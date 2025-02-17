@@ -4,12 +4,12 @@
 #include <wrl.h>
 #include <string>
 
+#include "WorldTransform.h"
 #include "Vector4.h"
 #include "Matrix4x4.h"
 
 using Microsoft::WRL::ComPtr;
 
-class WorldTransform;
 class Object3dBase;
 class Model;
 
@@ -29,7 +29,7 @@ public:
 	/*==================== メンバ関数 ====================*/
 
 	// 初期化
-	void Initialize(const std::string& filePath, WorldTransform* transform);
+	void Initialize(const std::string& filePath);
 
 	// 更新
 	void Update();
@@ -43,6 +43,8 @@ public:
 	void SetTexture(const std::string& directoryPath, const std::string& filePath);
 	void SetColor(const Vector4& color);
 
+	WorldTransform& GetTransform() { return transform_; }
+
 private:
 
 	// マテリアルデータの作成
@@ -54,7 +56,7 @@ private:
 
 	Model* model_ = nullptr;
 
-	WorldTransform* transform_ = nullptr;
+	WorldTransform transform_;
 
 	/*==================== マテリアル ====================*/
 

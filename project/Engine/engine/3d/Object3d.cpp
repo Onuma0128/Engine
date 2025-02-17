@@ -7,15 +7,13 @@
 #include "ModelManager.h"
 #include "Model.h"
 
-#include "WorldTransform.h"
-
 #include "CreateBufferResource.h"
 
-void Object3d::Initialize(const std::string& filePath, WorldTransform* transform)
+void Object3d::Initialize(const std::string& filePath)
 {
     this->object3dBase_ = Object3dBase::GetInstance();
 
-    transform_ = transform;
+    transform_ = WorldTransform();
 
     SetModel(filePath);
 
@@ -24,7 +22,7 @@ void Object3d::Initialize(const std::string& filePath, WorldTransform* transform
 
 void Object3d::Update()
 {
-    transform_->TransferMatrix(model_);
+    transform_.TransferMatrix(model_);
 }
 
 void Object3d::Draw()
@@ -33,7 +31,7 @@ void Object3d::Draw()
 
     auto commandList = object3dBase_->GetDxEngine()->GetCommandList();
     commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-    commandList->SetGraphicsRootConstantBufferView(1, transform_->GetConstBuffer()->GetGPUVirtualAddress());
+    commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(3, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());

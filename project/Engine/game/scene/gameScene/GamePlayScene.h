@@ -6,7 +6,6 @@
 #include "Object3d.h"
 #include "WorldTransform.h"
 #include "Sprite.h"
-#include "Camera.h"
 #include "ParticleEmitter.h"
 #include "TrailEffect.h"
 
@@ -26,19 +25,13 @@ public:
 
 private:
 
-	std::unique_ptr<Camera> camera1_ = nullptr;
-	std::unique_ptr<Camera> camera2_ = nullptr;
-
 	std::unique_ptr<Object3d> terrain_ = nullptr;
-	std::unique_ptr<WorldTransform> terrainTrans_ = nullptr;
 	Vector3 terrainAngle_;
 
 	std::unique_ptr<Object3d> sphere_ = nullptr;
-	std::unique_ptr<WorldTransform> sphereTrans_ = nullptr;
 	Vector3 sphereAngle_;
 
 	std::unique_ptr<Object3d> plane_ = nullptr;
-	std::unique_ptr<WorldTransform> planeTrans_ = nullptr;
 	Vector3 planeAngle_;
 
 	std::unique_ptr<Sprite> sprite_ = nullptr;
