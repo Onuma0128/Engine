@@ -27,9 +27,10 @@ void TrailEffectBase::Initialize(DirectXEngine* dxEngine)
 
 void TrailEffectBase::DrawBase()
 {
-	dxEngine_->GetCommandList()->SetGraphicsRootSignature(rootSignature_.Get());
-	dxEngine_->GetCommandList()->SetPipelineState(pipelineState_.Get());
-	dxEngine_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	auto commandList = dxEngine_->GetCommandList();
+	commandList->SetGraphicsRootSignature(rootSignature_.Get());
+	commandList->SetPipelineState(pipelineState_.Get());
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
 void TrailEffectBase::Finalize()

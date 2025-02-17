@@ -27,10 +27,11 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 
 void Model::Draw()
 {
-    modelBase_->GetDxEngine()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
+    auto commandList = modelBase_->GetDxEngine()->GetCommandList();
+    commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
     SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, modelData_.material.textureIndex);
     // 描画
-    modelBase_->GetDxEngine()->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
+    commandList->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
 }
 
 void Model::MakeVertexData()

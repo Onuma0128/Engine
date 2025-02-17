@@ -41,8 +41,9 @@ void TrailEffect::Update()
 
 void TrailEffect::Draw()
 {
-	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	trailEffectBase_->DrawBase();
 
+	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->IASetIndexBuffer(&indexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
@@ -74,8 +75,9 @@ void TrailEffect::InitSphere(uint32_t kSubdivision)
 
 void TrailEffect::DrawSphere()
 {
-	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	trailEffectBase_->DrawBase();
 
+	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());

@@ -48,24 +48,4 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	// Modelの描画準備
-	Object3dBase::GetInstance()->DrawBase();
-	
-
-
-
-	// Spriteの描画準備
-	SpriteBase::GetInstance()->DrawBase();
-	
-
-
-
-	// Lineの描画準備
-	PrimitiveDrawer::GetInstance()->DrawBase();
-
-
-
-
-	// Particleの描画
-
 }

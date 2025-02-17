@@ -110,7 +110,6 @@ void ParticleEmitter::Draw()
 #ifdef _DEBUG
 
     /*==================== パーティクルの範囲描画 ====================*/
-    PrimitiveDrawer::GetInstance()->DrawBase();
     for (auto& line : lines_) {
         line->Draw();
     }

@@ -3,9 +3,7 @@
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
 
-#include "DirectXEngine.h"
 #include "WinApp.h"
-#include "Input.h"
 
 #include "Transform.h"
 #include "Matrix4x4.h"
@@ -61,8 +59,6 @@ public:
 	const bool GetIsDebug()const { return isDebug_; }
 
 private:
-
-	Input* input_;
 
 	/*==================== カメラの変数 ====================*/
 

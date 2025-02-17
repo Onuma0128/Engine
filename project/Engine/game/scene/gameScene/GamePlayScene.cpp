@@ -129,33 +129,15 @@ void GamePlayScene::Update()
 }
 
 void GamePlayScene::Draw()
-{
-	// Modelの描画準備
-	Object3dBase::GetInstance()->DrawBase();
-	
+{	
 	terrain_->Draw();
 	sphere_->Draw();
 	plane_->Draw();
-
-	// Spriteの描画準備
-	SpriteBase::GetInstance()->DrawBase();
 	
 	sprite_->Draw();
 
-
-	// Lineの描画準備
-	PrimitiveDrawer::GetInstance()->DrawBase();
-
-
-
-
-	// TrailEffectの描画準備
-	TrailEffectBase::GetInstance()->DrawBase();
-
 	sphereEffect_->DrawSphere();
 
-
-	// Particleの描画
 	ParticleManager::GetInstance()->Draw();
 }
 

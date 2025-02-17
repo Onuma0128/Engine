@@ -1,5 +1,6 @@
 #include "Line3d.h"
 
+#include "DirectXEngine.h"
 #include "PrimitiveDrawer.h"
 
 #include "Camera.h"
@@ -43,16 +44,22 @@ void Line3d::Update()
 
 void Line3d::Draw()
 {
-	primitiveDrawer_->GetDxEngine()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
-	primitiveDrawer_->GetDxEngine()->GetCommandList()->SetGraphicsRootConstantBufferView(0, wvpResource_->GetGPUVirtualAddress());
-	primitiveDrawer_->GetDxEngine()->GetCommandList()->DrawInstanced(2, 1, 0, 0);
+	primitiveDrawer_->DrawBase();
+
+	auto commandList = primitiveDrawer_->GetDxEngine()->GetCommandList();
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	commandList->SetGraphicsRootConstantBufferView(0, wvpResource_->GetGPUVirtualAddress());
+	commandList->DrawInstanced(2, 1, 0, 0);
 }
 
 void Line3d::Draws()
 {
-	primitiveDrawer_->GetDxEngine()->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
-	primitiveDrawer_->GetDxEngine()->GetCommandList()->SetGraphicsRootConstantBufferView(0, wvpResource_->GetGPUVirtualAddress());
-	primitiveDrawer_->GetDxEngine()->GetCommandList()->DrawInstanced(lineCount_ * 2, 1, 0, 0);
+	primitiveDrawer_->DrawBase();
+
+	auto commandList = primitiveDrawer_->GetDxEngine()->GetCommandList();
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	commandList->SetGraphicsRootConstantBufferView(0, wvpResource_->GetGPUVirtualAddress());
+	commandList->DrawInstanced(lineCount_ * 2, 1, 0, 0);
 }
 
 void Line3d::CreatVertexResource()

@@ -1,14 +1,12 @@
 #include "Camera.h"
 
-#include "WinApp.h"
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG
+#include "Input.h"
 
 void Camera::Initialize()
 {
-	input_ = Input::GetInstance();
-
 	debugTransform_ = { {1.0f,1.0f,1.0f},{0.26f,0.0f,0.0f},{0.0f,4.0f,-15.0f} };
 	transform_ = { {1.0f,1.0f,1.0f},{0.26f,0.0f,0.0f},{0.0f,4.0f,-15.0f} };
 	fovY_ = 0.45f;
@@ -43,30 +41,31 @@ void Camera::DebugCamera()
 	Vector3 defaultRight = Vector3::ExprUnitX;
 	Vector3 right = defaultRight.Transform(rotationMatrix);
 
-	if (input_->PushKey(DIK_W)) {
+	Input* input = Input::GetInstance();
+	if (input->PushKey(DIK_W)) {
 		debugTransform_.translation += forward * moveSpeed;
 	}
-	if (input_->PushKey(DIK_S)) {
+	if (input->PushKey(DIK_S)) {
 		debugTransform_.translation -= forward * moveSpeed;
 	}
-	if (input_->PushKey(DIK_A)) {
+	if (input->PushKey(DIK_A)) {
 		debugTransform_.translation -= right * moveSpeed;
 	}
-	if (input_->PushKey(DIK_D)) {
+	if (input->PushKey(DIK_D)) {
 		debugTransform_.translation += right * moveSpeed;
 	}
-	if (input_->PushKey(DIK_Q)) {
+	if (input->PushKey(DIK_Q)) {
 		debugTransform_.translation.y -= moveSpeed;
 	}
-	if (input_->PushKey(DIK_E)) {
+	if (input->PushKey(DIK_E)) {
 		debugTransform_.translation.y += moveSpeed;
 	}
 
 	// 右クリックされているなら
-	if (input_->PushMouseButton(1)) {
+	if (input->PushMouseButton(1)) {
 		// マウスによるカメラ回転
-		float mouseDeltaX = static_cast<float>(input_->GetMouseDeltaX());
-		float mouseDeltaY = static_cast<float>(input_->GetMouseDeltaY());
+		float mouseDeltaX = static_cast<float>(input->GetMouseDeltaX());
+		float mouseDeltaY = static_cast<float>(input->GetMouseDeltaY()) * -1.0f;
 
 		// マウスの移動をカメラの回転に変換
 		debugTransform_.rotation.y += mouseDeltaX * mouseSensitivity_;

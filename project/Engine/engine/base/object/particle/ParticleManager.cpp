@@ -92,22 +92,24 @@ void ParticleManager::Update()
 
 void ParticleManager::Draw()
 {
+    auto commandList = dxEngine_->GetCommandList();
+
     /*==================== パイプラインの設定 ====================*/
-    dxEngine_->GetCommandList()->SetGraphicsRootSignature(rootSignature_.Get());
-    dxEngine_->GetCommandList()->SetPipelineState(pipelineState_.Get());
-    dxEngine_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    commandList->SetGraphicsRootSignature(rootSignature_.Get());
+    commandList->SetPipelineState(pipelineState_.Get());
+    commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     /*==================== パーティクルの描画 ====================*/
     for (const auto& [name, group] : particleGroups_) {
         uint32_t textIndex = group.textureIndex;
-        dxEngine_->GetCommandList()->IASetVertexBuffers(0, 1, &vertexBufferView_);
-        dxEngine_->GetCommandList()->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-        dxEngine_->GetCommandList()->SetGraphicsRootConstantBufferView(1, group.instancingResource->GetGPUVirtualAddress());
+        commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+        commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+        commandList->SetGraphicsRootConstantBufferView(1, group.instancingResource->GetGPUVirtualAddress());
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, group.srvIndex);
 
         // 各パーティクルグループのインスタンスを描画
-        dxEngine_->GetCommandList()->DrawInstanced(UINT(modelData_.vertices.size()), group.instanceCount, 0, 0);
+        commandList->DrawInstanced(UINT(modelData_.vertices.size()), group.instanceCount, 0, 0);
     }
 
     for (const auto& [name, group] : particleGroups_) {

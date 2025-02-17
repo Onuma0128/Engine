@@ -28,9 +28,10 @@ void PrimitiveDrawer::Initialize(DirectXEngine* dxEngine)
 
 void PrimitiveDrawer::DrawBase()
 {
-	dxEngine_->GetCommandList()->SetGraphicsRootSignature(rootSignature_.Get());
-	dxEngine_->GetCommandList()->SetPipelineState(pipelineState_.Get());
-	dxEngine_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+	auto commandList = dxEngine_->GetCommandList();
+	commandList->SetGraphicsRootSignature(rootSignature_.Get());
+	commandList->SetPipelineState(pipelineState_.Get());
+	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 }
 
 void PrimitiveDrawer::Finalize()

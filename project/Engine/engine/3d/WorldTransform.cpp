@@ -1,8 +1,9 @@
 #include "WorldTransform.h"
 
+#include "DirectXEngine.h"
+
 #include "Camera.h"
 #include "CameraManager.h"
-
 #include "Object3dBase.h"
 #include "Model.h"
 

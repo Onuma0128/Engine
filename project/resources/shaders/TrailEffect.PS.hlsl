@@ -22,11 +22,11 @@ PixelShaderOutput main(VertexShaderOutput input)
     float4 textureColor = gTexture.Sample(gSampler, input.texcoord);
     if (gMaterial.xTexcoord_alpha != 0)
     {
-        textureColor.a = input.texcoord.x;
+        textureColor.a *= input.texcoord.x;
     }
     if (gMaterial.yTexcoord_alpha != 0)
     {
-        textureColor.a = input.texcoord.y;
+        textureColor.a *= input.texcoord.y;
     }
     textureColor.a = clamp(textureColor.a, 0.0f, 1.0f);
     
