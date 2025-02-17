@@ -1,9 +1,11 @@
 #include "Object3d.h"
 
 #include "CameraManager.h"
+#include "Camera.h"
 #include "Object3dBase.h"
 #include "LightManager.h"
 #include "ModelManager.h"
+#include "Model.h"
 
 #include "WorldTransform.h"
 

@@ -1,5 +1,8 @@
 #include "Object3dBase.h"
 
+#include "DirectXEngine.h"
+#include "PipelineState.h"
+
 Object3dBase* Object3dBase::instance_ = nullptr;
 
 Object3dBase* Object3dBase::GetInstance()

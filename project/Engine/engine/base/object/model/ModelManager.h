@@ -3,9 +3,9 @@
 #include <string>
 #include <memory>
 
-#include "DirectXEngine.h"
-#include "Model.h"
-#include "ModelBase.h"
+class DirectXEngine;
+class ModelBase;
+class Model;
 
 class ModelManager
 {

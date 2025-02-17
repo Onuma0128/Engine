@@ -2,13 +2,15 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
-#include "StringUtility.h"
-#include "WinApp.h"
 
-#include "PipelineState.h"
 #include <dxcapi.h>
 #include <array>
 #include <chrono>
+
+#include "StringUtility.h"
+#include "PipelineState.h"
+
+class WinApp;
 
 using Microsoft::WRL::ComPtr;
 
@@ -61,17 +63,17 @@ public:
 	// コマンドリスト
 	ID3D12GraphicsCommandList* GetCommandList()const { return commandList_.Get(); }
 	// パイプラインのゲッター
-	PipelineState* GetPipelineState()const { return pipelineState_; }
+	PipelineState* GetPipelineState()const { return pipelineState_.get(); }
 	// バックバッファの数を取得
 	size_t GetBackBufferCount()const { return static_cast<size_t>(swapChainDesc_.BufferCount); }
 
 private:
 	// StringUtility
-	StringUtility* stringUtility_ = nullptr;
+	std::unique_ptr<StringUtility> stringUtility_ = nullptr;
 	// WindowsAPI
 	WinApp* winApp_ = nullptr;
 	// PipelineState
-	PipelineState* pipelineState_ = nullptr;
+	std::unique_ptr<PipelineState> pipelineState_ = nullptr;
 
 	///==============================================================
 
@@ -112,10 +114,6 @@ private:
 	// DxcCompilerの生成
 	ComPtr<IDxcUtils> dxcUtils_ = nullptr;
 	ComPtr<IDxcCompiler3> dxcCompiler_ = nullptr;
-	// PipelineStateの生成
-	// Particle
-	ComPtr<ID3D12RootSignature> ParticleRootSignature_ = nullptr;
-	ComPtr<ID3D12PipelineState> ParticlePipelineState_ = nullptr;
 	// IncludeHandlerの生成
 	ComPtr<IDxcIncludeHandler> includeHandler_ = nullptr;
 	// TransitionBarrierの生成

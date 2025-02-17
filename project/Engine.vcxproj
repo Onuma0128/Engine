@@ -118,14 +118,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\2d\Logger.cpp" />
     <ClCompile Include="Engine\engine\2d\Sprite.cpp" />
     <ClCompile Include="Engine\engine\3d\Line3d.cpp" />
-    <ClCompile Include="Engine\engine\3d\LoadObjFile.cpp" />
     <ClCompile Include="Engine\engine\3d\Model.cpp" />
     <ClCompile Include="Engine\engine\3d\Object3d.cpp" />
     <ClCompile Include="Engine\engine\3d\TrailEffect.cpp" />
-    <ClCompile Include="Engine\engine\3d\VertexResource.cpp" />
     <ClCompile Include="Engine\engine\3d\WorldTransform.cpp" />
     <ClCompile Include="Engine\engine\audio\Audio.cpp" />
-    <ClCompile Include="Engine\engine\audio\LoadSound.cpp" />
     <ClCompile Include="Engine\engine\base\audio\AudioManager.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\CompileShader.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\D3DResourceLeakChecker.cpp" />
@@ -157,7 +154,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\base\scene\SceneManager.cpp" />
     <ClCompile Include="Engine\engine\globalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\engine\input\Input.cpp" />
-    <ClCompile Include="Engine\engine\math\MT3.cpp" />
     <ClCompile Include="Engine\engine\math\structure\CreateBufferResource.cpp" />
     <ClCompile Include="Engine\engine\math\structure\Matrix4x4.cpp" />
     <ClCompile Include="Engine\engine\math\structure\Quaternion.cpp" />
@@ -172,14 +168,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\2d\Logger.h" />
     <ClInclude Include="Engine\engine\2d\Sprite.h" />
     <ClInclude Include="Engine\engine\3d\Line3d.h" />
-    <ClInclude Include="Engine\engine\3d\LoadObjFile.h" />
     <ClInclude Include="Engine\engine\3d\Model.h" />
     <ClInclude Include="Engine\engine\3d\Object3d.h" />
     <ClInclude Include="Engine\engine\3d\TrailEffect.h" />
-    <ClInclude Include="Engine\engine\3d\VertexResource.h" />
     <ClInclude Include="Engine\engine\3d\WorldTransform.h" />
     <ClInclude Include="Engine\engine\audio\Audio.h" />
-    <ClInclude Include="Engine\engine\audio\LoadSound.h" />
     <ClInclude Include="Engine\engine\base\audio\AudioManager.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\CompileShader.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\D3DResourceLeakChecker.h" />
@@ -212,7 +205,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\base\scene\SceneManager.h" />
     <ClInclude Include="Engine\engine\globalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\engine\input\Input.h" />
-    <ClInclude Include="Engine\engine\math\MT3.h" />
     <ClInclude Include="Engine\engine\math\structure\CreateBufferResource.h" />
     <ClInclude Include="Engine\engine\math\structure\Matrix3x3.h" />
     <ClInclude Include="Engine\engine\math\structure\Matrix4x4.h" />

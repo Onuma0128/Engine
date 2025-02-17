@@ -3,10 +3,6 @@
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
 
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix4x4.h"
-
 using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;

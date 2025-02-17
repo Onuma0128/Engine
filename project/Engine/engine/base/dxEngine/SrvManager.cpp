@@ -1,4 +1,8 @@
 #include "SrvManager.h"
+
+#include <cassert>
+
+#include "DirectXEngine.h"
 #include "DescriptorHeap.h"
 
 const uint32_t SrvManager::kMaxSRVCount_ = 512;

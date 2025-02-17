@@ -3,6 +3,10 @@
 #include "DirectXEngine.h"
 #include "PipelineState.h"
 
+#include "Vector3.h"
+#include "Vector4.h"
+#include "Matrix4x4.h"
+
 TrailEffectBase* TrailEffectBase::instance_ = nullptr;
 
 TrailEffectBase* TrailEffectBase::GetInstance()

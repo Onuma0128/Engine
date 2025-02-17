@@ -1,15 +1,15 @@
 #pragma once
 #include <string>
-#include <vector>
 #include <unordered_map>
 
 #include "DirectXTex.h"
-#include "wrl.h"
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
-#include "DirectXEngine.h"
+#include "wrl.h"
 
 using Microsoft::WRL::ComPtr;
+
+class DirectXEngine;
 
 class TextureManager
 {

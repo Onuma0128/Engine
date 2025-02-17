@@ -1,5 +1,7 @@
 #include "Line3d.h"
 
+#include "PrimitiveDrawer.h"
+
 #include "Camera.h"
 #include "CameraManager.h"
 #include "CreateBufferResource.h"

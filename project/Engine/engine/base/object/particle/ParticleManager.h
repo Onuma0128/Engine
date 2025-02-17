@@ -3,15 +3,11 @@
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
 #include <iostream>
-#include <numbers>
 #include <memory>
 #include <list>
 #include <unordered_map>
 
-#include "DirectXEngine.h"
-#include "SrvManager.h"
 #include "Model.h"
-#include "ModelManager.h"
 
 #include "Vector2.h"
 #include "Vector3.h"
@@ -25,6 +21,8 @@ using Microsoft::WRL::ComPtr;
 const uint32_t kNumMaxInstance = 1024;
 
 class ParticleEmitter;
+class DirectXEngine;
+class SrvManager;
 
 class ParticleManager
 {

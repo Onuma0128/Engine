@@ -45,6 +45,10 @@ void GamePlayScene::Initialize()
 	planeTrans_->translation_ = { -1.5f,1.0f,0.0f };
 	planeAngle_.y = 3.14f;
 
+	sprite_ = std::make_unique<Sprite>();
+	sprite_->Initialize("uvChecker.png");
+	sprite_->SetSize({ 200.0f,200.0f });
+
 	emitter_ = std::make_unique<ParticleEmitter>("test");
 	ParticleManager::GetInstance()->CreateParticleGroup("test", "uvChecker.png", emitter_.get());
 
@@ -117,6 +121,7 @@ void GamePlayScene::Update()
 	terrain_->Update();
 	sphere_->Update();
 	plane_->Update();
+	sprite_->Update();
 
 	sphereEffect_->Update();
 
@@ -135,7 +140,7 @@ void GamePlayScene::Draw()
 	// Spriteの描画準備
 	SpriteBase::GetInstance()->DrawBase();
 	
-
+	sprite_->Draw();
 
 
 	// Lineの描画準備

@@ -1,5 +1,7 @@
 #include "ModelBase.h"
 
+#include "DirectXEngine.h"
+
 ModelBase* ModelBase::instance_ = nullptr;
 
 ModelBase* ModelBase::GetInstance()

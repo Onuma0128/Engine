@@ -4,12 +4,12 @@
 #include "wrl.h"
 #include "vector"
 
-#include "PrimitiveDrawer.h"
-
 #include "Vector3.h"
 #include "Vector4.h"
 
 using Microsoft::WRL::ComPtr;
+
+class PrimitiveDrawer;
 
 class Line3d
 {

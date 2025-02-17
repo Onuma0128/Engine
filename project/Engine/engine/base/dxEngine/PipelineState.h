@@ -1,12 +1,10 @@
-
 #pragma once
+#include <Windows.h>
 #include "wrl.h"
 #include <dxcapi.h>
 #pragma comment(lib,"dxcompiler.lib")
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
-#include "CompileShader.h"
-#include <assert.h>
 
 using Microsoft::WRL::ComPtr;
 

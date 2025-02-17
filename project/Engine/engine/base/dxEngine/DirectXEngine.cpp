@@ -8,15 +8,17 @@
 #include "DescriptorHeap.h"
 
 #include "Logger.h"
+#include "WinApp.h"
+
+#include "SrvManager.h"
+#include "Object3dBase.h"
+#include "ModelManager.h"
+#include "SpriteBase.h"
 #include "CameraManager.h"
 #include "LightManager.h"
-#include "Object3dBase.h"
-#include "SpriteBase.h"
 #include "TextureManager.h"
-#include "ModelManager.h"
-#include "SrvManager.h"
-#include "PrimitiveDrawer.h"
 #include "ParticleManager.h"
+#include "PrimitiveDrawer.h"
 #include "AudioManager.h"
 #include "TrailEffectBase.h"
 
@@ -35,9 +37,6 @@ DirectXEngine::~DirectXEngine()
 	ParticleManager::GetInstance()->Finalize();
 	AudioManager::GetInstance()->Finalize();
 	TrailEffectBase::GetInstance()->Finalize();
-
-	delete stringUtility_;
-	delete pipelineState_;
 
 	//解放の処理
 	CloseHandle(fenceEvent_);
@@ -340,11 +339,8 @@ void DirectXEngine::IncludeHandlerInitialize()
 void DirectXEngine::PipelineStateInitialize()
 {
 	// 新しいパイプライン
-	pipelineState_ = new PipelineState();
+	pipelineState_ = std::make_unique<PipelineState>();
 	pipelineState_->Initialize(device_, dxcUtils_, dxcCompiler_, includeHandler_);
-	// Particle
-	ParticleRootSignature_ = pipelineState_->CreateParticleRootSignature();
-	ParticlePipelineState_ = pipelineState_->CreateParticlePipelineState();
 }
 
 void DirectXEngine::InitializeFixFPS()

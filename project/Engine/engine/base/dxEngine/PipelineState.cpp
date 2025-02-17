@@ -1,5 +1,9 @@
 #include "PipelineState.h"
 
+#include <cassert>
+
+#include "CompileShader.h"
+
 void PipelineState::Initialize(
 	ComPtr<ID3D12Device>& device, ComPtr<IDxcUtils> dxcUtils,
 	ComPtr<IDxcCompiler3>& dxcCompiler, ComPtr<IDxcIncludeHandler> includeHandler)

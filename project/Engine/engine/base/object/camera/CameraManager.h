@@ -7,7 +7,6 @@
 
 #include "Vector3.h"
 
-
 using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;

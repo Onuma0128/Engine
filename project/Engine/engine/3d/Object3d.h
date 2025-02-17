@@ -2,22 +2,16 @@
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
-#include <vector>
 #include <string>
 
-#include "Vector2.h"
-#include "Vector3.h"
 #include "Vector4.h"
 #include "Matrix4x4.h"
-#include "Transform.h"
-#include "Model.h"
-#include "Camera.h"
 
 using Microsoft::WRL::ComPtr;
 
 class WorldTransform;
-
 class Object3dBase;
+class Model;
 
 class Object3d
 {

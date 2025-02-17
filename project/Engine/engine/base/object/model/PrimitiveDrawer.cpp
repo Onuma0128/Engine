@@ -1,5 +1,12 @@
 #include "PrimitiveDrawer.h"
+
+#include "DirectXEngine.h"
+#include "PipelineState.h"
 #include "Camera.h"
+
+#include "Vector3.h"
+#include "Vector4.h"
+#include "Matrix4x4.h"
 
 PrimitiveDrawer* PrimitiveDrawer::instance_ = nullptr;
 

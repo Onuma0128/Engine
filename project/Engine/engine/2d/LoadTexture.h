@@ -1,9 +1,10 @@
 #pragma once
-#include <string>
 #include "DirectXTex.h"
-#include "wrl.h"
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
+#include "wrl.h"
+
+#include <string>
 
 using Microsoft::WRL::ComPtr;
 

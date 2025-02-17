@@ -1,9 +1,15 @@
 #include "ParticleManager.h"
 
+#include <numbers>
+
+#include "DirectXEngine.h"
+#include "PipelineState.h"
+#include "SrvManager.h"
 #include "PrimitiveDrawer.h"
 #include "LightManager.h"
 #include "TextureManager.h"
 #include "CameraManager.h"
+#include "ModelManager.h"
 
 #include "Camera.h"
 #include "CreateBufferResource.h"

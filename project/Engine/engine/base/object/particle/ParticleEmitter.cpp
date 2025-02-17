@@ -1,5 +1,7 @@
 #include "ParticleEmitter.h"
 
+#include "PrimitiveDrawer.h"
+
 #ifdef _DEBUG
 #include "imgui.h"
 #endif // _DEBUG

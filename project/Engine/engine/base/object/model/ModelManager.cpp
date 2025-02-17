@@ -1,5 +1,9 @@
 #include "ModelManager.h"
 
+#include "DirectXEngine.h"
+#include "ModelBase.h"
+#include "Model.h"
+
 ModelManager* ModelManager::instance_ = nullptr;
 
 ModelManager* ModelManager::GetInstance()

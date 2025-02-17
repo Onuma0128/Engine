@@ -1,5 +1,8 @@
 #include "SpriteBase.h"
 
+#include "DirectXEngine.h"
+#include "PipelineState.h"
+
 SpriteBase* SpriteBase::instance_ = nullptr;
 
 SpriteBase* SpriteBase::GetInstance()

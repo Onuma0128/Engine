@@ -16,8 +16,6 @@ void Framework::Initialize()
 
 void Framework::Finalize()
 {
-	delete sceneFactory_;
-
 	Input::GetInstance()->Finalize();
 
 	SceneManager::GetInstance()->Finalize();

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "DirectXEngine.h"
 #include "ModelBase.h"
 #include "TextureManager.h"
 #include "SrvManager.h"

@@ -15,8 +15,6 @@
 #include "ParticleManager.h"
 #include "GlobalVariables.h"
 
-class ParitcleManager;
-
 class ParticleEmitter
 {
 public:

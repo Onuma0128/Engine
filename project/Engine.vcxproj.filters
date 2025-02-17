@@ -30,9 +30,6 @@
     <ClCompile Include="Engine\engine\3d\Line3d.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\3d\LoadObjFile.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\engine\3d\Model.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -42,16 +39,10 @@
     <ClCompile Include="Engine\engine\3d\TrailEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\3d\VertexResource.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\engine\3d\WorldTransform.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\audio\Audio.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\engine\audio\LoadSound.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\base\framework\Framework.cpp">
@@ -147,9 +138,6 @@
     <ClCompile Include="Engine\engine\input\Input.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\math\MT3.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\engine\math\structure\CreateBufferResource.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -185,9 +173,6 @@
     <ClInclude Include="Engine\engine\3d\Line3d.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\3d\LoadObjFile.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\engine\3d\Model.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -197,16 +182,10 @@
     <ClInclude Include="Engine\engine\3d\TrailEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\3d\VertexResource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\engine\3d\WorldTransform.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\audio\Audio.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\engine\audio\LoadSound.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\framework\Framework.h">
@@ -303,9 +282,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\input\Input.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\engine\math\MT3.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\math\structure\CreateBufferResource.h">
