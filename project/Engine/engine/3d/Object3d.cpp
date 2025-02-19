@@ -1,5 +1,7 @@
 #include "Object3d.h"
 
+#include "DirectXEngine.h"
+
 #include "CameraManager.h"
 #include "Camera.h"
 #include "Object3dBase.h"

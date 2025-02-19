@@ -1,5 +1,7 @@
 #include "Sprite.h"
 
+#include "DirectXEngine.h"
+
 #include "CameraManager.h"
 #include "SpriteBase.h"
 #include "WinApp.h"

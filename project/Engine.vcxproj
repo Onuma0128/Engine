@@ -114,6 +114,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\engine\base\object\light\type\DirectionalLight.cpp" />
+    <ClCompile Include="Engine\engine\base\object\light\type\BaseLight.cpp" />
     <ClCompile Include="Engine\engine\2d\LoadTexture.cpp" />
     <ClCompile Include="Engine\engine\2d\Logger.cpp" />
     <ClCompile Include="Engine\engine\2d\Sprite.cpp" />
@@ -163,8 +165,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\titleScene\TitleScene.cpp" />
     <ClCompile Include="Engine\main.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\test\TestObject.cpp" />
+    <ClCompile Include="Engine\engine\base\object\light\type\PointLight.cpp" />
+    <ClCompile Include="Engine\engine\base\object\light\type\SpotLight.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\engine\base\object\light\type\DirectionalLight.h" />
+    <ClInclude Include="Engine\engine\base\object\light\type\BaseLight.h" />
     <ClInclude Include="Engine\engine\2d\LoadTexture.h" />
     <ClInclude Include="Engine\engine\2d\Logger.h" />
     <ClInclude Include="Engine\engine\2d\Sprite.h" />
@@ -217,6 +223,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\GamePlayScene.h" />
     <ClInclude Include="Engine\game\scene\titleScene\TitleScene.h" />
     <ClInclude Include="Engine\game\scene\gameScene\test\TestObject.h" />
+    <ClInclude Include="Engine\engine\base\object\light\type\PointLight.h" />
+    <ClInclude Include="Engine\engine\base\object\light\type\SpotLight.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

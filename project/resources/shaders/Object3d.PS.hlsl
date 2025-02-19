@@ -7,13 +7,13 @@ struct Material
     float4x4 uvTransform;
     float shininess;
 };
-struct DirectionalLight
+struct DirectionalLightData
 {
     float4 color;
     float3 direction;
     float intensity;
 };
-struct PointLight
+struct PointLightData
 {
     float4 color;
     float3 position;
@@ -21,7 +21,7 @@ struct PointLight
     float radius;
     float decay;
 };
-struct SpotLight
+struct SpotLightData
 {
     float4 color;
     float3 position;
@@ -38,9 +38,9 @@ struct Camera
 };
 
 ConstantBuffer<Material> gMaterial : register(b0);
-ConstantBuffer<DirectionalLight> gDirectionalLight : register(b1);
-ConstantBuffer<PointLight> gPointLight : register(b2);
-ConstantBuffer<SpotLight> gSpotLight : register(b3);
+ConstantBuffer<DirectionalLightData> gDirectionalLight : register(b1);
+ConstantBuffer<PointLightData> gPointLight : register(b2);
+ConstantBuffer<SpotLightData> gSpotLight : register(b3);
 ConstantBuffer<Camera> gCamera : register(b4);
 Texture2D<float4> gTexture : register(t0);
 SamplerState gSampler : register(s0);

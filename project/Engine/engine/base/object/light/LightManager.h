@@ -1,16 +1,14 @@
 #pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
-#include <wrl.h>
 
-#include "DirectXEngine.h"
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix4x4.h"
-#include "Transform.h"
+#include <memory>
 
-using Microsoft::WRL::ComPtr;
+#include "type/DirectionalLight.h"
+#include "type/PointLight.h"
+#include "type/SpotLight.h"
+
+class DirectXEngine;
 
 class LightManager
 {
@@ -21,35 +19,6 @@ private:
 	~LightManager() = default;
 	LightManager(LightManager&) = delete;
 	LightManager& operator=(LightManager&) = delete;
-
-public:
-
-	struct DirectionalLight {
-		Vector4 color;
-		Vector3 direction;
-		float intensity;
-	};
-
-	struct PointLight {
-		Vector4 color;
-		Vector3 position;
-		float intensity;
-		float radius;
-		float decay;
-		float padding[2];
-	};
-
-	struct SpotLight {
-		Vector4 color;
-		Vector3 position;
-		float intensity;
-		Vector3 direction;
-		float distance;
-		float decay;
-		float cosAngle;
-		float cosFalloffStart;
-		float padding;
-	};
 
 public:
 
@@ -66,49 +35,28 @@ public:
 
 	void Finalize();
 
-	void MakeDirectionalLightData();
-
-	void MakePointLightData();
-
-	void MakeSpotLightData();
-
 	/*==================== アクセッサー ====================*/
 
-	ID3D12Resource* GetDirectionalLightResource()const { return directionalLightResource_.Get(); }
+	ID3D12Resource* GetDirectionalLightResource()const { return directionalLight_->GetResource(); }
 
-	ID3D12Resource* GetPointLightResource()const { return pointLightResource_.Get(); }
+	ID3D12Resource* GetPointLightResource()const { return pointLight_->GetResource(); }
 
-	ID3D12Resource* GetSpotLightResource()const { return spotLightResource_.Get(); }
+	ID3D12Resource* GetSpotLightResource()const { return spotLight_->GetResource(); }
 
 private:
 
 	DirectXEngine* dxEngine_ = nullptr;
 
-	/*==================== 平行光源のデータ ====================*/
+	/*==================== 平行光源 ====================*/
 
-	// バッファリソース
-	ComPtr<ID3D12Resource> directionalLightResource_ = nullptr;
-	// バッファリソース内のデータを指すポインタ
-	D3D12_VERTEX_BUFFER_VIEW directionalLightBufferView_{};
-	// バッファリソースの使い道を補足するバッファビュー
-	DirectionalLight* directionalLightData_ = nullptr;
+	std::unique_ptr<DirectionalLight> directionalLight_ = nullptr;
 
-	/*==================== ポイントライトのデータ ====================*/
+	/*==================== ポイントライト ====================*/
 
-	// バッファリソース
-	ComPtr<ID3D12Resource> pointLightResource_ = nullptr;
-	// バッファリソース内のデータを指すポインタ
-	D3D12_VERTEX_BUFFER_VIEW pointLightBufferView_{};
-	// バッファリソースの使い道を補足するバッファビュー
-	PointLight* pointLightData_ = nullptr;
+	std::unique_ptr<PointLight> pointLight_ = nullptr;
 
-	/*==================== スポットライトのデータ ====================*/
+	/*==================== スポットライト ====================*/
 
-	// バッファリソース
-	ComPtr<ID3D12Resource> spotLightResource_ = nullptr;
-	// バッファリソース内のデータを指すポインタ
-	D3D12_VERTEX_BUFFER_VIEW spotLightBufferView_{};
-	// バッファリソースの使い道を補足するバッファビュー
-	SpotLight* spotLightData_ = nullptr;
+	std::unique_ptr<SpotLight> spotLight_ = nullptr;
 
 };
