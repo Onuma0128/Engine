@@ -10,17 +10,16 @@
 
 void GamePlayScene::Initialize()
 {
-	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
+	testObj_ = std::make_unique<TestObject>();
+	testObj_->Init();
+
 	terrain_ = std::make_unique<Object3d>();
 	terrain_->Initialize("terrain.obj");
 
-	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");
 	sphere_ = std::make_unique<Object3d>();
 	sphere_->Initialize("sphere.obj");
-	sphere_->SetTexture("resources","uvChecker.png");
 	sphere_->GetTransform().translation_ = {1.5f,1.0f,0.0f};
 
-	ModelManager::GetInstance()->LoadModel("resources", "plane.gltf");
 	plane_ = std::make_unique<Object3d>();
 	plane_->Initialize("plane.gltf");
 	plane_->GetTransform().translation_ = {-1.5f,1.0f,0.0f};
@@ -34,9 +33,10 @@ void GamePlayScene::Initialize()
 	ParticleManager::GetInstance()->CreateParticleGroup("test", "uvChecker.png", emitter_.get());
 
 	sphereEffect_ = std::make_unique<TrailEffect>();
-	sphereEffect_->InitSphere(16);
+	sphereEffect_->InitSphere(5);
 	sphereEffect_->SetTexcoordX_Alpha(false);
-	sphereEffect_->SetTexcoordY_Alpha(true);
+	sphereEffect_->SetTexcoordY_Alpha(false);
+	sphereEffect_->GetTransform().scale = Vector3{ 1.0f,0.2f,1.0f };
 }
 
 void GamePlayScene::Finalize()
@@ -87,6 +87,7 @@ void GamePlayScene::Update()
 	sphereEffect_->SetColor({ color.x,color.y,color.z });
 	sphereEffect_->SetAlpha(color.w);
 
+	testObj_->Update();
 	terrain_->Update();
 	sphere_->Update();
 	plane_->Update();
@@ -99,6 +100,7 @@ void GamePlayScene::Update()
 
 void GamePlayScene::Draw()
 {	
+	testObj_->Draw();
 	terrain_->Draw();
 	sphere_->Draw();
 	plane_->Draw();

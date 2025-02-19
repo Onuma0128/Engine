@@ -1,13 +1,10 @@
 #pragma once
-#include "wrl.h"
 #include <memory>
 
 #include "WinApp.h"
 #include "DirectXEngine.h"
-#include "Input.h"
-
-#include "SceneManager.h"
 #include "ImGuiManager.h"
+
 #include "AbstractSceneFactory.h"
 
 class Framework
@@ -25,6 +22,8 @@ public:
 	virtual void Draw() = 0;
 
 	virtual bool IsEndRequst() { return endRequst_; }
+
+	void LoadFiles();
 
 	void Run();
 

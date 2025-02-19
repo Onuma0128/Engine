@@ -1,10 +1,11 @@
 #include "MyGame.h"
 
+#include "SceneFactory.h"
+
+#include "SceneManager.h"
 #include "CameraManager.h"
 #include "LightManager.h"
-#include "SceneManager.h"
-#include "ParticleManager.h"
-#include "SceneFactory.h"
+
 #include "GlobalVariables.h"
 
 void MyGame::Initialize()

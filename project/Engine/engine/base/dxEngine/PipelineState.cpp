@@ -687,7 +687,7 @@ void PipelineState::TrailEffectBlendState(D3D12_BLEND_DESC& blendDesc)
 
 void PipelineState::TrailEffectRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc)
 {
-	//D3D12_CULL_MODE_BACK
+	//D3D12_CULL_MODE_NONE
 	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
 
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;

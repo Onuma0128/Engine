@@ -55,7 +55,7 @@ public:
 
 	/* =============== アクセッサ(球体用) =============== */
 
-	const Transform& GetTransform() { return transform_; }
+	Transform& GetTransform() { return transform_; }
 	void SetTransform(Transform transform) { transform_ = transform; }
 	const Vector4& GetColor() { return materialData_->color; }
 

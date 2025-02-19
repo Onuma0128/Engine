@@ -1,5 +1,10 @@
 #include "Framework.h"
 
+#include "SceneManager.h"
+#include "ModelManager.h"
+
+#include "Input.h"
+
 void Framework::Initialize()
 {
 	winApp_ = std::make_unique<WinApp>();
@@ -12,6 +17,8 @@ void Framework::Initialize()
 
 	imGuiManager_ = std::make_unique<ImGuiManager>();
 	imGuiManager_->Initialize(directXEngine_.get(), winApp_.get());
+
+	LoadFiles();
 }
 
 void Framework::Finalize()
@@ -32,6 +39,14 @@ void Framework::Update()
 		Input::GetInstance()->Update();
 
 	}
+}
+
+void Framework::LoadFiles()
+{
+	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
+	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");
+	ModelManager::GetInstance()->LoadModel("resources", "plane.gltf");
+	ModelManager::GetInstance()->LoadModel("resources", "suzanne.obj");
 }
 
 void Framework::Run()

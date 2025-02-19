@@ -9,6 +9,8 @@
 #include "ParticleEmitter.h"
 #include "TrailEffect.h"
 
+#include "gameScene/test/TestObject.h"
+
 class GamePlayScene : public BaseScene
 {
 public:
@@ -24,6 +26,8 @@ public:
 	void AddQuaternion(Quaternion& quaternion, const Vector3& angle);
 
 private:
+
+	std::unique_ptr<TestObject> testObj_ = nullptr;
 
 	std::unique_ptr<Object3d> terrain_ = nullptr;
 	Vector3 terrainAngle_;

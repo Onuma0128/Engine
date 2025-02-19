@@ -50,13 +50,15 @@ private:
 	// マテリアルデータの作成
 	void MakeMaterialData();
 
+protected:
+
+	WorldTransform transform_;
+
 private:
 
 	Object3dBase* object3dBase_ = nullptr;
 
 	Model* model_ = nullptr;
-
-	WorldTransform transform_;
 
 	/*==================== マテリアル ====================*/
 

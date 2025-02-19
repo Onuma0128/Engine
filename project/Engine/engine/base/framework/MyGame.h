@@ -1,6 +1,4 @@
 #pragma once
-#include <dxgidebug.h>
-#pragma comment(lib,"dxguid.lib")
 #include "Framework.h"
 
 class MyGame : public Framework

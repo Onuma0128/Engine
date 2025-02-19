@@ -162,6 +162,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\GamePlayScene.cpp" />
     <ClCompile Include="Engine\game\scene\titleScene\TitleScene.cpp" />
     <ClCompile Include="Engine\main.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\test\TestObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\2d\LoadTexture.h" />
@@ -215,6 +216,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\math\structure\Vector4.h" />
     <ClInclude Include="Engine\game\scene\gameScene\GamePlayScene.h" />
     <ClInclude Include="Engine\game\scene\titleScene\TitleScene.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\test\TestObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">
