@@ -54,6 +54,7 @@ public:
 
     // 球面線形補間
     void Slerp(const Quaternion& q1, float t);
+    static Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
 
 
     // 単項演算子オーバーロード

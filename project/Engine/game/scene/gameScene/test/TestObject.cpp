@@ -4,7 +4,7 @@
 
 void TestObject::Init()
 {
-	Object3d::Initialize("suzanne.obj");
+	Object3d::Initialize("terrain.obj");
 }
 
 void TestObject::Update()

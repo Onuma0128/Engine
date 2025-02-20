@@ -44,6 +44,7 @@ public:
 	void SetColor(const Vector4& color);
 
 	WorldTransform& GetTransform() { return transform_; }
+	Model* GetModel() { return model_; }
 
 private:
 

@@ -42,6 +42,11 @@ Vector3 Vector3::Cross(const Vector3& v1, const Vector3& v2) {
     };
 }
 
+Vector3 Vector3::Lerp(const Vector3& v1, const Vector3& v2, float t)
+{
+    return Vector3(std::lerp(v1.x, v2.x, t), std::lerp(v1.y, v2.y, t), std::lerp(v1.z, v2.z, t));
+}
+
 // 正規化
 Vector3 Vector3::Normalize() const {
     float length = Length();

@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\engine\3d\Animation.cpp" />
     <ClCompile Include="Engine\engine\base\object\light\type\DirectionalLight.cpp" />
     <ClCompile Include="Engine\engine\base\object\light\type\BaseLight.cpp" />
     <ClCompile Include="Engine\engine\2d\LoadTexture.cpp" />
@@ -169,6 +170,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\base\object\light\type\SpotLight.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\engine\3d\Animation.h" />
     <ClInclude Include="Engine\engine\base\object\light\type\DirectionalLight.h" />
     <ClInclude Include="Engine\engine\base\object\light\type\BaseLight.h" />
     <ClInclude Include="Engine\engine\2d\LoadTexture.h" />

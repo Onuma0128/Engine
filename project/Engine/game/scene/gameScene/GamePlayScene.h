@@ -10,6 +10,7 @@
 #include "TrailEffect.h"
 
 #include "gameScene/test/TestObject.h"
+#include "Animation.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -23,26 +24,11 @@ public:
 
 	void Draw() override;
 
-	void AddQuaternion(Quaternion& quaternion, const Vector3& angle);
-
 private:
 
 	std::unique_ptr<TestObject> testObj_ = nullptr;
 
-	std::unique_ptr<Object3d> terrain_ = nullptr;
-	Vector3 terrainAngle_;
-
-	std::unique_ptr<Object3d> sphere_ = nullptr;
-	Vector3 sphereAngle_;
-
-	std::unique_ptr<Object3d> plane_ = nullptr;
-	Vector3 planeAngle_;
-
-	std::unique_ptr<Sprite> sprite_ = nullptr;
-
-	std::unique_ptr<ParticleEmitter> emitter_ = nullptr;
-
-	std::unique_ptr<TrailEffect> sphereEffect_ = nullptr;
+	std::unique_ptr<Animation> animation_ = nullptr;
 
 };
 

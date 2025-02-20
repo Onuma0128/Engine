@@ -199,6 +199,28 @@ void Quaternion::Slerp(const Quaternion& q1, float t)
 	*this = *this * scale0 + q1 * scale1;
 }
 
+Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, float t)
+{
+	Quaternion copyQ0 = q0;
+	float dot = Dot(q0, q1);
+	if (dot < 0) {
+		copyQ0 = -copyQ0;
+		dot = -dot;
+	}
+
+	if (dot >= 1.0f - FLT_EPSILON) {
+		copyQ0 = copyQ0 * (1.0f - t) + q1 * t;
+		return Normalize(copyQ0);
+	}
+
+	float theta = std::acos(dot);
+
+	float scale0 = std::sin((1.0f - t) * theta) / std::sin(theta);
+	float scale1 = std::sin(t * theta) / std::sin(theta);
+
+	return copyQ0 * scale0 + q1 * scale1;
+}
+
 Quaternion Quaternion::operator-() const
 {
 	return { -x, -y, -z , -w };
