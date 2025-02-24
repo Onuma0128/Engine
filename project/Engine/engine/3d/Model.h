@@ -44,6 +44,7 @@ public:
 
 	struct ModelData {
 		std::vector<VertexData> vertices;
+		std::vector<uint32_t> indices;
 		MaterialData material;
 		Node rootNode;
 	};
@@ -57,9 +58,6 @@ public:
 	// 描画
 	void Draw();
 
-	// 頂点データの作成
-	void MakeVertexData();
-
 	const ModelData GetModelData()const { return modelData_; }
 
 	static Model::ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
@@ -67,6 +65,10 @@ public:
 	void SetTexture(const std::string& directoryPath, const std::string& filename);
 
 private:
+
+	// 頂点データの作成
+	void MakeVertexData();
+	void MakeIndexData();
 
 	static std::wstring s2ws(const std::string& str);
 
@@ -91,5 +93,14 @@ private:
 	VertexData* vertexData_ = nullptr;
 	// バッファリソースの使い道を補足するバッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
+
+	/*==================== Indexデータ ====================*/
+
+	// バッファリソース
+	ComPtr<ID3D12Resource> indexResource_ = nullptr;
+	// バッファリソース内のデータを指すポインタ
+	uint32_t* indexData_ = nullptr;
+	// バッファリソースの使い道を補足するバッファビュー
+	D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
 
 };

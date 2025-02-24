@@ -23,15 +23,18 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
         TextureManager::GetInstance()->GetSrvIndex(modelData_.material.directoryPath + modelData_.material.filePath);
 
     MakeVertexData();
+    MakeIndexData();
 }
 
 void Model::Draw()
 {
     auto commandList = modelBase_->GetDxEngine()->GetCommandList();
+
     commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+    commandList->IASetIndexBuffer(&indexBufferView_);
     SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, modelData_.material.textureIndex);
     // 描画
-    commandList->DrawInstanced(UINT(modelData_.vertices.size()), 1, 0, 0);
+    commandList->DrawIndexedInstanced((UINT)modelData_.indices.size(), 1, 0, 0, 0);
 }
 
 void Model::MakeVertexData()
@@ -44,6 +47,18 @@ void Model::MakeVertexData()
 
     vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
     std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
+}
+
+void Model::MakeIndexData()
+{
+    // 実際に頂点リソースを作る
+    indexResource_ = CreateBufferResource(modelBase_->GetDxEngine()->GetDevice(), sizeof(uint32_t) * modelData_.indices.size()).Get();
+    indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
+    indexBufferView_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
+    indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
+
+    indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
+    std::memcpy(indexData_, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 }
 
 std::wstring Model::s2ws(const std::string& str)
@@ -67,33 +82,30 @@ Model::ModelData Model::LoadObjFile(const std::string& directoryPath, const std:
     for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
         aiMesh* mesh = scene->mMeshes[meshIndex];
         assert(mesh->HasNormals());
-        //assert(mesh->HasTextureCoords(0));
+        modelData.vertices.resize(mesh->mNumVertices);
 
-        // faceを解析
+        for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
+            aiVector3D& position = mesh->mVertices[vertexIndex];
+            aiVector3D& normal = mesh->mNormals[vertexIndex];
+
+            modelData.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
+            modelData.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
+
+            if (mesh->HasTextureCoords(0)) {
+                aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
+                modelData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
+            } else {
+                modelData.vertices[vertexIndex].texcoord = { 0.0f,0.0f };
+            }
+        }
+
         for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
             aiFace& face = mesh->mFaces[faceIndex];
             assert(face.mNumIndices == 3);
 
-            // vertexを解析
             for (uint32_t element = 0; element < face.mNumIndices; ++element) {
                 uint32_t vertexIndex = face.mIndices[element];
-                aiVector3D& position = mesh->mVertices[vertexIndex];
-                aiVector3D& normal = mesh->mNormals[vertexIndex];
-
-                VertexData vertex;
-                vertex.position = { position.x,position.y,position.z,1.0f };
-                vertex.normal = { normal.x,normal.y,normal.z };
-                if (mesh->HasTextureCoords(0)) {
-                    aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-                    vertex.texcoord = { texcoord.x,texcoord.y };
-                }
-                else {
-                    vertex.texcoord = { 0.0f,0.0f };
-                }
-
-                vertex.position.x *= -1.0f;
-                vertex.normal.x *= -1.0f;
-                modelData.vertices.push_back(vertex);
+                modelData.indices.push_back(vertexIndex);
             }
         }
     }

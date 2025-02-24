@@ -15,10 +15,12 @@ void GamePlayScene::Initialize()
 
 	animation_ = std::make_unique<Animation>();
 	animation_->Init("resources/human", "walk.gltf");
+	animation_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, 3.14f);
 	animation_->GetTransform().translation_ = { -1.0f,0,0 };
 
 	animation2_ = std::make_unique<Animation>();
 	animation2_->Init("resources/human", "sneakWalk.gltf");
+	animation2_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, 3.14f);
 	animation2_->GetTransform().translation_ = { 1.0f,0,0 };
 }
 
