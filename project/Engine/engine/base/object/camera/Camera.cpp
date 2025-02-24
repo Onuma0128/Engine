@@ -81,7 +81,7 @@ void Camera::NormalCamera()
 	UpdateMatrix(transform_);
 }
 
-void Camera::UpdateMatrix(Transform transform)
+void Camera::UpdateMatrix(EulerTransform transform)
 {
 	worldMatrix_ = Matrix4x4::Affine(transform.scale, transform.rotation, transform.translation);
 

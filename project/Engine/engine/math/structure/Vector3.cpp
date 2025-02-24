@@ -1,5 +1,7 @@
 #include "Vector3.h"
 
+#include <algorithm>
+
 // コンストラクタ
 Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 
@@ -44,7 +46,12 @@ Vector3 Vector3::Cross(const Vector3& v1, const Vector3& v2) {
 
 Vector3 Vector3::Lerp(const Vector3& v1, const Vector3& v2, float t)
 {
-    return Vector3(std::lerp(v1.x, v2.x, t), std::lerp(v1.y, v2.y, t), std::lerp(v1.z, v2.z, t));
+    t = std::clamp(t, 0.0f, 1.0f);
+    return Vector3(
+        v1.x + (v2.x - v1.x) * t,
+        v1.y + (v2.y - v1.y) * t,
+        v1.z + (v2.z - v1.z) * t
+    );
 }
 
 // 正規化

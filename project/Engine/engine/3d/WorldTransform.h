@@ -11,7 +11,6 @@
 using Microsoft::WRL::ComPtr;
 
 class Model;
-
 class Object3dBase;
 
 class WorldTransform
@@ -29,6 +28,7 @@ public:
 
 	// 行列更新
 	void TransferMatrix(const Model* model);
+	void TransferMatrix(const Matrix4x4& localMatrix);
 
 	/*==================== アクセッサ ====================*/
 

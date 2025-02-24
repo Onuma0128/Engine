@@ -9,8 +9,14 @@ struct Transform2D {
 	Vector2 position;
 };
 
-struct Transform {
+struct EulerTransform {
 	Vector3 scale;
 	Vector3 rotation;
+	Vector3 translation;
+};
+
+struct Transform3D {
+	Vector3 scale;
+	Quaternion rotation;
 	Vector3 translation;
 };

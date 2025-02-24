@@ -13,6 +13,7 @@
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Matrix4x4.h"
+#include "Transform.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -35,6 +36,7 @@ public:
 	};
 
 	struct Node {
+		Transform3D transform;
 		Matrix4x4 localMatrix;
 		std::string name;
 		std::vector<Node> children;

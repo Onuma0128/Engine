@@ -17,7 +17,7 @@ public:
 
 	void Update();
 
-	void UpdateMatrix(Transform transform);
+	void UpdateMatrix(EulerTransform transform);
 
 	void CameraImGui();
 
@@ -62,8 +62,8 @@ private:
 
 	/*==================== カメラの変数 ====================*/
 
-	Transform transform_;
-	Transform debugTransform_;
+	EulerTransform transform_;
+	EulerTransform debugTransform_;
 
 	Matrix4x4 worldMatrix_;
 	Matrix4x4 viewMatrix_;

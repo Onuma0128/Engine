@@ -55,8 +55,8 @@ public:
 
 	/* =============== アクセッサ(球体用) =============== */
 
-	Transform& GetTransform() { return transform_; }
-	void SetTransform(Transform transform) { transform_ = transform; }
+	EulerTransform& GetTransform() { return transform_; }
+	void SetTransform(EulerTransform transform) { transform_ = transform; }
 	const Vector4& GetColor() { return materialData_->color; }
 
 	/* =============== アクセッサ(全体) =============== */
@@ -116,7 +116,7 @@ private:
 	Matrix4x4* wvpData_ = nullptr;
 
 
-	Transform transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	EulerTransform transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 
 	std::vector<Vector3> positions_;
 

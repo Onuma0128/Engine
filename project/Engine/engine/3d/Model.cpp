@@ -165,13 +165,15 @@ Model::MaterialData Model::LoadMaterialTemplateFile(const std::string& directory
 Model::Node Model::ReadNode(aiNode* node)
 {
     Node result;
-    aiMatrix4x4 aiLocalMatrix = node->mTransformation;
-    aiLocalMatrix.Transpose();
-    for (uint32_t i = 0; i < 4; ++i) {
-        for (uint32_t j = 0; j < 4; ++j) {
-            result.localMatrix.m[i][j] = aiLocalMatrix[i][j];
-        }
-    }
+    
+    aiVector3D scale, translate;
+    aiQuaternion rotate;
+    node->mTransformation.Decompose(scale, rotate, translate);
+    result.transform.scale = { scale.x,scale.y,scale.z };
+    result.transform.rotation = { rotate.x,-rotate.y,-rotate.z,rotate.w };
+    result.transform.translation = { -translate.x,translate.y,translate.z };
+    result.localMatrix = Matrix4x4::Affine(result.transform.scale, result.transform.rotation, result.transform.translation);
+
     result.name = node->mName.C_Str();
     result.children.resize(node->mNumChildren);
     for (uint32_t childIndex = 0; childIndex < node->mNumChildren; ++childIndex) {

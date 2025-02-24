@@ -29,6 +29,6 @@ private:
 	std::unique_ptr<TestObject> testObj_ = nullptr;
 
 	std::unique_ptr<Animation> animation_ = nullptr;
-
+	std::unique_ptr<Animation> animation2_ = nullptr;
 };
 

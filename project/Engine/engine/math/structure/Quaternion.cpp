@@ -1,6 +1,7 @@
 #include "Quaternion.h"
 
 #include <cmath>
+#include <algorithm>
 
 #include "imgui.h"
 #include "Vector3.h"
@@ -197,6 +198,18 @@ void Quaternion::Slerp(const Quaternion& q1, float t)
 	float scale1 = std::sin(t * theta) / std::sin(theta);
 
 	*this = *this * scale0 + q1 * scale1;
+}
+
+Quaternion Quaternion::Lerp(const Quaternion& q0, const Quaternion& q1, float t)
+{
+	t = std::clamp(t, 0.0f, 1.0f); // t を 0.0 ~ 1.0 に制限
+	Quaternion result(
+		q0.x + (q1.x - q0.x) * t,
+		q0.y + (q1.y - q0.y) * t,
+		q0.z + (q1.z - q0.z) * t,
+		q0.w + (q1.w - q0.w) * t
+	);
+	return Normalize(result);
 }
 
 Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, float t)

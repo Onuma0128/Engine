@@ -26,7 +26,7 @@ public:
 
 	struct Emitter {
 		std::string name;
-		Transform transform;
+		EulerTransform transform;
 		AABB size;
 		Vector3 scale;
 		uint32_t count;
