@@ -1,7 +1,4 @@
 #pragma once
-#include <d3d12.h>
-#pragma comment(lib,"d3d12.lib")
-#include "wrl.h"
 #include <iostream>
 #include <memory>
 #include <list>
@@ -9,13 +6,7 @@
 
 #include "Model.h"
 
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix4x4.h"
-#include "Transform.h"
-
-using Microsoft::WRL::ComPtr;
+#include "ModelStruct.h"
 
 // パーティクルのMAX値(上げすぎ注意!!)
 const uint32_t kNumMaxInstance = 1024;
@@ -111,7 +102,7 @@ private:
 	/*==================== メンバ変数 ====================*/
 
 	// モデル読み込み
-	Model::ModelData modelData_;
+	ModelData modelData_;
 
 	// パーティクルグループコンテナ
 	std::unordered_map<std::string, ParticleGroup> particleGroups_;

@@ -21,6 +21,7 @@
 #include "PrimitiveDrawer.h"
 #include "AudioManager.h"
 #include "TrailEffectBase.h"
+#include "AnimationBase.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -37,6 +38,7 @@ DirectXEngine::~DirectXEngine()
 	ParticleManager::GetInstance()->Finalize();
 	AudioManager::GetInstance()->Finalize();
 	TrailEffectBase::GetInstance()->Finalize();
+	AnimationBase::GetInstance()->Finalize();
 
 	//解放の処理
 	CloseHandle(fenceEvent_);
@@ -113,6 +115,10 @@ void DirectXEngine::Initialize(WinApp* winApp)
 	/*==================== トレイルエフェクト ====================*/
 
 	TrailEffectBase::GetInstance()->Initialize(this);
+
+	/*==================== アニメーション ====================*/
+
+	AnimationBase::GetInstance()->Initialize(this);
 }
 
 void DirectXEngine::DeviceInitialize()

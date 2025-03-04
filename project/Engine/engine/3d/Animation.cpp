@@ -5,21 +5,23 @@
 #include "assimp/postprocess.h"
 
 #include "DirectXEngine.h"
+#include "SrvManager.h"
+#include "TextureManager.h"
 
 #include "Object3d.h"
-#include "Object3dBase.h"
+#include "AnimationBase.h"
+#include "Model.h"
 #include "ModelManager.h"
 #include "LightManager.h"
 #include "CameraManager.h"
 #include "Line3d.h"
 
 #include "CreateBufferResource.h"
-#include "imgui.h"
 
 void Animation::Init(const std::string& directoryPath, const std::string& filename)
 {
 	ModelManager::GetInstance()->LoadModel(directoryPath, filename);
-	this->object3dBase_ = Object3dBase::GetInstance();
+	this->animationBase_ = AnimationBase::GetInstance();
 	transform_ = WorldTransform();
 	SetModel(filename);
 	MakeMaterialData();
@@ -27,6 +29,7 @@ void Animation::Init(const std::string& directoryPath, const std::string& filena
 	animationData_ = LoadAnimationFile(directoryPath, filename);
 
 	skeleton_ = CreateSkeleton(model_->GetModelData().rootNode);
+	skinCluster_ = CreateSkinCluster(animationBase_->GetDxEngine()->GetDevice(), skeleton_, model_->GetModelData());
 
 	for (const Joint& joint : skeleton_.joints) {
 		if (joint.parent) {
@@ -52,6 +55,7 @@ void Animation::Update()
 	
 	ApplyAnimation(skeleton_, animationData_, animationTime_);
 	SkeletonUpdate(skeleton_);
+	SkinClusterUpdate(skinCluster_, skeleton_);
 
 	transform_.TransferMatrix(Matrix4x4::Identity());
 
@@ -67,6 +71,7 @@ void Animation::Update()
 
 			lines_[count]->SetPosition(parentPos, jointPos);
 			lines_[count]->Update();
+
 			++count;
 		}
 	}
@@ -74,18 +79,24 @@ void Animation::Update()
 
 void Animation::Draw()
 {
-	object3dBase_->DrawBase();
+	animationBase_->DrawBase();
 
-	auto commandList = object3dBase_->GetDxEngine()->GetCommandList();
+	auto commandList = animationBase_->GetDxEngine()->GetCommandList();
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(3, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(6, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, skinCluster_.srvHandleIndex);
+	commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(6, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(7, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
 
 	if (model_) {
-		model_->Draw();
+		D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {
+			model_->GetVertexBuffer(),
+			skinCluster_.influenceBufferView
+		};
+		commandList->IASetVertexBuffers(0, 2, vbvs);
+		model_->Draw(true);
 	}
 
 	for (auto& line : lines_) {
@@ -93,7 +104,7 @@ void Animation::Draw()
 	}
 }
 
-Animation::AnimationData Animation::LoadAnimationFile(const std::string& directoryPath, const std::string& filename)
+AnimationData Animation::LoadAnimationFile(const std::string& directoryPath, const std::string& filename)
 {
 	AnimationData animationData;
 	Assimp::Importer importer;
@@ -136,7 +147,7 @@ Animation::AnimationData Animation::LoadAnimationFile(const std::string& directo
 	return animationData;
 }
 
-Animation::Skeleton Animation::CreateSkeleton(const Model::Node& rootNode)
+Skeleton Animation::CreateSkeleton(const Node& rootNode)
 {
 	Skeleton skeleton;
 	skeleton.root = CreateJoint(rootNode, {}, skeleton.joints);
@@ -148,7 +159,7 @@ Animation::Skeleton Animation::CreateSkeleton(const Model::Node& rootNode)
 	return skeleton;
 }
 
-int32_t Animation::CreateJoint(const Model::Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
+int32_t Animation::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
 {
 	Joint joint;
 	joint.name = node.name;
@@ -158,12 +169,75 @@ int32_t Animation::CreateJoint(const Model::Node& node, const std::optional<int3
 	joint.index = int32_t(joints.size());
 	joint.parent = parent;
 	joints.push_back(joint);
-	for (const Model::Node& child : node.children) {
+	for (const Node& child : node.children) {
 		int32_t childIndex = CreateJoint(child, joint.index, joints);
 		joints[joint.index].children.push_back(childIndex);
 	}
 
 	return joint.index;
+}
+
+SkinCluster Animation::CreateSkinCluster(const ComPtr<ID3D12Device>& device, const Skeleton& skeleton, const ModelData& modelData)
+{
+	SkinCluster skinCluster;
+	SrvManager* srvManager = SrvManager::GetInstance();
+
+	// **パレットリソースの作成**
+	size_t paletteSize = skeleton.joints.size() * sizeof(WellForGPU);
+	skinCluster.paletteResource = CreateBufferResource(device, paletteSize).Get();
+
+	// **パレットのマッピング**
+	WellForGPU* mappedPalette = nullptr;
+	skinCluster.paletteResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedPalette));
+	skinCluster.mappedPalette = std::span<WellForGPU>(mappedPalette, skeleton.joints.size());
+
+	// **Influenceリソースの作成**
+	size_t influenceSize = modelData.vertices.size() * sizeof(VertexInfluence);
+	skinCluster.infuenceResource = CreateBufferResource(device, influenceSize).Get();
+
+	// **Influenceのマッピング**
+	VertexInfluence* mappedInfluence = nullptr;
+	skinCluster.infuenceResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedInfluence));
+	std::memset(mappedInfluence, 0, influenceSize);
+	skinCluster.mappedInfluence = std::span<VertexInfluence>(mappedInfluence, modelData.vertices.size());
+
+	// **Influence バッファビューの設定**
+	skinCluster.influenceBufferView.BufferLocation = skinCluster.infuenceResource->GetGPUVirtualAddress();
+	skinCluster.influenceBufferView.SizeInBytes = static_cast<UINT>(influenceSize);
+	skinCluster.influenceBufferView.StrideInBytes = sizeof(VertexInfluence);
+
+	// **SRVの作成**
+	skinCluster.srvHandleIndex = srvManager->Allocate() + 1; // 空きSRVスロットを取得
+	srvManager->CreateSRVforStructuredBuffer(skinCluster.srvHandleIndex, skinCluster.paletteResource.Get(), static_cast<UINT>(skeleton.joints.size()), sizeof(WellForGPU));
+
+	skinCluster.inverseBindPoseMatrices.resize(skeleton.joints.size());
+	for (size_t i = 0; i < skinCluster.inverseBindPoseMatrices.size(); ++i) {
+		skinCluster.inverseBindPoseMatrices[i] = Matrix4x4::Identity();
+	}
+
+	for (const auto& jointWeight : model_->GetModelData().skinClusterData) {
+		// jointWeight.firstはjoint名なので、skeletonに対象となるjointが含まれているか判断
+		auto it = skeleton.jointMap.find(jointWeight.first);
+		if (it == skeleton.jointMap.end()) { // そんな名前のjointは存在しない。なので次に回す
+			continue;
+		}
+		// (*it).secondにはjointのindexが入っているので、該当のindexのinverseBindPoseMatrixを代入
+		skinCluster.inverseBindPoseMatrices[(*it).second] = jointWeight.second.inverseBindPosMatrix;
+		for (const auto& vertexWeight : jointWeight.second.vertexWeights) {
+			auto& currentInfluence = skinCluster.mappedInfluence[vertexWeight.vertexIndex];
+			// 空いている場所に入れる
+			for (uint32_t index = 0; index < kNumMaxInfluence; ++index) {
+				// weight == 0.0fが開いている状態なので、その場所にweightとjointのindexを代入
+				if (currentInfluence.weights[index] == 0.0f) {
+					currentInfluence.weights[index] = vertexWeight.weight;
+					currentInfluence.jointIndices[index] = (*it).second;
+					break;
+				}
+			}
+		}
+	}
+
+	return skinCluster;
 }
 
 void Animation::SkeletonUpdate(Skeleton& skeleton)
@@ -175,6 +249,17 @@ void Animation::SkeletonUpdate(Skeleton& skeleton)
 		} else {
 			joint.skeletonSpaceMatrix = joint.localMatrix;
 		}
+	}
+}
+
+void Animation::SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skeleton)
+{
+	for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); ++jointIndex) {
+		assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
+		skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix =
+			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
+		skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
+			Matrix4x4::Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix).Transpose();
 	}
 }
 
@@ -244,7 +329,7 @@ Quaternion Animation::CalculateValue(const std::vector<KeyFrameQuaternion>& keyf
 void Animation::MakeMaterialData()
 {
 	// マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-	materialResource_ = CreateBufferResource(object3dBase_->GetDxEngine()->GetDevice(), sizeof(Material)).Get();
+	materialResource_ = CreateBufferResource(animationBase_->GetDxEngine()->GetDevice(), sizeof(Material)).Get();
 	// 書き込むためのアドレスを取得
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	// 今回は白を書き込んでいく

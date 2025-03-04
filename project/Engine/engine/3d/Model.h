@@ -1,54 +1,16 @@
 #pragma once
-#include <d3d12.h>
-#pragma comment(lib,"d3d12.lib")
-#include <wrl.h>
-#include <vector>
-#include <string>
 
 #include "assimp//Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
 
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
-#include "Matrix4x4.h"
-#include "Transform.h"
-
-using Microsoft::WRL::ComPtr;
+#include "ModelStruct.h"
+#include "AnimationStruct.h"
 
 class ModelBase;
 
 class Model
 {
-public:
-
-	struct VertexData {
-		Vector4 position;
-		Vector2 texcoord;
-		Vector3 normal;
-	};
-
-	struct MaterialData {
-		std::string directoryPath;
-		std::string filePath;
-		uint32_t textureIndex = 0;
-	};
-
-	struct Node {
-		Transform3D transform;
-		Matrix4x4 localMatrix;
-		std::string name;
-		std::vector<Node> children;
-	};
-
-	struct ModelData {
-		std::vector<VertexData> vertices;
-		std::vector<uint32_t> indices;
-		MaterialData material;
-		Node rootNode;
-	};
-
 public:
 	/*==================== メンバ関数 ====================*/
 
@@ -56,11 +18,12 @@ public:
 	void Initialize(const std::string& directoryPath, const std::string& filename);
 
 	// 描画
-	void Draw();
+	void Draw(bool isAnimation);
 
 	const ModelData GetModelData()const { return modelData_; }
+	const D3D12_VERTEX_BUFFER_VIEW GetVertexBuffer() { return vertexBufferView_; }
 
-	static Model::ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
+	static ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
 
 	void SetTexture(const std::string& directoryPath, const std::string& filename);
 
@@ -72,9 +35,9 @@ private:
 
 	static std::wstring s2ws(const std::string& str);
 
-	static Model::MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename);
+	static MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename);
 
-	static Model::Node ReadNode(aiNode* node);
+	static Node ReadNode(aiNode* node);
 
 
 private:

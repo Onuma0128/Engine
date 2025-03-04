@@ -87,6 +87,21 @@ public:
 	// パイプラインの生成
 	ComPtr<ID3D12PipelineState> CreateTrailEffectPipelineState();
 
+	/* ==================== Animation ==================== */
+
+	// ルートシグネチャ
+	ComPtr<ID3D12RootSignature> CreateAnimationRootSignature();
+	// インプットレイアウト
+	void AnimationInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc);
+	// ラスタライザ
+	void AnimationRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc);
+	// シェーダーコンパイル
+	void AnimationShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& geometryShader, ComPtr<IDxcBlob>& pixelShader);
+	// デスクリプターステンシル
+	void AnimationDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc);
+	// パイプラインの生成
+	ComPtr<ID3D12PipelineState> CreateAnimationPipelineState();
+
 
 	///==============================================================================================================
 

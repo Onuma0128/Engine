@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\engine\base\object\model\AnimationBase.cpp" />
     <ClCompile Include="Engine\engine\3d\Animation.cpp" />
     <ClCompile Include="Engine\engine\base\object\light\type\DirectionalLight.cpp" />
     <ClCompile Include="Engine\engine\base\object\light\type\BaseLight.cpp" />
@@ -170,6 +171,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\base\object\light\type\SpotLight.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\engine\base\object\model\AnimationBase.h" />
     <ClInclude Include="Engine\engine\3d\Animation.h" />
     <ClInclude Include="Engine\engine\base\object\light\type\DirectionalLight.h" />
     <ClInclude Include="Engine\engine\base\object\light\type\BaseLight.h" />
@@ -214,6 +216,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\base\scene\SceneManager.h" />
     <ClInclude Include="Engine\engine\globalVariables\GlobalVariables.h" />
     <ClInclude Include="Engine\engine\input\Input.h" />
+    <ClInclude Include="Engine\engine\math\AnimationStruct.h" />
+    <ClInclude Include="Engine\engine\math\ModelStruct.h" />
     <ClInclude Include="Engine\engine\math\structure\CreateBufferResource.h" />
     <ClInclude Include="Engine\engine\math\structure\Matrix3x3.h" />
     <ClInclude Include="Engine\engine\math\structure\Matrix4x4.h" />
@@ -254,6 +258,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="resources\shaders\Primitive.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="resources\shaders\SkinningObject3d.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>

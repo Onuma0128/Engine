@@ -40,7 +40,7 @@ void Object3d::Draw()
     commandList->SetGraphicsRootConstantBufferView(6, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
 
     if (model_) {
-        model_->Draw();
+        model_->Draw(false);
     }
 
 }

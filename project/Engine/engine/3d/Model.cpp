@@ -26,13 +26,15 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
     MakeIndexData();
 }
 
-void Model::Draw()
+void Model::Draw(bool isAnimation)
 {
     auto commandList = modelBase_->GetDxEngine()->GetCommandList();
-
-    commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+    if (!isAnimation) {
+        commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+    }
     commandList->IASetIndexBuffer(&indexBufferView_);
     SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, modelData_.material.textureIndex);
+
     // 描画
     commandList->DrawIndexedInstanced((UINT)modelData_.indices.size(), 1, 0, 0, 0);
 }
@@ -69,7 +71,7 @@ std::wstring Model::s2ws(const std::string& str)
     return wstrTo;
 }
 
-Model::ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
+ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
 {
     Assimp::Importer importer;
     std::string filePath = directoryPath + "/" + filename;
@@ -106,6 +108,27 @@ Model::ModelData Model::LoadObjFile(const std::string& directoryPath, const std:
             for (uint32_t element = 0; element < face.mNumIndices; ++element) {
                 uint32_t vertexIndex = face.mIndices[element];
                 modelData.indices.push_back(vertexIndex);
+            }
+        }
+
+        for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+            aiBone* bone = mesh->mBones[boneIndex];
+            std::string jointName = bone->mName.C_Str();
+            JointWeightData& jointWeightData = modelData.skinClusterData[jointName];
+
+            aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
+            aiVector3D scale, translate;
+            aiQuaternion rotate;
+            bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
+            Matrix4x4 bindPoseMatrix = Matrix4x4::Affine(
+                Vector3{ scale.x,scale.y,scale.z },
+                Quaternion{ rotate.x,-rotate.y,-rotate.z,rotate.w },
+                Vector3{ -translate.x,translate.y,translate.z }
+            );
+            jointWeightData.inverseBindPosMatrix = Matrix4x4::Inverse(bindPoseMatrix);
+
+            for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
+                jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
             }
         }
     }
@@ -146,7 +169,7 @@ void Model::SetTexture(const std::string& directoryPath, const std::string& file
         TextureManager::GetInstance()->GetSrvIndex(modelData_.material.directoryPath + modelData_.material.filePath);
 }
 
-Model::MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
+MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
 {
     MaterialData materialData; // 構築するMaterialData
     std::string line; // ファイルから読んだ1行を格納するもの
@@ -174,7 +197,7 @@ Model::MaterialData Model::LoadMaterialTemplateFile(const std::string& directory
     return materialData;
 }
 
-Model::Node Model::ReadNode(aiNode* node)
+Node Model::ReadNode(aiNode* node)
 {
     Node result;
     
