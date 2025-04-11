@@ -207,7 +207,7 @@ SkinCluster Animation::CreateSkinCluster(const ComPtr<ID3D12Device>& device, con
 	skinCluster.influenceBufferView.StrideInBytes = sizeof(VertexInfluence);
 
 	// **SRVの作成**
-	skinCluster.srvHandleIndex = srvManager->Allocate() + 1; // 空きSRVスロットを取得
+	skinCluster.srvHandleIndex = srvManager->Allocate() + TextureManager::kSRVIndexTop; // 空きSRVスロットを取得
 	srvManager->CreateSRVforStructuredBuffer(skinCluster.srvHandleIndex, skinCluster.paletteResource.Get(), static_cast<UINT>(skeleton.joints.size()), sizeof(WellForGPU));
 
 	skinCluster.inverseBindPoseMatrices.resize(skeleton.joints.size());
