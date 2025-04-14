@@ -56,17 +56,12 @@ void ParticleManager::Update()
                 continue;
             }
 
-            // ビルボード前にパーティクルの回転を決める
-            Matrix4x4 rotateX = Matrix4x4::RotateX(0);
-            Matrix4x4 rotateY = Matrix4x4::RotateY(std::numbers::pi_v<float>);
-            Matrix4x4 rotateZ = Matrix4x4::RotateZ(0);
-            Matrix4x4 backToFrontMatrix = rotateX * rotateY * rotateZ;
-
             // パーティクルのビルボード化
-            Matrix4x4 billboardMatrix = backToFrontMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
+            Matrix4x4 billboardMatrix = Matrix4x4::Rotate(it->transform.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
             billboardMatrix.m[3][0] = 0.0f;
             billboardMatrix.m[3][1] = 0.0f;
             billboardMatrix.m[3][2] = 0.0f;
+            billboardMatrix.m[3][3] = 1.0f;
             Matrix4x4 worldMatrix = Matrix4x4::Scale(it->transform.scale) * billboardMatrix * Matrix4x4::Translate(it->transform.translation);
             Matrix4x4 worldViewMatrix = worldMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetViewMatrix();
             Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();

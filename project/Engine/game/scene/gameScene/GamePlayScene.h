@@ -30,5 +30,7 @@ private:
 
 	std::unique_ptr<Animation> animation_ = nullptr;
 	std::unique_ptr<Animation> animation2_ = nullptr;
+
+	std::unique_ptr<ParticleEmitter> testEmitter_ = nullptr;
 };
 

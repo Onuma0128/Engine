@@ -31,51 +31,142 @@ void GlobalVariables::RemoveKey(const std::string& groupName, const std::string&
     }
 }
 
+void GlobalVariables::RemoveSubGroup(const std::string& groupName, const std::string& subPathPrefix)
+{
+    auto groupIt = std::find_if(datas_.begin(), datas_.end(), [&groupName](const auto& pair) {
+        return pair.first == groupName;
+        });
+
+    if (groupIt == datas_.end()) {
+        return;
+    }
+
+    Group& group = groupIt->second;
+
+    // 指定のprefixを含むキーを全て削除
+    group.erase(
+        std::remove_if(group.begin(), group.end(), [&subPathPrefix](const auto& pair) {
+            return pair.first.starts_with(subPathPrefix + "/");
+            }),
+        group.end()
+    );
+}
+
+void GlobalVariables::DeleteGroup(const std::string& groupName)
+{
+    auto it = std::find_if(datas_.begin(), datas_.end(), [&groupName](const auto& pair) {
+        return pair.first == groupName;
+        });
+
+    if (it != datas_.end()) {
+        datas_.erase(it); // メモリ上のデータを削除
+    }
+
+    // JSONファイルも削除
+    std::filesystem::path filePath = kDirectoryPath + groupName + ".json";
+    if (std::filesystem::exists(filePath)) {
+        std::filesystem::remove(filePath);
+    }
+}
+
 void GlobalVariables::SaveFile(const std::string& groupName)
 {
-    // グループを検索
     auto itGroup = std::find_if(datas_.begin(), datas_.end(), [&groupName](const auto& pair) {
         return pair.first == groupName;
         });
 
-    // グループが見つからない場合エラーをスロー
     if (itGroup == datas_.end()) {
         throw std::runtime_error("Group not found: " + groupName);
     }
 
-    // JSONオブジェクトを作成
-    nlohmann::json root = nlohmann::json::object();
-    nlohmann::json groupJson = nlohmann::json::array(); // 配列で順序を明示
+    ordered_json root = ordered_json::object();
+    ordered_json groupArray = ordered_json::array();
 
-    // グループ内のアイテムを順序通りに追加
-    for (const auto& itItem : itGroup->second) {
-        nlohmann::json itemJson = nlohmann::json::object();
-        const std::string& itemName = itItem.first;
-        const Item& item = itItem.second;
+    using Item = std::variant<int32_t, float, Vector3, bool>;
 
-        if (std::holds_alternative<int32_t>(item)) {
-            itemJson[itemName] = std::get<int32_t>(item);
-        } else if (std::holds_alternative<float>(item)) {
-            itemJson[itemName] = std::get<float>(item);
-        } else if (std::holds_alternative<Vector3>(item)) {
-            Vector3 value = std::get<Vector3>(item);
-            itemJson[itemName] = { value.x, value.y, value.z };
-        } else if (std::holds_alternative<bool>(item)) {
-            itemJson[itemName] = std::get<bool>(item);
+    std::vector<ordered_json> topLevelItems;
+    std::vector<std::pair<std::string, std::vector<std::pair<std::string, Item>>>> subGroupItems;
+
+    for (auto& [fullKey, item] : itGroup->second) {
+        auto parts = SplitPath(fullKey);
+        if (parts.empty()) continue;
+
+        if (parts.size() == 1) {
+            const std::string& key = parts[0];
+            ordered_json obj;
+
+            if (std::holds_alternative<int32_t>(item)) {
+                obj[key] = std::get<int32_t>(item);
+            } else if (std::holds_alternative<float>(item)) {
+                obj[key] = std::get<float>(item);
+            } else if (std::holds_alternative<Vector3>(item)) {
+                Vector3 vec = std::get<Vector3>(item);
+                obj[key] = { vec.x, vec.y, vec.z };
+            } else if (std::holds_alternative<bool>(item)) {
+                obj[key] = std::get<bool>(item);
+            }
+
+            topLevelItems.push_back(obj);
+        } else {
+            // サブグループに分解
+            std::string groupName_ = parts[0];
+            std::string remainingPath;
+            for (size_t i = 1; i < parts.size(); ++i) {
+                if (!remainingPath.empty()) remainingPath += "/";
+                remainingPath += parts[i];
+            }
+
+            // vectorから検索・追加
+            auto it = std::find_if(subGroupItems.begin(), subGroupItems.end(),
+                [&groupName_](const auto& pair) { return pair.first == groupName_; });
+
+            if (it == subGroupItems.end()) {
+                subGroupItems.emplace_back(groupName_, std::vector<std::pair<std::string, Item>>{ { remainingPath, item } });
+            } else {
+                it->second.emplace_back(remainingPath, item);
+            }
         }
-
-        // 順序を守るために配列に追加
-        groupJson.push_back(itemJson);
     }
 
-    // グループデータをルートに追加
-    root[groupName] = groupJson;
+    // トップレベルアイテムを順番に追加
+    for (const auto& item : topLevelItems) {
+        groupArray.push_back(item);
+    }
 
-    // ファイル出力処理
+    // サブグループを順番に構築して追加
+    for (const auto& [groupKey, items] : subGroupItems) {
+        ordered_json groupJson = ordered_json::object();
+
+        for (const auto& [path, item] : items) {
+            auto subParts = SplitPath(path);
+            ordered_json* current = &groupJson;
+            for (size_t i = 0; i + 1 < subParts.size(); ++i) {
+                current = &(*current)[subParts[i]];
+            }
+
+            const std::string& leafKey = subParts.back();
+
+            if (std::holds_alternative<int32_t>(item)) {
+                (*current)[leafKey] = std::get<int32_t>(item);
+            } else if (std::holds_alternative<float>(item)) {
+                (*current)[leafKey] = std::get<float>(item);
+            } else if (std::holds_alternative<Vector3>(item)) {
+                Vector3 vec = std::get<Vector3>(item);
+                (*current)[leafKey] = { vec.x, vec.y, vec.z };
+            } else if (std::holds_alternative<bool>(item)) {
+                (*current)[leafKey] = std::get<bool>(item);
+            }
+        }
+
+        groupArray.push_back({ { groupKey, groupJson } });
+    }
+
+    root[groupName] = groupArray;
     OutputToFile(groupName, root);
 }
 
-void GlobalVariables::OutputToFile(const std::string& groupName, json root)
+
+void GlobalVariables::OutputToFile(const std::string& groupName, ordered_json root)
 {
     // ディレクトリが無ければ作成
     std::filesystem::path dir(kDirectoryPath);
@@ -103,6 +194,202 @@ void GlobalVariables::OutputToFile(const std::string& groupName, json root)
     ofs.close();
 }
 
+std::vector<std::string> GlobalVariables::SplitPath(const std::string& path) const
+{
+    std::vector<std::string> result;
+    std::stringstream ss(path);
+    std::string segment;
+    while (std::getline(ss, segment, '/')) {
+        result.push_back(segment);
+    }
+    return result;
+}
+
+void GlobalVariables::DisplayGroupItemsRecursive(const std::string& prefix, Group& group)
+{
+    // サブグループ用のマップ（Item* を保持する）
+    std::vector<std::pair<std::string, std::vector<std::pair<std::string, Item*>>>> subGroups;
+
+    for (auto& [fullKey, item] : group) {
+        auto parts = SplitPath(fullKey);
+        if (parts.empty()) continue;
+
+        if (parts.size() == 1) {
+            // キーが1階層だけの項目はそのまま表示
+            const std::string& itemName = parts[0];
+
+            auto comboIt = comboOptions_.find(fullKey);
+
+            // Typeを選べる
+            if (comboIt != comboOptions_.end()) {
+                int32_t* ptr = std::get_if<int32_t>(&item);
+                int currentType = *ptr;
+                const std::vector<const char*>& options = comboIt->second;
+
+                if (ImGui::Combo(itemName.c_str(), &currentType, options.data(), static_cast<int>(options.size()))) {
+                    *ptr = currentType;
+                }
+                continue;
+                // Buttonになる
+            } else if (std::holds_alternative<int32_t>(item) && buttonKeys_.count(fullKey)) {
+                int32_t* ptr = std::get_if<int32_t>(&item);
+                ImGui::Text("%s : %d", itemName.c_str(), *ptr);
+                ImGui::SameLine();
+                if (ImGui::Button(std::string("+##" + itemName).c_str())) {
+                    (*ptr)++;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button(std::string("-##" + itemName).c_str())) {
+                    if (*ptr > 0) (*ptr)--;
+                }
+                continue;
+                // int32_t
+            } else if (std::holds_alternative<int32_t>(item)) {
+                int32_t* ptr = std::get_if<int32_t>(&item);
+                ImGui::SliderInt(itemName.c_str(), ptr, 0, 100);
+            }
+            // float
+            if (std::holds_alternative<float>(item)) {
+                float* ptr = std::get_if<float>(&item);
+                ImGui::DragFloat(itemName.c_str(), ptr, 0.01f);
+            }
+            // Vector3
+            if (std::holds_alternative<Vector3>(item) && itemName != "color") {
+                Vector3* ptr = std::get_if<Vector3>(&item);
+                ImGui::DragFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.01f);
+            }
+            if (std::holds_alternative<Vector3>(item) && itemName == "color") {
+                Vector3* ptr = std::get_if<Vector3>(&item);
+                ImGui::ColorEdit3(itemName.c_str(), reinterpret_cast<float*>(ptr));
+            }
+            // bool
+            if (std::holds_alternative<bool>(item)) {
+                bool* ptr = std::get_if<bool>(&item);
+                ImGui::Checkbox(itemName.c_str(), ptr);  // ← ここでポインタで反映される！
+            }
+        } else {
+            // サブグループに分類（Item* で渡す）
+            std::string subGroupName = parts[0];
+            std::string remainingPath;
+            for (size_t i = 1; i < parts.size(); ++i) {
+                remainingPath += parts[i];
+                if (i < parts.size() - 1) remainingPath += "/";
+            }
+            auto it = std::find_if(subGroups.begin(), subGroups.end(), [&](const auto& pair) {
+                return pair.first == subGroupName;
+                });
+
+            if (it != subGroups.end()) {
+                it->second.emplace_back(remainingPath, &item);
+            } else {
+                subGroups.emplace_back(subGroupName, std::vector<std::pair<std::string, Item*>>{ { remainingPath, & item } });
+            }
+
+        }
+    }
+
+    // サブグループの表示
+    for (auto& [subName, subGroup] : subGroups) {
+        if (ImGui::TreeNode(subName.c_str())) {
+            DisplayGroupItemsRecursiveWithPointers(prefix + subName, subGroup);
+            ImGui::TreePop();
+        }
+    }
+}
+
+void GlobalVariables::DisplayGroupItemsRecursiveWithPointers(const std::string& prefix, std::vector<std::pair<std::string, Item*>>& group)
+{
+    for (auto& [key, itemPtr] : group) {
+        std::string itemName = key;
+        std::string fullKey = prefix.empty() ? itemName : prefix + "/" + itemName;
+        auto comboIt = comboOptions_.find(fullKey);
+
+        if (comboIt != comboOptions_.end()) {
+            int32_t* ptr = std::get_if<int32_t>(itemPtr);
+            const std::vector<const char*>& options = comboIt->second;
+            int current = *ptr;
+            if (ImGui::Combo((itemName + "##" + fullKey).c_str(), &current, options.data(), static_cast<int>(options.size()))) {
+                *ptr = current;
+            }
+        } else if (std::holds_alternative<int32_t>(*itemPtr) && buttonKeys_.count(fullKey)) {
+            int32_t* ptr = std::get_if<int32_t>(itemPtr);
+            ImGui::Text("%s : %d", itemName.c_str(), *ptr);
+            ImGui::SameLine();
+            if (ImGui::Button(std::string("+##" + itemName).c_str())) {
+                (*ptr)++;
+            }
+            ImGui::SameLine();
+            if (ImGui::Button(std::string("-##" + itemName).c_str())) {
+                if (*ptr > 0) (*ptr)--;
+            }
+            continue;
+        } else if (std::holds_alternative<int32_t>(*itemPtr)) {
+            int32_t* ptr = std::get_if<int32_t>(itemPtr);
+            ImGui::SliderInt((itemName + "##" + fullKey).c_str(), ptr, 0, 100);
+        } else if (std::holds_alternative<float>(*itemPtr)) {
+            float* ptr = std::get_if<float>(itemPtr);
+            ImGui::DragFloat((itemName + "##" + fullKey).c_str(), ptr, 0.01f);
+        } else if (std::holds_alternative<Vector3>(*itemPtr) && itemName != "color") {
+            Vector3* ptr = std::get_if<Vector3>(itemPtr);
+            ImGui::DragFloat3((itemName + "##" + fullKey).c_str(), reinterpret_cast<float*>(ptr), 0.01f);
+        } else if (std::holds_alternative<Vector3>(*itemPtr) && itemName == "color") {
+            Vector3* ptr = std::get_if<Vector3>(itemPtr);
+            ImGui::ColorEdit3((itemName + "##" + fullKey).c_str(), reinterpret_cast<float*>(ptr));
+        } else if (std::holds_alternative<bool>(*itemPtr)) {
+            bool* ptr = std::get_if<bool>(itemPtr);
+            ImGui::Checkbox((itemName + "##" + fullKey).c_str(), ptr);
+        }
+    }
+}
+
+void GlobalVariables::LoadJsonRecursive(const std::string& basePath, const ordered_json& node, const std::string& groupName)
+{
+    if (node.is_array()) {
+        for (const auto& item : node) {
+            if (!item.is_object()) continue;
+
+            for (auto it = item.begin(); it != item.end(); ++it) {
+                const std::string& key = it.key();
+                const auto& value = it.value();
+
+                // basePathはそのまま、groupNameは含めない！
+                std::string currentPath = basePath.empty() ? key : basePath + "/" + key;
+
+                if (value.is_object()) {
+                    LoadJsonRecursive(currentPath, value, groupName); // 再帰（ツリー構造）
+                } else if (value.is_array() && value.size() == 3 && value[0].is_number()) {
+                    AddValue(groupName, currentPath, Vector3{ value[0], value[1], value[2] });
+                } else if (value.is_number_integer()) {
+                    AddValue(groupName, currentPath, value.get<int32_t>());
+                } else if (value.is_number_float()) {
+                    AddValue(groupName, currentPath, static_cast<float>(value.get<double>()));
+                } else if (value.is_boolean()) {
+                    AddValue(groupName, currentPath, value.get<bool>());
+                }
+            }
+        }
+    } else if (node.is_object()) {
+        for (auto it = node.begin(); it != node.end(); ++it) {
+            const std::string& key = it.key();
+            const auto& value = it.value();
+
+            std::string currentPath = basePath.empty() ? key : basePath + "/" + key;
+
+            if (value.is_object()) {
+                LoadJsonRecursive(currentPath, value, groupName);
+            } else if (value.is_array() && value.size() == 3 && value[0].is_number()) {
+                AddValue(groupName, currentPath, Vector3{ value[0], value[1], value[2] });
+            } else if (value.is_number_integer()) {
+                AddValue(groupName, currentPath, value.get<int32_t>());
+            } else if (value.is_number_float()) {
+                AddValue(groupName, currentPath, static_cast<float>(value.get<double>()));
+            } else if (value.is_boolean()) {
+                AddValue(groupName, currentPath, value.get<bool>());
+            }
+        }
+    }
+}
+
 void GlobalVariables::LoadFiles()
 {
     // ディレクトリを確認
@@ -128,7 +415,6 @@ void GlobalVariables::LoadFiles()
 
 void GlobalVariables::LoadFile(const std::string& groupName)
 {
-    // 読み込むJSONファイルのパスを作成
     std::string filePath = kDirectoryPath + groupName + ".json";
     std::ifstream ifs(filePath);
 
@@ -136,20 +422,18 @@ void GlobalVariables::LoadFile(const std::string& groupName)
         throw std::runtime_error("Failed to open file: " + filePath);
     }
 
-    nlohmann::json root;
+    ordered_json root;
     ifs >> root;
     ifs.close();
 
-    // グループの存在確認
     if (root.find(groupName) == root.end()) {
         throw std::runtime_error("Group not found in JSON file: " + groupName);
     }
 
-    // JSONデータを取得
     const auto& groupData = root[groupName];
 
-    // グループを作成
     CreateGroup(groupName);
+
     auto groupIt = std::find_if(datas_.begin(), datas_.end(), [&groupName](const auto& pair) {
         return pair.first == groupName;
         });
@@ -158,32 +442,7 @@ void GlobalVariables::LoadFile(const std::string& groupName)
         throw std::runtime_error("Failed to create group: " + groupName);
     }
 
-    Group& group = groupIt->second;
-
-    // JSON配列を順序通りに解析
-    for (const auto& item : groupData) {
-        if (!item.is_object()) {
-            throw std::runtime_error("Invalid item format in JSON file: " + groupName);
-        }
-
-        // 各オブジェクトのキーと値を取得
-        for (auto it = item.begin(); it != item.end(); ++it) {
-            const std::string& key = it.key();
-
-            if (it.value().is_number_integer()) {
-                AddValue(groupName, key, it.value().get<int32_t>());
-            } else if (it.value().is_number_float()) {
-                AddValue(groupName, key, static_cast<float>(it.value().get<double>()));
-            } else if (it.value().is_array() && it.value().size() == 3) {
-                Vector3 value{ it.value()[0], it.value()[1], it.value()[2] };
-                AddValue(groupName, key, value);
-            } else if (it.value().is_boolean()) {
-                AddValue(groupName, key, it.value().get<bool>());
-            } else {
-                throw std::runtime_error("Unsupported value type for key: " + key);
-            }
-        }
-    }
+    LoadJsonRecursive("", groupData, groupName);
 }
 
 GlobalVariables* GlobalVariables::GetInstance()
@@ -219,35 +478,8 @@ void GlobalVariables::Update()
         }
 
         if (ImGui::TreeNode(groupName.c_str())) {
-            for (auto& itemPair : group) {
-                const std::string& itemName = itemPair.first;
-                Item& item = itemPair.second;
-
-                // int32_t
-                if (std::holds_alternative<int32_t>(item)) {
-                    int32_t* ptr = std::get_if<int32_t>(&item);
-                    ImGui::SliderInt(itemName.c_str(), ptr, 0, 100);
-                }
-                // float
-                if (std::holds_alternative<float>(item)) {
-                    float* ptr = std::get_if<float>(&item);
-                    ImGui::DragFloat(itemName.c_str(), ptr, 0.01f);
-                }
-                // Vector3
-                if (std::holds_alternative<Vector3>(item) && itemName != "color") {
-                    Vector3* ptr = std::get_if<Vector3>(&item);
-                    ImGui::DragFloat3(itemName.c_str(), reinterpret_cast<float*>(ptr), 0.01f);
-                }
-                if (std::holds_alternative<Vector3>(item) && itemName == "color") {
-                    Vector3* ptr = std::get_if<Vector3>(&item);
-                    ImGui::ColorEdit3(itemName.c_str(), reinterpret_cast<float*>(ptr));
-                }
-                // bool 
-                if (std::holds_alternative<bool>(item)) {
-                    bool* ptr = std::get_if<bool>(&item);
-                    ImGui::Checkbox(itemName.c_str(), ptr);
-                }
-            }
+            ImGui::PushItemWidth(140.0f);
+            DisplayGroupItemsRecursive("", group);
             if (ImGui::Button("Export")) {
                 SaveFile(groupName);
                 std::string message = std::format("{}.json saved.", groupName);
@@ -259,6 +491,12 @@ void GlobalVariables::Update()
     ImGui::End();
 
 #endif // _DEBUG
+}
+
+void GlobalVariables::Finalize()
+{
+    delete instance_;
+    instance_ = nullptr;
 }
 
 void GlobalVariables::CreateGroup(const std::string& groupName)

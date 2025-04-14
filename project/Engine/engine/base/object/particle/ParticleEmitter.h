@@ -25,13 +25,24 @@ public:
 	};
 
 	struct Emitter {
-		std::string name;
-		EulerTransform transform;
-		AABB size;
-		Vector3 scale;
-		uint32_t count;
-		float frequency;
-		float frequencyTime;
+
+		/* ==================== Emitter ==================== */
+
+		std::string name;			// 何のParticleを保持しているかのname
+		EulerTransform transform;	// EmitterのTransform
+		AABB emitterSize;			// Emitterのsize
+
+		/* ==================== Paritcle ==================== */
+
+		Vector3 minScale;			// Paritcle発生時の最小size
+		Vector3 maxScale;			// Paritcle発生時の最大size
+		Vector3 minVelocity;		// Paritcle発生時の最小velocity
+		Vector3 maxVelocity;		// Paritcle発生時の最大velocity
+
+		uint32_t count;				// Paritcle発生時に何個出すか
+		float lifeTime;				// Particle発生時から生きている時間
+		float frequency;			// Particle発生するまでの時間
+		float frequencyTime;		// Particle発生するまでカウントするTime
 	};
 
 	struct AccelerationField {
