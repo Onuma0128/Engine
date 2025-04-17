@@ -8,6 +8,23 @@
 
 using Microsoft::WRL::ComPtr;
 
+enum class BlendMode {
+	// ブレンド無し
+	kBlendModeNone,
+
+	// 通常αブレンド
+	kBlendModeNormal,
+
+	// 加算ブレンド
+	kBlendModeAdd,
+
+	// 減算ブレンド
+	kBlendModeSubtract,
+
+	// 乗算ブレンド
+	kBlendModeMultily
+};
+
 class PipelineState
 {
 public:
@@ -62,13 +79,13 @@ public:
 	// インプットレイアウト
 	void ParticleInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc);
 	// ブレンド
-	void ParticleBlendState(D3D12_BLEND_DESC& blendDesc);
+	void ParticleBlendState(D3D12_BLEND_DESC& blendDesc, int blendMode);
 	// シェーダーコンパイル
 	void ParticleShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader);
 	// デスクリプターステンシル
 	void ParticleDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc);
 	// パイプラインの生成
-	ComPtr<ID3D12PipelineState> CreateParticlePipelineState();
+	ComPtr<ID3D12PipelineState> CreateParticlePipelineState(int blendMode);
 
 	/* ==================== TrailEffect ==================== */
 

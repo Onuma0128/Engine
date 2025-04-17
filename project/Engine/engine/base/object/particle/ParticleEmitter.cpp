@@ -28,6 +28,7 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     emitter_.minScale = { 1.0f,1.0f,1.0f };
     emitter_.maxScale = { 1.0f,1.0f,1.0f };
 
+    blendMode_ = 0;
     moveStart_ = true;
     isFieldStart_ = false;
     isCreate_ = true;
@@ -50,8 +51,6 @@ void ParticleEmitter::GlobalInitialize(const std::string name)
 
     // jsonで指定した座標固定を無くすか
     global_->AddValue<bool>(globalName, "1.structEmitter/isLock", false);
-    // Emitterの回転
-    global_->AddValue<Vector3>(globalName, "1.structEmitter/rotate", Vector3{});
     // Emitterの座標
     global_->AddValue<Vector3>(globalName, "1.structEmitter/position", Vector3{});
     // Emitする範囲
@@ -74,6 +73,10 @@ void ParticleEmitter::GlobalInitialize(const std::string name)
     global_->AddValue<Vector3>(globalName, "2.defParticle/maxVelocity", Vector3{ 0.0f,0.0f,0.0f });
     // 出てくる色
     global_->AddValue<Vector3>(globalName, "2.defParticle/color", Vector3{ 1.0f,1.0f,1.0f });
+
+    // BlendModeの設定
+    std::vector<const char*> blendMode = { "None","Normal","Add", "Subtract","Multiply" };
+    global_->AddValue<int>(globalName, "blendMode", 2, blendMode);
     // 動かすか
     global_->AddValue<bool>(globalName, "move", false);
     // 加速度を足すか
@@ -107,11 +110,11 @@ void ParticleEmitter::Update()
         .min = emitter_.emitterSize.min + emitter_.transform.translation - Vector3{10.0f,10.0f,10.0f},
         .max = emitter_.emitterSize.max + emitter_.transform.translation + Vector3{10.0f,10.0f,10.0f}
     };
+    accelerationField_.acceleration = global_->GetValue<Vector3>(globalName, "2.defParticle/acceleration");
+
     if (!global_->GetValue<bool>(globalName, "1.structEmitter/isLock")) {
         emitter_.transform.translation = global_->GetValue<Vector3>(globalName, "1.structEmitter/position");
-        accelerationField_.acceleration = global_->GetValue<Vector3>(globalName, "2.defParticle/acceleration");
     }
-    emitter_.transform.rotation = global_->GetValue<Vector3>(globalName, "1.structEmitter/rotate");
 
     // min,maxが最大値を超えていないかclamp
     min = global_->GetValue<Vector3>(globalName, "2.defParticle/minScale");
@@ -133,6 +136,8 @@ void ParticleEmitter::Update()
         std::clamp(max.x,min.x,100.0f),std::clamp(max.y,min.y,100.0f),std::clamp(max.z,min.z,100.0f),
     };
 
+
+    blendMode_ = global_->GetValue<int>(globalName, "blendMode");
     // 動いているか
     moveStart_ = global_->GetValue<bool>(globalName, "move");
     isFieldStart_ = global_->GetValue<bool>(globalName, "field");
@@ -142,8 +147,9 @@ void ParticleEmitter::Update()
     linePosition_ = CreateLineBox(emitter_.emitterSize);
     for (auto& line : lines_) {
         Vector3 translate = emitter_.transform.translation;
-        Vector3 linePos1 = linePosition_[i].Transform(Matrix4x4::Rotate(emitter_.transform.rotation));
-        Vector3 linePos2 = linePosition_[i+1].Transform(Matrix4x4::Rotate(emitter_.transform.rotation));
+        Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
+        Vector3 linePos1 = linePosition_[i].Transform(rotateMatrix);
+        Vector3 linePos2 = linePosition_[i+1].Transform(rotateMatrix);
         line->SetPosition(linePos1 + translate, linePos2 + translate);
         line->Update();
         i += 2;
@@ -171,6 +177,12 @@ void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)
             group.particles.splice(group.particles.end(), Emit(emitter_, randomEngine_));
             emitter_.frequencyTime -= emitter_.frequency;
         }
+    }
+
+    if (onceEmit_) {
+        onceEmit_ = false;
+        std::mt19937 randomEngine_(seedGenerator_());
+        group.particles.splice(group.particles.end(), Emit(emitter_, randomEngine_));
     }
 }
 
@@ -219,7 +231,8 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     particle.transform.rotation = { 0.0f,0.0f,distRotate(randomEngine) };
     Vector3 randomTranslate = { distPosX(randomEngine),distPosY(randomEngine) ,distPosZ(randomEngine) };
     particle.transform.translation = emitter.transform.translation + randomTranslate;
-    particle.velocity = { distVelocityX(randomEngine),distVelocityY(randomEngine),distVelocityZ(randomEngine) };
+    Vector3 velocity = { distVelocityX(randomEngine),distVelocityY(randomEngine),distVelocityZ(randomEngine) };
+    particle.velocity = velocity.Transform(Quaternion::MakeRotateMatrix(emitter.transform.rotation));
     particle.color = { 1.0f,1.0f,1.0f,1.0f };
     particle.lifeTime = emitter.lifeTime;
     particle.currentTime = 0.0f;

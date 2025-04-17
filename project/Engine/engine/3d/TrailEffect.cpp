@@ -53,37 +53,42 @@ void TrailEffect::Draw()
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
 
-void TrailEffect::InitSphere(uint32_t kSubdivision)
+void TrailEffect::TypeInit(PrimitiveType type, uint32_t kIndex)
 {
-	kSubdivision_ = kSubdivision;
-	trailEffectBase_ = TrailEffectBase::GetInstance();
+	type_ = type;
 
-	SetTexture("resources", "white1x1.png");
-
-	uint32_t startIndex = kSubdivision * kSubdivision * 6;
-	CreateBufferResource(vertexResource_, sizeof(VertexData) * startIndex);
-	CreateVertexBufferView(startIndex);
-	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-	vertexData_ = CreateSphereVertexData(vertexData_, kSubdivision);
-
-	CreateBufferResource(materialResource_, sizeof(MaterialData));
-	CreateMaterialData();
-
-	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
-	CreateWVPData();
+	switch (type_)
+	{
+	case PrimitiveType::Plane:
+		InitPlane();
+		break;
+	case PrimitiveType::Sphere:
+		InitSphere(kIndex);
+		break;
+	case PrimitiveType::Ring:
+		InitRing(kIndex);
+		break;
+	default:
+		break;
+	}
 }
 
-void TrailEffect::DrawSphere()
+void TrailEffect::TypeDraw()
 {
-	trailEffectBase_->DrawBase();
-
-	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
-	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
-	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
-	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textureData_.textureIndex);
-
-	commandList->DrawInstanced(kSubdivision_ * kSubdivision_ * 6, 1, 0, 0);
+	switch (type_)
+	{
+	case PrimitiveType::Plane:
+		DrawPlane();
+		break;
+	case PrimitiveType::Sphere:
+		DrawSphere();
+		break;
+	case PrimitiveType::Ring:
+		DrawRing();
+		break;
+	default:
+		break;
+	}
 }
 
 void TrailEffect::SetPosition(std::vector<Vector3> pos)
@@ -189,7 +194,96 @@ void TrailEffect::CreateWVPData()
 	*wvpData_ = Matrix4x4::Identity();
 }
 
-TrailEffect::VertexData* TrailEffect::CreateSphereVertexData(VertexData* vertexData, uint32_t kSubdivision)
+void TrailEffect::InitPlane()
+{
+	trailEffectBase_ = TrailEffectBase::GetInstance();
+
+	SetTexture("resources", "uvChecker.png");
+
+	CreateBufferResource(vertexResource_, sizeof(VertexData) * 6);
+	CreateVertexBufferView(6);
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	CreatePlaneVertexData(vertexData_);
+
+	CreateBufferResource(materialResource_, sizeof(MaterialData));
+	CreateMaterialData();
+
+	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+	CreateWVPData();
+}
+
+void TrailEffect::DrawPlane()
+{
+	trailEffectBase_->DrawBase();
+
+	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textureData_.textureIndex);
+
+	commandList->DrawInstanced(6, 1, 0, 0);
+}
+
+void TrailEffect::CreatePlaneVertexData(VertexData* vertexData)
+{
+	// 1,3,2
+	vertexData[0] = {
+		.position = { -1.0f,1.0f,0.0f,1.0f },
+		.texcoord = { 0.0f,0.0f }
+	};
+	vertexData[1] = {
+		.position = { -1.0f,-1.0f,0.0f,1.0f },
+		.texcoord = { 0.0f,1.0f }
+	};
+	vertexData[2] = {
+		.position = { 1.0f,1.0f,0.0f,1.0f },
+		.texcoord = { 1.0f,0.0f }
+	};
+
+	// 2,3,4
+	vertexData[3] = vertexData[2];
+	vertexData[4] = vertexData[1];
+	vertexData[5] = {
+		.position = { 1.0f,-1.0f,0.0f,1.0f },
+		.texcoord = { 1.0f,1.0f }
+	};
+}
+
+void TrailEffect::InitSphere(uint32_t kSubdivision)
+{
+	kSubdivision_ = kSubdivision;
+	trailEffectBase_ = TrailEffectBase::GetInstance();
+
+	SetTexture("resources", "white1x1.png");
+
+	uint32_t startIndex = kSubdivision * kSubdivision * 6;
+	CreateBufferResource(vertexResource_, sizeof(VertexData) * startIndex);
+	CreateVertexBufferView(startIndex);
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	CreateSphereVertexData(vertexData_, kSubdivision);
+
+	CreateBufferResource(materialResource_, sizeof(MaterialData));
+	CreateMaterialData();
+
+	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+	CreateWVPData();
+}
+
+void TrailEffect::DrawSphere()
+{
+	trailEffectBase_->DrawBase();
+
+	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textureData_.textureIndex);
+
+	commandList->DrawInstanced(kSubdivision_ * kSubdivision_ * 6, 1, 0, 0);
+}
+
+void TrailEffect::CreateSphereVertexData(VertexData* vertexData, uint32_t kSubdivision)
 {
 	const float pi = static_cast<float>(std::numbers::pi);
 	const float kLonEvery = 2 * pi / float(kSubdivision); // 経度
@@ -221,5 +315,78 @@ TrailEffect::VertexData* TrailEffect::CreateSphereVertexData(VertexData* vertexD
 			vertexData[start + 5].texcoord = { u1, v0 };
 		}
 	}
-	return vertexData;
+}
+
+void TrailEffect::InitRing(uint32_t kRingDivide)
+{
+	kRingDivide_ = kRingDivide;
+	trailEffectBase_ = TrailEffectBase::GetInstance();
+
+	SetTexture("resources", "gradationLine.png");
+
+	CreateBufferResource(vertexResource_, sizeof(VertexData) * kRingDivide_ * 6);
+	CreateVertexBufferView(kRingDivide_ * 6);
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	CreateRingVertexData(vertexData_, kRingDivide_);
+
+	CreateBufferResource(materialResource_, sizeof(MaterialData));
+	CreateMaterialData();
+
+	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+	CreateWVPData();
+}
+
+void TrailEffect::DrawRing()
+{
+	trailEffectBase_->DrawBase();
+
+	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textureData_.textureIndex);
+
+	commandList->DrawInstanced(kRingDivide_ * 6, 1, 0, 0);
+}
+
+void TrailEffect::CreateRingVertexData(VertexData* vertexData, uint32_t kRingDivide)
+{
+	const float kOuterRadius = 1.0f;
+	const float kInnerRadius = 0.2f;
+	const float radianPerDivde = 2.0f * std::numbers::pi_v<float> / static_cast<float>(kRingDivide);
+
+	for (uint32_t index = 0; index < kRingDivide; ++index) {
+		float sin = std::sin(index * radianPerDivde);
+		float cos = std::cos(index * radianPerDivde);
+		uint32_t nextIndex = index + 1;
+		float sinNext = std::sin(nextIndex * radianPerDivde);
+		float cosNext = std::cos(nextIndex * radianPerDivde);
+		float u = static_cast<float>(index) / static_cast<float>(kRingDivide);
+		float uNext = static_cast<float>(nextIndex) / static_cast<float>(kRingDivide);
+
+		uint32_t counter = index * 6;
+		
+		// 1,3,2
+		vertexData[counter] = {
+			.position = {-sin * kOuterRadius,cos * kOuterRadius,0.0f,1.0f},
+			.texcoord = {u,0.0f}
+		};
+		vertexData[counter + 1] = {
+			.position = {-sin * kInnerRadius,cos * kInnerRadius,0.0f,1.0f},
+			.texcoord = {u,1.0f}
+		};
+		vertexData[counter + 2] = {
+			.position = {-sinNext * kOuterRadius,cosNext * kOuterRadius,0.0f,1.0f},
+			.texcoord = {uNext,0.0f}
+		};
+		// 2,3,4
+		vertexData[counter + 3] = vertexData[counter + 2];
+
+		vertexData[counter + 4] = vertexData[counter + 1];
+
+		vertexData[counter + 5] = {
+			.position = {-sinNext * kInnerRadius,cosNext * kInnerRadius,0.0f,1.0f},
+			.texcoord = {uNext,1.0f}
+		};
+	}
 }

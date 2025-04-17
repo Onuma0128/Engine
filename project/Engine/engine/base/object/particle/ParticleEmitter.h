@@ -29,7 +29,7 @@ public:
 		/* ==================== Emitter ==================== */
 
 		std::string name;			// 何のParticleを保持しているかのname
-		EulerTransform transform;	// EmitterのTransform
+		Transform3D transform;	// EmitterのTransform
 		AABB emitterSize;			// Emitterのsize
 
 		/* ==================== Paritcle ==================== */
@@ -66,13 +66,20 @@ public:
 
 	void UpdateParticle(std::list<ParticleManager::Particle>::iterator& particle);
 
+	// 呼び出す事で一回だけEmitする
+	void onceEmit() { onceEmit_ = true; }
+
 	/*==================== アクセッサー ====================*/
+
+	void SetRotation(const Quaternion& rotation) { emitter_.transform.rotation = rotation; }
 
 	void SetPosition(const Vector3& position) { emitter_.transform.translation = position; }
 
 	void SetAcceleration(const Vector3& acceleration) { accelerationField_.acceleration = acceleration; }
 
 	void SetIsCreate(bool isCreate) { isCreate_ = isCreate; }
+
+	int GetBlendMode()const { return blendMode_; }
 
 private:
 
@@ -100,8 +107,10 @@ private:
 	// Transform変数を作る
 	AccelerationField accelerationField_{};
 	Emitter emitter_{};
+	int blendMode_;
 	const float kDeltaTime = 1.0f / 60.0f;
 	bool moveStart_ = false;
 	bool isFieldStart_ = false;
 	bool isCreate_ = true;
+	bool onceEmit_ = false;
 };

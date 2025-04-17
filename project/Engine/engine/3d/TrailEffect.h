@@ -15,6 +15,12 @@ using Microsoft::WRL::ComPtr;
 
 class TrailEffectBase;
 
+enum class PrimitiveType {
+	Plane,
+	Sphere,
+	Ring
+};
+
 class TrailEffect
 {
 public:
@@ -43,24 +49,23 @@ public:
 
 	void Draw();
 
-	/* =============== 球面 =============== */
+	/* =============== Typeを選べるように =============== */
 
-	void InitSphere(uint32_t kSubdivision);
+	void TypeInit(PrimitiveType type, uint32_t kIndex = 0);
 
-	void DrawSphere();
+	void TypeDraw();
 
 	/* =============== アクセッサ(トレイル用) =============== */
 
 	void SetPosition(std::vector<Vector3> pos);
 
-	/* =============== アクセッサ(球体用) =============== */
-
-	EulerTransform& GetTransform() { return transform_; }
-	void SetTransform(EulerTransform transform) { transform_ = transform; }
-	const Vector4& GetColor() { return materialData_->color; }
-
 	/* =============== アクセッサ(全体) =============== */
 
+	EulerTransform& GetTransform() { return transform_; }
+	const Vector4& GetColor() { return materialData_->color; }
+
+
+	void SetTransform(EulerTransform transform) { transform_ = transform; }
 	void SetTexture(const std::string& directoryPath, const std::string& filePath);
 	void SetColor(const Vector3& color) {
 		materialData_->color.x = color.x;
@@ -68,7 +73,6 @@ public:
 		materialData_->color.z = color.z;
 	}
 	void SetAlpha(const float alpha) { materialData_->color.w = alpha; }
-
 	void SetTexcoordX_Alpha(bool flag) { materialData_->xTexcoord_alpha = flag; }
 	void SetTexcoordY_Alpha(bool flag) { materialData_->yTexcoord_alpha = flag; }
 
@@ -84,8 +88,33 @@ private:
 	void CreateMaterialData();
 	void CreateWVPData();
 
-	// 球面の頂点計算
-	VertexData* CreateSphereVertexData(VertexData* vertexData, uint32_t kSubdivision);
+	/* =============== Plane =============== */
+
+	void InitPlane();
+
+	void DrawPlane();
+
+	// Planeの頂点計算
+	void CreatePlaneVertexData(VertexData* vertexData);
+
+
+	/* =============== Sphere =============== */
+
+	void InitSphere(uint32_t kSubdivision);
+
+	void DrawSphere();
+
+	// Sphereの頂点計算
+	void CreateSphereVertexData(VertexData* vertexData, uint32_t kSubdivision);
+
+	/* =============== Ring =============== */
+
+	void InitRing(uint32_t kRingDivide);
+
+	void DrawRing();
+
+	// Ringの頂点計算
+	void CreateRingVertexData(VertexData* vertexData, uint32_t kRingDivide);
 
 private:
 
@@ -115,10 +144,22 @@ private:
 	ComPtr<ID3D12Resource> wvpResource_ = nullptr;
 	Matrix4x4* wvpData_ = nullptr;
 
+	/* =============== TypeとTransform =============== */
+
+	PrimitiveType type_;
 
 	EulerTransform transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 
+	/* =============== Trail =============== */
+
 	std::vector<Vector3> positions_;
+	
+	/* =============== Sphere =============== */
 
 	uint32_t kSubdivision_;
+
+	/* =============== Ring =============== */
+
+	uint32_t kRingDivide_;
+
 };

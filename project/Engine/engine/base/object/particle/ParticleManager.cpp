@@ -31,7 +31,9 @@ void ParticleManager::Initialize(DirectXEngine* dxEngine)
     srvManager_ = SrvManager::GetInstance();
 
     rootSignature_ = dxEngine_->GetPipelineState()->CreateParticleRootSignature();
-    pipelineState_ = dxEngine_->GetPipelineState()->CreateParticlePipelineState();
+    for (int i = 0; i < static_cast<int>(pipelineStates_.size()); ++i) {
+        pipelineStates_[i] = dxEngine_->GetPipelineState()->CreateParticlePipelineState(i);
+    }
 
     modelData_ = Model::LoadObjFile("resources", "plane.obj");
 
@@ -89,13 +91,14 @@ void ParticleManager::Draw()
 {
     auto commandList = dxEngine_->GetCommandList();
 
-    /*==================== パイプラインの設定 ====================*/
-    commandList->SetGraphicsRootSignature(rootSignature_.Get());
-    commandList->SetPipelineState(pipelineState_.Get());
-    commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-    /*==================== パーティクルの描画 ====================*/
     for (const auto& [name, group] : particleGroups_) {
+
+        /*==================== パイプラインの設定 ====================*/
+        commandList->SetGraphicsRootSignature(rootSignature_.Get());
+        commandList->SetPipelineState(pipelineStates_[particleGroups_[name].emitter->GetBlendMode()].Get());
+        commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+        /*==================== パーティクルの描画 ====================*/
         uint32_t textIndex = group.textureIndex;
         commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
         commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());

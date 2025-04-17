@@ -97,7 +97,7 @@ private:
 	// ルートシグネチャ
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	// パイプラインステート
-	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
+	std::array<ComPtr<ID3D12PipelineState>, 5> pipelineStates_;
 
 	/*==================== メンバ変数 ====================*/
 

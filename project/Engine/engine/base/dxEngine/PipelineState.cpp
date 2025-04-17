@@ -91,18 +91,64 @@ void PipelineState::ParticleInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDe
 	inputLayoutDesc.NumElements = numElements;
 }
 
-void PipelineState::ParticleBlendState(D3D12_BLEND_DESC& blendDesc)
+void PipelineState::ParticleBlendState(D3D12_BLEND_DESC& blendDesc, int blendMode)
 {
+	BlendMode setBlendMode = static_cast<BlendMode>(blendMode);
+
 	//全ての色要素を書き込む
 	blendDesc.RenderTarget[0].RenderTargetWriteMask =
 		D3D12_COLOR_WRITE_ENABLE_ALL;
-	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+
+	switch (setBlendMode)
+	{
+	case BlendMode::kBlendModeNone:
+		blendDesc.RenderTarget[0].BlendEnable = FALSE;
+		break;
+
+	case BlendMode::kBlendModeNormal:
+		blendDesc.RenderTarget[0].BlendEnable = TRUE;
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+		break;
+
+	case BlendMode::kBlendModeAdd:
+		blendDesc.RenderTarget[0].BlendEnable = TRUE;
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+		break;
+
+	case BlendMode::kBlendModeSubtract:
+		blendDesc.RenderTarget[0].BlendEnable = TRUE;
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+		break;
+
+	case BlendMode::kBlendModeMultily:
+		blendDesc.RenderTarget[0].BlendEnable = TRUE;
+		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_DEST_COLOR;
+		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+		break;
+
+	default:
+		blendDesc.RenderTarget[0].BlendEnable = FALSE;
+		break;
+	}
 }
 
 void PipelineState::RasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc, bool enableCulling)
@@ -553,7 +599,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateLine3dPipelineState()
 	return newPipelineState_;
 }
 
-ComPtr<ID3D12PipelineState> PipelineState::CreateParticlePipelineState()
+ComPtr<ID3D12PipelineState> PipelineState::CreateParticlePipelineState(int blendMode)
 {
 	// インプットレイアウト
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3]{};
@@ -562,7 +608,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateParticlePipelineState()
 
 	// ブレンド
 	D3D12_BLEND_DESC blendDesc{};
-	ParticleBlendState(blendDesc);
+	ParticleBlendState(blendDesc, blendMode);
 
 	// ラスタライザ
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -632,7 +678,7 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateTrailEffectRootSignature()
 	D3D12_STATIC_SAMPLER_DESC staticSamplers[1] = {};
 	staticSamplers[0].Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR; //バイリニアフィルタ
 	staticSamplers[0].AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; //0~1の範囲をリピート
-	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
+	staticSamplers[0].AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
 	staticSamplers[0].AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;
 	staticSamplers[0].ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER; //比較しない
 	staticSamplers[0].MaxLOD = D3D12_FLOAT32_MAX; //ありったけのMipmapを使う
@@ -679,7 +725,7 @@ void PipelineState::TrailEffectBlendState(D3D12_BLEND_DESC& blendDesc)
 	blendDesc.RenderTarget[0].BlendEnable = TRUE;
 	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
 	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
+	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
 	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
@@ -687,8 +733,9 @@ void PipelineState::TrailEffectBlendState(D3D12_BLEND_DESC& blendDesc)
 
 void PipelineState::TrailEffectRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc)
 {
-	//D3D12_CULL_MODE_NONE
-	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
+	// D3D12_CULL_MODE_NONE
+	// D3D12_CULL_MODE_BACK
+	rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
 
 	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
 }
