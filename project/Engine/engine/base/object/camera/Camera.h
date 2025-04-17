@@ -31,7 +31,7 @@ private:
 public:
 	// setter
 	// RT部分
-	void GetRotation(const Vector3& rotate) { transform_.rotation = rotate; }
+	void SetRotation(const Vector3& rotate) { transform_.rotation = rotate; }
 	void SetTranslation(const Vector3& translate) { transform_.translation = translate; }
 
 	// カメラの設定

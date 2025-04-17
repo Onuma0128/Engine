@@ -4,13 +4,10 @@
 #include "BaseScene.h"
 
 #include "Object3d.h"
-#include "WorldTransform.h"
-#include "Sprite.h"
-#include "ParticleEmitter.h"
-#include "TrailEffect.h"
 
-#include "gameScene/test/TestObject.h"
-#include "Animation.h"
+#include "gameScene/player/Player.h"
+#include "gameScene/gameCamera/GameCamera.h"
+
 
 class GamePlayScene : public BaseScene
 {
@@ -26,13 +23,13 @@ public:
 
 private:
 
-	std::unique_ptr<TestObject> testObj_ = nullptr;
+	std::unique_ptr<Object3d> demoObj_ = nullptr;
 
-	std::unique_ptr<Animation> animation_ = nullptr;
-	std::unique_ptr<Animation> animation2_ = nullptr;
 
-	std::unique_ptr<ParticleEmitter> bulletExplosionEmitter_ = nullptr;
-	std::unique_ptr<ParticleEmitter> bulletSparkEmitter_ = nullptr;
-	std::unique_ptr<ParticleEmitter> bulletSmokeEmitter_ = nullptr;
+	// プレイヤーの生成
+	std::unique_ptr<Player> player_ = nullptr;
+
+	// ゲームカメラの生成
+	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
 };
 
