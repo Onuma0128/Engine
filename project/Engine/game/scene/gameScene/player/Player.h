@@ -2,6 +2,8 @@
 
 #include "Object3d.h"
 
+#include "gameScene/player/effect/PlayerEffect.h"
+
 class Player : public Object3d
 {
 public:
@@ -16,6 +18,6 @@ public:
 
 private:
 
-
+	std::unique_ptr<PlayerEffect> effect_ = nullptr;
 
 };
