@@ -29,7 +29,8 @@ public:
 		/* ==================== Emitter ==================== */
 
 		std::string name;			// 何のParticleを保持しているかのname
-		Transform3D transform;	// EmitterのTransform
+		Vector3 setPosition;		// Emitterを固定する座標
+		Transform3D transform;		// EmitterのTransform
 		AABB emitterSize;			// Emitterのsize
 
 		/* ==================== Paritcle ==================== */
@@ -38,8 +39,11 @@ public:
 		Vector3 maxScale;			// Paritcle発生時の最大size
 		Vector3 minVelocity;		// Paritcle発生時の最小velocity
 		Vector3 maxVelocity;		// Paritcle発生時の最大velocity
+		float minRotateZ;			// Particle発生時の最小rotateZ
+		float maxRotateZ;			// Particle発生時の最大rotateZ
 		float reflectY;				// Particleが反射するY軸を設定
 
+		uint32_t blendMode_;		// ParticleのBlendModeを設定
 		uint32_t count;				// Paritcle発生時に何個出すか
 		float lifeTime;				// Particle発生時から生きている時間
 		float frequency;			// Particle発生するまでの時間
@@ -74,13 +78,13 @@ public:
 
 	void SetRotation(const Quaternion& rotation) { emitter_.transform.rotation = rotation; }
 
-	void SetPosition(const Vector3& position) { emitter_.transform.translation = position; }
+	void SetPosition(const Vector3& position) { emitter_.setPosition = position; }
 
 	void SetAcceleration(const Vector3& acceleration) { accelerationField_.acceleration = acceleration; }
 
 	void SetIsCreate(bool isCreate) { isCreate_ = isCreate; }
 
-	int GetBlendMode()const { return blendMode_; }
+	int GetBlendMode()const { return emitter_.blendMode_; }
 
 private:
 
@@ -108,7 +112,7 @@ private:
 	// Transform変数を作る
 	AccelerationField accelerationField_{};
 	Emitter emitter_{};
-	int blendMode_;
+
 	bool moveStart_ = false;
 	bool isFieldStart_ = false;
 	bool isCreate_ = true;

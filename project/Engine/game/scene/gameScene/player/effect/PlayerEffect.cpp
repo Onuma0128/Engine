@@ -9,6 +9,13 @@ void PlayerEffect::Init()
 	particleManager_->CreateParticleGroup("moveDust", "smoke.png", moveDustEmitter_.get());
 	moveDustEmitter_->SetIsCreate(false);
 
+	// 弾のエフェクト
+	for (size_t i = 0; i < bulletTrailEmitters_.size(); ++i) {
+		bulletTrailEmitters_[i] = std::make_unique<ParticleEmitter>("bulletTrail");
+		particleManager_->CreateParticleGroup("bulletTrail" + std::to_string(i), "white1x1.png", bulletTrailEmitters_[i].get());
+		bulletTrailEmitters_[i]->SetIsCreate(false);
+	}
+
 	// 弾を撃つ時のエフェクト
 	bulletExplosionEmitter_ = std::make_unique<ParticleEmitter>("bulletExplosion");
 	particleManager_->CreateParticleGroup("bulletExplosion", "circle.png", bulletExplosionEmitter_.get());
@@ -45,11 +52,23 @@ void PlayerEffect::OnceMoveEffect()
 	moveDustEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
+	Quaternion rotate = player_->GetTransform().rotation_;
 	Vector3 position = player_->GetTransform().translation_;
-	Vector3 offset = Vector3{ 0.0f,-0.4f,-0.5f }.Transform(Quaternion::MakeRotateMatrix(player_->GetTransform().rotation_));
+	
+	moveDustEmitter_->SetRotation(rotate);
+	moveDustEmitter_->SetPosition(position);
+}
 
-	moveDustEmitter_->SetRotation(player_->GetTransform().rotation_);
-	moveDustEmitter_->SetPosition(position + offset);
+void PlayerEffect::OnceBulletTrailEffect(const int32_t count, const WorldTransform& transform)
+{
+	bulletTrailEmitters_[count]->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	bulletTrailEmitters_[count]->SetRotation(rotate);
+	bulletTrailEmitters_[count]->SetPosition(position);
 }
 
 void PlayerEffect::OnceBulletEffect()
@@ -61,19 +80,21 @@ void PlayerEffect::OnceBulletEffect()
 	bulletCartridgeEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
+	Quaternion rotate = player_->GetTransform().rotation_;
 	Vector3 position = player_->GetTransform().translation_;
-	Vector3 offset = Vector3::ExprUnitZ.Transform(Quaternion::MakeRotateMatrix(player_->GetTransform().rotation_));
 
 	// 爆発
-	bulletExplosionEmitter_->SetPosition(position + offset);
+	bulletExplosionEmitter_->SetPosition(position);
+	bulletExplosionEmitter_->SetRotation(rotate);
 	// 火花
-	bulletSparkEmitter_->SetPosition(position + offset);
-	bulletSparkEmitter_->SetRotation(player_->GetTransform().rotation_);
+	bulletSparkEmitter_->SetPosition(position);
+	bulletSparkEmitter_->SetRotation(rotate);
 	// 煙
-	bulletSmokeEmitter_->SetPosition(position + offset + Vector3{ 0.0f,0.2f,0.0f });
+	bulletSmokeEmitter_->SetPosition(position);
+	bulletSmokeEmitter_->SetRotation(rotate);
 	// 薬莢
-	bulletCartridgeEmitter_->SetPosition(position + offset);
-	bulletCartridgeEmitter_->SetRotation(player_->GetTransform().rotation_);
+	bulletCartridgeEmitter_->SetPosition(position);
+	bulletCartridgeEmitter_->SetRotation(rotate);
 }
 
 void PlayerEffect::OnceAvoidEffect()
@@ -81,9 +102,9 @@ void PlayerEffect::OnceAvoidEffect()
 	avoidDustEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
+	Quaternion rotate = player_->GetTransform().rotation_;
 	Vector3 position = player_->GetTransform().translation_;
-	Vector3 offset = Vector3{ 0.0f,-0.4f,0.0f }.Transform(Quaternion::MakeRotateMatrix(player_->GetTransform().rotation_));
 
-	avoidDustEmitter_->SetPosition(position + offset);
-	avoidDustEmitter_->SetRotation(player_->GetTransform().rotation_);
+	avoidDustEmitter_->SetPosition(position);
+	avoidDustEmitter_->SetRotation(rotate);
 }

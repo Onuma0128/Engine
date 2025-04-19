@@ -14,7 +14,8 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     GlobalInitialize(name);
 
     emitter_.name = name;
-    emitter_.transform = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+    emitter_.setPosition = { 0.0f,0.0f,0.0f };
+    emitter_.transform = { {1.0f,1.0f,1.0f},Quaternion::IdentityQuaternion(),{0.0f,0.0f,0.0f} };
     emitter_.frequency = 0.1f;
     emitter_.frequencyTime = 0.0f;
     accelerationField_.acceleration = { 0.0f,10.0f,0.0f };
@@ -29,7 +30,7 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     emitter_.minScale = { 1.0f,1.0f,1.0f };
     emitter_.maxScale = { 1.0f,1.0f,1.0f };
 
-    blendMode_ = 0;
+    emitter_.blendMode_ = 0;
     moveStart_ = true;
     isFieldStart_ = false;
     isCreate_ = true;
@@ -72,6 +73,9 @@ void ParticleEmitter::GlobalInitialize(const std::string name)
     // 速度
     global_->AddValue<Vector3>(globalName, "2.defParticle/minVelocity", Vector3{ 0.0f,0.0f,0.0f });
     global_->AddValue<Vector3>(globalName, "2.defParticle/maxVelocity", Vector3{ 0.0f,0.0f,0.0f });
+    // 回転
+    global_->AddValue<float>(globalName, "2.defParticle/minRotateZ", 0.0f);
+    global_->AddValue<float>(globalName, "2.defParticle/maxRotateZ", 0.0f);
     // 反射する高さ
     global_->AddValue<float>(globalName, "2.defParticle/reflectY", 0.0f);
     // 出てくる色
@@ -117,8 +121,12 @@ void ParticleEmitter::Update()
     };
     accelerationField_.acceleration = global_->GetValue<Vector3>(globalName, "2.defParticle/acceleration");
 
+    Vector3 emitterPosition = global_->GetValue<Vector3>(globalName, "1.structEmitter/position");
     if (!global_->GetValue<bool>(globalName, "1.structEmitter/isLock")) {
-        emitter_.transform.translation = global_->GetValue<Vector3>(globalName, "1.structEmitter/position");
+        emitter_.transform.translation = emitterPosition;
+    } else {
+        Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
+        emitter_.transform.translation = emitter_.setPosition + (emitterPosition).Transform(rotateMatrix);
     }
 
     // min,maxが最大値を超えていないかclamp
@@ -140,10 +148,17 @@ void ParticleEmitter::Update()
     emitter_.maxVelocity = {
         std::clamp(max.x,min.x,100.0f),std::clamp(max.y,min.y,100.0f),std::clamp(max.z,min.z,100.0f),
     };
+
+    // min,maxが最大値を超えていないかclamp
+    float min_z = global_->GetValue<float>(globalName, "2.defParticle/minRotateZ");
+    float max_z = global_->GetValue<float>(globalName, "2.defParticle/maxRotateZ");
+    emitter_.minRotateZ = std::clamp(min_z, -100.0f, max_z);
+    emitter_.maxRotateZ = std::clamp(max_z, min_z, 100.0f);
+
     // 反射する高さ
     emitter_.reflectY = global_->GetValue<float>(globalName, "2.defParticle/reflectY");
 
-    blendMode_ = global_->GetValue<int>(globalName, "blendMode");
+    emitter_.blendMode_ = global_->GetValue<int>(globalName, "blendMode");
     // 動いているか
     moveStart_ = global_->GetValue<bool>(globalName, "move");
     isFieldStart_ = global_->GetValue<bool>(globalName, "field");
@@ -237,12 +252,13 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     std::uniform_real_distribution<float> distScaleY(emitter.minScale.y, emitter.maxScale.y);
     std::uniform_real_distribution<float> distScaleZ(emitter.minScale.z, emitter.maxScale.z);
 
-    std::uniform_real_distribution<float> distRotate(-std::numbers::pi_v<float>, std::numbers::pi_v<float>);
+    std::uniform_real_distribution<float> distRotate(emitter.minRotateZ, emitter.maxRotateZ);
     ParticleManager::Particle particle{};
     particle.transform.scale = { distScaleX(randomEngine),distScaleY(randomEngine),distScaleZ(randomEngine) };
     particle.transform.rotation = { 0.0f,0.0f,distRotate(randomEngine) };
     Vector3 randomTranslate = { distPosX(randomEngine),distPosY(randomEngine) ,distPosZ(randomEngine) };
-    particle.transform.translation = emitter.transform.translation + randomTranslate;
+    Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter.transform.rotation);
+    particle.transform.translation = emitter.transform.translation + randomTranslate.Transform(rotateMatrix);
     Vector3 velocity = { distVelocityX(randomEngine),distVelocityY(randomEngine),distVelocityZ(randomEngine) };
     particle.velocity = velocity.Transform(Quaternion::MakeRotateMatrix(emitter.transform.rotation));
     particle.color = { 1.0f,1.0f,1.0f,1.0f };

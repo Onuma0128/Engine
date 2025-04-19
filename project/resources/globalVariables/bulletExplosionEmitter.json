@@ -10,12 +10,15 @@
             "field": false
         },
         {
+            "reflect": false
+        },
+        {
             "1.structEmitter": {
                 "isLock": true,
                 "position": [
                     0.0,
-                    2.0,
-                    -6.0
+                    0.0,
+                    1.0
                 ],
                 "emitterSizeMin": [
                     0.0,
@@ -27,7 +30,7 @@
                     0.0,
                     0.0
                 ],
-                "lifeTime": 0.20000000298023224,
+                "lifeTime": 0.25,
                 "frequency": 1.0,
                 "count": 10
             }
@@ -41,7 +44,7 @@
                 ],
                 "minScale": [
                     0.10000000149011612,
-                    1.0,
+                    1.2000000476837158,
                     1.0
                 ],
                 "maxScale": [
@@ -59,6 +62,9 @@
                     0.0,
                     0.0
                 ],
+                "minRotateZ": -3.140000104904175,
+                "maxRotateZ": 3.140000104904175,
+                "reflectY": 0.0,
                 "color": [
                     1.0,
                     0.20588237047195435,

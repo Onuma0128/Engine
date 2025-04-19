@@ -32,6 +32,10 @@ void Player::Update()
 	// 弾の更新,弾UIの更新
 	for (size_t i = 0; i < bulletUIs_.size(); ++i) {
 		bullets_[i]->Update();
+		// トレイルエフェクトを生成
+		if (bullets_[i]->GetIsActive()) {
+			effect_->OnceBulletTrailEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
+		}
 		bulletUIs_[i]->Update({});
 	}
 	

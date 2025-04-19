@@ -1,7 +1,10 @@
 #pragma once
+#include <array>
 
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+
+#include "WorldTransform.h"
 
 class Player;
 
@@ -19,6 +22,8 @@ public:
 
 	// 移動時のエフェクトを呼び出す
 	void OnceMoveEffect();
+	// 弾のトレイルエフェクトを呼び出す
+	void OnceBulletTrailEffect(const int32_t count, const WorldTransform& transform);
 	// 弾のエフェクトを呼び出す
 	void OnceBulletEffect();
 	// 避けた時のエフェクトを呼び出す
@@ -35,6 +40,11 @@ private:
 
 	// 移動時の土埃
 	std::unique_ptr<ParticleEmitter> moveDustEmitter_ = nullptr;
+
+	/* ==================== プレイヤーが弾を撃った時のエフェクト ==================== */
+
+	// 弾のトレイルエフェクト
+	std::array<std::unique_ptr<ParticleEmitter>, 6> bulletTrailEmitters_;
 
 	/* ==================== プレイヤーが弾を撃った時のエフェクト ==================== */
 

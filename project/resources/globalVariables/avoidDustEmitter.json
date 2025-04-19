@@ -10,14 +10,14 @@
             "field": true
         },
         {
-            "reflect": true
+            "reflect": false
         },
         {
             "1.structEmitter": {
                 "isLock": true,
                 "position": [
                     0.0,
-                    0.0,
+                    -1.0,
                     0.0
                 ],
                 "emitterSizeMin": [
@@ -30,7 +30,7 @@
                     0.2199999988079071,
                     0.30000001192092896
                 ],
-                "lifeTime": 0.75,
+                "lifeTime": 0.5,
                 "frequency": 0.5,
                 "count": 40
             }
@@ -62,6 +62,8 @@
                     8.0,
                     0.0
                 ],
+                "minRotateZ": -3.140000104904175,
+                "maxRotateZ": 3.140000104904175,
                 "reflectY": 0.10000000149011612,
                 "color": [
                     0.12941177189350128,
