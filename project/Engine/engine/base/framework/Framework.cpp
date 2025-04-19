@@ -46,6 +46,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "plane.gltf");
+	ModelManager::GetInstance()->LoadModel("resources", "plane.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "suzanne.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "Box.obj");
 }

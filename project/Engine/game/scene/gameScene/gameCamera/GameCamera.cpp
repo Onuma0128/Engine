@@ -57,7 +57,12 @@ void GameCamera::Update()
 	// カメラの回転に合わせた座標を更新
 	Matrix4x4 rotateMatrix = Matrix4x4::Rotate(rotateAngle_);
 	Vector3 translation = global_->GetValue<Vector3>("CameraOffset", "translation");
-	camera_->SetTranslation(player_->GetTransform().translation_ + (translation.Transform(rotateMatrix)));
+
+	Vector3 previous = camera_->GetTranslation();
+	Vector3 current = player_->GetTransform().translation_ + (translation.Transform(rotateMatrix));
+	previous = Vector3::Lerp(previous, current, 0.1f);
+
+	camera_->SetTranslation(previous);
 }
 
 float GameCamera::LerpShortAngle(float a, float b, float t)

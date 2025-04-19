@@ -124,6 +124,8 @@ private:
 	ComPtr<ID3D12Resource> transformationMatrixResource_ = nullptr;
 	TransformationMatrix* transformationMatrixData_ = nullptr;
 
+protected:
+
 	// トランスフォーム
 	Transform2D transform_{ {1.0f,1.0f},0.0f,{0.0f,0.0f} };
 

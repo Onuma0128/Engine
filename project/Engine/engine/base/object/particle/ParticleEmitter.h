@@ -38,6 +38,7 @@ public:
 		Vector3 maxScale;			// Paritcle発生時の最大size
 		Vector3 minVelocity;		// Paritcle発生時の最小velocity
 		Vector3 maxVelocity;		// Paritcle発生時の最大velocity
+		float reflectY;				// Particleが反射するY軸を設定
 
 		uint32_t count;				// Paritcle発生時に何個出すか
 		float lifeTime;				// Particle発生時から生きている時間
@@ -108,9 +109,9 @@ private:
 	AccelerationField accelerationField_{};
 	Emitter emitter_{};
 	int blendMode_;
-	const float kDeltaTime = 1.0f / 60.0f;
 	bool moveStart_ = false;
 	bool isFieldStart_ = false;
 	bool isCreate_ = true;
 	bool onceEmit_ = false;
+	bool isReflect_ = false;
 };

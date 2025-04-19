@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "CameraManager.h"
 #include "LightManager.h"
+#include "DeltaTimer.h"
 
 #include "GlobalVariables.h"
 
@@ -15,6 +16,8 @@ void MyGame::Initialize()
 	sceneFactory_ = new SceneFactory();
 	SceneManager::GetInstance()->SetSceneFactory(sceneFactory_);
 	SceneManager::GetInstance()->ChangeScene("Game");
+
+	DeltaTimer::Initialize();
 
 	GlobalVariables::GetInstance()->LoadFiles();
 }
@@ -32,6 +35,9 @@ void MyGame::Update()
 	imGuiManager_->Begin();
 
 	Framework::Update();
+	
+	// DeltaTimeの更新
+	DeltaTimer::Update();
 
 	// シーンの更新
 	SceneManager::GetInstance()->Update();

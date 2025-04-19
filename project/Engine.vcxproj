@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -114,6 +114,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\player\ui\PlayerBulletUI.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerBaseState.cpp" />
+    <ClCompile Include="Engine\engine\base\framework\DeltaTimer.cpp" />
     <ClCompile Include="Engine\engine\base\object\model\AnimationBase.cpp" />
     <ClCompile Include="Engine\engine\3d\Animation.cpp" />
     <ClCompile Include="Engine\engine\base\object\light\type\DirectionalLight.cpp" />
@@ -172,8 +175,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\gameCamera\GameCamera.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\effect\PlayerEffect.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PlayerBullet.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerMoveState.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerAvoidState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\player\ui\PlayerBulletUI.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerBaseState.h" />
+    <ClInclude Include="Engine\engine\base\framework\DeltaTimer.h" />
     <ClInclude Include="Engine\engine\base\object\model\AnimationBase.h" />
     <ClInclude Include="Engine\engine\3d\Animation.h" />
     <ClInclude Include="Engine\engine\base\object\light\type\DirectionalLight.h" />
@@ -237,6 +245,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\gameCamera\GameCamera.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\effect\PlayerEffect.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PlayerBullet.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerMoveState.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerAvoidState.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

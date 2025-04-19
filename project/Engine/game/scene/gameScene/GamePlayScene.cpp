@@ -7,7 +7,11 @@
 void GamePlayScene::Initialize()
 {
 	demoObj_ = std::make_unique<Object3d>();
-	demoObj_->Initialize("terrain.obj");
+	demoObj_->Initialize("plane.obj");
+	demoObj_->SetTexture("resources", "white1x1.png");
+	demoObj_->SetColor({ 0.0f,0.0f,0.0f,1.0f });
+	demoObj_->GetTransform().scale_ = { 20.0f,20.0f ,20.0f };
+	demoObj_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, -1.57f);
 
 	player_ = std::make_unique<Player>();
 	player_->Init();

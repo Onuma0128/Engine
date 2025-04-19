@@ -1,6 +1,7 @@
 #include "ParticleEmitter.h"
 
 #include "PrimitiveDrawer.h"
+#include "DeltaTimer.h"
 
 #include "numbers"
 
@@ -71,6 +72,8 @@ void ParticleEmitter::GlobalInitialize(const std::string name)
     // 速度
     global_->AddValue<Vector3>(globalName, "2.defParticle/minVelocity", Vector3{ 0.0f,0.0f,0.0f });
     global_->AddValue<Vector3>(globalName, "2.defParticle/maxVelocity", Vector3{ 0.0f,0.0f,0.0f });
+    // 反射する高さ
+    global_->AddValue<float>(globalName, "2.defParticle/reflectY", 0.0f);
     // 出てくる色
     global_->AddValue<Vector3>(globalName, "2.defParticle/color", Vector3{ 1.0f,1.0f,1.0f });
 
@@ -81,6 +84,8 @@ void ParticleEmitter::GlobalInitialize(const std::string name)
     global_->AddValue<bool>(globalName, "move", false);
     // 加速度を足すか
     global_->AddValue<bool>(globalName, "field", false);
+    // 反射をするか
+    global_->AddValue<bool>(globalName, "reflect", false);
 
 }
 
@@ -135,12 +140,14 @@ void ParticleEmitter::Update()
     emitter_.maxVelocity = {
         std::clamp(max.x,min.x,100.0f),std::clamp(max.y,min.y,100.0f),std::clamp(max.z,min.z,100.0f),
     };
-
+    // 反射する高さ
+    emitter_.reflectY = global_->GetValue<float>(globalName, "2.defParticle/reflectY");
 
     blendMode_ = global_->GetValue<int>(globalName, "blendMode");
     // 動いているか
     moveStart_ = global_->GetValue<bool>(globalName, "move");
     isFieldStart_ = global_->GetValue<bool>(globalName, "field");
+    isReflect_  = global_->GetValue<bool>(globalName, "reflect");
 
 #ifdef _DEBUG
     int i = 0;
@@ -171,7 +178,7 @@ void ParticleEmitter::Draw()
 void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)
 {
     if (moveStart_ && isCreate_) {
-        emitter_.frequencyTime += kDeltaTime;
+        emitter_.frequencyTime += DeltaTimer::GetDeltaTime();
         if (emitter_.frequency <= emitter_.frequencyTime) {
             std::mt19937 randomEngine_(seedGenerator_());
             group.particles.splice(group.particles.end(), Emit(emitter_, randomEngine_));
@@ -190,10 +197,15 @@ void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::itera
 {
     if (moveStart_) {
         if (IsCollision(accelerationField_.area, particle->transform.translation) && isFieldStart_) {
-            particle->velocity += accelerationField_.acceleration * kDeltaTime;
+            particle->velocity += accelerationField_.acceleration * DeltaTimer::GetDeltaTime();
         }
-        particle->transform.translation += particle->velocity * kDeltaTime;
-        particle->currentTime += kDeltaTime;
+        particle->transform.translation += particle->velocity * DeltaTimer::GetDeltaTime();
+        if (isReflect_) {
+            if (particle->transform.translation.y <= emitter_.reflectY) {
+                particle->velocity.y *= -(3.0f / 4.0f);
+            }
+        }
+        particle->currentTime += DeltaTimer::GetDeltaTime();
 
         std::string globalName = emitter_.name + "Emitter";
         particle->color.x = global_->GetValue<Vector3>(globalName, "2.defParticle/color").x;
