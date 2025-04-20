@@ -6,22 +6,20 @@
 using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
-class PipelineState;
 
-class TrailEffectBase
+class Line3dBase
 {
 private:
+	static Line3dBase* instance_;
 
-	static TrailEffectBase* instance_;
-
-	TrailEffectBase() = default;
-	~TrailEffectBase() = default;
-	TrailEffectBase(TrailEffectBase&) = delete;
-	TrailEffectBase& operator=(TrailEffectBase&) = delete;
+	Line3dBase() = default;
+	~Line3dBase() = default;
+	Line3dBase(Line3dBase&) = delete;
+	Line3dBase& operator=(Line3dBase&) = delete;
 
 public:
-
-	static TrailEffectBase* GetInstance();
+	// シングルトンインスタンスの取得
+	static Line3dBase* GetInstance();
 
 	void Initialize(DirectXEngine* dxEngine);
 
@@ -39,5 +37,4 @@ private:
 
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
-
 };

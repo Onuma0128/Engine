@@ -1,13 +1,6 @@
 #include "ParticleEmitter.h"
 
-#include "PrimitiveDrawer.h"
 #include "DeltaTimer.h"
-
-#include "numbers"
-
-#ifdef _DEBUG
-#include "imgui.h"
-#endif // _DEBUG
 
 ParticleEmitter::ParticleEmitter(const std::string name)
 {

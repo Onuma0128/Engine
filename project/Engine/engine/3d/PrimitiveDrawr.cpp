@@ -1,18 +1,18 @@
-#include "TrailEffect.h"
+#include "PrimitiveDrawr.h"
 
 #include <numbers>
 
 #include "DirectXEngine.h"
-#include "TrailEffectBase.h"
+#include "PrimitiveDrawrBase.h"
 #include "TextureManager.h"
 #include "SrvManager.h"
 
 #include "Camera.h"
 #include "CameraManager.h"
 
-void TrailEffect::Init(std::vector<Vector3> pos)
+void PrimitiveDrawr::Init(std::vector<Vector3> pos)
 {
-	trailEffectBase_ = TrailEffectBase::GetInstance();
+	trailEffectBase_ = PrimitiveDrawrBase::GetInstance();
 	positions_ = pos;
 
 	SetTexture("resources", "white1x1.png");
@@ -32,14 +32,14 @@ void TrailEffect::Init(std::vector<Vector3> pos)
 	CreateWVPData();
 }
 
-void TrailEffect::Update()
+void PrimitiveDrawr::Update()
 {
 	Matrix4x4 matWorld = Matrix4x4::Affine(transform_.scale, transform_.rotation, transform_.translation);
 
 	*wvpData_ = matWorld * CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix();
 }
 
-void TrailEffect::Draw()
+void PrimitiveDrawr::Draw()
 {
 	trailEffectBase_->DrawBase();
 
@@ -53,7 +53,7 @@ void TrailEffect::Draw()
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
 
-void TrailEffect::TypeInit(PrimitiveType type, uint32_t kIndex)
+void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 {
 	type_ = type;
 
@@ -73,7 +73,7 @@ void TrailEffect::TypeInit(PrimitiveType type, uint32_t kIndex)
 	}
 }
 
-void TrailEffect::TypeDraw()
+void PrimitiveDrawr::TypeDraw()
 {
 	switch (type_)
 	{
@@ -91,7 +91,7 @@ void TrailEffect::TypeDraw()
 	}
 }
 
-void TrailEffect::SetPosition(std::vector<Vector3> pos)
+void PrimitiveDrawr::SetPosition(std::vector<Vector3> pos)
 {
 	vertexData_[0].position = { pos[0].x,pos[0].y,pos[0].z,1.0f };
 	vertexData_[1].position = { pos[1].x,pos[1].y,pos[1].z,1.0f };
@@ -99,7 +99,7 @@ void TrailEffect::SetPosition(std::vector<Vector3> pos)
 	vertexData_[3].position = { pos[3].x,pos[3].y,pos[3].z,1.0f };
 }
 
-void TrailEffect::SetTexture(const std::string& directoryPath, const std::string& filePath)
+void PrimitiveDrawr::SetTexture(const std::string& directoryPath, const std::string& filePath)
 {
 	textureData_.directoryPath = directoryPath;
 	textureData_.filePath = filePath;
@@ -108,7 +108,7 @@ void TrailEffect::SetTexture(const std::string& directoryPath, const std::string
 	textureData_.textureIndex = TextureManager::GetInstance()->GetSrvIndex(textureData_.directoryPath + "/" + textureData_.filePath);
 }
 
-void TrailEffect::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size_t size)
+void PrimitiveDrawr::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size_t size)
 {
 	// 頂点リソースのヒープの設定
 	D3D12_HEAP_PROPERTIES uploadHeapProperties = {};
@@ -136,21 +136,21 @@ void TrailEffect::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size_t 
 	assert(SUCCEEDED(hr)); // エラーチェック
 }
 
-void TrailEffect::CreateVertexBufferView(uint32_t kVertexSize)
+void PrimitiveDrawr::CreateVertexBufferView(uint32_t kVertexSize)
 {
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
 	vertexBufferView_.SizeInBytes = sizeof(VertexData) * kVertexSize;
 	vertexBufferView_.StrideInBytes = sizeof(VertexData);
 }
 
-void TrailEffect::CreateIndexBufferView()
+void PrimitiveDrawr::CreateIndexBufferView()
 {
 	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
 	indexBufferView_.SizeInBytes = sizeof(uint32_t) * 6;
 	indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
 }
 
-void TrailEffect::CreateVertexData()
+void PrimitiveDrawr::CreateVertexData()
 {
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 
@@ -170,7 +170,7 @@ void TrailEffect::CreateVertexData()
 	/*vertexData_[3] = { 0.5f,0.5f,0.0f,1.0f };*/
 }
 
-void TrailEffect::CreateIndexData()
+void PrimitiveDrawr::CreateIndexData()
 {
 	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
 
@@ -178,7 +178,7 @@ void TrailEffect::CreateIndexData()
 	indexData_[3] = 1; indexData_[4] = 3; indexData_[5] = 2;
 }
 
-void TrailEffect::CreateMaterialData()
+void PrimitiveDrawr::CreateMaterialData()
 {
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
@@ -187,16 +187,16 @@ void TrailEffect::CreateMaterialData()
 	materialData_->yTexcoord_alpha = false;
 }
 
-void TrailEffect::CreateWVPData()
+void PrimitiveDrawr::CreateWVPData()
 {
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
 
 	*wvpData_ = Matrix4x4::Identity();
 }
 
-void TrailEffect::InitPlane()
+void PrimitiveDrawr::InitPlane()
 {
-	trailEffectBase_ = TrailEffectBase::GetInstance();
+	trailEffectBase_ = PrimitiveDrawrBase::GetInstance();
 
 	SetTexture("resources", "uvChecker.png");
 
@@ -212,7 +212,7 @@ void TrailEffect::InitPlane()
 	CreateWVPData();
 }
 
-void TrailEffect::DrawPlane()
+void PrimitiveDrawr::DrawPlane()
 {
 	trailEffectBase_->DrawBase();
 
@@ -225,7 +225,7 @@ void TrailEffect::DrawPlane()
 	commandList->DrawInstanced(6, 1, 0, 0);
 }
 
-void TrailEffect::CreatePlaneVertexData(VertexData* vertexData)
+void PrimitiveDrawr::CreatePlaneVertexData(VertexData* vertexData)
 {
 	// 1,3,2
 	vertexData[0] = {
@@ -250,10 +250,10 @@ void TrailEffect::CreatePlaneVertexData(VertexData* vertexData)
 	};
 }
 
-void TrailEffect::InitSphere(uint32_t kSubdivision)
+void PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
 {
 	kSubdivision_ = kSubdivision;
-	trailEffectBase_ = TrailEffectBase::GetInstance();
+	trailEffectBase_ = PrimitiveDrawrBase::GetInstance();
 
 	SetTexture("resources", "white1x1.png");
 
@@ -270,7 +270,7 @@ void TrailEffect::InitSphere(uint32_t kSubdivision)
 	CreateWVPData();
 }
 
-void TrailEffect::DrawSphere()
+void PrimitiveDrawr::DrawSphere()
 {
 	trailEffectBase_->DrawBase();
 
@@ -283,7 +283,7 @@ void TrailEffect::DrawSphere()
 	commandList->DrawInstanced(kSubdivision_ * kSubdivision_ * 6, 1, 0, 0);
 }
 
-void TrailEffect::CreateSphereVertexData(VertexData* vertexData, uint32_t kSubdivision)
+void PrimitiveDrawr::CreateSphereVertexData(VertexData* vertexData, uint32_t kSubdivision)
 {
 	const float pi = static_cast<float>(std::numbers::pi);
 	const float kLonEvery = 2 * pi / float(kSubdivision); // 経度
@@ -317,10 +317,10 @@ void TrailEffect::CreateSphereVertexData(VertexData* vertexData, uint32_t kSubdi
 	}
 }
 
-void TrailEffect::InitRing(uint32_t kRingDivide)
+void PrimitiveDrawr::InitRing(uint32_t kRingDivide)
 {
 	kRingDivide_ = kRingDivide;
-	trailEffectBase_ = TrailEffectBase::GetInstance();
+	trailEffectBase_ = PrimitiveDrawrBase::GetInstance();
 
 	SetTexture("resources", "gradationLine.png");
 
@@ -336,7 +336,7 @@ void TrailEffect::InitRing(uint32_t kRingDivide)
 	CreateWVPData();
 }
 
-void TrailEffect::DrawRing()
+void PrimitiveDrawr::DrawRing()
 {
 	trailEffectBase_->DrawBase();
 
@@ -349,7 +349,7 @@ void TrailEffect::DrawRing()
 	commandList->DrawInstanced(kRingDivide_ * 6, 1, 0, 0);
 }
 
-void TrailEffect::CreateRingVertexData(VertexData* vertexData, uint32_t kRingDivide)
+void PrimitiveDrawr::CreateRingVertexData(VertexData* vertexData, uint32_t kRingDivide)
 {
 	const float kOuterRadius = 1.0f;
 	const float kInnerRadius = 0.2f;

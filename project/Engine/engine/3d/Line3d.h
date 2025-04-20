@@ -9,7 +9,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class PrimitiveDrawer;
+class Line3dBase;
 
 class Line3d
 {
@@ -51,7 +51,7 @@ public:
 
 private:
 
-	PrimitiveDrawer* primitiveDrawer_ = nullptr;
+	Line3dBase* primitiveDrawer_ = nullptr;
 
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;

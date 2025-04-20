@@ -183,10 +183,10 @@ void PipelineState::Object3dShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBl
 
 void PipelineState::Line3dShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader)
 {
-	vertexShader = CompileShader(L"resources/shaders/Primitive.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
+	vertexShader = CompileShader(L"resources/shaders/Line3d.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
 	assert(vertexShader != nullptr);
 
-	pixelShader = CompileShader(L"resources/shaders/Primitive.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
+	pixelShader = CompileShader(L"resources/shaders/Line3d.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
 	assert(pixelShader != nullptr);
 }
 
@@ -742,10 +742,10 @@ void PipelineState::TrailEffectRasterizerState(D3D12_RASTERIZER_DESC& rasterizer
 
 void PipelineState::TrailEffectShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader)
 {
-	vertexShader = CompileShader(L"resources/shaders/TrailEffect.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
+	vertexShader = CompileShader(L"resources/shaders/PrimitiveDrawr.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
 	assert(vertexShader != nullptr);
 
-	pixelShader = CompileShader(L"resources/shaders/TrailEffect.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
+	pixelShader = CompileShader(L"resources/shaders/PrimitiveDrawr.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
 	assert(pixelShader != nullptr);
 }
 

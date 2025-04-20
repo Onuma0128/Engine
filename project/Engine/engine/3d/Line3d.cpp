@@ -1,7 +1,7 @@
 #include "Line3d.h"
 
 #include "DirectXEngine.h"
-#include "PrimitiveDrawer.h"
+#include "Line3dBase.h"
 
 #include "Camera.h"
 #include "CameraManager.h"
@@ -9,7 +9,7 @@
 
 void Line3d::Initialize(Vector3 startPos, Vector3 endPos)
 {
-	primitiveDrawer_ = PrimitiveDrawer::GetInstance();
+	primitiveDrawer_ = Line3dBase::GetInstance();
 	startPos_ = startPos;
 	endPos_ = endPos;
 
@@ -24,7 +24,7 @@ void Line3d::Initialize(Vector3 startPos, Vector3 endPos)
 
 void Line3d::Initialize(const std::vector<Vector3>& positions)
 {
-	primitiveDrawer_ = PrimitiveDrawer::GetInstance();
+	primitiveDrawer_ = Line3dBase::GetInstance();
 
 	lineCount_ = static_cast<uint32_t>(positions.size() / 2);
 

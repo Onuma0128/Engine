@@ -1,4 +1,4 @@
-#include "Primitive.hlsli"
+#include "Line3d.hlsli"
 
 struct TransformationMatrix
 {

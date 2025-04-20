@@ -1,4 +1,4 @@
-#include "PrimitiveDrawer.h"
+#include "Line3dBase.h"
 
 #include "DirectXEngine.h"
 #include "PipelineState.h"
@@ -8,17 +8,17 @@
 #include "Vector4.h"
 #include "Matrix4x4.h"
 
-PrimitiveDrawer* PrimitiveDrawer::instance_ = nullptr;
+Line3dBase* Line3dBase::instance_ = nullptr;
 
-PrimitiveDrawer* PrimitiveDrawer::GetInstance()
+Line3dBase* Line3dBase::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new PrimitiveDrawer;
+		instance_ = new Line3dBase;
 	}
 	return instance_;
 }
 
-void PrimitiveDrawer::Initialize(DirectXEngine* dxEngine)
+void Line3dBase::Initialize(DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
@@ -26,7 +26,7 @@ void PrimitiveDrawer::Initialize(DirectXEngine* dxEngine)
 	pipelineState_ = dxEngine_->GetPipelineState()->CreateLine3dPipelineState();
 }
 
-void PrimitiveDrawer::DrawBase()
+void Line3dBase::DrawBase()
 {
 	auto commandList = dxEngine_->GetCommandList();
 	commandList->SetGraphicsRootSignature(rootSignature_.Get());
@@ -34,7 +34,7 @@ void PrimitiveDrawer::DrawBase()
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
 }
 
-void PrimitiveDrawer::Finalize()
+void Line3dBase::Finalize()
 {
 	delete instance_;
 	instance_ = nullptr;

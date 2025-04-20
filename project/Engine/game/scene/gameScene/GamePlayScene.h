@@ -4,6 +4,7 @@
 #include "BaseScene.h"
 
 #include "Object3d.h"
+#include "PrimitiveDrawr.h"
 
 #include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
@@ -24,8 +25,7 @@ public:
 private:
 
 	std::unique_ptr<Object3d> demoObj_ = nullptr;
-
-
+	
 	// プレイヤーの生成
 	std::unique_ptr<Player> player_ = nullptr;
 

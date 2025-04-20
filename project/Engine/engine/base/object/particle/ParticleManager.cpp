@@ -5,7 +5,7 @@
 #include "DirectXEngine.h"
 #include "PipelineState.h"
 #include "SrvManager.h"
-#include "PrimitiveDrawer.h"
+#include "Line3dBase.h"
 #include "LightManager.h"
 #include "TextureManager.h"
 #include "CameraManager.h"

@@ -29,7 +29,7 @@ void PlayerBullet::Update()
 		return;
 	}
 
-	const float bulletSpeed = 10.0f;
+	const float bulletSpeed = 20.0f;
 	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * bulletSpeed;
 
 	Object3d::Update();

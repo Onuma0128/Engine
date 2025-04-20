@@ -18,9 +18,9 @@
 #include "LightManager.h"
 #include "TextureManager.h"
 #include "ParticleManager.h"
-#include "PrimitiveDrawer.h"
+#include "Line3dBase.h"
 #include "AudioManager.h"
-#include "TrailEffectBase.h"
+#include "PrimitiveDrawrBase.h"
 #include "AnimationBase.h"
 
 using Microsoft::WRL::ComPtr;
@@ -34,10 +34,10 @@ DirectXEngine::~DirectXEngine()
 	Object3dBase::GetInstance()->Finalize();
 	LightManager::GetInstance()->Finalize();
 	ModelManager::GetInstance()->Finalize();
-	PrimitiveDrawer::GetInstance()->Finalize();
+	Line3dBase::GetInstance()->Finalize();
 	ParticleManager::GetInstance()->Finalize();
 	AudioManager::GetInstance()->Finalize();
-	TrailEffectBase::GetInstance()->Finalize();
+	PrimitiveDrawrBase::GetInstance()->Finalize();
 	AnimationBase::GetInstance()->Finalize();
 
 	//解放の処理
@@ -106,7 +106,7 @@ void DirectXEngine::Initialize(WinApp* winApp)
 
 	/*==================== 3Dライン ====================*/
 
-	PrimitiveDrawer::GetInstance()->Initialize(this);
+	Line3dBase::GetInstance()->Initialize(this);
 
 	/*==================== パーティクル ====================*/
 
@@ -114,7 +114,7 @@ void DirectXEngine::Initialize(WinApp* winApp)
 
 	/*==================== トレイルエフェクト ====================*/
 
-	TrailEffectBase::GetInstance()->Initialize(this);
+	PrimitiveDrawrBase::GetInstance()->Initialize(this);
 
 	/*==================== アニメーション ====================*/
 

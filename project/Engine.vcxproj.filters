@@ -36,7 +36,7 @@
     <ClCompile Include="Engine\engine\3d\Object3d.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\3d\TrailEffect.cpp">
+    <ClCompile Include="Engine\engine\3d\PrimitiveDrawr.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\3d\WorldTransform.cpp">
@@ -102,10 +102,10 @@
     <ClCompile Include="Engine\engine\base\object\model\Object3dBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\base\object\model\PrimitiveDrawer.cpp">
+    <ClCompile Include="Engine\engine\base\object\model\Line3dBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\base\object\model\TrailEffectBase.cpp">
+    <ClCompile Include="Engine\engine\base\object\model\PrimitiveDrawrBase.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\base\object\particle\ParticleEmitter.cpp">
@@ -224,7 +224,7 @@
     <ClInclude Include="Engine\engine\3d\Object3d.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\3d\TrailEffect.h">
+    <ClInclude Include="Engine\engine\3d\PrimitiveDrawr.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\3d\WorldTransform.h">
@@ -293,10 +293,10 @@
     <ClInclude Include="Engine\engine\base\object\model\Object3dBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\base\object\model\PrimitiveDrawer.h">
+    <ClInclude Include="Engine\engine\base\object\model\Line3dBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\base\object\model\TrailEffectBase.h">
+    <ClInclude Include="Engine\engine\base\object\model\PrimitiveDrawrBase.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\object\particle\ParticleEmitter.h">
@@ -417,16 +417,16 @@
     <FxCompile Include="resources\shaders\Object3d.VS.hlsl" />
     <FxCompile Include="resources\shaders\Particle.PS.hlsl" />
     <FxCompile Include="resources\shaders\Particle.VS.hlsl" />
-    <FxCompile Include="resources\shaders\Primitive.PS.hlsl" />
-    <FxCompile Include="resources\shaders\Primitive.VS.hlsl" />
-    <FxCompile Include="resources\shaders\TrailEffect.PS.hlsl" />
-    <FxCompile Include="resources\shaders\TrailEffect.VS.hlsl" />
+    <FxCompile Include="resources\shaders\Line3d.PS.hlsl" />
+    <FxCompile Include="resources\shaders\Line3d.VS.hlsl" />
+    <FxCompile Include="resources\shaders\PrimitiveDrawr.PS.hlsl" />
+    <FxCompile Include="resources\shaders\PrimitiveDrawr.VS.hlsl" />
     <FxCompile Include="resources\shaders\SkinningObject3d.VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Object3d.hlsli" />
     <None Include="resources\shaders\Particle.hlsli" />
-    <None Include="resources\shaders\Primitive.hlsli" />
-    <None Include="resources\shaders\TrailEffect.hlsli" />
+    <None Include="resources\shaders\Line3d.hlsli" />
+    <None Include="resources\shaders\PrimitiveDrawr.hlsli" />
   </ItemGroup>
 </Project>

@@ -6,20 +6,22 @@
 using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
+class PipelineState;
 
-class PrimitiveDrawer
+class PrimitiveDrawrBase
 {
 private:
-	static PrimitiveDrawer* instance_;
 
-	PrimitiveDrawer() = default;
-	~PrimitiveDrawer() = default;
-	PrimitiveDrawer(PrimitiveDrawer&) = delete;
-	PrimitiveDrawer& operator=(PrimitiveDrawer&) = delete;
+	static PrimitiveDrawrBase* instance_;
+
+	PrimitiveDrawrBase() = default;
+	~PrimitiveDrawrBase() = default;
+	PrimitiveDrawrBase(PrimitiveDrawrBase&) = delete;
+	PrimitiveDrawrBase& operator=(PrimitiveDrawrBase&) = delete;
 
 public:
-	// シングルトンインスタンスの取得
-	static PrimitiveDrawer* GetInstance();
+
+	static PrimitiveDrawrBase* GetInstance();
 
 	void Initialize(DirectXEngine* dxEngine);
 
@@ -37,4 +39,5 @@ private:
 
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
+
 };

@@ -1,4 +1,4 @@
-#include "TrailEffectBase.h"
+#include "PrimitiveDrawrBase.h"
 
 #include "DirectXEngine.h"
 #include "PipelineState.h"
@@ -7,17 +7,17 @@
 #include "Vector4.h"
 #include "Matrix4x4.h"
 
-TrailEffectBase* TrailEffectBase::instance_ = nullptr;
+PrimitiveDrawrBase* PrimitiveDrawrBase::instance_ = nullptr;
 
-TrailEffectBase* TrailEffectBase::GetInstance()
+PrimitiveDrawrBase* PrimitiveDrawrBase::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new TrailEffectBase;
+		instance_ = new PrimitiveDrawrBase;
 	}
 	return instance_;
 }
 
-void TrailEffectBase::Initialize(DirectXEngine* dxEngine)
+void PrimitiveDrawrBase::Initialize(DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
@@ -25,7 +25,7 @@ void TrailEffectBase::Initialize(DirectXEngine* dxEngine)
 	pipelineState_ = dxEngine_->GetPipelineState()->CreateTrailEffectPipelineState().Get();
 }
 
-void TrailEffectBase::DrawBase()
+void PrimitiveDrawrBase::DrawBase()
 {
 	auto commandList = dxEngine_->GetCommandList();
 	commandList->SetGraphicsRootSignature(rootSignature_.Get());
@@ -33,7 +33,7 @@ void TrailEffectBase::DrawBase()
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void TrailEffectBase::Finalize()
+void PrimitiveDrawrBase::Finalize()
 {
 	delete instance_;
 	instance_ = nullptr;

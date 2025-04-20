@@ -13,7 +13,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class TrailEffectBase;
+class PrimitiveDrawrBase;
 
 enum class PrimitiveType {
 	Plane,
@@ -21,7 +21,7 @@ enum class PrimitiveType {
 	Ring
 };
 
-class TrailEffect
+class PrimitiveDrawr
 {
 public:
 
@@ -118,7 +118,7 @@ private:
 
 private:
 
-	TrailEffectBase* trailEffectBase_ = nullptr;
+	PrimitiveDrawrBase* trailEffectBase_ = nullptr;
 
 	/* =============== 頂点 =============== */
 
