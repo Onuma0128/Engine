@@ -26,6 +26,7 @@ void PlayerMoveState::Update()
 	Vector3 velocity{};
 	velocity.x = input->GetGamepadLeftStickX();
 	velocity.z = input->GetGamepadLeftStickY();
+
 	player_->GetTransform().translation_ += velocity * DeltaTimer::GetDeltaTime() * playerSpeed;
 
 	// 移動時の回転の処理
@@ -45,7 +46,7 @@ void PlayerMoveState::Update()
 		player_->GetEffect()->OnceMoveEffect();
 	}
 
-	// 弾を発射する
+	// 弾を発射する(弾を発射するとリロードが止まる)
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 		isReloadBullet_ = false;
 		reloadBulletTime_ = 0.0f;

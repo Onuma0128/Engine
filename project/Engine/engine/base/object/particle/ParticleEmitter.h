@@ -37,8 +37,11 @@ public:
 
 		Vector3 minScale;			// Paritcle発生時の最小size
 		Vector3 maxScale;			// Paritcle発生時の最大size
+		Vector3 endScale;			// Paritcleが消える時のsize
+
 		Vector3 minVelocity;		// Paritcle発生時の最小velocity
 		Vector3 maxVelocity;		// Paritcle発生時の最大velocity
+
 		float minRotateZ;			// Particle発生時の最小rotateZ
 		float maxRotateZ;			// Particle発生時の最大rotateZ
 		float reflectY;				// Particleが反射するY軸を設定
@@ -118,4 +121,5 @@ private:
 	bool isCreate_ = true;
 	bool onceEmit_ = false;
 	bool isReflect_ = false;
+	bool isChangeScale_ = false;
 };

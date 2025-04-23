@@ -13,6 +13,9 @@
             "reflect": false
         },
         {
+            "changeScale": true
+        },
+        {
             "1.structEmitter": {
                 "isLock": true,
                 "position": [
@@ -30,7 +33,7 @@
                     0.0,
                     0.0
                 ],
-                "lifeTime": 0.25,
+                "lifeTime": 0.5,
                 "frequency": 1.0,
                 "count": 10
             }
@@ -69,6 +72,11 @@
                     1.0,
                     0.20588237047195435,
                     0.0
+                ],
+                "endScale": [
+                    0.10000000149011612,
+                    0.10000000149011612,
+                    1.0
                 ]
             }
         }

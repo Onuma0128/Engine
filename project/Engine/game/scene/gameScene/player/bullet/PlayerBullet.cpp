@@ -18,12 +18,19 @@ void PlayerBullet::Update()
 {
 	// フレームが60立ったらIsActiveをfalseにする
 	if (isActive_) {
-		activeFrame_ += DeltaTimer::GetDeltaTime();
+		activeFrame_ += DeltaTimer::GetDeltaTime() * 2.0f;
 		if (activeFrame_ >= 1.0f) {
 			activeFrame_ = 1.0f;
 			isActive_ = false;
 		}
 	} 
+
+	if (wasActive_ && !isActive_ && onDeactivatedCallback_) {
+		onDeactivatedCallback_();
+	}
+
+	wasActive_ = isActive_;
+
 	if (!isActive_) {
 		Object3d::Update();
 		return;
@@ -62,4 +69,18 @@ void PlayerBullet::Attack(const WorldTransform& transform)
 	isActive_ = true;
 	activeFrame_ = 0.0f;
 	isReload_ = false;
+}
+
+void PlayerBullet::IsCollision()
+{
+	isObjectCollision_ = true;
+
+	wasActive_ = false;
+	isActive_ = false;
+	activeFrame_ = 1.0f;
+}
+
+void PlayerBullet::SetOnDeactivateCallback(const std::function<void()>& callback)
+{
+	onDeactivatedCallback_ = callback;
 }

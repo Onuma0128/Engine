@@ -4,6 +4,8 @@
 #include "SceneManager.h"
 #include "ModelManager.h"
 
+#include "Collision3D.h"
+
 void GamePlayScene::Initialize()
 {
 	demoObj_ = std::make_unique<Object3d>();
@@ -15,6 +17,9 @@ void GamePlayScene::Initialize()
 
 	player_ = std::make_unique<Player>();
 	player_->Init();
+
+	enemy_ = std::make_unique<Enemy>();
+	enemy_->Init();
 
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
@@ -31,7 +36,11 @@ void GamePlayScene::Update()
 
 	player_->Update();
 
+	enemy_->Update();
+
 	gameCamera_->Update();
+
+	Collision();
 
 	ParticleManager::GetInstance()->Update();
 }
@@ -42,5 +51,30 @@ void GamePlayScene::Draw()
 
 	player_->Draw();
 
+	enemy_->Draw();
+
 	ParticleManager::GetInstance()->Draw();
+}
+
+void GamePlayScene::Collision()
+{
+	for (auto& bullet : player_->GetBullets()) {
+		if (!bullet->GetIsActive()) { continue; }
+		// 敵のOBB
+		OBB obb1 = {
+			.center = enemy_->GetTransform().translation_,
+			.rotateMatrix = Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_),
+			.size = enemy_->GetTransform().scale_
+		};
+		// 弾のSphere
+		Sphere sphere = {
+			.center = bullet->GetTransform().translation_,
+			.radius = bullet->GetTransform().scale_.x / 2.0f
+		};
+
+		std::string name;
+		bool isCollision = Collision3D::CollisionChecker(obb1, sphere, name);
+
+		if (isCollision) { bullet->IsCollision(); }
+	}
 }

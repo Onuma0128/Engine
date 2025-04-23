@@ -7,6 +7,7 @@
 #include "PrimitiveDrawr.h"
 
 #include "gameScene/player/Player.h"
+#include "gameScene/enemy/Enemy.h"
 #include "gameScene/gameCamera/GameCamera.h"
 
 
@@ -22,12 +23,17 @@ public:
 
 	void Draw() override;
 
+	void Collision();
+
 private:
 
 	std::unique_ptr<Object3d> demoObj_ = nullptr;
 	
 	// プレイヤーの生成
 	std::unique_ptr<Player> player_ = nullptr;
+
+	// 敵の生成
+	std::unique_ptr<Enemy> enemy_ = nullptr;
 
 	// ゲームカメラの生成
 	std::unique_ptr<GameCamera> gameCamera_ = nullptr;

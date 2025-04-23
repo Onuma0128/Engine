@@ -42,6 +42,7 @@ public:
     Vector3 Normalize() const;
 
     // 行列による変換
+    static Vector3 Transform(const Vector3& v, const Matrix4x4& matrix);
     Vector3 Transform(const Matrix4x4& matrix) const;
 
     // 単項演算子オーバーロード

@@ -14,6 +14,14 @@ void PlayerEffect::Init()
 		bulletTrailEmitters_[i] = std::make_unique<ParticleEmitter>("bulletTrail");
 		particleManager_->CreateParticleGroup("bulletTrail" + std::to_string(i), "white1x1.png", bulletTrailEmitters_[i].get());
 		bulletTrailEmitters_[i]->SetIsCreate(false);
+
+		bulletHitEmitters_[i] = std::make_unique<ParticleEmitter>("bulletHit");
+		particleManager_->CreateParticleGroup("bulletHit" + std::to_string(i), "white1x1.png", bulletHitEmitters_[i].get());
+		bulletHitEmitters_[i]->SetIsCreate(false);
+
+		bulletDeleteEmitters_[i] = std::make_unique<ParticleEmitter>("bulletDelete");
+		particleManager_->CreateParticleGroup("bulletDelete" + std::to_string(i), "white1x1.png", bulletDeleteEmitters_[i].get());
+		bulletDeleteEmitters_[i]->SetIsCreate(false);
 	}
 
 	// 弾を撃つ時のエフェクト
@@ -69,6 +77,30 @@ void PlayerEffect::OnceBulletTrailEffect(const int32_t count, const WorldTransfo
 
 	bulletTrailEmitters_[count]->SetRotation(rotate);
 	bulletTrailEmitters_[count]->SetPosition(position);
+}
+
+void PlayerEffect::OnceBulletHitEffect(const int32_t count, const WorldTransform& transform)
+{
+	bulletHitEmitters_[count]->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	bulletHitEmitters_[count]->SetRotation(rotate);
+	bulletHitEmitters_[count]->SetPosition(position);
+}
+
+void PlayerEffect::OnceBulletDeleteEffect(const int32_t count, const WorldTransform& transform)
+{
+	bulletDeleteEmitters_[count]->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	bulletDeleteEmitters_[count]->SetRotation(rotate);
+	bulletDeleteEmitters_[count]->SetPosition(position);
 }
 
 void PlayerEffect::OnceBulletEffect()

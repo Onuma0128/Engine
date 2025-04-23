@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <array>
+#include <vector>
 
 #include "Object3d.h"
 
@@ -32,6 +33,8 @@ public:
 
 	PlayerEffect* GetEffect() { return effect_.get(); }
 
+	std::vector<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
+
 private:
 
 	void BulletInit();
@@ -46,7 +49,7 @@ private:
 	std::unique_ptr<PlayerEffect> effect_ = nullptr;
 
 	// 弾を6つ生成する
-	std::array<std::unique_ptr<PlayerBullet>, 6> bullets_;
-	std::array<std::unique_ptr<PlayerBulletUI>, 6> bulletUIs_;
+	std::vector<std::unique_ptr<PlayerBullet>> bullets_;
+	std::vector<std::unique_ptr<PlayerBulletUI>> bulletUIs_;
 
 };

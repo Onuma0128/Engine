@@ -22,6 +22,8 @@ private:
 
 	float avoidTime_ = 0.0f;
 
+	float velocityY_ = 0.0f;
+	float acceleration_ = 0.0f;
 	Quaternion rotateY_ = Quaternion::IdentityQuaternion();
 
 };

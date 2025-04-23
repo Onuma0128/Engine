@@ -28,38 +28,19 @@ void GameCamera::GlobalInit()
 {
 	global_->AddValue<Vector3>("CameraOffset", "rotation", Vector3{});
 	global_->AddValue<Vector3>("CameraOffset", "translation", Vector3{});
-	global_->AddValue<float>("CameraOffset", "minRotateX", 0.2f);
-	global_->AddValue<float>("CameraOffset", "maxRotateX", 1.0f);
-	global_->AddValue<float>("CameraOffset", "angleSpeed", 0.01f);
-	global_->AddValue<float>("CameraOffset", "angleLerp", 0.1f);
 }
 
 void GameCamera::Update()
 {
-	// 回転する速度
-	const float angleSpeed = global_->GetValue<float>("CameraOffset", "angleSpeed");
-	// 回転した後の角度
-	const float rotationX = Input::GetInstance()->GetGamepadRightStickY() * angleSpeed;
-	const float rotationY = Input::GetInstance()->GetGamepadRightStickX() * angleSpeed;
 	// オフセットの回転角
 	const Vector3 offsetRotation = global_->GetValue<Vector3>("CameraOffset", "rotation");
-	// カメラのx回転,y回転を制御する
-	float min = global_->GetValue<float>("CameraOffset", "minRotateX") - offsetRotation.x;
-	float max = global_->GetValue<float>("CameraOffset", "maxRotateX") - offsetRotation.x;
-	destinationAngleX += rotationX;
-	destinationAngleX = std::clamp(destinationAngleX, min, max);
-	destinationAngleY += rotationY;
 	// 回転を更新
-	rotateAngle_.x = LerpShortAngle(rotateAngle_.x, destinationAngleX, global_->GetValue<float>("CameraOffset", "angleLerp"));
-	rotateAngle_.y = LerpShortAngle(rotateAngle_.y, destinationAngleY, global_->GetValue<float>("CameraOffset", "angleLerp"));
-	camera_->SetRotation(rotateAngle_ + offsetRotation);
+	camera_->SetRotation(offsetRotation);
 
 	// カメラの回転に合わせた座標を更新
-	Matrix4x4 rotateMatrix = Matrix4x4::Rotate(rotateAngle_);
 	Vector3 translation = global_->GetValue<Vector3>("CameraOffset", "translation");
-
 	Vector3 previous = camera_->GetTranslation();
-	Vector3 current = player_->GetTransform().translation_ + (translation.Transform(rotateMatrix));
+	Vector3 current = player_->GetTransform().translation_ + translation;
 	previous = Vector3::Lerp(previous, current, 0.1f);
 
 	camera_->SetTranslation(previous);

@@ -36,6 +36,17 @@ void Player::Update()
 		if (bullets_[i]->GetIsActive()) {
 			effect_->OnceBulletTrailEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
 		}
+		// 弾が当たった時のエフェクト
+		if (bullets_[i]->GetIsCollision()) {
+			bullets_[i]->SetIsCollision(false);
+			effect_->OnceBulletDeleteEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
+			effect_->OnceBulletHitEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
+		}
+		// 弾が消えた時のコールバック関数
+		bullets_[i]->SetOnDeactivateCallback([this, i]() {
+			this->GetEffect()->OnceBulletDeleteEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
+			});
+
 		bulletUIs_[i]->Update({});
 	}
 	
@@ -93,6 +104,8 @@ void Player::AttackBullet()
 void Player::BulletInit()
 {
 	// 弾を初期化
+	bullets_.resize(6);
+	bulletUIs_.resize(6);
 	for (auto& bullet : bullets_) {
 		bullet = std::make_unique<PlayerBullet>();
 		bullet->Init();

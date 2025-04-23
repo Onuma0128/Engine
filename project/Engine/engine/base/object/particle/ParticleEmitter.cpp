@@ -63,6 +63,7 @@ void ParticleEmitter::GlobalInitialize(const std::string name)
     // サイズ
     global_->AddValue<Vector3>(globalName, "2.defParticle/minScale", Vector3{ 1.0f,1.0f,1.0f });
     global_->AddValue<Vector3>(globalName, "2.defParticle/maxScale", Vector3{ 1.0f,1.0f,1.0f });
+    global_->AddValue<Vector3>(globalName, "2.defParticle/endScale", Vector3{ 1.0f,1.0f,1.0f });
     // 速度
     global_->AddValue<Vector3>(globalName, "2.defParticle/minVelocity", Vector3{ 0.0f,0.0f,0.0f });
     global_->AddValue<Vector3>(globalName, "2.defParticle/maxVelocity", Vector3{ 0.0f,0.0f,0.0f });
@@ -83,6 +84,8 @@ void ParticleEmitter::GlobalInitialize(const std::string name)
     global_->AddValue<bool>(globalName, "field", false);
     // 反射をするか
     global_->AddValue<bool>(globalName, "reflect", false);
+    // スケール変化させるか
+    global_->AddValue<bool>(globalName, "changeScale", false);
 
 }
 
@@ -125,11 +128,15 @@ void ParticleEmitter::Update()
     // min,maxが最大値を超えていないかclamp
     min = global_->GetValue<Vector3>(globalName, "2.defParticle/minScale");
     max = global_->GetValue<Vector3>(globalName, "2.defParticle/maxScale");
+    Vector3 end = global_->GetValue<Vector3>(globalName, "2.defParticle/endScale");
     emitter_.minScale = {
         std::clamp(min.x,-100.0f,max.x),std::clamp(min.y,-100.0f,max.y),std::clamp(min.z,-100.0f,max.z),
     };
     emitter_.maxScale = {
         std::clamp(max.x,min.x,100.0f),std::clamp(max.y,min.y,100.0f),std::clamp(max.z,min.z,100.0f),
+    };
+    emitter_.endScale = {
+        std::clamp(end.x,0.0f,100.0f),std::clamp(end.y,0.0f,100.0f),std::clamp(end.z,0.0f,100.0f)
     };
 
     // min,maxが最大値を超えていないかclamp
@@ -156,6 +163,7 @@ void ParticleEmitter::Update()
     moveStart_ = global_->GetValue<bool>(globalName, "move");
     isFieldStart_ = global_->GetValue<bool>(globalName, "field");
     isReflect_  = global_->GetValue<bool>(globalName, "reflect");
+    isChangeScale_= global_->GetValue<bool>(globalName, "changeScale");
 
 #ifdef _DEBUG
     int i = 0;
@@ -208,10 +216,16 @@ void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::itera
             particle->velocity += accelerationField_.acceleration * DeltaTimer::GetDeltaTime();
         }
         particle->transform.translation += particle->velocity * DeltaTimer::GetDeltaTime();
+        // 反射の処理
         if (isReflect_) {
             if (particle->transform.translation.y <= emitter_.reflectY) {
                 particle->velocity.y *= -(3.0f / 4.0f);
             }
+        }
+        // スケールの処理
+        if (isChangeScale_) {
+            float t = 1.0f - (particle->currentTime / particle->lifeTime);
+            particle->transform.scale = t * particle->offsetScale + (1.0f - t) * emitter_.endScale;
         }
         particle->currentTime += DeltaTimer::GetDeltaTime();
 
@@ -248,6 +262,7 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     std::uniform_real_distribution<float> distRotate(emitter.minRotateZ, emitter.maxRotateZ);
     ParticleManager::Particle particle{};
     particle.transform.scale = { distScaleX(randomEngine),distScaleY(randomEngine),distScaleZ(randomEngine) };
+    particle.offsetScale = particle.transform.scale;
     particle.transform.rotation = { 0.0f,0.0f,distRotate(randomEngine) };
     Vector3 randomTranslate = { distPosX(randomEngine),distPosY(randomEngine) ,distPosZ(randomEngine) };
     Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter.transform.rotation);

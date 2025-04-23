@@ -34,6 +34,7 @@ public:
 
 	struct Particle {
 		EulerTransform transform;
+		Vector3 offsetScale;
 		Vector3 velocity;
 		Vector4 color;
 		float lifeTime;
