@@ -35,6 +35,7 @@ public:
 	struct Particle {
 		EulerTransform transform;
 		Vector3 offsetScale;
+		Vector3 uvTranslate;
 		Vector3 velocity;
 		Vector4 color;
 		float lifeTime;
@@ -54,6 +55,9 @@ public:
 		uint32_t instancingIndex;
 		ComPtr<ID3D12Resource> instancingResource;
 		uint32_t instanceCount;
+		ComPtr<ID3D12Resource> materialResource_ = nullptr;
+		Material* materialData_ = nullptr;
+
 		ParticleForGPU* instancingData;
 		ParticleEmitter* emitter;
 	};
@@ -88,7 +92,7 @@ private:
 
 	void CreateVertexResource();
 
-	void CreateMatrialResource();
+	void CreateMatrialResource(ParticleGroup& group);
 
 private:
 
@@ -114,9 +118,5 @@ private:
 
 	// 頂点バッファビューを作成
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
-
-	//マテリアル用のリソース,データを作成
-	ComPtr<ID3D12Resource> materialResource_ = nullptr;
-	Material* materialData_ = nullptr;
 
 };

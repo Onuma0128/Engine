@@ -24,8 +24,6 @@ public:
 	void OnceMoveEffect();
 	// 弾のトレイルエフェクトを呼び出す
 	void OnceBulletTrailEffect(const int32_t count, const WorldTransform& transform);
-	// 弾がヒットした時のエフェクトを呼び出す
-	void OnceBulletHitEffect(const int32_t count, const WorldTransform& transform);
 	// 弾が消える時のエフェクトを呼び出す
 	void OnceBulletDeleteEffect(const int32_t count, const WorldTransform& transform);
 	// 弾のエフェクトを呼び出す
@@ -49,8 +47,6 @@ private:
 
 	// 弾のトレイルエフェクト
 	std::array<std::unique_ptr<ParticleEmitter>, 6> bulletTrailEmitters_;
-	// 弾がヒットした時のエフェクト
-	std::array<std::unique_ptr<ParticleEmitter>, 6> bulletHitEmitters_;
 	// 弾が消える時のエフェクト
 	std::array<std::unique_ptr<ParticleEmitter>, 6> bulletDeleteEmitters_;
 

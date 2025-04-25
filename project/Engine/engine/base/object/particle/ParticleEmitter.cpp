@@ -75,6 +75,9 @@ void ParticleEmitter::GlobalInitialize(const std::string name)
     // 出てくる色
     global_->AddValue<Vector3>(globalName, "2.defParticle/color", Vector3{ 1.0f,1.0f,1.0f });
 
+    global_->AddValue<Vector3>(globalName, "2.defParticle/uvTranslate", Vector3{ 0.0f,0.0f,0.0f });
+
+
     // BlendModeの設定
     std::vector<const char*> blendMode = { "None","Normal","Add", "Subtract","Multiply" };
     global_->AddValue<int>(globalName, "blendMode", 2, blendMode);
@@ -123,6 +126,7 @@ void ParticleEmitter::Update()
     } else {
         Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
         emitter_.transform.translation = emitter_.setPosition + (emitterPosition).Transform(rotateMatrix);
+        accelerationField_.acceleration = Vector3::Transform(accelerationField_.acceleration, rotateMatrix);
     }
 
     // min,maxが最大値を超えていないかclamp
@@ -157,6 +161,8 @@ void ParticleEmitter::Update()
 
     // 反射する高さ
     emitter_.reflectY = global_->GetValue<float>(globalName, "2.defParticle/reflectY");
+
+    emitter_.uvTranslation = global_->GetValue<Vector3>(globalName, "2.defParticle/uvTranslate");
 
     emitter_.blendMode_ = global_->GetValue<int>(globalName, "blendMode");
     // 動いているか
@@ -227,6 +233,8 @@ void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::itera
             float t = 1.0f - (particle->currentTime / particle->lifeTime);
             particle->transform.scale = t * particle->offsetScale + (1.0f - t) * emitter_.endScale;
         }
+        particle->uvTranslate += emitter_.uvTranslation;
+
         particle->currentTime += DeltaTimer::GetDeltaTime();
 
         std::string globalName = emitter_.name + "Emitter";

@@ -37,12 +37,23 @@ void GameCamera::Update()
 	// 回転を更新
 	camera_->SetRotation(offsetRotation);
 
+	// シェイクオフセット（ランダムな微小ノイズ）
+    Vector3 shakeOffset{};
+    if (shakeStrength_ > 0.01f) {
+        shakeOffset = {
+            (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f * shakeStrength_,
+            (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f * shakeStrength_,
+            (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f * shakeStrength_,
+        };
+        shakeStrength_ *= shakeDecay_; // 減衰させる
+    }
+
 	// カメラの回転に合わせた座標を更新
 	Vector3 translation = global_->GetValue<Vector3>("CameraOffset", "translation");
 	Vector3 previous = camera_->GetTranslation();
 	Vector3 current = player_->GetTransform().translation_ + translation;
-	previous = Vector3::Lerp(previous, current, 0.1f);
 
+	previous = Vector3::Lerp(previous, current + shakeOffset, 0.1f);
 	camera_->SetTranslation(previous);
 }
 

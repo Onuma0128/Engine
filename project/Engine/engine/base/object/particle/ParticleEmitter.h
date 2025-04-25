@@ -46,6 +46,8 @@ public:
 		float maxRotateZ;			// Particle発生時の最大rotateZ
 		float reflectY;				// Particleが反射するY軸を設定
 
+		Vector3 uvTranslation;		// ParticleのUVをスクロールする
+
 		uint32_t blendMode_;		// ParticleのBlendModeを設定
 		uint32_t count;				// Paritcle発生時に何個出すか
 		float lifeTime;				// Particle発生時から生きている時間

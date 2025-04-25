@@ -38,8 +38,6 @@ void ParticleManager::Initialize(DirectXEngine* dxEngine)
     modelData_ = Model::LoadObjFile("resources", "plane.obj");
 
     CreateVertexResource();
-
-    CreateMatrialResource();
 }
 
 void ParticleManager::Update()
@@ -71,6 +69,9 @@ void ParticleManager::Update()
             // パーティクルの更新
             group.emitter->UpdateParticle(it);
 
+            // uvTranslate
+            group.materialData_->uvTransform = Matrix4x4::Translate(it->uvTranslate);
+
             float alpha = 1.0f - (it->currentTime / it->lifeTime);
             if (numInstance < kNumMaxInstance) {
                 group.instancingData[numInstance].WVP = worldViewProjectionMatrix;
@@ -101,7 +102,7 @@ void ParticleManager::Draw()
         /*==================== パーティクルの描画 ====================*/
         uint32_t textIndex = group.textureIndex;
         commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
-        commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+        commandList->SetGraphicsRootConstantBufferView(0, group.materialResource_->GetGPUVirtualAddress());
         commandList->SetGraphicsRootConstantBufferView(1, group.instancingResource->GetGPUVirtualAddress());
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, group.srvIndex);
@@ -132,6 +133,9 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
     group.textureFilePath = textureFilePath;
     TextureManager::GetInstance()->LoadTexture("resources/" + group.textureFilePath);
     group.textureIndex = TextureManager::GetInstance()->GetSrvIndex("resources/" + group.textureFilePath);
+
+    // パーティクルグループのマテリアル用のリソース,データを作成
+    CreateMatrialResource(group);
 
     // パーティクルグループのインスタンス数とリソースを初期化
     group.instanceCount = 0;
@@ -182,14 +186,14 @@ void ParticleManager::CreateVertexResource()
     std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 }
 
-void ParticleManager::CreateMatrialResource()
+void ParticleManager::CreateMatrialResource(ParticleGroup& group)
 {
     // マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-    materialResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(Material)).Get();
+    group.materialResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(Material)).Get();
     // 書き込むためのアドレスを取得
-    materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
+    group.materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&group.materialData_));
     // 今回は白を書き込んでいく
-    materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-    materialData_->enableLighting = false;
-    materialData_->uvTransform = Matrix4x4::Identity();
+    group.materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    group.materialData_->enableLighting = false;
+    group.materialData_->uvTransform = Matrix4x4::Identity();
 }

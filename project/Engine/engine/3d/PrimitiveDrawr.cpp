@@ -183,6 +183,7 @@ void PrimitiveDrawr::CreateMaterialData()
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
+	materialData_->uvTransform = Matrix4x4::Identity();
 	materialData_->xTexcoord_alpha = false;
 	materialData_->yTexcoord_alpha = false;
 }

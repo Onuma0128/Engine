@@ -17,6 +17,8 @@ public:
 
 	void Update();
 
+	void SetShake(float shakeStrength) { shakeStrength_ = shakeStrength; }
+
 	void SetPlayer(Player* player) { player_ = player; }
 
 	float LerpShortAngle(float a, float b, float t);
@@ -33,5 +35,8 @@ private:
 	Vector3 rotateAngle_ = {};
 
 	Player* player_ = nullptr;
+
+	float shakeStrength_ = 0.0f;
+	float shakeDecay_ = 0.9f;   
 
 };

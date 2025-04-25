@@ -36,6 +36,7 @@ public:
 	};
 	struct MaterialData {
 		Vector4 color;
+		Matrix4x4 uvTransform;
 		int32_t xTexcoord_alpha;
 		int32_t yTexcoord_alpha;
 		float padding[2];

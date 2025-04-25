@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.cpp" />
     <ClCompile Include="Engine\engine\math\structure\Collision3D.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\Enemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\ui\PlayerBulletUI.cpp" />
@@ -181,6 +182,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerAvoidState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.h" />
     <ClInclude Include="Engine\engine\math\structure\Collision3D.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\Enemy.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\ui\PlayerBulletUI.h" />
