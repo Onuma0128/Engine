@@ -119,6 +119,21 @@ public:
 	// パイプラインの生成
 	ComPtr<ID3D12PipelineState> CreateAnimationPipelineState();
 
+	/* ==================== RenderTexture ==================== */
+
+	// ルートシグネチャ
+	ComPtr<ID3D12RootSignature> CreateRenderTextureRootSignature();
+	// インプットレイアウト
+	void RenderTextureInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc);
+	// ラスタライザ
+	void RenderTextureRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc);
+	// シェーダーコンパイル
+	void RenderTextureShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader);
+	// デスクリプターステンシル
+	void RenderTextureDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc);
+	// パイプラインの生成
+	ComPtr<ID3D12PipelineState> CreateRenderTexturePipelineState();
+
 
 	///==============================================================================================================
 

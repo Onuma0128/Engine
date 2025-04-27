@@ -64,6 +64,8 @@ void MyGame::Draw()
 
 	SceneManager::GetInstance()->Draw();
 
+	directXEngine_->SwapChainDrawSet();
+
 	// ImGuiの描画
 	imGuiManager_->Draw();
 

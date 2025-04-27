@@ -138,7 +138,7 @@
     <ClCompile Include="Engine\engine\input\Input.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\math\structure\CreateBufferResource.cpp">
+    <ClCompile Include="Engine\engine\base\dxEngine\CreateBufferResource.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\math\structure\Matrix4x4.cpp">
@@ -211,6 +211,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\engine\base\dxEngine\RenderTexture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -338,7 +341,7 @@
     <ClInclude Include="Engine\engine\input\Input.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\math\structure\CreateBufferResource.h">
+    <ClInclude Include="Engine\engine\base\dxEngine\CreateBufferResource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\math\structure\Matrix3x3.h">
@@ -428,6 +431,9 @@
     <ClInclude Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\engine\base\dxEngine\RenderTexture.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl" />
@@ -440,11 +446,14 @@
     <FxCompile Include="resources\shaders\PrimitiveDrawr.PS.hlsl" />
     <FxCompile Include="resources\shaders\PrimitiveDrawr.VS.hlsl" />
     <FxCompile Include="resources\shaders\SkinningObject3d.VS.hlsl" />
+    <FxCompile Include="resources\shaders\CopyImage.VS.hlsl" />
+    <FxCompile Include="resources\shaders\CopyImage.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Object3d.hlsli" />
     <None Include="resources\shaders\Particle.hlsli" />
     <None Include="resources\shaders\Line3d.hlsli" />
     <None Include="resources\shaders\PrimitiveDrawr.hlsli" />
+    <None Include="resources\shaders\CopyImage.hlsli" />
   </ItemGroup>
 </Project>

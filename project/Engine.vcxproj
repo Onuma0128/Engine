@@ -164,7 +164,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\base\scene\SceneManager.cpp" />
     <ClCompile Include="Engine\engine\globalVariables\GlobalVariables.cpp" />
     <ClCompile Include="Engine\engine\input\Input.cpp" />
-    <ClCompile Include="Engine\engine\math\structure\CreateBufferResource.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\CreateBufferResource.cpp" />
     <ClCompile Include="Engine\engine\math\structure\Matrix4x4.cpp" />
     <ClCompile Include="Engine\engine\math\structure\Quaternion.cpp" />
     <ClCompile Include="Engine\engine\math\structure\Vector3.cpp" />
@@ -180,6 +180,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PlayerBullet.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerMoveState.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerAvoidState.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\RenderTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.h" />
@@ -235,7 +236,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\input\Input.h" />
     <ClInclude Include="Engine\engine\math\AnimationStruct.h" />
     <ClInclude Include="Engine\engine\math\ModelStruct.h" />
-    <ClInclude Include="Engine\engine\math\structure\CreateBufferResource.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\CreateBufferResource.h" />
     <ClInclude Include="Engine\engine\math\structure\Matrix3x3.h" />
     <ClInclude Include="Engine\engine\math\structure\Matrix4x4.h" />
     <ClInclude Include="Engine\engine\math\structure\Quaternion.h" />
@@ -253,9 +254,22 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PlayerBullet.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerMoveState.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerAvoidState.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\RenderTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="resources\shaders\CopyImage.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="resources\shaders\CopyImage.VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
@@ -299,6 +313,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\shaders\CopyImage.hlsli">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </None>
     <None Include="resources\shaders\Object3d.hlsli" />
     <None Include="resources\shaders\Particle.hlsli" />
     <None Include="resources\shaders\Line3d.hlsli" />

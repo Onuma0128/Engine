@@ -3,16 +3,7 @@
 #include <cassert>
 #include <stdint.h>
 
-#include "Vector4.h"
-#include "Matrix4x4.h"
-
-struct Material {
-	Vector4 color;
-	int32_t enableLighting;
-	float padding[3];
-	Matrix4x4 uvTransform;
-	float shininess;
-};
+#include "ModelStruct.h"
 
 ResourceObject CreateBufferResource(ComPtr<ID3D12Device> device, size_t sizeInBytes)
 {

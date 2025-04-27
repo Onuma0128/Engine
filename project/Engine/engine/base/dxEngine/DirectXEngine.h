@@ -11,6 +11,7 @@
 #include "PipelineState.h"
 
 class WinApp;
+class ImGuiManager;
 
 using Microsoft::WRL::ComPtr;
 
@@ -21,7 +22,7 @@ public:
 	~DirectXEngine();
 
 	// 初期化
-	void Initialize(WinApp* winApp);
+	void Initialize(WinApp* winApp, ImGuiManager* imguiManager);
 	// デバイスの初期化
 	void DeviceInitialize();
 	// コマンド関連の初期化
@@ -53,6 +54,8 @@ public:
 
 	// 描画前の処理
 	void PreDraw();
+	// Object描画後の処理
+	void SwapChainDrawSet();
 	// 描画後の処理
 	void PostDraw();
 
@@ -91,13 +94,18 @@ private:
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
 	std::array<ComPtr<ID3D12Resource>, 2> swapChainResources_ = { nullptr };
+	// レンダーテクスチャを生成する
+	uint32_t renderTextureSRVIndex_;
+	ComPtr<ID3D12Resource> renderTextureResource_ = nullptr;
+	D3D12_CPU_DESCRIPTOR_HANDLE renderTextureHandle_{};
+	// ルートシグネチャ,パイプラインステート
+	ComPtr<ID3D12RootSignature> offScreenRootSignature_ = nullptr;
+	ComPtr<ID3D12PipelineState> offScreenPipelineState_ = nullptr;
 	// 深度バッファの生成
 	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr;
 	// 各種でスクリプタヒープの生成
 	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
-	//ComPtr<ID3D12DescriptorHeap> srvDescriptorHeap_ = nullptr;
-	//uint32_t descriptorSizeSRV_ = NULL;
 	uint32_t descriptorSizeRTV_ = NULL;
 	uint32_t descriptorSizeDSV_ = NULL;
 	//RTVを2つ作るのでディスクリプタを2つ用意

@@ -10,13 +10,12 @@ void Framework::Initialize()
 	winApp_ = std::make_unique<WinApp>();
 	winApp_->Initialize();
 
+	imGuiManager_ = std::make_unique<ImGuiManager>();
+
 	directXEngine_ = std::make_unique<DirectXEngine>();
-	directXEngine_->Initialize(winApp_.get());
+	directXEngine_->Initialize(winApp_.get(), imGuiManager_.get());
 
 	Input::GetInstance()->Initialize(winApp_.get());
-
-	imGuiManager_ = std::make_unique<ImGuiManager>();
-	imGuiManager_->Initialize(directXEngine_.get(), winApp_.get());
 
 	LoadFiles();
 }
