@@ -3,6 +3,8 @@
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
 
+#include <array>
+
 using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
@@ -25,7 +27,7 @@ public:
 
 	void Initialize(DirectXEngine* dxEngine);
 
-	void DrawBase();
+	void DrawBase(int blendMode);
 
 	void Finalize();
 
@@ -38,6 +40,6 @@ private:
 	DirectXEngine* dxEngine_ = nullptr;
 
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
-	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
+	std::array<ComPtr<ID3D12PipelineState>, 5> pipelineStates_;
 
 };

@@ -79,7 +79,7 @@ public:
 	// インプットレイアウト
 	void ParticleInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc);
 	// ブレンド
-	void ParticleBlendState(D3D12_BLEND_DESC& blendDesc, int blendMode);
+	void BlendState(D3D12_BLEND_DESC& blendDesc, int blendMode);
 	// シェーダーコンパイル
 	void ParticleShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader);
 	// デスクリプターステンシル
@@ -93,8 +93,6 @@ public:
 	ComPtr<ID3D12RootSignature> CreateTrailEffectRootSignature();
 	// インプットレイアウト
 	void TrailEffectInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc);
-	// ブレンド
-	void TrailEffectBlendState(D3D12_BLEND_DESC& blendDesc);
 	// ラスタライザ
 	void TrailEffectRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc);
 	// シェーダーコンパイル
@@ -102,7 +100,7 @@ public:
 	// デスクリプターステンシル
 	void TrailEffectDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc);
 	// パイプラインの生成
-	ComPtr<ID3D12PipelineState> CreateTrailEffectPipelineState();
+	ComPtr<ID3D12PipelineState> CreateTrailEffectPipelineState(int blendMode);
 
 	/* ==================== Animation ==================== */
 

@@ -91,7 +91,7 @@ void PipelineState::ParticleInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDe
 	inputLayoutDesc.NumElements = numElements;
 }
 
-void PipelineState::ParticleBlendState(D3D12_BLEND_DESC& blendDesc, int blendMode)
+void PipelineState::BlendState(D3D12_BLEND_DESC& blendDesc, int blendMode)
 {
 	BlendMode setBlendMode = static_cast<BlendMode>(blendMode);
 
@@ -608,7 +608,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateParticlePipelineState(int blend
 
 	// ブレンド
 	D3D12_BLEND_DESC blendDesc{};
-	ParticleBlendState(blendDesc, blendMode);
+	BlendState(blendDesc, blendMode);
 
 	// ラスタライザ
 	D3D12_RASTERIZER_DESC rasterizerDesc{};
@@ -719,18 +719,6 @@ void PipelineState::TrailEffectInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElemen
 	inputLayoutDesc.NumElements = numElements;
 }
 
-void PipelineState::TrailEffectBlendState(D3D12_BLEND_DESC& blendDesc)
-{
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-}
-
 void PipelineState::TrailEffectRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc)
 {
 	// D3D12_CULL_MODE_NONE
@@ -759,7 +747,7 @@ void PipelineState::TrailEffectDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depth
 	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 }
 
-ComPtr<ID3D12PipelineState> PipelineState::CreateTrailEffectPipelineState()
+ComPtr<ID3D12PipelineState> PipelineState::CreateTrailEffectPipelineState(int blendMode)
 {
 	// インプットレイアウト
 	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2]{};
@@ -768,7 +756,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateTrailEffectPipelineState()
 
 	// ブレンド
 	D3D12_BLEND_DESC blendDesc{};
-	TrailEffectBlendState(blendDesc);
+	BlendState(blendDesc, blendMode);
 
 	// ラスタライザ
 	D3D12_RASTERIZER_DESC rasterizerDesc{};

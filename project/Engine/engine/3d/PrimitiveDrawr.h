@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+#include "PipelineState.h"
+
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -18,7 +20,8 @@ class PrimitiveDrawrBase;
 enum class PrimitiveType {
 	Plane,
 	Sphere,
-	Ring
+	Ring,
+	Cylinder
 };
 
 class PrimitiveDrawr
@@ -63,10 +66,12 @@ public:
 	/* =============== アクセッサ(全体) =============== */
 
 	EulerTransform& GetTransform() { return transform_; }
+	Transform2D& GetUVTransform() { return uvTransform_; }
+	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
 	const Vector4& GetColor() { return materialData_->color; }
 
-
 	void SetTransform(EulerTransform transform) { transform_ = transform; }
+	void SetUVTransform(Transform2D transform) { uvTransform_ = transform; }
 	void SetTexture(const std::string& directoryPath, const std::string& filePath);
 	void SetColor(const Vector3& color) {
 		materialData_->color.x = color.x;
@@ -88,6 +93,8 @@ private:
 	void CreateIndexData();
 	void CreateMaterialData();
 	void CreateWVPData();
+
+	void UVTransformUpdate();
 
 	/* =============== Plane =============== */
 
@@ -117,9 +124,18 @@ private:
 	// Ringの頂点計算
 	void CreateRingVertexData(VertexData* vertexData, uint32_t kRingDivide);
 
+	/* =============== Cylinder =============== */
+
+	void InitCylinder(uint32_t kCylinderDivide);
+
+	void DrawCylinder();
+
+	// Cylinderの頂点計算
+	void CreateCylinderVertexData(VertexData* vertexData, uint32_t kCylinderDivide);
+
 private:
 
-	PrimitiveDrawrBase* trailEffectBase_ = nullptr;
+	PrimitiveDrawrBase* primitiveDrawrBase_ = nullptr;
 
 	/* =============== 頂点 =============== */
 
@@ -150,6 +166,9 @@ private:
 	PrimitiveType type_;
 
 	EulerTransform transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Transform2D uvTransform_ = { {1.0f,1.0f},{0.0f},{0.0f,0.0f} };
+
+	BlendMode blendMode_ = BlendMode::kBlendModeAdd;
 
 	/* =============== Trail =============== */
 
@@ -162,5 +181,9 @@ private:
 	/* =============== Ring =============== */
 
 	uint32_t kRingDivide_;
+
+	/* =============== Cylinder =============== */
+
+	uint32_t kCylinderDivide_;
 
 };

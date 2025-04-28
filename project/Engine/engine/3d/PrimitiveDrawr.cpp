@@ -12,7 +12,7 @@
 
 void PrimitiveDrawr::Init(std::vector<Vector3> pos)
 {
-	trailEffectBase_ = PrimitiveDrawrBase::GetInstance();
+	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
 	positions_ = pos;
 
 	SetTexture("resources", "white1x1.png");
@@ -34,6 +34,9 @@ void PrimitiveDrawr::Init(std::vector<Vector3> pos)
 
 void PrimitiveDrawr::Update()
 {
+	// uvTransformの更新
+	UVTransformUpdate();
+
 	Matrix4x4 matWorld = Matrix4x4::Affine(transform_.scale, transform_.rotation, transform_.translation);
 
 	*wvpData_ = matWorld * CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix();
@@ -41,9 +44,9 @@ void PrimitiveDrawr::Update()
 
 void PrimitiveDrawr::Draw()
 {
-	trailEffectBase_->DrawBase();
+	primitiveDrawrBase_->DrawBase(static_cast<int>(blendMode_));
 
-	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->IASetIndexBuffer(&indexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
@@ -51,6 +54,17 @@ void PrimitiveDrawr::Draw()
 	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textureData_.textureIndex);
 
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
+}
+
+void PrimitiveDrawr::UVTransformUpdate()
+{
+	// UVTransformの更新
+	Matrix4x4 scaleMatrix = Matrix4x4::Scale({ uvTransform_.size.x, uvTransform_.size.y, 1.0f });
+	Matrix4x4 rotateMatrix = Matrix4x4::RotateZ(uvTransform_.rotate);
+	Matrix4x4 translateMatrix = Matrix4x4::Translate({ uvTransform_.position.x, uvTransform_.position.y, 0.0f });
+	Matrix4x4 uvTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
+
+	materialData_->uvTransform = uvTransformMatrix;
 }
 
 void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
@@ -68,6 +82,9 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 	case PrimitiveType::Ring:
 		InitRing(kIndex);
 		break;
+	case PrimitiveType::Cylinder:
+		InitCylinder(kIndex);
+		break;
 	default:
 		break;
 	}
@@ -75,6 +92,8 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 
 void PrimitiveDrawr::TypeDraw()
 {
+	primitiveDrawrBase_->DrawBase(static_cast<int>(blendMode_));
+
 	switch (type_)
 	{
 	case PrimitiveType::Plane:
@@ -85,6 +104,9 @@ void PrimitiveDrawr::TypeDraw()
 		break;
 	case PrimitiveType::Ring:
 		DrawRing();
+		break;
+	case PrimitiveType::Cylinder:
+		DrawCylinder();
 		break;
 	default:
 		break;
@@ -125,7 +147,7 @@ void PrimitiveDrawr::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size
 	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 頂点リソースを作成する
-	HRESULT hr = trailEffectBase_->GetDxEngine()->GetDevice()->CreateCommittedResource(
+	HRESULT hr = primitiveDrawrBase_->GetDxEngine()->GetDevice()->CreateCommittedResource(
 		&uploadHeapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&vertexResourceDesc,
@@ -197,7 +219,7 @@ void PrimitiveDrawr::CreateWVPData()
 
 void PrimitiveDrawr::InitPlane()
 {
-	trailEffectBase_ = PrimitiveDrawrBase::GetInstance();
+	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
 
 	SetTexture("resources", "uvChecker.png");
 
@@ -215,9 +237,7 @@ void PrimitiveDrawr::InitPlane()
 
 void PrimitiveDrawr::DrawPlane()
 {
-	trailEffectBase_->DrawBase();
-
-	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -254,7 +274,7 @@ void PrimitiveDrawr::CreatePlaneVertexData(VertexData* vertexData)
 void PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
 {
 	kSubdivision_ = kSubdivision;
-	trailEffectBase_ = PrimitiveDrawrBase::GetInstance();
+	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
 
 	SetTexture("resources", "white1x1.png");
 
@@ -273,9 +293,7 @@ void PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
 
 void PrimitiveDrawr::DrawSphere()
 {
-	trailEffectBase_->DrawBase();
-
-	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -321,7 +339,7 @@ void PrimitiveDrawr::CreateSphereVertexData(VertexData* vertexData, uint32_t kSu
 void PrimitiveDrawr::InitRing(uint32_t kRingDivide)
 {
 	kRingDivide_ = kRingDivide;
-	trailEffectBase_ = PrimitiveDrawrBase::GetInstance();
+	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
 
 	SetTexture("resources", "gradationLine.png");
 
@@ -339,9 +357,7 @@ void PrimitiveDrawr::InitRing(uint32_t kRingDivide)
 
 void PrimitiveDrawr::DrawRing()
 {
-	trailEffectBase_->DrawBase();
-
-	auto commandList = trailEffectBase_->GetDxEngine()->GetCommandList();
+	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -387,6 +403,79 @@ void PrimitiveDrawr::CreateRingVertexData(VertexData* vertexData, uint32_t kRing
 
 		vertexData[counter + 5] = {
 			.position = {-sinNext * kInnerRadius,cosNext * kInnerRadius,0.0f,1.0f},
+			.texcoord = {uNext,1.0f}
+		};
+	}
+}
+
+void PrimitiveDrawr::InitCylinder(uint32_t kCylinderDivide)
+{
+	kCylinderDivide_ = kCylinderDivide;
+	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
+
+	SetTexture("resources", "gradationLine.png");
+
+	CreateBufferResource(vertexResource_, sizeof(VertexData) * kCylinderDivide_ * 6);
+	CreateVertexBufferView(kCylinderDivide_ * 6);
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	CreateCylinderVertexData(vertexData_, kCylinderDivide_);
+
+	CreateBufferResource(materialResource_, sizeof(MaterialData));
+	CreateMaterialData();
+
+	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+	CreateWVPData();
+}
+
+void PrimitiveDrawr::DrawCylinder()
+{
+	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textureData_.textureIndex);
+
+	commandList->DrawInstanced(kCylinderDivide_ * 6, 1, 0, 0);
+}
+
+void PrimitiveDrawr::CreateCylinderVertexData(VertexData* vertexData, uint32_t kCylinderDivide)
+{
+	const float kTopRadius = 1.0f;
+	const float kBottomRadius = 1.0f;
+	const float kHeight = 3.0f;
+	const float radianPerDivde = 2.0f * std::numbers::pi_v<float> / static_cast<float>(kCylinderDivide);
+
+	for (uint32_t index = 0; index < kCylinderDivide; ++index) {
+		float sin = std::sin(index * radianPerDivde);
+		float cos = std::cos(index * radianPerDivde);
+		uint32_t nextIndex = index + 1;
+		float sinNext = std::sin(nextIndex * radianPerDivde);
+		float cosNext = std::cos(nextIndex * radianPerDivde);
+		float u = static_cast<float>(index) / static_cast<float>(kCylinderDivide);
+		float uNext = static_cast<float>(nextIndex) / static_cast<float>(kCylinderDivide);
+
+		uint32_t counter = index * 6;
+
+		// 1,3,2
+		vertexData[counter] = {
+			.position = {-sin * kTopRadius,kHeight,cos * kTopRadius,1.0f},
+			.texcoord = {u,0.0f}
+		};
+		vertexData[counter + 1] = {
+			.position = {-sinNext * kTopRadius,kHeight,cosNext * kTopRadius,1.0f},
+			.texcoord = {uNext,0.0f}
+		};
+		vertexData[counter + 2] = {
+			.position = {-sin * kBottomRadius,0.0f,cos * kBottomRadius,1.0f},
+			.texcoord = {u,1.0f}
+		};
+		// 2,3,4
+		vertexData[counter + 3] = vertexData[counter + 2];
+
+		vertexData[counter + 4] = vertexData[counter + 1];
+
+		vertexData[counter + 5] = {
+			.position = {-sinNext * kBottomRadius,0.0f,cosNext * kBottomRadius,1.0f},
 			.texcoord = {uNext,1.0f}
 		};
 	}
