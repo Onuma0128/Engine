@@ -372,7 +372,7 @@ void DirectXEngine::PipelineStateInitialize()
 	pipelineState_ = std::make_unique<PipelineState>();
 	pipelineState_->Initialize(device_, dxcUtils_, dxcCompiler_, includeHandler_);
 
-	offScreenRootSignature_ = pipelineState_->CreateRenderTextureRootSignature();
+	offScreenRootSignature_ = pipelineState_->CreateRootSignature(PipelineType::RenderTexture);
 	offScreenPipelineState_ = pipelineState_->CreateRenderTexturePipelineState();
 }
 

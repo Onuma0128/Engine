@@ -21,9 +21,9 @@ void PrimitiveDrawrBase::Initialize(DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
-	rootSignature_ = dxEngine_->GetPipelineState()->CreateTrailEffectRootSignature().Get();
+	rootSignature_ = dxEngine_->GetPipelineState()->CreateRootSignature(PipelineType::PrimitiveDrawr).Get();
 	for (int i = 0; i < static_cast<int>(pipelineStates_.size()); ++i) {
-		pipelineStates_[i] = dxEngine_->GetPipelineState()->CreateTrailEffectPipelineState(i);
+		pipelineStates_[i] = dxEngine_->GetPipelineState()->CreatePrimitiveDrawrPipelineState(i);
 	}
 }
 

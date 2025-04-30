@@ -22,7 +22,7 @@ void Line3dBase::Initialize(DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
-	rootSignature_ = dxEngine_->GetPipelineState()->CreateLine3dRootSignature();
+	rootSignature_ = dxEngine_->GetPipelineState()->CreateRootSignature(PipelineType::Line3d);
 	pipelineState_ = dxEngine_->GetPipelineState()->CreateLine3dPipelineState();
 }
 

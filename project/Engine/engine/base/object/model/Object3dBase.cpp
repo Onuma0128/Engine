@@ -17,7 +17,7 @@ void Object3dBase::Initialize(DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
-	rootSignature_ = dxEngine_->GetPipelineState()->CreateObject3dRootSignature().Get();
+	rootSignature_ = dxEngine_->GetPipelineState()->CreateRootSignature(PipelineType::Object3d).Get();
 	pipelineState_ = dxEngine_->GetPipelineState()->CreateObject3dPipelineState().Get();
 }
 

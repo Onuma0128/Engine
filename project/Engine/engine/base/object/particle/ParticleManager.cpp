@@ -30,7 +30,7 @@ void ParticleManager::Initialize(DirectXEngine* dxEngine)
     dxEngine_ = dxEngine;
     srvManager_ = SrvManager::GetInstance();
 
-    rootSignature_ = dxEngine_->GetPipelineState()->CreateParticleRootSignature();
+    rootSignature_ = dxEngine_->GetPipelineState()->CreateRootSignature(PipelineType::Particle);
     for (int i = 0; i < static_cast<int>(pipelineStates_.size()); ++i) {
         pipelineStates_[i] = dxEngine_->GetPipelineState()->CreateParticlePipelineState(i);
     }

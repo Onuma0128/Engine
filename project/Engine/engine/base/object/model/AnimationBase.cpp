@@ -17,7 +17,7 @@ void AnimationBase::Initialize(DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
-	rootSignature_ = dxEngine_->GetPipelineState()->CreateAnimationRootSignature().Get();
+	rootSignature_ = dxEngine_->GetPipelineState()->CreateRootSignature(PipelineType::Animation).Get();
 	pipelineState_ = dxEngine_->GetPipelineState()->CreateAnimationPipelineState().Get();
 }
 
