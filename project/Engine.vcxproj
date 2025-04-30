@@ -63,7 +63,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\engine\2d;$(ProjectDir)Engine\engine\3d;$(ProjectDir)Engine\engine\audio;$(ProjectDir)Engine\engine\base\audio;$(ProjectDir)Engine\engine\base\dxEngine;$(ProjectDir)Engine\engine\base\framework;$(ProjectDir)Engine\engine\base\imgui;$(ProjectDir)Engine\engine\base\scene;$(ProjectDir)Engine\engine\base\scene\sceneFactory;$(ProjectDir)Engine\engine\base\object\camera;$(ProjectDir)Engine\engine\base\object\light;$(ProjectDir)Engine\engine\base\object\model;$(ProjectDir)Engine\engine\base\object\particle;$(ProjectDir)Engine\engine\base\object\sprite;$(ProjectDir)Engine\engine\base\object\texture;$(ProjectDir)Engine\engine\input;$(ProjectDir)Engine\engine\math;$(ProjectDir)Engine\engine\math\structure;$(ProjectDir)Engine\engine\globalVariables;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\assimp\include;$(ProjectDir)Engine\game;$(ProjectDir)Engine\game\scene;$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\engine\2d;$(ProjectDir)Engine\engine\3d;$(ProjectDir)Engine\engine\audio;$(ProjectDir)Engine\engine\base\audio;$(ProjectDir)Engine\engine\base\dxEngine;$(ProjectDir)Engine\engine\base\dxEngine\pipeline;$(ProjectDir)Engine\engine\base\dxEngine\pipeline\inputLayout;$(ProjectDir)Engine\engine\base\dxEngine\pipeline\blendState;$(ProjectDir)Engine\engine\base\dxEngine\pipeline\rasterizerState;$(ProjectDir)Engine\engine\base\framework;$(ProjectDir)Engine\engine\base\imgui;$(ProjectDir)Engine\engine\base\scene;$(ProjectDir)Engine\engine\base\scene\sceneFactory;$(ProjectDir)Engine\engine\base\object\camera;$(ProjectDir)Engine\engine\base\object\light;$(ProjectDir)Engine\engine\base\object\model;$(ProjectDir)Engine\engine\base\object\particle;$(ProjectDir)Engine\engine\base\object\sprite;$(ProjectDir)Engine\engine\base\object\texture;$(ProjectDir)Engine\engine\input;$(ProjectDir)Engine\engine\math;$(ProjectDir)Engine\engine\math\structure;$(ProjectDir)Engine\engine\globalVariables;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\assimp\include;$(ProjectDir)Engine\game;$(ProjectDir)Engine\game\scene;$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,7 +89,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\engine\2d;$(ProjectDir)Engine\engine\3d;$(ProjectDir)Engine\engine\audio;$(ProjectDir)Engine\engine\base\audio;$(ProjectDir)Engine\engine\base\dxEngine;$(ProjectDir)Engine\engine\base\framework;$(ProjectDir)Engine\engine\base\imgui;$(ProjectDir)Engine\engine\base\scene;$(ProjectDir)Engine\engine\base\scene\sceneFactory;$(ProjectDir)Engine\engine\base\object\camera;$(ProjectDir)Engine\engine\base\object\light;$(ProjectDir)Engine\engine\base\object\model;$(ProjectDir)Engine\engine\base\object\particle;$(ProjectDir)Engine\engine\base\object\sprite;$(ProjectDir)Engine\engine\base\object\texture;$(ProjectDir)Engine\engine\input;$(ProjectDir)Engine\engine\math;$(ProjectDir)Engine\engine\math\structure;$(ProjectDir)Engine\engine\globalVariables;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\assimp\include;$(ProjectDir)Engine\game;$(ProjectDir)Engine\game\scene;$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\engine\2d;$(ProjectDir)Engine\engine\3d;$(ProjectDir)Engine\engine\audio;$(ProjectDir)Engine\engine\base\audio;$(ProjectDir)Engine\engine\base\dxEngine;$(ProjectDir)Engine\engine\base\dxEngine\pipeline;$(ProjectDir)Engine\engine\base\dxEngine\pipeline\inputLayout;$(ProjectDir)Engine\engine\base\dxEngine\pipeline\blendState;$(ProjectDir)Engine\engine\base\dxEngine\pipeline\rasterizerState;$(ProjectDir)Engine\engine\base\framework;$(ProjectDir)Engine\engine\base\imgui;$(ProjectDir)Engine\engine\base\scene;$(ProjectDir)Engine\engine\base\scene\sceneFactory;$(ProjectDir)Engine\engine\base\object\camera;$(ProjectDir)Engine\engine\base\object\light;$(ProjectDir)Engine\engine\base\object\model;$(ProjectDir)Engine\engine\base\object\particle;$(ProjectDir)Engine\engine\base\object\sprite;$(ProjectDir)Engine\engine\base\object\texture;$(ProjectDir)Engine\engine\input;$(ProjectDir)Engine\engine\math;$(ProjectDir)Engine\engine\math\structure;$(ProjectDir)Engine\engine\globalVariables;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\assimp\include;$(ProjectDir)Engine\game;$(ProjectDir)Engine\game\scene;$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -114,6 +114,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\engine\base\dxEngine\pipeline\blendState\BlendStateFactory.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\pipeline\blendState\BlendStateBase.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.cpp" />
     <ClCompile Include="Engine\engine\math\structure\Collision3D.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\Enemy.cpp" />
@@ -134,12 +136,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\3d\WorldTransform.cpp" />
     <ClCompile Include="Engine\engine\audio\Audio.cpp" />
     <ClCompile Include="Engine\engine\base\audio\AudioManager.cpp" />
-    <ClCompile Include="Engine\engine\base\dxEngine\CompileShader.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\pipeline\CompileShader.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\D3DResourceLeakChecker.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\DepthStencilTexture.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\DescriptorHeap.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\DirectXEngine.cpp" />
-    <ClCompile Include="Engine\engine\base\dxEngine\PipelineState.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\pipeline\PipelineState.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\SrvManager.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\StringUtility.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\WinApp.cpp" />
@@ -181,8 +183,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerMoveState.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerAvoidState.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\RenderTexture.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\pipeline\inputLayout\InputLayoutBase.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\pipeline\inputLayout\InputLayoutFactory.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\pipeline\rasterizerState\RasterizerStateBase.cpp" />
+    <ClCompile Include="Engine\engine\base\dxEngine\pipeline\rasterizerState\RasterizerStateFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\blendState\BlendStateFactory.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\blendState\BlendStateBase.h" />
+    <ClInclude Include="Engine\engine\math\PipelineStruct.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.h" />
     <ClInclude Include="Engine\engine\math\structure\Collision3D.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\Enemy.h" />
@@ -203,12 +212,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\3d\WorldTransform.h" />
     <ClInclude Include="Engine\engine\audio\Audio.h" />
     <ClInclude Include="Engine\engine\base\audio\AudioManager.h" />
-    <ClInclude Include="Engine\engine\base\dxEngine\CompileShader.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\CompileShader.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\D3DResourceLeakChecker.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\DepthStencilTexture.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\DescriptorHeap.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\DirectXEngine.h" />
-    <ClInclude Include="Engine\engine\base\dxEngine\PipelineState.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\PipelineState.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\ResourceObject.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\SrvManager.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\StringUtility.h" />
@@ -255,6 +264,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerMoveState.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerAvoidState.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\RenderTexture.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\inputLayout\InputLayoutBase.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\inputLayout\InputLayoutFactory.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rasterizerState\RasterizerStateBase.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rasterizerState\RasterizerStateFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

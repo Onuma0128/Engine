@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "PipelineState.h"
+#include "PipelineStruct.h"
 
 #include "Vector2.h"
 #include "Vector3.h"

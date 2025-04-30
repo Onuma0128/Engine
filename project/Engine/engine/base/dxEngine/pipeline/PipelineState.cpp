@@ -2,6 +2,11 @@
 
 #include <cassert>
 
+#include "PipelineStruct.h"
+#include "InputLayoutFactory.h"
+#include "BlendStateFactory.h"
+#include "RasterizerStateFactory.h"
+
 #include "CompileShader.h"
 
 void PipelineState::Initialize(
@@ -12,161 +17,6 @@ void PipelineState::Initialize(
 	dxcUtils_ = dxcUtils;
 	dxcCompiler_ = dxcCompiler;
 	includeHandler_ = includeHandler;
-}
-
-
-void PipelineState::Object3dInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc)
-{
-	const UINT numElements = 3;
-
-	inputElementDescs[0].SemanticName = "POSITION";
-	inputElementDescs[0].SemanticIndex = 0;
-	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[1].SemanticName = "TEXCOORD";
-	inputElementDescs[1].SemanticIndex = 0;
-	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[2].SemanticName = "NORMAL";
-	inputElementDescs[2].SemanticIndex = 0;
-	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputLayoutDesc.pInputElementDescs = inputElementDescs;
-	inputLayoutDesc.NumElements = numElements;
-}
-
-void PipelineState::SpriteInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc)
-{
-	const UINT numElements = 3;
-
-	inputElementDescs[0].SemanticName = "POSITION";
-	inputElementDescs[0].SemanticIndex = 0;
-	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[1].SemanticName = "TEXCOORD";
-	inputElementDescs[1].SemanticIndex = 0;
-	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[2].SemanticName = "NORMAL";
-	inputElementDescs[2].SemanticIndex = 0;
-	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputLayoutDesc.pInputElementDescs = inputElementDescs;
-	inputLayoutDesc.NumElements = numElements;
-}
-
-void PipelineState::Line3dInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc)
-{
-	const UINT numElements = 1;
-
-	inputElementDescs[0].SemanticName = "POSITION";
-	inputElementDescs[0].SemanticIndex = 0;
-	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputLayoutDesc.pInputElementDescs = inputElementDescs;
-	inputLayoutDesc.NumElements = numElements;
-}
-
-void PipelineState::ParticleInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc)
-{
-	const UINT numElements = 3;
-
-	inputElementDescs[0].SemanticName = "POSITION";
-	inputElementDescs[0].SemanticIndex = 0;
-	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[1].SemanticName = "TEXCOORD";
-	inputElementDescs[1].SemanticIndex = 0;
-	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[2].SemanticName = "COLOR";
-	inputElementDescs[2].SemanticIndex = 0;
-	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputLayoutDesc.pInputElementDescs = inputElementDescs;
-	inputLayoutDesc.NumElements = numElements;
-}
-
-void PipelineState::BlendState(D3D12_BLEND_DESC& blendDesc, int blendMode)
-{
-	BlendMode setBlendMode = static_cast<BlendMode>(blendMode);
-
-	//全ての色要素を書き込む
-	blendDesc.RenderTarget[0].RenderTargetWriteMask =
-		D3D12_COLOR_WRITE_ENABLE_ALL;
-
-	switch (setBlendMode)
-	{
-	case BlendMode::kBlendModeNone:
-		blendDesc.RenderTarget[0].BlendEnable = FALSE;
-		break;
-
-	case BlendMode::kBlendModeNormal:
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		break;
-
-	case BlendMode::kBlendModeAdd:
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		break;
-
-	case BlendMode::kBlendModeSubtract:
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		break;
-
-	case BlendMode::kBlendModeMultily:
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_DEST_COLOR;
-		blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		break;
-
-	default:
-		blendDesc.RenderTarget[0].BlendEnable = FALSE;
-		break;
-	}
-}
-
-void PipelineState::RasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc, bool enableCulling)
-{
-	if (enableCulling) {
-		rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
-		rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	} else {
-		rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
-		rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	}
-}
-
-void PipelineState::Line3dRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc)
-{
-	rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
-	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-	rasterizerDesc.DepthClipEnable = TRUE;
 }
 
 void PipelineState::Object3dShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& geometryShader, ComPtr<IDxcBlob>& pixelShader)
@@ -442,26 +292,6 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateParticleRootSignature()
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateObject3dPipelineState()
 {
-	// インプットレイアウト
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3]{};
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	Object3dInputLayout(inputElementDescs, inputLayoutDesc);
-
-	// ブレンド
-	D3D12_BLEND_DESC blendDesc{};
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-
-	// ラスタライザ
-	D3D12_RASTERIZER_DESC rasterizerDesc{};
-	RasterizerState(rasterizerDesc, false);
-
 	// シェーダーのコンパイル
 	ComPtr<IDxcBlob> vertexShaderBlob;
 	ComPtr<IDxcBlob> geometryShaderBlob;
@@ -478,13 +308,13 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateObject3dPipelineState()
 	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
 	psoDesc.GS = { geometryShaderBlob->GetBufferPointer(),geometryShaderBlob->GetBufferSize() };
 	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
-	psoDesc.InputLayout = inputLayoutDesc;
+	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Object3d);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = UINT_MAX;
-	psoDesc.RasterizerState = rasterizerDesc;
-	psoDesc.BlendState = blendDesc;
+	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Object3d);
+	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNormal);
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.DepthStencilState = depthStencilDesc;
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -498,26 +328,6 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateObject3dPipelineState()
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateSpritePipelineState()
 {
-	// インプットレイアウト
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3]{};
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	SpriteInputLayout(inputElementDescs, inputLayoutDesc);
-
-	// ブレンド
-	D3D12_BLEND_DESC blendDesc{};
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-
-	// ラスタライザ
-	D3D12_RASTERIZER_DESC rasterizerDesc{};
-	RasterizerState(rasterizerDesc, true);
-
 	// シェーダーのコンパイル
 	ComPtr<IDxcBlob> vertexShaderBlob;
 	ComPtr<IDxcBlob> geometryShaderBlob;
@@ -534,13 +344,13 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateSpritePipelineState()
 	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
 	psoDesc.GS = { geometryShaderBlob->GetBufferPointer(),geometryShaderBlob->GetBufferSize() };
 	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
-	psoDesc.InputLayout = inputLayoutDesc;
+	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Sprite);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-	psoDesc.RasterizerState = rasterizerDesc;
-	psoDesc.BlendState = blendDesc;
+	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Sprite);
+	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNormal);
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.DepthStencilState = depthStencilDesc;
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -554,19 +364,6 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateSpritePipelineState()
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateLine3dPipelineState()
 {
-	// インプットレイアウト
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3]{};
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	Line3dInputLayout(inputElementDescs, inputLayoutDesc);
-
-	// ブレンド
-	D3D12_BLEND_DESC blendDesc{};
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-
-	// ラスタライザ
-	D3D12_RASTERIZER_DESC rasterizerDesc{};
-	Line3dRasterizerState(rasterizerDesc);
-
 	// シェーダーのコンパイル
 	ComPtr<IDxcBlob> vertexShaderBlob;
 	ComPtr<IDxcBlob> pixelShaderBlob;
@@ -581,13 +378,13 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateLine3dPipelineState()
 	psoDesc.pRootSignature = newRootSignature_.Get();
 	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
 	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
-	psoDesc.InputLayout = inputLayoutDesc;
+	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Line3d);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = UINT_MAX;
-	psoDesc.RasterizerState = rasterizerDesc;
-	psoDesc.BlendState = blendDesc;
+	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Line3d);
+	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNone);
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.DepthStencilState = depthStencilDesc;
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -601,19 +398,6 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateLine3dPipelineState()
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateParticlePipelineState(int blendMode)
 {
-	// インプットレイアウト
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[3]{};
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	ParticleInputLayout(inputElementDescs, inputLayoutDesc);
-
-	// ブレンド
-	D3D12_BLEND_DESC blendDesc{};
-	BlendState(blendDesc, blendMode);
-
-	// ラスタライザ
-	D3D12_RASTERIZER_DESC rasterizerDesc{};
-	RasterizerState(rasterizerDesc, false);
-
 	// シェーダーのコンパイル
 	ComPtr<IDxcBlob> vertexShaderBlob;
 	ComPtr<IDxcBlob> pixelShaderBlob;
@@ -628,13 +412,13 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateParticlePipelineState(int blend
 	psoDesc.pRootSignature = newRootSignature_.Get();
 	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
 	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
-	psoDesc.InputLayout = inputLayoutDesc;
+	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Particle);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = UINT_MAX;
-	psoDesc.RasterizerState = rasterizerDesc;
-	psoDesc.BlendState = blendDesc;
+	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Particle);
+	psoDesc.BlendState = BlendStateFactory::GetBlendState(static_cast<BlendMode>(blendMode));
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.DepthStencilState = depthStencilDesc;
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -702,32 +486,6 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateTrailEffectRootSignature()
 	return newRootSignature_;
 }
 
-void PipelineState::TrailEffectInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc)
-{
-	const UINT numElements = 2;
-
-	inputElementDescs[0].SemanticName = "POSITION";
-	inputElementDescs[0].SemanticIndex = 0;
-	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[1].SemanticName = "TEXCOORD";
-	inputElementDescs[1].SemanticIndex = 0;
-	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputLayoutDesc.pInputElementDescs = inputElementDescs;
-	inputLayoutDesc.NumElements = numElements;
-}
-
-void PipelineState::TrailEffectRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc)
-{
-	// D3D12_CULL_MODE_NONE
-	// D3D12_CULL_MODE_BACK
-	rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
-
-	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-}
-
 void PipelineState::TrailEffectShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader)
 {
 	vertexShader = CompileShader(L"resources/shaders/PrimitiveDrawr.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
@@ -749,19 +507,6 @@ void PipelineState::TrailEffectDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depth
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateTrailEffectPipelineState(int blendMode)
 {
-	// インプットレイアウト
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[2]{};
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	TrailEffectInputLayout(inputElementDescs, inputLayoutDesc);
-
-	// ブレンド
-	D3D12_BLEND_DESC blendDesc{};
-	BlendState(blendDesc, blendMode);
-
-	// ラスタライザ
-	D3D12_RASTERIZER_DESC rasterizerDesc{};
-	TrailEffectRasterizerState(rasterizerDesc);
-
 	// シェーダーのコンパイル
 	ComPtr<IDxcBlob> vertexShaderBlob;
 	ComPtr<IDxcBlob> pixelShaderBlob;
@@ -776,13 +521,13 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateTrailEffectPipelineState(int bl
 	psoDesc.pRootSignature = newRootSignature_.Get();
 	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
 	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
-	psoDesc.InputLayout = inputLayoutDesc;
+	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::PrimitiveDrawr);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
-	psoDesc.RasterizerState = rasterizerDesc;
-	psoDesc.BlendState = blendDesc;
+	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::PrimitiveDrawr);
+	psoDesc.BlendState = BlendStateFactory::GetBlendState(static_cast<BlendMode>(blendMode));
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.DepthStencilState = depthStencilDesc;
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -872,44 +617,6 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateAnimationRootSignature()
 	return newRootSignature_;
 }
 
-void PipelineState::AnimationInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc)
-{
-	const UINT numElements = 5;
-
-	inputElementDescs[0].SemanticName = "POSITION";
-	inputElementDescs[0].SemanticIndex = 0;
-	inputElementDescs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[1].SemanticName = "TEXCOORD";
-	inputElementDescs[1].SemanticIndex = 0;
-	inputElementDescs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
-	inputElementDescs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[2].SemanticName = "NORMAL";
-	inputElementDescs[2].SemanticIndex = 0;
-	inputElementDescs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-	inputElementDescs[2].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputElementDescs[3].SemanticName = "WEIGHT";
-	inputElementDescs[3].SemanticIndex = 0;
-	inputElementDescs[3].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	inputElementDescs[3].InputSlot = 1;
-	inputElementDescs[3].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-	inputElementDescs[4].SemanticName = "INDEX";
-	inputElementDescs[4].SemanticIndex = 0;
-	inputElementDescs[4].Format = DXGI_FORMAT_R32G32B32A32_SINT;
-	inputElementDescs[4].InputSlot = 1;
-	inputElementDescs[4].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
-
-	inputLayoutDesc.pInputElementDescs = inputElementDescs;
-	inputLayoutDesc.NumElements = numElements;
-}
-
-void PipelineState::AnimationRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc)
-{
-	rasterizerDesc.CullMode = D3D12_CULL_MODE_BACK;
-	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
-}
-
 void PipelineState::AnimationShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& geometryShader, ComPtr<IDxcBlob>& pixelShader)
 {
 	vertexShader = CompileShader(L"resources/shaders/SkinningObject3d.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
@@ -934,26 +641,6 @@ void PipelineState::AnimationDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthSt
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateAnimationPipelineState()
 {
-	// インプットレイアウト
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[5]{};
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	AnimationInputLayout(inputElementDescs, inputLayoutDesc);
-
-	// ブレンド
-	D3D12_BLEND_DESC blendDesc{};
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	blendDesc.RenderTarget[0].BlendEnable = TRUE;
-	blendDesc.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-	blendDesc.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-	blendDesc.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-	blendDesc.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-
-	// ラスタライザ
-	D3D12_RASTERIZER_DESC rasterizerDesc{};
-	AnimationRasterizerState(rasterizerDesc);
-
 	// シェーダーのコンパイル
 	ComPtr<IDxcBlob> vertexShaderBlob;
 	ComPtr<IDxcBlob> geometryShaderBlob;
@@ -970,13 +657,13 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateAnimationPipelineState()
 	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
 	psoDesc.GS = { geometryShaderBlob->GetBufferPointer(),geometryShaderBlob->GetBufferSize() };
 	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
-	psoDesc.InputLayout = inputLayoutDesc;
+	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Animation);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = UINT_MAX;
-	psoDesc.RasterizerState = rasterizerDesc;
-	psoDesc.BlendState = blendDesc;
+	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Animation);
+	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNormal);
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.DepthStencilState = depthStencilDesc;
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -1039,18 +726,6 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateRenderTextureRootSignature()
 	return newRootSignature_;
 }
 
-void PipelineState::RenderTextureInputLayout(D3D12_INPUT_ELEMENT_DESC* inputElementDescs, D3D12_INPUT_LAYOUT_DESC& inputLayoutDesc)
-{
-	inputLayoutDesc.pInputElementDescs = nullptr;
-	inputLayoutDesc.NumElements = 0;
-}
-
-void PipelineState::RenderTextureRasterizerState(D3D12_RASTERIZER_DESC& rasterizerDesc)
-{
-	rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
-	rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;	
-}
-
 void PipelineState::RenderTextureShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader)
 {
 	vertexShader = CompileShader(L"resources/shaders/CopyImage.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
@@ -1067,20 +742,6 @@ void PipelineState::RenderTextureDepthStencilState(D3D12_DEPTH_STENCIL_DESC& dep
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateRenderTexturePipelineState()
 {
-	// インプットレイアウト
-	D3D12_INPUT_ELEMENT_DESC inputElementDescs[1]{};
-	D3D12_INPUT_LAYOUT_DESC inputLayoutDesc{};
-	RenderTextureInputLayout(inputElementDescs, inputLayoutDesc);
-
-	// ブレンド
-	D3D12_BLEND_DESC blendDesc{};
-	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-	blendDesc.RenderTarget[0].BlendEnable = FALSE;
-
-	// ラスタライザ
-	D3D12_RASTERIZER_DESC rasterizerDesc{};
-	RenderTextureRasterizerState(rasterizerDesc);
-
 	// シェーダーのコンパイル
 	ComPtr<IDxcBlob> vertexShaderBlob;
 	ComPtr<IDxcBlob> pixelShaderBlob;
@@ -1095,13 +756,13 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateRenderTexturePipelineState()
 	psoDesc.pRootSignature = newRootSignature_.Get();
 	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
 	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
-	psoDesc.InputLayout = inputLayoutDesc;
+	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::RenderTexture);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = UINT_MAX;
-	psoDesc.RasterizerState = rasterizerDesc;
-	psoDesc.BlendState = blendDesc;
+	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::RenderTexture);
+	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNone);
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.DepthStencilState = depthStencilDesc;
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;

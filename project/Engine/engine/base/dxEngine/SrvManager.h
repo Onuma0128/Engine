@@ -46,6 +46,8 @@ public:
 	void CreateSRVforStructuredBuffer(uint32_t srvIndex, ID3D12Resource* pResource, UINT numElements, UINT structureByteStride);
 	// SRV生成(RenderTexture用)
 	void CreateSRVforRenderTexture(uint32_t srvIndex, ID3D12Resource* pResource);
+	// SRV生成(DDSテクスチャ用)
+	void CreateSRVforTextureCube(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format);
 
 	uint32_t Allocate();
 
