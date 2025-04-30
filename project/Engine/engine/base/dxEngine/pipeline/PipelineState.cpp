@@ -6,8 +6,8 @@
 #include "InputLayoutFactory.h"
 #include "BlendStateFactory.h"
 #include "RasterizerStateFactory.h"
-
-#include "CompileShader.h"
+#include "CompileShaderFactory.h"
+#include "DepthStencilStateFactory.h"
 
 void PipelineState::Initialize(
 	ComPtr<ID3D12Device>& device, ComPtr<IDxcUtils> dxcUtils,
@@ -17,66 +17,6 @@ void PipelineState::Initialize(
 	dxcUtils_ = dxcUtils;
 	dxcCompiler_ = dxcCompiler;
 	includeHandler_ = includeHandler;
-}
-
-void PipelineState::Object3dShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& geometryShader, ComPtr<IDxcBlob>& pixelShader)
-{
-	vertexShader = CompileShader(L"resources/shaders/Object3d.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(vertexShader != nullptr);
-
-	geometryShader = CompileShader(L"resources/shaders/BasicGeometryShader.hlsl", L"gs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(geometryShader != nullptr);
-
-	pixelShader = CompileShader(L"resources/shaders/Object3d.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(pixelShader != nullptr);
-}
-
-void PipelineState::Line3dShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader)
-{
-	vertexShader = CompileShader(L"resources/shaders/Line3d.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(vertexShader != nullptr);
-
-	pixelShader = CompileShader(L"resources/shaders/Line3d.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(pixelShader != nullptr);
-}
-
-void PipelineState::ParticleShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader)
-{
-	vertexShader = CompileShader(L"resources/shaders/Particle.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(vertexShader != nullptr);
-
-	pixelShader = CompileShader(L"resources/shaders/Particle.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(pixelShader != nullptr);
-}
-
-void PipelineState::Object3dDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc)
-{
-	//Depthの機能を有効化する
-	depthStencilDesc.DepthEnable = true;
-	//書き込みします
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	//比較関数はLessEqual。つまり、近ければ描画される
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-}
-
-void PipelineState::SpriteDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc)
-{
-	//Depthの機能を有効化する
-	depthStencilDesc.DepthEnable = true;
-	//書き込みします
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	//比較関数はLessEqual。つまり、近ければ描画される
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-}
-
-void PipelineState::ParticleDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc)
-{
-	//Depthの機能を有効化する
-	depthStencilDesc.DepthEnable = true;
-	//書き込みします
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
-	//比較関数はLessEqual。つまり、近ければ描画される
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
 }
 
 ComPtr<ID3D12RootSignature> PipelineState::CreateObject3dRootSignature()
@@ -158,7 +98,7 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateSpriteRootSignature()
 	descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
 
 	//RootParameterの作成。複数設定できるので配列。今回は結果1つだけなので長さ1の配列
-	D3D12_ROOT_PARAMETER rootParameters[7] = {};
+	D3D12_ROOT_PARAMETER rootParameters[3] = {};
 	rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 	rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
 	rootParameters[0].Descriptor.ShaderRegister = 0;
@@ -169,19 +109,6 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateSpriteRootSignature()
 	rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
 	rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRange; //Tableの中身の配列を指定
 	rootParameters[2].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange); //Tableで利用する数
-	rootParameters[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
-	rootParameters[3].Descriptor.ShaderRegister = 1;
-	rootParameters[4].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[4].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
-	rootParameters[4].Descriptor.ShaderRegister = 2;
-	rootParameters[5].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[5].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
-	rootParameters[5].Descriptor.ShaderRegister = 3;
-	rootParameters[6].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-	rootParameters[6].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
-	rootParameters[6].Descriptor.ShaderRegister = 4;
-
 
 	rootSignatureDesc.pParameters = rootParameters;
 	rootSignatureDesc.NumParameters = _countof(rootParameters);
@@ -292,22 +219,11 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateParticleRootSignature()
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateObject3dPipelineState()
 {
-	// シェーダーのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob;
-	ComPtr<IDxcBlob> geometryShaderBlob;
-	ComPtr<IDxcBlob> pixelShaderBlob;
-	Object3dShader(vertexShaderBlob, geometryShaderBlob, pixelShaderBlob);
-
-	// デスクリプターステンシル
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	Object3dDepthStencilState(depthStencilDesc);
-
 	// パイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.pRootSignature = newRootSignature_.Get();
-	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
-	psoDesc.GS = { geometryShaderBlob->GetBufferPointer(),geometryShaderBlob->GetBufferSize() };
-	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
+	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::Object3d, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::Object3d, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Object3d);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -316,7 +232,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateObject3dPipelineState()
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Object3d);
 	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNormal);
 	psoDesc.NumRenderTargets = 1;
-	psoDesc.DepthStencilState = depthStencilDesc;
+	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(PipelineType::Object3d);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 新しいパイプラインステートオブジェクトの作成
@@ -328,22 +244,11 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateObject3dPipelineState()
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateSpritePipelineState()
 {
-	// シェーダーのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob;
-	ComPtr<IDxcBlob> geometryShaderBlob;
-	ComPtr<IDxcBlob> pixelShaderBlob;
-	Object3dShader(vertexShaderBlob, geometryShaderBlob, pixelShaderBlob);
-
-	// デスクリプターステンシル
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	SpriteDepthStencilState(depthStencilDesc);
-
 	// パイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.pRootSignature = newRootSignature_.Get();
-	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
-	psoDesc.GS = { geometryShaderBlob->GetBufferPointer(),geometryShaderBlob->GetBufferSize() };
-	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
+	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::Sprite, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::Sprite, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Sprite);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -352,7 +257,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateSpritePipelineState()
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Sprite);
 	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNormal);
 	psoDesc.NumRenderTargets = 1;
-	psoDesc.DepthStencilState = depthStencilDesc;
+	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(PipelineType::Sprite);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 新しいパイプラインステートオブジェクトの作成
@@ -364,20 +269,11 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateSpritePipelineState()
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateLine3dPipelineState()
 {
-	// シェーダーのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob;
-	ComPtr<IDxcBlob> pixelShaderBlob;
-	Line3dShader(vertexShaderBlob, pixelShaderBlob);
-
-	// デスクリプターステンシル
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	Object3dDepthStencilState(depthStencilDesc);
-
 	// パイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.pRootSignature = newRootSignature_.Get();
-	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
-	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
+	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::Line3d, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::Line3d, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Line3d);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -386,7 +282,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateLine3dPipelineState()
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Line3d);
 	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNone);
 	psoDesc.NumRenderTargets = 1;
-	psoDesc.DepthStencilState = depthStencilDesc;
+	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(PipelineType::Line3d);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 新しいパイプラインステートオブジェクトの作成
@@ -398,20 +294,11 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateLine3dPipelineState()
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateParticlePipelineState(int blendMode)
 {
-	// シェーダーのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob;
-	ComPtr<IDxcBlob> pixelShaderBlob;
-	ParticleShader(vertexShaderBlob, pixelShaderBlob);
-
-	// デスクリプターステンシル
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	ParticleDepthStencilState(depthStencilDesc);
-
 	// パイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.pRootSignature = newRootSignature_.Get();
-	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
-	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
+	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::Particle, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::Particle, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Particle);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -420,7 +307,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateParticlePipelineState(int blend
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Particle);
 	psoDesc.BlendState = BlendStateFactory::GetBlendState(static_cast<BlendMode>(blendMode));
 	psoDesc.NumRenderTargets = 1;
-	psoDesc.DepthStencilState = depthStencilDesc;
+	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(PipelineType::Particle);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 新しいパイプラインステートオブジェクトの作成
@@ -486,41 +373,13 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateTrailEffectRootSignature()
 	return newRootSignature_;
 }
 
-void PipelineState::TrailEffectShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader)
-{
-	vertexShader = CompileShader(L"resources/shaders/PrimitiveDrawr.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(vertexShader != nullptr);
-
-	pixelShader = CompileShader(L"resources/shaders/PrimitiveDrawr.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(pixelShader != nullptr);
-}
-
-void PipelineState::TrailEffectDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc)
-{
-	//Depthの機能を有効化する
-	depthStencilDesc.DepthEnable = true;
-	//書き込みしない
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
-	//比較関数はLessEqual。つまり、近ければ描画される
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-}
-
 ComPtr<ID3D12PipelineState> PipelineState::CreateTrailEffectPipelineState(int blendMode)
 {
-	// シェーダーのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob;
-	ComPtr<IDxcBlob> pixelShaderBlob;
-	TrailEffectShader(vertexShaderBlob, pixelShaderBlob);
-
-	// デスクリプターステンシル
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	TrailEffectDepthStencilState(depthStencilDesc);
-
 	// パイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.pRootSignature = newRootSignature_.Get();
-	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
-	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
+	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::PrimitiveDrawr, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::PrimitiveDrawr, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::PrimitiveDrawr);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -529,7 +388,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateTrailEffectPipelineState(int bl
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::PrimitiveDrawr);
 	psoDesc.BlendState = BlendStateFactory::GetBlendState(static_cast<BlendMode>(blendMode));
 	psoDesc.NumRenderTargets = 1;
-	psoDesc.DepthStencilState = depthStencilDesc;
+	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(PipelineType::PrimitiveDrawr);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 新しいパイプラインステートオブジェクトの作成
@@ -617,46 +476,13 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateAnimationRootSignature()
 	return newRootSignature_;
 }
 
-void PipelineState::AnimationShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& geometryShader, ComPtr<IDxcBlob>& pixelShader)
-{
-	vertexShader = CompileShader(L"resources/shaders/SkinningObject3d.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(vertexShader != nullptr);
-
-	geometryShader = CompileShader(L"resources/shaders/BasicGeometryShader.hlsl", L"gs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(geometryShader != nullptr);
-
-	pixelShader = CompileShader(L"resources/shaders/Object3d.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(pixelShader != nullptr);
-}
-
-void PipelineState::AnimationDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc)
-{
-	//Depthの機能を有効化する
-	depthStencilDesc.DepthEnable = true;
-	//書き込みします
-	depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-	//比較関数はLessEqual。つまり、近ければ描画される
-	depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
-}
-
 ComPtr<ID3D12PipelineState> PipelineState::CreateAnimationPipelineState()
 {
-	// シェーダーのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob;
-	ComPtr<IDxcBlob> geometryShaderBlob;
-	ComPtr<IDxcBlob> pixelShaderBlob;
-	AnimationShader(vertexShaderBlob, geometryShaderBlob, pixelShaderBlob);
-
-	// デスクリプターステンシル
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	AnimationDepthStencilState(depthStencilDesc);
-
 	// パイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.pRootSignature = newRootSignature_.Get();
-	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
-	psoDesc.GS = { geometryShaderBlob->GetBufferPointer(),geometryShaderBlob->GetBufferSize() };
-	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
+	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::Animation, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::Animation, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Animation);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -665,7 +491,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateAnimationPipelineState()
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Animation);
 	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNormal);
 	psoDesc.NumRenderTargets = 1;
-	psoDesc.DepthStencilState = depthStencilDesc;
+	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(PipelineType::Animation);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 新しいパイプラインステートオブジェクトの作成
@@ -726,36 +552,13 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateRenderTextureRootSignature()
 	return newRootSignature_;
 }
 
-void PipelineState::RenderTextureShader(ComPtr<IDxcBlob>& vertexShader, ComPtr<IDxcBlob>& pixelShader)
-{
-	vertexShader = CompileShader(L"resources/shaders/CopyImage.VS.hlsl", L"vs_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(vertexShader != nullptr);
-	pixelShader = CompileShader(L"resources/shaders/CopyImage.PS.hlsl", L"ps_6_0", dxcUtils_.Get(), dxcCompiler_.Get(), includeHandler_.Get());
-	assert(pixelShader != nullptr);
-}
-
-void PipelineState::RenderTextureDepthStencilState(D3D12_DEPTH_STENCIL_DESC& depthStencilDesc)
-{
-	//Depthの機能を有効化にしない
-	depthStencilDesc.DepthEnable = false;
-}
-
 ComPtr<ID3D12PipelineState> PipelineState::CreateRenderTexturePipelineState()
 {
-	// シェーダーのコンパイル
-	ComPtr<IDxcBlob> vertexShaderBlob;
-	ComPtr<IDxcBlob> pixelShaderBlob;
-	RenderTextureShader(vertexShaderBlob, pixelShaderBlob);
-
-	// デスクリプターステンシル
-	D3D12_DEPTH_STENCIL_DESC depthStencilDesc{};
-	RenderTextureDepthStencilState(depthStencilDesc);
-
 	// パイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.pRootSignature = newRootSignature_.Get();
-	psoDesc.VS = { vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize() };
-	psoDesc.PS = { pixelShaderBlob->GetBufferPointer(), pixelShaderBlob->GetBufferSize() };
+	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::RenderTexture, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::RenderTexture, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::RenderTexture);
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -764,7 +567,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateRenderTexturePipelineState()
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::RenderTexture);
 	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNone);
 	psoDesc.NumRenderTargets = 1;
-	psoDesc.DepthStencilState = depthStencilDesc;
+	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(PipelineType::RenderTexture);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	// 新しいパイプラインステートオブジェクトの作成

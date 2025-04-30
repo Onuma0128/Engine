@@ -30,7 +30,7 @@ D3D12_RASTERIZER_DESC& RasterizerStateFactory::GetRasterizerDesc(PipelineType ty
 		rasterizerState = std::make_unique<RenderTextureRasterizerState>();
 		break;
 	default:
-		assert(false && "Invalid InputLayoutType");
+		assert(false && "Invalid RasterizerStateType");
 		break;
 	}
 
