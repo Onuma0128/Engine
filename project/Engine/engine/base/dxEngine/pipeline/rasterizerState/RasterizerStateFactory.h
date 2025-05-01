@@ -123,3 +123,19 @@ public:
 		return rasterizerDesc;
 	}
 };
+
+// ============================================================
+// Skybox
+// ============================================================
+
+class SkyboxRasterizerState : public RasterizerStateBase
+{
+public:
+
+	D3D12_RASTERIZER_DESC& BuildRasterizer() override
+	{
+		rasterizerDesc.CullMode = D3D12_CULL_MODE_NONE;
+		rasterizerDesc.FillMode = D3D12_FILL_MODE_SOLID;
+		return rasterizerDesc;
+	}
+};

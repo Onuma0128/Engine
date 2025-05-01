@@ -29,6 +29,8 @@ public:
 
 	void DrawBase(int blendMode);
 
+	void DrawSkyboxBase();
+
 	void Finalize();
 
 	/*==================== アクセッサ ====================*/
@@ -41,5 +43,8 @@ private:
 
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	std::array<ComPtr<ID3D12PipelineState>, 5> pipelineStates_;
+
+	ComPtr<ID3D12RootSignature> skyboxRootSignature_ = nullptr;
+	ComPtr<ID3D12PipelineState> skyboxPipelineState_;
 
 };

@@ -29,6 +29,9 @@ D3D12_RASTERIZER_DESC& RasterizerStateFactory::GetRasterizerDesc(PipelineType ty
 	case PipelineType::RenderTexture:
 		rasterizerState = std::make_unique<RenderTextureRasterizerState>();
 		break;
+	case PipelineType::Skybox:
+		rasterizerState = std::make_unique<SkyboxRasterizerState>();
+		break;
 	default:
 		assert(false && "Invalid RasterizerStateType");
 		break;

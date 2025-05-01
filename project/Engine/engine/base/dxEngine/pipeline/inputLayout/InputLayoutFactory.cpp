@@ -29,6 +29,9 @@ D3D12_INPUT_LAYOUT_DESC& InputLayoutFactory::GetInputLayout(PipelineType type)
 	case PipelineType::RenderTexture:
 		inputLayout = std::make_unique<RenderTextureInputLayout>();
 		break;
+	case PipelineType::Skybox:
+		inputLayout = std::make_unique<SkyboxInputLayout>();
+		break;
 	default:
 		assert(false && "Invalid InputLayoutType");
 		break;

@@ -207,3 +207,29 @@ public:
 		return layoutDesc;
 	}
 };
+
+// ============================================================
+// Skybox
+// ============================================================
+
+class SkyboxInputLayout : public InputLayoutBase
+{
+public:
+
+	D3D12_INPUT_LAYOUT_DESC& BuildLayout() override
+	{
+		descs[0].SemanticName = "POSITION";
+		descs[0].SemanticIndex = 0;
+		descs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		descs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+		descs[1].SemanticName = "TEXCOORD";
+		descs[1].SemanticIndex = 0;
+		descs[1].Format = DXGI_FORMAT_R32G32_FLOAT;
+		descs[1].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+
+		layoutDesc.pInputElementDescs = descs.data();
+		layoutDesc.NumElements = 2;
+
+		return layoutDesc;
+	}
+};

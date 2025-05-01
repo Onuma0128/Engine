@@ -85,6 +85,9 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 	case PrimitiveType::Cylinder:
 		InitCylinder(kIndex);
 		break;
+	case PrimitiveType::Skybox:
+		InitSkybox();
+		break;
 	default:
 		break;
 	}
@@ -92,7 +95,11 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 
 void PrimitiveDrawr::TypeDraw()
 {
-	primitiveDrawrBase_->DrawBase(static_cast<int>(blendMode_));
+	if (type_ == PrimitiveType::Skybox) {
+		primitiveDrawrBase_->DrawSkyboxBase();
+	} else {
+		primitiveDrawrBase_->DrawBase(static_cast<int>(blendMode_));
+	}
 
 	switch (type_)
 	{
@@ -107,6 +114,9 @@ void PrimitiveDrawr::TypeDraw()
 		break;
 	case PrimitiveType::Cylinder:
 		DrawCylinder();
+		break;
+	case PrimitiveType::Skybox:
+		DrawSkybox();
 		break;
 	default:
 		break;
@@ -479,4 +489,84 @@ void PrimitiveDrawr::CreateCylinderVertexData(VertexData* vertexData, uint32_t k
 			.texcoord = {uNext,1.0f}
 		};
 	}
+}
+
+void PrimitiveDrawr::InitSkybox()
+{
+	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
+
+	SetTexture("resources", "rostock_laage_airport_4k.dds");
+
+	CreateBufferResource(vertexResource_, sizeof(VertexData) * 36);
+	CreateVertexBufferView(36);
+	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	CreateSkyboxVertexData(vertexData_);
+
+	CreateBufferResource(materialResource_, sizeof(MaterialData));
+	CreateMaterialData();
+
+	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+	CreateWVPData();
+}
+
+void PrimitiveDrawr::DrawSkybox()
+{
+	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
+	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textureData_.textureIndex);
+
+	commandList->DrawInstanced(36, 1, 0, 0);
+}
+
+void PrimitiveDrawr::CreateSkyboxVertexData(VertexData* vertexData)
+{
+	// 前面 (+Z)
+	vertexData[0].position = { -1.0f,  1.0f,  1.0f, 1.0f };
+	vertexData[1].position = { 1.0f,  1.0f,  1.0f, 1.0f };
+	vertexData[2].position = { -1.0f, -1.0f,  1.0f, 1.0f };
+	vertexData[3].position = { -1.0f, -1.0f,  1.0f, 1.0f };
+	vertexData[4].position = { 1.0f,  1.0f,  1.0f, 1.0f };
+	vertexData[5].position = { 1.0f, -1.0f,  1.0f, 1.0f };
+
+	// 背面 (-Z)
+	vertexData[6].position = { 1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[7].position = { -1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[8].position = { 1.0f, -1.0f, -1.0f, 1.0f };
+	vertexData[9].position = { 1.0f, -1.0f, -1.0f, 1.0f };
+	vertexData[10].position = { -1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[11].position = { -1.0f, -1.0f, -1.0f, 1.0f };
+
+	// 左面 (-X)
+	vertexData[12].position = { -1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[13].position = { -1.0f,  1.0f,  1.0f, 1.0f };
+	vertexData[14].position = { -1.0f, -1.0f, -1.0f, 1.0f };
+	vertexData[15].position = { -1.0f, -1.0f, -1.0f, 1.0f };
+	vertexData[16].position = { -1.0f,  1.0f,  1.0f, 1.0f };
+	vertexData[17].position = { -1.0f, -1.0f,  1.0f, 1.0f };
+
+	// 右面 (+X)
+	vertexData[18].position = { 1.0f,  1.0f,  1.0f, 1.0f };
+	vertexData[19].position = { 1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[20].position = { 1.0f, -1.0f,  1.0f, 1.0f };
+	vertexData[21].position = { 1.0f, -1.0f,  1.0f, 1.0f };
+	vertexData[22].position = { 1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[23].position = { 1.0f, -1.0f, -1.0f, 1.0f };
+
+	// 上面 (+Y)
+	vertexData[24].position = { -1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[25].position = { 1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[26].position = { -1.0f,  1.0f,  1.0f, 1.0f };
+	vertexData[27].position = { -1.0f,  1.0f,  1.0f, 1.0f };
+	vertexData[28].position = { 1.0f,  1.0f, -1.0f, 1.0f };
+	vertexData[29].position = { 1.0f,  1.0f,  1.0f, 1.0f };
+
+	// 下面 (-Y)
+	vertexData[30].position = { -1.0f, -1.0f,  1.0f, 1.0f };
+	vertexData[31].position = { 1.0f, -1.0f,  1.0f, 1.0f };
+	vertexData[32].position = { -1.0f, -1.0f, -1.0f, 1.0f };
+	vertexData[33].position = { -1.0f, -1.0f, -1.0f, 1.0f };
+	vertexData[34].position = { 1.0f, -1.0f,  1.0f, 1.0f };
+	vertexData[35].position = { 1.0f, -1.0f, -1.0f, 1.0f };
 }

@@ -8,7 +8,8 @@ enum class PipelineType {
 	Particle,
 	PrimitiveDrawr,
 	Animation,
-	RenderTexture
+	RenderTexture,
+	Skybox
 };
 
 enum class BlendMode {

@@ -127,3 +127,20 @@ public:
 		return depthStencilDesc;
 	}
 };
+
+// ============================================================
+// Skybox
+// ============================================================
+
+class SkyboxDepthStencilState : public DepthStencilStateBase
+{
+public:
+
+	D3D12_DEPTH_STENCIL_DESC& BuildDepthStencil() override
+	{
+		depthStencilDesc.DepthEnable = true;
+		depthStencilDesc.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+		depthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;
+		return depthStencilDesc;
+	}
+};

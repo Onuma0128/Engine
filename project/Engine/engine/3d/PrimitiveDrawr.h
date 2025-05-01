@@ -21,7 +21,8 @@ enum class PrimitiveType {
 	Plane,
 	Sphere,
 	Ring,
-	Cylinder
+	Cylinder,
+	Skybox
 };
 
 class PrimitiveDrawr
@@ -133,6 +134,15 @@ private:
 	// Cylinderの頂点計算
 	void CreateCylinderVertexData(VertexData* vertexData, uint32_t kCylinderDivide);
 
+	/* =============== Skybox =============== */
+
+	void InitSkybox();
+
+	void DrawSkybox();
+
+	// Skyboxの頂点計算
+	void CreateSkyboxVertexData(VertexData* vertexData);
+
 private:
 
 	PrimitiveDrawrBase* primitiveDrawrBase_ = nullptr;
@@ -185,5 +195,9 @@ private:
 	/* =============== Cylinder =============== */
 
 	uint32_t kCylinderDivide_;
+
+	/* =============== Skybox =============== */
+
+
 
 };

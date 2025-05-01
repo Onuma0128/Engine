@@ -282,3 +282,37 @@ public:
 	}
 };
 
+// ============================================================
+// Skybox
+// ============================================================
+
+class SkyboxCompileShader : public CompileShaderBase
+{
+public:
+
+	SkyboxCompileShader(
+		ComPtr<IDxcUtils> dxcUtils,
+		ComPtr<IDxcCompiler3>& dxcCompiler,
+		ComPtr<IDxcIncludeHandler> includeHandler
+	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+	}
+
+	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
+	{
+		vsBytecode = CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/Skybox.VS.hlsl", L"vs_6_0",
+			dxcUtils_, dxcCompiler_, includeHandler_
+		);
+		return vsBytecode;
+	}
+
+	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	{
+		psBytecode = CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/Skybox.PS.hlsl", L"ps_6_0",
+			dxcUtils_, dxcCompiler_, includeHandler_
+		);
+		return psBytecode;
+	}
+};
+

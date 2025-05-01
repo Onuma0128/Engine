@@ -29,6 +29,9 @@ D3D12_DEPTH_STENCIL_DESC& DepthStencilStateFactory::GetDepthStencilState(Pipelin
 	case PipelineType::RenderTexture:
 		depthStencilState = std::make_unique<RenderTextureDepthStencilState>();
 		break;
+	case PipelineType::Skybox:
+		depthStencilState = std::make_unique<SkyboxDepthStencilState>();
+		break;
 	default:
 		assert(false && "Invalid DepthStencilStateType");
 		break;

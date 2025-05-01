@@ -138,6 +138,9 @@ std::unique_ptr<CompileShaderBase> CompileShaderFactory::GetCompileShaderPtr(Pip
 	case PipelineType::RenderTexture:
 		compileShader = std::make_unique<RenderTextureCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
+	case PipelineType::Skybox:
+		compileShader = std::make_unique<SkyboxCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		break;
 	default:
 		assert(false && "Invalid CompileShaderType");
 		break;

@@ -56,6 +56,11 @@ public:
 	// パイプラインの生成
 	ComPtr<ID3D12PipelineState> CreateRenderTexturePipelineState();
 
+	/* ==================== Skybox ==================== */
+
+	// パイプラインの生成
+	ComPtr<ID3D12PipelineState> CreateSkyboxPipelineState();
+
 
 	///==============================================================================================================
 

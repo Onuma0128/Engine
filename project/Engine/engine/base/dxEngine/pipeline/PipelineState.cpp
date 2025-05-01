@@ -198,3 +198,28 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateRenderTexturePipelineState()
 
 	return newPipelineState_;
 }
+
+ComPtr<ID3D12PipelineState> PipelineState::CreateSkyboxPipelineState()
+{
+	// パイプラインステートの設定
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+	psoDesc.pRootSignature = RootSignatureFactory::GetRootSignature(PipelineType::Skybox, device_).Get();
+	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::Skybox, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::Skybox, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::Skybox);
+	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	psoDesc.SampleDesc.Count = 1;
+	psoDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;
+	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(PipelineType::Skybox);
+	psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNormal);
+	psoDesc.NumRenderTargets = 1;
+	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(PipelineType::Skybox);
+	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	// 新しいパイプラインステートオブジェクトの作成
+	hr_ = device_->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&newPipelineState_));
+	assert(SUCCEEDED(hr_));
+
+	return newPipelineState_;
+}

@@ -10,6 +10,7 @@
 #include "PrimitiveDrawrRootSignature.h"
 #include "AnimationRootSignature.h"
 #include "RenderTextureRootSignature.h"
+#include "SkyboxRootSignature.h"
 
 ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType type, ComPtr<ID3D12Device> device)
 {
@@ -36,6 +37,9 @@ ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType 
 		break;
 	case PipelineType::RenderTexture:
 		rootSignature = std::make_unique<RenderTextureRootSignature>();
+		break;
+	case PipelineType::Skybox:
+		rootSignature = std::make_unique<SkyboxRootSignature>();
 		break;
 	default:
 		assert(false && "Invalid RootSignatureType");

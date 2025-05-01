@@ -80,7 +80,8 @@ void TextureManager::LoadTexture(const std::string& filePath)
 		SrvManager::GetInstance()->CreateSRVforTextureCube(
 			textureData.srvIndex,
 			textureData.resource.Get(),
-			textureData.metadata.format
+			textureData.metadata.format,
+			UINT(textureData.metadata.mipLevels)
 		);
 	} else {
 		SrvManager::GetInstance()->CreateSRVforTexture2D(
@@ -100,18 +101,18 @@ void TextureManager::UploadTextureData(ComPtr<ID3D12Resource> texture, const Dir
 	//Meta情報を取得
 	const DirectX::TexMetadata& metadata = mipImages.GetMetadata();
 	//全MipMapについて
-	for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; ++mipLevel) {
-		//MipMapLevelを指定して各Imageを取得
-		const DirectX::Image* img = mipImages.GetImage(mipLevel, 0, 0);
-		//Textureに転送
-		HRESULT hr = texture->WriteToSubresource(
-			UINT(mipLevel),
-			nullptr,
-			img->pixels,
-			UINT(img->rowPitch),
-			UINT(img->slicePitch)
-		);
-		assert(SUCCEEDED(hr));
+	for (size_t arraySlice = 0; arraySlice < metadata.arraySize; ++arraySlice) {
+		for (size_t mipLevel = 0; mipLevel < metadata.mipLevels; ++mipLevel) {
+			const DirectX::Image* img = mipImages.GetImage(mipLevel, arraySlice, 0);
+			HRESULT hr = texture->WriteToSubresource(
+				UINT(mipLevel + arraySlice * metadata.mipLevels),
+				nullptr,
+				img->pixels,
+				UINT(img->rowPitch),
+				UINT(img->slicePitch)
+			);
+			assert(SUCCEEDED(hr));
+		}
 	}
 }
 
