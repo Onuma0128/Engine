@@ -22,6 +22,13 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
     modelData_.material.textureIndex =
         TextureManager::GetInstance()->GetSrvIndex(modelData_.material.directoryPath + modelData_.material.filePath);
 
+    modelData_.material.ENV_DirectoryPath = "resources/";
+    modelData_.material.ENV_FilePath = "rostock_laage_airport_4k.dds";
+    TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
+
+    modelData_.material.ENV_TextureIndex =
+        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
+
     MakeVertexData();
     MakeIndexData();
 }
@@ -34,6 +41,7 @@ void Model::Draw(bool isAnimation)
     }
     commandList->IASetIndexBuffer(&indexBufferView_);
     SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, modelData_.material.textureIndex);
+    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, modelData_.material.ENV_TextureIndex);
 
     // 描画
     commandList->DrawIndexedInstanced((UINT)modelData_.indices.size(), 1, 0, 0, 0);
@@ -167,6 +175,15 @@ void Model::SetTexture(const std::string& directoryPath, const std::string& file
     TextureManager::GetInstance()->LoadTexture(modelData_.material.directoryPath + modelData_.material.filePath);
     modelData_.material.textureIndex =
         TextureManager::GetInstance()->GetSrvIndex(modelData_.material.directoryPath + modelData_.material.filePath);
+}
+
+void Model::SetTexture_ENV(const std::string& directoryPath, const std::string& filename)
+{
+    modelData_.material.ENV_DirectoryPath = directoryPath + "/";
+    modelData_.material.ENV_FilePath = filename;
+    TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
+    modelData_.material.ENV_TextureIndex =
+        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
 }
 
 MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)

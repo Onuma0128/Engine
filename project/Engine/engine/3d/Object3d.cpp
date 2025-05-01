@@ -55,6 +55,11 @@ void Object3d::SetTexture(const std::string& directoryPath, const std::string& f
     model_->SetTexture(directoryPath, filePath);
 }
 
+void Object3d::SetTexture_ENV(const std::string& directoryPath, const std::string& filePath)
+{
+    model_->SetTexture_ENV(directoryPath, filePath);
+}
+
 void Object3d::SetColor(const Vector4& color)
 {
     materialData_->color = color;
@@ -71,4 +76,5 @@ void Object3d::MakeMaterialData()
     materialData_->enableLighting = true;
     materialData_->uvTransform = Matrix4x4::Identity();
     materialData_->shininess = 20.0f;
+    materialData_->environmentCoefficient = 0;
 }

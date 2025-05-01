@@ -3,9 +3,10 @@
 struct Material
 {
     float4 color;
-    int enableLighting;
     float4x4 uvTransform;
+    int enableLighting;
     float shininess;
+    float environmentCoefficient;
 };
 struct DirectionalLightData
 {
@@ -43,6 +44,7 @@ ConstantBuffer<PointLightData> gPointLight : register(b2);
 ConstantBuffer<SpotLightData> gSpotLight : register(b3);
 ConstantBuffer<Camera> gCamera : register(b4);
 Texture2D<float4> gTexture : register(t0);
+TextureCube<float4> gEnvironmentTexture : register(t1);
 SamplerState gSampler : register(s0);
 
 struct PixelShaderOutput
@@ -73,7 +75,6 @@ PixelShaderOutput main(VertexShaderOutput input)
     RdotE = max(dot(reflectLight, toEye), 0.0f);
     float spotPow = pow(RdotE, gMaterial.shininess);
     
-    
     if (gMaterial.enableLighting != 0)
     {
         // DirectionalLightの処理
@@ -97,11 +98,17 @@ PixelShaderOutput main(VertexShaderOutput input)
         float spotDistanceFactor = pow(saturate(-spotDistance / gSpotLight.distance + 1.0f), gSpotLight.decay);
         float3 diffuseSpotLight = gMaterial.color.rgb * textureColor.rgb * gSpotLight.color.rgb * cos * gSpotLight.intensity * spotDistanceFactor * falloffFactor;
         float3 specularSpotLight = gSpotLight.color.rgb * gSpotLight.intensity * spotPow * spotDistanceFactor * falloffFactor;
+        // 環境マップの処理
+        float3 cameraToPosition = normalize(input.worldPosition - gCamera.worldPosition);
+        float3 reflectedVector = reflect(cameraToPosition, normalize(input.normal));
+        float4 environmentColor = gEnvironmentTexture.Sample(gSampler, reflectedVector);
+        environmentColor.rgb *= gMaterial.environmentCoefficient;
         // ライトの処理を合算
-        output.color.rgb = 
+        output.color.rgb =
         diffuseDirectionalLight + specularDirectionalLight +
         diffusePointLight + specularPointLight +
-        diffuseSpotLight + specularSpotLight;
+        diffuseSpotLight + specularSpotLight +
+        environmentColor.rgb;
         output.color.a = gMaterial.color.a * textureColor.a;
     }
     else

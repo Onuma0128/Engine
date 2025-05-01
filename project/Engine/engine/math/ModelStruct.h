@@ -26,16 +26,21 @@ struct VertexData {
 
 struct Material {
 	Vector4 color;
-	int32_t enableLighting;
-	float padding[3];
 	Matrix4x4 uvTransform;
+	int32_t enableLighting;
 	float shininess;
+	float environmentCoefficient;
+	float padding[1];
 };
 
 struct MaterialData {
 	std::string directoryPath;
 	std::string filePath;
 	uint32_t textureIndex = 0;
+
+	std::string ENV_DirectoryPath;
+	std::string ENV_FilePath;
+	uint32_t ENV_TextureIndex = 0;
 };
 
 struct Node {

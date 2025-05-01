@@ -26,6 +26,7 @@ public:
 	static ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
 
 	void SetTexture(const std::string& directoryPath, const std::string& filename);
+	void SetTexture_ENV(const std::string& directoryPath, const std::string& filename);
 
 private:
 
