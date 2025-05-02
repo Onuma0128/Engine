@@ -15,10 +15,6 @@ void GamePlayScene::Initialize()
 	demoObj_->GetTransform().scale_ = { 20.0f,20.0f ,20.0f };
 	demoObj_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, -1.57f);
 
-	demoSkybox_ = std::make_unique<PrimitiveDrawr>();
-	demoSkybox_->TypeInit(PrimitiveType::Skybox);
-	demoSkybox_->GetTransform().scale = { 20,20,20 };
-
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
@@ -38,8 +34,6 @@ void GamePlayScene::Update()
 {
 	demoObj_->Update();
 
-	demoSkybox_->Update();
-
 	player_->Update();
 
 	enemy_->Update();
@@ -54,8 +48,6 @@ void GamePlayScene::Update()
 void GamePlayScene::Draw()
 {
 	demoObj_->Draw();
-
-	demoSkybox_->TypeDraw();
 
 	player_->Draw();
 
