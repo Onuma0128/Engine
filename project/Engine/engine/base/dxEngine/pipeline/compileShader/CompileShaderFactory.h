@@ -233,7 +233,7 @@ public:
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
 		vsBytecode = CompileShaderFactory::CreateCompileShader(
-			L"resources/shaders/CopyImage.VS.hlsl", L"vs_6_0",
+			L"resources/shaders/Fullscreen.VS.hlsl", L"vs_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
 		return vsBytecode;

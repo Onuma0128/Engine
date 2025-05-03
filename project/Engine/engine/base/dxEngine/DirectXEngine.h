@@ -104,13 +104,8 @@ private:
 	// 深度バッファの生成
 	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr;
-	// 各種でスクリプタヒープの生成
-	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap_ = nullptr;
-	uint32_t descriptorSizeRTV_ = NULL;
-	uint32_t descriptorSizeDSV_ = NULL;
 	//RTVを2つ作るのでディスクリプタを2つ用意
-	D3D12_RENDER_TARGET_VIEW_DESC rtvDesc_{};
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandles_[2]{};
+	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 2> rtvHandles_{};
 	// フェンスを生成
 	ComPtr<ID3D12Fence> fence_ = nullptr;
 	uint64_t fenceValue_ = 0;

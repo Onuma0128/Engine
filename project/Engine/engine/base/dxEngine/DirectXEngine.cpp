@@ -13,6 +13,7 @@
 
 #include "ImGuiManager.h"
 #include "SrvManager.h"
+#include "RtvManager.h"
 #include "Object3dBase.h"
 #include "ModelManager.h"
 #include "SpriteBase.h"
@@ -30,6 +31,7 @@ using Microsoft::WRL::ComPtr;
 DirectXEngine::~DirectXEngine()
 {
 	SrvManager::GetInstance()->Finalize();
+	RtvManager::GetInstance()->Finalize();
 	CameraManager::GetInstance()->Finalize();
 	TextureManager::GetInstance()->Finalize();
 	SpriteBase::GetInstance()->Finalize();
@@ -64,9 +66,7 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	// 各種デスクリプタヒープの初期化
 	DescriptorHeapInitialize();
 
-	/*==================== SRV ====================*/
-
-	SrvManager::GetInstance()->Initialize(this);
+	/*==================== ImGui ====================*/
 
 	imguiManager->Initialize(this, winApp_);
 
@@ -264,37 +264,25 @@ void DirectXEngine::DepthStencilInitialize()
 
 void DirectXEngine::DescriptorHeapInitialize()
 {
-	//ディスクリプタヒープの生成(RTV,SRV)
-	rtvDescriptorHeap_ = CreateDescriptorHeap(device_, D3D12_DESCRIPTOR_HEAP_TYPE_RTV, 3, false);
-	//srvDescriptorHeap_ = CreateDescriptorHeap(device_, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, kMaxSRVCount, true);
-	//DescriptorSizeを取得しておく
-	//descriptorSizeSRV_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	descriptorSizeRTV_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-	descriptorSizeDSV_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	/*==================== SRV,RTV ====================*/
+
+	SrvManager::GetInstance()->Initialize(this);
+	RtvManager::GetInstance()->Initialize(this);
 }
 
 void DirectXEngine::RTVInitialize()
 {
 	HRESULT hr{};
 
-	//SwapChainからResourceを引っ張ってくる
-	hr = swapChain_->GetBuffer(0, IID_PPV_ARGS(&swapChainResources_[0]));
-	//うまく取得できなければ起動できない
-	assert(SUCCEEDED(hr));
-	hr = swapChain_->GetBuffer(1, IID_PPV_ARGS(&swapChainResources_[1]));
-	assert(SUCCEEDED(hr));
+	// swapChainを2つ初期化
+	for (uint32_t i = 0; i < 2; ++i) {
+		hr = swapChain_->GetBuffer(i, IID_PPV_ARGS(&swapChainResources_[i]));
+		assert(SUCCEEDED(hr));
 
-	//RTVの設定
-	rtvDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; //出力結果をSRGBに変換して書き込む
-	rtvDesc_.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D; //2Dテクスチャとして書き込む
-	//ディスクリプタの先頭を取得する
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvStartHandle = GetCPUDescriptorHandle(rtvDescriptorHeap_, descriptorSizeRTV_, 0);
-	//まず1つ目を作る。1つ目は最初の所に作る。作る場所をこちらで指摘してあげる必要がある
-	rtvHandles_[0] = rtvStartHandle;
-	rtvHandles_[1].ptr = rtvHandles_[0].ptr + device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-	for (uint32_t i = 0; i < 2; i++) {
-		assert(swapChainResources_[i] != nullptr);
-		device_->CreateRenderTargetView(swapChainResources_[i].Get(), &rtvDesc_, rtvHandles_[i]);
+		// RtvManagerでRTVを割り当てて作成
+		uint32_t rtvIndex = RtvManager::GetInstance()->Allocate();
+		rtvHandles_[i] = RtvManager::GetInstance()->GetCPUDescriptorHandle(rtvIndex);
+		RtvManager::GetInstance()->CreateRTV(rtvIndex, swapChainResources_[i].Get());
 	}
 
 	// RenderTextureのRTVの設定
@@ -306,10 +294,12 @@ void DirectXEngine::RTVInitialize()
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		kRenderTargetClearValue
 	);
-	renderTextureHandle_ = GetCPUDescriptorHandle(rtvDescriptorHeap_, descriptorSizeRTV_, 2);
+	// RtvManagerでRTVを割り当てて作成
+	uint32_t renderTextureRTVIndex = RtvManager::GetInstance()->Allocate();
+	renderTextureHandle_ = RtvManager::GetInstance()->GetCPUDescriptorHandle(renderTextureRTVIndex);
+	RtvManager::GetInstance()->CreateRTV(renderTextureRTVIndex, renderTextureResource_.Get());
 
-	assert(renderTextureResource_ != nullptr);
-	device_->CreateRenderTargetView(renderTextureResource_.Get(), &rtvDesc_, renderTextureHandle_);
+	// RenderTextureのSRVの設定
 	renderTextureSRVIndex_ = SrvManager::GetInstance()->Allocate() + 1;
 	SrvManager::GetInstance()->CreateSRVforRenderTexture(renderTextureSRVIndex_, renderTextureResource_.Get());
 
