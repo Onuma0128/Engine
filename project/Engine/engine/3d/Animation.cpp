@@ -9,7 +9,6 @@
 #include "TextureManager.h"
 
 #include "Object3d.h"
-#include "AnimationBase.h"
 #include "Model.h"
 #include "ModelManager.h"
 #include "LightManager.h"
@@ -21,7 +20,9 @@
 void Animation::Init(const std::string& directoryPath, const std::string& filename)
 {
 	ModelManager::GetInstance()->LoadModel(directoryPath, filename);
-	this->animationBase_ = AnimationBase::GetInstance();
+	animationBase_ = std::make_unique<AnimationBase>();
+	animationBase_->Initialize();
+
 	transform_ = WorldTransform();
 	SetModel(filename);
 	MakeMaterialData();
@@ -29,7 +30,7 @@ void Animation::Init(const std::string& directoryPath, const std::string& filena
 	animationData_ = LoadAnimationFile(directoryPath, filename);
 
 	skeleton_ = CreateSkeleton(model_->GetModelData().rootNode);
-	skinCluster_ = CreateSkinCluster(animationBase_->GetDxEngine()->GetDevice(), skeleton_, model_->GetModelData());
+	skinCluster_ = CreateSkinCluster(DirectXEngine::GetDevice(), skeleton_, model_->GetModelData());
 
 	for (const Joint& joint : skeleton_.joints) {
 		if (joint.parent) {
@@ -81,14 +82,14 @@ void Animation::Draw()
 {
 	animationBase_->DrawBase();
 
-	auto commandList = animationBase_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
 	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, skinCluster_.srvHandleIndex);
 	commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(6, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(7, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(8, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
 
 	if (model_) {
 		D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {
@@ -329,7 +330,7 @@ Quaternion Animation::CalculateValue(const std::vector<KeyFrameQuaternion>& keyf
 void Animation::MakeMaterialData()
 {
 	// マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-	materialResource_ = CreateBufferResource(animationBase_->GetDxEngine()->GetDevice(), sizeof(Material)).Get();
+	materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material)).Get();
 	// 書き込むためのアドレスを取得
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	// 今回は白を書き込んでいく

@@ -48,6 +48,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources", "plane.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "suzanne.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "Box.obj");
+	ModelManager::GetInstance()->LoadModel("resources/human", "walk.gltf");
 }
 
 void Framework::Run()

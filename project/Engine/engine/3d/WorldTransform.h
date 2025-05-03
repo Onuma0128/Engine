@@ -11,7 +11,6 @@
 using Microsoft::WRL::ComPtr;
 
 class Model;
-class Object3dBase;
 
 class WorldTransform
 {
@@ -54,8 +53,6 @@ public:
 	const WorldTransform* parent_ = nullptr;
 
 private:
-
-	Object3dBase* object3dBase_ = nullptr;
 
 	/*==================== 座標変換行列 ====================*/
 

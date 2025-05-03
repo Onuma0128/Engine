@@ -2,8 +2,11 @@
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
+#include <memory>
 #include <stdint.h>
 #include <string>
+
+#include "SpriteBase.h"
 
 #include "Vector2.h"
 #include "Vector3.h"
@@ -12,8 +15,6 @@
 #include "Transform.h"
 
 using Microsoft::WRL::ComPtr;
-
-class SpriteBase;
 
 class Sprite
 {
@@ -96,7 +97,7 @@ private:
 
 private:
 
-	SpriteBase* spriteBase_ = nullptr;
+	std::unique_ptr<SpriteBase> spriteBase_ = nullptr;
 	// テクスチャ番号　
 	uint32_t textureIndex_ = 0;
 	// ファイルパス

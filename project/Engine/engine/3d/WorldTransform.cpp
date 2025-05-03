@@ -4,15 +4,12 @@
 
 #include "Camera.h"
 #include "CameraManager.h"
-#include "Object3dBase.h"
 #include "Model.h"
 
 #include "CreateBufferResource.h"
 
 WorldTransform::WorldTransform()
 {
-    object3dBase_ = Object3dBase::GetInstance();
-
     CreateConstBuffer();
 }
 
@@ -44,7 +41,7 @@ void WorldTransform::TransferMatrix(const Matrix4x4& localMatrix)
 
 void WorldTransform::CreateConstBuffer()
 {
-    constBuffer_ = CreateBufferResource(object3dBase_->GetDxEngine()->GetDevice(), sizeof(TransformationMatrix)).Get();
+    constBuffer_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(TransformationMatrix)).Get();
     constBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&constMap_));
     constMap_->WVP = Matrix4x4::Identity();
     constMap_->World = Matrix4x4::Identity();

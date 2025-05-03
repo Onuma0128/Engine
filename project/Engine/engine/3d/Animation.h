@@ -1,12 +1,13 @@
 #pragma once
+#include <memory>
 
+#include "AnimationBase.h"
 #include "WorldTransform.h"
 
 #include "AnimationStruct.h"
 #include "ModelStruct.h"
 
 class Model;
-class AnimationBase;
 class Line3d;
 
 class Animation
@@ -52,7 +53,7 @@ protected:
 
 private:
 
-	AnimationBase* animationBase_ = nullptr;
+	std::unique_ptr<AnimationBase> animationBase_ = nullptr;
 	Model* model_ = nullptr;
 
 	AnimationData animationData_;

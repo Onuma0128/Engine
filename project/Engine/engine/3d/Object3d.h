@@ -2,8 +2,10 @@
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
+#include <memory>
 #include <string>
 
+#include "Object3dBase.h"
 #include "WorldTransform.h"
 #include "Vector4.h"
 #include "Matrix4x4.h"
@@ -12,7 +14,6 @@
 
 using Microsoft::WRL::ComPtr;
 
-class Object3dBase;
 class Model;
 
 class Object3d
@@ -50,7 +51,7 @@ protected:
 
 private:
 
-	Object3dBase* object3dBase_ = nullptr;
+	std::unique_ptr<Object3dBase> object3dBase_ = nullptr;
 
 	Model* model_ = nullptr;
 

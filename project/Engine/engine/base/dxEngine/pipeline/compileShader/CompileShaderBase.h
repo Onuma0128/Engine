@@ -5,6 +5,8 @@
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 
+#include "PostEffectType.h"
+
 using Microsoft::WRL::ComPtr;
 
 class CompileShaderBase
@@ -18,7 +20,7 @@ public:
 	);
 	virtual ~CompileShaderBase() = default;
 	virtual D3D12_SHADER_BYTECODE& BuildVS_Shader() = 0;
-	virtual D3D12_SHADER_BYTECODE& BuildPS_Shader() = 0;
+	virtual D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) = 0;
 
 protected:
 

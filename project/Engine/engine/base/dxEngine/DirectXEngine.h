@@ -9,6 +9,7 @@
 
 #include "StringUtility.h"
 #include "PipelineState.h"
+#include "PostEffectManager.h"
 
 class WinApp;
 class ImGuiManager;
@@ -61,14 +62,17 @@ public:
 
 	/*========================== ゲッター ===========================*/
 
-	// デバイス
-	ID3D12Device* GetDevice()const { return device_.Get(); }
-	// コマンドリスト
-	ID3D12GraphicsCommandList* GetCommandList()const { return commandList_.Get(); }
-	// パイプラインのゲッター
-	PipelineState* GetPipelineState()const { return pipelineState_.get(); }
 	// バックバッファの数を取得
 	size_t GetBackBufferCount()const { return static_cast<size_t>(swapChainDesc_.BufferCount); }
+
+	// デバイス
+	static ID3D12Device* GetDevice() { return device_.Get(); }
+	// コマンドリスト
+	static ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
+	// パイプライン
+	static PipelineState* GetPipelineState() { return pipelineState_.get(); }
+	// ポストエフェクト
+	static PostEffectManager* GetPostEffectMgr() { return postEffectManager_.get(); }
 
 private:
 	// StringUtility
@@ -76,18 +80,20 @@ private:
 	// WindowsAPI
 	WinApp* winApp_ = nullptr;
 	// PipelineState
-	std::unique_ptr<PipelineState> pipelineState_ = nullptr;
+	static std::unique_ptr<PipelineState> pipelineState_;
+	// PostEffectManager
+	static std::unique_ptr<PostEffectManager> postEffectManager_;
+	// D3D12Deviceの作成
+	static ComPtr<ID3D12Device> device_;
+	// commandListを生成する
+	static ComPtr<ID3D12GraphicsCommandList> commandList_;
 
 	///==============================================================
 
-	// D3D12Deviceの作成
-	ComPtr<ID3D12Device> device_ = nullptr;
 	// DXGIファクトリーの生成
 	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;
 	//コマンドキューを生成する
 	ComPtr<ID3D12CommandQueue> commandQueue_ = nullptr;
-	//コマンドリストを生成する
-	ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
 	//コマンドアロケータを生成する
 	ComPtr<ID3D12CommandAllocator> commandAllocator_ = nullptr;
 	//スワップチェーンを生成する

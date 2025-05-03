@@ -2,14 +2,15 @@
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
-#include "vector"
+#include <memory>
+#include <vector>
+
+#include "Line3dBase.h"
 
 #include "Vector3.h"
 #include "Vector4.h"
 
 using Microsoft::WRL::ComPtr;
-
-class Line3dBase;
 
 class Line3d
 {
@@ -51,7 +52,7 @@ public:
 
 private:
 
-	Line3dBase* primitiveDrawer_ = nullptr;
+	std::unique_ptr<Line3dBase> line3dBase_ = nullptr;
 
 	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;

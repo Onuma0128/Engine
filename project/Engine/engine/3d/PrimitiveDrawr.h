@@ -2,9 +2,11 @@
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
+#include <memory>
 #include <vector>
 #include <string>
 
+#include "PrimitiveDrawrBase.h"
 #include "PipelineStruct.h"
 
 #include "Vector2.h"
@@ -14,8 +16,6 @@
 #include "Transform.h"
 
 using Microsoft::WRL::ComPtr;
-
-class PrimitiveDrawrBase;
 
 enum class PrimitiveType {
 	Plane,
@@ -145,7 +145,7 @@ private:
 
 private:
 
-	PrimitiveDrawrBase* primitiveDrawrBase_ = nullptr;
+	std::unique_ptr<PrimitiveDrawrBase> primitiveDrawrBase_ = nullptr;
 
 	/* =============== 頂点 =============== */
 

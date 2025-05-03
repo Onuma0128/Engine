@@ -5,35 +5,15 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
-
 class SpriteBase
 {
-private:
-	static SpriteBase* instance_;
-
-	SpriteBase() = default;
-	~SpriteBase() = default;
-	SpriteBase(SpriteBase&) = delete;
-	SpriteBase& operator=(SpriteBase&) = delete;
-
 public:
-	// シングルトンインスタンスの取得
-	static SpriteBase* GetInstance();
 
-	void Initialize(DirectXEngine* dxEngine);
+	void Initialize();
 
 	void DrawBase();
 
-	void Finalize();
-
-
-	// ゲッター
-	DirectXEngine* GetDxEngine() const { return dxEngine_; }
-
 private:
-
-	DirectXEngine* dxEngine_ = nullptr;
 
 	// ルートシグネチャ
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;

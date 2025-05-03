@@ -14,13 +14,13 @@ D3D12_SHADER_BYTECODE& CompileShaderFactory::GetCompileShader_VS(PipelineType ty
 	return compileShader->BuildVS_Shader();
 }
 
-D3D12_SHADER_BYTECODE& CompileShaderFactory::GetCompileShader_PS(PipelineType type, ComPtr<IDxcUtils> dxcUtils, ComPtr<IDxcCompiler3>& dxcCompiler, ComPtr<IDxcIncludeHandler> includeHandler)
+D3D12_SHADER_BYTECODE& CompileShaderFactory::GetCompileShader_PS(PipelineType type, ComPtr<IDxcUtils> dxcUtils, ComPtr<IDxcCompiler3>& dxcCompiler, ComPtr<IDxcIncludeHandler> includeHandler, PostEffectType effectType)
 {
 	static std::unique_ptr<CompileShaderBase> compileShader = nullptr;
 
 	compileShader = GetCompileShaderPtr(type, dxcUtils, dxcCompiler, includeHandler);
 
-	return compileShader->BuildPS_Shader();
+	return compileShader->BuildPS_Shader(effectType);
 }
 
 D3D12_SHADER_BYTECODE& CompileShaderFactory::CreateCompileShader(

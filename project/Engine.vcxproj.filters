@@ -252,6 +252,9 @@
     <ClCompile Include="Engine\engine\base\dxEngine\RtvManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\engine\base\effect\PostEffectManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\2d\LoadTexture.h">
@@ -533,6 +536,12 @@
     <ClInclude Include="Engine\engine\base\dxEngine\RtvManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\engine\base\effect\PostEffectManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\engine\base\effect\PostEffectType.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl" />
@@ -552,6 +561,7 @@
     <FxCompile Include="resources\shaders\Skybox.VS.hlsl" />
     <FxCompile Include="resources\shaders\Skybox.PS.hlsl" />
     <FxCompile Include="resources\shaders\Grayscale.PS.hlsl" />
+    <FxCompile Include="resources\shaders\Vignette.PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Object3d.hlsli" />

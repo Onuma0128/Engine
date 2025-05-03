@@ -14,19 +14,19 @@
 #include "ImGuiManager.h"
 #include "SrvManager.h"
 #include "RtvManager.h"
-#include "Object3dBase.h"
-#include "ModelManager.h"
-#include "SpriteBase.h"
 #include "CameraManager.h"
 #include "LightManager.h"
-#include "TextureManager.h"
-#include "ParticleManager.h"
-#include "Line3dBase.h"
 #include "AudioManager.h"
-#include "PrimitiveDrawrBase.h"
-#include "AnimationBase.h"
+#include "TextureManager.h"
+#include "ModelManager.h"
+#include "ParticleManager.h"
 
 using Microsoft::WRL::ComPtr;
+
+ComPtr<ID3D12Device> DirectXEngine::device_ = nullptr;
+ComPtr<ID3D12GraphicsCommandList> DirectXEngine::commandList_ = nullptr;
+std::unique_ptr<PipelineState> DirectXEngine::pipelineState_ = nullptr;
+std::unique_ptr<PostEffectManager> DirectXEngine::postEffectManager_ = nullptr;
 
 DirectXEngine::~DirectXEngine()
 {
@@ -34,15 +34,15 @@ DirectXEngine::~DirectXEngine()
 	RtvManager::GetInstance()->Finalize();
 	CameraManager::GetInstance()->Finalize();
 	TextureManager::GetInstance()->Finalize();
-	SpriteBase::GetInstance()->Finalize();
-	Object3dBase::GetInstance()->Finalize();
 	LightManager::GetInstance()->Finalize();
 	ModelManager::GetInstance()->Finalize();
-	Line3dBase::GetInstance()->Finalize();
 	ParticleManager::GetInstance()->Finalize();
 	AudioManager::GetInstance()->Finalize();
-	PrimitiveDrawrBase::GetInstance()->Finalize();
-	AnimationBase::GetInstance()->Finalize();
+
+	device_.Reset();
+	commandList_.Reset();
+	pipelineState_.reset();
+	postEffectManager_.reset();
 
 	//解放の処理
 	CloseHandle(fenceEvent_);
@@ -85,7 +85,6 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	// PipelineStateの初期化
 	PipelineStateInitialize();
 
-
 	/*==================== カメラ準備用 ====================*/
 
 	CameraManager::GetInstance()->Initialize(this);
@@ -93,14 +92,6 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	/*==================== ライト準備用 ====================*/
 
 	LightManager::GetInstance()->Initialize(this);
-
-	/*==================== モデル描画準備用 ====================*/
-
-	Object3dBase::GetInstance()->Initialize(this);
-
-	/*==================== スプライト描画準備用 ====================*/
-
-	SpriteBase::GetInstance()->Initialize(this);
 
 	/*==================== テクスチャ読み込み ====================*/
 
@@ -110,21 +101,14 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 
 	ModelManager::GetInstance()->Initialize(this);
 
-	/*==================== 3Dライン ====================*/
-
-	Line3dBase::GetInstance()->Initialize(this);
-
 	/*==================== パーティクル ====================*/
 
 	ParticleManager::GetInstance()->Initialize(this);
 
-	/*==================== トレイルエフェクト ====================*/
-
-	PrimitiveDrawrBase::GetInstance()->Initialize(this);
-
 	/*==================== アニメーション ====================*/
 
-	AnimationBase::GetInstance()->Initialize(this);
+	postEffectManager_ = std::make_unique<PostEffectManager>();
+	postEffectManager_->Initialize(this);
 }
 
 void DirectXEngine::DeviceInitialize()
@@ -435,6 +419,9 @@ void DirectXEngine::SwapChainDrawSet()
 	//TransitionBarrierを張る
 	commandList_->ResourceBarrier(1, &barrier_);
 
+	// PostEffectの複数描画
+	postEffectManager_->RenderTextureDraws(renderTextureSRVIndex_);
+
 	// これから書き込むバックバッファのインデックスを取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
 	//バリアを張る対象のリソース。現在のバックバッファに対して行う
@@ -458,7 +445,7 @@ void DirectXEngine::SwapChainDrawSet()
 	commandList_->SetGraphicsRootSignature(offScreenRootSignature_.Get());
 	commandList_->SetPipelineState(offScreenPipelineState_.Get());
 	commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, renderTextureSRVIndex_);
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, postEffectManager_->GetFinalSRVIndex());
 	commandList_->DrawInstanced(3, 1, 0, 0);
 }
 

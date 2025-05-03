@@ -1,5 +1,6 @@
 #include "GamePlayScene.h"
 
+#include "DirectXEngine.h"
 #include "ParticleManager.h"
 #include "SceneManager.h"
 #include "ModelManager.h"
@@ -24,6 +25,9 @@ void GamePlayScene::Initialize()
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
 	gameCamera_->Init();
+
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
 }
 
 void GamePlayScene::Finalize()

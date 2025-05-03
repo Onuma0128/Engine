@@ -21,7 +21,8 @@ public:
 		PipelineType type,
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
-		ComPtr<IDxcIncludeHandler> includeHandler
+		ComPtr<IDxcIncludeHandler> includeHandler,
+		PostEffectType effectType = PostEffectType::None
 	);
 
 	static D3D12_SHADER_BYTECODE& CreateCompileShader(
@@ -74,7 +75,7 @@ public:
 		return vsBytecode;
 	}
 
-	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
 	{
 		psBytecode = CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Object3d.PS.hlsl", L"ps_6_0",
@@ -107,7 +108,7 @@ public:
 		return vsBytecode;
 	}
 
-	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
 	{
 		psBytecode = CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Sprite.PS.hlsl", L"ps_6_0",
@@ -140,7 +141,7 @@ public:
 		return vsBytecode;
 	}
 
-	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
 	{
 		psBytecode = CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Line3d.PS.hlsl", L"ps_6_0",
@@ -173,7 +174,7 @@ public:
 		return vsBytecode;
 	}
 
-	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
 	{
 		psBytecode = CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Particle.PS.hlsl", L"ps_6_0",
@@ -206,7 +207,7 @@ public:
 		return vsBytecode;
 	}
 
-	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
 	{
 		psBytecode = CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/PrimitiveDrawr.PS.hlsl", L"ps_6_0",
@@ -239,12 +240,42 @@ public:
 		return vsBytecode;
 	}
 
-	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
-			L"resources/shaders/CopyImage.PS.hlsl", L"ps_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
-		);
+		switch (type)
+		{
+		case PostEffectType::None:
+			psBytecode = CompileShaderFactory::CreateCompileShader(
+				L"resources/shaders/CopyImage.PS.hlsl", L"ps_6_0",
+				dxcUtils_, dxcCompiler_, includeHandler_
+			);
+			break;
+		case PostEffectType::Grayscale:
+			psBytecode = CompileShaderFactory::CreateCompileShader(
+				L"resources/shaders/Grayscale.PS.hlsl", L"ps_6_0",
+				dxcUtils_, dxcCompiler_, includeHandler_
+			);
+			break;
+		case PostEffectType::Vignette:
+			psBytecode = CompileShaderFactory::CreateCompileShader(
+				L"resources/shaders/Vignette.PS.hlsl", L"ps_6_0",
+				dxcUtils_, dxcCompiler_, includeHandler_
+			);
+			break;
+		case PostEffectType::Blur:
+			break;
+		case PostEffectType::Invert:
+			break;
+		case PostEffectType::Noise:
+			break;
+		case PostEffectType::Bloom:
+			break;
+		case PostEffectType::Count:
+			break;
+		default:
+			break;
+		}
+		
 		return psBytecode;
 	}
 };
@@ -272,7 +303,7 @@ public:
 		return vsBytecode;
 	}
 
-	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
 	{
 		psBytecode = CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Object3d.PS.hlsl", L"ps_6_0",
@@ -306,7 +337,7 @@ public:
 		return vsBytecode;
 	}
 
-	D3D12_SHADER_BYTECODE& BuildPS_Shader() override
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
 	{
 		psBytecode = CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Skybox.PS.hlsl", L"ps_6_0",

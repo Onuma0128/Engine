@@ -7,6 +7,7 @@
 #pragma comment(lib,"d3d12.lib")
 
 #include "PipelineStruct.h"
+#include "PostEffectType.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -54,7 +55,7 @@ public:
 	/* ==================== RenderTexture ==================== */
 
 	// パイプラインの生成
-	ComPtr<ID3D12PipelineState> CreateRenderTexturePipelineState();
+	ComPtr<ID3D12PipelineState> CreateRenderTexturePipelineState(PostEffectType type = PostEffectType::None);
 
 	/* ==================== Skybox ==================== */
 

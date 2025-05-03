@@ -5,35 +5,15 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
-
 class Line3dBase
 {
-private:
-	static Line3dBase* instance_;
-
-	Line3dBase() = default;
-	~Line3dBase() = default;
-	Line3dBase(Line3dBase&) = delete;
-	Line3dBase& operator=(Line3dBase&) = delete;
-
 public:
-	// シングルトンインスタンスの取得
-	static Line3dBase* GetInstance();
 
-	void Initialize(DirectXEngine* dxEngine);
+	void Initialize();
 
 	void DrawBase();
 
-	void Finalize();
-
-	/*==================== アクセッサ ====================*/
-
-	DirectXEngine* GetDxEngine() const { return dxEngine_; }
-
 private:
-
-	DirectXEngine* dxEngine_ = nullptr;
 
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;

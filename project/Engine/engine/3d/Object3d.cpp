@@ -4,7 +4,6 @@
 
 #include "CameraManager.h"
 #include "Camera.h"
-#include "Object3dBase.h"
 #include "LightManager.h"
 #include "ModelManager.h"
 #include "Model.h"
@@ -13,7 +12,8 @@
 
 void Object3d::Initialize(const std::string& filePath)
 {
-    this->object3dBase_ = Object3dBase::GetInstance();
+    object3dBase_ = std::make_unique<Object3dBase>();
+    object3dBase_->Initialize();
 
     transform_ = WorldTransform();
 
@@ -31,7 +31,7 @@ void Object3d::Draw()
 {
     object3dBase_->DrawBase();
 
-    auto commandList = object3dBase_->GetDxEngine()->GetCommandList();
+    auto commandList = DirectXEngine::GetCommandList();
     commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(3, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
@@ -68,7 +68,7 @@ void Object3d::SetColor(const Vector4& color)
 void Object3d::MakeMaterialData()
 {
     // マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-    materialResource_ = CreateBufferResource(object3dBase_->GetDxEngine()->GetDevice(), sizeof(Material)).Get();
+    materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material)).Get();
     // 書き込むためのアドレスを取得
     materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
     // 今回は白を書き込んでいく

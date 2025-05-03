@@ -1,7 +1,6 @@
 #include "Line3d.h"
 
 #include "DirectXEngine.h"
-#include "Line3dBase.h"
 
 #include "Camera.h"
 #include "CameraManager.h"
@@ -9,7 +8,9 @@
 
 void Line3d::Initialize(Vector3 startPos, Vector3 endPos)
 {
-	primitiveDrawer_ = Line3dBase::GetInstance();
+	line3dBase_ = std::make_unique<Line3dBase>();
+	line3dBase_->Initialize();
+
 	startPos_ = startPos;
 	endPos_ = endPos;
 
@@ -17,14 +18,15 @@ void Line3d::Initialize(Vector3 startPos, Vector3 endPos)
 
 	CreatVertexBufferView();
 
-	wvpResource_ = CreateBufferResource(primitiveDrawer_->GetDxEngine()->GetDevice(), sizeof(Matrix4x4)).Get();
+	wvpResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4)).Get();
 
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
 }
 
 void Line3d::Initialize(const std::vector<Vector3>& positions)
 {
-	primitiveDrawer_ = Line3dBase::GetInstance();
+	line3dBase_ = std::make_unique<Line3dBase>();
+	line3dBase_->Initialize();
 
 	lineCount_ = static_cast<uint32_t>(positions.size() / 2);
 
@@ -32,7 +34,7 @@ void Line3d::Initialize(const std::vector<Vector3>& positions)
 
 	CreatVertexBufferViews();
 
-	wvpResource_ = CreateBufferResource(primitiveDrawer_->GetDxEngine()->GetDevice(), sizeof(Matrix4x4)).Get();
+	wvpResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4)).Get();
 
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
 }
@@ -44,9 +46,9 @@ void Line3d::Update()
 
 void Line3d::Draw()
 {
-	primitiveDrawer_->DrawBase();
+	line3dBase_->DrawBase();
 
-	auto commandList = primitiveDrawer_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, wvpResource_->GetGPUVirtualAddress());
 	commandList->DrawInstanced(2, 1, 0, 0);
@@ -54,9 +56,9 @@ void Line3d::Draw()
 
 void Line3d::Draws()
 {
-	primitiveDrawer_->DrawBase();
+	line3dBase_->DrawBase();
 
-	auto commandList = primitiveDrawer_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, wvpResource_->GetGPUVirtualAddress());
 	commandList->DrawInstanced(lineCount_ * 2, 1, 0, 0);
@@ -78,7 +80,7 @@ void Line3d::CreatVertexResource()
 	vertexResourceDesc.SampleDesc.Count = 1;
 	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	HRESULT hr = primitiveDrawer_->GetDxEngine()->GetDevice()->CreateCommittedResource(
+	HRESULT hr = DirectXEngine::GetDevice()->CreateCommittedResource(
 		&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &vertexResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertexResource_)
 	);
@@ -106,7 +108,7 @@ void Line3d::CreatVertexResource(const std::vector<Vector3>& positions)
 	vertexResourceDesc.SampleDesc.Count = 1;
 	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	HRESULT hr = primitiveDrawer_->GetDxEngine()->GetDevice()->CreateCommittedResource(
+	HRESULT hr = DirectXEngine::GetDevice()->CreateCommittedResource(
 		&uploadHeapProperties, D3D12_HEAP_FLAG_NONE, &vertexResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertexResource_)
 	);

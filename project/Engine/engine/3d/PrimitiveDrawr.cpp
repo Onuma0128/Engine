@@ -3,7 +3,6 @@
 #include <numbers>
 
 #include "DirectXEngine.h"
-#include "PrimitiveDrawrBase.h"
 #include "TextureManager.h"
 #include "SrvManager.h"
 
@@ -12,7 +11,8 @@
 
 void PrimitiveDrawr::Init(std::vector<Vector3> pos)
 {
-	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
+	primitiveDrawrBase_ = std::make_unique<PrimitiveDrawrBase>();
+	primitiveDrawrBase_->Initialize();
 	positions_ = pos;
 
 	SetTexture("resources", "white1x1.png");
@@ -46,7 +46,7 @@ void PrimitiveDrawr::Draw()
 {
 	primitiveDrawrBase_->DrawBase(static_cast<int>(blendMode_));
 
-	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->IASetIndexBuffer(&indexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
@@ -70,6 +70,9 @@ void PrimitiveDrawr::UVTransformUpdate()
 void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 {
 	type_ = type;
+
+	primitiveDrawrBase_ = std::make_unique<PrimitiveDrawrBase>();
+	primitiveDrawrBase_->Initialize();
 
 	switch (type_)
 	{
@@ -157,7 +160,7 @@ void PrimitiveDrawr::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size
 	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 頂点リソースを作成する
-	HRESULT hr = primitiveDrawrBase_->GetDxEngine()->GetDevice()->CreateCommittedResource(
+	HRESULT hr = DirectXEngine::GetDevice()->CreateCommittedResource(
 		&uploadHeapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&vertexResourceDesc,
@@ -229,8 +232,6 @@ void PrimitiveDrawr::CreateWVPData()
 
 void PrimitiveDrawr::InitPlane()
 {
-	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
-
 	SetTexture("resources", "uvChecker.png");
 
 	CreateBufferResource(vertexResource_, sizeof(VertexData) * 6);
@@ -247,7 +248,7 @@ void PrimitiveDrawr::InitPlane()
 
 void PrimitiveDrawr::DrawPlane()
 {
-	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -284,8 +285,7 @@ void PrimitiveDrawr::CreatePlaneVertexData(VertexData* vertexData)
 void PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
 {
 	kSubdivision_ = kSubdivision;
-	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
-
+	
 	SetTexture("resources", "white1x1.png");
 
 	uint32_t startIndex = kSubdivision * kSubdivision * 6;
@@ -303,7 +303,7 @@ void PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
 
 void PrimitiveDrawr::DrawSphere()
 {
-	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -349,7 +349,6 @@ void PrimitiveDrawr::CreateSphereVertexData(VertexData* vertexData, uint32_t kSu
 void PrimitiveDrawr::InitRing(uint32_t kRingDivide)
 {
 	kRingDivide_ = kRingDivide;
-	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
 
 	SetTexture("resources", "gradationLine.png");
 
@@ -367,7 +366,7 @@ void PrimitiveDrawr::InitRing(uint32_t kRingDivide)
 
 void PrimitiveDrawr::DrawRing()
 {
-	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -421,7 +420,6 @@ void PrimitiveDrawr::CreateRingVertexData(VertexData* vertexData, uint32_t kRing
 void PrimitiveDrawr::InitCylinder(uint32_t kCylinderDivide)
 {
 	kCylinderDivide_ = kCylinderDivide;
-	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
 
 	SetTexture("resources", "gradationLine.png");
 
@@ -439,7 +437,7 @@ void PrimitiveDrawr::InitCylinder(uint32_t kCylinderDivide)
 
 void PrimitiveDrawr::DrawCylinder()
 {
-	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -493,8 +491,6 @@ void PrimitiveDrawr::CreateCylinderVertexData(VertexData* vertexData, uint32_t k
 
 void PrimitiveDrawr::InitSkybox()
 {
-	primitiveDrawrBase_ = PrimitiveDrawrBase::GetInstance();
-
 	SetTexture("resources", "rostock_laage_airport_4k.dds");
 
 	CreateBufferResource(vertexResource_, sizeof(VertexData) * 36);
@@ -511,7 +507,7 @@ void PrimitiveDrawr::InitSkybox()
 
 void PrimitiveDrawr::DrawSkybox()
 {
-	auto commandList = primitiveDrawrBase_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());

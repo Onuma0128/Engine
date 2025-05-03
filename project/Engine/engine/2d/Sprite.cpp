@@ -13,7 +13,8 @@
 
 void Sprite::Initialize(std::string textureFilePath)
 {
-	this->spriteBase_ = SpriteBase::GetInstance();
+	spriteBase_ = std::make_unique<SpriteBase>();
+	spriteBase_->Initialize();
 
 	textureFilePath_ = "resources/" + textureFilePath;
 
@@ -42,7 +43,7 @@ void Sprite::Draw()
 {
 	spriteBase_->DrawBase();
 
-	auto commandList = spriteBase_->GetDxEngine()->GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->IASetIndexBuffer(&indexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
@@ -54,8 +55,8 @@ void Sprite::Draw()
 
 void Sprite::VertexDataInitialize()
 {
-	vertexResource_ = CreateBufferResource(spriteBase_->GetDxEngine()->GetDevice(), sizeof(VertexData) * 4).Get();
-	indexResource_ = CreateBufferResource(spriteBase_->GetDxEngine()->GetDevice(), sizeof(uint32_t) * 6).Get();
+	vertexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VertexData) * 4).Get();
+	indexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(uint32_t) * 6).Get();
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
 	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
 	vertexBufferView_.SizeInBytes = sizeof(VertexData) * 4;
@@ -83,7 +84,7 @@ void Sprite::VertexDataInitialize()
 
 void Sprite::MaterialDataInitialize()
 {
-	materialResource_ = CreateBufferResource(spriteBase_->GetDxEngine()->GetDevice(), sizeof(Material)).Get();
+	materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material)).Get();
 	
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
@@ -93,7 +94,7 @@ void Sprite::MaterialDataInitialize()
 
 void Sprite::TransformationMatrixDataInitialize()
 {
-	transformationMatrixResource_ = CreateBufferResource(spriteBase_->GetDxEngine()->GetDevice(), sizeof(Matrix4x4)).Get();
+	transformationMatrixResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4)).Get();
 	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
 	transformationMatrixData_->WVP = Matrix4x4::Identity();
 	transformationMatrixData_->World = Matrix4x4::Identity();
