@@ -12,7 +12,7 @@
 #include "RenderTextureRootSignature.h"
 #include "SkyboxRootSignature.h"
 
-ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType type, ComPtr<ID3D12Device> device)
+ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType type, ComPtr<ID3D12Device> device, PostEffectType effectType)
 {
 	static std::unique_ptr<RootSignatureBase> rootSignature = nullptr;
 
@@ -46,5 +46,5 @@ ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType 
 		break;
 	}
 
-	return rootSignature->BuildRootSignature(device.Get());
+	return rootSignature->BuildRootSignature(device.Get(), effectType);
 }

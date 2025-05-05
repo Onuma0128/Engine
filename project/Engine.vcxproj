@@ -194,6 +194,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\base\dxEngine\pipeline\rootSignature\RootSignatureFactory.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\RtvManager.cpp" />
     <ClCompile Include="Engine\engine\base\effect\PostEffectManager.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerSpecialMoveState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\base\dxEngine\pipeline\depthStencilState\DepthStencilStateBase.h" />
@@ -291,6 +292,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\RootSignatureFactory.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\RtvManager.h" />
     <ClInclude Include="Engine\engine\base\effect\PostEffectManager.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerSpecialMoveState.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

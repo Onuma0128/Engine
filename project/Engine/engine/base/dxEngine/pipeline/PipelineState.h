@@ -20,7 +20,7 @@ public:
 		ComPtr<IDxcCompiler3>& dxcCompiler, ComPtr<IDxcIncludeHandler> includeHandler);
 
 	// ルートシグネチャ
-	ComPtr<ID3D12RootSignature> CreateRootSignature(PipelineType type);
+	ComPtr<ID3D12RootSignature> CreateRootSignature(PipelineType type, PostEffectType effectType = PostEffectType::None);
 
 	/* ==================== Object3d ==================== */
 

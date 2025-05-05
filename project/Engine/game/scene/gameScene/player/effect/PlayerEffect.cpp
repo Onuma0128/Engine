@@ -1,5 +1,9 @@
 #include "PlayerEffect.h"
 
+#include "DirectXEngine.h"
+#include "PostEffectManager.h"
+#include "DeltaTimer.h"
+
 #include "gameScene/player/Player.h"
 
 void PlayerEffect::Init()
@@ -45,6 +49,7 @@ void PlayerEffect::Init()
 
 void PlayerEffect::Update()
 {	
+	UpdatePostEffect();
 }
 
 void PlayerEffect::Draw()
@@ -123,4 +128,67 @@ void PlayerEffect::OnceAvoidEffect()
 
 	avoidDustEmitter_->SetPosition(position);
 	avoidDustEmitter_->SetRotation(rotate);
+}
+
+void PlayerEffect::UpdatePostEffect()
+{
+	constexpr float expandDuration = 1.0f;  // 60フレーム
+	constexpr float holdDuration = 3.0f;	// 180フレーム
+	constexpr float shrinkDuration = 1.0f;  // 60フレーム
+
+	float delta = DeltaTimer::GetDeltaTime();
+
+	switch (grayscaleState_) {
+	case GrayscaleState::Expanding:
+		grayscaleFrame_ += delta;
+		{
+			float t = std::clamp(grayscaleFrame_ / expandDuration, 0.0f, 1.0f);
+			t = std::pow(t, 5.0f);  // 加速カーブ
+			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = t;
+			DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = t * 0.8f;
+
+			if (grayscaleFrame_ >= expandDuration) {
+				grayscaleFrame_ = 0.0f;
+				grayscaleState_ = GrayscaleState::Holding;
+			}
+		}
+		break;
+
+	case GrayscaleState::Holding:
+		grayscaleFrame_ += delta;
+		DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 1.0f;
+
+		if (grayscaleFrame_ >= holdDuration) {
+			grayscaleFrame_ = 0.0f;
+			grayscaleState_ = GrayscaleState::Shrinking;
+		}
+		break;
+
+	case GrayscaleState::Shrinking:
+		grayscaleFrame_ += delta;
+		{
+			float t = std::clamp(1.0f - (grayscaleFrame_ / shrinkDuration), 0.0f, 1.0f);
+			t = std::pow(t, 5.0f);  // 加速カーブ（逆）
+			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = t;
+			DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = t * 0.8f;
+
+			if (grayscaleFrame_ >= shrinkDuration) {
+				grayscaleFrame_ = 0.0f;
+				grayscaleState_ = GrayscaleState::None;
+				isGrayScale_ = false;
+				DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 0.0f;
+				DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = 0.0f;
+			}
+		}
+		break;
+
+	case GrayscaleState::None:
+		if (isGrayScale_) {
+			grayscaleState_ = GrayscaleState::Expanding;
+		}
+		break;
+
+	default:
+		break;
+	}
 }

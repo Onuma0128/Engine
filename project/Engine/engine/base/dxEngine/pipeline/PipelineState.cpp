@@ -19,9 +19,13 @@ void PipelineState::Initialize(
 	includeHandler_ = includeHandler;
 }
 
-ComPtr<ID3D12RootSignature> PipelineState::CreateRootSignature(PipelineType type)
+ComPtr<ID3D12RootSignature> PipelineState::CreateRootSignature(PipelineType type,PostEffectType effectType)
 {
-	return RootSignatureFactory::GetRootSignature(type, device_);
+	if (effectType != PostEffectType::None) {
+		return RootSignatureFactory::GetRootSignature(type, device_, effectType);
+	} else {
+		return RootSignatureFactory::GetRootSignature(type, device_);
+	}
 }
 
 ComPtr<ID3D12PipelineState> PipelineState::CreateObject3dPipelineState()
@@ -178,7 +182,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreateRenderTexturePipelineState(Post
 {
 	// パイプラインステートの設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
-	psoDesc.pRootSignature = RootSignatureFactory::GetRootSignature(PipelineType::RenderTexture, device_).Get();
+	psoDesc.pRootSignature = RootSignatureFactory::GetRootSignature(PipelineType::RenderTexture, device_, type).Get();
 	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(PipelineType::RenderTexture, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(PipelineType::RenderTexture, dxcUtils_, dxcCompiler_, includeHandler_, type);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(PipelineType::RenderTexture);

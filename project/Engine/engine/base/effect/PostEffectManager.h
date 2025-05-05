@@ -23,9 +23,22 @@ public:
     void CreatePostEffect(PostEffectType type);
 
 	// ポストエフェクト全ての描画
+    void PostEffectCommand(PostEffectType type);
     void RenderTextureDraws(uint32_t inputSRVIndex);
     // 最後のSRVIndexを保管
     uint32_t GetFinalSRVIndex()const { return finalSRVIndex_; }
+
+    // ポストエフェクト全てのポインタ
+    // GrayscaleData
+    GrayscaleData* GetGrayscaleData() { return grayscaleData_; }
+    // VignetteData
+    VignetteData* GetVignetteData() { return vignetteData_; }
+
+private:
+
+    void ResourceInitialize();
+
+    void Update();
 
 private:
 
@@ -45,5 +58,12 @@ private:
     std::unordered_map<PostEffectType, ComPtr<ID3D12RootSignature>> rootSignatures_;
 
     uint32_t finalSRVIndex_;
+
+    // GrayscaleData
+    ComPtr<ID3D12Resource> grayscaleResource_ = nullptr;
+    GrayscaleData* grayscaleData_;
+    // VignetteData
+    ComPtr<ID3D12Resource> vignetteResource_ = nullptr;
+    VignetteData* vignetteData_;
 };
 

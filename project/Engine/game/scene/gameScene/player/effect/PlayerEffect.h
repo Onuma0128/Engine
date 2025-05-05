@@ -6,6 +6,13 @@
 
 #include "WorldTransform.h"
 
+enum class GrayscaleState {
+	None,
+	Expanding,   // 拡大中（0→1）
+	Holding,     // 維持（1）
+	Shrinking    // 縮小中（1→0）
+};
+
 class Player;
 
 class PlayerEffect
@@ -30,6 +37,10 @@ public:
 	void OnceBulletEffect();
 	// 避けた時のエフェクトを呼び出す
 	void OnceAvoidEffect();
+	// 必殺技を撃った時のエフェクト
+	void UpdatePostEffect();
+	bool GetIsGrayScale()const { return isGrayScale_; }
+	void SetIsGrayScale(bool flag) { isGrayScale_ = flag; }
 
 private:
 
@@ -65,5 +76,11 @@ private:
 
 	// 避けた時の土埃
 	std::unique_ptr<ParticleEmitter> avoidDustEmitter_ = nullptr;
+
+	/* ==================== プレイヤーが必殺技を撃った時のエフェクト ==================== */
+
+	GrayscaleState grayscaleState_ = GrayscaleState::None;
+	bool isGrayScale_ = false;
+	float grayscaleFrame_ = 0.0f;
 };
 

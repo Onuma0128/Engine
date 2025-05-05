@@ -5,6 +5,7 @@
 
 #include "gameScene/player/Player.h"
 #include "PlayerAvoidState.h"
+#include "PlayerSpecialMoveState.h"
 
 PlayerMoveState::PlayerMoveState(Player* player) :PlayerBaseState(player) {}
 
@@ -63,6 +64,11 @@ void PlayerMoveState::Update()
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_B)) {
 		player_->GetEffect()->OnceAvoidEffect();
 		player_->ChengeState(std::make_unique<PlayerAvoidState>(player_));
+		return;
+	}
+
+	if (input->GetGamepadRightTrigger() != 0.0f && !player_->GetEffect()->GetIsGrayScale()) {
+		player_->GetEffect()->SetIsGrayScale(true);
 	}
 }
 

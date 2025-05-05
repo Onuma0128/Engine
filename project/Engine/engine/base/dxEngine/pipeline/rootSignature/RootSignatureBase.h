@@ -3,6 +3,8 @@
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 
+#include "PostEffectType.h"
+
 using Microsoft::WRL::ComPtr;
 
 class RootSignatureBase
@@ -10,7 +12,7 @@ class RootSignatureBase
 public:
 
 	virtual ~RootSignatureBase() = default;
-	virtual ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device) = 0;
+	virtual ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::None) = 0;
 
 protected:
 
