@@ -28,9 +28,6 @@ void GamePlayScene::Initialize()
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
 	gameCamera_->Init();
-
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
 }
 
 void GamePlayScene::Finalize()
@@ -48,11 +45,6 @@ void GamePlayScene::Update()
 	gameCamera_->Update();
 
 	Collision();
-
-	ImGui::Begin("Vignette");
-	ImGui::DragFloat("scale", &DirectXEngine::GetPostEffectMgr()->GetVignetteData()->scale, 0.1f);
-	ImGui::DragFloat("gamma", &DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma, 0.01f);
-	ImGui::End();
 
 	ParticleManager::GetInstance()->Update();
 }

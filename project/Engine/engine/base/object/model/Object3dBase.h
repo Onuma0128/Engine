@@ -5,8 +5,6 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
-
 class Object3dBase
 {
 public:

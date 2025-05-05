@@ -45,6 +45,10 @@ void PlayerEffect::Init()
 	avoidDustEmitter_ = std::make_unique<ParticleEmitter>("avoidDust");
 	particleManager_->CreateParticleGroup("avoidDust", "smoke.png", avoidDustEmitter_.get());
 	avoidDustEmitter_->SetIsCreate(false);
+
+	// PostEffectを初期化
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
 }
 
 void PlayerEffect::Update()
