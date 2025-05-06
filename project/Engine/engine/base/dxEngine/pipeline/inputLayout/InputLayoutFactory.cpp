@@ -2,40 +2,41 @@
 
 #include <cassert>
 #include <memory>
+#include <unordered_map>
 
 D3D12_INPUT_LAYOUT_DESC& InputLayoutFactory::GetInputLayout(PipelineType type)
 {
-	static std::unique_ptr<InputLayoutBase> inputLayout = nullptr;
+	static std::unordered_map<PipelineType, std::unique_ptr<InputLayoutBase>> inputLayout;
 
 	switch (type) {
 	case PipelineType::Object3d:
-		inputLayout = std::make_unique<Object3dInputLayout>();
+		inputLayout[type] = std::make_unique<Object3dInputLayout>();
 		break;
 	case PipelineType::Sprite:
-		inputLayout = std::make_unique<SpriteInputLayout>();
+		inputLayout[type] = std::make_unique<SpriteInputLayout>();
 		break;
 	case PipelineType::Line3d:
-		inputLayout = std::make_unique<Line3dInputLayout>();
+		inputLayout[type] = std::make_unique<Line3dInputLayout>();
 		break;
 	case PipelineType::Particle:
-		inputLayout = std::make_unique<ParticleInputLayout>();
+		inputLayout[type] = std::make_unique<ParticleInputLayout>();
 		break;
 	case PipelineType::PrimitiveDrawr:
-		inputLayout = std::make_unique<PrimitiveDrawrInputLayout>();
+		inputLayout[type] = std::make_unique<PrimitiveDrawrInputLayout>();
 		break;
 	case PipelineType::Animation:
-		inputLayout = std::make_unique<AnimationInputLayout>();
+		inputLayout[type] = std::make_unique<AnimationInputLayout>();
 		break;
 	case PipelineType::RenderTexture:
-		inputLayout = std::make_unique<RenderTextureInputLayout>();
+		inputLayout[type] = std::make_unique<RenderTextureInputLayout>();
 		break;
 	case PipelineType::Skybox:
-		inputLayout = std::make_unique<SkyboxInputLayout>();
+		inputLayout[type] = std::make_unique<SkyboxInputLayout>();
 		break;
 	default:
 		assert(false && "Invalid InputLayoutType");
 		break;
 	}
 
-	return inputLayout->BuildLayout();
+	return inputLayout[type]->BuildLayout();
 }

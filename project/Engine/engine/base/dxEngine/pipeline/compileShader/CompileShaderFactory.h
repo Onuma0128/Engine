@@ -25,7 +25,7 @@ public:
 		PostEffectType effectType = PostEffectType::None
 	);
 
-	static D3D12_SHADER_BYTECODE& CreateCompileShader(
+	static D3D12_SHADER_BYTECODE CreateCompileShader(
 		const std::wstring& filePath,
 		const wchar_t* profile,
 		ComPtr<IDxcUtils> dxcUtils,

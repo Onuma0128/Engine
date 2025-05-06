@@ -5,12 +5,12 @@
 
 void PrimitiveDrawrBase::Initialize()
 {
-	rootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::PrimitiveDrawr).Get();
+	rootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::PrimitiveDrawr);
 	for (int i = 0; i < static_cast<int>(pipelineStates_.size()); ++i) {
 		pipelineStates_[i] = DirectXEngine::GetPipelineState()->CreatePrimitiveDrawrPipelineState(i);
 	}
 
-	skyboxRootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::Skybox).Get();
+	skyboxRootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::Skybox);
 	skyboxPipelineState_ = DirectXEngine::GetPipelineState()->CreateSkyboxPipelineState();
 }
 

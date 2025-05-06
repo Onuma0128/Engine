@@ -2,32 +2,33 @@
 
 #include <cassert>
 #include <memory>
+#include <unordered_map>
 
 D3D12_BLEND_DESC& BlendStateFactory::GetBlendState(BlendMode type)
 {
-    static std::unique_ptr<BlendStateBase> blendState = nullptr;
+	static std::unordered_map<BlendMode, std::unique_ptr<BlendStateBase>> blendState;
 
 	switch (type)
 	{
 	case BlendMode::kBlendModeNone:
-		blendState = std::make_unique<BlendStateNone>();
+		blendState[type] = std::make_unique<BlendStateNone>();
 		break;
 	case BlendMode::kBlendModeNormal:
-		blendState = std::make_unique<BlendStateNormal>();
+		blendState[type] = std::make_unique<BlendStateNormal>();
 		break;
 	case BlendMode::kBlendModeAdd:
-		blendState = std::make_unique<BlendStateAdd>();
+		blendState[type] = std::make_unique<BlendStateAdd>();
 		break;
 	case BlendMode::kBlendModeSubtract:
-		blendState = std::make_unique<BlendStateSubtract>();
+		blendState[type] = std::make_unique<BlendStateSubtract>();
 		break;
 	case BlendMode::kBlendModeMultily:
-		blendState = std::make_unique<BlendStateMultily>();
+		blendState[type] = std::make_unique<BlendStateMultily>();
 		break;
 	default:
 		assert(false && "Invalid BlendMode");
 		break;
 	}
 
-	return blendState->BuildBlend();
+	return blendState[type]->BuildBlend();
 }

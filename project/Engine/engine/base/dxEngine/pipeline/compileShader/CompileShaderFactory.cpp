@@ -1,6 +1,7 @@
 #include "CompileShaderFactory.h"
 
 #include <format>
+#include <unordered_map>
 
 #include "Logger.h"
 #include "StringUtility.h"
@@ -23,7 +24,7 @@ D3D12_SHADER_BYTECODE& CompileShaderFactory::GetCompileShader_PS(PipelineType ty
 	return compileShader->BuildPS_Shader(effectType);
 }
 
-D3D12_SHADER_BYTECODE& CompileShaderFactory::CreateCompileShader(
+D3D12_SHADER_BYTECODE CompileShaderFactory::CreateCompileShader(
 	//CompilerするShaderファイルへのパス
 	const std::wstring& filePath,
 	//Compilerに使用するProfile
@@ -114,37 +115,37 @@ ComPtr<IDxcBlob> CompileShaderFactory::CompileShader(
 
 std::unique_ptr<CompileShaderBase> CompileShaderFactory::GetCompileShaderPtr(PipelineType type, ComPtr<IDxcUtils> dxcUtils, ComPtr<IDxcCompiler3>& dxcCompiler, ComPtr<IDxcIncludeHandler> includeHandler)
 {
-	static std::unique_ptr<CompileShaderBase> compileShader = nullptr;
+	static std::unordered_map<PipelineType, std::unique_ptr<CompileShaderBase>> compileShader;
 
 	switch (type) {
 	case PipelineType::Object3d:
-		compileShader = std::make_unique<Object3dCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		compileShader[type] = std::make_unique<Object3dCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	case PipelineType::Sprite:
-		compileShader = std::make_unique<SpriteCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		compileShader[type] = std::make_unique<SpriteCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	case PipelineType::Line3d:
-		compileShader = std::make_unique<Line3dCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		compileShader[type] = std::make_unique<Line3dCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	case PipelineType::Particle:
-		compileShader = std::make_unique<ParticleCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		compileShader[type] = std::make_unique<ParticleCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	case PipelineType::PrimitiveDrawr:
-		compileShader = std::make_unique<PrimitiveDrawrCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		compileShader[type] = std::make_unique<PrimitiveDrawrCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	case PipelineType::Animation:
-		compileShader = std::make_unique<AnimationCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		compileShader[type] = std::make_unique<AnimationCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	case PipelineType::RenderTexture:
-		compileShader = std::make_unique<RenderTextureCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		compileShader[type] = std::make_unique<RenderTextureCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	case PipelineType::Skybox:
-		compileShader = std::make_unique<SkyboxCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		compileShader[type] = std::make_unique<SkyboxCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	default:
 		assert(false && "Invalid CompileShaderType");
 		break;
 	}
 
-	return std::move(compileShader);
+	return std::move(compileShader[type]);
 }
