@@ -16,6 +16,7 @@ public:
 	void GlobalInit();
 
 	void Update();
+	void SabUpdate();
 
 	void SetShake(float shakeStrength) { shakeStrength_ = shakeStrength; }
 
@@ -23,18 +24,16 @@ public:
 
 	float LerpShortAngle(float a, float b, float t);
 
-	Camera* GetCamera() { return camera_.get(); }
+	Camera* GetCamera() { return mainCamera_.get(); }
 
 private:
 
 	GlobalVariables* global_ = GlobalVariables::GetInstance();
 
-	std::unique_ptr<Camera> camera_ = nullptr;
-	float destinationAngleX = 0.0f;
-	float destinationAngleY = 0.0f;
-	Vector3 rotateAngle_ = {};
-
 	Player* player_ = nullptr;
+
+	std::unique_ptr<Camera> mainCamera_ = nullptr;
+	std::unique_ptr<Camera> sabCamera_ = nullptr;
 
 	float shakeStrength_ = 0.0f;
 	float shakeDecay_ = 0.9f;   

@@ -84,6 +84,8 @@ private:
 			param.Descriptor.ShaderRegister = 0;
 			rootParameters.push_back(param);
 			break;
+		case PostEffectType::Smoothing:
+			break;
 		case PostEffectType::Blur:
 			break;
 		case PostEffectType::Invert:

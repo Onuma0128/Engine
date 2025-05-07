@@ -1,11 +1,7 @@
 #include "GamePlayScene.h"
 
-#include "imgui.h"
-#include "DirectXEngine.h"
-#include "PostEffectManager.h"
 #include "ParticleManager.h"
 #include "SceneManager.h"
-#include "ModelManager.h"
 
 #include "Collision3D.h"
 #include "Vector3.h"

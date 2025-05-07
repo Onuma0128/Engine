@@ -6,6 +6,7 @@ enum class PostEffectType {
     None,
     Grayscale,
     Vignette,
+    Smoothing,
     Blur,
     Invert,
     Noise,

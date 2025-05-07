@@ -110,6 +110,10 @@ void PostEffectManager::PostEffectCommand(PostEffectType type)
         cmdList->SetGraphicsRootConstantBufferView(1, vignetteResource_->GetGPUVirtualAddress());
 
         break;
+    case PostEffectType::Smoothing:
+
+
+        break;
     case PostEffectType::Blur:
         break;
     case PostEffectType::Invert:

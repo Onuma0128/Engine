@@ -262,6 +262,12 @@ public:
 				dxcUtils_, dxcCompiler_, includeHandler_
 			);
 			break;
+		case PostEffectType::Smoothing:
+			psBytecode = CompileShaderFactory::CreateCompileShader(
+				L"resources/shaders/GaussianFilter.PS.hlsl", L"ps_6_0",
+				dxcUtils_, dxcCompiler_, includeHandler_
+			);
+			break;
 		case PostEffectType::Blur:
 			break;
 		case PostEffectType::Invert:
