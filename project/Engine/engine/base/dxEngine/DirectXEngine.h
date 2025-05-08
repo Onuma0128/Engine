@@ -10,6 +10,7 @@
 #include "StringUtility.h"
 #include "PipelineState.h"
 #include "PostEffectManager.h"
+#include "RenderTexture.h"
 
 class WinApp;
 class ImGuiManager;
@@ -30,8 +31,6 @@ public:
 	void CommandInitialize();
 	// スワップチェーンの初期化
 	void SwapChainInitialize();
-	// 深度バッファの初期化
-	void DepthStencilInitialize();
 	// 各種デスクリプタヒープの初期化
 	void DescriptorHeapInitialize();
 	// レンダーターゲットビューの初期化
@@ -50,6 +49,8 @@ public:
 	void PipelineStateInitialize();
 	// FPS固定の初期化
 	void InitializeFixFPS();
+	// RenderTextureの初期化
+	void RenderTextureInitialize();
 	// FPS固定の更新
 	void UpdateFixFPS();
 
@@ -87,6 +88,8 @@ private:
 	static ComPtr<ID3D12Device> device_;
 	// commandListを生成する
 	static ComPtr<ID3D12GraphicsCommandList> commandList_;
+	// RenderTexture
+	std::unique_ptr<RenderTexture> renderTexture_ = nullptr;
 
 	///==============================================================
 
@@ -100,16 +103,6 @@ private:
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
 	std::array<ComPtr<ID3D12Resource>, 2> swapChainResources_ = { nullptr };
-	// レンダーテクスチャを生成する
-	uint32_t renderTextureSRVIndex_;
-	ComPtr<ID3D12Resource> renderTextureResource_ = nullptr;
-	D3D12_CPU_DESCRIPTOR_HANDLE renderTextureHandle_{};
-	// ルートシグネチャ,パイプラインステート
-	ComPtr<ID3D12RootSignature> offScreenRootSignature_ = nullptr;
-	ComPtr<ID3D12PipelineState> offScreenPipelineState_ = nullptr;
-	// 深度バッファの生成
-	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
-	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap_ = nullptr;
 	//RTVを2つ作るのでディスクリプタを2つ用意
 	std::array<D3D12_CPU_DESCRIPTOR_HANDLE, 2> rtvHandles_{};
 	// フェンスを生成

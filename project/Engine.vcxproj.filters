@@ -54,10 +54,10 @@
     <ClCompile Include="Engine\engine\base\dxEngine\D3DResourceLeakChecker.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\base\dxEngine\DepthStencilTexture.cpp">
+    <ClCompile Include="Engine\engine\base\dxEngine\renderTexture\DepthStencilTexture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\base\dxEngine\DescriptorHeap.cpp">
+    <ClCompile Include="Engine\engine\base\dxEngine\descriptorHeap\DescriptorHeap.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\base\dxEngine\DirectXEngine.cpp">
@@ -66,7 +66,7 @@
     <ClCompile Include="Engine\engine\base\dxEngine\pipeline\PipelineState.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\base\dxEngine\SrvManager.cpp">
+    <ClCompile Include="Engine\engine\base\dxEngine\descriptorHeap\SrvManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\base\dxEngine\StringUtility.cpp">
@@ -210,7 +210,7 @@
     <ClCompile Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\base\dxEngine\RenderTexture.cpp">
+    <ClCompile Include="Engine\engine\base\dxEngine\renderTexture\RenderTexture.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\base\dxEngine\pipeline\inputLayout\InputLayoutBase.cpp">
@@ -249,7 +249,7 @@
     <ClCompile Include="Engine\engine\base\dxEngine\pipeline\rootSignature\RootSignatureFactory.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\base\dxEngine\RtvManager.cpp">
+    <ClCompile Include="Engine\engine\base\dxEngine\descriptorHeap\RtvManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\base\effect\PostEffectManager.cpp">
@@ -259,6 +259,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyBaseState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\engine\base\dxEngine\descriptorHeap\DsvManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -299,10 +302,10 @@
     <ClInclude Include="Engine\engine\base\dxEngine\D3DResourceLeakChecker.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\base\dxEngine\DepthStencilTexture.h">
+    <ClInclude Include="Engine\engine\base\dxEngine\renderTexture\DepthStencilTexture.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\base\dxEngine\DescriptorHeap.h">
+    <ClInclude Include="Engine\engine\base\dxEngine\descriptorHeap\DescriptorHeap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\dxEngine\DirectXEngine.h">
@@ -314,7 +317,7 @@
     <ClInclude Include="Engine\engine\base\dxEngine\ResourceObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\base\dxEngine\SrvManager.h">
+    <ClInclude Include="Engine\engine\base\dxEngine\descriptorHeap\SrvManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\dxEngine\StringUtility.h">
@@ -473,7 +476,7 @@
     <ClInclude Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\base\dxEngine\RenderTexture.h">
+    <ClInclude Include="Engine\engine\base\dxEngine\renderTexture\RenderTexture.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\dxEngine\pipeline\inputLayout\InputLayoutBase.h">
@@ -539,7 +542,7 @@
     <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\SkyboxRootSignature.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\base\dxEngine\RtvManager.h">
+    <ClInclude Include="Engine\engine\base\dxEngine\descriptorHeap\RtvManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\effect\PostEffectManager.h">
@@ -552,6 +555,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyBaseState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\engine\base\dxEngine\descriptorHeap\DsvManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -27,7 +27,7 @@ void PostEffectManager::CreatePostEffect(PostEffectType type)
     PostEffectPass pass;
 
     // RenderTexture作成
-    pass.renderTexture = CreateRenderTextureResource(
+    pass.renderTexture = RenderTexture::CreateResource(
         dxEngine_->GetDevice(),
         WinApp::kClientWidth,
         WinApp::kClientHeight,

@@ -4,9 +4,6 @@
 #pragma comment(lib,"dxgi.lib")
 #include <format>
 #include <thread>
-#include "DepthStencilTexture.h"
-#include "DescriptorHeap.h"
-#include "RenderTexture.h"
 
 #include "Logger.h"
 #include "WinApp.h"
@@ -14,6 +11,7 @@
 #include "ImGuiManager.h"
 #include "SrvManager.h"
 #include "RtvManager.h"
+#include "DsvManager.h"
 #include "CameraManager.h"
 #include "LightManager.h"
 #include "AudioManager.h"
@@ -32,6 +30,7 @@ DirectXEngine::~DirectXEngine()
 {
 	SrvManager::GetInstance()->Finalize();
 	RtvManager::GetInstance()->Finalize();
+	DsvManager::GetInstance()->Finalize();
 	CameraManager::GetInstance()->Finalize();
 	TextureManager::GetInstance()->Finalize();
 	LightManager::GetInstance()->Finalize();
@@ -61,8 +60,6 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	CommandInitialize();
 	// スワップチェーンの初期化
 	SwapChainInitialize();
-	// 深度バッファの初期化
-	DepthStencilInitialize();
 	// 各種デスクリプタヒープの初期化
 	DescriptorHeapInitialize();
 
@@ -84,6 +81,8 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	IncludeHandlerInitialize();
 	// PipelineStateの初期化
 	PipelineStateInitialize();
+	// RenderTextureの初期化
+	RenderTextureInitialize();
 
 	/*==================== カメラ準備用 ====================*/
 
@@ -232,26 +231,13 @@ void DirectXEngine::SwapChainInitialize()
 	assert(SUCCEEDED(hr));
 }
 
-void DirectXEngine::DepthStencilInitialize()
-{
-	//DepthStencilTextureをウィンドウのサイズで作成
-	depthStencilResource_ = CreateDepthStencilTextureResource(device_, winApp_->kClientWidth, winApp_->kClientHeight);
-	//DSV用のヒープでディスクリプタの数は1。DSVはShader内で触るものではないので、ShaderVisibleはflase
-	dsvDescriptorHeap_ = CreateDescriptorHeap(device_, D3D12_DESCRIPTOR_HEAP_TYPE_DSV, 1, false);
-	//DSVの設定
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc{};
-	dsvDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;//Format。基本的にはResourceに合わせる
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;//2dTexture
-	//DSVHeapの先頭にDSVを作る
-	device_->CreateDepthStencilView(depthStencilResource_.Get(), &dsvDesc, dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart());
-}
-
 void DirectXEngine::DescriptorHeapInitialize()
 {
-	/*==================== SRV,RTV ====================*/
+	/*==================== SRV,RTV,DSV ====================*/
 
 	SrvManager::GetInstance()->Initialize(this);
 	RtvManager::GetInstance()->Initialize(this);
+	DsvManager::GetInstance()->Initialize(this);
 }
 
 void DirectXEngine::RTVInitialize()
@@ -268,25 +254,6 @@ void DirectXEngine::RTVInitialize()
 		rtvHandles_[i] = RtvManager::GetInstance()->GetCPUDescriptorHandle(rtvIndex);
 		RtvManager::GetInstance()->CreateRTV(rtvIndex, swapChainResources_[i].Get());
 	}
-
-	// RenderTextureのRTVの設定
-	const Vector4 kRenderTargetClearValue = { 0.0f,0.0f,0.2f,1.0f };
-	renderTextureResource_ = CreateRenderTextureResource(
-		device_,
-		winApp_->kClientWidth,
-		winApp_->kClientHeight,
-		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
-		kRenderTargetClearValue
-	);
-	// RtvManagerでRTVを割り当てて作成
-	uint32_t renderTextureRTVIndex = RtvManager::GetInstance()->Allocate();
-	renderTextureHandle_ = RtvManager::GetInstance()->GetCPUDescriptorHandle(renderTextureRTVIndex);
-	RtvManager::GetInstance()->CreateRTV(renderTextureRTVIndex, renderTextureResource_.Get());
-
-	// RenderTextureのSRVの設定
-	renderTextureSRVIndex_ = SrvManager::GetInstance()->Allocate() + 1;
-	SrvManager::GetInstance()->CreateSRVforRenderTexture(renderTextureSRVIndex_, renderTextureResource_.Get());
-
 }
 
 void DirectXEngine::FenceInitialize()
@@ -345,14 +312,17 @@ void DirectXEngine::PipelineStateInitialize()
 	// 新しいパイプライン
 	pipelineState_ = std::make_unique<PipelineState>();
 	pipelineState_->Initialize(device_, dxcUtils_, dxcCompiler_, includeHandler_);
-
-	offScreenRootSignature_ = pipelineState_->CreateRootSignature(PipelineType::RenderTexture);
-	offScreenPipelineState_ = pipelineState_->CreateRenderTexturePipelineState();
 }
 
 void DirectXEngine::InitializeFixFPS()
 {
 	reference_ = std::chrono::steady_clock::now();
+}
+
+void DirectXEngine::RenderTextureInitialize()
+{
+	renderTexture_ = std::make_unique<RenderTexture>();
+	renderTexture_->Initialize();
 }
 
 void DirectXEngine::UpdateFixFPS()
@@ -381,28 +351,10 @@ void DirectXEngine::UpdateFixFPS()
 
 void DirectXEngine::PreDraw()
 {
-	//TransitionBarrierの設定
-	//今回のバリアはTransition
-	barrier_.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	//Noneにしておく
-	barrier_.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	//バリアを張る対象のリソース。現在のバックバッファに対して行う
-	barrier_.Transition.pResource = renderTextureResource_.Get();
-	//遷移前(現在)のResourceState
-	barrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
-	//遷移後のResourceState
-	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	//TransitionBarrierを張る
-	commandList_->ResourceBarrier(1, &barrier_);
-
-	//描画先のRTVとDSVを設定する
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
-	commandList_->OMSetRenderTargets(1, &renderTextureHandle_, false, &dsvHandle);
-	//指定した深度で画面全体をクリアする
-	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-	//指定した色で画面全体をクリアする
-	float clearColor[] = { 0.0f,0.0f,0.2f,1.0f }; // 青色。RGBAの順
-	commandList_->ClearRenderTargetView(renderTextureHandle_, clearColor, 0, nullptr);
+	// RenderTextureのStartBarrier
+	renderTexture_->StartBarrier();
+	// RenderTextureの描画前準備
+	renderTexture_->PreDraw();
 	//描画用のDescriptorHeapの設定
 	SrvManager::GetInstance()->PreDraw();
 	//コマンドを積む
@@ -412,15 +364,11 @@ void DirectXEngine::PreDraw()
 
 void DirectXEngine::SwapChainDrawSet()
 {
-	//遷移前(現在)のResourceState
-	barrier_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
-	//遷移後のResourceState
-	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
-	//TransitionBarrierを張る
-	commandList_->ResourceBarrier(1, &barrier_);
+	// RenderTextureのEndBarrier
+	renderTexture_->EndBarrier();
 
 	// PostEffectの複数描画
-	postEffectManager_->RenderTextureDraws(renderTextureSRVIndex_);
+	postEffectManager_->RenderTextureDraws(renderTexture_->GetRenderTextureSRVIndex());
 
 	// これから書き込むバックバッファのインデックスを取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
@@ -435,18 +383,14 @@ void DirectXEngine::SwapChainDrawSet()
 
 	// これから書き込むバックバッファのインデックスを取得
 	//描画先のRTVとDSVを設定する
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvDescriptorHeap_->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = renderTexture_->GetDSVHandle();
 	commandList_->OMSetRenderTargets(1, &rtvHandles_[backBufferIndex], false, &dsvHandle);
 	//コマンドを積む
 	commandList_->RSSetViewports(1, &viewport_);
 	commandList_->RSSetScissorRects(1, &scissorRect_);
 
 	// RenderTextureの描画
-	commandList_->SetGraphicsRootSignature(offScreenRootSignature_.Get());
-	commandList_->SetPipelineState(offScreenPipelineState_.Get());
-	commandList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, postEffectManager_->GetFinalSRVIndex());
-	commandList_->DrawInstanced(3, 1, 0, 0);
+	renderTexture_->Draw(postEffectManager_->GetFinalSRVIndex());
 }
 
 void DirectXEngine::PostDraw()
