@@ -17,5 +17,6 @@ enum class BlendMode {
 	kBlendModeNormal,		// 通常αブレンド
 	kBlendModeAdd,			// 加算ブレンド
 	kBlendModeSubtract,		// 減算ブレンド
-	kBlendModeMultily		// 乗算ブレンド
+	kBlendModeMultily,		// 乗算ブレンド
+	kCount
 };

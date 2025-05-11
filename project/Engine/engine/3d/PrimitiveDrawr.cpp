@@ -503,7 +503,7 @@ void PrimitiveDrawr::CreateCylinderVertexData(VertexData* vertexData, uint32_t k
 
 void PrimitiveDrawr::InitSkybox()
 {
-	SetTexture("resources", "rostock_laage_airport_4k.dds");
+	SetTexture("resources", "output.dds");
 
 	CreateBufferResource(vertexResource_, sizeof(VertexData) * 36);
 	CreateVertexBufferView(36);

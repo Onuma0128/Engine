@@ -44,8 +44,8 @@ void PostEffectManager::CreatePostEffect(PostEffectType type)
     SrvManager::GetInstance()->CreateSRVforRenderTexture(pass.srvIndex, pass.renderTexture.Get());
 
     // PSOとRootSignatureの登録
-    rootSignatures_[type] = pipeline_->CreateRootSignature(PipelineType::RenderTexture, type);
-    pipelineStates_[type] = pipeline_->CreateRenderTexturePipelineState(type);
+    rootSignatures_[type] = pipeline_->GetRootSignature(PipelineType::RenderTexture, type, BlendMode::kBlendModeNone).Get();
+    pipelineStates_[type] = pipeline_->GetPipelineState(PipelineType::RenderTexture, type, BlendMode::kBlendModeNone).Get();
 
     // 保存
     enabledEffects_.push_back(type);

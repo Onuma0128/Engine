@@ -23,7 +23,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
         TextureManager::GetInstance()->GetSrvIndex(modelData_.material.directoryPath + modelData_.material.filePath);
 
     modelData_.material.ENV_DirectoryPath = "resources/";
-    modelData_.material.ENV_FilePath = "rostock_laage_airport_4k.dds";
+    modelData_.material.ENV_FilePath = "output.dds";
     TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
 
     modelData_.material.ENV_TextureIndex =

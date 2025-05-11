@@ -70,6 +70,8 @@ private:
 		{
 		case PostEffectType::None:
 			break;
+		case PostEffectType::RenderTexture:
+			break;
 		case PostEffectType::Grayscale:
 
 			param.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;

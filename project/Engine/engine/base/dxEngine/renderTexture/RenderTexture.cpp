@@ -84,8 +84,12 @@ void RenderTexture::Initialize()
 	SrvManager::GetInstance()->CreateSRVforRenderTexture(renderTextureSRVIndex_, renderTextureResource_.Get());
 
 	// ルートシグネチャ,パイプラインステート
-	rootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::RenderTexture);
-	pipelineState_ = DirectXEngine::GetPipelineState()->CreateRenderTexturePipelineState();
+	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+		PipelineType::RenderTexture, PostEffectType::RenderTexture, BlendMode::kBlendModeNone
+	).Get();
+	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+		PipelineType::RenderTexture, PostEffectType::RenderTexture, BlendMode::kBlendModeNone
+	).Get();
 }
 
 void RenderTexture::StartBarrier()

@@ -245,6 +245,8 @@ public:
 		switch (type)
 		{
 		case PostEffectType::None:
+			break;
+		case PostEffectType::RenderTexture:
 			psBytecode = CompileShaderFactory::CreateCompileShader(
 				L"resources/shaders/CopyImage.PS.hlsl", L"ps_6_0",
 				dxcUtils_, dxcCompiler_, includeHandler_

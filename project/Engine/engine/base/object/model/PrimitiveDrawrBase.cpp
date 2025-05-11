@@ -5,13 +5,15 @@
 
 void PrimitiveDrawrBase::Initialize()
 {
-	rootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::PrimitiveDrawr);
+	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::PrimitiveDrawr).Get();
 	for (int i = 0; i < static_cast<int>(pipelineStates_.size()); ++i) {
-		pipelineStates_[i] = DirectXEngine::GetPipelineState()->CreatePrimitiveDrawrPipelineState(i);
+		pipelineStates_[i] = DirectXEngine::GetPipelineState()->GetPipelineState(
+			PipelineType::PrimitiveDrawr, PostEffectType::None, static_cast<BlendMode>(i)
+		).Get();
 	}
 
-	skyboxRootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::Skybox);
-	skyboxPipelineState_ = DirectXEngine::GetPipelineState()->CreateSkyboxPipelineState();
+	skyboxRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::Skybox).Get();
+	skyboxPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::Skybox).Get();
 }
 
 void PrimitiveDrawrBase::DrawBase(int blendMode)

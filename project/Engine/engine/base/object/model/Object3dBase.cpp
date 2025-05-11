@@ -5,8 +5,8 @@
 
 void Object3dBase::Initialize()
 {
-	rootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::Object3d);
-	pipelineState_ = DirectXEngine::GetPipelineState()->CreateObject3dPipelineState();
+	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::Object3d).Get();
+	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::Object3d).Get();
 }
 
 void Object3dBase::DrawBase()

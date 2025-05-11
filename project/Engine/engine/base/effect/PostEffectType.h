@@ -4,6 +4,7 @@
 
 enum class PostEffectType {
     None,
+    RenderTexture,
     Grayscale,
     Vignette,
     Smoothing,

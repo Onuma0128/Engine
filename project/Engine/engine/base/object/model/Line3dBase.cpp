@@ -5,8 +5,8 @@
 
 void Line3dBase::Initialize()
 {
-	rootSignature_ = DirectXEngine::GetPipelineState()->CreateRootSignature(PipelineType::Line3d);
-	pipelineState_ = DirectXEngine::GetPipelineState()->CreateLine3dPipelineState();
+	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::Line3d).Get();
+	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::Line3d).Get();
 }
 
 void Line3dBase::DrawBase()

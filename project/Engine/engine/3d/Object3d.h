@@ -39,6 +39,7 @@ public:
 
 	WorldTransform& GetTransform() { return transform_; }
 	Model* GetModel() { return model_; }
+	Material* GetMaterial() { return materialData_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
 private:
