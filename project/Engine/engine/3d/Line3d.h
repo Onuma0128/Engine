@@ -7,6 +7,7 @@
 
 #include "Line3dBase.h"
 
+#include "ModelStruct.h"
 #include "Vector3.h"
 #include "Vector4.h"
 
@@ -50,6 +51,9 @@ public:
 		vertexData_[1].position = { endPos_.x,endPos_.y,endPos_.z,1.0f };
 	}
 
+	RenderOptions& GetRenderOptions() { return renderOptions_; }
+	bool GetIsMultiple()const { return isMultiple_; }
+
 private:
 
 	std::unique_ptr<Line3dBase> line3dBase_ = nullptr;
@@ -64,6 +68,10 @@ private:
 
 	Vector3 startPos_ = {};
 	Vector3 endPos_ = {};
+
+	// 描画するか
+	RenderOptions renderOptions_;
+	bool isMultiple_ = false;
 
 };
 

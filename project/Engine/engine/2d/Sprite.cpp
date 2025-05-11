@@ -29,6 +29,12 @@ void Sprite::Initialize(std::string textureFilePath)
 	TransformationMatrixDataInitialize();
 
 	AdjustTextureSize();
+
+	renderOptions_ = {
+		.enabled = true,
+		.offscreen = true
+	};
+	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
 }
 
 void Sprite::Update()

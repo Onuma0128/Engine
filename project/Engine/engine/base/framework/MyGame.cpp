@@ -62,9 +62,13 @@ void MyGame::Draw()
 	// 描画前の処理
 	directXEngine_->PreDraw();
 
-	SceneManager::GetInstance()->Draw();
+	//SceneManager::GetInstance()->Draw();
+
+	directXEngine_->GetAllDrawrMgr()->AllDraw();
 
 	directXEngine_->SwapChainDrawSet();
+
+	directXEngine_->GetAllDrawrMgr()->OutAllDraw();
 
 	// ImGuiの描画
 	imGuiManager_->Draw();

@@ -9,6 +9,7 @@
 #include "PrimitiveDrawrBase.h"
 #include "PipelineStruct.h"
 
+#include "ModelStruct.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -18,6 +19,7 @@
 using Microsoft::WRL::ComPtr;
 
 enum class PrimitiveType {
+	None,
 	Plane,
 	Sphere,
 	Ring,
@@ -70,6 +72,8 @@ public:
 	Transform2D& GetUVTransform() { return uvTransform_; }
 	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
 	const Vector4& GetColor() { return materialData_->color; }
+	PrimitiveType GetPrimitiveType()const { return type_; }
+	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
 	void SetTransform(EulerTransform transform) { transform_ = transform; }
 	void SetUVTransform(Transform2D transform) { uvTransform_ = transform; }
@@ -173,12 +177,15 @@ private:
 
 	/* =============== TypeとTransform =============== */
 
-	PrimitiveType type_;
+	PrimitiveType type_ = PrimitiveType::None;
 
 	EulerTransform transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform2D uvTransform_ = { {1.0f,1.0f},{0.0f},{0.0f,0.0f} };
 
 	BlendMode blendMode_ = BlendMode::kBlendModeAdd;
+
+	// 描画するか
+	RenderOptions renderOptions_;
 
 	/* =============== Trail =============== */
 

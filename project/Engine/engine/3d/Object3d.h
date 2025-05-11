@@ -39,6 +39,7 @@ public:
 
 	WorldTransform& GetTransform() { return transform_; }
 	Model* GetModel() { return model_; }
+	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
 private:
 
@@ -61,5 +62,8 @@ private:
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	// バッファリソース内のデータを指すポインタ
 	Material* materialData_ = nullptr;
+
+	// 描画するか
+	RenderOptions renderOptions_;
 
 };

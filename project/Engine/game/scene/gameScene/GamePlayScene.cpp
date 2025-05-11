@@ -3,6 +3,8 @@
 #include "ParticleManager.h"
 #include "SceneManager.h"
 
+#include "gameScene/enemy/Enemy.h"
+
 #include "Collision3D.h"
 #include "Vector3.h"
 
@@ -18,8 +20,8 @@ void GamePlayScene::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
-	enemy_ = std::make_unique<Enemy>();
-	enemy_->Init();
+	enemySpawner_ = std::make_unique<EnemySpawner>();
+	enemySpawner_->Init();
 
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
@@ -36,7 +38,7 @@ void GamePlayScene::Update()
 
 	player_->Update();
 
-	enemy_->Update();
+	enemySpawner_->Update();
 
 	gameCamera_->Update();
 
@@ -51,7 +53,7 @@ void GamePlayScene::Draw()
 
 	player_->Draw();
 
-	enemy_->Draw();
+	enemySpawner_->Draw();
 
 	ParticleManager::GetInstance()->Draw();
 }
@@ -60,25 +62,27 @@ void GamePlayScene::Collision()
 {
 	for (auto& bullet : player_->GetBullets()) {
 		if (!bullet->GetIsActive()) { continue; }
-		// 敵のOBB
-		OBB obb1 = {
-			.center = enemy_->GetTransform().translation_,
-			.rotateMatrix = Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_),
-			.size = enemy_->GetTransform().scale_
-		};
-		// 弾のSphere
-		Sphere sphere = {
-			.center = bullet->GetTransform().translation_,
-			.radius = bullet->GetTransform().scale_.x
-		};
+		for (auto& enemy : enemySpawner_->GetEnemyList()) {
+			// 敵のOBB
+			OBB obb1 = {
+				.center = enemy->GetTransform().translation_,
+				.rotateMatrix = Quaternion::MakeRotateMatrix(enemy->GetTransform().rotation_),
+				.size = enemy->GetTransform().scale_
+			};
+			// 弾のSphere
+			Sphere sphere = {
+				.center = bullet->GetTransform().translation_,
+				.radius = bullet->GetTransform().scale_.x
+			};
 
-		std::string name;
-		bool isCollision = Collision3D::CollisionChecker(obb1, sphere, name);
+			std::string name;
+			bool isCollision = Collision3D::CollisionChecker(obb1, sphere, name);
 
-		if (isCollision) { 
-			enemy_->GetEffect()->OnceBulletHitEffect(bullet->GetTransform());
-			bullet->IsCollision();
-			gameCamera_->SetShake(1.0f);
+			if (isCollision) {
+				enemy->GetEffect()->OnceBulletHitEffect(bullet->GetTransform());
+				bullet->IsCollision();
+				gameCamera_->SetShake(1.0f);
+			}
 		}
 	}
 }

@@ -8,6 +8,7 @@
 
 #include "SpriteBase.h"
 
+#include "ModelStruct.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -81,6 +82,8 @@ public:
 	const Vector2& GetTextureSize()const { return textureSize_; }
 	void SetTextureSize(const Vector2& size) { textureSize_ = size; }
 
+	RenderOptions& GetRenderOptions() { return renderOptions_; }
+
 private:
 
 	void VertexDataInitialize();
@@ -121,6 +124,9 @@ private:
 	// 座標変換行列
 	ComPtr<ID3D12Resource> transformationMatrixResource_ = nullptr;
 	TransformationMatrix* transformationMatrixData_ = nullptr;
+
+	// 描画するか
+	RenderOptions renderOptions_;
 
 protected:
 

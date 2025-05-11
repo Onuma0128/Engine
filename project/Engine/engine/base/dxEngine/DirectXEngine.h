@@ -11,6 +11,7 @@
 #include "PipelineState.h"
 #include "PostEffectManager.h"
 #include "RenderTexture.h"
+#include "AllDrawrManager.h"
 
 class WinApp;
 class ImGuiManager;
@@ -74,12 +75,16 @@ public:
 	static PipelineState* GetPipelineState() { return pipelineState_.get(); }
 	// ポストエフェクト
 	static PostEffectManager* GetPostEffectMgr() { return postEffectManager_.get(); }
+	// 全ての描画
+	static AllDrawrManager* GetAllDrawrMgr() { return allDrawrManager_.get(); }
 
 private:
 	// StringUtility
 	std::unique_ptr<StringUtility> stringUtility_ = nullptr;
 	// WindowsAPI
 	WinApp* winApp_ = nullptr;
+	// RenderTexture
+	std::unique_ptr<RenderTexture> renderTexture_ = nullptr;
 	// PipelineState
 	static std::unique_ptr<PipelineState> pipelineState_;
 	// PostEffectManager
@@ -88,8 +93,8 @@ private:
 	static ComPtr<ID3D12Device> device_;
 	// commandListを生成する
 	static ComPtr<ID3D12GraphicsCommandList> commandList_;
-	// RenderTexture
-	std::unique_ptr<RenderTexture> renderTexture_ = nullptr;
+	// AllDrawrManager
+	static std::unique_ptr<AllDrawrManager> allDrawrManager_;
 
 	///==============================================================
 

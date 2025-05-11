@@ -92,3 +92,8 @@ struct SkinCluster {
 	uint32_t srvHandleIndex;
 	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle;
 };
+
+struct RenderOptions {
+	bool enabled;		// 描画をするか
+	bool offscreen;		// オフスク描画をするか
+};

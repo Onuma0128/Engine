@@ -47,6 +47,9 @@ void Player::Update()
 			});
 
 		bulletUIs_[i]->Update({});
+
+		if (!bullets_[i]->GetIsReload()) { bulletUIs_[i]->GetRenderOptions().enabled = false; }
+		else { bulletUIs_[i]->GetRenderOptions().enabled = true; }
 	}
 	
 	Object3d::Update();

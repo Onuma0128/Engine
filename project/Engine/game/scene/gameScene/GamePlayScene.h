@@ -7,7 +7,7 @@
 #include "PrimitiveDrawr.h"
 
 #include "gameScene/player/Player.h"
-#include "gameScene/enemy/Enemy.h"
+#include "gameScene/enemy/EnemySpawner.h"
 #include "gameScene/gameCamera/GameCamera.h"
 
 
@@ -33,7 +33,7 @@ private:
 	std::unique_ptr<Player> player_ = nullptr;
 
 	// 敵の生成
-	std::unique_ptr<Enemy> enemy_ = nullptr;
+	std::unique_ptr<EnemySpawner> enemySpawner_ = nullptr;
 
 	// ゲームカメラの生成
 	std::unique_ptr<GameCamera> gameCamera_ = nullptr;

@@ -20,6 +20,12 @@ void Object3d::Initialize(const std::string& filePath)
     SetModel(filePath);
 
     MakeMaterialData();
+
+    renderOptions_ = {
+        .enabled = true,
+        .offscreen = true
+    };
+    DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
 }
 
 void Object3d::Update()

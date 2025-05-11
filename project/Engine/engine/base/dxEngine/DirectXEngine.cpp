@@ -25,6 +25,7 @@ ComPtr<ID3D12Device> DirectXEngine::device_ = nullptr;
 ComPtr<ID3D12GraphicsCommandList> DirectXEngine::commandList_ = nullptr;
 std::unique_ptr<PipelineState> DirectXEngine::pipelineState_ = nullptr;
 std::unique_ptr<PostEffectManager> DirectXEngine::postEffectManager_ = nullptr;
+std::unique_ptr<AllDrawrManager> DirectXEngine::allDrawrManager_ = nullptr;
 
 DirectXEngine::~DirectXEngine()
 {
@@ -42,6 +43,8 @@ DirectXEngine::~DirectXEngine()
 	commandList_.Reset();
 	pipelineState_.reset();
 	postEffectManager_.reset();
+	allDrawrManager_->Finalize();
+	allDrawrManager_.reset();
 
 	//解放の処理
 	CloseHandle(fenceEvent_);
@@ -104,10 +107,10 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 
 	ParticleManager::GetInstance()->Initialize(this);
 
-	/*==================== アニメーション ====================*/
-
 	postEffectManager_ = std::make_unique<PostEffectManager>();
 	postEffectManager_->Initialize(this);
+
+	allDrawrManager_ = std::make_unique<AllDrawrManager>();
 }
 
 void DirectXEngine::DeviceInitialize()

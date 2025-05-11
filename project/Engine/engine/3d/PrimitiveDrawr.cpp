@@ -30,6 +30,12 @@ void PrimitiveDrawr::Init(std::vector<Vector3> pos)
 
 	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
 	CreateWVPData();
+
+	renderOptions_ = {
+		.enabled = true,
+		.offscreen = true
+	};
+	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
 }
 
 void PrimitiveDrawr::Update()
@@ -73,6 +79,12 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 
 	primitiveDrawrBase_ = std::make_unique<PrimitiveDrawrBase>();
 	primitiveDrawrBase_->Initialize();
+
+	renderOptions_ = {
+		.enabled = true,
+		.offscreen = true
+	};
+	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
 
 	switch (type_)
 	{
