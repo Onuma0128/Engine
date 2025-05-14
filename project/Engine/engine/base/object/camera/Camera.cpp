@@ -31,7 +31,7 @@ void Camera::Update()
 
 void Camera::DebugCamera()
 {
-	const float moveSpeed = 0.1f;
+	const float moveSpeed = 0.25f;
 
 	Vector3 defaultForward = Vector3::ExprUnitZ;
 	Matrix4x4 rotationMatrix = Matrix4x4::RotateY(debugTransform_.rotation.y);

@@ -32,25 +32,29 @@ void PipelineState::Initialize(
 		PostEffectType::Smoothing
 	};
 
+	// RootSignature,Pipelineの作成
 	for (auto type : pipelineTypes) {
 		for (auto effect : postEffectTypes) {
 			// Effectありで必要なものだけ処理（RenderTexture等）
-			if (effect != PostEffectType::None && type != PipelineType::RenderTexture) { continue; }
-
+			if ((effect != PostEffectType::None && type != PipelineType::RenderTexture) ||
+				(effect == PostEffectType::None && type == PipelineType::RenderTexture)) {
+				continue; 
+			}
+			// BlendMode複数持ちの設定
 			if (type == PipelineType::PrimitiveDrawr || type == PipelineType::Particle) {
 				for (int blend = 0; blend < static_cast<int>(BlendMode::kCount); ++blend) {
 					PipelineKey key{ type, effect, static_cast<BlendMode>(blend) };
 					rootSignatures_[key] = CreateRootSignature(type, effect);
 					pipelineStates_[key] = CreatePipelineState(type, effect, static_cast<BlendMode>(blend));
 				}
+			// その他設定
 			} else {
-				PipelineKey key;
 				if (type == PipelineType::RenderTexture) {
-					key = { type, effect, BlendMode::kBlendModeNone };
+					PipelineKey key{ type, effect, BlendMode::kBlendModeNone };
 					rootSignatures_[key] = CreateRootSignature(type, effect);
 					pipelineStates_[key] = CreatePipelineState(type, effect, BlendMode::kBlendModeNone);
 				} else {
-					key = { type, effect, BlendMode::kBlendModeNormal };
+					PipelineKey key{ type, effect, BlendMode::kBlendModeNormal };
 					rootSignatures_[key] = CreateRootSignature(type, effect);
 					pipelineStates_[key] = CreatePipelineState(type, effect, BlendMode::kBlendModeNormal);
 				}
@@ -71,7 +75,7 @@ ComPtr<ID3D12RootSignature> PipelineState::CreateRootSignature(PipelineType type
 ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type, PostEffectType effectType, BlendMode blendMode)
 {
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
-	psoDesc.pRootSignature = RootSignatureFactory::GetRootSignature(type, device_, effectType).Get();
+	psoDesc.pRootSignature = GetRootSignature(type, effectType, blendMode).Get();
 	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
 	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(type, dxcUtils_, dxcCompiler_, includeHandler_, effectType);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(type);

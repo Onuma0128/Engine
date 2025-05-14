@@ -27,6 +27,7 @@ void PlayerBullet::Update()
 
 	if (wasActive_ && !isActive_ && onDeactivatedCallback_) {
 		onDeactivatedCallback_();
+		GetRenderOptions().enabled = false;
 	}
 
 	wasActive_ = isActive_;
@@ -69,6 +70,7 @@ void PlayerBullet::Attack(const WorldTransform& transform)
 	isActive_ = true;
 	activeFrame_ = 0.0f;
 	isReload_ = false;
+	GetRenderOptions().enabled = true;
 }
 
 void PlayerBullet::IsCollision()

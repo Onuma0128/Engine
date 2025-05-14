@@ -26,7 +26,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     float2 center = float2(0.5f, 0.5f);
     float dist = distance(input.texcoord, center);
 
-    // 最大半径（対角線中心 ≒ √0.5^2 + 0.5^2 = 0.707）
+    // 最大半径
     float maxRadius = 0.707f;
 
     // グレースケールがかかる半径：t が上がるほど広がる
@@ -35,6 +35,7 @@ PixelShaderOutput main(VertexShaderOutput input)
 
     // 中心から radius の範囲に smooth にグレースケール適用
     float grayscaleFactor = smoothstep(radius - delta, radius + delta, dist);
+    grayscaleFactor = clamp(grayscaleFactor, 0.0f, 1.0f);
 
     // 補間
     texColor.rgb = lerp(texColor.rgb, float3(grayscale, grayscale, grayscale), (1.0f - grayscaleFactor));

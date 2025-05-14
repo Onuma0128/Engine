@@ -30,6 +30,7 @@ public:
 
 	WorldTransform& GetTransform() { return transform_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
+	Material* GetMaterial() { return materialData_; }
 
 private:
 

@@ -270,15 +270,11 @@ public:
 				dxcUtils_, dxcCompiler_, includeHandler_
 			);
 			break;
-		case PostEffectType::Blur:
-			break;
-		case PostEffectType::Invert:
-			break;
-		case PostEffectType::Noise:
-			break;
-		case PostEffectType::Bloom:
-			break;
-		case PostEffectType::Count:
+		case PostEffectType::OutLine:
+			psBytecode = CompileShaderFactory::CreateCompileShader(
+				L"resources/shaders/LuminanceBasedOutline.PS.hlsl", L"ps_6_0",
+				dxcUtils_, dxcCompiler_, includeHandler_
+			);
 			break;
 		default:
 			break;

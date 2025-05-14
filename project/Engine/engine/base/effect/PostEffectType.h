@@ -8,10 +8,7 @@ enum class PostEffectType {
     Grayscale,
     Vignette,
     Smoothing,
-    Blur,
-    Invert,
-    Noise,
-    Bloom,
+    OutLine,
     Count
 };
 

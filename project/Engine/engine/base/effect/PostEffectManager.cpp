@@ -114,16 +114,6 @@ void PostEffectManager::PostEffectCommand(PostEffectType type)
 
 
         break;
-    case PostEffectType::Blur:
-        break;
-    case PostEffectType::Invert:
-        break;
-    case PostEffectType::Noise:
-        break;
-    case PostEffectType::Bloom:
-        break;
-    case PostEffectType::Count:
-        break;
     default:
         break;
     }

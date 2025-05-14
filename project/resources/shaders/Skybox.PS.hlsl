@@ -22,16 +22,6 @@ PixelShaderOutput main(VertexShaderOutput input)
     PixelShaderOutput output;
     float3 dir = normalize(input.texcoord);
     float4 textureColor = gTexture.Sample(gSampler, dir);
-    //if (gMaterial.xTexcoord_alpha != 0)
-    //{
-    //    textureColor.a *= input.texcoord.x;
-    //}
-    //if (gMaterial.yTexcoord_alpha != 0)
-    //{
-    //    textureColor.a *= input.texcoord.y;
-    //}
-    //textureColor.a = clamp(textureColor.a, 0.0f, 1.0f);
-    
     output.color = textureColor * gMaterial.color;
     
     return output;
