@@ -19,7 +19,7 @@ private:
 	DsvManager& operator=(const DsvManager&) = delete;
 
 public:
-	static const uint32_t kMaxDSVCount = 16;
+	static const uint32_t kMaxDSVCount = 256;
 
 	static DsvManager* GetInstance();
 
@@ -29,8 +29,9 @@ public:
 	// ハンドル取得
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(uint32_t index);
 
-	// RTV作成
+	// DSV作成
 	void CreateDSV(uint32_t index, ID3D12Resource* resource);
+	void CreateOutlineDSV(uint32_t index, ID3D12Resource* resource);
 
 	// 自動割当
 	uint32_t Allocate();

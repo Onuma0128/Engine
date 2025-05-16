@@ -77,6 +77,8 @@ public:
 	static PostEffectManager* GetPostEffectMgr() { return postEffectManager_.get(); }
 	// 全ての描画
 	static AllDrawrManager* GetAllDrawrMgr() { return allDrawrManager_.get(); }
+	// RenderTexture
+	RenderTexture* GetRenderTexrure() { return renderTexture_.get(); }
 
 private:
 	// StringUtility

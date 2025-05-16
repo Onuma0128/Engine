@@ -49,7 +49,7 @@ void PlayerEffect::Init()
 	// PostEffectを初期化
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
-	//DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Smoothing);
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::OutLine);
 }
 
 void PlayerEffect::Update()

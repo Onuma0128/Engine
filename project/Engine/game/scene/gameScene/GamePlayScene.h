@@ -29,6 +29,7 @@ public:
 private:
 
 	std::unique_ptr<Object3d> demoObj_ = nullptr;
+	std::unique_ptr<PrimitiveDrawr> skyBox_ = nullptr;
 	
 	// プレイヤーの生成
 	std::unique_ptr<Player> player_ = nullptr;

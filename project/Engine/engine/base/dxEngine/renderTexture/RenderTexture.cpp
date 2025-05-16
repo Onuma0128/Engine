@@ -48,6 +48,11 @@ ComPtr<ID3D12Resource> RenderTexture::CreateResource(ComPtr<ID3D12Device> device
 	return resource;
 }
 
+ID3D12Resource* RenderTexture::GetDSVResource() const
+{
+	return depthStencilResource_.Get();
+}
+
 D3D12_CPU_DESCRIPTOR_HANDLE RenderTexture::GetDSVHandle() const
 {
 	return DsvManager::GetInstance()->GetCPUDescriptorHandle(depthIndex_);

@@ -5,6 +5,8 @@
 
 #include <chrono>
 
+#include "PostEffectType.h"
+
 using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
@@ -45,7 +47,7 @@ public:
 	// SRV生成(StructuredBuffer用)
 	void CreateSRVforStructuredBuffer(uint32_t srvIndex, ID3D12Resource* pResource, UINT numElements, UINT structureByteStride);
 	// SRV生成(RenderTexture用)
-	void CreateSRVforRenderTexture(uint32_t srvIndex, ID3D12Resource* pResource);
+	void CreateSRVforRenderTexture(uint32_t srvIndex, ID3D12Resource* pResource, PostEffectType type = PostEffectType::None);
 	// SRV生成(DDSテクスチャ用)
 	void CreateSRVforTextureCube(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format, UINT MipLevels);
 
