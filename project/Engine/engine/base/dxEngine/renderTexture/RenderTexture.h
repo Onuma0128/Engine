@@ -27,6 +27,7 @@ public:
 		return renderTextureSRVIndex_;
 	}
 
+	ID3D12Resource* GetDSVResource()const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetDSVHandle() const;
 
 	// 初期化

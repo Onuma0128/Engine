@@ -29,7 +29,7 @@ void PipelineState::Initialize(
 	std::vector<PostEffectType> postEffectTypes = {
 		PostEffectType::None, PostEffectType::RenderTexture,
 		PostEffectType::Grayscale, PostEffectType::Vignette,
-		PostEffectType::Smoothing
+		PostEffectType::Smoothing, PostEffectType::OutLine
 	};
 
 	// RootSignature,Pipelineの作成

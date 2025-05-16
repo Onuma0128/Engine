@@ -58,6 +58,9 @@ public:
 	const Vector3& GetTranslation()const { return transform_.translation; }
 	const bool GetIsDebug()const { return isDebug_; }
 
+	const float GetNearClip()const { return nearClip_; }
+	const float GetFarClip()const { return farClip_; }
+
 private:
 
 	/*==================== カメラの変数 ====================*/

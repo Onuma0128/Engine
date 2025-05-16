@@ -44,9 +44,9 @@ private:
 
     struct PostEffectPass {
         ComPtr<ID3D12Resource> renderTexture;
-        D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle{};
         uint32_t srvIndex = 0;
         uint32_t rtvIndex = 0;
+        uint32_t depthSrvIndex = 0;
     };
 
     DirectXEngine* dxEngine_ = nullptr;
@@ -65,5 +65,8 @@ private:
     // VignetteData
     ComPtr<ID3D12Resource> vignetteResource_ = nullptr;
     VignetteData* vignetteData_;
+    // OutlineData
+    ComPtr<ID3D12Resource> outlineResource_ = nullptr;
+    OutlineData* outlineData_;
 };
 
