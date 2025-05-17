@@ -20,6 +20,11 @@ PixelShaderOutput main(VertexShaderOutput input)
     PixelShaderOutput output;
 
     float4 texColor = gTexture.Sample(gSampler, input.texcoord);
+    if (gGrayscaleData.t <= 0.0001f)
+    {
+        output.color = texColor;
+        return output;
+    }
     float grayscale = dot(texColor.rgb, gGrayscaleData.color);
 
     // 画面中心との距離

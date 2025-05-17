@@ -48,17 +48,8 @@ public:
 
 	/*==================== アクセッサ ====================*/
 
-	// サイズ
-	const Vector2& GetSize()const { return size_; }
-	void SetSize(const Vector2& size) { this->size_ = size; }
-	
-	// 回転
-	const float& GetRotation()const { return rotation_; }
-	void SetRotation(const float& rotation) { this->rotation_ = rotation; }
-	
-	// 座標
-	const Vector2& GetPosition()const { return position_; }
-	void SetPosition(const Vector2& position) { this->position_ = position; }
+	// トランスフォーム
+	Transform2D& GetTransform() { return transform_; }
 
 	// カラー
 	const Vector4& GetColor()const { return materialData_->color; }
@@ -130,17 +121,11 @@ private:
 
 protected:
 
-	// トランスフォーム
-	Transform2D transform_{ {1.0f,1.0f},0.0f,{0.0f,0.0f} };
 
 	/*==================== アクセッサー用のメンバ変数 ====================*/
-
-	// サイズ
-	Vector2 size_{ 640.0f,360.0f };
-	// 回転
-	float rotation_ = 0.0f;
-	// 座標
-	Vector2 position_ = { 0.0f,0.0f };
+	
+	// トランスフォーム
+	Transform2D transform_{ {1.0f,1.0f},0.0f,{0.0f,0.0f} };
 	// アンカーポイント
 	Vector2 anchorPoint_ = { 0.0f,0.0f };
 	// 左右フリップ

@@ -45,6 +45,9 @@ public:
     static Vector3 Transform(const Vector3& v, const Matrix4x4& matrix);
     Vector3 Transform(const Matrix4x4& matrix) const;
 
+    static Vector3 TransformNormal(const Vector3& v, const Matrix4x4& matrix);
+    Vector3 TransformNormal(const Matrix4x4& matrix)const;
+
     // 単項演算子オーバーロード
     Vector3 operator+() const;
     Vector3 operator-() const;

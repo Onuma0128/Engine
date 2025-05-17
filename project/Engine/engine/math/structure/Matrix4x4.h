@@ -46,6 +46,8 @@ public:
     // LookAt行列の生成
     static Matrix4x4 LookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
 
+    static Vector3 ExtractEulerAngles(const Matrix4x4& m);
+
     // アフィン変換行列の生成
     static Matrix4x4 Affine(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
     static Matrix4x4 Affine(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);

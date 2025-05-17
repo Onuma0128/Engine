@@ -3,10 +3,11 @@
 
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+#include "PrimitiveDrawr.h"
 
 #include "WorldTransform.h"
 
-enum class GrayscaleState {
+enum class SpecialMoveState {
 	None,
 	Expanding,   // 拡大中（0→1）
 	Holding,     // 維持（1）
@@ -23,8 +24,6 @@ public:
 
 	void Update();
 
-	void Draw();
-
 	void SetPlayer(Player* player) { player_ = player; }
 
 	// 移動時のエフェクトを呼び出す
@@ -39,8 +38,10 @@ public:
 	void OnceAvoidEffect();
 	// 必殺技を撃った時のエフェクト
 	void UpdatePostEffect();
-	bool GetIsGrayScale()const { return isGrayScale_; }
-	void SetIsGrayScale(bool flag) { isGrayScale_ = flag; }
+	SpecialMoveState GetSpecialState()const { return specialMoveState_; }
+	float GetSpecialMoveFrame()const { return specialMoveFrame_; }
+	bool GetIsSpecialMove()const { return isSpecialMove_; }
+	void SetIsSpecialMove(bool flag) { isSpecialMove_ = flag; }
 
 private:
 
@@ -79,8 +80,13 @@ private:
 
 	/* ==================== プレイヤーが必殺技を撃った時のエフェクト ==================== */
 
-	GrayscaleState grayscaleState_ = GrayscaleState::None;
-	bool isGrayScale_ = false;
-	float grayscaleFrame_ = 0.0f;
+	// シリンダーで必殺の範囲を視覚的に
+	std::unique_ptr<PrimitiveDrawr> cylinder_ = nullptr;
+	// 必殺技の遷移状態
+	SpecialMoveState specialMoveState_ = SpecialMoveState::None;
+	// 今必殺技を撃っているか
+	bool isSpecialMove_ = false;
+	// 必殺技のフレーム
+	float specialMoveFrame_ = 0.0f;
 };
 

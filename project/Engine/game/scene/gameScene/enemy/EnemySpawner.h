@@ -13,8 +13,6 @@ public:
 
 	void Update();
 
-	void Draw();
-
 	std::list<std::unique_ptr<Enemy>>& GetEnemyList() { return enemys_; }
 
 private:

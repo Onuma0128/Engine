@@ -162,7 +162,14 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
 // LookAt行列の生成
 Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vector3& up) {
     Vector3 z = target - eye;
+    if (z.Length() < 1e-6f) {
+        z = Vector3::ExprUnitZ;
+    }
     Vector3 x = Vector3::Cross(up, z.Normalize());
+    if (x.Length() < 1e-6f) {
+        x = Vector3::ExprUnitX;
+    }
+
     Vector3 y = Vector3::Cross(z.Normalize(), x.Normalize());
 
     Matrix4x4 result = Identity();
@@ -174,6 +181,28 @@ Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vec
     result.m[3][2] = -Vector3::Dot(z, eye);
     result.m[3][3] = 1.0f;
     return result;
+}
+
+Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)
+{
+    Vector3 euler{};
+
+    // Y軸（ピッチ）を中心とした回転を考慮した XYZ 回転順の抽出
+    if (std::abs(m.m[2][0]) < 1.0f) {
+        // 一般ケース
+        euler.y = std::asin(-m.m[2][0]); // Pitch（Y）
+
+        float cosY = std::cos(euler.y);
+        euler.x = std::atan2(m.m[2][1] / cosY, m.m[2][2] / cosY); // Roll（X）
+        euler.z = std::atan2(m.m[1][0] / cosY, m.m[0][0] / cosY); // Yaw（Z）
+    } else {
+        // 万が一 Gimbal Lock の場合（Pitch ±90°）
+        euler.y = (m.m[2][0] < 0) ? std::numbers::pi / 2.0f : -std::numbers::pi / 2.0f;
+        euler.x = 0.0f;
+        euler.z = std::atan2(-m.m[0][1], m.m[1][1]);
+    }
+
+    return euler;
 }
 
 // アフィン変換行列の生成

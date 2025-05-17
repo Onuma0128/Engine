@@ -13,8 +13,6 @@ public:
 
 	void Update();
 
-	void Draw();
-
 	EnemyEffect* GetEffect() { return effect_.get(); }
 
 private:

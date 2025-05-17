@@ -16,8 +16,3 @@ void Enemy::Update()
 {
 	Object3d::Update();
 }
-
-void Enemy::Draw()
-{
-	Object3d::Draw();
-}

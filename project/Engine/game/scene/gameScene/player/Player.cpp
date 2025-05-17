@@ -15,6 +15,9 @@ void Player::Init()
 	effect_->SetPlayer(this);
 	effect_->Init();
 
+	reticle_ = std::make_unique<PlayerReticle>();
+	reticle_->Init();
+
 	BulletInit();
 }
 
@@ -53,22 +56,6 @@ void Player::Update()
 	}
 	
 	Object3d::Update();
-}
-
-void Player::Draw()
-{
-	state_->Draw();
-
-	effect_->Draw();
-
-	// 弾の描画,弾UIの描画
-	for (size_t i = 0; i < bulletUIs_.size(); ++i) {
-		bullets_[i]->Draw();
-		if (!bullets_[i]->GetIsReload()) { continue; }
-		bulletUIs_[i]->Draw();
-	}
-	
-	Object3d::Draw();
 }
 
 void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)

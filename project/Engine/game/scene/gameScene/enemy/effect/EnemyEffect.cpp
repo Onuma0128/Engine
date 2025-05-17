@@ -19,10 +19,6 @@ void EnemyEffect::Update()
 {
 }
 
-void EnemyEffect::Draw()
-{
-}
-
 void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
 {
 	hitEmitter_->onceEmit();

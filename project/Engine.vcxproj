@@ -115,6 +115,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\engine\base\object\AllDrawrManager.cpp" />
+    <ClCompile Include="Engine\engine\math\structure\Vector2.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\EnemySpawner.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\descriptorHeap\DsvManager.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyBaseState.cpp" />
@@ -199,9 +200,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\base\dxEngine\descriptorHeap\RtvManager.cpp" />
     <ClCompile Include="Engine\engine\base\effect\PostEffectManager.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerSpecialMoveState.cpp" />
+    <ClCompile Include="Engine\engine\globalVariables\JsonAdapter.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\reticle\PlayerReticle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\base\object\AllDrawrManager.h" />
+    <ClInclude Include="Engine\engine\math\structure\Easing.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\EnemySpawner.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\descriptorHeap\DsvManager.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyBaseState.h" />
@@ -301,6 +305,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\base\dxEngine\descriptorHeap\RtvManager.h" />
     <ClInclude Include="Engine\engine\base\effect\PostEffectManager.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerSpecialMoveState.h" />
+    <ClInclude Include="Engine\engine\globalVariables\JsonAdapter.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\reticle\PlayerReticle.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

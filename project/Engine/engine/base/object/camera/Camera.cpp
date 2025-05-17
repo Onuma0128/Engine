@@ -81,6 +81,57 @@ void Camera::NormalCamera()
 	UpdateMatrix(transform_);
 }
 
+void Camera::SetLookAt(const Vector3& eye, const Vector3& target)
+{
+	// カメラの位置を設定
+	transform_.translation = eye;
+
+	// 方向ベクトル
+	Vector3 forward = target - eye;
+	if (forward.Length() < 1e-6f) {
+		// 方向が0だと回転計算ができない
+		return;
+	}
+	forward = forward.Normalize();
+
+	// Y軸を上と仮定して右ベクトルを求める
+	Vector3 up = { 0.0f, 1.0f, 0.0f };
+	Vector3 right = Vector3::Cross(up, forward).Normalize();
+
+	// 正確な up を再計算（直交性を保証）
+	up = Vector3::Cross(forward, right);
+
+	// 回転行列を構成（カメラのローカル座標系）
+	Matrix4x4 rotMat{};
+
+	// 1列目（X軸：Right）
+	rotMat.m[0][0] = right.x;
+	rotMat.m[1][0] = right.y;
+	rotMat.m[2][0] = right.z;
+	rotMat.m[3][0] = 0.0f;
+
+	// 2列目（Y軸：Up）
+	rotMat.m[0][1] = up.x;
+	rotMat.m[1][1] = up.y;
+	rotMat.m[2][1] = up.z;
+	rotMat.m[3][1] = 0.0f;
+
+	// 3列目（Z軸：Forward）
+	rotMat.m[0][2] = forward.x;
+	rotMat.m[1][2] = forward.y;
+	rotMat.m[2][2] = forward.z;
+	rotMat.m[3][2] = 0.0f;
+
+	// 4列目（平行移動・今回は0）
+	rotMat.m[0][3] = 0.0f;
+	rotMat.m[1][3] = 0.0f;
+	rotMat.m[2][3] = 0.0f;
+	rotMat.m[3][3] = 1.0f;
+
+	// 行列からオイラー角を抽出
+	transform_.rotation = Matrix4x4::ExtractEulerAngles(rotMat);
+}
+
 void Camera::UpdateMatrix(EulerTransform transform)
 {
 	worldMatrix_ = Matrix4x4::Affine(transform.scale, transform.rotation, transform.translation);

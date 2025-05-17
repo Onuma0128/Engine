@@ -108,11 +108,6 @@ void Sprite::TransformationMatrixDataInitialize()
 
 void Sprite::AccessorUpdate()
 {
-	// トランスフォームを設定
-	transform_.size = size_;
-	transform_.rotate = rotation_;
-	transform_.position = position_;
-
 	// アンカーポイントを設定
 	float left = 0.0f - anchorPoint_.x;
 	float right = 1.0f - anchorPoint_.x;
@@ -170,8 +165,8 @@ void Sprite::AdjustTextureSize()
 	const DirectX::TexMetadata& metadata =
 		TextureManager::GetInstance()->GetMetaData(textureFilePath_);
 	textureSize_ = {
-		.x = static_cast<float>(metadata.width),
-		.y = static_cast<float>(metadata.height)
+		static_cast<float>(metadata.width),
+		static_cast<float>(metadata.height)
 	};
-	size_ = textureSize_;
+	transform_.size = textureSize_;
 }

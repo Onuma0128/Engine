@@ -67,8 +67,10 @@ void PlayerMoveState::Update()
 		return;
 	}
 
-	if (input->GetGamepadRightTrigger() != 0.0f && !player_->GetEffect()->GetIsGrayScale()) {
-		player_->GetEffect()->SetIsGrayScale(true);
+	if (input->GetGamepadRightTrigger() != 0.0f && !player_->GetEffect()->GetIsSpecialMove()) {
+		player_->GetEffect()->SetIsSpecialMove(true);
+		player_->ChengeState(std::make_unique<PlayerSpecialMoveState>(player_));
+		return;
 	}
 }
 

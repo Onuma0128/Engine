@@ -43,14 +43,6 @@ void PlayerBullet::Update()
 	Object3d::Update();
 }
 
-void PlayerBullet::Draw()
-{
-	if (!isActive_) {
-		return;
-	}
-	Object3d::Draw();
-}
-
 void PlayerBullet::Reload()
 {
 	isReload_ = true;

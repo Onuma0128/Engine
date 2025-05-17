@@ -10,9 +10,6 @@ public:
 
 	void Update(const Vector2& position);
 
-	void Draw();
-
-
 private:
 
 };

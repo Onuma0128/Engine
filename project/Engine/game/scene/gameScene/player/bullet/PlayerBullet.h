@@ -14,8 +14,6 @@ public:
 
 	void Update();
 
-	void Draw();
-
 	// リロードをする関数
 	void Reload();
 	// 攻撃をする関数

@@ -39,6 +39,7 @@ public:
 	void SetAspectRatio(const float aspectRatio) { aspectRatio_ = aspectRatio; }
 	void SetNearClip(const float nearClip) { nearClip_ = nearClip; }
 	void SetFarClip(const float farClip) { farClip_ = farClip; }
+	void SetLookAt(const Vector3& eye, const Vector3& target);
 
 	// getter
 	const Matrix4x4& GetWorldMatrix()const { return worldMatrix_; }

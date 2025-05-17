@@ -56,13 +56,6 @@ void GamePlayScene::Update()
 
 void GamePlayScene::Draw()
 {
-	demoObj_->Draw();
-
-	player_->Draw();
-
-	enemySpawner_->Draw();
-
-	ParticleManager::GetInstance()->Draw();
 }
 
 void GamePlayScene::Collision()

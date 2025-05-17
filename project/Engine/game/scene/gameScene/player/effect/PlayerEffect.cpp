@@ -3,7 +3,9 @@
 #include "DirectXEngine.h"
 #include "PostEffectManager.h"
 #include "DeltaTimer.h"
+#include "Input.h"
 
+#include "Easing.h"
 #include "gameScene/player/Player.h"
 
 void PlayerEffect::Init()
@@ -49,16 +51,22 @@ void PlayerEffect::Init()
 	// PostEffectを初期化
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::OutLine);
+
+	cylinder_ = std::make_unique<PrimitiveDrawr>();
+	cylinder_->TypeInit(PrimitiveType::Cylinder, 32);
+	cylinder_->GetTransform().scale = {};
+	cylinder_->SetColor({ 1.0f,1.0f,0.0f });
+	cylinder_->GetRenderOptions().enabled = false;
+	cylinder_->GetRenderOptions().offscreen = false;
 }
 
 void PlayerEffect::Update()
 {	
 	UpdatePostEffect();
-}
 
-void PlayerEffect::Draw()
-{
+	cylinder_->GetTransform().translation = player_->GetTransform().translation_;
+	cylinder_->GetTransform().translation.y = 0.0f;
+	cylinder_->Update();
 }
 
 void PlayerEffect::OnceMoveEffect()
@@ -137,59 +145,80 @@ void PlayerEffect::OnceAvoidEffect()
 
 void PlayerEffect::UpdatePostEffect()
 {
-	constexpr float expandDuration = 1.0f;  // 60フレーム
-	constexpr float holdDuration = 3.0f;	// 180フレーム
-	constexpr float shrinkDuration = 1.0f;  // 60フレーム
+	const float expandDuration = 1.0f;  // 60フレーム
+	const float holdDuration = 3.0f;	// 180フレーム
+	const float shrinkDuration = 1.0f;  // 60フレーム
 
 	float delta = DeltaTimer::GetDeltaTime();
 
-	switch (grayscaleState_) {
-	case GrayscaleState::Expanding:
-		grayscaleFrame_ += delta;
+	switch (specialMoveState_) {
+	case SpecialMoveState::Expanding:
+		specialMoveFrame_ += delta;
 		{
-			float t = std::clamp(grayscaleFrame_ / expandDuration, 0.0f, 1.0f);
-			t = std::pow(t, 5.0f);  // 加速カーブ
+			// 必殺技のフレーム管理
+			float t = std::clamp(specialMoveFrame_ / expandDuration, 0.0f, 1.0f);
+			t = Easing::EaseInQuint(t);
+			// PostEffectへの値を適応
 			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = t;
 			DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = t * 0.8f;
+			// Cylinderのスケール、回転を適応
+			float scale = t * 20.0f;
+			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
+			cylinder_->GetTransform().rotation.y = t * 3.14f;
 
-			if (grayscaleFrame_ >= expandDuration) {
-				grayscaleFrame_ = 0.0f;
-				grayscaleState_ = GrayscaleState::Holding;
+			if (specialMoveFrame_ >= expandDuration) {
+				specialMoveFrame_ = 0.0f;
+				specialMoveState_ = SpecialMoveState::Holding;
+				cylinder_->GetRenderOptions().enabled = false;
 			}
 		}
 		break;
 
-	case GrayscaleState::Holding:
-		grayscaleFrame_ += delta;
-		DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 1.0f;
+	case SpecialMoveState::Holding:
+		specialMoveFrame_ += delta;
+		{
+			// PostEffectへの値を適応
+			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 1.0f;
 
-		if (grayscaleFrame_ >= holdDuration) {
-			grayscaleFrame_ = 0.0f;
-			grayscaleState_ = GrayscaleState::Shrinking;
+			if (Input::GetInstance()->GetGamepadRightTrigger() == 0.0f &&
+				specialMoveFrame_ >= holdDuration) {
+				specialMoveFrame_ = 0.0f;
+				specialMoveState_ = SpecialMoveState::Shrinking;
+				cylinder_->GetRenderOptions().enabled = true;
+			}
 		}
 		break;
 
-	case GrayscaleState::Shrinking:
-		grayscaleFrame_ += delta;
+	case SpecialMoveState::Shrinking:
+		specialMoveFrame_ += delta;
 		{
-			float t = std::clamp(1.0f - (grayscaleFrame_ / shrinkDuration), 0.0f, 1.0f);
-			t = std::pow(t, 5.0f);  // 加速カーブ（逆）
+			// 必殺技のフレーム管理
+			float t = std::clamp(1.0f - (specialMoveFrame_ / shrinkDuration), 0.0f, 1.0f);
+			t = Easing::EaseInQuint(t);
+			// PostEffectへの値を適応
 			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = t;
 			DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = t * 0.8f;
+			// Cylinderのスケール、回転を適応
+			float scale = t * 20.0f;
+			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
+			cylinder_->GetTransform().rotation.y = t * 3.14f;
 
-			if (grayscaleFrame_ >= shrinkDuration) {
-				grayscaleFrame_ = 0.0f;
-				grayscaleState_ = GrayscaleState::None;
-				isGrayScale_ = false;
+			if (specialMoveFrame_ >= shrinkDuration) {
+				specialMoveFrame_ = 0.0f;
+				specialMoveState_ = SpecialMoveState::None;
+				isSpecialMove_ = false;
 				DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 0.0f;
 				DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = 0.0f;
+				cylinder_->GetTransform().scale = {};
+				cylinder_->GetRenderOptions().enabled = false;
 			}
 		}
 		break;
 
-	case GrayscaleState::None:
-		if (isGrayScale_) {
-			grayscaleState_ = GrayscaleState::Expanding;
+	case SpecialMoveState::None:
+		if (isSpecialMove_) {
+			specialMoveState_ = SpecialMoveState::Expanding;
+			cylinder_->GetRenderOptions().enabled = true;
 		}
 		break;
 

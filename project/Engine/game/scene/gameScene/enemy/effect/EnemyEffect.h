@@ -15,8 +15,6 @@ public:
 
 	void Update();
 
-	void Draw();
-
 	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
 
 	// 弾がヒットした時のエフェクトを呼び出す

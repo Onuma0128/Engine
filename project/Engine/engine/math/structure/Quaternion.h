@@ -52,6 +52,8 @@ public:
     // QuaternionのY回転だけを取得
     static Quaternion ExtractYawQuaternion(const Quaternion& quaternion);
 
+    static Vector3 ToEuler(const Quaternion& q);
+
     // 球面線形補間
     void Slerp(const Quaternion& q1, float t);
     static Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t);

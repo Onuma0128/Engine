@@ -179,6 +179,27 @@ Quaternion Quaternion::ExtractYawQuaternion(const Quaternion& quaternion)
 	return Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, yaw);
 }
 
+Vector3 Quaternion::ToEuler(const Quaternion& q) {
+	Vector3 euler;
+
+	// Pitch（X軸回転）
+	float sinp = 2.0f * (q.w * q.x + q.y * q.z);
+	float cosp = 1.0f - 2.0f * (q.x * q.x + q.y * q.y);
+	euler.x = std::atan2(sinp, cosp); // pitch
+
+	// Yaw（Y軸回転）
+	float siny = 2.0f * (q.w * q.y - q.z * q.x);
+	siny = std::clamp(siny, -1.0f, 1.0f); // asin範囲制限
+	euler.y = std::asin(siny); // yaw
+
+	// Roll（Z軸回転）
+	float sinr = 2.0f * (q.w * q.z + q.x * q.y);
+	float cosr = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
+	euler.z = std::atan2(sinr, cosr); // roll
+
+	return euler;
+}
+
 void Quaternion::Slerp(const Quaternion& q1, float t)
 {
 	float dot = Dot(*this, q1);

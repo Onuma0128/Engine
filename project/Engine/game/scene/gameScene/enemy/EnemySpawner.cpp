@@ -14,15 +14,6 @@ void EnemySpawner::Update()
 	Object3d::Update();
 }
 
-void EnemySpawner::Draw()
-{
-	for (auto& enemy : enemys_) {
-		enemy->Draw();
-	}
-
-	Object3d::Draw();
-}
-
 void EnemySpawner::EnemySpawn()
 {
 	// 敵を生成
