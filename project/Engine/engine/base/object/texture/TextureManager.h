@@ -43,7 +43,7 @@ public:
 	void Finalize();
     
     // テクスチャの読み込み
-	void LoadTexture(const std::string& filePath);
+	void LoadTexture(const std::string& directoryPath, const std::string& filePath);
 	void UploadTextureData(ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
 	// テクスチャリソースを作成
 	ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);

@@ -35,7 +35,7 @@ void PrimitiveDrawr::Init(std::vector<Vector3> pos)
 		.enabled = true,
 		.offscreen = true
 	};
-	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
+	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
 void PrimitiveDrawr::Update()
@@ -84,7 +84,7 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 		.enabled = true,
 		.offscreen = true
 	};
-	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
+	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 
 	switch (type_)
 	{
@@ -151,8 +151,8 @@ void PrimitiveDrawr::SetTexture(const std::string& directoryPath, const std::str
 	textureData_.directoryPath = directoryPath;
 	textureData_.filePath = filePath;
 
-	TextureManager::GetInstance()->LoadTexture(textureData_.directoryPath + "/" + textureData_.filePath);
-	textureData_.textureIndex = TextureManager::GetInstance()->GetSrvIndex(textureData_.directoryPath + "/" + textureData_.filePath);
+	TextureManager::GetInstance()->LoadTexture(textureData_.directoryPath, textureData_.filePath);
+	textureData_.textureIndex = TextureManager::GetInstance()->GetSrvIndex(textureData_.filePath);
 }
 
 void PrimitiveDrawr::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size_t size)

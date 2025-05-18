@@ -17,17 +17,17 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 
     modelData_ = LoadObjFile(directoryPath, filename);
 
-    TextureManager::GetInstance()->LoadTexture(modelData_.material.directoryPath + modelData_.material.filePath);
+    TextureManager::GetInstance()->LoadTexture(modelData_.material.directoryPath, modelData_.material.filePath);
 
     modelData_.material.textureIndex =
-        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.directoryPath + modelData_.material.filePath);
+        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.filePath);
 
-    modelData_.material.ENV_DirectoryPath = "resources/";
+    modelData_.material.ENV_DirectoryPath = "resources";
     modelData_.material.ENV_FilePath = "output.dds";
-    TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
+    TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath, modelData_.material.ENV_FilePath);
 
     modelData_.material.ENV_TextureIndex =
-        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
+        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.ENV_FilePath);
 
     MakeVertexData();
     MakeIndexData();
@@ -150,7 +150,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
             aiString textureFilePath;
             material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-            modelData.material.directoryPath = directoryPath + "/";
+            modelData.material.directoryPath = directoryPath;
             modelData.material.filePath = textureFilePath.C_Str();
             textureFound = true; // テクスチャが見つかった
         }
@@ -158,7 +158,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
         // いずれのテクスチャも見つからなければデフォルトのwhite1x1.pngを割り当てる
         if (!textureFound) {
-            modelData.material.directoryPath = "resources/";
+            modelData.material.directoryPath = "resources";
             modelData.material.filePath = "white1x1.png";
         }
     }
@@ -170,18 +170,18 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
 void Model::SetTexture(const std::string& directoryPath, const std::string& filename)
 {
-    modelData_.material.directoryPath = directoryPath + "/";
+    modelData_.material.directoryPath = directoryPath;
     modelData_.material.filePath = filename;
-    TextureManager::GetInstance()->LoadTexture(modelData_.material.directoryPath + modelData_.material.filePath);
+    TextureManager::GetInstance()->LoadTexture(modelData_.material.directoryPath, modelData_.material.filePath);
     modelData_.material.textureIndex =
         TextureManager::GetInstance()->GetSrvIndex(modelData_.material.directoryPath + modelData_.material.filePath);
 }
 
 void Model::SetTexture_ENV(const std::string& directoryPath, const std::string& filename)
 {
-    modelData_.material.ENV_DirectoryPath = directoryPath + "/";
+    modelData_.material.ENV_DirectoryPath = directoryPath;
     modelData_.material.ENV_FilePath = filename;
-    TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
+    TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath, modelData_.material.ENV_FilePath);
     modelData_.material.ENV_TextureIndex =
         TextureManager::GetInstance()->GetSrvIndex(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
 }

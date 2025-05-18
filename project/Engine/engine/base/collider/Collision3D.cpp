@@ -2,8 +2,13 @@
 
 #include <algorithm>
 
-bool Collision3D::CollisionChecker(const Sphere& sphere1, const Sphere& sphere2)
+#include "Collider.h"
+
+bool Collision3D::SphereSphere(const Collider* a, const Collider* b)
 {
+	Sphere sphere1 = ChangeSphere(a);
+	Sphere sphere2 = ChangeSphere(b);
+
 	float distance = (sphere1.center - sphere2.center).Length();
 	if (distance <= sphere1.radius + sphere2.radius) {
 		return true;
@@ -12,7 +17,7 @@ bool Collision3D::CollisionChecker(const Sphere& sphere1, const Sphere& sphere2)
 	}
 }
 
-bool Collision3D::CollisionChecker(const AABB& aabb, const Sphere& sphere)
+bool Collision3D::AABBSphere(const AABB aabb, const Sphere sphere)
 {
 	//最近接点を求める
 	Vector3 closestPoint{
@@ -29,7 +34,7 @@ bool Collision3D::CollisionChecker(const AABB& aabb, const Sphere& sphere)
 	return false;
 }
 
-bool Collision3D::CollisionChecker(const AABB& aabb, const Segment& segment)
+bool Collision3D::AABBSegment(const AABB aabb, const Segment segment)
 {
 	float tXmin = (aabb.min.x - segment.origin.x) / segment.diff.x;
 	float tXmax = (aabb.max.x - segment.origin.x) / segment.diff.x;
@@ -55,8 +60,11 @@ bool Collision3D::CollisionChecker(const AABB& aabb, const Segment& segment)
 	return false;
 }
 
-bool Collision3D::CollisionChecker(const OBB& obb, const Sphere& sphere, std::string& normal)
+bool Collision3D::OBBSphere(const Collider* a, const Collider* b)
 {
+	OBB obb = ChangeOBB(a);
+	Sphere sphere = ChangeSphere(b);
+
 	// OBBのWorld行列を作成
 	Matrix4x4 worldInverse = Matrix4x4::Identity();
 
@@ -86,41 +94,45 @@ bool Collision3D::CollisionChecker(const OBB& obb, const Sphere& sphere, std::st
 	};
 
 	// AABBとSphereで判定を取る
-	if (!CollisionChecker(aabb_OBBLocal, sphere_OBBLocal)) {
-		normal = "";
-		return { false };
-	}
-
-	// 最近接点
-	Vector3 closestPoint{
-		std::clamp(sphere_OBBLocal.center.x, aabb_OBBLocal.min.x, aabb_OBBLocal.max.x),
-		std::clamp(sphere_OBBLocal.center.y, aabb_OBBLocal.min.y, aabb_OBBLocal.max.y),
-		std::clamp(sphere_OBBLocal.center.z, aabb_OBBLocal.min.z, aabb_OBBLocal.max.z)
-	};
-
-	Vector3 normalV = (sphere_OBBLocal.center - closestPoint);
-	if (normalV.Length() != 0.0f) { normalV = normalV.Normalize(); }
-
-	// 衝突方向判定
-	std::string direction = "";
-	float absX = std::abs(normalV.x);
-	float absY = std::abs(normalV.y);
-	float absZ = std::abs(normalV.z);
-
-	if (absX > absY && absX > absZ) {
-		direction = normalV.x > 0 ? "RIGHT" : "LEFT";
-	} else if (absY > absZ) {
-		direction = normalV.y > 0 ? "UP" : "DOWN";
+	if (AABBSphere(aabb_OBBLocal, sphere_OBBLocal)) {
+		return true;
 	} else {
-		direction = normalV.z > 0 ? "FRONT" : "BACK";
+		return false;
 	}
 
-	normal = direction;
-	return { true };
+	//// 最近接点
+	//Vector3 closestPoint{
+	//	std::clamp(sphere_OBBLocal.center.x, aabb_OBBLocal.min.x, aabb_OBBLocal.max.x),
+	//	std::clamp(sphere_OBBLocal.center.y, aabb_OBBLocal.min.y, aabb_OBBLocal.max.y),
+	//	std::clamp(sphere_OBBLocal.center.z, aabb_OBBLocal.min.z, aabb_OBBLocal.max.z)
+	//};
+
+	//Vector3 normalV = (sphere_OBBLocal.center - closestPoint);
+	//if (normalV.Length() != 0.0f) { normalV = normalV.Normalize(); }
+
+	//// 衝突方向判定
+	//std::string direction = "";
+	//float absX = std::abs(normalV.x);
+	//float absY = std::abs(normalV.y);
+	//float absZ = std::abs(normalV.z);
+
+	//if (absX > absY && absX > absZ) {
+	//	direction = normalV.x > 0 ? "RIGHT" : "LEFT";
+	//} else if (absY > absZ) {
+	//	direction = normalV.y > 0 ? "UP" : "DOWN";
+	//} else {
+	//	direction = normalV.z > 0 ? "FRONT" : "BACK";
+	//}
+
+	//normal = direction;
+	//return { true };
 }
 
-bool Collision3D::CollisionChecker(const OBB& obb, const Segment& segment)
+bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
 {
+	OBB obb = ChangeOBB(a);
+	Segment segment = ChangeSegment(b);
+
 	// OBBのWorld行列を作成
 	Matrix4x4 worldInverse = Matrix4x4::Identity();
 
@@ -139,7 +151,7 @@ bool Collision3D::CollisionChecker(const OBB& obb, const Segment& segment)
 	// SegmentをOBBローカル空間に入れる
 	Vector3 originInOBBLocalSpace = Vector3::Transform(segment.origin, Matrix4x4::Inverse(worldInverse));
 	// TransformNormaleにする
-	Vector3 diffInOBBLocalSpace = Vector3::Transform(segment.diff, worldInverse);
+	Vector3 diffInOBBLocalSpace = Vector3::TransformNormal(segment.diff, worldInverse);
 
 	// OBBローカルのAABBとOBBローカルのSegmentを作成
 	AABB aabb_OBBLocal = {
@@ -152,5 +164,38 @@ bool Collision3D::CollisionChecker(const OBB& obb, const Segment& segment)
 	};
 
 	// AABBとSegmentで判定を取る
-	return CollisionChecker(aabb_OBBLocal, segment_OBBLocal);
+	return AABBSegment(aabb_OBBLocal, segment_OBBLocal);
+}
+
+Sphere Collision3D::ChangeSphere(const Collider* collider)
+{
+	return {
+		.center = collider->GetCenterPosition(),
+		.radius = collider->GetRadius()
+	};
+}
+
+Segment Collision3D::ChangeSegment(const Collider* collider)
+{
+	return  {
+		.origin = collider->GetOrigin(),
+		.diff = collider->GetDiff()
+	};
+}
+
+AABB Collision3D::ChangeAABB(const Collider* collider)
+{
+	return {
+		.min = collider->GetCenterPosition() - (collider->GetSize() * 0.5f),
+		.max = collider->GetCenterPosition() + (collider->GetSize() * 0.5f)
+	};
+}
+
+OBB Collision3D::ChangeOBB(const Collider* collider)
+{
+	return {
+		.center = collider->GetCenterPosition(),
+		.rotateMatrix = Quaternion::MakeRotateMatrix(collider->GetRotate()),
+		.size = collider->GetSize()
+	};
 }

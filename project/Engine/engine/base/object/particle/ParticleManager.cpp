@@ -133,8 +133,7 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 {
     ParticleGroup group;
     group.textureFilePath = textureFilePath;
-    TextureManager::GetInstance()->LoadTexture("resources/" + group.textureFilePath);
-    group.textureIndex = TextureManager::GetInstance()->GetSrvIndex("resources/" + group.textureFilePath);
+    group.textureIndex = TextureManager::GetInstance()->GetSrvIndex(group.textureFilePath);
 
     // パーティクルグループのマテリアル用のリソース,データを作成
     CreateMatrialResource(group);

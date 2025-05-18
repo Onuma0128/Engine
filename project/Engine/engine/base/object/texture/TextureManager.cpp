@@ -27,7 +27,7 @@ void TextureManager::Finalize()
 	instance_ = nullptr;
 }
 
-void TextureManager::LoadTexture(const std::string& filePath)
+void TextureManager::LoadTexture(const std::string& directoryPath, const std::string& filePath)
 {
 	if(textureDatas_.contains(filePath)){
 		// 読み込み済みなら早期return
@@ -36,7 +36,7 @@ void TextureManager::LoadTexture(const std::string& filePath)
 
 	// テクスチャファイルを読んでプログラムで抑えるようにする
 	DirectX::ScratchImage image{};
-	std::wstring filePathW = ConvertString(filePath);
+	std::wstring filePathW = ConvertString(directoryPath + "/" + filePath);
 	HRESULT hr;
 	if (filePathW.ends_with(L".dds")) {
 		hr = DirectX::LoadFromDDSFile(filePathW.c_str(), DirectX::DDS_FLAGS_NONE, nullptr, image);

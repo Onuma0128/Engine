@@ -1,9 +1,10 @@
 #pragma once
 #include <memory>
 
+#include "Collider.h"
 #include "Sprite.h"
 
-class PlayerReticle :public Sprite
+class PlayerReticle :public Sprite,Collider
 {
 public:
 
@@ -13,7 +14,12 @@ public:
 
 	void Update();
 
+	void OnCollisionStay(Collider* other) override;
+	void OnCollisionExit(Collider* other) override;
+
 private:
+
+	void SegmentUpdate();
 
 };
 

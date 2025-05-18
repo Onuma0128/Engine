@@ -2,6 +2,7 @@
 
 #include "SceneManager.h"
 #include "ModelManager.h"
+#include "TextureManager.h"
 
 #include "Input.h"
 
@@ -42,6 +43,13 @@ void Framework::Update()
 
 void Framework::LoadFiles()
 {
+	TextureManager::GetInstance()->LoadTexture("resources", "smoke.png");
+	TextureManager::GetInstance()->LoadTexture("resources", "circle.png");
+	TextureManager::GetInstance()->LoadTexture("resources", "white1x1.png");
+	TextureManager::GetInstance()->LoadTexture("resources", "uvChecker.png");
+	TextureManager::GetInstance()->LoadTexture("resources", "output.dds");
+	TextureManager::GetInstance()->LoadTexture("resources/player/texture", "2dReticle.png");
+
 	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "plane.gltf");

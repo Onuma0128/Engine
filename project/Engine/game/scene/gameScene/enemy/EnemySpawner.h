@@ -4,8 +4,9 @@
 #include "Enemy.h"
 
 #include "Object3d.h"
+#include "Collider.h"
 
-class EnemySpawner : public Object3d
+class EnemySpawner : public Object3d,Collider
 {
 public:
 

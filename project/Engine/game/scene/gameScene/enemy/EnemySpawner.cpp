@@ -3,6 +3,10 @@
 void EnemySpawner::Init()
 {
 	Object3d::Initialize("Box.obj");
+
+	Collider::AddCollider();
+	Collider::myType_ = ColliderType::OBB;
+	Collider::size_ = transform_.scale_;
 }
 
 void EnemySpawner::Update()
@@ -10,6 +14,9 @@ void EnemySpawner::Update()
 	for (auto& enemy : enemys_) {
 		enemy->Update();
 	}
+
+	Collider::centerPosition_ = transform_.translation_;
+	Collider::rotate_ = transform_.rotation_;
 
 	Object3d::Update();
 }

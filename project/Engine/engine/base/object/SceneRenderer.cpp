@@ -1,8 +1,8 @@
-#include "AllDrawrManager.h"
+#include "SceneRenderer.h"
 
 #include "ParticleManager.h"
 
-void AllDrawrManager::Finalize()
+void SceneRenderer::Finalize()
 {
 	objects_.clear();
 	sprites_.clear();
@@ -11,7 +11,7 @@ void AllDrawrManager::Finalize()
 	animations_.clear();
 }
 
-void AllDrawrManager::AllDraw()
+void SceneRenderer::AllDraw()
 {
 	/// ============================== Object3d ============================== ///
 	for (auto& object : objects_) {
@@ -44,7 +44,7 @@ void AllDrawrManager::AllDraw()
 	ParticleManager::GetInstance()->Draw();
 }
 
-void AllDrawrManager::OutAllDraw()
+void SceneRenderer::OutAllDraw()
 {
 	/// ============================== Object3d ============================== ///
 	for (auto& object : objects_) {

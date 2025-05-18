@@ -52,7 +52,7 @@ void Animation::Init(const std::string& directoryPath, const std::string& filena
 		.enabled = true,
 		.offscreen = true
 	};
-	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
+	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
 void Animation::Update()

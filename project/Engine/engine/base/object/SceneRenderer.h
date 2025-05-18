@@ -8,7 +8,7 @@
 #include "PrimitiveDrawr.h"
 #include "Animation.h"
 
-class AllDrawrManager
+class SceneRenderer
 {
 public:
 
@@ -36,26 +36,26 @@ private:
 };
 
 template<>
-inline void AllDrawrManager::SetDrawList<Object3d>(Object3d* object) {
+inline void SceneRenderer::SetDrawList<Object3d>(Object3d* object) {
 	objects_.push_back(object);
 }
 
 template<>
-inline void AllDrawrManager::SetDrawList<Sprite>(Sprite* sprite) {
+inline void SceneRenderer::SetDrawList<Sprite>(Sprite* sprite) {
 	sprites_.push_back(sprite);
 }
 
 template<>
-inline void AllDrawrManager::SetDrawList<Line3d>(Line3d* line) {
+inline void SceneRenderer::SetDrawList<Line3d>(Line3d* line) {
 	lines_.push_back(line);
 }
 
 template<>
-inline void AllDrawrManager::SetDrawList<PrimitiveDrawr>(PrimitiveDrawr* primitive) {
+inline void SceneRenderer::SetDrawList<PrimitiveDrawr>(PrimitiveDrawr* primitive) {
 	primitiveDrawrs_.push_back(primitive);
 }
 
 template<>
-inline void AllDrawrManager::SetDrawList<Animation>(Animation* animation) {
+inline void SceneRenderer::SetDrawList<Animation>(Animation* animation) {
 	animations_.push_back(animation);
 }

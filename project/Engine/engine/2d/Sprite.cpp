@@ -16,11 +16,9 @@ void Sprite::Initialize(std::string textureFilePath)
 	spriteBase_ = std::make_unique<SpriteBase>();
 	spriteBase_->Initialize();
 
-	textureFilePath_ = "resources/" + textureFilePath;
+	textureFilePath_ = textureFilePath;
 
-	TextureManager::GetInstance()->LoadTexture("resources/" + textureFilePath);
-
-	textureIndex_ = TextureManager::GetInstance()->GetSrvIndex("resources/" + textureFilePath);
+	textureIndex_ = TextureManager::GetInstance()->GetSrvIndex(textureFilePath);
 
 	VertexDataInitialize();
 
@@ -34,7 +32,7 @@ void Sprite::Initialize(std::string textureFilePath)
 		.enabled = true,
 		.offscreen = true
 	};
-	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
+	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
 void Sprite::Update()

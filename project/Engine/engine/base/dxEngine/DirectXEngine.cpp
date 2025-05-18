@@ -25,7 +25,8 @@ ComPtr<ID3D12Device> DirectXEngine::device_ = nullptr;
 ComPtr<ID3D12GraphicsCommandList> DirectXEngine::commandList_ = nullptr;
 std::unique_ptr<PipelineState> DirectXEngine::pipelineState_ = nullptr;
 std::unique_ptr<PostEffectManager> DirectXEngine::postEffectManager_ = nullptr;
-std::unique_ptr<AllDrawrManager> DirectXEngine::allDrawrManager_ = nullptr;
+std::unique_ptr<SceneRenderer> DirectXEngine::sceneRendrer_ = nullptr;
+std::unique_ptr<CollisionManager> DirectXEngine::collisionManager_ = nullptr;
 
 DirectXEngine::~DirectXEngine()
 {
@@ -43,8 +44,9 @@ DirectXEngine::~DirectXEngine()
 	commandList_.Reset();
 	pipelineState_.reset();
 	postEffectManager_.reset();
-	allDrawrManager_->Finalize();
-	allDrawrManager_.reset();
+	sceneRendrer_->Finalize();
+	sceneRendrer_.reset();
+	collisionManager_.reset();
 
 	//解放の処理
 	CloseHandle(fenceEvent_);
@@ -110,7 +112,9 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	postEffectManager_ = std::make_unique<PostEffectManager>();
 	postEffectManager_->Initialize(this);
 
-	allDrawrManager_ = std::make_unique<AllDrawrManager>();
+	sceneRendrer_ = std::make_unique<SceneRenderer>();
+
+	collisionManager_ = std::make_unique<CollisionManager>();
 }
 
 void DirectXEngine::DeviceInitialize()

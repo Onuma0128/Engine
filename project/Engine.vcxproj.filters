@@ -204,7 +204,7 @@
     <ClCompile Include="Engine\game\scene\gameScene\enemy\Enemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\math\structure\Collision3D.cpp">
+    <ClCompile Include="Engine\engine\base\collider\Collision3D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.cpp">
@@ -267,7 +267,7 @@
     <ClCompile Include="Engine\game\scene\gameScene\enemy\EnemySpawner.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\engine\base\object\AllDrawrManager.cpp">
+    <ClCompile Include="Engine\engine\base\object\SceneRenderer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\globalVariables\JsonAdapter.cpp">
@@ -277,6 +277,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\math\structure\Vector2.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\engine\base\collider\CollisionManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\engine\base\collider\Collider.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -485,7 +491,7 @@
     <ClInclude Include="Engine\game\scene\gameScene\enemy\Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\math\structure\Collision3D.h">
+    <ClInclude Include="Engine\engine\base\collider\Collision3D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.h">
@@ -578,7 +584,7 @@
     <ClInclude Include="Engine\game\scene\gameScene\enemy\EnemySpawner.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\engine\base\object\AllDrawrManager.h">
+    <ClInclude Include="Engine\engine\base\object\SceneRenderer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\globalVariables\JsonAdapter.h">
@@ -588,6 +594,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\math\structure\Easing.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\engine\base\collider\CollisionManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\engine\base\collider\Collider.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

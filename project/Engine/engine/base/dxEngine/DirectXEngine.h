@@ -11,7 +11,8 @@
 #include "PipelineState.h"
 #include "PostEffectManager.h"
 #include "RenderTexture.h"
-#include "AllDrawrManager.h"
+#include "SceneRenderer.h"
+#include "CollisionManager.h"
 
 class WinApp;
 class ImGuiManager;
@@ -76,7 +77,9 @@ public:
 	// ポストエフェクト
 	static PostEffectManager* GetPostEffectMgr() { return postEffectManager_.get(); }
 	// 全ての描画
-	static AllDrawrManager* GetAllDrawrMgr() { return allDrawrManager_.get(); }
+	static SceneRenderer* GetSceneRenderer() { return sceneRendrer_.get(); }
+	// 当たり判定
+	static CollisionManager* GetCollisionMgr() { return collisionManager_.get(); }
 	// RenderTexture
 	RenderTexture* GetRenderTexrure() { return renderTexture_.get(); }
 
@@ -95,8 +98,10 @@ private:
 	static ComPtr<ID3D12Device> device_;
 	// commandListを生成する
 	static ComPtr<ID3D12GraphicsCommandList> commandList_;
-	// AllDrawrManager
-	static std::unique_ptr<AllDrawrManager> allDrawrManager_;
+	// SceneRendrer
+	static std::unique_ptr<SceneRenderer> sceneRendrer_;
+	// CollisionManager
+	static std::unique_ptr<CollisionManager> collisionManager_;
 
 	///==============================================================
 

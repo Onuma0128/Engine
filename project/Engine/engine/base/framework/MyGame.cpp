@@ -39,6 +39,9 @@ void MyGame::Update()
 	// DeltaTimeの更新
 	DeltaTimer::Update();
 
+	// 当たり判定
+	directXEngine_->GetCollisionMgr()->CheckAllCollisions();
+
 	// シーンの更新
 	SceneManager::GetInstance()->Update();
 
@@ -64,11 +67,11 @@ void MyGame::Draw()
 
 	//SceneManager::GetInstance()->Draw();
 
-	directXEngine_->GetAllDrawrMgr()->AllDraw();
+	directXEngine_->GetSceneRenderer()->AllDraw();
 
 	directXEngine_->SwapChainDrawSet();
 
-	directXEngine_->GetAllDrawrMgr()->OutAllDraw();
+	directXEngine_->GetSceneRenderer()->OutAllDraw();
 
 	// ImGuiの描画
 	imGuiManager_->Draw();

@@ -25,7 +25,7 @@ void Object3d::Initialize(const std::string& filePath)
         .enabled = true,
         .offscreen = true
     };
-    DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
+    DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
 void Object3d::Update()

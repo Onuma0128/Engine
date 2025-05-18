@@ -27,7 +27,7 @@ void Line3d::Initialize(Vector3 startPos, Vector3 endPos)
 		.offscreen = true
 	};
 	isMultiple_ = false;
-	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
+	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
 void Line3d::Initialize(const std::vector<Vector3>& positions)
@@ -50,7 +50,7 @@ void Line3d::Initialize(const std::vector<Vector3>& positions)
 		.offscreen = true
 	};
 	isMultiple_ = true;
-	DirectXEngine::GetAllDrawrMgr()->SetDrawList(this);
+	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
 void Line3d::Update()
