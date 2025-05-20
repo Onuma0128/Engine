@@ -46,6 +46,9 @@ public:
 	// OBBとSegmentの衝突判定
 	static bool OBBSegment(const Collider* a, const Collider* b);
 
+	// OBBとOBBの衝突判定
+	static bool OBBOBB(const Collider* a, const Collider* b);
+
 private:
 
 	static Sphere ChangeSphere(const Collider* collider);

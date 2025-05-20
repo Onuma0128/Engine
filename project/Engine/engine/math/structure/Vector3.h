@@ -48,6 +48,8 @@ public:
     static Vector3 TransformNormal(const Vector3& v, const Matrix4x4& matrix);
     Vector3 TransformNormal(const Matrix4x4& matrix)const;
 
+    static float AxisComponent(const Vector3& v, int axis);
+
     // 単項演算子オーバーロード
     Vector3 operator+() const;
     Vector3 operator-() const;

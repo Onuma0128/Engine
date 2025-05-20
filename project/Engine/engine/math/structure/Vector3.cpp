@@ -98,6 +98,15 @@ Vector3 Vector3::TransformNormal(const Vector3& v, const Matrix4x4& matrix)
     };
 }
 
+float Vector3::AxisComponent(const Vector3& v, int axis)
+{
+    switch (axis) {
+    case 0:  return v.x;
+    case 1:  return v.y;
+    default: return v.z;
+    }
+}
+
 // 単項演算子オーバーロード
 Vector3 Vector3::operator+() const {
     return *this;

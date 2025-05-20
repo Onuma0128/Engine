@@ -197,7 +197,7 @@ Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)
         euler.z = std::atan2(m.m[1][0] / cosY, m.m[0][0] / cosY); // Yaw（Z）
     } else {
         // 万が一 Gimbal Lock の場合（Pitch ±90°）
-        euler.y = (m.m[2][0] < 0) ? std::numbers::pi / 2.0f : -std::numbers::pi / 2.0f;
+        euler.y = (m.m[2][0] < 0) ? std::numbers::pi / 2.0f : -std::numbers::pi_v<float> / 2.0f;
         euler.x = 0.0f;
         euler.z = std::atan2(-m.m[0][1], m.m[1][1]);
     }

@@ -167,6 +167,83 @@ bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
 	return AABBSegment(aabb_OBBLocal, segment_OBBLocal);
 }
 
+bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
+{
+	// ① OBB 情報取得
+	OBB obb1 = ChangeOBB(a);
+	OBB obb2 = ChangeOBB(b);
+
+	const Vector3 e1 = obb1.size;   // half-extent
+	const Vector3 e2 = obb2.size;
+
+	// ② 各 OBB のローカル軸（列ベクトルを抽出）
+	Vector3 u1[3], u2[3];
+	for (int i = 0; i < 3; ++i) {
+		u1[i] = { obb1.rotateMatrix.m[0][i], obb1.rotateMatrix.m[1][i], obb1.rotateMatrix.m[2][i] };
+		u2[i] = { obb2.rotateMatrix.m[0][i], obb2.rotateMatrix.m[1][i], obb2.rotateMatrix.m[2][i] };
+	}
+
+	// ③ 回転行列 R と |R|
+	float R[3][3], AbsR[3][3];
+	constexpr float kEps = 1e-5f;
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			R[i][j] = Vector3::Dot(u1[i], u2[j]);
+			AbsR[i][j] = std::abs(R[i][j]) + kEps;
+		}
+	}
+
+	// ④ 中心間ベクトルを u1 基底に変換
+	const Vector3 tWorld = obb2.center - obb1.center;
+	const Vector3 Tvec = {
+		Vector3::Dot(tWorld, u1[0]),
+		Vector3::Dot(tWorld, u1[1]),
+		Vector3::Dot(tWorld, u1[2])
+	};
+
+	// ⑤ 分離軸テスト
+	// (A の 3 軸)
+	for (int i = 0; i < 3; ++i) {
+		const float ra = Vector3::AxisComponent(e1, i);
+		const float rb =
+			e2.x * AbsR[i][0] + e2.y * AbsR[i][1] + e2.z * AbsR[i][2];
+		if (std::abs(Vector3::AxisComponent(Tvec, i)) > ra + rb) { return false; }
+	}
+
+	// (B の 3 軸)
+	for (int j = 0; j < 3; ++j) {
+		const float ra =
+			e1.x * AbsR[0][j] + e1.y * AbsR[1][j] + e1.z * AbsR[2][j];
+		const float rb = Vector3::AxisComponent(e2, j);
+		const float proj = std::abs(Vector3::Dot(tWorld, u2[j]));
+		if (proj > ra + rb) { return false; }
+	}
+
+	// (交差軸 u1[i] × u2[j] 9 本)
+	for (int i = 0; i < 3; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			const int i1 = (i + 1) % 3, i2 = (i + 2) % 3;
+			const int j1 = (j + 1) % 3, j2 = (j + 2) % 3;
+
+			const float ra =
+				Vector3::AxisComponent(e1, i1) * AbsR[i2][j] +
+				Vector3::AxisComponent(e1, i2) * AbsR[i1][j];
+			const float rb =
+				Vector3::AxisComponent(e2, j1) * AbsR[i][j2] +
+				Vector3::AxisComponent(e2, j2) * AbsR[i][j1];
+
+			const float Tij = std::abs(
+				Vector3::AxisComponent(Tvec, i2) * R[i1][j] -
+				Vector3::AxisComponent(Tvec, i1) * R[i2][j]);
+
+			if (Tij > ra + rb) { return false; }
+		}
+	}
+
+	// どの軸でも分離できなければ衝突
+	return true;
+}
+
 Sphere Collision3D::ChangeSphere(const Collider* collider)
 {
 	return {

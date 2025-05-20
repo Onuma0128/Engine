@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Object3d.h"
+#include "Collider.h"
 
 #include "gameScene/player/state/PlayerBaseState.h"
 #include "gameScene/player/effect/PlayerEffect.h"
@@ -11,7 +12,7 @@
 #include "gameScene/player/ui/PlayerBulletUI.h"
 #include "gameScene/player/reticle/PlayerReticle.h"
 
-class Player : public Object3d
+class Player : public Object3d,Collider
 {
 public:
 

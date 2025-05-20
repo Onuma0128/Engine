@@ -19,6 +19,12 @@ void Player::Init()
 	reticle_->Init();
 
 	BulletInit();
+
+	Collider::AddCollider();
+	Collider::colliderName_ = "Player";
+	Collider::myType_ = ColliderType::OBB;
+	Collider::size_ = transform_.scale_;
+	Collider::DrawCollider();
 }
 
 void Player::GlobalInit()
@@ -32,31 +38,9 @@ void Player::Update()
 
 	effect_->Update();
 
-	/* 弾の更新,弾UIの更新
-	for (size_t i = 0; i < bulletUIs_.size(); ++i) {
-		bullets_[i]->Update();
-		 トレイルエフェクトを生成
-		if (bullets_[i]->GetIsActive()) {
-			effect_->OnceBulletTrailEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
-		}
-		 弾が当たった時のエフェクト
-		if (bullets_[i]->GetIsCollision()) {
-			bullets_[i]->SetIsCollision(false);
-			effect_->OnceBulletDeleteEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
-		}
-		 弾が消えた時のコールバック関数
-		bullets_[i]->SetOnDeactivateCallback([this, i]() {
-			this->GetEffect()->OnceBulletDeleteEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
-			});
-
-		bulletUIs_[i]->Update({});
-
-		if (!bullets_[i]->GetIsReload()) { bulletUIs_[i]->GetRenderOptions().enabled = false; }
-		else { bulletUIs_[i]->GetRenderOptions().enabled = true; }
-	}*/
-
 	// 今リロードが終わっている弾のを取得する
 	size_t bulletCount = 0;
+	// 弾の更新,弾UIの更新
 	for (auto& bullet : bullets_) {
 		bullet->Update();
 		// トレイルエフェクトを生成
@@ -88,7 +72,9 @@ void Player::Update()
 		}
 	}
 
-	
+	Collider::rotate_ = transform_.rotation_;
+	Collider::centerPosition_ = transform_.translation_;
+	Collider::Update();
 	Object3d::Update();
 }
 

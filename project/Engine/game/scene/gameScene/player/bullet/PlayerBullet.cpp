@@ -5,14 +5,15 @@
 void PlayerBullet::Init()
 {
 	Object3d::Initialize("Box.obj");
+	transform_.scale_ = { 0.1f,0.1f ,0.3f };
 
 	isActive_ = false;
 	activeFrame_ = 0.0f;
 
 	Collider::AddCollider();
-	Collider::myType_ = ColliderType::Sphere;
+	Collider::myType_ = ColliderType::OBB;
 	Collider::colliderName_ = "PlayerBullet";
-	Collider::radius_ = 0.3f;
+	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
 	Collider::DrawCollider();
 }
@@ -71,7 +72,6 @@ void PlayerBullet::Reload()
 void PlayerBullet::Attack(const WorldTransform& transform)
 {
 	// 回転と座標を取得
-	transform_.scale_ = { 0.1f,0.1f ,0.3f };
 	transform_.rotation_ = transform.rotation_;
 	transform_.translation_ = transform.translation_;
 

@@ -50,7 +50,7 @@ std::vector<Vector3> Collider::CreateLinePositions()
 	case ColliderType::Segment:
 		break;
 	case ColliderType::OBB:
-		linePositions = line_->CreateBox(-size_,size_);
+		linePositions = line_->CreateBox(-size_, size_);
 		break;
 	default:
 		break;
