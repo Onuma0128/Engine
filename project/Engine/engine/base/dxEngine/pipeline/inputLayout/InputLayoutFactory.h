@@ -83,13 +83,32 @@ public:
 
 	D3D12_INPUT_LAYOUT_DESC& BuildLayout() override
 	{
-		descs[0].SemanticName = "POSITION";
+		descs[0].SemanticName = "LOCAL";
 		descs[0].SemanticIndex = 0;
-		descs[0].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-		descs[0].AlignedByteOffset = D3D12_APPEND_ALIGNED_ELEMENT;
+		descs[0].Format = DXGI_FORMAT_R32_FLOAT;
+		descs[0].InputSlot = 0;
+		descs[0].AlignedByteOffset = 0;
+		descs[0].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
+		descs[0].InstanceDataStepRate = 0;
+
+		descs[1].SemanticName = "STARTPOS";
+		descs[1].SemanticIndex = 0;
+		descs[1].Format = DXGI_FORMAT_R32G32B32_FLOAT;    
+		descs[1].InputSlot = 1;                              
+		descs[1].AlignedByteOffset = 0;
+		descs[1].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA;
+		descs[1].InstanceDataStepRate = 1;
+
+		descs[2].SemanticName = "ENDPOS";
+		descs[2].SemanticIndex = 0;
+		descs[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+		descs[2].InputSlot = 1;                              
+		descs[2].AlignedByteOffset = 12;                             
+		descs[2].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA;
+		descs[2].InstanceDataStepRate = 1;
 
 		layoutDesc.pInputElementDescs = descs.data();
-		layoutDesc.NumElements = 1;
+		layoutDesc.NumElements = 3;
 
 		return layoutDesc;
 	}

@@ -2,10 +2,15 @@
 #include <memory>
 
 #include "Object3d.h"
+#include "Collider.h"
 
+#include "gameScene/enemy/state/EnemyBaseState.h"
 #include "gameScene/enemy/effect/EnemyEffect.h"
 
-class Enemy:public Object3d
+class Player;
+class GameCamera;
+
+class Enemy:public Object3d,Collider
 {
 public:
 
@@ -13,12 +18,28 @@ public:
 
 	void Update();
 
+	void ChengeState(std::unique_ptr<EnemyBaseState> newState);
+
+	void OnCollisionEnter(Collider* other) override;
+
 	EnemyEffect* GetEffect() { return effect_.get(); }
+
+	Player* GetPlayer() { return player_; }
+	void SetPlayer(Player* player) { player_ = player; }
+
+	GameCamera* GetGameCamera() { return gameCamera_; }
+	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
 
 private:
 
-	bool isCollision = false;
+	// ゲッターで貰ったポインタ
+	Player* player_ = nullptr;
+	GameCamera* gameCamera_ = nullptr;
 
+	// 状態遷移
+	std::unique_ptr<EnemyBaseState> state_ = nullptr;
+
+	// エフェクト
 	std::unique_ptr<EnemyEffect> effect_ = nullptr;
 
 };

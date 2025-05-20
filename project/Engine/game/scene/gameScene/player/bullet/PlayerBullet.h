@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Object3d.h"
+#include "Collider.h"
 
 #include <functional>
 
-class PlayerBullet : public Object3d
+class PlayerBullet : public Object3d,Collider
 {
 public:
 
@@ -13,6 +14,8 @@ public:
 	void GlobalInit();
 
 	void Update();
+
+	void OnCollisionEnter(Collider* other)override;
 
 	// リロードをする関数
 	void Reload();

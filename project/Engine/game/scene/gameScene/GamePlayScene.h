@@ -24,8 +24,6 @@ public:
 
 	void Draw() override;
 
-	void Collision();
-
 private:
 
 	std::unique_ptr<Object3d> demoObj_ = nullptr;

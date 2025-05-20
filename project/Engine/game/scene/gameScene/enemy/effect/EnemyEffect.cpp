@@ -12,7 +12,6 @@ void EnemyEffect::Init()
 	hitDustEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
 	particleManager_->CreateParticleGroup("enemyHitExplosion", "circle.png", hitDustEmitter_.get());
 	hitDustEmitter_->SetIsCreate(false);
-
 }
 
 void EnemyEffect::Update()

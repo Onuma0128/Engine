@@ -25,12 +25,14 @@ void GamePlayScene::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Init();
 
-	enemySpawner_ = std::make_unique<EnemySpawner>();
-	enemySpawner_->Init();
-
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
 	gameCamera_->Init();
+
+	enemySpawner_ = std::make_unique<EnemySpawner>();
+	enemySpawner_->SetPlayer(player_.get());
+	enemySpawner_->SetGameCamera(gameCamera_.get());
+	enemySpawner_->Init();
 }
 
 void GamePlayScene::Finalize()
@@ -47,8 +49,6 @@ void GamePlayScene::Update()
 
 	gameCamera_->Update();
 
-	Collision();
-
 	skyBox_->Update();
 
 	ParticleManager::GetInstance()->Update();
@@ -56,45 +56,4 @@ void GamePlayScene::Update()
 
 void GamePlayScene::Draw()
 {
-}
-
-void GamePlayScene::Collision()
-{
-	//for (auto& bullet : player_->GetBullets()) {
-	//	if (!bullet->GetIsActive()) { continue; }
-	//	for (auto& enemy : enemySpawner_->GetEnemyList()) {
-	//		// 敵のOBB
-	//		OBB obb1 = {
-	//			.center = enemy->GetTransform().translation_,
-	//			.rotateMatrix = Quaternion::MakeRotateMatrix(enemy->GetTransform().rotation_),
-	//			.size = enemy->GetTransform().scale_
-	//		};
-	//		// 弾のSphere
-	//		Sphere sphere = {
-	//			.center = bullet->GetTransform().translation_,
-	//			.radius = bullet->GetTransform().scale_.x
-	//		};
-
-	//		std::string name;
-	//		bool isCollision = Collision3D::CollisionChecker(obb1, sphere, name);
-
-	//		if (isCollision) {
-	//			enemy->GetEffect()->OnceBulletHitEffect(bullet->GetTransform());
-	//			bullet->IsCollision();
-	//			gameCamera_->SetShake(1.0f);
-	//		}
-	//	}
-	//}
-
-	//OBB obb = {
-	//	.center = enemySpawner_->GetTransform().translation_,
-	//	.rotateMatrix = Quaternion::MakeRotateMatrix(enemySpawner_->GetTransform().rotation_),
-	//	.size = enemySpawner_->GetTransform().scale_
-	//};
-
-	//if (Collision3D::CollisionChecker(obb, player_->GetReticle()->GetSegment())) {
-	//	player_->GetReticle()->SetColor({ 1.0f,0.0f,0.0f,1.0f });
-	//} else {
-	//	player_->GetReticle()->SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	//}
 }

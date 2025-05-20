@@ -64,7 +64,7 @@ private:
 	SkinCluster skinCluster_;
 	Skeleton skeleton_;
 
-	std::vector<std::unique_ptr<Line3d>> lines_;
+	std::unique_ptr<Line3d> line_;
 
 	/*==================== マテリアル ====================*/
 

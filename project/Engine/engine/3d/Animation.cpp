@@ -7,6 +7,7 @@
 #include "DirectXEngine.h"
 #include "SrvManager.h"
 #include "TextureManager.h"
+#include "DeltaTimer.h"
 
 #include "Object3d.h"
 #include "Model.h"
@@ -32,6 +33,7 @@ void Animation::Init(const std::string& directoryPath, const std::string& filena
 	skeleton_ = CreateSkeleton(model_->GetModelData().rootNode);
 	skinCluster_ = CreateSkinCluster(DirectXEngine::GetDevice(), skeleton_, model_->GetModelData());
 
+	std::vector<Vector3> linePositions{};
 	for (const Joint& joint : skeleton_.joints) {
 		if (joint.parent) {
 			// 初期の位置を取得
@@ -41,12 +43,14 @@ void Animation::Init(const std::string& directoryPath, const std::string& filena
 			Vector3 parentPos = Vector3{}.Transform(parentMatrix);
 			Vector3 jointPos = Vector3{}.Transform(jointMatrix);
 
-			// Line3dを初期化
-			std::unique_ptr<Line3d> line = std::make_unique<Line3d>();
-			line->Initialize(parentPos, jointPos);
-			lines_.push_back(std::move(line));
+			linePositions.push_back(parentPos);
+			linePositions.push_back(jointPos);
 		}
 	}
+
+	// Line3dを初期化
+	line_ = std::make_unique<Line3d>();
+	line_->Initialize(linePositions);
 
 	renderOptions_ = {
 		.enabled = true,
@@ -57,7 +61,7 @@ void Animation::Init(const std::string& directoryPath, const std::string& filena
 
 void Animation::Update()
 {
-	animationTime_ += 1.0f / 60.0f;
+	animationTime_ += DeltaTimer::GetDeltaTime();
 	animationTime_ = std::fmod(animationTime_, animationData_.duration);
 	
 	ApplyAnimation(skeleton_, animationData_, animationTime_);
@@ -67,6 +71,7 @@ void Animation::Update()
 	transform_.TransferMatrix(Matrix4x4::Identity());
 
 	int32_t count = 0;
+	std::vector<Vector3> linePositions{};
 	for (const Joint& joint : skeleton_.joints) {
 		if (joint.parent) {
 			// 初期の位置を取得
@@ -76,12 +81,15 @@ void Animation::Update()
 			Vector3 parentPos = Vector3{}.Transform(parentMatrix);
 			Vector3 jointPos = Vector3{}.Transform(jointMatrix);
 
-			lines_[count]->SetPosition(parentPos, jointPos);
-			lines_[count]->Update();
+			linePositions.push_back(parentPos);
+			linePositions.push_back(jointPos);
 
 			++count;
 		}
 	}
+
+	line_->SetPositions(linePositions);
+	line_->Update();
 }
 
 void Animation::Draw()
@@ -104,10 +112,6 @@ void Animation::Draw()
 		};
 		commandList->IASetVertexBuffers(0, 2, vbvs);
 		model_->Draw(true);
-	}
-
-	for (auto& line : lines_) {
-		line->Draw();
 	}
 }
 

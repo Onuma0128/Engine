@@ -32,12 +32,8 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     AABB aabb = emitter_.emitterSize;
     linePosition_ = CreateLineBox(emitter_.emitterSize);
 
-    for (int i = 0; i * 2 < (int)linePosition_.size(); ++i) {
-        int j = i * 2 + 1;
-        std::unique_ptr<Line3d> line = std::make_unique<Line3d>();
-        line->Initialize(linePosition_[i * 2], linePosition_[j]);
-        lines_.push_back(std::move(line));
-    }
+    line_ = std::make_unique<Line3d>();
+    line_->Initialize(linePosition_);
 }
 
 void ParticleEmitter::GlobalInitialize(const std::string name)
@@ -172,17 +168,16 @@ void ParticleEmitter::Update()
     isChangeScale_= global_->GetValue<bool>(globalName, "changeScale");
 
 #ifdef _DEBUG
-    int i = 0;
+
     linePosition_ = CreateLineBox(emitter_.emitterSize);
-    for (auto& line : lines_) {
+    for (auto& linePos : linePosition_) {
         Vector3 translate = emitter_.transform.translation;
         Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
-        Vector3 linePos1 = linePosition_[i].Transform(rotateMatrix);
-        Vector3 linePos2 = linePosition_[i+1].Transform(rotateMatrix);
-        line->SetPosition(linePos1 + translate, linePos2 + translate);
-        line->Update();
-        i += 2;
+        linePos = linePos.Transform(rotateMatrix) + translate;
     }
+    line_->SetPositions(linePosition_);
+    line_->Update();
+
 #endif // _DEBUG
 }
 
@@ -191,9 +186,11 @@ void ParticleEmitter::Draw()
 #ifdef _DEBUG
 
     /*==================== パーティクルの範囲描画 ====================*/
-    for (auto& line : lines_) {
+    /*for (auto& line : lines_) {
         line->Draw();
-    }
+    }*/
+
+    //line_->Draws();
 #endif // _DEBUG
 }
 

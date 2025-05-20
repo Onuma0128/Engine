@@ -16,58 +16,47 @@ using Microsoft::WRL::ComPtr;
 class Line3d
 {
 public:
-	struct VertexLineData {
-		Vector4 position;
-		//Vector4 color;
-	};
-public:
-
-	void Initialize(Vector3 startPos, Vector3 endPos);
 
 	void Initialize(const std::vector<Vector3>& positions);
 
 	void Update();
 
-	void Draw();
-
 	void Draws();
 
 	/*==================== メンバ関数 ====================*/
-
-	void CreatVertexResource();
-
-	void CreatVertexResource(const std::vector<Vector3>& positions);
-
-	void CreatVertexBufferView();
-
-	void CreatVertexBufferViews();
+private:
+	
+	void CreateLocalVB();
+	void CreateInstanceVB(const std::vector<Vector3>& pos);
+	void CreateCB();
 
 	/*==================== アクセッサ ====================*/
+public:
 
-	void SetPosition(const Vector3& start,const Vector3& end){
-		startPos_ = start;
-		endPos_ = end;
-		vertexData_[0].position = { startPos_.x ,startPos_.y,startPos_.z,1.0f };
-		vertexData_[1].position = { endPos_.x,endPos_.y,endPos_.z,1.0f };
-	}
+	void SetPositions(const std::vector<Vector3>& positions);
 
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 	bool GetIsMultiple()const { return isMultiple_; }
 
+	std::vector<Vector3> CreateBox(const Vector3& min, const Vector3& max);
+	std::vector<Vector3> CreateSphere(const float& radius);
+
 private:
+
+	struct LocalVertex { float t; };
+	struct LineInstance { Vector3 startPos; Vector3 endPos; };
 
 	std::unique_ptr<Line3dBase> line3dBase_ = nullptr;
 
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
-	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
+	ComPtr<ID3D12Resource> localVB_ = nullptr;
+	ComPtr<ID3D12Resource> instanceVB_ = nullptr;
 	ComPtr<ID3D12Resource> wvpResource_ = nullptr;
 
-	VertexLineData* vertexData_ = nullptr;
+	D3D12_VERTEX_BUFFER_VIEW vbvLocal_{};
+	D3D12_VERTEX_BUFFER_VIEW vbvInst_{};
 	Matrix4x4* wvpData_ = nullptr;
-	uint32_t lineCount_ = 0;
 
-	Vector3 startPos_ = {};
-	Vector3 endPos_ = {};
+	uint32_t lineCount_ = 0;
 
 	// 描画するか
 	RenderOptions renderOptions_;

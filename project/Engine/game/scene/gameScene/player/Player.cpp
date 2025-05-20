@@ -32,19 +32,19 @@ void Player::Update()
 
 	effect_->Update();
 
-	// 弾の更新,弾UIの更新
+	/* 弾の更新,弾UIの更新
 	for (size_t i = 0; i < bulletUIs_.size(); ++i) {
 		bullets_[i]->Update();
-		// トレイルエフェクトを生成
+		 トレイルエフェクトを生成
 		if (bullets_[i]->GetIsActive()) {
 			effect_->OnceBulletTrailEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
 		}
-		// 弾が当たった時のエフェクト
+		 弾が当たった時のエフェクト
 		if (bullets_[i]->GetIsCollision()) {
 			bullets_[i]->SetIsCollision(false);
 			effect_->OnceBulletDeleteEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
 		}
-		// 弾が消えた時のコールバック関数
+		 弾が消えた時のコールバック関数
 		bullets_[i]->SetOnDeactivateCallback([this, i]() {
 			this->GetEffect()->OnceBulletDeleteEffect(static_cast<int32_t>(i), bullets_[i]->GetTransform());
 			});
@@ -53,7 +53,41 @@ void Player::Update()
 
 		if (!bullets_[i]->GetIsReload()) { bulletUIs_[i]->GetRenderOptions().enabled = false; }
 		else { bulletUIs_[i]->GetRenderOptions().enabled = true; }
+	}*/
+
+	// 今リロードが終わっている弾のを取得する
+	size_t bulletCount = 0;
+	for (auto& bullet : bullets_) {
+		bullet->Update();
+		// トレイルエフェクトを生成
+		if (bullet->GetIsActive()) {
+			effect_->OnceBulletTrailEffect(static_cast<int32_t>(bulletCount), bullet->GetTransform());
+		}
+		// 弾が当たった時のエフェクト
+		if (bullet->GetIsCollision()) {
+			bullet->SetIsCollision(false);
+			effect_->OnceBulletDeleteEffect(static_cast<int32_t>(bulletCount), bullet->GetTransform());
+		}
+		// 弾が消えた時のコールバック関数
+		bullet->SetOnDeactivateCallback([this, bulletCount, &bullet]() {
+			this->GetEffect()->OnceBulletDeleteEffect(static_cast<int32_t>(bulletCount), bullet->GetTransform());
+		});
+		// 弾のリロードが終わっているならカウントに追加
+		if (bullet->GetIsReload()) { ++bulletCount; }
 	}
+
+	size_t bulletUICount = 0;
+	for (auto& bulletUI : bulletUIs_) {
+		bulletUI->Update({});
+		++bulletUICount;
+
+		if (bulletCount >= bulletUICount) {
+			bulletUI->GetRenderOptions().enabled = true;
+		} else {
+			bulletUI->GetRenderOptions().enabled = false;
+		}
+	}
+
 	
 	Object3d::Update();
 }

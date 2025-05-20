@@ -113,6 +113,7 @@ private:
 	// エミッタの範囲を可視化
 	std::vector<Vector3> linePosition_;
 	std::vector<std::unique_ptr<Line3d>> lines_;
+	std::unique_ptr<Line3d> line_;
 
 	// Transform変数を作る
 	AccelerationField accelerationField_{};

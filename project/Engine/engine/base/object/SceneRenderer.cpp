@@ -27,7 +27,7 @@ void SceneRenderer::AllDraw()
 	for (auto& line : lines_) {
 		if (!line->GetRenderOptions().enabled || !line->GetRenderOptions().offscreen) { continue; }
 		if (line->GetIsMultiple()) { line->Draws(); }
-		else { line->Draw(); }
+		else { line->Draws(); }
 	}
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
@@ -60,7 +60,7 @@ void SceneRenderer::OutAllDraw()
 	for (auto& line : lines_) {
 		if (!line->GetRenderOptions().enabled || line->GetRenderOptions().offscreen) { continue; }
 		if (line->GetIsMultiple()) { line->Draws(); }
-		else { line->Draw(); }
+		else { line->Draws(); }
 	}
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {

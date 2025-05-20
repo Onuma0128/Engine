@@ -33,9 +33,16 @@ void CollisionManager::CheckAllCollisions()
 
 bool CollisionManager::Dispatch(Collider* a, Collider* b)
 {
+    // お互いのTypeを取得
     ColliderType typeA = a->GetMyColliderType();
     ColliderType typeB = b->GetMyColliderType();
 
+    // お互いのActiveがONなら判定を取る、どちらかがOFFなら判定を取らない
+    if (!a->GetActive() || !b->GetActive()) {
+        return false;
+    }
+
+    // お互いのTypeで判定を取る
     switch (typeA)
     {
     case ColliderType::Sphere:
@@ -62,6 +69,8 @@ bool CollisionManager::Dispatch(Collider* a, Collider* b)
     default:
         break;
     }
+
+    return false;
 }
 
 void CollisionManager::CheckCollisionPair(Collider* a, Collider* b, PairSet& thisFrame)

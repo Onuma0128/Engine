@@ -20,6 +20,7 @@ void PlayerReticle::Init()
 
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::Segment;
+	Collider::colliderName_ = "2dReticle";
 }
 
 void PlayerReticle::GlobalInit()
@@ -47,12 +48,16 @@ void PlayerReticle::Update()
 
 void PlayerReticle::OnCollisionStay(Collider* other)
 {
-	SetColor({ 1.0f,0.0f,0.0f,1.0f });
+	if (other->GetColliderName() == "Enemy") {
+		SetColor({ 1.0f,0.0f,0.0f,1.0f });
+	}
 }
 
 void PlayerReticle::OnCollisionExit(Collider* other)
 {
-	SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	if (other->GetColliderName() == "Enemy") {
+		SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	}
 }
 
 void PlayerReticle::SegmentUpdate()

@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.cpp" />
     <ClCompile Include="Engine\engine\base\collider\Collider.cpp" />
     <ClCompile Include="Engine\engine\base\collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\engine\base\object\SceneRenderer.cpp" />
@@ -206,6 +207,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\reticle\PlayerReticle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.h" />
     <ClInclude Include="Engine\engine\base\collider\Collider.h" />
     <ClInclude Include="Engine\engine\base\collider\CollisionManager.h" />
     <ClInclude Include="Engine\engine\base\object\SceneRenderer.h" />
