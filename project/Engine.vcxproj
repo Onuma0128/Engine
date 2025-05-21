@@ -114,12 +114,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.cpp" />
     <ClCompile Include="Engine\engine\base\collider\Collider.cpp" />
     <ClCompile Include="Engine\engine\base\collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\engine\base\object\SceneRenderer.cpp" />
     <ClCompile Include="Engine\engine\math\structure\Vector2.cpp" />
-    <ClCompile Include="Engine\game\scene\gameScene\enemy\EnemySpawner.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawner.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\descriptorHeap\DsvManager.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyBaseState.cpp" />
     <ClCompile Include="Engine\engine\base\dxEngine\pipeline\depthStencilState\DepthStencilStateBase.cpp" />
@@ -205,14 +206,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerSpecialMoveState.cpp" />
     <ClCompile Include="Engine\engine\globalVariables\JsonAdapter.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\reticle\PlayerReticle.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\effect\PlayerBulletEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.h" />
     <ClInclude Include="Engine\engine\base\collider\Collider.h" />
     <ClInclude Include="Engine\engine\base\collider\CollisionManager.h" />
     <ClInclude Include="Engine\engine\base\object\SceneRenderer.h" />
     <ClInclude Include="Engine\engine\math\structure\Easing.h" />
-    <ClInclude Include="Engine\game\scene\gameScene\enemy\EnemySpawner.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawner.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\descriptorHeap\DsvManager.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyBaseState.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\pipeline\depthStencilState\DepthStencilStateBase.h" />
@@ -313,6 +316,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerSpecialMoveState.h" />
     <ClInclude Include="Engine\engine\globalVariables\JsonAdapter.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\reticle\PlayerReticle.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\effect\PlayerBulletEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

@@ -21,6 +21,8 @@ public:
 	void ChengeState(std::unique_ptr<EnemyBaseState> newState);
 
 	void OnCollisionEnter(Collider* other) override;
+	void OnCollisionStay(Collider* other) override;
+	void OnCollisionExit(Collider* other) override;
 
 	EnemyEffect* GetEffect() { return effect_.get(); }
 
@@ -29,6 +31,10 @@ public:
 
 	GameCamera* GetGameCamera() { return gameCamera_; }
 	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
+
+	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
+
+	bool GetHitReticle()const { return hitReticle_; }
 
 private:
 
@@ -41,6 +47,12 @@ private:
 
 	// エフェクト
 	std::unique_ptr<EnemyEffect> effect_ = nullptr;
+
+	// 速度
+	Vector3 velocity_{};
+
+	// プレイヤーのReticleに当たっているか
+	bool hitReticle_ = false;
 
 };
 

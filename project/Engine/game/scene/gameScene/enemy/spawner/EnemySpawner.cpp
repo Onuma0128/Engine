@@ -11,8 +11,7 @@ void EnemySpawner::Init()
 	Collider::myType_ = ColliderType::OBB;
 	Collider::colliderName_ = "EnemySpawner";
 	Collider::size_ = transform_.scale_;
-
-	EnemySpawn();
+	Collider::DrawCollider();
 }
 
 void EnemySpawner::Update()
@@ -21,8 +20,9 @@ void EnemySpawner::Update()
 		enemy->Update();
 	}
 
-	Collider::centerPosition_ = transform_.translation_;
 	Collider::rotate_ = transform_.rotation_;
+	Collider::centerPosition_ = transform_.translation_;
+	Collider::Update();
 
 	Object3d::Update();
 }

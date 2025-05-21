@@ -16,11 +16,15 @@ void PlayerReticle::Init()
 	anchorPoint_ = { 0.5f,0.5f };
 	GetRenderOptions().enabled = false;
 	GetRenderOptions().offscreen = false;
+	Sprite::SetColor({ 0.0f,0.0f,0.0f,1.0f });
 	Sprite::Update();
 
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::Segment;
-	Collider::colliderName_ = "2dReticle";
+	Collider::colliderName_ = "PlayerReticle";
+	Collider::isActive_ = false;
+
+	hitCount_ = 0;
 }
 
 void PlayerReticle::GlobalInit()
@@ -32,12 +36,12 @@ void PlayerReticle::Update()
 	Input* input = Input::GetInstance();
 
 	// 移動の処理
-	const float reticleSpeed = 500.0f;
+	const float reticleSpeed = 10.0f;
 	Vector2 velocity{};
 	velocity.x = input->GetGamepadRightStickX();
 	velocity.y = -input->GetGamepadRightStickY();
 
-	transform_.position += velocity * DeltaTimer::GetDeltaTime() * reticleSpeed;
+	transform_.position += velocity * reticleSpeed;
 
 	// 当たり判定用の線を更新
 	SegmentUpdate();
@@ -46,17 +50,30 @@ void PlayerReticle::Update()
 	Sprite::Update();
 }
 
+void PlayerReticle::OnCollisionEnter(Collider* other)
+{
+	// 当たった敵のTransformを作成して取得する
+	if (other->GetColliderName() == "Enemy" &&
+		hitCount_ < 6) {
+		Sprite::SetColor({ 1.0f,0.0f,0.0f,1.0f });
+		++hitCount_;
+		WorldTransform transform;
+		transform.rotation_ = other->GetRotate() * Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, 3.14f);
+		enemyTransforms_.push_back(transform);
+	}
+}
+
 void PlayerReticle::OnCollisionStay(Collider* other)
 {
 	if (other->GetColliderName() == "Enemy") {
-		SetColor({ 1.0f,0.0f,0.0f,1.0f });
+		Sprite::SetColor({ 1.0f,0.0f,0.0f,1.0f });
 	}
 }
 
 void PlayerReticle::OnCollisionExit(Collider* other)
 {
 	if (other->GetColliderName() == "Enemy") {
-		SetColor({ 1.0f,1.0f,1.0f,1.0f });
+		Sprite::SetColor({ 0.0f,0.0f,0.0f,1.0f });
 	}
 }
 
@@ -73,5 +90,5 @@ void PlayerReticle::SegmentUpdate()
 	Vector3 farPos = Vector3::Transform(Vector3(ndc.x, ndc.y, 1.0f), invVP);
 
 	Collider::origin_ = nearPos;
-	Collider::diff_ = farPos - nearPos;
+	Collider::diff_ = (farPos - nearPos);
 }

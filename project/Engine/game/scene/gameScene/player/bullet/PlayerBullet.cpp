@@ -2,13 +2,17 @@
 
 #include "DeltaTimer.h"
 
-void PlayerBullet::Init()
+void PlayerBullet::Init(const uint32_t count)
 {
 	Object3d::Initialize("Box.obj");
 	transform_.scale_ = { 0.1f,0.1f ,0.3f };
+	Object3d::GetRenderOptions().enabled = false;
 
 	isActive_ = false;
 	activeFrame_ = 0.0f;
+
+	effect_ = std::make_unique<PlayerBulletEffect>();
+	effect_->Init(count);
 
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::OBB;
@@ -31,26 +35,30 @@ void PlayerBullet::Update()
 			activeFrame_ = 1.0f;
 			isActive_ = false;
 			Collider::isActive_ = false;
-			GetRenderOptions().enabled = false;
+			Object3d::GetRenderOptions().enabled = false;
 		}
 	} 
 
+	// コールバック関数
 	if (wasActive_ && !isActive_ && onDeactivatedCallback_) {
 		onDeactivatedCallback_();
-		GetRenderOptions().enabled = false;
+		effect_->OnceBulletDeleteEffect(transform_);
+		Object3d::GetRenderOptions().enabled = false;
 	}
-
 	wasActive_ = isActive_;
 
+	// Activeがfalseならこの先を更新しない
 	if (!isActive_) {
 		Collider::Update();
 		Object3d::Update();
 		return;
 	}
 
+	// 移動処理
 	const float bulletSpeed = 20.0f;
 	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * bulletSpeed;
 
+	effect_->OnceBulletTrailEffect(transform_);
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::Update();
@@ -59,8 +67,11 @@ void PlayerBullet::Update()
 
 void PlayerBullet::OnCollisionEnter(Collider* other)
 {
+	// 敵と当たったらなエフェクトを出す
 	if (other->GetColliderName() == "Enemy") {
 		IsCollision();
+		effect_->OnceBulletDeleteEffect(transform_);
+		effect_->OnceBulletHitEffect(transform_);
 	}
 }
 
@@ -83,18 +94,18 @@ void PlayerBullet::Attack(const WorldTransform& transform)
 	isReload_ = false;
 	isActive_ = true;
 	Collider::isActive_ = true;
-	GetRenderOptions().enabled = true;
+	Object3d::GetRenderOptions().enabled = true;
+
+	effect_->OnceBulletEffect(transform);
 }
 
 void PlayerBullet::IsCollision()
 {
-	isObjectCollision_ = true;
-
 	activeFrame_ = 1.0f;
 	wasActive_ = false;
 	isActive_ = false;
 	Collider::isActive_ = false;
-	GetRenderOptions().enabled = false;
+	Object3d::GetRenderOptions().enabled = false;
 }
 
 void PlayerBullet::SetOnDeactivateCallback(const std::function<void()>& callback)

@@ -1,34 +1,60 @@
 #include "EnemyEffect.h"
 
+#include "DeltaTimer.h"
+#include "Easing.h"
+
 #include "gameScene/enemy/Enemy.h"
 
 void EnemyEffect::Init()
 {
-	// ヒット時のエフェクト
-	hitEmitter_ = std::make_unique<ParticleEmitter>("enemyHit");
-	particleManager_->CreateParticleGroup("enemyHit", "white1x1.png", hitEmitter_.get());
-	hitEmitter_->SetIsCreate(false);
-
-	hitDustEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
-	particleManager_->CreateParticleGroup("enemyHitExplosion", "circle.png", hitDustEmitter_.get());
-	hitDustEmitter_->SetIsCreate(false);
+	hitReticleEffect_.cylinder_ = std::make_unique<PrimitiveDrawr>();
+	hitReticleEffect_.cylinder_->TypeInit(PrimitiveType::Cylinder, 32);
+	hitReticleEffect_.cylinder_->GetTransform().scale = {};
+	hitReticleEffect_.cylinder_->SetColor({ 1.0f,1.0f,0.0f });
+	hitReticleEffect_.cylinder_->GetRenderOptions().enabled = false;
+	hitReticleEffect_.cylinder_->GetRenderOptions().offscreen = false;
+	hitReticleEffect_.frame_ = 0.0f;
+	hitReticleEffect_.axis_ = 0.0f;
 }
 
 void EnemyEffect::Update()
 {
+	HitReticleUpdate();
 }
 
-void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
+void EnemyEffect::HitReticleUpdate()
 {
-	hitEmitter_->onceEmit();
-	hitDustEmitter_->onceEmit();
+	float deltaTime = 1.0f / 60.0f;
 
-	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	// ヒットしているなら描画をする
+	if (enemy_->GetHitReticle()) {
+		hitReticleEffect_.cylinder_->GetRenderOptions().enabled = true;
+		hitReticleEffect_.frame_ += deltaTime;
 
-	hitEmitter_->SetRotation(rotate);
-	hitEmitter_->SetPosition(position);
-	hitDustEmitter_->SetRotation(rotate);
-	hitDustEmitter_->SetPosition(position);
+	// ヒットが終わったら
+	} else {
+		hitReticleEffect_.frame_ -= deltaTime * 2.0f;
+
+		// 描画を切る
+		if (hitReticleEffect_.frame_ <= 0.0f) {
+			hitReticleEffect_.cylinder_->GetRenderOptions().enabled = false;
+		}
+	}
+
+	// Cylinderが描画されているなら
+	if (hitReticleEffect_.cylinder_->GetRenderOptions().enabled) {
+		// frameをクランプしてイージングを掛ける
+		hitReticleEffect_.frame_ = std::clamp(hitReticleEffect_.frame_, 0.0f, 1.0f);
+		float t = 0.0f;
+		if(enemy_->GetHitReticle()){ t = Easing::EaseInQuint(hitReticleEffect_.frame_); }
+		else { t = Easing::EaseOutBack(hitReticleEffect_.frame_); }
+		float scale = t;
+		// スケールと回転を適応
+		hitReticleEffect_.cylinder_->GetTransform().scale = { scale,scale,scale };
+		hitReticleEffect_.axis_ += 0.1f;
+		hitReticleEffect_.cylinder_->GetTransform().rotation.y = hitReticleEffect_.axis_;
+		Vector3 offset = { 0.0f,-0.5f,0.0f };
+		hitReticleEffect_.cylinder_->GetTransform().translation = enemy_->GetTransform().translation_ + offset;
+		hitReticleEffect_.cylinder_->Update();
+	}
 }

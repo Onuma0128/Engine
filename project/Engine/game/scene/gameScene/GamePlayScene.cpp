@@ -29,10 +29,10 @@ void GamePlayScene::Initialize()
 	gameCamera_->SetPlayer(player_.get());
 	gameCamera_->Init();
 
-	enemySpawner_ = std::make_unique<EnemySpawner>();
-	enemySpawner_->SetPlayer(player_.get());
-	enemySpawner_->SetGameCamera(gameCamera_.get());
-	enemySpawner_->Init();
+	enemySpawnerFactory_ = std::make_unique<EnemySpawnerFactory>();
+	enemySpawnerFactory_->SetPlayer(player_.get());
+	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
+	enemySpawnerFactory_->Init();
 }
 
 void GamePlayScene::Finalize()
@@ -45,7 +45,7 @@ void GamePlayScene::Update()
 
 	player_->Update();
 
-	enemySpawner_->Update();
+	enemySpawnerFactory_->Update();
 
 	gameCamera_->Update();
 

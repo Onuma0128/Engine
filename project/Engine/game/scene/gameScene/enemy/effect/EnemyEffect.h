@@ -1,7 +1,9 @@
 #pragma once
+#include <memory>
 
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+#include "PrimitiveDrawr.h"
 
 #include "WorldTransform.h"
 
@@ -17,8 +19,9 @@ public:
 
 	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
 
-	// 弾がヒットした時のエフェクトを呼び出す
-	void OnceBulletHitEffect(const WorldTransform& transform);
+private:
+
+	void HitReticleUpdate();
 
 private:
 
@@ -27,11 +30,13 @@ private:
 	// パーティクルを管理する
 	ParticleManager* particleManager_ = ParticleManager::GetInstance();
 
-	/* ==================== 敵に弾がヒットした時のエフェクト ==================== */
+	// レティクルがヒットした時のエフェクト
+	struct HitReticleEffect {
+		std::unique_ptr<PrimitiveDrawr> cylinder_;
+		float frame_;
+		float axis_;
+	};
+	HitReticleEffect hitReticleEffect_;
 
-	// 弾がヒットした時のエフェクト(血飛沫)
-	std::unique_ptr<ParticleEmitter> hitEmitter_;
-	// 弾がヒットした時のエフェクト(土煙)
-	std::unique_ptr<ParticleEmitter> hitDustEmitter_;
 
 };

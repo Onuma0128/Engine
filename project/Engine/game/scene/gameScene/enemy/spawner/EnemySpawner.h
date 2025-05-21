@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 #include <memory>
-#include "Enemy.h"
+#include "gameScene/enemy/Enemy.h"
 
 #include "Object3d.h"
 #include "Collider.h"
@@ -21,8 +21,6 @@ public:
 
 	GameCamera* GetGameCamera() { return gameCamera_; }
 	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
-
-private:
 
 	void EnemySpawn();
 

@@ -99,33 +99,6 @@ bool Collision3D::OBBSphere(const Collider* a, const Collider* b)
 	} else {
 		return false;
 	}
-
-	//// 最近接点
-	//Vector3 closestPoint{
-	//	std::clamp(sphere_OBBLocal.center.x, aabb_OBBLocal.min.x, aabb_OBBLocal.max.x),
-	//	std::clamp(sphere_OBBLocal.center.y, aabb_OBBLocal.min.y, aabb_OBBLocal.max.y),
-	//	std::clamp(sphere_OBBLocal.center.z, aabb_OBBLocal.min.z, aabb_OBBLocal.max.z)
-	//};
-
-	//Vector3 normalV = (sphere_OBBLocal.center - closestPoint);
-	//if (normalV.Length() != 0.0f) { normalV = normalV.Normalize(); }
-
-	//// 衝突方向判定
-	//std::string direction = "";
-	//float absX = std::abs(normalV.x);
-	//float absY = std::abs(normalV.y);
-	//float absZ = std::abs(normalV.z);
-
-	//if (absX > absY && absX > absZ) {
-	//	direction = normalV.x > 0 ? "RIGHT" : "LEFT";
-	//} else if (absY > absZ) {
-	//	direction = normalV.y > 0 ? "UP" : "DOWN";
-	//} else {
-	//	direction = normalV.z > 0 ? "FRONT" : "BACK";
-	//}
-
-	//normal = direction;
-	//return { true };
 }
 
 bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
@@ -151,7 +124,7 @@ bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
 	// SegmentをOBBローカル空間に入れる
 	Vector3 originInOBBLocalSpace = Vector3::Transform(segment.origin, Matrix4x4::Inverse(worldInverse));
 	// TransformNormaleにする
-	Vector3 diffInOBBLocalSpace = Vector3::TransformNormal(segment.diff, worldInverse);
+	Vector3 diffInOBBLocalSpace = Vector3::TransformNormal(segment.diff, Matrix4x4::Inverse(worldInverse));
 
 	// OBBローカルのAABBとOBBローカルのSegmentを作成
 	AABB aabb_OBBLocal = {

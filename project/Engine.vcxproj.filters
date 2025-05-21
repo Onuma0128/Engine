@@ -264,7 +264,7 @@
     <ClCompile Include="Engine\engine\base\dxEngine\descriptorHeap\DsvManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\game\scene\gameScene\enemy\EnemySpawner.cpp">
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawner.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\base\object\SceneRenderer.cpp">
@@ -286,6 +286,12 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\game\scene\gameScene\player\effect\PlayerBulletEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -584,7 +590,7 @@
     <ClInclude Include="Engine\engine\base\dxEngine\descriptorHeap\DsvManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\game\scene\gameScene\enemy\EnemySpawner.h">
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawner.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\object\SceneRenderer.h">
@@ -606,6 +612,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\game\scene\gameScene\player\effect\PlayerBulletEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

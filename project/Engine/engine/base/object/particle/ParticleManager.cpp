@@ -129,8 +129,35 @@ void ParticleManager::Clear()
     particleGroups_.clear();
 }
 
-void ParticleManager::CreateParticleGroup(const std::string name, const std::string textureFilePath, ParticleEmitter* emitter)
+void ParticleManager::CreateParticleGroup(const std::string name, const std::string textureFilePath, ParticleEmitter* emitter, bool copy)
 {
+    auto it = particleGroups_.find(name);
+    if (it != particleGroups_.end()) {
+
+        if (copy) {
+            // 既存グループを複製
+            ParticleGroup newGroup = it->second;
+            newGroup.emitter = emitter;         
+            newGroup.instanceCount = 0;         
+
+            // SRVだけは取り直す
+            newGroup.srvIndex = srvManager_->Allocate() + TextureManager::kSRVIndexTop;
+            srvManager_->CreateSRVforStructuredBuffer(
+                newGroup.srvIndex,
+                newGroup.instancingResource.Get(),
+                kNumMaxInstance,
+                sizeof(ParticleForGPU));
+
+            // 別名を付けて登録
+            std::string copyName = name;
+            for (int i = 1; particleGroups_.contains(copyName); ++i) {
+                copyName = name + std::to_string(i);
+            }
+            particleGroups_[copyName] = std::move(newGroup);
+        }
+        return;
+    }
+
     ParticleGroup group;
     group.textureFilePath = textureFilePath;
     group.textureIndex = TextureManager::GetInstance()->GetSrvIndex(group.textureFilePath);

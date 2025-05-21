@@ -1,15 +1,16 @@
 #pragma once
+#include <functional>
 
 #include "Object3d.h"
 #include "Collider.h"
 
-#include <functional>
+#include "gameScene/player/effect/PlayerBulletEffect.h"
 
 class PlayerBullet : public Object3d,Collider
 {
 public:
 
-	void Init();
+	void Init(const uint32_t count);
 
 	void GlobalInit();
 
@@ -25,13 +26,14 @@ public:
 	bool GetIsActive()const { return isActive_; }
 	bool GetIsReload()const { return isReload_; }
 	void IsCollision();
-	bool GetIsCollision()const { return isObjectCollision_; }
-	void SetIsCollision(bool flag) { isObjectCollision_ = flag; }
 
 	// isActiveがfalseになった瞬間のコールバック関数
 	void SetOnDeactivateCallback(const std::function<void()>& callback);
 
 private:
+
+	// 弾のエフェクト呼び出し
+	std::unique_ptr<PlayerBulletEffect> effect_ = nullptr;
 
 	// 今動いているか
 	bool isActive_ = false;
@@ -40,14 +42,12 @@ private:
 	// コールバック関数
 	std::function<void()> onDeactivatedCallback_;
 
+	// 速度
+	Vector3 velocity_;
 	// 動いている時間
 	float activeFrame_ = 0.0f;
 	// リロードされているか
 	bool isReload_ = true;
-	// 誰かと衝突をしたか
-	bool isObjectCollision_ = false;
-
-	Vector3 velocity_;
 
 };
 

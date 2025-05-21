@@ -1,6 +1,9 @@
 #include "Enemy.h"
 
+#include "DeltaTimer.h"
+
 #include "gameScene/enemy/state/EnemyMoveState.h"
+#include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
 
 void Enemy::Init()
@@ -27,6 +30,13 @@ void Enemy::Update()
 {
 	state_->Update();
 
+	effect_->Update();
+	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Shrinking) {
+		Object3d::GetRenderOptions().offscreen = true;
+		Collider::isActive_ = true;
+		hitReticle_ = false;
+	}
+
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::rotate_ = transform_.rotation_;
 	Collider::Update();
@@ -45,11 +55,55 @@ void Enemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 
 void Enemy::OnCollisionEnter(Collider* other)
 {
+	// プレイヤーの弾と当たっているなら
 	if (other->GetColliderName() == "PlayerBullet") {
-		WorldTransform bulletTrans;
-		bulletTrans.rotation_ = other->GetRotate();
-		bulletTrans.translation_ = other->GetCenterPosition();
-		effect_->OnceBulletHitEffect(bulletTrans);
 		gameCamera_->SetShake(1.0f);
+	}
+
+	if (other->GetColliderName() == "PlayerReticle") {
+	}
+}
+
+void Enemy::OnCollisionStay(Collider* other)
+{
+	// プレイヤーと当たっているなら
+	if (other->GetColliderName() == "Player") {
+		Object3d::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
+		const float speed = 2.0f;
+		transform_.translation_ -= velocity_ * speed * DeltaTimer::GetDeltaTime();
+		Object3d::Update();
+	}
+
+	// 敵と当たっているなら
+	if (other->GetColliderName() == "Enemy") {
+		Object3d::SetColor(Vector4{ 0.0f,1.0f,0.0f,1.0f });
+		const float speed = 1.0f;
+		Vector3 velocity = transform_.translation_ - other->GetCenterPosition();
+		velocity.y = 0.0f;
+		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
+		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+		Object3d::Update();
+	}
+
+	// プレイヤーのレティクルと当たっているなら
+	if (other->GetColliderName() == "PlayerReticle") {
+		hitReticle_ = true;
+		Object3d::GetRenderOptions().offscreen = false;
+		Collider::isActive_ = false;
+	}
+}
+
+void Enemy::OnCollisionExit(Collider* other)
+{
+	// プレイヤーと当たっているなら
+	// 敵と当たっているなら
+	if (other->GetColliderName() == "Player" ||
+		other->GetColliderName() == "Enemy") {
+		Object3d::SetColor(Vector4{ 1.0f,1.0f,1.0f,1.0f });
+		Object3d::Update();
+	}
+
+	if (other->GetColliderName() == "PlayerReticle") {
+		Object3d::GetRenderOptions().offscreen = true;
 	}
 }

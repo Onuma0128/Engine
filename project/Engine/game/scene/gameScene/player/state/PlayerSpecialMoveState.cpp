@@ -17,6 +17,7 @@ void PlayerSpecialMoveState::Init()
 	player_->GetReticle()->GetTransform().size = { 0.0f,0.0f };
 	player_->GetReticle()->GetTransform().position = { 640.0f,300.0f };
 	player_->GetReticle()->GetRenderOptions().enabled = true;
+	player_->GetReticle()->SetColliderActive(true);
 }
 
 void PlayerSpecialMoveState::Finalize()
@@ -41,6 +42,15 @@ void PlayerSpecialMoveState::Update()
 		float t = std::clamp(1.0f - (player_->GetEffect()->GetSpecialMoveFrame() / 0.5f), 0.0f, 1.0f);
 		t = Easing::EaseOutBack(t);
 		player_->GetReticle()->GetTransform().size = Vector2{ 64.0f,64.0f }*t;
+		player_->GetReticle()->SetColliderActive(false);
+
+		// 必殺技が終わったらターゲットしている敵に弾を出す
+		if (t <= 0.0f) {
+			player_->SpecialAttackBullet();
+			player_->GetReticle()->GetRenderOptions().enabled = false;
+			player_->ChengeState(std::make_unique<PlayerMoveState>(player_));
+			return;
+		}
 	}
 		break;
 	default:
@@ -49,12 +59,6 @@ void PlayerSpecialMoveState::Update()
 
 	// レティクルの更新
 	player_->GetReticle()->Update();
-
-	if (!player_->GetEffect()->GetIsSpecialMove()) {
-		player_->GetReticle()->GetRenderOptions().enabled = false;
-		player_->ChengeState(std::make_unique<PlayerMoveState>(player_));
-		return;
-	}
 }
 
 void PlayerSpecialMoveState::Draw()

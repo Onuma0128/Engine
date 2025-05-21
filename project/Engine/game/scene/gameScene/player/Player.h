@@ -24,11 +24,16 @@ public:
 
 	void ChengeState(std::unique_ptr<PlayerBaseState> newState);
 
+	void OnCollisionEnter(Collider* other) override;
+	void OnCollisionStay(Collider* other) override;
+	void OnCollisionExit(Collider* other) override;
+
 	// 弾のリロードを管理する関数
 	void ReloadBullet();
 
 	// 弾を発射する関数
-	void AttackBullet();
+	void AttackBullet(const Quaternion& q);
+	void SpecialAttackBullet();
 
 	PlayerEffect* GetEffect() { return effect_.get(); }
 	PlayerReticle* GetReticle() { return reticle_.get(); }
@@ -53,5 +58,7 @@ private:
 	// 弾を6つ生成する
 	std::vector<std::unique_ptr<PlayerBullet>> bullets_;
 	std::vector<std::unique_ptr<PlayerBulletUI>> bulletUIs_;
+	// 必殺技用の弾を6つ生成
+	std::vector<std::unique_ptr<PlayerBullet>> specialBullets_;
 
 };

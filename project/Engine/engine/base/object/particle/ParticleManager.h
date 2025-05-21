@@ -84,7 +84,7 @@ public:
 
 	void Finalize();
 
-	void CreateParticleGroup(const std::string name, const std::string textureFilePath, ParticleEmitter* emitter);
+	void CreateParticleGroup(const std::string name, const std::string textureFilePath, ParticleEmitter* emitter, bool copy = false);
 
 	void Emit(const std::string name);
 

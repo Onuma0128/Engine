@@ -5,6 +5,7 @@
 void Player::Init()
 {
 	Object3d::Initialize("Box.obj");
+	Object3d::GetRenderOptions().enabled = false;
 
 	transform_.scale_ = { 0.5f,0.5f,0.5f };
 	transform_.translation_ = { 0.0f,0.5f,0.0f };
@@ -43,21 +44,15 @@ void Player::Update()
 	// 弾の更新,弾UIの更新
 	for (auto& bullet : bullets_) {
 		bullet->Update();
-		// トレイルエフェクトを生成
-		if (bullet->GetIsActive()) {
-			effect_->OnceBulletTrailEffect(static_cast<int32_t>(bulletCount), bullet->GetTransform());
-		}
-		// 弾が当たった時のエフェクト
-		if (bullet->GetIsCollision()) {
-			bullet->SetIsCollision(false);
-			effect_->OnceBulletDeleteEffect(static_cast<int32_t>(bulletCount), bullet->GetTransform());
-		}
 		// 弾が消えた時のコールバック関数
-		bullet->SetOnDeactivateCallback([this, bulletCount, &bullet]() {
-			this->GetEffect()->OnceBulletDeleteEffect(static_cast<int32_t>(bulletCount), bullet->GetTransform());
-		});
+		bullet->SetOnDeactivateCallback([]() {});
 		// 弾のリロードが終わっているならカウントに追加
 		if (bullet->GetIsReload()) { ++bulletCount; }
+	}
+	for (auto& bullet : specialBullets_) {
+		bullet->Update();
+		// 弾が消えた時のコールバック関数
+		bullet->SetOnDeactivateCallback([]() {});
 	}
 
 	size_t bulletUICount = 0;
@@ -87,6 +82,18 @@ void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)
 	state_->Init();
 }
 
+void Player::OnCollisionEnter(Collider* other)
+{
+}
+
+void Player::OnCollisionStay(Collider* other)
+{
+}
+
+void Player::OnCollisionExit(Collider* other)
+{
+}
+
 void Player::ReloadBullet()
 {
 	// 動きが終わっている弾からリロードをする
@@ -98,26 +105,51 @@ void Player::ReloadBullet()
 	}
 }
 
-void Player::AttackBullet()
+void Player::AttackBullet(const Quaternion& q)
 {
 	// リロードが終わっていて動いていない弾を発射する
-	for (int32_t i = static_cast<int32_t>(bullets_.size() - 1); i >= 0; --i) {
-		if (!bullets_[i]->GetIsActive() && bullets_[i]->GetIsReload()) {
-			bullets_[i]->Attack(transform_);
-			effect_->OnceBulletEffect();
+	for (auto& bullet : bullets_) {
+		if (!bullet->GetIsActive() && bullet->GetIsReload()) {
+			WorldTransform transform;
+			transform.rotation_ = q;
+			transform.translation_ = transform_.translation_;
+			bullet->Attack(transform);
 			break;
 		}
 	}
+}
+
+void Player::SpecialAttackBullet()
+{
+	for (auto& bullet : specialBullets_) {
+		bullet->Reload();
+	}
+	// 敵のTransformを取得した分だけ回す
+	uint32_t count = 0;
+	for (auto& transform : reticle_->GetEnemyTransforms()) {
+		transform.translation_ = transform_.translation_;
+		specialBullets_[count]->Attack(transform);
+		++count;
+	}
+	reticle_->GetEnemyTransforms().clear();
 }
 
 void Player::BulletInit()
 {
 	// 弾を初期化
 	bullets_.resize(6);
+	specialBullets_.resize(6);
 	bulletUIs_.resize(6);
+	uint32_t num = 0;
 	for (auto& bullet : bullets_) {
 		bullet = std::make_unique<PlayerBullet>();
-		bullet->Init();
+		bullet->Init(num);
+		++num;
+	}
+	for (auto& bullet : specialBullets_) {
+		bullet = std::make_unique<PlayerBullet>();
+		bullet->Init(num);
+		++num;
 	}
 	// 弾UIを初期化
 	for (size_t i = 0; i < bulletUIs_.size(); ++i) {

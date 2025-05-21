@@ -11,6 +11,7 @@ PlayerMoveState::PlayerMoveState(Player* player) :PlayerBaseState(player) {}
 
 void PlayerMoveState::Init()
 {
+	rightStickVelocity_ = { 0.0f,0.0f,1.0f };
 }
 
 void PlayerMoveState::Finalize()
@@ -32,18 +33,9 @@ void PlayerMoveState::Update()
 
 	// 移動時の回転の処理
 	if (velocity.Length() != 0.0f) {
-		Vector3 foward = Vector3::ExprUnitZ;
-		Vector3 targetDir = Vector3{ -velocity.x,0.0f,velocity.z };
-
-		// velocityから回転を求める
-		Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
-		Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
-		Quaternion currentRotation = player_->GetTransform().rotation_;
-		Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, 0.1f);
-
 		// 回転を適応
-		player_->GetTransform().rotation_ = result;
-
+		player_->GetTransform().rotation_ = VelocityToQuaternion(velocity, 0.1f);
+		// 移動時のエフェクト
 		player_->GetEffect()->OnceMoveEffect();
 	}
 
@@ -51,7 +43,12 @@ void PlayerMoveState::Update()
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 		isReloadBullet_ = false;
 		reloadBulletTime_ = 0.0f;
-		player_->AttackBullet();
+		// 右のスティックのvelocityを取得
+		rightStickVelocity_.x = input->GetGamepadRightStickX();
+		rightStickVelocity_.z = input->GetGamepadRightStickY();
+		Quaternion q = player_->GetTransform().rotation_;
+		//if (rightStickVelocity_.Length() != 0.0f) { q = VelocityToQuaternion(rightStickVelocity_, 1.0f); }
+		player_->AttackBullet(q);
 	}
 	// 弾のリロードを開始する
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_LEFT_SHOULDER)) {
@@ -67,7 +64,8 @@ void PlayerMoveState::Update()
 		return;
 	}
 
-	if (input->GetGamepadRightTrigger() != 0.0f && !player_->GetEffect()->GetIsSpecialMove()) {
+	// 必殺技の状態に遷移
+	if (input->GetGamepadLeftTrigger() != 0.0f && !player_->GetEffect()->GetIsSpecialMove()) {
 		player_->GetEffect()->SetIsSpecialMove(true);
 		player_->ChengeState(std::make_unique<PlayerSpecialMoveState>(player_));
 		return;
@@ -97,4 +95,18 @@ void PlayerMoveState::ReloadBullet()
 			player_->ReloadBullet();
 		}
 	}
+}
+
+Quaternion PlayerMoveState::VelocityToQuaternion(const Vector3& velocity, const float lerp)
+{
+	Vector3 foward = Vector3::ExprUnitZ;
+	Vector3 targetDir = Vector3{ -velocity.x,0.0f,velocity.z };
+
+	// velocityから回転を求める
+	Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
+	Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
+	Quaternion currentRotation = player_->GetTransform().rotation_;
+	Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, lerp);
+
+	return result;
 }
