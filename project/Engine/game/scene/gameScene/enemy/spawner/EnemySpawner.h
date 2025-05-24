@@ -14,6 +14,8 @@ public:
 
 	void Update();
 
+	void Draw();
+
 	std::list<std::unique_ptr<Enemy>>& GetEnemyList() { return enemys_; }
 	
 	Player* GetPlayer() { return player_; }
@@ -32,6 +34,8 @@ private:
 
 	// 敵のリスト
 	std::list<std::unique_ptr<Enemy>> enemys_;
+
+	float spawnFrame_ = 0.0f;
 
 };
 

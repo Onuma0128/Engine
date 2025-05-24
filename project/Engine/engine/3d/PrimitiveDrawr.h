@@ -59,6 +59,7 @@ public:
 	/* =============== Typeを選べるように =============== */
 
 	void TypeInit(PrimitiveType type, uint32_t kIndex = 0);
+	void SetSceneRenderer();
 
 	void TypeDraw();
 

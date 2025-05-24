@@ -29,16 +29,16 @@ void SceneRenderer::AllDraw()
 		if (line->GetIsMultiple()) { line->Draws(); }
 		else { line->Draws(); }
 	}
+	/// ============================== Animation ============================== ///
+	for (auto& animation : animations_) {
+		if (!animation->GetRenderOptions().enabled || !animation->GetRenderOptions().offscreen) { continue; }
+		animation->Draw();
+	}
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
 		if (!primitive->GetRenderOptions().enabled || !primitive->GetRenderOptions().offscreen) { continue; }
 		if (primitive->GetPrimitiveType() == PrimitiveType::None) { primitive->Draw(); }
 		else { primitive->TypeDraw(); }
-	}
-	/// ============================== Animation ============================== ///
-	for (auto& animation : animations_) {
-		if (!animation->GetRenderOptions().enabled || !animation->GetRenderOptions().offscreen) { continue; }
-		animation->Draw();
 	}
 
 	ParticleManager::GetInstance()->Draw();
@@ -62,15 +62,15 @@ void SceneRenderer::OutAllDraw()
 		if (line->GetIsMultiple()) { line->Draws(); }
 		else { line->Draws(); }
 	}
+	/// ============================== Animation ============================== ///
+	for (auto& animation : animations_) {
+		if (!animation->GetRenderOptions().enabled || animation->GetRenderOptions().offscreen) { continue; }
+		animation->Draw();
+	}
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
 		if (!primitive->GetRenderOptions().enabled || primitive->GetRenderOptions().offscreen) { continue; }
 		if (primitive->GetPrimitiveType() == PrimitiveType::None) { primitive->Draw(); }
 		else { primitive->TypeDraw(); }
-	}
-	/// ============================== Animation ============================== ///
-	for (auto& animation : animations_) {
-		if (!animation->GetRenderOptions().enabled || animation->GetRenderOptions().offscreen) { continue; }
-		animation->Draw();
 	}
 }

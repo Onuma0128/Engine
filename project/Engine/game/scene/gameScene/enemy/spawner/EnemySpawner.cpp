@@ -1,11 +1,14 @@
 #include "EnemySpawner.h"
 
+#include "DeltaTimer.h"
+
 #include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
 
 void EnemySpawner::Init()
 {
 	Object3d::Initialize("Box.obj");
+	Object3d::SetSceneRenderer();
 
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::OBB;
@@ -16,8 +19,24 @@ void EnemySpawner::Init()
 
 void EnemySpawner::Update()
 {
-	for (auto& enemy : enemys_) {
-		enemy->Update();
+	/*spawnFrame_ += DeltaTimer::GetDeltaTime();
+	if (spawnFrame_ > 5.0f) {
+		spawnFrame_ = 0.0f;
+		EnemySpawn();
+	}*/
+	if (enemys_.size() == 0) {
+		EnemySpawn();
+	}
+
+	for (auto it = enemys_.begin(); it != enemys_.end(); ) {
+		(*it)->Update();
+
+		if ((*it)->GetIsDead()) {
+			(*it)->Finalize();
+			it = enemys_.erase(it);
+		} else {
+			++it;
+		}
 	}
 
 	Collider::rotate_ = transform_.rotation_;
@@ -25,6 +44,13 @@ void EnemySpawner::Update()
 	Collider::Update();
 
 	Object3d::Update();
+}
+
+void EnemySpawner::Draw()
+{
+	for (auto& enemy : enemys_) {
+		enemy->Draw();
+	}
 }
 
 void EnemySpawner::EnemySpawn()

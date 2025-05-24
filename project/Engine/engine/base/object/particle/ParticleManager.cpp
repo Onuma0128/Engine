@@ -45,48 +45,56 @@ void ParticleManager::Initialize(DirectXEngine* dxEngine)
 void ParticleManager::Update()
 {
     // 各パーティクルグループに対して処理
-    for (auto& [name, group] : particleGroups_) {
-        // 新しいパーティクルを追加する
-        particleGroups_[name].emitter->Update();
-        Emit(name);
+    for (auto it = particleGroups_.begin(); it != particleGroups_.end();) {
+        auto& group = it->second;
 
-        uint32_t numInstance = 0;
-        // 各パーティクルを更新
-        for (auto it = group.particles.begin(); it != group.particles.end();) {
-            if (it->lifeTime <= it->currentTime) {
-                it = group.particles.erase(it);
-                continue;
+        if (auto emitter = group.emitter.lock()) {
+            // 新しいパーティクルを追加する
+            emitter->Update();
+            Emit(it->first);
+
+            uint32_t numInstance = 0;
+            // 各パーティクルを更新
+            for (auto p_it = group.particles.begin(); p_it != group.particles.end();) {
+                if (p_it->lifeTime <= p_it->currentTime) {
+                    p_it = group.particles.erase(p_it);
+                    continue;
+                }
+
+                // パーティクルのビルボード化
+                Matrix4x4 billboardMatrix = Matrix4x4::Rotate(p_it->transform.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
+                billboardMatrix.m[3][0] = 0.0f;
+                billboardMatrix.m[3][1] = 0.0f;
+                billboardMatrix.m[3][2] = 0.0f;
+                billboardMatrix.m[3][3] = 1.0f;
+                Matrix4x4 worldMatrix = Matrix4x4::Scale(p_it->transform.scale) * billboardMatrix * Matrix4x4::Translate(p_it->transform.translation);
+                Matrix4x4 worldViewMatrix = worldMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetViewMatrix();
+                Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
+
+                // パーティクルの更新
+                emitter->UpdateParticle(p_it);
+
+                // uvTranslate
+                group.materialData_->uvTransform = Matrix4x4::Translate(p_it->uvTranslate);
+
+                float alpha = 1.0f - (p_it->currentTime / p_it->lifeTime);
+                if (numInstance < kNumMaxInstance) {
+                    group.instancingData[numInstance].WVP = worldViewProjectionMatrix;
+                    group.instancingData[numInstance].World = worldViewMatrix;
+                    group.instancingData[numInstance].color = p_it->color;
+                    group.instancingData[numInstance].color.w = alpha;
+                    ++numInstance;
+                }
+                ++p_it;
             }
 
-            // パーティクルのビルボード化
-            Matrix4x4 billboardMatrix = Matrix4x4::Rotate(it->transform.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
-            billboardMatrix.m[3][0] = 0.0f;
-            billboardMatrix.m[3][1] = 0.0f;
-            billboardMatrix.m[3][2] = 0.0f;
-            billboardMatrix.m[3][3] = 1.0f;
-            Matrix4x4 worldMatrix = Matrix4x4::Scale(it->transform.scale) * billboardMatrix * Matrix4x4::Translate(it->transform.translation);
-            Matrix4x4 worldViewMatrix = worldMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetViewMatrix();
-            Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
-
-            // パーティクルの更新
-            group.emitter->UpdateParticle(it);
-
-            // uvTranslate
-            group.materialData_->uvTransform = Matrix4x4::Translate(it->uvTranslate);
-
-            float alpha = 1.0f - (it->currentTime / it->lifeTime);
-            if (numInstance < kNumMaxInstance) {
-                group.instancingData[numInstance].WVP = worldViewProjectionMatrix;
-                group.instancingData[numInstance].World = worldViewMatrix;
-                group.instancingData[numInstance].color = it->color;
-                group.instancingData[numInstance].color.w = alpha;
-                ++numInstance;
-            }
+            group.instanceCount = numInstance;
+            //std::memcpy(group.instancingData, group.instancingData, sizeof(ParticleForGPU) * numInstance);
             ++it;
-        }
 
-        group.instanceCount = numInstance;
-        std::memcpy(group.instancingData, group.instancingData, sizeof(ParticleForGPU) * numInstance);
+        } else {
+            it = particleGroups_.erase(it);
+        }
     }
 }
 
@@ -98,7 +106,7 @@ void ParticleManager::Draw()
 
         /*==================== パイプラインの設定 ====================*/
         commandList->SetGraphicsRootSignature(rootSignature_.Get());
-        commandList->SetPipelineState(pipelineStates_[particleGroups_[name].emitter->GetBlendMode()].Get());
+        commandList->SetPipelineState(pipelineStates_[particleGroups_[name].emitter.lock()->GetBlendMode()].Get());
         commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         /*==================== パーティクルの描画 ====================*/
@@ -111,10 +119,6 @@ void ParticleManager::Draw()
 
         // 各パーティクルグループのインスタンスを描画
         commandList->DrawInstanced(UINT(modelData_.vertices.size()), group.instanceCount, 0, 0);
-    }
-
-    for (const auto& [name, group] : particleGroups_) {
-        group.emitter->Draw();
     }
 }
 
@@ -129,7 +133,11 @@ void ParticleManager::Clear()
     particleGroups_.clear();
 }
 
-void ParticleManager::CreateParticleGroup(const std::string name, const std::string textureFilePath, ParticleEmitter* emitter, bool copy)
+void ParticleManager::CreateParticleGroup(
+    const std::string name,
+    const std::string textureFilePath,
+    std::shared_ptr<ParticleEmitter> emitter,
+    bool copy)
 {
     auto it = particleGroups_.find(name);
     if (it != particleGroups_.end()) {
@@ -138,7 +146,17 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
             // 既存グループを複製
             ParticleGroup newGroup = it->second;
             newGroup.emitter = emitter;         
-            newGroup.instanceCount = 0;         
+            newGroup.instanceCount = 0;  
+
+            newGroup.instancingResource = CreateBufferResource(
+                dxEngine_->GetDevice(),
+                sizeof(ParticleForGPU) * kNumMaxInstance).Get();
+            newGroup.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&newGroup.instancingData));
+            for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
+                newGroup.instancingData[i].WVP = Matrix4x4::Identity();
+                newGroup.instancingData[i].World = Matrix4x4::Identity();
+                newGroup.instancingData[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
+            }
 
             // SRVだけは取り直す
             newGroup.srvIndex = srvManager_->Allocate() + TextureManager::kSRVIndexTop;
@@ -199,7 +217,7 @@ void ParticleManager::CreateParticleGroup(const std::string name, const std::str
 void ParticleManager::Emit(const std::string name)
 {
     // 新しいパーティクルを追加する
-    particleGroups_[name].emitter->CreateParticles(particleGroups_[name]);
+    particleGroups_[name].emitter.lock()->CreateParticles(particleGroups_[name]);
 }
 
 void ParticleManager::CreateVertexResource()

@@ -12,6 +12,7 @@ PlayerMoveState::PlayerMoveState(Player* player) :PlayerBaseState(player) {}
 void PlayerMoveState::Init()
 {
 	rightStickVelocity_ = { 0.0f,0.0f,1.0f };
+	rightStickQuaternion_ = Quaternion::IdentityQuaternion();
 }
 
 void PlayerMoveState::Finalize()
@@ -39,16 +40,21 @@ void PlayerMoveState::Update()
 		player_->GetEffect()->OnceMoveEffect();
 	}
 
+	// 右のスティックのvelocityを取得
+	velocity.x = input->GetGamepadRightStickX();
+	velocity.z = input->GetGamepadRightStickY();
+	if (velocity.Length() != 0.0f) {
+		rightStickVelocity_ = velocity;
+		// StickのVelocityから回転を計算
+		rightStickQuaternion_ = VelocityToQuaternion(rightStickVelocity_, 1.0f);
+		Quaternion target = Quaternion::Slerp(player_->GetRightStickQua(), rightStickQuaternion_, 0.3f);
+		player_->SetRightStickQua(target);
+	}
 	// 弾を発射する(弾を発射するとリロードが止まる)
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_RIGHT_SHOULDER)) {
 		isReloadBullet_ = false;
 		reloadBulletTime_ = 0.0f;
-		// 右のスティックのvelocityを取得
-		rightStickVelocity_.x = input->GetGamepadRightStickX();
-		rightStickVelocity_.z = input->GetGamepadRightStickY();
-		Quaternion q = player_->GetTransform().rotation_;
-		//if (rightStickVelocity_.Length() != 0.0f) { q = VelocityToQuaternion(rightStickVelocity_, 1.0f); }
-		player_->AttackBullet(q);
+		player_->AttackBullet();
 	}
 	// 弾のリロードを開始する
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_LEFT_SHOULDER)) {

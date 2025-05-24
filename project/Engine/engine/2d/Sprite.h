@@ -41,6 +41,7 @@ public:
 	/*==================== メンバ関数 ====================*/
 
 	void Initialize(std::string textureFilePath);
+	void SetSceneRenderer();
 
 	void Update();
 

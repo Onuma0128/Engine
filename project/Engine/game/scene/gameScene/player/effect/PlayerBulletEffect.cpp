@@ -1,42 +1,31 @@
 #include "PlayerBulletEffect.h"
 
-void PlayerBulletEffect::Init(const uint32_t count)
+void PlayerBulletEffect::Init()
 {
-	std::string num = std::to_string(count);
-
 	// 弾のエフェクト
 	bulletTrailEmitter_ = std::make_unique<ParticleEmitter>("bulletTrail");
-	particleManager_->CreateParticleGroup("bulletTrail", "white1x1.png", bulletTrailEmitter_.get(), true);
+	particleManager_->CreateParticleGroup("bulletTrail", "white1x1.png", bulletTrailEmitter_, true);
 	bulletTrailEmitter_->SetIsCreate(false);
 
 	bulletDeleteEmitter_ = std::make_unique<ParticleEmitter>("bulletDelete");
-	particleManager_->CreateParticleGroup("bulletDelete", "white1x1.png", bulletDeleteEmitter_.get(), true);
+	particleManager_->CreateParticleGroup("bulletDelete", "white1x1.png", bulletDeleteEmitter_, true);
 	bulletDeleteEmitter_->SetIsCreate(false);
-
-	// ヒット時のエフェクト
-	hitEmitter_ = std::make_unique<ParticleEmitter>("enemyHit");
-	particleManager_->CreateParticleGroup("enemyHit", "white1x1.png", hitEmitter_.get(), true);
-	hitEmitter_->SetIsCreate(false);
-
-	hitDustEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
-	particleManager_->CreateParticleGroup("enemyHitExplosion", "circle.png", hitDustEmitter_.get(), true);
-	hitDustEmitter_->SetIsCreate(false);
 
 	// 弾を撃つ時のエフェクト
 	bulletExplosionEmitter_ = std::make_unique<ParticleEmitter>("bulletExplosion");
-	particleManager_->CreateParticleGroup("bulletExplosion", "circle.png", bulletExplosionEmitter_.get(), true);
+	particleManager_->CreateParticleGroup("bulletExplosion", "circle.png", bulletExplosionEmitter_, true);
 	bulletExplosionEmitter_->SetIsCreate(false);
 
 	bulletSparkEmitter_ = std::make_unique<ParticleEmitter>("bulletSpark");
-	particleManager_->CreateParticleGroup("bulletSpark", "circle.png", bulletSparkEmitter_.get(), true);
+	particleManager_->CreateParticleGroup("bulletSpark", "circle.png", bulletSparkEmitter_, true);
 	bulletSparkEmitter_->SetIsCreate(false);
 
 	bulletSmokeEmitter_ = std::make_unique<ParticleEmitter>("bulletSmoke");
-	particleManager_->CreateParticleGroup("bulletSmoke", "smoke.png", bulletSmokeEmitter_.get(), true);
+	particleManager_->CreateParticleGroup("bulletSmoke", "smoke.png", bulletSmokeEmitter_, true);
 	bulletSmokeEmitter_->SetIsCreate(false);
 
 	bulletCartridgeEmitter_ = std::make_unique<ParticleEmitter>("bulletCartridge");
-	particleManager_->CreateParticleGroup("bulletCartridge", "white1x1.png", bulletCartridgeEmitter_.get(), true);
+	particleManager_->CreateParticleGroup("bulletCartridge", "white1x1.png", bulletCartridgeEmitter_, true);
 	bulletCartridgeEmitter_->SetIsCreate(false);
 }
 
@@ -66,21 +55,6 @@ void PlayerBulletEffect::OnceBulletDeleteEffect(const WorldTransform& transform)
 
 	bulletDeleteEmitter_->SetRotation(rotate);
 	bulletDeleteEmitter_->SetPosition(position);
-}
-
-void PlayerBulletEffect::OnceBulletHitEffect(const WorldTransform& transform)
-{
-	hitEmitter_->onceEmit();
-	hitDustEmitter_->onceEmit();
-
-	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
-
-	hitEmitter_->SetRotation(rotate);
-	hitEmitter_->SetPosition(position);
-	hitDustEmitter_->SetRotation(rotate);
-	hitDustEmitter_->SetPosition(position);
 }
 
 void PlayerBulletEffect::OnceBulletEffect(const WorldTransform& transform)

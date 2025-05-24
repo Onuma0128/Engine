@@ -22,6 +22,8 @@ public:
 	// Obejctをセットする
 	template<typename T>
 	void SetDrawList(T* object);
+	template<typename T>
+	void SetRemoveList(T* object);
 
 private:
 
@@ -39,15 +41,27 @@ template<>
 inline void SceneRenderer::SetDrawList<Object3d>(Object3d* object) {
 	objects_.push_back(object);
 }
+template<>
+inline void SceneRenderer::SetRemoveList<Object3d>(Object3d* object) {
+	objects_.remove(object);
+}
 
 template<>
 inline void SceneRenderer::SetDrawList<Sprite>(Sprite* sprite) {
 	sprites_.push_back(sprite);
 }
+template<>
+inline void SceneRenderer::SetRemoveList<Sprite>(Sprite* sprite) {
+	sprites_.remove(sprite);
+}
 
 template<>
 inline void SceneRenderer::SetDrawList<Line3d>(Line3d* line) {
 	lines_.push_back(line);
+}
+template<>
+inline void SceneRenderer::SetRemoveList<Line3d>(Line3d* line) {
+	lines_.remove(line);
 }
 
 template<>

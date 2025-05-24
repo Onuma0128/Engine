@@ -20,12 +20,20 @@ void Object3d::Initialize(const std::string& filePath)
     SetModel(filePath);
 
     MakeMaterialData();
+}
 
+void Object3d::SetSceneRenderer()
+{
     renderOptions_ = {
         .enabled = true,
         .offscreen = true
     };
     DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+}
+
+void Object3d::RemoveRenderer()
+{
+    DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
 }
 
 void Object3d::Update()

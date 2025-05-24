@@ -10,7 +10,7 @@ class PlayerBullet : public Object3d,Collider
 {
 public:
 
-	void Init(const uint32_t count);
+	void Init(const std::string& colliderName);
 
 	void GlobalInit();
 
@@ -21,7 +21,7 @@ public:
 	// リロードをする関数
 	void Reload();
 	// 攻撃をする関数
-	void Attack(const WorldTransform& transform);
+	void Attack(const WorldTransform& transform, float speed = 20.0f);
 
 	bool GetIsActive()const { return isActive_; }
 	bool GetIsReload()const { return isReload_; }
@@ -43,6 +43,7 @@ private:
 	std::function<void()> onDeactivatedCallback_;
 
 	// 速度
+	float speed_ = 0.0f;
 	Vector3 velocity_;
 	// 動いている時間
 	float activeFrame_ = 0.0f;

@@ -24,6 +24,8 @@ public:
 
 	void Update();
 
+	void Draw();
+
 	void SetPlayer(Player* player) { player_ = player; }
 
 	// 移動時のエフェクトを呼び出す
@@ -47,12 +49,12 @@ private:
 	/* ==================== プレイヤーが移動時のエフェクト ==================== */
 
 	// 移動時の土埃
-	std::unique_ptr<ParticleEmitter> moveDustEmitter_ = nullptr;
+	std::shared_ptr<ParticleEmitter> moveDustEmitter_ = nullptr;
 
 	/* ==================== プレイヤーが避けた時のエフェクト ==================== */
 
 	// 避けた時の土埃
-	std::unique_ptr<ParticleEmitter> avoidDustEmitter_ = nullptr;
+	std::shared_ptr<ParticleEmitter> avoidDustEmitter_ = nullptr;
 
 	/* ==================== プレイヤーが必殺技を撃った時のエフェクト ==================== */
 

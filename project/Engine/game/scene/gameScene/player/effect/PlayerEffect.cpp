@@ -12,12 +12,12 @@ void PlayerEffect::Init()
 {
 	// 移動時のエフェクト
 	moveDustEmitter_ = std::make_unique<ParticleEmitter>("moveDust");
-	particleManager_->CreateParticleGroup("moveDust", "smoke.png", moveDustEmitter_.get());
+	particleManager_->CreateParticleGroup("moveDust", "smoke.png", moveDustEmitter_);
 	moveDustEmitter_->SetIsCreate(false);
 
 	// 避け時のエフェクト
 	avoidDustEmitter_ = std::make_unique<ParticleEmitter>("avoidDust");
-	particleManager_->CreateParticleGroup("avoidDust", "smoke.png", avoidDustEmitter_.get());
+	particleManager_->CreateParticleGroup("avoidDust", "smoke.png", avoidDustEmitter_);
 	avoidDustEmitter_->SetIsCreate(false);
 
 	// PostEffectを初期化
@@ -39,6 +39,13 @@ void PlayerEffect::Update()
 	cylinder_->GetTransform().translation = player_->GetTransform().translation_;
 	cylinder_->GetTransform().translation.y = 0.0f;
 	cylinder_->Update();
+}
+
+void PlayerEffect::Draw()
+{
+	if (cylinder_->GetRenderOptions().enabled) {
+		cylinder_->TypeDraw();
+	}
 }
 
 void PlayerEffect::OnceMoveEffect()

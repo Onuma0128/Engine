@@ -27,7 +27,10 @@ void Sprite::Initialize(std::string textureFilePath)
 	TransformationMatrixDataInitialize();
 
 	AdjustTextureSize();
+}
 
+void Sprite::SetSceneRenderer()
+{
 	renderOptions_ = {
 		.enabled = true,
 		.offscreen = true

@@ -62,13 +62,12 @@ public:
 
 public:
 
+	~ParticleEmitter();
 	ParticleEmitter(const std::string name);
 
 	void GlobalInitialize(const std::string name);
 
 	void Update();
-
-	void Draw();
 
 	/*==================== パーティクルの生成 ====================*/
 

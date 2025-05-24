@@ -14,9 +14,9 @@ void PlayerReticle::Init()
 
 	transform_.size = { 0.0f,0.0f };
 	anchorPoint_ = { 0.5f,0.5f };
-	GetRenderOptions().enabled = false;
-	GetRenderOptions().offscreen = false;
-	Sprite::SetColor({ 0.0f,0.0f,0.0f,1.0f });
+	Sprite::GetRenderOptions().enabled = false;
+	Sprite::GetRenderOptions().offscreen = false;
+	Sprite::SetColor({ 1.0f,1.0f,1.0f,1.0f });
 	Sprite::Update();
 
 	Collider::AddCollider();
@@ -41,13 +41,22 @@ void PlayerReticle::Update()
 	velocity.x = input->GetGamepadRightStickX();
 	velocity.y = -input->GetGamepadRightStickY();
 
-	transform_.position += velocity * reticleSpeed;
+	if (transform_.size.x >= 64.0f) {
+		transform_.position += velocity * reticleSpeed;
+	}
 
 	// 当たり判定用の線を更新
 	SegmentUpdate();
 
 	// Spriteの更新
 	Sprite::Update();
+}
+
+void PlayerReticle::Draw()
+{
+	if (Sprite::GetRenderOptions().enabled) {
+		Sprite::Draw();
+	}
 }
 
 void PlayerReticle::OnCollisionEnter(Collider* other)
@@ -73,7 +82,7 @@ void PlayerReticle::OnCollisionStay(Collider* other)
 void PlayerReticle::OnCollisionExit(Collider* other)
 {
 	if (other->GetColliderName() == "Enemy") {
-		Sprite::SetColor({ 0.0f,0.0f,0.0f,1.0f });
+		Sprite::SetColor({ 1.0f,1.0f,1.0f,1.0f });
 	}
 }
 

@@ -9,7 +9,7 @@
 #include "ModelStruct.h"
 
 // パーティクルのMAX値(上げすぎ注意!!)
-const uint32_t kNumMaxInstance = 1024;
+const uint32_t kNumMaxInstance = 128;
 
 class ParticleEmitter;
 class DirectXEngine;
@@ -59,7 +59,7 @@ public:
 		Material* materialData_ = nullptr;
 
 		ParticleForGPU* instancingData;
-		ParticleEmitter* emitter;
+		std::weak_ptr<ParticleEmitter> emitter;
 	};
 
 private:
@@ -84,7 +84,12 @@ public:
 
 	void Finalize();
 
-	void CreateParticleGroup(const std::string name, const std::string textureFilePath, ParticleEmitter* emitter, bool copy = false);
+	void CreateParticleGroup(
+		const std::string name, 
+		const std::string textureFilePath, 
+		std::shared_ptr<ParticleEmitter> emitter, 
+		bool copy = false
+	);
 
 	void Emit(const std::string name);
 

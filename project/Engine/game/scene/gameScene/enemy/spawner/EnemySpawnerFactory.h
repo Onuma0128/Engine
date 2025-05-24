@@ -13,6 +13,8 @@ public:
 
 	void Update();
 
+	void Draw();
+
 	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }
 

@@ -1,6 +1,13 @@
 #include "ParticleEmitter.h"
 
+#include "DirectXEngine.h"
+
 #include "DeltaTimer.h"
+
+ParticleEmitter::~ParticleEmitter()
+{
+    DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
+}
 
 ParticleEmitter::ParticleEmitter(const std::string name)
 {
@@ -27,13 +34,15 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     moveStart_ = true;
     isFieldStart_ = false;
     isCreate_ = true;
-
+    
+#ifdef _DEBUG
     // Emitterの範囲を線で描画
     AABB aabb = emitter_.emitterSize;
     linePosition_ = CreateLineBox(emitter_.emitterSize);
 
     line_ = std::make_unique<Line3d>();
     line_->Initialize(linePosition_);
+#endif // _DEBUG
 }
 
 void ParticleEmitter::GlobalInitialize(const std::string name)
@@ -178,19 +187,6 @@ void ParticleEmitter::Update()
     line_->SetPositions(linePosition_);
     line_->Update();
 
-#endif // _DEBUG
-}
-
-void ParticleEmitter::Draw()
-{
-#ifdef _DEBUG
-
-    /*==================== パーティクルの範囲描画 ====================*/
-    /*for (auto& line : lines_) {
-        line->Draw();
-    }*/
-
-    //line_->Draws();
 #endif // _DEBUG
 }
 

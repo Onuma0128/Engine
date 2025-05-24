@@ -51,7 +51,10 @@ void Animation::Init(const std::string& directoryPath, const std::string& filena
 	// Line3dを初期化
 	line_ = std::make_unique<Line3d>();
 	line_->Initialize(linePositions);
+}
 
+void Animation::SetSceneRenderer()
+{
 	renderOptions_ = {
 		.enabled = true,
 		.offscreen = true

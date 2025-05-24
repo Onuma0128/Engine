@@ -34,6 +34,7 @@ private:
 
 	// 最後に向けたRightStickを保存する
 	Vector3 rightStickVelocity_{};
+	Quaternion rightStickQuaternion_{};
 
 };
 

@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyDeadState.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.cpp" />
     <ClCompile Include="Engine\engine\base\collider\Collider.cpp" />
@@ -207,8 +208,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\globalVariables\JsonAdapter.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\reticle\PlayerReticle.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\effect\PlayerBulletEffect.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PredictionObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyDeadState.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.h" />
     <ClInclude Include="Engine\engine\base\collider\Collider.h" />
@@ -317,6 +320,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\globalVariables\JsonAdapter.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\reticle\PlayerReticle.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\effect\PlayerBulletEffect.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PredictionObject.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

@@ -15,11 +15,59 @@ void EnemyEffect::Init()
 	hitReticleEffect_.cylinder_->GetRenderOptions().offscreen = false;
 	hitReticleEffect_.frame_ = 0.0f;
 	hitReticleEffect_.axis_ = 0.0f;
+
+	// ヒット時のエフェクト
+	hitEmitter_ = std::make_unique<ParticleEmitter>("enemyHit");
+	particleManager_->CreateParticleGroup("enemyHit", "white1x1.png", hitEmitter_, true);
+	hitEmitter_->SetIsCreate(false);
+
+	hitExplosionEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
+	particleManager_->CreateParticleGroup("enemyHitExplosion", "circle.png", hitExplosionEmitter_, true);
+	hitExplosionEmitter_->SetIsCreate(false);
+
+	// 死亡時のエフェクト
+	deadEmitter_ = std::make_unique<ParticleEmitter>("enemyDead");
+	particleManager_->CreateParticleGroup("enemyDead", "white1x1.png", deadEmitter_, true);
+	deadEmitter_->SetIsCreate(false);
 }
 
 void EnemyEffect::Update()
 {
 	HitReticleUpdate();
+
+	deadEmitter_->SetRotation(enemy_->GetTransform().rotation_);
+	deadEmitter_->SetPosition(enemy_->GetTransform().translation_);
+}
+
+void EnemyEffect::Draw()
+{
+	if (hitReticleEffect_.cylinder_->GetRenderOptions().enabled) {
+		hitReticleEffect_.cylinder_->TypeDraw();
+	}
+}
+
+void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
+{
+	hitEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	hitEmitter_->SetRotation(rotate);
+	hitEmitter_->SetPosition(position);
+}
+
+void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
+{
+	hitExplosionEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	hitExplosionEmitter_->SetRotation(rotate);
+	hitExplosionEmitter_->SetPosition(position);
 }
 
 void EnemyEffect::HitReticleUpdate()

@@ -2,24 +2,27 @@
 
 #include "DeltaTimer.h"
 
-void PlayerBullet::Init(const uint32_t count)
+void PlayerBullet::Init(const std::string& colliderName)
 {
 	Object3d::Initialize("Box.obj");
-	transform_.scale_ = { 0.1f,0.1f ,0.3f };
+	Object3d::SetSceneRenderer();
 	Object3d::GetRenderOptions().enabled = false;
+	transform_.scale_ = { 0.1f,0.1f ,0.3f };
 
 	isActive_ = false;
 	activeFrame_ = 0.0f;
 
 	effect_ = std::make_unique<PlayerBulletEffect>();
-	effect_->Init(count);
+	effect_->Init();
 
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::OBB;
-	Collider::colliderName_ = "PlayerBullet";
+	Collider::colliderName_ = colliderName;
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
 	Collider::DrawCollider();
+
+	speed_ = 20.0f;
 }
 
 void PlayerBullet::GlobalInit()
@@ -55,8 +58,7 @@ void PlayerBullet::Update()
 	}
 
 	// 移動処理
-	const float bulletSpeed = 20.0f;
-	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * bulletSpeed;
+	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed_;
 
 	effect_->OnceBulletTrailEffect(transform_);
 	Collider::rotate_ = transform_.rotation_;
@@ -71,7 +73,6 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	if (other->GetColliderName() == "Enemy") {
 		IsCollision();
 		effect_->OnceBulletDeleteEffect(transform_);
-		effect_->OnceBulletHitEffect(transform_);
 	}
 }
 
@@ -80,13 +81,14 @@ void PlayerBullet::Reload()
 	isReload_ = true;
 }
 
-void PlayerBullet::Attack(const WorldTransform& transform)
+void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 {
 	// 回転と座標を取得
 	transform_.rotation_ = transform.rotation_;
 	transform_.translation_ = transform.translation_;
 
 	// 速度(向き)を取得
+	speed_ = speed;
 	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform.rotation_);
 	velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix);
 

@@ -16,6 +16,8 @@ public:
 
 	void Update();
 
+	void Draw();
+
 	void OnCollisionEnter(Collider* other) override;
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
@@ -23,6 +25,7 @@ public:
 	void SetColliderActive(bool flag) { Collider::isActive_ = flag; }
 
 	std::vector<WorldTransform>& GetEnemyTransforms() { return enemyTransforms_; }
+	void ResetHitCount() { hitCount_ = 0; }
 
 private:
 

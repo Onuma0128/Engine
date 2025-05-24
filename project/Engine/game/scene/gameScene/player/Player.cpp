@@ -5,7 +5,7 @@
 void Player::Init()
 {
 	Object3d::Initialize("Box.obj");
-	Object3d::GetRenderOptions().enabled = false;
+	Object3d::SetSceneRenderer();
 
 	transform_.scale_ = { 0.5f,0.5f,0.5f };
 	transform_.translation_ = { 0.0f,0.5f,0.0f };
@@ -20,12 +20,15 @@ void Player::Init()
 	reticle_->Init();
 
 	BulletInit();
+	PredictionObjInit();
 
 	Collider::AddCollider();
 	Collider::colliderName_ = "Player";
 	Collider::myType_ = ColliderType::OBB;
 	Collider::size_ = transform_.scale_;
 	Collider::DrawCollider();
+
+	rightStickQuaternion_ = Quaternion::IdentityQuaternion();
 }
 
 void Player::GlobalInit()
@@ -67,10 +70,21 @@ void Player::Update()
 		}
 	}
 
+	for (auto& obj : predictionObjects_) {
+		obj->Update();
+	}
+
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::Update();
 	Object3d::Update();
+}
+
+void Player::Draw()
+{
+	effect_->Draw();
+	
+	reticle_->Draw();
 }
 
 void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)
@@ -105,13 +119,13 @@ void Player::ReloadBullet()
 	}
 }
 
-void Player::AttackBullet(const Quaternion& q)
+void Player::AttackBullet()
 {
 	// リロードが終わっていて動いていない弾を発射する
 	for (auto& bullet : bullets_) {
 		if (!bullet->GetIsActive() && bullet->GetIsReload()) {
 			WorldTransform transform;
-			transform.rotation_ = q;
+			transform.rotation_ = rightStickQuaternion_;
 			transform.translation_ = transform_.translation_;
 			bullet->Attack(transform);
 			break;
@@ -121,6 +135,7 @@ void Player::AttackBullet(const Quaternion& q)
 
 void Player::SpecialAttackBullet()
 {
+	if (reticle_->GetEnemyTransforms().empty()) { return; }
 	for (auto& bullet : specialBullets_) {
 		bullet->Reload();
 	}
@@ -128,10 +143,11 @@ void Player::SpecialAttackBullet()
 	uint32_t count = 0;
 	for (auto& transform : reticle_->GetEnemyTransforms()) {
 		transform.translation_ = transform_.translation_;
-		specialBullets_[count]->Attack(transform);
+		specialBullets_[count]->Attack(transform, 50.0f);
 		++count;
 	}
 	reticle_->GetEnemyTransforms().clear();
+	reticle_->ResetHitCount();
 }
 
 void Player::BulletInit()
@@ -140,20 +156,26 @@ void Player::BulletInit()
 	bullets_.resize(6);
 	specialBullets_.resize(6);
 	bulletUIs_.resize(6);
-	uint32_t num = 0;
 	for (auto& bullet : bullets_) {
 		bullet = std::make_unique<PlayerBullet>();
-		bullet->Init(num);
-		++num;
+		bullet->Init("PlayerBullet");
 	}
 	for (auto& bullet : specialBullets_) {
 		bullet = std::make_unique<PlayerBullet>();
-		bullet->Init(num);
-		++num;
+		bullet->Init("PlayerBulletSpecial");
 	}
 	// 弾UIを初期化
 	for (size_t i = 0; i < bulletUIs_.size(); ++i) {
 		bulletUIs_[i] = std::make_unique<PlayerBulletUI>();
 		bulletUIs_[i]->Init(Vector2{ (i * 32.0f) + 32.0f,32.0f });
+	}
+}
+
+void Player::PredictionObjInit()
+{
+	for (size_t i = 0; i < predictionObjects_.size(); ++i) {
+		predictionObjects_[i] = std::make_unique<PredictionObject>();
+		predictionObjects_[i]->SetPlayer(this);
+		predictionObjects_[i]->Init((Vector3::ExprUnitZ * static_cast<float>(i + 1)));
 	}
 }
