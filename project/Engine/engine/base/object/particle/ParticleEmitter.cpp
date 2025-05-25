@@ -198,7 +198,39 @@ void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)
             std::mt19937 randomEngine_(seedGenerator_());
             group.particles.splice(group.particles.end(), Emit(emitter_, randomEngine_));
             emitter_.frequencyTime -= emitter_.frequency;
+
+            // 最初の一回目は補完をしない
+            if (needResetPrev_ && !hasPrevPos_) {
+                prevPosition_ = emitter_.transform.translation;
+                hasPrevPos_ = true;
+            }
+            // 移動量が多いときその移動の補完をする
+            float dist = (emitter_.transform.translation - prevPosition_).Length();
+            Vector3 span = emitter_.emitterSize.max - emitter_.emitterSize.min;
+            float  threshold = span.Length();
+            int n = static_cast<int>(dist / threshold);
+            for (int i = 1; i <= n; ++i) {
+                float t = static_cast<float>(i) / (n + 1);
+                Vector3 pos = Vector3::Lerp(prevPosition_, emitter_.transform.translation, t);
+
+                Transform3D backup = emitter_.transform;          // 元を退避
+                emitter_.transform.translation = pos;             // 中間点に置き換える
+                {
+                    std::mt19937 rng(seedGenerator_());
+                    group.particles.splice(group.particles.end(), Emit(emitter_, rng));
+                }
+                emitter_.transform = backup;
+            }
+
+            // 前の座標を保存
+            if (needResetPrev_) {
+                prevPosition_ = emitter_.transform.translation;
+                needResetPrev_ = false;
+            }
         }
+    } else {
+        hasPrevPos_ = false;
+        needResetPrev_ = true;
     }
 
     if (onceEmit_) {

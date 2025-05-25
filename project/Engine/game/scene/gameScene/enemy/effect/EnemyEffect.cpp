@@ -22,7 +22,7 @@ void EnemyEffect::Init()
 	hitEmitter_->SetIsCreate(false);
 
 	hitExplosionEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
-	particleManager_->CreateParticleGroup("enemyHitExplosion", "circle.png", hitExplosionEmitter_, true);
+	particleManager_->CreateParticleGroup("enemyHitExplosion", "circle.png", hitExplosionEmitter_, true, 32);
 	hitExplosionEmitter_->SetIsCreate(false);
 
 	// 死亡時のエフェクト

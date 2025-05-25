@@ -68,14 +68,14 @@ PixelShaderOutpot main(VertexShaderOutput input)
     output.color.rgb = float3(0.0f, 0.0f, 0.0f);
     output.color.a = 1.0f;
     
-    for (x = 0; x < 3; ++x)
+    for (int y = 0; y < 3; ++y)
     {
-        for (int y = 0; y < 3; ++y)
+        for (int x = 0; x < 3; ++x)
         {
-            float2 texcoord = input.texcoord + kIndex3x3[x][y] * uvStepSize;
+            float2 texcoord = input.texcoord + kIndex3x3[y][x] * uvStepSize;
             
             float3 fetchColor = gTexture.Sample(gSampler, texcoord).rgb;
-            output.color.rgb += fetchColor * kernel3x3[x][y];
+            output.color.rgb += fetchColor * kernel3x3[y][x];
         }
     }
     output.color.rgb *= rcp(weight);

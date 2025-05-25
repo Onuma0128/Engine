@@ -32,7 +32,7 @@ void SpotLight::Debug_ImGui()
 
 void SpotLight::MakeLightData()
 {
-	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(SpotLightData)).Get();
+	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(SpotLightData));
 	bufferView_.BufferLocation = resource_->GetGPUVirtualAddress();
 	bufferView_.SizeInBytes = sizeof(SpotLightData);
 	bufferView_.StrideInBytes = sizeof(SpotLightData);

@@ -52,6 +52,7 @@ public:
 		uint32_t srvIndex;
 		uint32_t textureIndex;
 		std::list<Particle> particles;
+		uint32_t maxInstance;
 		uint32_t instancingIndex;
 		ComPtr<ID3D12Resource> instancingResource;
 		uint32_t instanceCount;
@@ -87,8 +88,9 @@ public:
 	void CreateParticleGroup(
 		const std::string name, 
 		const std::string textureFilePath, 
-		std::shared_ptr<ParticleEmitter> emitter, 
-		bool copy = false
+		std::shared_ptr<ParticleEmitter> emitter,
+		bool copy = false,
+		uint32_t maxInstance = 64
 	);
 
 	void Emit(const std::string name);

@@ -152,17 +152,17 @@ void PostEffectManager::PostEffectCommand(PostEffectType type)
 
 void PostEffectManager::ResourceInitialize()
 {
-    grayscaleResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(GrayscaleData)).Get();
+    grayscaleResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(GrayscaleData));
     grayscaleResource_->Map(0, nullptr, reinterpret_cast<void**>(&grayscaleData_));
     grayscaleData_->color = { 0.2125f, 0.7154f, 0.0721f };
     grayscaleData_->t = 0.0f;
 
-    vignetteResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VignetteData)).Get();
+    vignetteResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VignetteData));
     vignetteResource_->Map(0, nullptr, reinterpret_cast<void**>(&vignetteData_));
     vignetteData_->scale = 16.0f;
     vignetteData_->gamma = 0.0f;
 
-    outlineResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(OutlineData)).Get();
+    outlineResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(OutlineData));
     outlineResource_->Map(0, nullptr, reinterpret_cast<void**>(&outlineData_));
     outlineData_->projection = Matrix4x4::Identity();
 }

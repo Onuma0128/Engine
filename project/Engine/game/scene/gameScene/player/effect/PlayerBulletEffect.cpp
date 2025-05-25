@@ -4,7 +4,7 @@ void PlayerBulletEffect::Init()
 {
 	// 弾のエフェクト
 	bulletTrailEmitter_ = std::make_unique<ParticleEmitter>("bulletTrail");
-	particleManager_->CreateParticleGroup("bulletTrail", "white1x1.png", bulletTrailEmitter_, true);
+	particleManager_->CreateParticleGroup("bulletTrail", "white1x1.png", bulletTrailEmitter_, true, 192);
 	bulletTrailEmitter_->SetIsCreate(false);
 
 	bulletDeleteEmitter_ = std::make_unique<ParticleEmitter>("bulletDelete");
@@ -25,17 +25,18 @@ void PlayerBulletEffect::Init()
 	bulletSmokeEmitter_->SetIsCreate(false);
 
 	bulletCartridgeEmitter_ = std::make_unique<ParticleEmitter>("bulletCartridge");
-	particleManager_->CreateParticleGroup("bulletCartridge", "white1x1.png", bulletCartridgeEmitter_, true);
+	particleManager_->CreateParticleGroup("bulletCartridge", "white1x1.png", bulletCartridgeEmitter_, true, 10);
 	bulletCartridgeEmitter_->SetIsCreate(false);
 }
 
 void PlayerBulletEffect::Update()
 {
+	bulletTrailEmitter_->SetIsCreate(false);
 }
 
 void PlayerBulletEffect::OnceBulletTrailEffect(const WorldTransform& transform)
 {
-	bulletTrailEmitter_->onceEmit();
+	bulletTrailEmitter_->SetIsCreate(true);
 
 	// パーティクルの座標を設定
 	Quaternion rotate = transform.rotation_;

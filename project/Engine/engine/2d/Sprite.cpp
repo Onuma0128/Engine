@@ -62,8 +62,8 @@ void Sprite::Draw()
 
 void Sprite::VertexDataInitialize()
 {
-	vertexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VertexData) * 4).Get();
-	indexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(uint32_t) * 6).Get();
+	vertexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VertexData) * 4);
+	indexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(uint32_t) * 6);
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
 	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
 	vertexBufferView_.SizeInBytes = sizeof(VertexData) * 4;
@@ -91,7 +91,7 @@ void Sprite::VertexDataInitialize()
 
 void Sprite::MaterialDataInitialize()
 {
-	materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material)).Get();
+	materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material));
 	
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
@@ -101,7 +101,7 @@ void Sprite::MaterialDataInitialize()
 
 void Sprite::TransformationMatrixDataInitialize()
 {
-	transformationMatrixResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4)).Get();
+	transformationMatrixResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4));
 	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
 	transformationMatrixData_->WVP = Matrix4x4::Identity();
 	transformationMatrixData_->World = Matrix4x4::Identity();

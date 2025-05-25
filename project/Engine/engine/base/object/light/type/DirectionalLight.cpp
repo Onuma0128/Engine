@@ -25,7 +25,7 @@ void DirectionalLight::Debug_ImGui()
 
 void DirectionalLight::MakeLightData()
 {
-	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(DirectionalLightData)).Get();
+	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(DirectionalLightData));
 	bufferView_.BufferLocation = resource_->GetGPUVirtualAddress();
 	bufferView_.SizeInBytes = sizeof(DirectionalLightData);
 	bufferView_.StrideInBytes = sizeof(DirectionalLightData);

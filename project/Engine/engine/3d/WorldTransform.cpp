@@ -41,7 +41,7 @@ void WorldTransform::TransferMatrix(const Matrix4x4& localMatrix)
 
 void WorldTransform::CreateConstBuffer()
 {
-    constBuffer_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(TransformationMatrix)).Get();
+    constBuffer_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(TransformationMatrix));
     constBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&constMap_));
     constMap_->WVP = Matrix4x4::Identity();
     constMap_->World = Matrix4x4::Identity();

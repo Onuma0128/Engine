@@ -16,7 +16,7 @@ public:
 	void GlobalInit();
 
 	void Update();
-	void SabUpdate();
+	void SabUpdate(const Vector3& shakeOffset);
 
 	void SetShake(float shakeStrength) { shakeStrength_ = shakeStrength; }
 

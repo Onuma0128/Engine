@@ -5,7 +5,7 @@
 
 #include "ModelStruct.h"
 
-ResourceObject CreateBufferResource(ComPtr<ID3D12Device> device, size_t sizeInBytes)
+ComPtr<ID3D12Resource> CreateBufferResource(ComPtr<ID3D12Device> device, size_t sizeInBytes)
 {
 	// 頂点リソースのヒープの設定
 	D3D12_HEAP_PROPERTIES uploadHeapProperties = {};
@@ -22,7 +22,7 @@ ResourceObject CreateBufferResource(ComPtr<ID3D12Device> device, size_t sizeInBy
 	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 頂点リソースを作成する
-	ID3D12Resource* vertexResource = nullptr;
+	ComPtr<ID3D12Resource> vertexResource = nullptr;
 	HRESULT hr = device->CreateCommittedResource(
 		&uploadHeapProperties,
 		D3D12_HEAP_FLAG_NONE,

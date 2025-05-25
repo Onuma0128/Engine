@@ -54,6 +54,7 @@ void PlayerBullet::Update()
 	if (!isActive_) {
 		Collider::Update();
 		Object3d::Update();
+		effect_->Update();
 		return;
 	}
 

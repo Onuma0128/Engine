@@ -48,7 +48,7 @@ void Line3d::CreateLocalVB()
 {
 	LocalVertex local[2] = { {0.f}, {1.f} };   // t=0 / t=1
 	auto device = DirectXEngine::GetDevice();
-	localVB_ = CreateBufferResource(device, sizeof(local)).Get();
+	localVB_ = CreateBufferResource(device, sizeof(local));
 	void* dst{};
 	localVB_->Map(0, nullptr, &dst);
 	memcpy(dst, local, sizeof(local));
@@ -70,7 +70,7 @@ void Line3d::CreateInstanceVB(const std::vector<Vector3>& pos)
 
 	auto bytes = inst.size() * sizeof(LineInstance);
 	auto device = DirectXEngine::GetDevice();
-	instanceVB_ = CreateBufferResource(device, bytes).Get();
+	instanceVB_ = CreateBufferResource(device, bytes);
 
 	void* dst{};
 	instanceVB_->Map(0, nullptr, &dst);
@@ -86,7 +86,7 @@ void Line3d::CreateInstanceVB(const std::vector<Vector3>& pos)
 void Line3d::CreateCB()
 {
 	auto device = DirectXEngine::GetDevice();
-	wvpResource_ = CreateBufferResource(device, sizeof(Matrix4x4)).Get();
+	wvpResource_ = CreateBufferResource(device, sizeof(Matrix4x4));
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
 }
 

@@ -198,7 +198,7 @@ SkinCluster Animation::CreateSkinCluster(const ComPtr<ID3D12Device>& device, con
 
 	// **パレットリソースの作成**
 	size_t paletteSize = skeleton.joints.size() * sizeof(WellForGPU);
-	skinCluster.paletteResource = CreateBufferResource(device, paletteSize).Get();
+	skinCluster.paletteResource = CreateBufferResource(device, paletteSize);
 
 	// **パレットのマッピング**
 	WellForGPU* mappedPalette = nullptr;
@@ -207,7 +207,7 @@ SkinCluster Animation::CreateSkinCluster(const ComPtr<ID3D12Device>& device, con
 
 	// **Influenceリソースの作成**
 	size_t influenceSize = modelData.vertices.size() * sizeof(VertexInfluence);
-	skinCluster.infuenceResource = CreateBufferResource(device, influenceSize).Get();
+	skinCluster.infuenceResource = CreateBufferResource(device, influenceSize);
 
 	// **Influenceのマッピング**
 	VertexInfluence* mappedInfluence = nullptr;
@@ -343,7 +343,7 @@ Quaternion Animation::CalculateValue(const std::vector<KeyFrameQuaternion>& keyf
 void Animation::MakeMaterialData()
 {
 	// マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-	materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material)).Get();
+	materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material));
 	// 書き込むためのアドレスを取得
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 	// 今回は白を書き込んでいく

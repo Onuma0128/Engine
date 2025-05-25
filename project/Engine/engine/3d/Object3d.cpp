@@ -82,7 +82,7 @@ void Object3d::SetColor(const Vector4& color)
 void Object3d::MakeMaterialData()
 {
     // マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-    materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material)).Get();
+    materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material));
     // 書き込むためのアドレスを取得
     materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
     // 今回は白を書き込んでいく

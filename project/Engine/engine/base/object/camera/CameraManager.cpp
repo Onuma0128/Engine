@@ -54,7 +54,7 @@ void CameraManager::Clear()
 void CameraManager::MakeCameraData()
 {
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	cameraResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(Vector3)).Get();
+	cameraResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(Vector3));
 
 	// 書き込むためのアドレスを取得
 	cameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));

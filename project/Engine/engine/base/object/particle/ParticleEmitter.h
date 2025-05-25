@@ -82,7 +82,10 @@ public:
 
 	void SetRotation(const Quaternion& rotation) { emitter_.transform.rotation = rotation; }
 
-	void SetPosition(const Vector3& position) { emitter_.setPosition = position; }
+	void SetPosition(const Vector3& position) { 
+		emitter_.setPosition = position;
+		needResetPrev_ = true;
+	}
 
 	void SetAcceleration(const Vector3& acceleration) { accelerationField_.acceleration = acceleration; }
 
@@ -117,6 +120,10 @@ private:
 	// Transform変数を作る
 	AccelerationField accelerationField_{};
 	Emitter emitter_{};
+	// emitterの前の座標を保存する
+	bool hasPrevPos_ = false;
+	bool needResetPrev_ = false;
+	Vector3 prevPosition_;
 
 	bool moveStart_ = false;
 	bool isFieldStart_ = false;

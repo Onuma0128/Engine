@@ -48,9 +48,6 @@ void GameCamera::Update()
 		CameraManager::GetInstance()->SetActiveCamera(2);
 	}
 
-	// サブカメラの更新
-	SabUpdate();
-
 	// オフセットの回転角
 	const Vector3 offsetRotation = global_->GetValue<Vector3>("CameraOffset", "rotation");
 	// 回転を更新
@@ -74,13 +71,16 @@ void GameCamera::Update()
 
 	previous = Vector3::Lerp(previous, current + shakeOffset, 0.1f);
 	mainCamera_->SetTranslation(previous);
+
+	// サブカメラの更新
+	SabUpdate(shakeOffset);
 }
 
-void GameCamera::SabUpdate()
+void GameCamera::SabUpdate(const Vector3& shakeOffset)
 {
 	// プレイヤーの位置と回転
 	Vector3 playerPos = player_->GetTransform().translation_;
-	Quaternion playerRot = player_->GetTransform().rotation_;
+	Quaternion playerRot = Quaternion::IdentityQuaternion();
 
 	// オフセット（プレイヤーの後方、例：Z方向-10など）
 	Vector3 offset = global_->GetValue<Vector3>("CameraOffset", "sab_translation");
@@ -91,6 +91,7 @@ void GameCamera::SabUpdate()
 
 	// カメラの位置は、プレイヤー位置 + 回転されたオフセット
 	Vector3 cameraPos = playerPos + rotatedOffset;
+	cameraPos = Vector3::Lerp(cameraPos, cameraPos + shakeOffset, 0.1f);
 	sabCamera_->SetTranslation(cameraPos);
 
 	// プレイヤーを見つめる

@@ -197,7 +197,7 @@ Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)
         euler.z = std::atan2(m.m[1][0] / cosY, m.m[0][0] / cosY); // Yaw（Z）
     } else {
         // 万が一 Gimbal Lock の場合（Pitch ±90°）
-        euler.y = (m.m[2][0] < 0) ? std::numbers::pi / 2.0f : -std::numbers::pi_v<float> / 2.0f;
+        euler.y = (m.m[2][0] < 0) ? std::numbers::pi_v<float> / 2.0f : -std::numbers::pi_v<float> / 2.0f;
         euler.x = 0.0f;
         euler.z = std::atan2(-m.m[0][1], m.m[1][1]);
     }
@@ -346,7 +346,7 @@ Matrix4x4 Matrix4x4::DirectionToDirection(const Vector3& from, const Vector3& to
         // 逆方向: 任意の軸で180度回転
         Vector3 arbitraryAxis = (std::abs(fromNorm.x) < 0.1f) ? Vector3(1.0f, 0.0f, 0.0f) : Vector3(0.0f, 1.0f, 0.0f);
         axis = Vector3::Cross(fromNorm, arbitraryAxis).Normalize();
-        return MakeRotateAxisAngle(axis, static_cast<float>(std::numbers::pi));
+        return MakeRotateAxisAngle(axis, std::numbers::pi_v<float>);
     }
 
     axis = axis.Normalize();

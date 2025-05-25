@@ -50,7 +50,7 @@ void Model::Draw(bool isAnimation)
 void Model::MakeVertexData()
 {
     // 実際に頂点リソースを作る
-    vertexResource_ = CreateBufferResource(modelBase_->GetDxEngine()->GetDevice(), sizeof(VertexData) * modelData_.vertices.size()).Get();
+    vertexResource_ = CreateBufferResource(modelBase_->GetDxEngine()->GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
     vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
     vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
     vertexBufferView_.StrideInBytes = sizeof(VertexData);
@@ -62,7 +62,7 @@ void Model::MakeVertexData()
 void Model::MakeIndexData()
 {
     // 実際に頂点リソースを作る
-    indexResource_ = CreateBufferResource(modelBase_->GetDxEngine()->GetDevice(), sizeof(uint32_t) * modelData_.indices.size()).Get();
+    indexResource_ = CreateBufferResource(modelBase_->GetDxEngine()->GetDevice(), sizeof(uint32_t) * modelData_.indices.size());
     indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
     indexBufferView_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
     indexBufferView_.Format = DXGI_FORMAT_R32_UINT;

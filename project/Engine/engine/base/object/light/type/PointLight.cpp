@@ -26,7 +26,7 @@ void PointLight::Debug_ImGui()
 
 void PointLight::MakeLightData()
 {
-	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(PointLightData)).Get();
+	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(PointLightData));
 	bufferView_.BufferLocation = resource_->GetGPUVirtualAddress();
 	bufferView_.SizeInBytes = sizeof(PointLightData);
 	bufferView_.StrideInBytes = sizeof(PointLightData);
