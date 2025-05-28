@@ -170,11 +170,11 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
 void Model::SetTexture(const std::string& directoryPath, const std::string& filename)
 {
-    modelData_.material.directoryPath = directoryPath;
+    modelData_.material.directoryPath = directoryPath + "/";
     modelData_.material.filePath = filename;
     TextureManager::GetInstance()->LoadTexture(modelData_.material.directoryPath, modelData_.material.filePath);
     modelData_.material.textureIndex =
-        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.directoryPath + modelData_.material.filePath);
+        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.filePath);
 }
 
 void Model::SetTexture_ENV(const std::string& directoryPath, const std::string& filename)

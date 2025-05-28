@@ -32,6 +32,7 @@ public:
 
 	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }
+	const Vector3& GetPlayerBullet() { return playerBulletPosition_; }
 
 	GameCamera* GetGameCamera() { return gameCamera_; }
 	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
@@ -65,6 +66,8 @@ private:
 	// プレイヤーのReticleに当たっているか
 	bool hitReticle_ = false;
 
+	// 当たったプレイヤーの弾の座標を保存
+	Vector3 playerBulletPosition_{};
 
 };
 

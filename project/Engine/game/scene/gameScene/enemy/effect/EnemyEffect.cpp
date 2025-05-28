@@ -35,7 +35,7 @@ void EnemyEffect::Update()
 {
 	HitReticleUpdate();
 
-	deadEmitter_->SetRotation(enemy_->GetTransform().rotation_);
+	//deadEmitter_->SetRotation(enemy_->GetTransform().rotation_);
 	deadEmitter_->SetPosition(enemy_->GetTransform().translation_);
 }
 

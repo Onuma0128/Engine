@@ -1,5 +1,7 @@
 #include "EnemyDeadState.h"
 
+#include <numbers>
+
 #include "DeltaTimer.h"
 #include "Easing.h"
 
@@ -16,6 +18,10 @@ void EnemyDeadState::GlobalInit()
 	knockbackFrame_ = 1.0f;
 	// パーティクルが出ている時間
 	particleFrame_ = 3.0f;
+
+	// 敵が死ぬ時のvelocityとacceleration
+	velocityY_ = 10.0f;
+	accelerationY_ = 100.0f;
 }
 
 void EnemyDeadState::Init()
@@ -26,10 +32,8 @@ void EnemyDeadState::Init()
 	deadFrame_ = maxDeadFrame_;
 	// 敵がノックバックする方向
 	velocity_ = enemy_->GetVelocity();
-	// ノックバックする距離
-	target_ = enemy_->GetTransform().translation_ + velocity_ * 3.0f;
-	// デフォルトのScaleを取得
-	defaultScale_ = enemy_->GetTransform().scale_;
+	// ノックバックの際に敵が起こすアクションの計算
+	ResultTargetOffset();
 }
 
 void EnemyDeadState::Finalize()
@@ -46,8 +50,16 @@ void EnemyDeadState::Update()
 	if (deadFrame_ > (maxDeadFrame_ - knockbackFrame_)) {
 		float t = std::clamp(1.0f - (deadFrame_ - 4.0f), 0.0f, 1.0f);
 		Vector3 enemyPosition = enemy_->GetTransform().translation_;
+		if (enemy_->GetTransform().translation_.y >= 0.5f) {
+			enemyPosition.y += velocity_.y * DeltaTimer::GetDeltaTime();
+			target_.y += velocity_.y * DeltaTimer::GetDeltaTime();
+		}
 		Vector3 target = Vector3::Lerp(enemyPosition, target_, t);
 		enemy_->GetTransform().translation_ = target;
+		velocity_.y -= accelerationY_ * DeltaTimer::GetDeltaTime();
+		// 回転をスラープさせる
+		defaultRotate_ = Quaternion::Slerp(defaultRotate_, targetRotate_, 0.2f);
+		enemy_->GetTransform().rotation_ = defaultRotate_;
 
 	// それ以降に死亡時パーティクルを出す
 	} else if (deadFrame_ > (maxDeadFrame_ - knockbackFrame_ - particleFrame_)) {
@@ -64,4 +76,35 @@ void EnemyDeadState::Update()
 
 void EnemyDeadState::Draw()
 {
+}
+
+void EnemyDeadState::ResultTargetOffset()
+{
+	// ノックバックする座標
+	target_ = enemy_->GetTransform().translation_ + velocity_ * 3.0f;
+	velocity_.y = velocityY_;
+	// ノックバックする回転
+	// 敵のローカル空間で弾の座標が左か右にいるか計算
+	isLeft_ = false;
+	Vector3 localPosition = Vector3(enemy_->GetPlayerBullet()).Transform(Matrix4x4::Inverse(enemy_->GetTransform().matWorld_));
+	Quaternion rotateX = Quaternion::IdentityQuaternion();
+	Quaternion rotateZ = Quaternion::IdentityQuaternion();
+	// 弾が敵の左にあるか判定
+	if (0.0f > localPosition.x) {
+		isLeft_ = true;
+	}
+	// 左なら
+	if (isLeft_) {
+		rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, -std::numbers::pi_v<float> / 2.0f);
+		rotateZ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitZ, std::numbers::pi_v<float> / 2.0f);
+	// 右なら
+	} else {
+		rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, std::numbers::pi_v<float> / 2.0f);
+		rotateZ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitZ, -std::numbers::pi_v<float> / 2.0f);
+	}
+	defaultRotate_ = enemy_->GetTransform().rotation_;
+	targetRotate_ = enemy_->GetTransform().rotation_ * rotateX * rotateZ;
+
+	// デフォルトのScaleを取得
+	defaultScale_ = enemy_->GetTransform().scale_;
 }

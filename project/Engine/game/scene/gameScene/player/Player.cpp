@@ -143,7 +143,7 @@ void Player::SpecialAttackBullet()
 	uint32_t count = 0;
 	for (auto& transform : reticle_->GetEnemyTransforms()) {
 		transform.translation_ = transform_.translation_;
-		specialBullets_[count]->Attack(transform, 50.0f);
+		specialBullets_[count]->Attack(transform, 40.0f);
 		++count;
 	}
 	reticle_->GetEnemyTransforms().clear();

@@ -8,7 +8,7 @@
 void EnemySpawner::Init()
 {
 	Object3d::Initialize("Box.obj");
-	Object3d::SetSceneRenderer();
+	//Object3d::SetSceneRenderer();
 
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::OBB;

@@ -6,8 +6,12 @@
 void EnemySpawnerFactory::Init()
 {
 	CreateSpawner(Vector3{ -10.0f,0.5f,0.0f });
-	CreateSpawner(Vector3{ 0.0f,0.5f,5.0f });
+	CreateSpawner(Vector3{ 0.0f,0.5f,7.5f });
 	CreateSpawner(Vector3{ 10.0f,0.5f,0.0f });
+
+	CreateSpawner(Vector3{ -10.0f,0.5f,-5.0f });
+	CreateSpawner(Vector3{ 0.0f,0.5f,-10.0f });
+	CreateSpawner(Vector3{ 10.0f,0.5f,-5.0f });
 }
 
 void EnemySpawnerFactory::Update()

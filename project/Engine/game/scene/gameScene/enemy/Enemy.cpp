@@ -20,8 +20,8 @@ void Enemy::Init()
 	Object3d::SetSceneRenderer();
 	Object3d::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
 
-	transform_.scale_ = { 0.5f,0.5f,0.5f };
-	transform_.translation_ = { 0.0f,0.5f,0.0f };
+	transform_.scale_ = { 0.5f,0.75f,0.5f };
+	transform_.translation_ = { 0.0f,0.75f,0.0f };
 
 	ChengeState(std::make_unique<EnemyMoveState>(this));
 
@@ -87,12 +87,17 @@ void Enemy::OnCollisionEnter(Collider* other)
 		// 敵がノックバックする方向を取得
 		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
 		velocity_ = Vector3::ExprUnitZ.Transform(rotate);
+		playerBulletPosition_ = other->GetCenterPosition();
 		// エフェクトを描画
 		WorldTransform transform;
 		transform.rotation_ = other->GetRotate();
 		transform.translation_ = transform_.translation_;
 		effect_->OnceBulletHitEffect(transform);
-		effect_->OnceBulletHitExplosionEffect(transform_);
+		transform.rotation_ = transform_.rotation_;
+		transform.translation_ = other->GetCenterPosition();
+		if (other->GetColliderName() == "PlayerBulletSpecial")
+			transform.translation_ = other->GetCenterPosition() - (velocity_ * 0.5f);
+		effect_->OnceBulletHitExplosionEffect(transform);
 		// 死亡時のステートに遷移
 		ChengeState(std::make_unique<EnemyDeadState>(this));
 	}
