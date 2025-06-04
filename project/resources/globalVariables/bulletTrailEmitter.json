@@ -1,7 +1,7 @@
 {
     "bulletTrailEmitter": [
         {
-            "blendMode": 2
+            "blendMode": 1
         },
         {
             "move": true

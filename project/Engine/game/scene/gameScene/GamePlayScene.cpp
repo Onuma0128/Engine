@@ -12,7 +12,7 @@ void GamePlayScene::Initialize()
 {
 	demoObj_ = std::make_unique<Object3d>();
 	demoObj_->Initialize("plane.obj");
-	demoObj_->SetSceneRenderer();
+	//demoObj_->SetSceneRenderer();
 	demoObj_->SetTexture("resources", "white1x1.png");
 	demoObj_->SetColor({ 0.1f,0.1f,0.1f,1.0f });
 	demoObj_->GetTransform().scale_ = { 20.0f,20.0f,20.0f };
@@ -21,6 +21,7 @@ void GamePlayScene::Initialize()
 	skyBox_ = std::make_unique<PrimitiveDrawr>();
 	skyBox_->TypeInit(PrimitiveType::Skybox);
 	skyBox_->GetTransform().scale = { 512.0f,512.0f ,512.0f };
+	skyBox_->SetSceneRenderer();
 	//skyBox_->GetRenderOptions().enabled = false;
 
 	player_ = std::make_unique<Player>();
