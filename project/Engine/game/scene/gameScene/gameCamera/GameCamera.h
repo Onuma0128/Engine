@@ -2,8 +2,9 @@
 
 #include <memory>
 
+#include "JsonFunction.h"
 #include "Camera.h"
-#include "GlobalVariables.h"
+#include "Vector3.h"
 
 class Player;
 
@@ -13,7 +14,9 @@ public:
 
 	void Init();
 
-	void GlobalInit();
+	void JsonInit();
+	void SaveJson();
+	void ValueImGui();
 
 	void Update();
 	void SabUpdate(const Vector3& shakeOffset);
@@ -28,14 +31,14 @@ public:
 
 private:
 
-	GlobalVariables* global_ = GlobalVariables::GetInstance();
-
 	Player* player_ = nullptr;
 
 	std::unique_ptr<Camera> mainCamera_ = nullptr;
 	std::unique_ptr<Camera> sabCamera_ = nullptr;
 
 	float shakeStrength_ = 0.0f;
-	float shakeDecay_ = 0.9f;   
+	float shakeDecay_ = 0.9f;
+
+	JsonFunction data_;
 
 };

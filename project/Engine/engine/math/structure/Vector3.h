@@ -3,6 +3,7 @@
 #include <cassert>
 
 #include "Matrix4x4.h"
+#include "Quaternion.h"
 
 // Vector3 クラスの定義
 class Vector3 
@@ -49,6 +50,8 @@ public:
     Vector3 TransformNormal(const Matrix4x4& matrix)const;
 
     static float AxisComponent(const Vector3& v, int axis);
+
+    static Quaternion FromEuler(const Vector3& eulerDeg);
 
     // 単項演算子オーバーロード
     Vector3 operator+() const;

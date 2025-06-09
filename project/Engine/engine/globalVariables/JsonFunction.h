@@ -1,5 +1,4 @@
 #pragma once
-
 #include <json.hpp>
 #include <string>
 #include <fstream>
@@ -71,19 +70,19 @@ class JsonFunction
 public:
 
     // コンストラクタでファイルパスを取得する
-    JsonFunction(const std::string& filePath) { filePath_ = filePath + ".json"; }
+    void Init(const std::string filePath) { filePath_ = filePath + ".json"; }
 
     // 値をセット
-    void Set(const std::string& key, int value) { data_[key] = value; }
-    void Set(const std::string& key, float value) { data_[key] = value; }
-    void Set(const std::string& key, bool value) { data_[key] = value; }
-    void Set(const std::string& key, const char* value) { data_[key] = static_cast<std::string>(value); }
-    void Set(const std::string& key, const std::string value) { data_[key] = value; }
+    void Set(const std::string& key, int value) { datas_[key] = value; }
+    void Set(const std::string& key, float value) { datas_[key] = value; }
+    void Set(const std::string& key, bool value) { datas_[key] = value; }
+    void Set(const std::string& key, const char* value) { datas_[key] = static_cast<std::string>(value); }
+    void Set(const std::string& key, const std::string value) { datas_[key] = value; }
     // 自作構造体(Vector2,3,4,Quaternion)
-    void Set(const std::string& key, const Vector2& value) { data_[key] = value; }
-    void Set(const std::string& key, const Vector3& value) { data_[key] = value; }
-    void Set(const std::string& key, const Vector4& value) { data_[key] = value; }
-    void Set(const std::string& key, const Quaternion& value) { data_[key] = value; }
+    void Set(const std::string& key, const Vector2& value) { datas_[key] = value; }
+    void Set(const std::string& key, const Vector3& value) { datas_[key] = value; }
+    void Set(const std::string& key, const Vector4& value) { datas_[key] = value; }
+    void Set(const std::string& key, const Quaternion& value) { datas_[key] = value; }
 
     // 値を取得
     std::string GetString(const std::string& key, const std::string& defaultValue = "") const { 
@@ -94,6 +93,9 @@ public:
         return GetValue<Item>(key, defaultValue);
     }
 
+    // 今入っているデータのImGuiを描画する
+    void DrawImGui(float dragSpeed = 0.01f);
+
     // JSON をファイルへ保存
     bool Save(bool pretty = true) const;
 
@@ -101,7 +103,7 @@ public:
     bool Load();
 
     // データを消去
-    void Clear() { data_.clear(); }
+    void Clear() { datas_.clear(); }
 
     // データをファイル上から削除する
     bool Deleta() const;
@@ -109,13 +111,13 @@ public:
 private:
     template <class T>
     T GetValue(const std::string& key, const T& defaultValue) const {
-        if (!data_.contains(key)) return defaultValue;
-        try { return data_.at(key).get<T>(); }
+        if (!datas_.contains(key)) return defaultValue;
+        try { return datas_.at(key).get<T>(); }
         catch (...) { return defaultValue; }
     }
 
     // 保存するデータ
-    Json data_;
+    Json datas_;
     // 保存先ファイルパス
     const std::string kDirectoryPath_ = "resources/json/";
     std::string filePath_ = "";

@@ -209,6 +209,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\effect\PlayerBulletEffect.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PredictionObject.cpp" />
     <ClCompile Include="Engine\engine\globalVariables\JsonFunction.cpp" />
+    <ClCompile Include="Engine\engine\base\object\particle\ParticleEditor.cpp" />
+    <ClCompile Include="Engine\engine\globalVariables\SceneJsonLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyDeadState.h" />
@@ -321,6 +323,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\player\effect\PlayerBulletEffect.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PredictionObject.h" />
     <ClInclude Include="Engine\engine\globalVariables\JsonFunction.h" />
+    <ClInclude Include="Engine\engine\base\object\particle\ParticleEditor.h" />
+    <ClInclude Include="Engine\engine\globalVariables\SceneJsonLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

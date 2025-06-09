@@ -18,16 +18,16 @@ void EnemyEffect::Init()
 
 	// ヒット時のエフェクト
 	hitEmitter_ = std::make_unique<ParticleEmitter>("enemyHit");
-	particleManager_->CreateParticleGroup("enemyHit", "white1x1.png", hitEmitter_, true);
+	particleManager_->CreateParticleGroup("enemyHit", "white1x1.png", hitEmitter_);
 	hitEmitter_->SetIsCreate(false);
 
 	hitExplosionEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
-	particleManager_->CreateParticleGroup("enemyHitExplosion", "circle.png", hitExplosionEmitter_, true, 32);
+	particleManager_->CreateParticleGroup("enemyHitExplosion", "circle.png", hitExplosionEmitter_);
 	hitExplosionEmitter_->SetIsCreate(false);
 
 	// 死亡時のエフェクト
 	deadEmitter_ = std::make_unique<ParticleEmitter>("enemyDead");
-	particleManager_->CreateParticleGroup("enemyDead", "white1x1.png", deadEmitter_, true);
+	particleManager_->CreateParticleGroup("enemyDead", "white1x1.png", deadEmitter_);
 	deadEmitter_->SetIsCreate(false);
 }
 

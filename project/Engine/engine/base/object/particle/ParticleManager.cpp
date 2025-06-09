@@ -37,9 +37,10 @@ void ParticleManager::Initialize(DirectXEngine* dxEngine)
         ).Get();
     }
 
-    modelData_ = Model::LoadObjFile("resources", "plane.obj");
-
     CreateVertexResource();
+    CreateVertexData();
+    CreateIndexResource();
+    CreateIndexData();
 }
 
 void ParticleManager::Update()
@@ -48,13 +49,39 @@ void ParticleManager::Update()
     for (auto it = particleGroups_.begin(); it != particleGroups_.end();) {
         auto& group = it->second;
 
-        if (auto emitter = group.emitter.lock()) {
+        size_t emitterSize = group.emitters.size();
+        group.emitters.erase(
+            std::remove_if(group.emitters.begin(), group.emitters.end(),
+                [](const std::weak_ptr<ParticleEmitter>& w) {
+                    return w.expired(); }),
+                    group.emitters.end());
+
+        // Emitterが消えているならCopyのNameを詰める
+        uint32_t emitCount = 0;
+        for (auto& g_emitter : group.emitters) {
+            if (emitterSize == group.emitters.size()) { break; }
+            if (auto emitter = g_emitter.lock()) {
+                std::string name = emitter->GetName();
+                if (emitCount == 0) {
+                    emitter->SetCopyName(name);
+                } else {
+                    emitter->SetCopyName(name + std::to_string(static_cast<uint32_t>(emitCount)));
+                }
+            }
+            ++emitCount;
+        }
+
+        std::vector<ParticleForGPU> staging;
+        uint32_t numInstance = 0;
+        if (!group.emitters.empty()) {
             // 新しいパーティクルを追加する
-            emitter->Update();
+            for (auto& g_emitter : group.emitters) {
+                if (auto emitter = g_emitter.lock()) {
+                    emitter->Update();
+                }
+            }
             Emit(it->first);
 
-            std::vector<ParticleForGPU> staging;
-            uint32_t numInstance = 0;
             // 各パーティクルを更新
             for (auto p_it = group.particles.begin(); p_it != group.particles.end();) {
                 if (p_it->lifeTime <= p_it->currentTime) {
@@ -73,7 +100,13 @@ void ParticleManager::Update()
                 Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
 
                 // パーティクルの更新
-                emitter->UpdateParticle(p_it);
+                for (auto& g_emitter : group.emitters) {
+                    if (auto emitter = g_emitter.lock()) {
+                        if (emitter->GetCopyName() == p_it->emitterName) {
+                            emitter->UpdateParticle(p_it);
+                        }
+                    }
+                }
 
                 // uvTranslate
                 group.materialData_->uvTransform = Matrix4x4::Translate(p_it->uvTranslate);
@@ -95,8 +128,6 @@ void ParticleManager::Update()
             std::memcpy(group.instancingData, staging.data(), bytes);
             ++it;
 
-        } else {
-            it = particleGroups_.erase(it);
         }
     }
 }
@@ -107,21 +138,25 @@ void ParticleManager::Draw()
 
     for (const auto& [name, group] : particleGroups_) {
 
+        /*==================== カウントが0なら描画しない ====================*/
+        if (group.instanceCount == 0) { continue; }
+
         /*==================== パイプラインの設定 ====================*/
         commandList->SetGraphicsRootSignature(rootSignature_.Get());
-        commandList->SetPipelineState(pipelineStates_[particleGroups_[name].emitter.lock()->GetBlendMode()].Get());
+        commandList->SetPipelineState(pipelineStates_[particleGroups_[name].emitters.back().lock()->GetBlendMode()].Get());
         commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         /*==================== パーティクルの描画 ====================*/
         uint32_t textIndex = group.textureIndex;
         commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+        commandList->IASetIndexBuffer(&indexBufferView_);
         commandList->SetGraphicsRootConstantBufferView(0, group.materialResource_->GetGPUVirtualAddress());
         commandList->SetGraphicsRootConstantBufferView(1, group.instancingResource->GetGPUVirtualAddress());
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, group.srvIndex);
 
         // 各パーティクルグループのインスタンスを描画
-        commandList->DrawInstanced(UINT(modelData_.vertices.size()), group.instanceCount, 0, 0);
+        commandList->DrawIndexedInstanced(6, group.instanceCount, 0, 0, 0);
     }
 }
 
@@ -139,44 +174,44 @@ void ParticleManager::Clear()
 void ParticleManager::CreateParticleGroup(
     const std::string name,
     const std::string textureFilePath,
-    std::shared_ptr<ParticleEmitter> emitter,
-    bool copy,
-    uint32_t maxInstance)
+    std::shared_ptr<ParticleEmitter> emitter)
 {
     auto it = particleGroups_.find(name);
     if (it != particleGroups_.end()) {
 
-        if (copy) {
-            // 既存グループを複製
-            ParticleGroup newGroup = it->second;
-            newGroup.emitter = emitter;         
-            newGroup.instanceCount = 0;
+        //// 既存グループを複製
+        std::string copyName = emitter->GetName();
+        copyName = copyName + std::to_string(static_cast<uint32_t>(it->second.emitters.size()));
+        emitter->SetCopyName(copyName);
+        it->second.emitters.push_back(emitter);
+        //newGroup.instanceCount = 0;
+        ////newGroup.instancingData = nullptr;
 
-            newGroup.instancingResource = CreateBufferResource(
-                dxEngine_->GetDevice(),
-                sizeof(ParticleForGPU) * maxInstance);
-            newGroup.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&newGroup.instancingData));
-            for (uint32_t i = 0; i < maxInstance; ++i) {
-                newGroup.instancingData[i].WVP = Matrix4x4::Identity();
-                newGroup.instancingData[i].World = Matrix4x4::Identity();
-                newGroup.instancingData[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
-            }
+        ///*newGroup.instancingResource = CreateBufferResource(
+        //    dxEngine_->GetDevice(),
+        //    sizeof(ParticleForGPU) * kNumMaxInstance);*/
+        ////newGroup.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&newGroup.instancingData));
+        ////for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
+        ////    newGroup.instancingData[i].WVP = Matrix4x4::Identity();
+        ////    newGroup.instancingData[i].World = Matrix4x4::Identity();
+        ////    newGroup.instancingData[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
+        ////}
 
-            // SRVだけは取り直す
-            newGroup.srvIndex = srvManager_->Allocate() + TextureManager::kSRVIndexTop;
-            srvManager_->CreateSRVforStructuredBuffer(
-                newGroup.srvIndex,
-                newGroup.instancingResource.Get(),
-                maxInstance,
-                sizeof(ParticleForGPU));
+        ////// SRVだけは取り直す
+        ////newGroup.srvIndex = srvManager_->Allocate() + TextureManager::kSRVIndexTop;
+        ////srvManager_->CreateSRVforStructuredBuffer(
+        ////    newGroup.srvIndex,
+        ////    newGroup.instancingResource.Get(),
+        ////    kNumMaxInstance,
+        ////    sizeof(ParticleForGPU));
 
-            // 別名を付けて登録
-            std::string copyName = name;
-            for (int i = 1; particleGroups_.contains(copyName); ++i) {
-                copyName = name + std::to_string(i);
-            }
-            particleGroups_[copyName] = std::move(newGroup);
-        }
+        //// 別名を付けて登録
+        //std::string copyName = name;
+        //for (int i = 1; particleGroups_.contains(copyName); ++i) {
+        //    copyName = name + std::to_string(i);
+        //}
+        //particleGroups_[copyName] = std::move(newGroup);
+
         return;
     }
 
@@ -188,30 +223,30 @@ void ParticleManager::CreateParticleGroup(
     CreateMatrialResource(group);
 
     // パーティクルグループのインスタンス数とリソースを初期化
-    group.maxInstance = maxInstance;
+    group.maxInstance = kNumMaxInstance;
     group.instanceCount = 0;
     group.instancingData = nullptr;
 
     // インスタンスデータ用のバッファリソースを作成
     group.instancingResource = CreateBufferResource(
         dxEngine_->GetDevice(),
-        sizeof(ParticleForGPU) * maxInstance);
+        sizeof(ParticleForGPU) * kNumMaxInstance);
 
     // リソースをマッピングして、インスタンスデータを初期化
     group.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&group.instancingData));
-    for (uint32_t i = 0; i < maxInstance; ++i) {
+    for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
         group.instancingData[i].WVP = Matrix4x4::Identity();
         group.instancingData[i].World = Matrix4x4::Identity();
         group.instancingData[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
     }
-    group.emitter = emitter;
+    group.emitters.push_back(emitter);
 
     group.srvIndex = srvManager_->Allocate() + TextureManager::kSRVIndexTop;
 
     srvManager_->CreateSRVforStructuredBuffer(
         group.srvIndex,
         group.instancingResource.Get(),
-        maxInstance,
+        kNumMaxInstance,
         sizeof(ParticleManager::ParticleForGPU)
     );
 
@@ -222,19 +257,51 @@ void ParticleManager::CreateParticleGroup(
 void ParticleManager::Emit(const std::string name)
 {
     // 新しいパーティクルを追加する
-    particleGroups_[name].emitter.lock()->CreateParticles(particleGroups_[name]);
+    for (auto& g_emitter : particleGroups_[name].emitters) {
+        if (auto emitter = g_emitter.lock()) {
+            emitter->CreateParticles(particleGroups_[name]);
+        }
+    }
+}
+
+void ParticleManager::CreateVertexData()
+{
+    vertexData_[0].position = { -1.0f,1.0f,0.0f,1.0f };
+    vertexData_[1].position = { 1.0f,1.0f,0.0f,1.0f };
+    vertexData_[2].position = { -1.0f,-1.0f,0.0f,1.0f };
+    vertexData_[3].position = { 1.0f,-1.0f,0.0f,1.0f };
+
+    vertexData_[0].texcoord = { 0.0f,0.0f };
+    vertexData_[1].texcoord = { 1.0f,0.0f };
+    vertexData_[2].texcoord = { 0.0f,1.0f };
+    vertexData_[3].texcoord = { 1.0f,1.0f };
 }
 
 void ParticleManager::CreateVertexResource()
 {
     // 実際に頂点リソースを作る
-    vertexResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
+    vertexResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(VertexData) * 4);
     vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-    vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
+    vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * 4);
     vertexBufferView_.StrideInBytes = sizeof(VertexData);
 
     vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-    std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
+}
+
+void ParticleManager::CreateIndexData() 
+{
+    indexData_[0] = 0; indexData_[1] = 1; indexData_[2] = 2;
+    indexData_[3] = 1; indexData_[4] = 3; indexData_[5] = 2;
+}
+
+void ParticleManager::CreateIndexResource()
+{
+    indexResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(uint32_t) * 6);
+    indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
+    indexBufferView_.SizeInBytes = sizeof(uint32_t) * 6;
+    indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
+
+    indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
 }
 
 void ParticleManager::CreateMatrialResource(ParticleGroup& group)

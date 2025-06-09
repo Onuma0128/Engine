@@ -4,28 +4,28 @@ void PlayerBulletEffect::Init()
 {
 	// 弾のエフェクト
 	bulletTrailEmitter_ = std::make_unique<ParticleEmitter>("bulletTrail");
-	particleManager_->CreateParticleGroup("bulletTrail", "white1x1.png", bulletTrailEmitter_, true, 192);
+	particleManager_->CreateParticleGroup("bulletTrail", "white1x1.png", bulletTrailEmitter_);
 	bulletTrailEmitter_->SetIsCreate(false);
 
 	bulletDeleteEmitter_ = std::make_unique<ParticleEmitter>("bulletDelete");
-	particleManager_->CreateParticleGroup("bulletDelete", "white1x1.png", bulletDeleteEmitter_, true);
+	particleManager_->CreateParticleGroup("bulletDelete", "white1x1.png", bulletDeleteEmitter_);
 	bulletDeleteEmitter_->SetIsCreate(false);
 
 	// 弾を撃つ時のエフェクト
 	bulletExplosionEmitter_ = std::make_unique<ParticleEmitter>("bulletExplosion");
-	particleManager_->CreateParticleGroup("bulletExplosion", "circle.png", bulletExplosionEmitter_, true);
+	particleManager_->CreateParticleGroup("bulletExplosion", "circle.png", bulletExplosionEmitter_);
 	bulletExplosionEmitter_->SetIsCreate(false);
 
 	bulletSparkEmitter_ = std::make_unique<ParticleEmitter>("bulletSpark");
-	particleManager_->CreateParticleGroup("bulletSpark", "circle.png", bulletSparkEmitter_, true);
+	particleManager_->CreateParticleGroup("bulletSpark", "circle.png", bulletSparkEmitter_);
 	bulletSparkEmitter_->SetIsCreate(false);
 
 	bulletSmokeEmitter_ = std::make_unique<ParticleEmitter>("bulletSmoke");
-	particleManager_->CreateParticleGroup("bulletSmoke", "smoke.png", bulletSmokeEmitter_, true);
+	particleManager_->CreateParticleGroup("bulletSmoke", "smoke.png", bulletSmokeEmitter_);
 	bulletSmokeEmitter_->SetIsCreate(false);
 
 	bulletCartridgeEmitter_ = std::make_unique<ParticleEmitter>("bulletCartridge");
-	particleManager_->CreateParticleGroup("bulletCartridge", "white1x1.png", bulletCartridgeEmitter_, true, 10);
+	particleManager_->CreateParticleGroup("bulletCartridge", "white1x1.png", bulletCartridgeEmitter_);
 	bulletCartridgeEmitter_->SetIsCreate(false);
 }
 
@@ -36,7 +36,7 @@ void PlayerBulletEffect::Update()
 
 void PlayerBulletEffect::OnceBulletTrailEffect(const WorldTransform& transform)
 {
-	bulletTrailEmitter_->SetIsCreate(true);
+	bulletTrailEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
 	Quaternion rotate = transform.rotation_;

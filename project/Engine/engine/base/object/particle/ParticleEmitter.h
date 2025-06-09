@@ -29,9 +29,10 @@ public:
 		/* ==================== Emitter ==================== */
 
 		std::string name;			// 何のParticleを保持しているかのname
+		std::string copyName;		// Particleのコピーが出来た時のname
 		Vector3 setPosition;		// Emitterを固定する座標
-		Transform3D transform;		// EmitterのTransform
-		AABB emitterSize;			// Emitterのsize
+		Transform3D transform;		// EmitterのTransform*
+		AABB emitterSize;			// Emitterのsize*
 
 		/* ==================== Paritcle ==================== */
 
@@ -41,6 +42,7 @@ public:
 
 		Vector3 minVelocity;		// Paritcle発生時の最小velocity
 		Vector3 maxVelocity;		// Paritcle発生時の最大velocity
+		Vector3 acceleration;		// Particleの全体の加速度
 
 		float minRotateZ;			// Particle発生時の最小rotateZ
 		float maxRotateZ;			// Particle発生時の最大rotateZ
@@ -48,10 +50,10 @@ public:
 
 		Vector3 uvTranslation;		// ParticleのUVをスクロールする
 
-		uint32_t blendMode_;		// ParticleのBlendModeを設定
-		uint32_t count;				// Paritcle発生時に何個出すか
-		float lifeTime;				// Particle発生時から生きている時間
-		float frequency;			// Particle発生するまでの時間
+		uint32_t blendMode_;		// ParticleのBlendModeを設定*
+		uint32_t count;				// Paritcle発生時に何個出すか*
+		float lifeTime;				// Particle発生時から生きている時間*
+		float frequency;			// Particle発生するまでの時間*
 		float frequencyTime;		// Particle発生するまでカウントするTime
 	};
 
@@ -76,7 +78,9 @@ public:
 	void UpdateParticle(std::list<ParticleManager::Particle>::iterator& particle);
 
 	// 呼び出す事で一回だけEmitする
-	void onceEmit() { onceEmit_ = true; }
+	void onceEmit() { 
+		onceEmit_ = true;
+	}
 
 	/*==================== アクセッサー ====================*/
 
@@ -92,6 +96,10 @@ public:
 	void SetIsCreate(bool isCreate) { isCreate_ = isCreate; }
 
 	int GetBlendMode()const { return emitter_.blendMode_; }
+
+	void SetCopyName(const std::string& name) { emitter_.copyName = name; }
+	std::string GetCopyName()const { return emitter_.copyName; }
+	std::string GetName()const { return emitter_.name; }
 
 private:
 
@@ -127,8 +135,9 @@ private:
 
 	bool moveStart_ = false;
 	bool isFieldStart_ = false;
-	bool isCreate_ = true;
-	bool onceEmit_ = false;
+	bool isCreate_ = true;    
 	bool isReflect_ = false;
 	bool isChangeScale_ = false;
+
+	bool onceEmit_ = false;
 };

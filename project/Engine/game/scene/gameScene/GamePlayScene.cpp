@@ -2,6 +2,7 @@
 
 #include "ParticleManager.h"
 #include "SceneManager.h"
+#include "SceneJsonLoader.h"
 
 #include "gameScene/enemy/Enemy.h"
 
@@ -35,6 +36,10 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->SetPlayer(player_.get());
 	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
 	enemySpawnerFactory_->Init();
+
+	SceneJsonLoader loader;
+	loader.Load("sceneObject");
+
 }
 
 void GamePlayScene::Finalize()

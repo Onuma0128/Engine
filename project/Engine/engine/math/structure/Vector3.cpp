@@ -1,6 +1,7 @@
 #include "Vector3.h"
 
 #include <algorithm>
+#include <numbers>
 
 // コンストラクタ
 Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
@@ -105,6 +106,30 @@ float Vector3::AxisComponent(const Vector3& v, int axis)
     case 1:  return v.y;
     default: return v.z;
     }
+}
+
+Quaternion Vector3::FromEuler(const Vector3& eulerDeg)
+{
+    // ラジアンへ変換して半角を取る
+    float kDeg2Rad = std::numbers::pi_v<float> / 180.0f;
+    const float hx = eulerDeg.x * kDeg2Rad * 0.5f;   // pitch / 2
+    const float hy = eulerDeg.y * kDeg2Rad * 0.5f;   // yaw   / 2
+    const float hz = eulerDeg.z * kDeg2Rad * 0.5f;   // roll  / 2
+
+    const float cx = std::cos(hx);
+    const float sx = std::sin(hx);
+    const float cy = std::cos(hy);
+    const float sy = std::sin(hy);
+    const float cz = std::cos(hz);
+    const float sz = std::sin(hz);
+
+    Quaternion q;
+    // Y (yaw) → X (pitch) → Z (roll) の順
+    q.w = cx * cy * cz + sx * sy * sz;
+    q.x = sx * cy * cz + cx * sy * sz;
+    q.y = cx * sy * cz - sx * cy * sz;
+    q.z = cx * cy * sz - sx * sy * cz;
+    return q;
 }
 
 // 単項演算子オーバーロード

@@ -40,6 +40,7 @@ public:
 		Vector4 color;
 		float lifeTime;
 		float currentTime;
+		std::string emitterName;
 	};
 	struct ParticleForGPU {
 		Matrix4x4 WVP;
@@ -60,7 +61,7 @@ public:
 		Material* materialData_ = nullptr;
 
 		ParticleForGPU* instancingData;
-		std::weak_ptr<ParticleEmitter> emitter;
+		std::vector<std::weak_ptr<ParticleEmitter>> emitters;
 	};
 
 private:
@@ -88,20 +89,24 @@ public:
 	void CreateParticleGroup(
 		const std::string name, 
 		const std::string textureFilePath, 
-		std::shared_ptr<ParticleEmitter> emitter,
-		bool copy = false,
-		uint32_t maxInstance = 64
+		std::shared_ptr<ParticleEmitter> emitter
 	);
 
 	void Emit(const std::string name);
 
 private:
 
+	void CreateVertexData();
 	void CreateVertexResource();
+
+	void CreateIndexData();
+	void CreateIndexResource();
 
 	void CreateMatrialResource(ParticleGroup& group);
 
 private:
+
+	/*==================== メンバ変数 ====================*/
 
 	// 基盤ポインタ
 	DirectXEngine* dxEngine_ = nullptr;
@@ -111,19 +116,20 @@ private:
 	// パイプラインステート
 	std::array<ComPtr<ID3D12PipelineState>, 5> pipelineStates_;
 
-	/*==================== メンバ変数 ====================*/
+	/* =============== 頂点 =============== */
 
-	// モデル読み込み
-	ModelData modelData_;
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
+	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
+	VertexData* vertexData_ = nullptr;
+
+	/* =============== index頂点 =============== */
+
+	D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
+	ComPtr<ID3D12Resource> indexResource_ = nullptr;
+	uint32_t* indexData_ = nullptr;
 
 	// パーティクルグループコンテナ
 	std::unordered_map<std::string, ParticleGroup> particleGroups_;
 
-	// 頂点リソース,データを作成
-	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
-	VertexData* vertexData_ = nullptr;
-
-	// 頂点バッファビューを作成
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
 
 };

@@ -1,22 +1,22 @@
 #include "GameCamera.h"
 
 #include <numbers>
+#include "imgui.h"
 
 #include "Input.h"
 #include "CameraManager.h"
-#include "Vector3.h"
 
 #include "gameScene/player/Player.h"
 
 void GameCamera::Init()
 {
-	GlobalInit();
+	JsonInit();
 
 	// カメラの初期化
 	mainCamera_ = std::make_unique<Camera>();
 	mainCamera_->Initialize();
-	mainCamera_->SetRotation(global_->GetValue<Vector3>("CameraOffset", "rotation"));
-	Vector3 translation = global_->GetValue<Vector3>("CameraOffset", "translation");
+	mainCamera_->SetRotation(data_.Get<Vector3>("mainRotate"));
+	Vector3 translation = data_.Get<Vector3>("mainPosition");
 	mainCamera_->SetTranslation(translation + player_->GetTransform().translation_);
 	CameraManager::GetInstance()->SetCamera(mainCamera_.get());
 	CameraManager::GetInstance()->SetActiveCamera(1);
@@ -24,18 +24,35 @@ void GameCamera::Init()
 
 	sabCamera_ = std::make_unique<Camera>();
 	sabCamera_->Initialize();
-	translation = global_->GetValue<Vector3>("CameraOffset", "sab_translation");
+	translation = data_.Get<Vector3>("sabPosition");
 	sabCamera_->SetTranslation(translation + player_->GetTransform().translation_);
 	CameraManager::GetInstance()->SetCamera(sabCamera_.get());
 	sabCamera_->Update();
 }
 
-void GameCamera::GlobalInit()
+void GameCamera::JsonInit()
 {
-	global_->AddValue<Vector3>("CameraOffset", "rotation", Vector3{});
-	global_->AddValue<Vector3>("CameraOffset", "translation", Vector3{});
+	data_.Init("GameCamera");
 
-	global_->AddValue<Vector3>("CameraOffset", "sab_translation", Vector3{});
+	if (!data_.Load()) {
+		data_.Set("mainRotate", Vector3{});
+		data_.Set("mainPosition", Vector3{});
+		data_.Set("sabPosition", Vector3{});
+	}
+}
+
+void GameCamera::SaveJson()
+{
+}
+
+void GameCamera::ValueImGui()
+{
+	ImGui::Begin("GameCamera");
+	data_.DrawImGui();
+	if (ImGui::Button("Save")) {
+		data_.Save();
+	}
+	ImGui::End();
 }
 
 void GameCamera::Update()
@@ -48,8 +65,10 @@ void GameCamera::Update()
 		CameraManager::GetInstance()->SetActiveCamera(2);
 	}
 
+	ValueImGui();
+
 	// オフセットの回転角
-	const Vector3 offsetRotation = global_->GetValue<Vector3>("CameraOffset", "rotation");
+	const Vector3 offsetRotation = data_.Get<Vector3>("mainRotate");
 	// 回転を更新
 	mainCamera_->SetRotation(offsetRotation);
 
@@ -65,7 +84,7 @@ void GameCamera::Update()
     }
 
 	// カメラの回転に合わせた座標を更新
-	Vector3 translation = global_->GetValue<Vector3>("CameraOffset", "translation");
+	Vector3 translation = data_.Get<Vector3>("mainPosition");
 	Vector3 previous = mainCamera_->GetTranslation();
 	Vector3 current = player_->GetTransform().translation_ + translation;
 
@@ -83,7 +102,7 @@ void GameCamera::SabUpdate(const Vector3& shakeOffset)
 	Quaternion playerRot = Quaternion::IdentityQuaternion();
 
 	// オフセット（プレイヤーの後方、例：Z方向-10など）
-	Vector3 offset = global_->GetValue<Vector3>("CameraOffset", "sab_translation");
+	Vector3 offset = data_.Get<Vector3>("sabPosition");
 
 	// プレイヤーの回転を適用したオフセット
 	Matrix4x4 rotMat = Quaternion::MakeRotateMatrix(playerRot);
