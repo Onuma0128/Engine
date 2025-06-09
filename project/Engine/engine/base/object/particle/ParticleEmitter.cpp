@@ -32,8 +32,8 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     emitter_.maxScale = { 1.0f,1.0f,1.0f };
 
     emitter_.blendMode_ = 0;
-    moveStart_ = true;
-    isFieldStart_ = false;
+    emitter_.isMoveStart = true;
+    emitter_.isFieldStart = false;
     isCreate_ = true;
     
 #ifdef _DEBUG
@@ -48,53 +48,6 @@ ParticleEmitter::ParticleEmitter(const std::string name)
 
 void ParticleEmitter::GlobalInitialize(const std::string name)
 {
-    std::string globalName = name + "Emitter";
-
-    // jsonで指定した座標固定を無くすか
-    global_->AddValue<bool>(globalName, "1.structEmitter/isLock", false);
-    // Emitterの座標
-    global_->AddValue<Vector3>(globalName, "1.structEmitter/position", Vector3{});
-    // Emitする範囲
-    global_->AddValue<Vector3>(globalName, "1.structEmitter/emitterSizeMin", Vector3{ -1.0f,-1.0f,-1.0f });
-    global_->AddValue<Vector3>(globalName, "1.structEmitter/emitterSizeMax", Vector3{ 1.0f,1.0f,1.0f });
-    // パーティクルが消えるまでの時間
-    global_->AddValue<float>(globalName, "1.structEmitter/lifeTime", 3.0f);
-    // 発生頻度
-    global_->AddValue<float>(globalName, "1.structEmitter/frequency", 0.5f);
-    // 発生する時の個数
-    global_->AddValue<int>(globalName, "1.structEmitter/count", 3, {}, true);
-
-    // 加速度
-    global_->AddValue<Vector3>(globalName, "2.defParticle/acceleration", Vector3{ 0.0f,10.0f,0.0f });
-    // サイズ
-    global_->AddValue<Vector3>(globalName, "2.defParticle/minScale", Vector3{ 1.0f,1.0f,1.0f });
-    global_->AddValue<Vector3>(globalName, "2.defParticle/maxScale", Vector3{ 1.0f,1.0f,1.0f });
-    global_->AddValue<Vector3>(globalName, "2.defParticle/endScale", Vector3{ 1.0f,1.0f,1.0f });
-    // 速度
-    global_->AddValue<Vector3>(globalName, "2.defParticle/minVelocity", Vector3{ 0.0f,0.0f,0.0f });
-    global_->AddValue<Vector3>(globalName, "2.defParticle/maxVelocity", Vector3{ 0.0f,0.0f,0.0f });
-    // 回転
-    global_->AddValue<float>(globalName, "2.defParticle/minRotateZ", 0.0f);
-    global_->AddValue<float>(globalName, "2.defParticle/maxRotateZ", 0.0f);
-    // 反射する高さ
-    global_->AddValue<float>(globalName, "2.defParticle/reflectY", 0.0f);
-    // 出てくる色
-    global_->AddValue<Vector3>(globalName, "2.defParticle/color", Vector3{ 1.0f,1.0f,1.0f });
-
-    global_->AddValue<Vector3>(globalName, "2.defParticle/uvTranslate", Vector3{ 0.0f,0.0f,0.0f });
-
-
-    // BlendModeの設定
-    std::vector<const char*> blendMode = { "None","Normal","Add", "Subtract","Multiply" };
-    global_->AddValue<int>(globalName, "blendMode", 2, blendMode);
-    // 動かすか
-    global_->AddValue<bool>(globalName, "move", false);
-    // 加速度を足すか
-    global_->AddValue<bool>(globalName, "field", false);
-    // 反射をするか
-    global_->AddValue<bool>(globalName, "reflect", false);
-    // スケール変化させるか
-    global_->AddValue<bool>(globalName, "changeScale", false);
 
 }
 
@@ -102,11 +55,20 @@ void ParticleEmitter::Update()
 {
     /*==================== パーティクルの範囲更新 ====================*/
 
-    std::string globalName = emitter_.name + "Emitter";
+    Emitter backup = emitter_;
+    emitter_ = editorEmitter_;
+
+    // コピーしない値を戻す
+    emitter_.name = backup.name;
+    emitter_.copyName = backup.copyName;
+    emitter_.frequencyTime = backup.frequencyTime;
+    emitter_.setPosition = backup.setPosition;
+    emitter_.transform.scale = backup.transform.scale;
+    emitter_.transform.rotation = backup.transform.rotation;
 
     // 新たな数値を代入
-    Vector3 min = global_->GetValue<Vector3>(globalName, "1.structEmitter/emitterSizeMin");
-    Vector3 max = global_->GetValue<Vector3>(globalName, "1.structEmitter/emitterSizeMax");
+    Vector3 min = editorEmitter_.emitterSize.min;
+    Vector3 max = editorEmitter_.emitterSize.max;
     // min,maxが最大値を超えていないかclamp
     emitter_.emitterSize.min = {
         std::clamp(min.x,-256.0f,0.0f),std::clamp(min.y,-256.0f,0.0f),std::clamp(min.z,-256.0f,0.0f),
@@ -115,19 +77,15 @@ void ParticleEmitter::Update()
         std::clamp(max.x,0.0f,256.0f),std::clamp(max.y,0.0f,256.0f),std::clamp(max.z,0.0f,256.0f),
     };
 
-    emitter_.lifeTime = global_->GetValue<float>(globalName, "1.structEmitter/lifeTime");
-    emitter_.frequency = global_->GetValue<float>(globalName, "1.structEmitter/frequency");
-    emitter_.count = global_->GetValue<int32_t>(globalName, "1.structEmitter/count");
-
     // Emitterの範囲より少し大きめにFieldを作る
     accelerationField_.area = {
-        .min = emitter_.emitterSize.min + emitter_.transform.translation - Vector3{10.0f,10.0f,10.0f},
-        .max = emitter_.emitterSize.max + emitter_.transform.translation + Vector3{10.0f,10.0f,10.0f}
+        .min = emitter_.emitterSize.min + emitter_.transform.translation + editorEmitter_.minAccelerField,
+        .max = emitter_.emitterSize.max + emitter_.transform.translation + editorEmitter_.maxAccelerField
     };
-    accelerationField_.acceleration = global_->GetValue<Vector3>(globalName, "2.defParticle/acceleration");
+    accelerationField_.acceleration = editorEmitter_.acceleration;
 
-    Vector3 emitterPosition = global_->GetValue<Vector3>(globalName, "1.structEmitter/position");
-    if (!global_->GetValue<bool>(globalName, "1.structEmitter/isLock")) {
+    Vector3 emitterPosition = editorEmitter_.transform.translation;
+    if (!editorEmitter_.isLock) {
         emitter_.transform.translation = emitterPosition;
     } else {
         Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
@@ -136,9 +94,9 @@ void ParticleEmitter::Update()
     }
 
     // min,maxが最大値を超えていないかclamp
-    min = global_->GetValue<Vector3>(globalName, "2.defParticle/minScale");
-    max = global_->GetValue<Vector3>(globalName, "2.defParticle/maxScale");
-    Vector3 end = global_->GetValue<Vector3>(globalName, "2.defParticle/endScale");
+    min = editorEmitter_.minScale;
+    max = editorEmitter_.maxScale;
+    Vector3 end = editorEmitter_.endScale;
     emitter_.minScale = {
         std::clamp(min.x,-100.0f,max.x),std::clamp(min.y,-100.0f,max.y),std::clamp(min.z,-100.0f,max.z),
     };
@@ -150,8 +108,8 @@ void ParticleEmitter::Update()
     };
 
     // min,maxが最大値を超えていないかclamp
-    min = global_->GetValue<Vector3>(globalName, "2.defParticle/minVelocity");
-    max = global_->GetValue<Vector3>(globalName, "2.defParticle/maxVelocity");
+    min = editorEmitter_.minVelocity;
+    max = editorEmitter_.maxVelocity;
     emitter_.minVelocity = {
         std::clamp(min.x,-100.0f,max.x),std::clamp(min.y,-100.0f,max.y),std::clamp(min.z,-100.0f,max.z),
     };
@@ -160,22 +118,10 @@ void ParticleEmitter::Update()
     };
 
     // min,maxが最大値を超えていないかclamp
-    float min_z = global_->GetValue<float>(globalName, "2.defParticle/minRotateZ");
-    float max_z = global_->GetValue<float>(globalName, "2.defParticle/maxRotateZ");
-    emitter_.minRotateZ = std::clamp(min_z, -100.0f, max_z);
-    emitter_.maxRotateZ = std::clamp(max_z, min_z, 100.0f);
-
-    // 反射する高さ
-    emitter_.reflectY = global_->GetValue<float>(globalName, "2.defParticle/reflectY");
-
-    emitter_.uvTranslation = global_->GetValue<Vector3>(globalName, "2.defParticle/uvTranslate");
-
-    emitter_.blendMode_ = global_->GetValue<int>(globalName, "blendMode");
-    // 動いているか
-    moveStart_ = global_->GetValue<bool>(globalName, "move");
-    isFieldStart_ = global_->GetValue<bool>(globalName, "field");
-    isReflect_  = global_->GetValue<bool>(globalName, "reflect");
-    isChangeScale_= global_->GetValue<bool>(globalName, "changeScale");
+    float min_z = editorEmitter_.minRotate.z;
+    float max_z = editorEmitter_.maxRotate.z;
+    emitter_.minRotate.z = std::clamp(min_z, -100.0f, max_z);
+    emitter_.maxRotate.z = std::clamp(max_z, min_z, 100.0f);
 
 #ifdef _DEBUG
 
@@ -193,7 +139,7 @@ void ParticleEmitter::Update()
 
 void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)
 {
-    if (moveStart_ && isCreate_) {
+    if (emitter_.isMoveStart && isCreate_) {
         emitter_.frequencyTime += DeltaTimer::GetDeltaTime();
         if (emitter_.frequency <= emitter_.frequencyTime) {
             std::mt19937 randomEngine_(seedGenerator_());
@@ -243,19 +189,19 @@ void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)
 
 void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::iterator& particle)
 {
-    if (moveStart_) {
-        if (IsCollision(accelerationField_.area, particle->transform.translation) && isFieldStart_) {
+    if (emitter_.isMoveStart) {
+        if (IsCollision(accelerationField_.area, particle->transform.translation) && emitter_.isFieldStart) {
             particle->velocity += accelerationField_.acceleration * DeltaTimer::GetDeltaTime();
         }
         particle->transform.translation += particle->velocity * DeltaTimer::GetDeltaTime();
         // 反射の処理
-        if (isReflect_) {
+        if (emitter_.isReflect) {
             if (particle->transform.translation.y <= emitter_.reflectY) {
                 particle->velocity.y *= -(3.0f / 4.0f);
             }
         }
         // スケールの処理
-        if (isChangeScale_) {
+        if (emitter_.isChangeScale) {
             float t = 1.0f - (particle->currentTime / particle->lifeTime);
             particle->transform.scale = t * particle->offsetScale + (1.0f - t) * emitter_.endScale;
         }
@@ -264,9 +210,9 @@ void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::itera
         particle->currentTime += DeltaTimer::GetDeltaTime();
 
         std::string globalName = emitter_.name + "Emitter";
-        particle->color.x = global_->GetValue<Vector3>(globalName, "2.defParticle/color").x;
-        particle->color.y = global_->GetValue<Vector3>(globalName, "2.defParticle/color").y;
-        particle->color.z = global_->GetValue<Vector3>(globalName, "2.defParticle/color").z;
+        particle->color.x = emitter_.color.x;
+        particle->color.y = emitter_.color.y;
+        particle->color.z = emitter_.color.z;
     }
 }
 
@@ -293,7 +239,7 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     std::uniform_real_distribution<float> distScaleY(emitter.minScale.y, emitter.maxScale.y);
     std::uniform_real_distribution<float> distScaleZ(emitter.minScale.z, emitter.maxScale.z);
 
-    std::uniform_real_distribution<float> distRotate(emitter.minRotateZ, emitter.maxRotateZ);
+    std::uniform_real_distribution<float> distRotate(emitter.minRotate.z, emitter.maxRotate.z);
     ParticleManager::Particle particle{};
     particle.transform.scale = { distScaleX(randomEngine),distScaleY(randomEngine),distScaleZ(randomEngine) };
     particle.offsetScale = particle.transform.scale;

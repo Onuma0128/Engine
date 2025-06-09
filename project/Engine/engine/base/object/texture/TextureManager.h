@@ -53,10 +53,7 @@ public:
 
 	/*========================== ゲッター ===========================*/
 
-	//// SRVインデックスの開始番号
-	//uint32_t GetTextureIndexByFilePath(const std::string& filePath);
-	//// テクスチャ番号からGPUハンドルを取得
-	//D3D12_GPU_DESCRIPTOR_HANDLE GetSrvHandleGPU(uint32_t textureIndex);
+	std::vector<std::string> GetTextures()const { return textureNames_; }
 
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
 	uint32_t GetSrvIndex(const std::string& filePath);
@@ -67,6 +64,7 @@ public:
 private:
 	// テクスチャデータ
 	std::unordered_map<std::string, TextureData> textureDatas_;
+	std::vector<std::string> textureNames_;
 	
 	DirectXEngine* dxEngine_ = nullptr;
 };

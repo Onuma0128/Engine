@@ -33,6 +33,8 @@ void TextureManager::LoadTexture(const std::string& directoryPath, const std::st
 		// 読み込み済みなら早期return
 		return;
 	}
+	// テクスチャのファイルを保存
+	textureNames_.push_back(filePath);
 
 	// テクスチャファイルを読んでプログラムで抑えるようにする
 	DirectX::ScratchImage image{};

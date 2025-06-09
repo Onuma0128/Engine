@@ -1,6 +1,7 @@
 #include "ParticleManager.h"
 
 #include <numbers>
+#include "imgui.h"
 
 #include "DirectXEngine.h"
 #include "PipelineState.h"
@@ -14,6 +15,7 @@
 #include "Camera.h"
 #include "CreateBufferResource.h"
 #include "ParticleEmitter.h"
+#include "ParticleEditor.h"
 
 ParticleManager* ParticleManager::instance_ = nullptr;
 
@@ -45,6 +47,9 @@ void ParticleManager::Initialize(DirectXEngine* dxEngine)
 
 void ParticleManager::Update()
 {
+    // editorのUpdate
+    ParticleEditorUpdate();
+
     // 各パーティクルグループに対して処理
     for (auto it = particleGroups_.begin(); it != particleGroups_.end();) {
         auto& group = it->second;
@@ -77,6 +82,7 @@ void ParticleManager::Update()
             // 新しいパーティクルを追加する
             for (auto& g_emitter : group.emitters) {
                 if (auto emitter = g_emitter.lock()) {
+                    emitter->SetEmitter(group.editor->GetBaseEmitter());
                     emitter->Update();
                 }
             }
@@ -179,38 +185,11 @@ void ParticleManager::CreateParticleGroup(
     auto it = particleGroups_.find(name);
     if (it != particleGroups_.end()) {
 
-        //// 既存グループを複製
+        // 既存グループを複製
         std::string copyName = emitter->GetName();
         copyName = copyName + std::to_string(static_cast<uint32_t>(it->second.emitters.size()));
         emitter->SetCopyName(copyName);
         it->second.emitters.push_back(emitter);
-        //newGroup.instanceCount = 0;
-        ////newGroup.instancingData = nullptr;
-
-        ///*newGroup.instancingResource = CreateBufferResource(
-        //    dxEngine_->GetDevice(),
-        //    sizeof(ParticleForGPU) * kNumMaxInstance);*/
-        ////newGroup.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&newGroup.instancingData));
-        ////for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
-        ////    newGroup.instancingData[i].WVP = Matrix4x4::Identity();
-        ////    newGroup.instancingData[i].World = Matrix4x4::Identity();
-        ////    newGroup.instancingData[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
-        ////}
-
-        ////// SRVだけは取り直す
-        ////newGroup.srvIndex = srvManager_->Allocate() + TextureManager::kSRVIndexTop;
-        ////srvManager_->CreateSRVforStructuredBuffer(
-        ////    newGroup.srvIndex,
-        ////    newGroup.instancingResource.Get(),
-        ////    kNumMaxInstance,
-        ////    sizeof(ParticleForGPU));
-
-        //// 別名を付けて登録
-        //std::string copyName = name;
-        //for (int i = 1; particleGroups_.contains(copyName); ++i) {
-        //    copyName = name + std::to_string(i);
-        //}
-        //particleGroups_[copyName] = std::move(newGroup);
 
         return;
     }
@@ -240,6 +219,8 @@ void ParticleManager::CreateParticleGroup(
         group.instancingData[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
     }
     group.emitters.push_back(emitter);
+    group.editor = std::make_unique<ParticleEditor>();
+    group.editor->Initialize(name);
 
     group.srvIndex = srvManager_->Allocate() + TextureManager::kSRVIndexTop;
 
@@ -262,6 +243,44 @@ void ParticleManager::Emit(const std::string name)
             emitter->CreateParticles(particleGroups_[name]);
         }
     }
+}
+
+void ParticleManager::ParticleEditorUpdate()
+{
+    // 選択できるアイテム
+    std::vector<std::string> items;
+    // 選択中インデックス
+    static int current = 0;
+    // パーティクルのEditor処理
+    for (auto it = particleGroups_.begin(); it != particleGroups_.end();) {
+        std::string name = it->first;
+        items.push_back(name);
+        ++it;
+    }
+    // ImGuiの描画
+    ImGui::Begin("ParicleEditor");
+    if (ImGui::BeginCombo("EditorFile", items[current].c_str())) {
+        for (int i = 0; i < items.size(); ++i) {
+            const bool is_selected = (current == i);
+            if (ImGui::Selectable(items[i].c_str(), is_selected)) {
+                current = i;                      // 切り替え
+            }
+            if (is_selected) {
+                ImGui::SetItemDefaultFocus();     // 選択項目にフォーカス
+            }
+        }
+        ImGui::EndCombo();
+    }
+
+    // 選択中のnameを取得、ImGuiを描画
+    std::string selectedName = items[current];
+    particleGroups_[selectedName].editor->Update();
+    if (particleGroups_[selectedName].editor->GetTexture() != "") {
+        particleGroups_[selectedName].textureFilePath = particleGroups_[selectedName].editor->GetTexture();
+        particleGroups_[selectedName].textureIndex = TextureManager::GetInstance()->GetSrvIndex(particleGroups_[selectedName].textureFilePath);
+    }
+
+    ImGui::End();
 }
 
 void ParticleManager::CreateVertexData()

@@ -12,6 +12,7 @@
 const uint32_t kNumMaxInstance = 1024;
 
 class ParticleEmitter;
+class ParticleEditor;
 class DirectXEngine;
 class SrvManager;
 
@@ -62,6 +63,7 @@ public:
 
 		ParticleForGPU* instancingData;
 		std::vector<std::weak_ptr<ParticleEmitter>> emitters;
+		std::unique_ptr<ParticleEditor> editor;
 	};
 
 private:
@@ -95,6 +97,8 @@ public:
 	void Emit(const std::string name);
 
 private:
+
+	void ParticleEditorUpdate();
 
 	void CreateVertexData();
 	void CreateVertexResource();
