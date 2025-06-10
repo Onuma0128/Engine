@@ -38,6 +38,7 @@ public:
 		Vector3 offsetScale;
 		Vector3 uvTranslate;
 		Vector3 velocity;
+		Vector3 rotateSpeed;
 		Vector4 color;
 		float lifeTime;
 		float currentTime;
@@ -88,11 +89,7 @@ public:
 
 	void Finalize();
 
-	void CreateParticleGroup(
-		const std::string name, 
-		const std::string textureFilePath, 
-		std::shared_ptr<ParticleEmitter> emitter
-	);
+	void CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitter);
 
 	void Emit(const std::string name);
 

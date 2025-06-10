@@ -172,7 +172,7 @@ void ParticleEditor::Update()
 			ImGui::Checkbox("Move", &baseEmitter_.isMoveStart);
 			// 発生数
 			int emitCount = static_cast<int>(baseEmitter_.count);
-			ImGui::DragInt("Count", &emitCount);
+			ImGui::DragInt("Count", &emitCount, 1.0f, 0, 1024);
 			baseEmitter_.count = static_cast<uint32_t>(emitCount);
 			// 発生までの時間
 			ImGui::DragFloat("FrequencyTime", &baseEmitter_.frequency, 0.01f);
@@ -181,13 +181,13 @@ void ParticleEditor::Update()
 			ImGui::Separator();
 			// パーティクルに掛かる加速度
 			ImGui::Checkbox("AcceleField", &baseEmitter_.isFieldStart);
-			ImGui::DragFloat3("Acceleration", &baseEmitter_.acceleration.x);
-			ImGui::DragFloat3("MinAcceleField", &baseEmitter_.minAccelerField.x);
-			ImGui::DragFloat3("MaxAcceleField", &baseEmitter_.maxAccelerField.x);
+			ImGui::DragFloat3("Acceleration", &baseEmitter_.acceleration.x, 0.01f);
+			ImGui::DragFloat3("MinAcceleField", &baseEmitter_.minAccelerField.x, 0.01f, -256.0f, 0.0f);
+			ImGui::DragFloat3("MaxAcceleField", &baseEmitter_.maxAccelerField.x, 0.01f, 0.0f, 256.0f);
 			ImGui::Separator();
 			// パーティクルが反射するY軸
 			ImGui::Checkbox("Reflect", &baseEmitter_.isReflect);
-			ImGui::DragFloat("ReflectY", &baseEmitter_.reflectY);
+			ImGui::DragFloat("ReflectY", &baseEmitter_.reflectY, 0.01f);
 
 			ImGui::TreePop();
 		}
@@ -199,25 +199,24 @@ void ParticleEditor::Update()
 
 			// カラー
 			ImGui::ColorEdit3("Color", &baseEmitter_.color.x);
-			ImGui::DragFloat3("uvTranslation", &baseEmitter_.uvTranslation.x);
+			ImGui::DragFloat3("uvTranslation", &baseEmitter_.uvTranslation.x, 0.01f);
 			ImGui::Separator();
 			// スケール
-			ImGui::DragFloat3("MinScale", &baseEmitter_.minScale.x);
-			ImGui::DragFloat3("MaxScale", &baseEmitter_.maxScale.x);
+			ImGui::DragFloat3("MinScale", &baseEmitter_.minScale.x, 0.01f);
+			ImGui::DragFloat3("MaxScale", &baseEmitter_.maxScale.x, 0.01f);
 			ImGui::Checkbox("ChangeScale", &baseEmitter_.isChangeScale);
-			ImGui::DragFloat3("EndScale", &baseEmitter_.endScale.x);
+			ImGui::DragFloat3("EndScale", &baseEmitter_.endScale.x, 0.01f);
 			ImGui::Separator();
 			// 速度
-			ImGui::DragFloat3("MinVelocity", &baseEmitter_.minVelocity.x);
-			ImGui::DragFloat3("MaxVelocity", &baseEmitter_.maxVelocity.x);
+			ImGui::DragFloat3("MinVelocity", &baseEmitter_.minVelocity.x, 0.01f);
+			ImGui::DragFloat3("MaxVelocity", &baseEmitter_.maxVelocity.x, 0.01f);
 			ImGui::Separator();
 			// 回転
-			bool billboard;
-			ImGui::Checkbox("Billboard", &billboard);
-			ImGui::DragFloat3("MinRotate", &baseEmitter_.minRotate.x);
-			ImGui::DragFloat3("MaxRotate", &baseEmitter_.maxRotate.x);
-			ImGui::DragFloat3("MinRotateSpeed", &baseEmitter_.minRotateSpeed.x);
-			ImGui::DragFloat3("MaxRotateSpeed", &baseEmitter_.maxRotateSpeed.x);
+			ImGui::Checkbox("Billboard", &baseEmitter_.isBillboard);
+			ImGui::DragFloat3("MinRotate", &baseEmitter_.minRotate.x, 0.01f);
+			ImGui::DragFloat3("MaxRotate", &baseEmitter_.maxRotate.x, 0.01f);
+			ImGui::DragFloat3("MinRotateSpeed", &baseEmitter_.minRotateSpeed.x, 0.01f);
+			ImGui::DragFloat3("MaxRotateSpeed", &baseEmitter_.maxRotateSpeed.x, 0.01f);
 
 			ImGui::TreePop();
 		}
@@ -228,11 +227,11 @@ void ParticleEditor::Update()
 		if (ImGui::TreeNode("EmitterWhole Parameters")) {
 
 			// サイズ
-			ImGui::DragFloat3("MinSize", &baseEmitter_.emitterSize.min.x);
-			ImGui::DragFloat3("MaxSize", &baseEmitter_.emitterSize.max.x);
+			ImGui::DragFloat3("MinSize", &baseEmitter_.emitterSize.min.x, 0.01f, -256.0f, 0.0f);
+			ImGui::DragFloat3("MaxSize", &baseEmitter_.emitterSize.max.x, 0.01f, 0.0f, 256.0f);
 			// Transform
 			ImGui::Checkbox("Lock", &baseEmitter_.isLock);
-			ImGui::DragFloat3("Position", &baseEmitter_.transform.translation.x);
+			ImGui::DragFloat3("Position", &baseEmitter_.transform.translation.x, 0.01f);
 
 			ImGui::TreePop();
 		}

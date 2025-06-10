@@ -1,0 +1,99 @@
+{
+    "Texture": "white1x1.png",
+    "BlendMode": 4,
+    "Move": true,
+    "EmitCount": 1024,
+    "FrequencyTime": 9.710000038146973,
+    "LifeTime": 7.880000114440918,
+    "Acceleration": {
+        "x": 0.0,
+        "y": -13.630000114440918,
+        "z": 0.0
+    },
+    "AcceleField": false,
+    "MinAcceleField": {
+        "x": -10.0,
+        "y": -10.0,
+        "z": -10.0
+    },
+    "MaxAcceleField": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+    },
+    "Reflect": false,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.5,
+        "y": 0.5,
+        "z": 1.0
+    },
+    "MaxScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "ChangeScale": true,
+    "EndScale": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinVelocity": {
+        "x": -10.0,
+        "y": -10.0,
+        "z": -10.0
+    },
+    "MaxVelocity": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+    },
+    "Billboard": true,
+    "MinRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotate": {
+        "x": 3.2300000190734863,
+        "y": 3.0299999713897705,
+        "z": 0.0
+    },
+    "MinRotateSpeed": {
+        "x": -0.25,
+        "y": -0.15000000596046448,
+        "z": -0.17000000178813934
+    },
+    "MaxRotateSpeed": {
+        "x": 0.36000001430511475,
+        "y": 0.11999999731779099,
+        "z": 0.12999999523162842
+    },
+    "MinSize": {
+        "x": -0.5,
+        "y": -0.5,
+        "z": -0.5
+    },
+    "MaxSize": {
+        "x": 0.5,
+        "y": 0.5,
+        "z": 0.5
+    },
+    "Position": {
+        "x": -9.770000457763672,
+        "y": 4.110000133514404,
+        "z": 0.0
+    },
+    "Look": false
+}

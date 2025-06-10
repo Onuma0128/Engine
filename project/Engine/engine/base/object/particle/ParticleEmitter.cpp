@@ -11,8 +11,6 @@ ParticleEmitter::~ParticleEmitter()
 
 ParticleEmitter::ParticleEmitter(const std::string name)
 {
-    GlobalInitialize(name);
-
     emitter_.name = name;
     emitter_.copyName = name;
     emitter_.setPosition = { 0.0f,0.0f,0.0f };
@@ -35,6 +33,7 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     emitter_.isMoveStart = true;
     emitter_.isFieldStart = false;
     isCreate_ = true;
+    needResetPrev_ = true;
     
 #ifdef _DEBUG
     // Emitterの範囲を線で描画
@@ -44,11 +43,6 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     line_ = std::make_unique<Line3d>();
     line_->Initialize(linePosition_);
 #endif // _DEBUG
-}
-
-void ParticleEmitter::GlobalInitialize(const std::string name)
-{
-
 }
 
 void ParticleEmitter::Update()
@@ -77,11 +71,6 @@ void ParticleEmitter::Update()
         std::clamp(max.x,0.0f,256.0f),std::clamp(max.y,0.0f,256.0f),std::clamp(max.z,0.0f,256.0f),
     };
 
-    // Emitterの範囲より少し大きめにFieldを作る
-    accelerationField_.area = {
-        .min = emitter_.emitterSize.min + emitter_.transform.translation + editorEmitter_.minAccelerField,
-        .max = emitter_.emitterSize.max + emitter_.transform.translation + editorEmitter_.maxAccelerField
-    };
     accelerationField_.acceleration = editorEmitter_.acceleration;
 
     Vector3 emitterPosition = editorEmitter_.transform.translation;
@@ -92,36 +81,53 @@ void ParticleEmitter::Update()
         emitter_.transform.translation = emitter_.setPosition + (emitterPosition).Transform(rotateMatrix);
         accelerationField_.acceleration = Vector3::Transform(accelerationField_.acceleration, rotateMatrix);
     }
+    // Emitterの範囲より少し大きめにFieldを作る
+    accelerationField_.area = {
+        .min = emitter_.emitterSize.min + emitter_.transform.translation + editorEmitter_.minAccelerField,
+        .max = emitter_.emitterSize.max + emitter_.transform.translation + editorEmitter_.maxAccelerField
+    };
 
     // min,maxが最大値を超えていないかclamp
     min = editorEmitter_.minScale;
     max = editorEmitter_.maxScale;
     Vector3 end = editorEmitter_.endScale;
     emitter_.minScale = {
-        std::clamp(min.x,-100.0f,max.x),std::clamp(min.y,-100.0f,max.y),std::clamp(min.z,-100.0f,max.z),
+        std::clamp(min.x,-256.0f,max.x),std::clamp(min.y,-256.0f,max.y),std::clamp(min.z,-256.0f,max.z),
     };
     emitter_.maxScale = {
-        std::clamp(max.x,min.x,100.0f),std::clamp(max.y,min.y,100.0f),std::clamp(max.z,min.z,100.0f),
+        std::clamp(max.x,min.x,256.0f),std::clamp(max.y,min.y,256.0f),std::clamp(max.z,min.z,256.0f),
     };
     emitter_.endScale = {
-        std::clamp(end.x,0.0f,100.0f),std::clamp(end.y,0.0f,100.0f),std::clamp(end.z,0.0f,100.0f)
+        std::clamp(end.x,0.0f,256.0f),std::clamp(end.y,0.0f,256.0f),std::clamp(end.z,0.0f,256.0f)
     };
-
     // min,maxが最大値を超えていないかclamp
     min = editorEmitter_.minVelocity;
     max = editorEmitter_.maxVelocity;
     emitter_.minVelocity = {
-        std::clamp(min.x,-100.0f,max.x),std::clamp(min.y,-100.0f,max.y),std::clamp(min.z,-100.0f,max.z),
+        std::clamp(min.x,-256.0f,max.x),std::clamp(min.y,-256.0f,max.y),std::clamp(min.z,-256.0f,max.z),
     };
     emitter_.maxVelocity = {
-        std::clamp(max.x,min.x,100.0f),std::clamp(max.y,min.y,100.0f),std::clamp(max.z,min.z,100.0f),
+        std::clamp(max.x,min.x,256.0f),std::clamp(max.y,min.y,256.0f),std::clamp(max.z,min.z,256.0f),
     };
 
     // min,maxが最大値を超えていないかclamp
-    float min_z = editorEmitter_.minRotate.z;
-    float max_z = editorEmitter_.maxRotate.z;
-    emitter_.minRotate.z = std::clamp(min_z, -100.0f, max_z);
-    emitter_.maxRotate.z = std::clamp(max_z, min_z, 100.0f);
+    min = editorEmitter_.minRotate;
+    max = editorEmitter_.maxRotate;
+    emitter_.minRotate = {
+        std::clamp(min.x, -256.0f, max.x),std::clamp(min.y, -256.0f, max.y),std::clamp(min.z, -256.0f, max.z)
+    };
+    emitter_.maxRotate = {
+        std::clamp(max.x, min.x, 256.0f),std::clamp(max.x, min.x, 256.0f),std::clamp(max.x, min.x, 256.0f)
+    };
+    // min,maxが最大値を超えていないかclamp
+    min = editorEmitter_.minRotateSpeed;
+    max = editorEmitter_.maxRotateSpeed;
+    emitter_.minRotateSpeed = {
+        std::clamp(min.x, -256.0f, max.x),std::clamp(min.y, -256.0f, max.y),std::clamp(min.z, -256.0f, max.z)
+    };
+    emitter_.maxRotateSpeed = {
+        std::clamp(max.x, min.x, 256.0f),std::clamp(max.x, min.x, 256.0f),std::clamp(max.x, min.x, 256.0f)
+    };
 
 #ifdef _DEBUG
 
@@ -205,11 +211,11 @@ void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::itera
             float t = 1.0f - (particle->currentTime / particle->lifeTime);
             particle->transform.scale = t * particle->offsetScale + (1.0f - t) * emitter_.endScale;
         }
+        particle->transform.rotation += particle->rotateSpeed;
         particle->uvTranslate += emitter_.uvTranslation;
 
         particle->currentTime += DeltaTimer::GetDeltaTime();
 
-        std::string globalName = emitter_.name + "Emitter";
         particle->color.x = emitter_.color.x;
         particle->color.y = emitter_.color.y;
         particle->color.z = emitter_.color.z;
@@ -239,11 +245,24 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     std::uniform_real_distribution<float> distScaleY(emitter.minScale.y, emitter.maxScale.y);
     std::uniform_real_distribution<float> distScaleZ(emitter.minScale.z, emitter.maxScale.z);
 
-    std::uniform_real_distribution<float> distRotate(emitter.minRotate.z, emitter.maxRotate.z);
+    std::uniform_real_distribution<float> distRotateX(emitter.minRotate.x, emitter.maxRotate.x);
+    std::uniform_real_distribution<float> distRotateY(emitter.minRotate.y, emitter.maxRotate.y);
+    std::uniform_real_distribution<float> distRotateZ(emitter.minRotate.z, emitter.maxRotate.z);
+
+    std::uniform_real_distribution<float> distRotateSpeedX(emitter.minRotateSpeed.x, emitter.maxRotateSpeed.x);
+    std::uniform_real_distribution<float> distRotateSpeedY(emitter.minRotateSpeed.y, emitter.maxRotateSpeed.y);
+    std::uniform_real_distribution<float> distRotateSpeedZ(emitter.minRotateSpeed.z, emitter.maxRotateSpeed.z);
+
     ParticleManager::Particle particle{};
     particle.transform.scale = { distScaleX(randomEngine),distScaleY(randomEngine),distScaleZ(randomEngine) };
     particle.offsetScale = particle.transform.scale;
-    particle.transform.rotation = { 0.0f,0.0f,distRotate(randomEngine) };
+    if (emitter.isBillboard) {
+        particle.transform.rotation = { 0.0f,0.0f,distRotateZ(randomEngine) };
+        particle.rotateSpeed = { 0.0f,0.0f,distRotateSpeedZ(randomEngine) };
+    } else {
+        particle.transform.rotation = { distRotateX(randomEngine),distRotateY(randomEngine),distRotateZ(randomEngine) };
+        particle.rotateSpeed = { distRotateSpeedX(randomEngine),distRotateSpeedY(randomEngine),distRotateSpeedZ(randomEngine) };
+    }
     Vector3 randomTranslate = { distPosX(randomEngine),distPosY(randomEngine) ,distPosZ(randomEngine) };
     Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter.transform.rotation);
     particle.transform.translation = emitter.transform.translation + randomTranslate.Transform(rotateMatrix);

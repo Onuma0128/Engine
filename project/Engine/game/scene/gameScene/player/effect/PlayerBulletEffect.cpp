@@ -4,28 +4,28 @@ void PlayerBulletEffect::Init()
 {
 	// 弾のエフェクト
 	bulletTrailEmitter_ = std::make_unique<ParticleEmitter>("bulletTrail");
-	particleManager_->CreateParticleGroup("bulletTrail", "white1x1.png", bulletTrailEmitter_);
+	particleManager_->CreateParticleGroup(bulletTrailEmitter_);
 	bulletTrailEmitter_->SetIsCreate(false);
 
 	bulletDeleteEmitter_ = std::make_unique<ParticleEmitter>("bulletDelete");
-	particleManager_->CreateParticleGroup("bulletDelete", "white1x1.png", bulletDeleteEmitter_);
+	particleManager_->CreateParticleGroup(bulletDeleteEmitter_);
 	bulletDeleteEmitter_->SetIsCreate(false);
 
 	// 弾を撃つ時のエフェクト
 	bulletExplosionEmitter_ = std::make_unique<ParticleEmitter>("bulletExplosion");
-	particleManager_->CreateParticleGroup("bulletExplosion", "circle.png", bulletExplosionEmitter_);
+	particleManager_->CreateParticleGroup(bulletExplosionEmitter_);
 	bulletExplosionEmitter_->SetIsCreate(false);
 
 	bulletSparkEmitter_ = std::make_unique<ParticleEmitter>("bulletSpark");
-	particleManager_->CreateParticleGroup("bulletSpark", "circle.png", bulletSparkEmitter_);
+	particleManager_->CreateParticleGroup(bulletSparkEmitter_);
 	bulletSparkEmitter_->SetIsCreate(false);
 
 	bulletSmokeEmitter_ = std::make_unique<ParticleEmitter>("bulletSmoke");
-	particleManager_->CreateParticleGroup("bulletSmoke", "smoke.png", bulletSmokeEmitter_);
+	particleManager_->CreateParticleGroup(bulletSmokeEmitter_);
 	bulletSmokeEmitter_->SetIsCreate(false);
 
 	bulletCartridgeEmitter_ = std::make_unique<ParticleEmitter>("bulletCartridge");
-	particleManager_->CreateParticleGroup("bulletCartridge", "white1x1.png", bulletCartridgeEmitter_);
+	particleManager_->CreateParticleGroup(bulletCartridgeEmitter_);
 	bulletCartridgeEmitter_->SetIsCreate(false);
 }
 

@@ -67,6 +67,7 @@ public:
 		bool isFieldStart;			// ParticleにAccelerationを掛けるか
 		bool isReflect;				// Y軸の高さで反射をするか
 		bool isChangeScale;			// 生きている時間でScaleを変えるか
+		bool isBillboard;			// ビルボードしているか
 	};
 
 	struct AccelerationField {
@@ -78,8 +79,6 @@ public:
 
 	~ParticleEmitter();
 	ParticleEmitter(const std::string name);
-
-	void GlobalInitialize(const std::string name);
 
 	void Update();
 

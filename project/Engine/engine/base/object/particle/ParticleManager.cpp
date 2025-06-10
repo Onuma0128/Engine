@@ -177,15 +177,14 @@ void ParticleManager::Clear()
     particleGroups_.clear();
 }
 
-void ParticleManager::CreateParticleGroup(
-    const std::string name,
-    const std::string textureFilePath,
-    std::shared_ptr<ParticleEmitter> emitter)
+void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitter)
 {
+    std::string name = emitter->GetName();
+
     auto it = particleGroups_.find(name);
     if (it != particleGroups_.end()) {
 
-        // 既存グループを複製
+        // 既存グループのエミッターを複製
         std::string copyName = emitter->GetName();
         copyName = copyName + std::to_string(static_cast<uint32_t>(it->second.emitters.size()));
         emitter->SetCopyName(copyName);
@@ -195,7 +194,7 @@ void ParticleManager::CreateParticleGroup(
     }
 
     ParticleGroup group;
-    group.textureFilePath = textureFilePath;
+    group.textureFilePath = "white1x1.png";
     group.textureIndex = TextureManager::GetInstance()->GetSrvIndex(group.textureFilePath);
 
     // パーティクルグループのマテリアル用のリソース,データを作成

@@ -12,12 +12,12 @@ void PlayerEffect::Init()
 {
 	// 移動時のエフェクト
 	moveDustEmitter_ = std::make_unique<ParticleEmitter>("moveDust");
-	particleManager_->CreateParticleGroup("moveDust", "smoke.png", moveDustEmitter_);
+	particleManager_->CreateParticleGroup(moveDustEmitter_);
 	moveDustEmitter_->SetIsCreate(false);
 
 	// 避け時のエフェクト
 	avoidDustEmitter_ = std::make_unique<ParticleEmitter>("avoidDust");
-	particleManager_->CreateParticleGroup("avoidDust", "smoke.png", avoidDustEmitter_);
+	particleManager_->CreateParticleGroup(avoidDustEmitter_);
 	avoidDustEmitter_->SetIsCreate(false);
 
 	// PostEffectを初期化

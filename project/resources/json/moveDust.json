@@ -1,0 +1,99 @@
+{
+    "Texture": "smoke.png",
+    "BlendMode": 1,
+    "Move": true,
+    "EmitCount": 4,
+    "FrequencyTime": 0.5,
+    "LifeTime": 0.3700000047683716,
+    "Acceleration": {
+        "x": 0.0,
+        "y": -10.0,
+        "z": 0.0
+    },
+    "AcceleField": true,
+    "MinAcceleField": {
+        "x": -5.0,
+        "y": -5.0,
+        "z": -5.0
+    },
+    "MaxAcceleField": {
+        "x": 5.0,
+        "y": 5.0,
+        "z": 5.0
+    },
+    "Reflect": true,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 0.25882354378700256,
+        "y": 0.11372549086809158,
+        "z": 0.0470588244497776
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 1.0
+    },
+    "MaxScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 1.0
+    },
+    "ChangeScale": false,
+    "EndScale": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinVelocity": {
+        "x": -1.0,
+        "y": 1.0,
+        "z": -1.0
+    },
+    "MaxVelocity": {
+        "x": 1.0,
+        "y": 2.0,
+        "z": 0.0
+    },
+    "Billboard": true,
+    "MinRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -3.140000104904175
+    },
+    "MaxRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 3.140000104904175
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinSize": {
+        "x": -0.3499999940395355,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxSize": {
+        "x": 0.3499999940395355,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Position": {
+        "x": 0.0,
+        "y": -0.44999998807907104,
+        "z": -0.5
+    },
+    "Look": true
+}

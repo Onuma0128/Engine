@@ -6,6 +6,7 @@
 #include "Object3d.h"
 #include "Animation.h"
 #include "PrimitiveDrawr.h"
+#include "ParticleEmitter.h"
 
 #include "gameScene/player/Player.h"
 #include "gameScene/enemy/spawner/EnemySpawnerFactory.h"
@@ -28,6 +29,7 @@ private:
 
 	std::unique_ptr<Object3d> demoObj_ = nullptr;
 	std::unique_ptr<PrimitiveDrawr> skyBox_ = nullptr;
+	std::shared_ptr<ParticleEmitter> emitter_ = nullptr;
 	
 	// プレイヤーの生成
 	std::unique_ptr<Player> player_ = nullptr;
