@@ -57,13 +57,13 @@ void GameCamera::ValueImGui()
 
 void GameCamera::Update()
 {
-	Input* input = Input::GetInstance();
+	/*Input* input = Input::GetInstance();
 	if (input->TriggerKey(DIK_1)) {
 		CameraManager::GetInstance()->SetActiveCamera(1);
 	}
 	if (input->TriggerKey(DIK_2)) {
 		CameraManager::GetInstance()->SetActiveCamera(2);
-	}
+	}*/
 
 	ValueImGui();
 

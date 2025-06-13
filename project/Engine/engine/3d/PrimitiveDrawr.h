@@ -183,7 +183,7 @@ private:
 	EulerTransform transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform2D uvTransform_ = { {1.0f,1.0f},{0.0f},{0.0f,0.0f} };
 
-	BlendMode blendMode_ = BlendMode::kBlendModeAdd;
+	BlendMode blendMode_ = BlendMode::kBlendModeNormal;
 
 	// 描画するか
 	RenderOptions renderOptions_;

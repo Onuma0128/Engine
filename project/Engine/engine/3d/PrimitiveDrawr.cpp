@@ -61,7 +61,7 @@ void PrimitiveDrawr::UVTransformUpdate()
 	// UVTransformの更新
 	Matrix4x4 scaleMatrix = Matrix4x4::Scale({ uvTransform_.size.x, uvTransform_.size.y, 1.0f });
 	Matrix4x4 rotateMatrix = Matrix4x4::RotateZ(uvTransform_.rotate);
-	Matrix4x4 translateMatrix = Matrix4x4::Translate({ uvTransform_.position.x, uvTransform_.position.y, 0.0f });
+	Matrix4x4 translateMatrix = Matrix4x4::Translate({ uvTransform_.position.x, uvTransform_.position.y, 1.0f });
 	Matrix4x4 uvTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
 
 	materialData_->uvTransform = uvTransformMatrix;

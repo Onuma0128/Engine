@@ -6,9 +6,9 @@
             "name": "Cube",
             "transform": {
                 "translation": [
+                    -20.0,
                     0.0,
-                    0.0,
-                    0.0
+                    1.0
                 ],
                 "rotation": [
                     0.0,
@@ -21,76 +21,8 @@
                     1.0
                 ]
             },
-            "collider": {
-                "type": "Box",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "children": [
-                {
-                    "type": "MESH",
-                    "name": "ICO球",
-                    "transform": {
-                        "translation": [
-                            0.0,
-                            -1.3799999952316284,
-                            0.0
-                        ],
-                        "rotation": [
-                            0.0,
-                            -0.0,
-                            0.0
-                        ],
-                        "scaling": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ]
-                    },
-                    "collider": {
-                        "type": "Box",
-                        "center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "size": [
-                            2.0,
-                            2.0,
-                            2.0
-                        ]
-                    }
-                }
-            ]
-        },
-        {
-            "type": "LIGHT",
-            "name": "Light",
-            "transform": {
-                "translation": [
-                    4.076245307922363,
-                    1.0054539442062378,
-                    5.903861999511719
-                ],
-                "rotation": [
-                    37.26104736328125,
-                    3.1637091636657715,
-                    106.93632507324219
-                ],
-                "scaling": [
-                    1.0,
-                    0.9999999403953552,
-                    1.0
-                ]
-            }
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
         },
         {
             "type": "CAMERA",
@@ -112,6 +44,314 @@
                     1.0
                 ]
             }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.001",
+            "transform": {
+                "translation": [
+                    20.0,
+                    0.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.002",
+            "transform": {
+                "translation": [
+                    0.0,
+                    20.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.003",
+            "transform": {
+                "translation": [
+                    0.0,
+                    -20.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.004",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.5
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "Player",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_4",
+            "transform": {
+                "translation": [
+                    8.800000190734863,
+                    11.75999927520752,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    0.6000000238418579
+                ]
+            },
+            "file_name": "DeadTree_4.gltf",
+            "tag_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.699999988079071
+                ],
+                "size": [
+                    0.5,
+                    0.5,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_1",
+            "transform": {
+                "translation": [
+                    -12.449999809265137,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.75,
+                    0.75,
+                    0.75
+                ]
+            },
+            "file_name": "DeadTree_1.gltf",
+            "tag_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.699999988079071
+                ],
+                "size": [
+                    0.5,
+                    0.5,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_2",
+            "transform": {
+                "translation": [
+                    7.539999961853027,
+                    -8.119998931884766,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.699999988079071,
+                    0.699999988079071,
+                    0.699999988079071
+                ]
+            },
+            "file_name": "DeadTree_2.gltf",
+            "tag_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.019999980926513672,
+                    0.0,
+                    0.699999988079071
+                ],
+                "size": [
+                    0.5,
+                    0.5,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_3",
+            "transform": {
+                "translation": [
+                    -5.769999980926514,
+                    -10.119999885559082,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "file_name": "DeadTree_3.gltf",
+            "tag_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6499999761581421
+                ],
+                "size": [
+                    0.5,
+                    0.5,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_5",
+            "transform": {
+                "translation": [
+                    -7.62999963760376,
+                    9.769999504089355,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "file_name": "DeadTree_5.gltf",
+            "tag_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.7999999523162842
+                ],
+                "size": [
+                    0.5,
+                    0.5,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "平面",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    30.0,
+                    30.0,
+                    1.0
+                ]
+            },
+            "file_name": "ground.obj",
+            "tag_name": "FieldObject"
         }
     ]
 }

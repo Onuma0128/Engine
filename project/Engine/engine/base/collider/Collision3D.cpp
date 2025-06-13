@@ -220,7 +220,7 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 Sphere Collision3D::ChangeSphere(const Collider* collider)
 {
 	return {
-		.center = collider->GetCenterPosition(),
+		.center = collider->GetCenterPosition() + collider->GetOffsetPosition(),
 		.radius = collider->GetRadius()
 	};
 }
@@ -236,15 +236,15 @@ Segment Collision3D::ChangeSegment(const Collider* collider)
 AABB Collision3D::ChangeAABB(const Collider* collider)
 {
 	return {
-		.min = collider->GetCenterPosition() - (collider->GetSize() * 0.5f),
-		.max = collider->GetCenterPosition() + (collider->GetSize() * 0.5f)
+		.min = collider->GetCenterPosition() + collider->GetOffsetPosition() - (collider->GetSize() * 0.5f),
+		.max = collider->GetCenterPosition() + collider->GetOffsetPosition() + (collider->GetSize() * 0.5f)
 	};
 }
 
 OBB Collision3D::ChangeOBB(const Collider* collider)
 {
 	return {
-		.center = collider->GetCenterPosition(),
+		.center = collider->GetCenterPosition() + collider->GetOffsetPosition(),
 		.rotateMatrix = Quaternion::MakeRotateMatrix(collider->GetRotate()),
 		.size = collider->GetSize()
 	};

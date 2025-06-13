@@ -36,6 +36,7 @@ public:
 	virtual Vector3 GetSize() const { return size_; }
 	virtual Quaternion GetRotate() const { return rotate_; }
 	virtual Vector3 GetCenterPosition() const { return centerPosition_; }
+	virtual Vector3 GetOffsetPosition() const { return offsetPosition_; }
 
 	virtual std::string GetColliderName()const { return colliderName_; }
 	virtual float GetRadius()const { return radius_; }
@@ -56,6 +57,8 @@ protected:
 
 	// 中心座標
 	Vector3 centerPosition_;
+	// 中心座標からどのくらいズレているか
+	Vector3 offsetPosition_;
 	
 	// OBB用(サイズと回転)
 	Vector3 size_;
@@ -70,7 +73,7 @@ protected:
 
 private:
 
-	std::unique_ptr<Line3d> line_ = nullptr;
+	std::shared_ptr<Line3d> line_ = nullptr;
 	std::vector<Vector3> linePositions_;
 
 	std::vector<Vector3> CreateLinePositions();

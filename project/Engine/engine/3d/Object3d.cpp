@@ -20,6 +20,10 @@ void Object3d::Initialize(const std::string& filePath)
     SetModel(filePath);
 
     MakeMaterialData();
+
+    /*if (model_ && !model_->GetModelData().materials.empty()) {
+        materialData_->color = model_->GetModelData().materials[0].kdColor;
+    }*/
 }
 
 void Object3d::SetSceneRenderer()

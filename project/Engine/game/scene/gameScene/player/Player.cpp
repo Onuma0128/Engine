@@ -1,15 +1,36 @@
 #include "Player.h"
 
+#include "imgui.h"
+
 #include "state/PlayerMoveState.h"
 
-void Player::Init()
+void Player::Init(SceneJsonLoader loader)
 {
-	Object3d::Initialize("Box.obj");
+	// 全ての調整項目をロード
+	adjustItems_.LoadItems();
+
+	// シーンのオブジェクトをロード、初期化
+	SceneObject player;
+	for (auto it = loader.GetData().begin(); it != loader.GetData().end();) {
+		if (it->second.tag == "Player") {
+			player = it->second;
+			break;
+		}
+		++it;
+	}
+	Object3d::Initialize(player.fileName);
 	Object3d::SetSceneRenderer();
+	transform_ = player.transform;
+	if (player.collider.active) {
+		Collider::AddCollider();
+		Collider::colliderName_ = "Player";
+		Collider::myType_ = player.collider.type;
+		Collider::offsetPosition_ = player.collider.center;
+		Collider::size_ = player.collider.size;
+		Collider::DrawCollider();
+	}
 
-	transform_.scale_ = { 0.5f,0.5f,0.5f };
-	transform_.translation_ = { 0.0f,0.5f,0.0f };
-
+	// プレイヤーの初期化
 	ChengeState(std::make_unique<PlayerMoveState>(this));
 
 	effect_ = std::make_unique<PlayerEffect>();
@@ -22,12 +43,6 @@ void Player::Init()
 	BulletInit();
 	PredictionObjInit();
 
-	Collider::AddCollider();
-	Collider::colliderName_ = "Player";
-	Collider::myType_ = ColliderType::OBB;
-	Collider::size_ = transform_.scale_;
-	Collider::DrawCollider();
-
 	rightStickQuaternion_ = Quaternion::IdentityQuaternion();
 }
 
@@ -38,6 +53,8 @@ void Player::GlobalInit()
 
 void Player::Update()
 {
+	adjustItems_.Editor();
+
 	state_->Update();
 
 	effect_->Update();
@@ -60,7 +77,9 @@ void Player::Update()
 
 	size_t bulletUICount = 0;
 	for (auto& bulletUI : bulletUIs_) {
-		bulletUI->Update({});
+		bulletUI->Update(
+			adjustItems_.GetBulletUIData().size,
+			Vector2{ (bulletUICount * adjustItems_.GetBulletUIData().position.x) + adjustItems_.GetBulletUIData().startPosition,adjustItems_.GetBulletUIData().position.y });
 		++bulletUICount;
 
 		if (bulletCount >= bulletUICount) {
@@ -85,6 +104,12 @@ void Player::Draw()
 	effect_->Draw();
 	
 	reticle_->Draw();
+
+	for (auto& bulletUI : bulletUIs_) {
+		if (bulletUI->GetRenderOptions().enabled) {
+			bulletUI->Draw();
+		}
+	}
 }
 
 void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)

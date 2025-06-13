@@ -11,6 +11,7 @@ void EnemyEffect::Init()
 	hitReticleEffect_.cylinder_->TypeInit(PrimitiveType::Cylinder, 32);
 	hitReticleEffect_.cylinder_->GetTransform().scale = {};
 	hitReticleEffect_.cylinder_->SetColor({ 1.0f,1.0f,0.0f });
+	hitReticleEffect_.cylinder_->SetBlendMode(BlendMode::kBlendModeAdd);
 	hitReticleEffect_.cylinder_->GetRenderOptions().enabled = false;
 	hitReticleEffect_.cylinder_->GetRenderOptions().offscreen = false;
 	hitReticleEffect_.frame_ = 0.0f;

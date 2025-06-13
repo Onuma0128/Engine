@@ -30,6 +30,7 @@ void PlayerEffect::Init()
 	cylinder_->SetColor({ 1.0f,1.0f,0.0f });
 	cylinder_->GetRenderOptions().enabled = false;
 	cylinder_->GetRenderOptions().offscreen = false;
+	cylinder_->SetBlendMode(BlendMode::kBlendModeAdd);
 }
 
 void PlayerEffect::Update()

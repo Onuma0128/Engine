@@ -15,6 +15,7 @@ public:
 
 	ParticleEmitter::Emitter GetBaseEmitter()const { return baseEmitter_; }
 	std::string GetTexture()const { return baseEmitter_.texture; }
+	bool GetBillboard()const { return baseEmitter_.isBillboard; }
 
 private:
 

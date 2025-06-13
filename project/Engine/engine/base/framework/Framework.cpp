@@ -49,6 +49,8 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources", "uvChecker.png");
 	TextureManager::GetInstance()->LoadTexture("resources", "output.dds");
 	TextureManager::GetInstance()->LoadTexture("resources/player/texture", "2dReticle.png");
+	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "bulletUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/fieldObject", "ground.png");
 
 	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");
@@ -56,7 +58,13 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources", "plane.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "suzanne.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "Box.obj");
-	ModelManager::GetInstance()->LoadModel("resources/human", "walk.gltf");
+
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "ground.obj");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_1.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_2.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_3.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_4.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_5.gltf");
 }
 
 void Framework::Run()

@@ -4,12 +4,13 @@
 
 #include "gameScene/enemy/Enemy.h"
 #include "EnemySpawner.h"
+#include "SceneJsonLoader.h"
 
 class EnemySpawnerFactory
 {
 public:
 
-	void Init();
+	void Init(SceneJsonLoader loader);
 
 	void Update();
 
@@ -21,7 +22,7 @@ public:
 	GameCamera* GetGameCamera() { return gameCamera_; }
 	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
 
-	void CreateSpawner(const Vector3& position);
+	void CreateSpawner(SceneObject object);
 
 private:
 

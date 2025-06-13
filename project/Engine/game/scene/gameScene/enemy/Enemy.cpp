@@ -79,7 +79,7 @@ void Enemy::OnCollisionEnter(Collider* other)
 	}
 	if (other->GetColliderName() == "PlayerBulletSpecial") {
 		gameCamera_->SetShake(5.0f);
-		DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.3f);
+		DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
 	}
 	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial") {
 		Collider::isActive_ = false;
@@ -94,9 +94,7 @@ void Enemy::OnCollisionEnter(Collider* other)
 		transform.translation_ = transform_.translation_;
 		effect_->OnceBulletHitEffect(transform);
 		transform.rotation_ = transform_.rotation_;
-		transform.translation_ = other->GetCenterPosition();
-		if (other->GetColliderName() == "PlayerBulletSpecial")
-			transform.translation_ = other->GetCenterPosition() - (velocity_ * 0.5f);
+		transform.translation_ = transform_.translation_ - (velocity_ * 0.5f);
 		effect_->OnceBulletHitExplosionEffect(transform);
 		// 死亡時のステートに遷移
 		ChengeState(std::make_unique<EnemyDeadState>(this));

@@ -8,7 +8,9 @@ public:
 
 	void Init(const Vector2& position);
 
-	void Update(const Vector2& position);
+	void Update(const Vector2& size, const Vector2& position);
+
+	void Draw();
 
 private:
 

@@ -23,6 +23,11 @@ struct VertexData {
 	Vector2 texcoord;
 	Vector3 normal;
 };
+struct SubMesh {
+	uint32_t indexStart;
+	uint32_t indexCount;
+	uint32_t materialIndex;
+};
 
 struct Material {
 	Vector4 color;
@@ -64,7 +69,8 @@ struct ModelData {
 	std::map<std::string, JointWeightData> skinClusterData;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
-	MaterialData material;
+	std::vector<SubMesh> subMeshes;
+	std::vector<MaterialData> materials;
 	Node rootNode;
 };
 

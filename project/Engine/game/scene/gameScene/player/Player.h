@@ -5,6 +5,8 @@
 
 #include "Object3d.h"
 #include "Collider.h"
+#include "SceneJsonLoader.h"
+#include "JsonFunction.h"
 
 #include "gameScene/player/state/PlayerBaseState.h"
 #include "gameScene/player/effect/PlayerEffect.h"
@@ -12,12 +14,13 @@
 #include "gameScene/player/bullet/PlayerBullet.h"
 #include "gameScene/player/ui/PlayerBulletUI.h"
 #include "gameScene/player/reticle/PlayerReticle.h"
+#include "gameScene/player/adjustItem/PlayerAdjustItem.h"
 
 class Player : public Object3d,Collider
 {
 public:
 
-	void Init();
+	void Init(SceneJsonLoader loader);
 
 	void GlobalInit();
 
@@ -49,6 +52,7 @@ public:
 private:
 
 	void BulletInit();
+
 	void PredictionObjInit();
 
 private:
@@ -69,5 +73,7 @@ private:
 	std::vector<std::unique_ptr<PlayerBulletUI>> bulletUIs_;
 	// 必殺技用の弾を6つ生成
 	std::vector<std::unique_ptr<PlayerBullet>> specialBullets_;
+	// 調整項目
+	PlayerAdjustItem adjustItems_;
 
 };

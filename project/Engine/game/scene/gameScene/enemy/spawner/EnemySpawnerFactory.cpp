@@ -3,15 +3,14 @@
 #include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
 
-void EnemySpawnerFactory::Init()
+void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 {
-	CreateSpawner(Vector3{ -10.0f,0.5f,0.0f });
-	CreateSpawner(Vector3{ 0.0f,0.5f,7.5f });
-	CreateSpawner(Vector3{ 10.0f,0.5f,0.0f });
-
-	CreateSpawner(Vector3{ -10.0f,0.5f,-5.0f });
-	CreateSpawner(Vector3{ 0.0f,0.5f,-10.0f });
-	CreateSpawner(Vector3{ 10.0f,0.5f,-5.0f });
+	for (auto it = loader.GetData().begin(); it != loader.GetData().end();) {
+		if (it->second.tag == "EnemySpawner") {
+			CreateSpawner(it->second);
+		}
+		++it;
+	}
 }
 
 void EnemySpawnerFactory::Update()
@@ -28,13 +27,12 @@ void EnemySpawnerFactory::Draw()
 	}
 }
 
-void EnemySpawnerFactory::CreateSpawner(const Vector3& position)
+void EnemySpawnerFactory::CreateSpawner(SceneObject object)
 {
 	std::unique_ptr<EnemySpawner> spawner = std::make_unique<EnemySpawner>();
 	spawner->SetPlayer(player_);
 	spawner->SetGameCamera(gameCamera_);
-	spawner->Init();
-	spawner->GetTransform().translation_ = position;
+	spawner->Init(object);
 	spawner->EnemySpawn();
 	enemySpawners_.push_back(std::move(spawner));
 }

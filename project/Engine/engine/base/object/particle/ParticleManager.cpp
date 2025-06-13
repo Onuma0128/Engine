@@ -96,7 +96,12 @@ void ParticleManager::Update()
                 }
 
                 // パーティクルのビルボード化
-                Matrix4x4 billboardMatrix = Matrix4x4::Rotate(p_it->transform.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
+                Matrix4x4 billboardMatrix = Matrix4x4::Identity();
+                if (group.editor->GetBillboard()) {
+                    billboardMatrix = Matrix4x4::Rotate(p_it->transform.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
+                } else {
+                    billboardMatrix = Matrix4x4::Rotate(p_it->transform.rotation);
+                }
                 billboardMatrix.m[3][0] = 0.0f;
                 billboardMatrix.m[3][1] = 0.0f;
                 billboardMatrix.m[3][2] = 0.0f;
@@ -194,8 +199,6 @@ void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitt
     }
 
     ParticleGroup group;
-    group.textureFilePath = "white1x1.png";
-    group.textureIndex = TextureManager::GetInstance()->GetSrvIndex(group.textureFilePath);
 
     // パーティクルグループのマテリアル用のリソース,データを作成
     CreateMatrialResource(group);
@@ -220,6 +223,9 @@ void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitt
     group.emitters.push_back(emitter);
     group.editor = std::make_unique<ParticleEditor>();
     group.editor->Initialize(name);
+
+    group.textureFilePath = group.editor->GetTexture();
+    group.textureIndex = TextureManager::GetInstance()->GetSrvIndex(group.textureFilePath);
 
     group.srvIndex = srvManager_->Allocate() + TextureManager::kSRVIndexTop;
 

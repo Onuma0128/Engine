@@ -65,7 +65,7 @@ public:
 		rootParameters[7].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
 		rootParameters[7].DescriptorTable.pDescriptorRanges = environmentRange; //Tableの中身の配列を指定
 		rootParameters[7].DescriptorTable.NumDescriptorRanges = _countof(environmentRange); //Tableで利用する数
-		
+
 		rootParameters[8].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 		rootParameters[8].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
 		rootParameters[8].Descriptor.ShaderRegister = 4;

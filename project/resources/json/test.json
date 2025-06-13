@@ -2,7 +2,7 @@
     "Texture": "white1x1.png",
     "BlendMode": 4,
     "Move": true,
-    "EmitCount": 1024,
+    "EmitCount": 0,
     "FrequencyTime": 9.710000038146973,
     "LifeTime": 7.880000114440918,
     "Acceleration": {

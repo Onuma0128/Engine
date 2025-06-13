@@ -47,6 +47,9 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 	if (json.contains("file_name")) {
 		object.fileName = json["file_name"].get<std::string>();
 	}
+	if (json.contains("tag_name")) {
+		object.tag = json["tag_name"].get<std::string>();
+	}
 
 	if (json.contains("transform")) {
 		auto& transform = json["transform"];
@@ -92,7 +95,10 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 
 		col.center = center;
 		col.size = size;
+		col.active = true;
 		object.collider = col;
+	} else {
+		object.collider.active = false;
 	}
 
 	if (json.contains("children")) {

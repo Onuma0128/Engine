@@ -5,12 +5,13 @@
 
 #include "Object3d.h"
 #include "Collider.h"
+#include "SceneJsonLoader.h"
 
 class EnemySpawner : public Object3d,Collider
 {
 public:
 
-	void Init();
+	void Init(SceneObject object);
 
 	void Update();
 

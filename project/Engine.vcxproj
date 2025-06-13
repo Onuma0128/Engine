@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\player\adjustItem\PlayerAdjustItem.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyDeadState.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.cpp" />
@@ -211,8 +212,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\globalVariables\JsonFunction.cpp" />
     <ClCompile Include="Engine\engine\base\object\particle\ParticleEditor.cpp" />
     <ClCompile Include="Engine\engine\globalVariables\SceneJsonLoader.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\fieldObject\FieldObject.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\fieldObject\FieldObjectFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\player\adjustItem\PlayerAdjustItem.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyDeadState.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyMoveState.h" />
@@ -325,6 +329,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\globalVariables\JsonFunction.h" />
     <ClInclude Include="Engine\engine\base\object\particle\ParticleEditor.h" />
     <ClInclude Include="Engine\engine\globalVariables\SceneJsonLoader.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\fieldObject\FieldObject.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\fieldObject\FieldObjectFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

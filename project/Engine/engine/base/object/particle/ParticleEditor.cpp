@@ -14,6 +14,13 @@ void ParticleEditor::Initialize(std::string filePath)
 
 		// Texture
 		parameters_.Set("Texture", "white1x1.png");
+		baseEmitter_.texture = "white1x1.png";
+		// 選択できるテクスチャ
+		auto items = TextureManager::GetInstance()->GetTextures();
+		// テクスチャを検索
+		for (int i = 0; i < items.size(); ++i) {
+			if (baseEmitter_.texture == items[i]) { textureIndex_ = i; }
+		}
 		// BlendMode
 		parameters_.Set("BlendMode", 0);
 		// 発生させるか
@@ -110,7 +117,7 @@ void ParticleEditor::Initialize(std::string filePath)
 		baseEmitter_.minVelocity = parameters_.Get<Vector3>("MinVelocity", baseEmitter_.minVelocity);
 		baseEmitter_.maxVelocity = parameters_.Get<Vector3>("MaxVelocity", baseEmitter_.maxVelocity);
 		// 回転
-		parameters_.Get<bool>("Billboard", true);
+		baseEmitter_.isBillboard = parameters_.Get<bool>("Billboard", baseEmitter_.isBillboard);
 		baseEmitter_.minRotate = parameters_.Get<Vector3>("MinRotate", baseEmitter_.minRotate);
 		baseEmitter_.maxRotate = parameters_.Get<Vector3>("MaxRotate", baseEmitter_.maxRotate);
 		baseEmitter_.minRotateSpeed = parameters_.Get<Vector3>("MinRotateSpeed", baseEmitter_.minRotateSpeed);
@@ -286,7 +293,7 @@ void ParticleEditor::Save()
 	parameters_.Set("MinVelocity", baseEmitter_.minVelocity);
 	parameters_.Set("MaxVelocity", baseEmitter_.maxVelocity);
 	// 回転
-	parameters_.Set("Billboard", true);
+	parameters_.Set("Billboard", baseEmitter_.isBillboard);
 	parameters_.Set("MinRotate", baseEmitter_.minRotate);
 	parameters_.Set("MaxRotate", baseEmitter_.maxRotate);
 	parameters_.Set("MinRotateSpeed", baseEmitter_.minRotateSpeed);

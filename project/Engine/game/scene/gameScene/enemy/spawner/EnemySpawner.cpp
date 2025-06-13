@@ -5,25 +5,24 @@
 #include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
 
-void EnemySpawner::Init()
+void EnemySpawner::Init(SceneObject object)
 {
-	Object3d::Initialize("Box.obj");
-	//Object3d::SetSceneRenderer();
+	Object3d::Initialize(object.fileName);
+	Object3d::SetSceneRenderer();
+	transform_ = object.transform;
 
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::OBB;
-	Collider::colliderName_ = "EnemySpawner";
-	Collider::size_ = transform_.scale_;
-	Collider::DrawCollider();
+	if (object.collider.active) {
+		Collider::AddCollider();
+		Collider::myType_ = object.collider.type;
+		Collider::colliderName_ = "EnemySpawner";
+		Collider::offsetPosition_ = object.collider.center;
+		Collider::size_ = object.collider.size;
+		Collider::DrawCollider();
+	}
 }
 
 void EnemySpawner::Update()
 {
-	/*spawnFrame_ += DeltaTimer::GetDeltaTime();
-	if (spawnFrame_ > 5.0f) {
-		spawnFrame_ = 0.0f;
-		EnemySpawn();
-	}*/
 	if (enemys_.size() == 0) {
 		EnemySpawn();
 	}

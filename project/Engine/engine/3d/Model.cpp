@@ -17,17 +17,20 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 
     modelData_ = LoadObjFile(directoryPath, filename);
 
-    TextureManager::GetInstance()->LoadTexture(modelData_.material.directoryPath, modelData_.material.filePath);
+    for (auto& material : modelData_.materials) {
 
-    modelData_.material.textureIndex =
-        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.filePath);
+        TextureManager::GetInstance()->LoadTexture(material.directoryPath, material.filePath);
 
-    modelData_.material.ENV_DirectoryPath = "resources";
-    modelData_.material.ENV_FilePath = "output.dds";
-    TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath, modelData_.material.ENV_FilePath);
+        material.textureIndex =
+            TextureManager::GetInstance()->GetSrvIndex(material.filePath);
 
-    modelData_.material.ENV_TextureIndex =
-        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.ENV_FilePath);
+        material.ENV_DirectoryPath = "resources";
+        material.ENV_FilePath = "output.dds";
+        TextureManager::GetInstance()->LoadTexture(material.ENV_DirectoryPath, material.ENV_FilePath);
+
+        material.ENV_TextureIndex =
+            TextureManager::GetInstance()->GetSrvIndex(material.ENV_FilePath);
+    }
 
     MakeVertexData();
     MakeIndexData();
@@ -40,11 +43,14 @@ void Model::Draw(bool isAnimation)
         commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
     }
     commandList->IASetIndexBuffer(&indexBufferView_);
-    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, modelData_.material.textureIndex);
-    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, modelData_.material.ENV_TextureIndex);
 
-    // 描画
-    commandList->DrawIndexedInstanced((UINT)modelData_.indices.size(), 1, 0, 0, 0);
+    for (const auto& subMesh : modelData_.subMeshes) {
+        const auto& material = modelData_.materials[subMesh.materialIndex];
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, material.textureIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, material.ENV_TextureIndex);
+        // 描画
+        commandList->DrawIndexedInstanced(subMesh.indexCount, 1, subMesh.indexStart, 0, 0);
+    }
 }
 
 void Model::MakeVertexData()
@@ -87,26 +93,31 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
     assert(scene->HasMeshes());
 
     ModelData modelData;
+    size_t vertexOffset = 0;
 
     // meshを解析
     for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
         aiMesh* mesh = scene->mMeshes[meshIndex];
         assert(mesh->HasNormals());
-        modelData.vertices.resize(mesh->mNumVertices);
+
+        SubMesh subMesh{};
+        subMesh.indexStart = static_cast<uint32_t>(modelData.indices.size());
+        subMesh.materialIndex = mesh->mMaterialIndex;
+        //modelData.vertices.resize(mesh->mNumVertices);
 
         for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
+            VertexData vertex{};
             aiVector3D& position = mesh->mVertices[vertexIndex];
             aiVector3D& normal = mesh->mNormals[vertexIndex];
 
-            modelData.vertices[vertexIndex].position = { -position.x,position.y,position.z,1.0f };
-            modelData.vertices[vertexIndex].normal = { -normal.x,normal.y,normal.z };
+            vertex.position = { -position.x,position.y,position.z,1.0f };
+            vertex.normal = { -normal.x,normal.y,normal.z };
 
             if (mesh->HasTextureCoords(0)) {
                 aiVector3D& texcoord = mesh->mTextureCoords[0][vertexIndex];
-                modelData.vertices[vertexIndex].texcoord = { texcoord.x,texcoord.y };
-            } else {
-                modelData.vertices[vertexIndex].texcoord = { 0.0f,0.0f };
+                vertex.texcoord = { texcoord.x,texcoord.y };
             }
+            modelData.vertices.push_back(vertex);
         }
 
         for (uint32_t faceIndex = 0; faceIndex < mesh->mNumFaces; ++faceIndex) {
@@ -115,9 +126,12 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
             for (uint32_t element = 0; element < face.mNumIndices; ++element) {
                 uint32_t vertexIndex = face.mIndices[element];
-                modelData.indices.push_back(vertexIndex);
+                modelData.indices.push_back(static_cast<uint32_t>(vertexOffset) + vertexIndex);
             }
         }
+        subMesh.indexCount = static_cast<uint32_t>(modelData.indices.size()) - subMesh.indexStart;
+        modelData.subMeshes.push_back(subMesh);
+        vertexOffset = modelData.vertices.size();
 
         for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
             aiBone* bone = mesh->mBones[boneIndex];
@@ -142,25 +156,24 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
     }
 
     // materialを解析
-    bool textureFound = false;  // テクスチャが見つかったかどうかのフラグ
+    modelData.materials.resize(scene->mNumMaterials);
     for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
         aiMaterial* material = scene->mMaterials[materialIndex];
+        MaterialData materialData{};
+        aiString textureFilePath;
 
         // Diffuseテクスチャを確認
-        if (material->GetTextureCount(aiTextureType_DIFFUSE) != 0) {
-            aiString textureFilePath;
-            material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath);
-            modelData.material.directoryPath = directoryPath;
-            modelData.material.filePath = textureFilePath.C_Str();
-            textureFound = true; // テクスチャが見つかった
-        }
-        // 他にも必要なテクスチャタイプがあればここで追加で確認する
+        if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath) == AI_SUCCESS) {
+            materialData.directoryPath = directoryPath;
+            materialData.filePath = textureFilePath.C_Str();
 
         // いずれのテクスチャも見つからなければデフォルトのwhite1x1.pngを割り当てる
-        if (!textureFound) {
-            modelData.material.directoryPath = "resources";
-            modelData.material.filePath = "white1x1.png";
+        } else {
+            materialData.directoryPath = "resources";
+            materialData.filePath = "white1x1.png";
         }
+
+        modelData.materials[materialIndex] = materialData;
     }
 
     modelData.rootNode = ReadNode(scene->mRootNode);
@@ -170,20 +183,26 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
 void Model::SetTexture(const std::string& directoryPath, const std::string& filename)
 {
-    modelData_.material.directoryPath = directoryPath + "/";
-    modelData_.material.filePath = filename;
-    TextureManager::GetInstance()->LoadTexture(modelData_.material.directoryPath, modelData_.material.filePath);
-    modelData_.material.textureIndex =
-        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.filePath);
+    if (modelData_.materials.empty()) { return; }
+    auto& materialData = modelData_.materials[0];
+    materialData.directoryPath = directoryPath + "/";
+    materialData.filePath = filename;
+
+    TextureManager::GetInstance()->LoadTexture(materialData.directoryPath, materialData.filePath);
+    materialData.textureIndex =
+        TextureManager::GetInstance()->GetSrvIndex(materialData.filePath);
 }
 
 void Model::SetTexture_ENV(const std::string& directoryPath, const std::string& filename)
 {
-    modelData_.material.ENV_DirectoryPath = directoryPath;
-    modelData_.material.ENV_FilePath = filename;
-    TextureManager::GetInstance()->LoadTexture(modelData_.material.ENV_DirectoryPath, modelData_.material.ENV_FilePath);
-    modelData_.material.ENV_TextureIndex =
-        TextureManager::GetInstance()->GetSrvIndex(modelData_.material.ENV_DirectoryPath + modelData_.material.ENV_FilePath);
+    if (modelData_.materials.empty()) { return; }
+    auto& materialData = modelData_.materials[0];
+    materialData.ENV_DirectoryPath = directoryPath + "/";
+    materialData.ENV_FilePath = filename;
+
+    TextureManager::GetInstance()->LoadTexture(materialData.ENV_DirectoryPath, materialData.ENV_FilePath);
+    materialData.ENV_TextureIndex =
+        TextureManager::GetInstance()->GetSrvIndex(materialData.ENV_FilePath);
 }
 
 MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)

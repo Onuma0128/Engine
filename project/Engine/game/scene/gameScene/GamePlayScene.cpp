@@ -1,5 +1,6 @@
 #include "GamePlayScene.h"
 
+#include "imgui.h"
 #include "ParticleManager.h"
 #include "SceneManager.h"
 #include "SceneJsonLoader.h"
@@ -11,22 +12,17 @@
 
 void GamePlayScene::Initialize()
 {
-	demoObj_ = std::make_unique<Object3d>();
-	demoObj_->Initialize("plane.obj");
-	//demoObj_->SetSceneRenderer();
-	demoObj_->SetTexture("resources", "white1x1.png");
-	demoObj_->SetColor({ 0.1f,0.1f,0.1f,1.0f });
-	demoObj_->GetTransform().scale_ = { 20.0f,20.0f,20.0f };
-	demoObj_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, -1.57f);
+	// シーンのロード
+	SceneJsonLoader loader;
+	loader.Load("sceneObject");
 
 	skyBox_ = std::make_unique<PrimitiveDrawr>();
 	skyBox_->TypeInit(PrimitiveType::Skybox);
 	skyBox_->GetTransform().scale = { 512.0f,512.0f ,512.0f };
 	skyBox_->SetSceneRenderer();
-	//skyBox_->GetRenderOptions().enabled = false;
 
 	player_ = std::make_unique<Player>();
-	player_->Init();
+	player_->Init(loader);
 
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
@@ -35,10 +31,10 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_ = std::make_unique<EnemySpawnerFactory>();
 	enemySpawnerFactory_->SetPlayer(player_.get());
 	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
-	enemySpawnerFactory_->Init();
+	enemySpawnerFactory_->Init(loader);
 
-	SceneJsonLoader loader;
-	loader.Load("sceneObject");
+	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
+	fieldObjectFactory_->Init(loader);
 
 	emitter_ = std::make_unique<ParticleEmitter>("test");
 	ParticleManager::GetInstance()->CreateParticleGroup(emitter_);
@@ -51,11 +47,11 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
-	demoObj_->Update();
-
 	player_->Update();
 
 	enemySpawnerFactory_->Update();
+
+	fieldObjectFactory_->Update();
 
 	gameCamera_->Update();
 
