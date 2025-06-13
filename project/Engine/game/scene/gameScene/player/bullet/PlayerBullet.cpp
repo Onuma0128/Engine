@@ -75,6 +75,11 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 		IsCollision();
 		effect_->OnceBulletDeleteEffect(transform_);
 	}
+
+	if (other->GetColliderName() == "FieldObject") {
+		IsCollision();
+		effect_->OnceBulletDeleteEffect(transform_);
+	}
 }
 
 void PlayerBullet::Reload()

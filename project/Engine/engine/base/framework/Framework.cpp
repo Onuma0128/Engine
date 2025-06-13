@@ -43,14 +43,16 @@ void Framework::Update()
 
 void Framework::LoadFiles()
 {
-	TextureManager::GetInstance()->LoadTexture("resources", "smoke.png");
-	TextureManager::GetInstance()->LoadTexture("resources", "circle.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "smoke.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "circle.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "woodChip.png");
 	TextureManager::GetInstance()->LoadTexture("resources", "white1x1.png");
 	TextureManager::GetInstance()->LoadTexture("resources", "uvChecker.png");
 	TextureManager::GetInstance()->LoadTexture("resources", "output.dds");
 	TextureManager::GetInstance()->LoadTexture("resources/player/texture", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "bulletUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/fieldObject", "ground.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "blood.png");
 
 	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");
@@ -58,6 +60,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources", "plane.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "suzanne.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "Box.obj");
+	ModelManager::GetInstance()->LoadModel("resources/player/revolver", "Revolver.obj");
 
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "ground.obj");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_1.gltf");

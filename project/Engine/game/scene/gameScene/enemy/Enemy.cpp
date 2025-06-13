@@ -75,7 +75,7 @@ void Enemy::OnCollisionEnter(Collider* other)
 {
 	// プレイヤーの弾と当たっているなら
 	if (other->GetColliderName() == "PlayerBullet") {
-		gameCamera_->SetShake(1.0f);
+		gameCamera_->SetShake(2.0f);
 	}
 	if (other->GetColliderName() == "PlayerBulletSpecial") {
 		gameCamera_->SetShake(5.0f);

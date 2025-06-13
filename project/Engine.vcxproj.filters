@@ -312,7 +312,10 @@
     <ClCompile Include="Engine\game\scene\gameScene\fieldObject\FieldObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\game\scene\gameScene\fieldObject\FieldObjectFactory.cpp">
+    <ClCompile Include="Engine\game\scene\gameScene\fieldObject\Factory\FieldObjectFactory.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\game\scene\gameScene\fieldObject\effect\FieldObjectEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -659,7 +662,10 @@
     <ClInclude Include="Engine\game\scene\gameScene\fieldObject\FieldObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\game\scene\gameScene\fieldObject\FieldObjectFactory.h">
+    <ClInclude Include="Engine\game\scene\gameScene\fieldObject\Factory\FieldObjectFactory.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\game\scene\gameScene\fieldObject\effect\FieldObjectEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

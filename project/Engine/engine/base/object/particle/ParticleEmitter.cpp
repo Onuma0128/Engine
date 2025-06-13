@@ -117,7 +117,7 @@ void ParticleEmitter::Update()
         std::clamp(min.x, -256.0f, max.x),std::clamp(min.y, -256.0f, max.y),std::clamp(min.z, -256.0f, max.z)
     };
     emitter_.maxRotate = {
-        std::clamp(max.x, min.x, 256.0f),std::clamp(max.x, min.x, 256.0f),std::clamp(max.x, min.x, 256.0f)
+        std::clamp(max.x, min.x, 256.0f),std::clamp(max.y, min.y, 256.0f),std::clamp(max.z, min.z, 256.0f)
     };
     // min,maxが最大値を超えていないかclamp
     min = editorEmitter_.minRotateSpeed;
@@ -126,7 +126,7 @@ void ParticleEmitter::Update()
         std::clamp(min.x, -256.0f, max.x),std::clamp(min.y, -256.0f, max.y),std::clamp(min.z, -256.0f, max.z)
     };
     emitter_.maxRotateSpeed = {
-        std::clamp(max.x, min.x, 256.0f),std::clamp(max.x, min.x, 256.0f),std::clamp(max.x, min.x, 256.0f)
+        std::clamp(max.x, min.x, 256.0f),std::clamp(max.y, min.y, 256.0f),std::clamp(max.z, min.z, 256.0f)
     };
 
 #ifdef _DEBUG
@@ -211,8 +211,8 @@ void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::itera
             float t = 1.0f - (particle->currentTime / particle->lifeTime);
             particle->transform.scale = t * particle->offsetScale + (1.0f - t) * emitter_.endScale;
         }
-        particle->transform.rotation += particle->rotateSpeed;
-        particle->uvTranslate += emitter_.uvTranslation;
+        particle->transform.rotation += particle->rotateSpeed * DeltaTimer::GetDeltaTime();
+        particle->uvTranslate += emitter_.uvTranslation * DeltaTimer::GetDeltaTime();
 
         particle->currentTime += DeltaTimer::GetDeltaTime();
 

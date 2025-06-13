@@ -11,7 +11,7 @@
 #include "gameScene/player/Player.h"
 #include "gameScene/enemy/spawner/EnemySpawnerFactory.h"
 #include "gameScene/gameCamera/GameCamera.h"
-#include "gameScene/fieldObject/FieldObjectFactory.h"
+#include "gameScene/fieldObject/Factory/FieldObjectFactory.h"
 
 
 class GamePlayScene : public BaseScene

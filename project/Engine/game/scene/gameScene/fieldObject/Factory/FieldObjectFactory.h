@@ -4,7 +4,7 @@
 #include <list>
 
 #include "SceneJsonLoader.h"
-#include "FieldObject.h"
+#include "gameScene/fieldObject/FieldObject.h"
 
 class FieldObjectFactory
 {
