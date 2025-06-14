@@ -21,6 +21,8 @@ void ParticleEditor::Initialize(std::string filePath)
 		for (int i = 0; i < items.size(); ++i) {
 			if (baseEmitter_.texture == items[i]) { textureIndex_ = i; }
 		}
+		// Model
+		parameters_.Set("Model", 0);
 		// BlendMode
 		parameters_.Set("BlendMode", 0);
 		// 発生させるか
@@ -83,6 +85,9 @@ void ParticleEditor::Initialize(std::string filePath)
 		for (int i = 0; i < items.size(); ++i) {
 			if (baseEmitter_.texture == items[i]) { textureIndex_ = i; }
 		}
+		// Model
+		baseEmitter_.model_ = parameters_.Get<int>("Model", static_cast<int>(baseEmitter_.model_));
+		modelIndex_ = baseEmitter_.model_;
 		// BlendMode
 		baseEmitter_.blendMode_ = parameters_.Get<int>("BlendMode", static_cast<int>(baseEmitter_.blendMode_));
 		blendIndex_ = baseEmitter_.blendMode_;
@@ -154,6 +159,21 @@ void ParticleEditor::Update()
 			ImGui::EndCombo();
 		}
 		baseEmitter_.texture = items[textureIndex_];
+
+		/* ==================== 選択できるモデル ==================== */
+
+		items.clear();
+		items = { "Plane","Ring" };
+		// ブレンドを選択
+		if (ImGui::BeginCombo("Model", items[modelIndex_].c_str())) {
+			for (int i = 0; i < items.size(); ++i) {
+				const bool is_selected = (modelIndex_ == i);
+				if (ImGui::Selectable(items[i].c_str(), is_selected)) { modelIndex_ = i; }
+				if (is_selected) { ImGui::SetItemDefaultFocus(); }
+			}
+			ImGui::EndCombo();
+		}
+		baseEmitter_.model_ = modelIndex_;
 
 		/* ==================== 選択できるブレンド ==================== */
 
@@ -260,6 +280,8 @@ void ParticleEditor::Save()
 
 	// Texture
 	parameters_.Set("Texture", baseEmitter_.texture);
+	// BlendMode
+	parameters_.Set("Model", static_cast<int>(baseEmitter_.model_));
 	// BlendMode
 	parameters_.Set("BlendMode", static_cast<int>(baseEmitter_.blendMode_));
 	// 発生数

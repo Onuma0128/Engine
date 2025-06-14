@@ -119,15 +119,23 @@ private:
 
 	/* =============== 頂点 =============== */
 
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView_{};
-	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
-	VertexData* vertexData_ = nullptr;
+	struct VertexDatas {
+		D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
+		ComPtr<ID3D12Resource> vertexResource = nullptr;
+		VertexData* vertexData = nullptr;
+	};
+	VertexDatas vertexPlane_;
+	VertexDatas vertexRing_;
 
 	/* =============== index頂点 =============== */
 
-	D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
-	ComPtr<ID3D12Resource> indexResource_ = nullptr;
-	uint32_t* indexData_ = nullptr;
+	struct IndexDatas {
+		D3D12_INDEX_BUFFER_VIEW indexBufferView{};
+		ComPtr<ID3D12Resource> indexResource = nullptr;
+		uint32_t* indexData = nullptr;
+	};
+	IndexDatas indexPlane_;
+	IndexDatas indexRing_;
 
 	// パーティクルグループコンテナ
 	std::unordered_map<std::string, ParticleGroup> particleGroups_;

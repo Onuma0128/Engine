@@ -154,20 +154,28 @@ void ParticleManager::Draw()
 
         /*==================== パイプラインの設定 ====================*/
         commandList->SetGraphicsRootSignature(rootSignature_.Get());
-        commandList->SetPipelineState(pipelineStates_[particleGroups_[name].emitters.back().lock()->GetBlendMode()].Get());
+        commandList->SetPipelineState(pipelineStates_[particleGroups_[name].editor->GetBlendMode()].Get());
         commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
         /*==================== パーティクルの描画 ====================*/
         uint32_t textIndex = group.textureIndex;
-        commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
-        commandList->IASetIndexBuffer(&indexBufferView_);
+        UINT drawIndex = 6;
+        D3D12_VERTEX_BUFFER_VIEW vertex = vertexPlane_.vertexBufferView;
+        D3D12_INDEX_BUFFER_VIEW index = indexPlane_.indexBufferView;
+        if (particleGroups_[name].editor->GetModel() == 1) {
+            vertex = vertexRing_.vertexBufferView;
+            index = indexRing_.indexBufferView;
+            drawIndex = 192;
+        }
+        commandList->IASetVertexBuffers(0, 1, &vertex);
+        commandList->IASetIndexBuffer(&index);
         commandList->SetGraphicsRootConstantBufferView(0, group.materialResource_->GetGPUVirtualAddress());
         commandList->SetGraphicsRootConstantBufferView(1, group.instancingResource->GetGPUVirtualAddress());
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, group.srvIndex);
 
         // 各パーティクルグループのインスタンスを描画
-        commandList->DrawIndexedInstanced(6, group.instanceCount, 0, 0, 0);
+        commandList->DrawIndexedInstanced(drawIndex, group.instanceCount, 0, 0, 0);
     }
 }
 
@@ -290,42 +298,107 @@ void ParticleManager::ParticleEditorUpdate()
 
 void ParticleManager::CreateVertexData()
 {
-    vertexData_[0].position = { -1.0f,1.0f,0.0f,1.0f };
-    vertexData_[1].position = { 1.0f,1.0f,0.0f,1.0f };
-    vertexData_[2].position = { -1.0f,-1.0f,0.0f,1.0f };
-    vertexData_[3].position = { 1.0f,-1.0f,0.0f,1.0f };
+    /* ============================== Plane ============================== */
 
-    vertexData_[0].texcoord = { 0.0f,0.0f };
-    vertexData_[1].texcoord = { 1.0f,0.0f };
-    vertexData_[2].texcoord = { 0.0f,1.0f };
-    vertexData_[3].texcoord = { 1.0f,1.0f };
+    vertexPlane_.vertexData[0].position = { -1.0f,1.0f,0.0f,1.0f };
+    vertexPlane_.vertexData[1].position = { 1.0f,1.0f,0.0f,1.0f };
+    vertexPlane_.vertexData[2].position = { -1.0f,-1.0f,0.0f,1.0f };
+    vertexPlane_.vertexData[3].position = { 1.0f,-1.0f,0.0f,1.0f };
+
+    vertexPlane_.vertexData[0].texcoord = { 0.0f,0.0f };
+    vertexPlane_.vertexData[1].texcoord = { 1.0f,0.0f };
+    vertexPlane_.vertexData[2].texcoord = { 0.0f,1.0f };
+    vertexPlane_.vertexData[3].texcoord = { 1.0f,1.0f };
+
+    /* ============================== RIng ============================== */
+
+    const float kRingDivide = 32;
+    const float kOuterRadius = 1.0f;
+    const float kInnerRadius = 0.2f;
+
+    for (uint32_t i = 0; i <= kRingDivide; ++i) {
+        float t = static_cast<float>(i) / kRingDivide;   // 0.0 … 1.0
+        float rad = t * 2.0f * std::numbers::pi_v<float>;
+        float s = std::sin(rad);
+        float c = std::cos(rad);
+
+        uint32_t counter = i * 2;
+        // 外周
+        vertexRing_.vertexData[counter].position = {-s * kOuterRadius,  c * kOuterRadius, 0.0f, 1.0f};
+        vertexRing_.vertexData[counter].texcoord = { t, 0.0f };
+        // 内周
+        vertexRing_.vertexData[counter + 1].position = { -s * kInnerRadius,  c * kInnerRadius, 0.0f, 1.0f };
+        vertexRing_.vertexData[counter + 1].texcoord = { t, 1.0f };
+    }
+
 }
 
 void ParticleManager::CreateVertexResource()
 {
     // 実際に頂点リソースを作る
-    vertexResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(VertexData) * 4);
-    vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-    vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * 4);
-    vertexBufferView_.StrideInBytes = sizeof(VertexData);
+    vertexPlane_.vertexResource = CreateBufferResource(dxEngine_->GetDevice(), sizeof(VertexData) * 4);
+    vertexPlane_.vertexBufferView.BufferLocation = vertexPlane_.vertexResource->GetGPUVirtualAddress();
+    vertexPlane_.vertexBufferView.SizeInBytes = UINT(sizeof(VertexData) * 4);
+    vertexPlane_.vertexBufferView.StrideInBytes = sizeof(VertexData);
 
-    vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+    vertexPlane_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexPlane_.vertexData));
+
+    // 実際に頂点リソースを作る
+    vertexRing_.vertexResource = CreateBufferResource(dxEngine_->GetDevice(), sizeof(VertexData) * 66);
+    vertexRing_.vertexBufferView.BufferLocation = vertexRing_.vertexResource->GetGPUVirtualAddress();
+    vertexRing_.vertexBufferView.SizeInBytes = UINT(sizeof(VertexData) * 66);
+    vertexRing_.vertexBufferView.StrideInBytes = sizeof(VertexData);
+
+    vertexRing_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexRing_.vertexData));
 }
 
 void ParticleManager::CreateIndexData() 
 {
-    indexData_[0] = 0; indexData_[1] = 1; indexData_[2] = 2;
-    indexData_[3] = 1; indexData_[4] = 3; indexData_[5] = 2;
+    /* ============================== Plane ============================== */
+
+    indexPlane_.indexData[0] = 0; indexPlane_.indexData[1] = 1; indexPlane_.indexData[2] = 2;
+    indexPlane_.indexData[3] = 1; indexPlane_.indexData[4] = 3; indexPlane_.indexData[5] = 2;
+
+    /* ============================== Ring ============================== */
+
+    const float kRingDivide = 32;
+
+    for (uint32_t i = 0; i < kRingDivide; ++i) {
+        uint32_t v0 = 2 * i;     // 外周  (current)
+        uint32_t v1 = 2 * i + 1; // 内周  (current)
+        uint32_t v2 = 2 * (i + 1);     // 外周  (next)
+        uint32_t v3 = 2 * (i + 1) + 1; // 内周  (next)
+
+        uint32_t counter = i * 6;
+
+        // 三角形 1
+        indexRing_.indexData[counter] = v0;
+        indexRing_.indexData[counter + 1] = v1;
+        indexRing_.indexData[counter + 2] = v2;
+
+        // 三角形 2
+        indexRing_.indexData[counter + 3] = v2;
+        indexRing_.indexData[counter + 4] = v1;
+        indexRing_.indexData[counter + 5] = v3;
+    }
 }
 
 void ParticleManager::CreateIndexResource()
 {
-    indexResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(uint32_t) * 6);
-    indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
-    indexBufferView_.SizeInBytes = sizeof(uint32_t) * 6;
-    indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
+    indexPlane_.indexResource = CreateBufferResource(dxEngine_->GetDevice(), sizeof(uint32_t) * 6);
+    indexPlane_.indexBufferView.BufferLocation = indexPlane_.indexResource->GetGPUVirtualAddress();
+    indexPlane_.indexBufferView.SizeInBytes = sizeof(uint32_t) * 6;
+    indexPlane_.indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 
-    indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
+    indexPlane_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&indexPlane_.indexData));
+
+
+    indexRing_.indexResource = CreateBufferResource(dxEngine_->GetDevice(), sizeof(uint32_t) * 6 * 32);
+    indexRing_.indexBufferView.BufferLocation = indexRing_.indexResource->GetGPUVirtualAddress();
+    indexRing_.indexBufferView.SizeInBytes = sizeof(uint32_t) * 6 * 32;
+    indexRing_.indexBufferView.Format = DXGI_FORMAT_R32_UINT;
+
+    indexRing_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&indexRing_.indexData));
 }
 
 void ParticleManager::CreateMatrialResource(ParticleGroup& group)

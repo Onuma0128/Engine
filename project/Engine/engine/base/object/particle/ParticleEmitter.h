@@ -36,6 +36,7 @@ public:
 		/* ==================== Particle ==================== */
 
 		std::string texture;		// ParticleのTexture
+		uint32_t model_;			// ParticleのModel
 		uint32_t blendMode_;		// ParticleのBlendModeを設定
 		Vector3 minScale;			// Particle発生時の最小size
 		Vector3 maxScale;			// Particle発生時の最大size
