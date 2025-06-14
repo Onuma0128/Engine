@@ -2,6 +2,8 @@
 
 #include "DeltaTimer.h"
 
+#include "gameScene/player/adjustItem/PlayerAdjustItem.h"
+
 void PlayerBullet::Init(const std::string& colliderName)
 {
 	Object3d::Initialize("Box.obj");
@@ -90,12 +92,12 @@ void PlayerBullet::Reload()
 void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 {
 	// 回転と座標を取得
+	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform.rotation_);
 	transform_.rotation_ = transform.rotation_;
-	transform_.translation_ = transform.translation_;
+	transform_.translation_ = transform.translation_ + item_->GetBulletData().position.Transform(rotateMatrix);
 
 	// 速度(向き)を取得
 	speed_ = speed;
-	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform.rotation_);
 	velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix);
 
 	activeFrame_ = 0.0f;

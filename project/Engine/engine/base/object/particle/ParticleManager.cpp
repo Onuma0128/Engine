@@ -47,8 +47,10 @@ void ParticleManager::Initialize(DirectXEngine* dxEngine)
 
 void ParticleManager::Update()
 {
+#ifdef _DEBUG
     // editorのUpdate
     ParticleEditorUpdate();
+#endif // _DEBUG
 
     // 各パーティクルグループに対して処理
     for (auto it = particleGroups_.begin(); it != particleGroups_.end();) {

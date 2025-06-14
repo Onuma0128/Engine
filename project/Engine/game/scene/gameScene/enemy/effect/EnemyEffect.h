@@ -42,8 +42,10 @@ private:
 
 	// 弾がヒットした時のエフェクト(血飛沫)
 	std::shared_ptr<ParticleEmitter> hitEmitter_;
-	// 弾がヒットした時のエフェクト(土煙)
+	// 弾がヒットした時のエフェクト(爆発)
 	std::shared_ptr<ParticleEmitter> hitExplosionEmitter_;
+	// 弾がヒットした時のエフェクト(爆発)
+	std::shared_ptr<ParticleEmitter> hitRingEmitter_;
 
 	/* ==================== プレイヤーが死亡時のエフェクト ==================== */
 

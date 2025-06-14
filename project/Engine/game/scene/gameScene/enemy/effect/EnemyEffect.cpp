@@ -26,6 +26,10 @@ void EnemyEffect::Init()
 	particleManager_->CreateParticleGroup(hitExplosionEmitter_);
 	hitExplosionEmitter_->SetIsCreate(false);
 
+	hitRingEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRing");
+	particleManager_->CreateParticleGroup(hitRingEmitter_);
+	hitRingEmitter_->SetIsCreate(false);
+
 	// 死亡時のエフェクト
 	deadEmitter_ = std::make_unique<ParticleEmitter>("enemyDead");
 	particleManager_->CreateParticleGroup(deadEmitter_);
@@ -62,6 +66,7 @@ void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
 void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
 {
 	hitExplosionEmitter_->onceEmit();
+	hitRingEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
 	Quaternion rotate = transform.rotation_;
@@ -69,6 +74,8 @@ void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
 
 	hitExplosionEmitter_->SetRotation(rotate);
 	hitExplosionEmitter_->SetPosition(position);
+	hitRingEmitter_->SetRotation(rotate);
+	hitRingEmitter_->SetPosition(position);
 }
 
 void EnemyEffect::HitReticleUpdate()

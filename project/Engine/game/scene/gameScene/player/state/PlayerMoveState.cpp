@@ -25,7 +25,7 @@ void PlayerMoveState::Update()
 	Input* input = Input::GetInstance();
 
 	// 移動の処理
-	const float playerSpeed = 3.0f;
+	const float playerSpeed = player_->GetItem()->GetPlayerData().speed;
 	Vector3 velocity{};
 	velocity.x = input->GetGamepadLeftStickX();
 	velocity.z = input->GetGamepadLeftStickY();

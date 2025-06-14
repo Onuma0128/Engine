@@ -7,7 +7,8 @@
 void Player::Init(SceneJsonLoader loader)
 {
 	// 全ての調整項目をロード
-	adjustItems_.LoadItems();
+	items_ = std::make_unique<PlayerAdjustItem>();
+	items_->LoadItems();
 
 	// シーンのオブジェクトをロード、初期化
 	SceneObject player;
@@ -53,7 +54,9 @@ void Player::GlobalInit()
 
 void Player::Update()
 {
-	adjustItems_.Editor();
+#ifdef _DEBUG
+	items_->Editor();
+#endif // _DEBUG
 
 	state_->Update();
 
@@ -78,8 +81,8 @@ void Player::Update()
 	size_t bulletUICount = 0;
 	for (auto& bulletUI : bulletUIs_) {
 		bulletUI->Update(
-			adjustItems_.GetBulletUIData().size,
-			Vector2{ (bulletUICount * adjustItems_.GetBulletUIData().position.x) + adjustItems_.GetBulletUIData().startPosition,adjustItems_.GetBulletUIData().position.y });
+			items_->GetBulletUIData().size,
+			Vector2{ (bulletUICount * items_->GetBulletUIData().position.x) + items_->GetBulletUIData().startPosition,items_->GetBulletUIData().position.y });
 		++bulletUICount;
 
 		if (bulletCount >= bulletUICount) {
@@ -89,8 +92,14 @@ void Player::Update()
 		}
 	}
 
-	for (auto& obj : predictionObjects_) {
-		obj->Update();
+	revolver_->Update();
+
+	for (size_t i = 0; i < predictionObjects_.size(); ++i) {
+		float interval = items_->GetPreObjectData().interval;
+		Vector3 startPosition = items_->GetPreObjectData().startPosition;
+		predictionObjects_[i]->Update(
+			(Vector3::ExprUnitZ * (static_cast<float>(i) * interval) + startPosition)
+		);
 	}
 
 	Collider::rotate_ = transform_.rotation_;
@@ -152,7 +161,7 @@ void Player::AttackBullet()
 			WorldTransform transform;
 			transform.rotation_ = rightStickQuaternion_;
 			transform.translation_ = transform_.translation_;
-			bullet->Attack(transform);
+			bullet->Attack(transform, items_->GetBulletData().speed);
 			break;
 		}
 	}
@@ -168,7 +177,7 @@ void Player::SpecialAttackBullet()
 	uint32_t count = 0;
 	for (auto& transform : reticle_->GetEnemyTransforms()) {
 		transform.translation_ = transform_.translation_;
-		specialBullets_[count]->Attack(transform, 40.0f);
+		specialBullets_[count]->Attack(transform, items_->GetBulletData().speed_sp);
 		++count;
 	}
 	reticle_->GetEnemyTransforms().clear();
@@ -183,10 +192,12 @@ void Player::BulletInit()
 	bulletUIs_.resize(6);
 	for (auto& bullet : bullets_) {
 		bullet = std::make_unique<PlayerBullet>();
+		bullet->SetItem(items_.get());
 		bullet->Init("PlayerBullet");
 	}
 	for (auto& bullet : specialBullets_) {
 		bullet = std::make_unique<PlayerBullet>();
+		bullet->SetItem(items_.get());
 		bullet->Init("PlayerBulletSpecial");
 	}
 	// 弾UIを初期化
@@ -198,9 +209,16 @@ void Player::BulletInit()
 
 void Player::PredictionObjInit()
 {
-	for (size_t i = 0; i < predictionObjects_.size(); ++i) {
-		predictionObjects_[i] = std::make_unique<PredictionObject>();
-		predictionObjects_[i]->SetPlayer(this);
-		predictionObjects_[i]->Init((Vector3::ExprUnitZ * static_cast<float>(i + 1)));
+	// リボルバー銃の初期化
+	revolver_ = std::make_unique<Revolver>();
+	revolver_->SetPlayer(this);
+	revolver_->Init();
+
+	// 弾の予測オブジェクトの初期化
+	for (auto& object : predictionObjects_) {
+		object = std::make_unique<PredictionObject>();
+		object->SetPlayer(this);
+		object->Init();
 	}
+
 }

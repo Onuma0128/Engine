@@ -4,18 +4,19 @@
 
 class Player;
 
-class PredictionObject :public Object3d
+class Revolver : public Object3d
 {
 public:
 
 	void Init();
 
-	void Update(const Vector3& offset);
+	void Update();
 
 	void SetPlayer(Player* player) { player_ = player; }
 
 private:
 
 	Player* player_ = nullptr;
-	
+
 };
+

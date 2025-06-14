@@ -6,6 +6,8 @@
 
 #include "gameScene/player/effect/PlayerBulletEffect.h"
 
+class PlayerAdjustItem;
+
 class PlayerBullet : public Object3d,Collider
 {
 public:
@@ -30,10 +32,14 @@ public:
 	// isActiveがfalseになった瞬間のコールバック関数
 	void SetOnDeactivateCallback(const std::function<void()>& callback);
 
+	void SetItem(PlayerAdjustItem* item) { item_ = item; }
+
 private:
 
 	// 弾のエフェクト呼び出し
 	std::unique_ptr<PlayerBulletEffect> effect_ = nullptr;
+	// 調整項目
+	PlayerAdjustItem* item_ = nullptr;
 
 	// 今動いているか
 	bool isActive_ = false;
