@@ -51,13 +51,13 @@
     },
     "MinVelocity": {
         "x": -2.5,
-        "y": 3.0,
+        "y": 2.5,
         "z": -1.0
     },
     "MaxVelocity": {
         "x": 2.5,
-        "y": 5.0,
-        "z": 2.5
+        "y": 3.0,
+        "z": 3.0
     },
     "Billboard": true,
     "MinRotate": {
