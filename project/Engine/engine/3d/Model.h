@@ -33,6 +33,8 @@ private:
 	// 頂点データの作成
 	void MakeVertexData();
 	void MakeIndexData();
+	// メッシュごとのカラーを作成
+	void MakeMeshColor(MaterialData& material);
 
 	static std::wstring s2ws(const std::string& str);
 
@@ -48,6 +50,8 @@ private:
 	/*==================== モデルのデータ ====================*/
 
 	ModelData modelData_;
+
+	std::vector<KdColor*> kdColors_{};
 
 	/*==================== 頂点データ ====================*/
 

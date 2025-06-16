@@ -38,11 +38,17 @@ struct Camera
     float3 worldPosition;
 };
 
+struct KdColor
+{
+    float4 color;
+};
+
 ConstantBuffer<Material> gMaterial : register(b0);
 ConstantBuffer<DirectionalLightData> gDirectionalLight : register(b1);
 ConstantBuffer<PointLightData> gPointLight : register(b2);
 ConstantBuffer<SpotLightData> gSpotLight : register(b3);
 ConstantBuffer<Camera> gCamera : register(b4);
+ConstantBuffer<KdColor> gKdColor : register(b5);
 Texture2D<float4> gTexture : register(t0);
 TextureCube<float4> gEnvironmentTexture : register(t1);
 SamplerState gSampler : register(s0);
@@ -57,6 +63,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     PixelShaderOutput output;
     float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial.uvTransform);
     float4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
+    float3 baseColor = textureColor.rgb * gKdColor.color.rgb;
     float3 normal = normalize(input.normal);
     float3 toEye = normalize(gCamera.worldPosition - input.worldPosition);
     // DirectionalLight
@@ -80,14 +87,14 @@ PixelShaderOutput main(VertexShaderOutput input)
         // DirectionalLightの処理
         float NdotL = (dot(normal, lightDirectionalLight));
         float cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
-        float3 diffuseDirectionalLight = gMaterial.color.rgb * textureColor.rgb * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
+        float3 diffuseDirectionalLight = gMaterial.color.rgb * baseColor * gDirectionalLight.color.rgb * cos * gDirectionalLight.intensity;
         float3 specularDirectionalLight = gDirectionalLight.color.rgb * gDirectionalLight.intensity * specularPow;
         // PointLightの処理
         NdotL = (dot(normal, pointLightDirecion));
         cos = pow(NdotL * 0.5f + 0.5f, 2.0f);
         float distance = length(gPointLight.position - input.worldPosition);
         float factor = pow(saturate(-distance / gPointLight.radius + 1.0f), gPointLight.decay);
-        float3 diffusePointLight = gMaterial.color.rgb * textureColor.rgb * gPointLight.color.rgb * cos * gPointLight.intensity * factor;
+        float3 diffusePointLight = gMaterial.color.rgb * baseColor * gPointLight.color.rgb * cos * gPointLight.intensity * factor;
         float3 specularPointLight = gPointLight.color.rgb * gPointLight.intensity * pointPow * factor;
         // SpotLightの処理
         NdotL = (dot(normal, spotLightDirecionOnSurface));
@@ -96,7 +103,7 @@ PixelShaderOutput main(VertexShaderOutput input)
         float falloffFactor = saturate((cosAngle - gSpotLight.cosAngle) / (gSpotLight.cosFalloffStart - gSpotLight.cosAngle));
         float spotDistance = length(gSpotLight.position - input.worldPosition);
         float spotDistanceFactor = pow(saturate(-spotDistance / gSpotLight.distance + 1.0f), gSpotLight.decay);
-        float3 diffuseSpotLight = gMaterial.color.rgb * textureColor.rgb * gSpotLight.color.rgb * cos * gSpotLight.intensity * spotDistanceFactor * falloffFactor;
+        float3 diffuseSpotLight = gMaterial.color.rgb * baseColor * gSpotLight.color.rgb * cos * gSpotLight.intensity * spotDistanceFactor * falloffFactor;
         float3 specularSpotLight = gSpotLight.color.rgb * gSpotLight.intensity * spotPow * spotDistanceFactor * falloffFactor;
         // 環境マップの処理
         float3 cameraToPosition = normalize(input.worldPosition - gCamera.worldPosition);
@@ -113,7 +120,7 @@ PixelShaderOutput main(VertexShaderOutput input)
     }
     else
     {
-        output.color = gMaterial.color * textureColor;
+        output.color = gMaterial.color * float4(baseColor, textureColor.a);
     }
 
     if (textureColor.a == 0.0f || textureColor.a <= 0.5f || output.color.a == 0.0f)

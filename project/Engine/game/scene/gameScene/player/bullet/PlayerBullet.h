@@ -21,7 +21,7 @@ public:
 	void OnCollisionEnter(Collider* other)override;
 
 	// リロードをする関数
-	void Reload();
+	void Reload(const WorldTransform& transform, bool isEmit = false);
 	// 攻撃をする関数
 	void Attack(const WorldTransform& transform, float speed = 20.0f);
 

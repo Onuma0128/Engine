@@ -84,9 +84,13 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	}
 }
 
-void PlayerBullet::Reload()
+void PlayerBullet::Reload(const WorldTransform& transform, bool isEmit)
 {
 	isReload_ = true;
+
+	// Emitがtureならリロードのエフェクトを出す
+	if (isEmit == false) { return; }
+	effect_->OnceBulletReloadEffect(transform);
 }
 
 void PlayerBullet::Attack(const WorldTransform& transform, float speed)

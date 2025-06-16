@@ -6,6 +6,7 @@
 
 #include "gameScene/enemy/state/EnemyBaseState.h"
 #include "gameScene/enemy/effect/EnemyEffect.h"
+#include "gameScene/enemy/type/EnemyType.h"
 
 class Player;
 class GameCamera;
@@ -51,9 +52,10 @@ private:
 	Player* player_ = nullptr;
 	GameCamera* gameCamera_ = nullptr;
 
+	// 敵のタイプ
+	EnemyType type_;
 	// 状態遷移
 	std::unique_ptr<EnemyBaseState> state_ = nullptr;
-
 	// エフェクト
 	std::unique_ptr<EnemyEffect> effect_ = nullptr;
 

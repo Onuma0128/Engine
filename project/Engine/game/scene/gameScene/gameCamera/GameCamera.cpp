@@ -57,8 +57,9 @@ void GameCamera::ValueImGui()
 
 void GameCamera::Update()
 {
-	/*Input* input = Input::GetInstance();
-	if (input->TriggerKey(DIK_1)) {
+	Input* input = Input::GetInstance();
+	//input->SetGamepadStickDeadzoneScale(0.4f);
+	/*if (input->TriggerKey(DIK_1)) {
 		CameraManager::GetInstance()->SetActiveCamera(1);
 	}
 	if (input->TriggerKey(DIK_2)) {
@@ -84,7 +85,8 @@ void GameCamera::Update()
     }
 
 	// カメラの回転に合わせた座標を更新
-	Vector3 translation = data_.Get<Vector3>("mainPosition");
+	Vector2 R_StickDire = { input->GetGamepadRightStickX(),input->GetGamepadRightStickY() };
+	Vector3 translation = data_.Get<Vector3>("mainPosition") + Vector3{ R_StickDire.x,0.0f,R_StickDire.y };
 	Vector3 previous = mainCamera_->GetTranslation();
 	Vector3 current = player_->GetTransform().translation_ + translation;
 

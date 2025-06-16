@@ -30,6 +30,8 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 
         material.ENV_TextureIndex =
             TextureManager::GetInstance()->GetSrvIndex(material.ENV_FilePath);
+
+        MakeMeshColor(material);
     }
 
     MakeVertexData();
@@ -48,6 +50,7 @@ void Model::Draw(bool isAnimation)
         const auto& material = modelData_.materials[subMesh.materialIndex];
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, material.textureIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, material.ENV_TextureIndex);
+        commandList->SetGraphicsRootConstantBufferView(8, material.kdColorResource->GetGPUVirtualAddress());
         // 描画
         commandList->DrawIndexedInstanced(subMesh.indexCount, 1, subMesh.indexStart, 0, 0);
     }
@@ -75,6 +78,17 @@ void Model::MakeIndexData()
 
     indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
     std::memcpy(indexData_, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
+}
+
+void Model::MakeMeshColor(MaterialData& material)
+{
+    // マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
+    material.kdColorResource = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(KdColor));
+    // 書き込むためのアドレスを取得
+    KdColor* kdColor = nullptr;
+    material.kdColorResource->Map(0, nullptr, reinterpret_cast<void**>(&kdColor));
+    kdColor->Color = material.kdColor;
+    kdColors_.push_back(std::move(kdColor));
 }
 
 std::wstring Model::s2ws(const std::string& str)
@@ -161,6 +175,8 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         aiMaterial* material = scene->mMaterials[materialIndex];
         MaterialData materialData{};
         aiString textureFilePath;
+        aiColor3D kd(1, 1, 1);
+        Vector4 kdColor = { 1.0f,1.0f,1.0f,1.0f };
 
         // Diffuseテクスチャを確認
         if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath) == AI_SUCCESS) {
@@ -171,8 +187,12 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         } else {
             materialData.directoryPath = "resources";
             materialData.filePath = "white1x1.png";
+            if (material->Get(AI_MATKEY_COLOR_DIFFUSE, kd) == AI_SUCCESS) {
+                kdColor = { kd.r, kd.g, kd.b, 1.0f };
+            }
         }
 
+        materialData.kdColor = kdColor;
         modelData.materials[materialIndex] = materialData;
     }
 

@@ -33,7 +33,7 @@ public:
 		environmentRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
 
 		//RootParameterの作成。複数設定できるので配列。今回は結果1つだけなので長さ1の配列
-		D3D12_ROOT_PARAMETER rootParameters[9] = {};
+		D3D12_ROOT_PARAMETER rootParameters[10] = {};
 		rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 		rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
 		rootParameters[0].Descriptor.ShaderRegister = 0;
@@ -68,7 +68,11 @@ public:
 
 		rootParameters[8].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 		rootParameters[8].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
-		rootParameters[8].Descriptor.ShaderRegister = 4;
+		rootParameters[8].Descriptor.ShaderRegister = 5;
+
+		rootParameters[9].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+		rootParameters[9].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
+		rootParameters[9].Descriptor.ShaderRegister = 4;
 
 
 

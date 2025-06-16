@@ -46,6 +46,13 @@ struct MaterialData {
 	std::string ENV_DirectoryPath;
 	std::string ENV_FilePath;
 	uint32_t ENV_TextureIndex = 0;
+
+	ComPtr<ID3D12Resource> kdColorResource;
+	Vector4 kdColor;
+};
+
+struct KdColor {
+	Vector4 Color;
 };
 
 struct Node {

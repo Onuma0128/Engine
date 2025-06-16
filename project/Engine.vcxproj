@@ -114,6 +114,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\state\Melee\EnemyMelee_AttackState.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\state\RangedElite\EnemyRangedElite_AttackState.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\state\Ranged\EnemyRanged_AttackState.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\state\ShieldBearer\EnemyShieldBearer_AttackState.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\adjustItem\PlayerAdjustItem.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\EnemyDeadState.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.cpp" />
@@ -218,6 +222,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\revolver\Revolver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\state\Melee\EnemyMelee_AttackState.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\state\RangedElite\EnemyRangedElite_AttackState.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\state\Ranged\EnemyRanged_AttackState.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\state\ShieldBearer\EnemyShieldBearer_AttackState.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\type\EnemyType.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\adjustItem\PlayerAdjustItem.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\state\EnemyDeadState.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\spawner\EnemySpawnerFactory.h" />

@@ -147,7 +147,10 @@ void Player::ReloadBullet()
 	// 動きが終わっている弾からリロードをする
 	for (auto& bullet : bullets_) {
 		if (!bullet->GetIsActive() && !bullet->GetIsReload()) {
-			bullet->Reload();
+			WorldTransform transform;
+			transform.rotation_ = rightStickQuaternion_;
+			transform.translation_ = transform_.translation_;
+			bullet->Reload(transform, true);
 			break;
 		}
 	}
@@ -171,7 +174,7 @@ void Player::SpecialAttackBullet()
 {
 	if (reticle_->GetEnemyTransforms().empty()) { return; }
 	for (auto& bullet : specialBullets_) {
-		bullet->Reload();
+		bullet->Reload(WorldTransform());
 	}
 	// 敵のTransformを取得した分だけ回す
 	uint32_t count = 0;

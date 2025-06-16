@@ -41,6 +41,7 @@ void Enemy::Update()
 	state_->Update();
 
 	effect_->Update();
+
 	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Shrinking) {
 		if (isAlive_) {
 			Collider::isActive_ = true;

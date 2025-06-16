@@ -53,6 +53,7 @@ public:
 	// ジョイスティックボタンのトリガーチェック
 	bool TriggerGamepadButton(WORD button) const;
 	// スティックのX軸とY軸の取得
+	void SetGamepadStickDeadzoneScale(float scale) { deadzoneScale_ = scale; }
 	// 左
 	float GetGamepadLeftStickX() const;
 	float GetGamepadLeftStickY() const;
@@ -112,5 +113,7 @@ private:
 	LONG joystickMaxX_ = 1000;
 	LONG joystickMinY_ = -1000;
 	LONG joystickMaxY_ = 1000;
+	// ジョイスティックのデッドゾーン
+	float deadzoneScale_ = 1.0f;
 
 };

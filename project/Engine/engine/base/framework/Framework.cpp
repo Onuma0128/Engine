@@ -68,6 +68,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_3.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_4.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_5.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BirchTree_1.obj");
 }
 
 void Framework::Run()

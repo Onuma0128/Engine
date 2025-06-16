@@ -21,6 +21,8 @@ public:
 	void OnceBulletDeleteEffect(const WorldTransform& transform);
 	// 弾のエフェクトを呼び出す
 	void OnceBulletEffect(const WorldTransform& transform);
+	// 弾リロード時のエフェクトを呼び出す
+	void OnceBulletReloadEffect(const WorldTransform& transform);
 
 private:
 

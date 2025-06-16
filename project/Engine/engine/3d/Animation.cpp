@@ -18,7 +18,7 @@
 
 #include "CreateBufferResource.h"
 
-void Animation::Init(const std::string& directoryPath, const std::string& filename)
+void Animation::Initialize(const std::string& directoryPath, const std::string& filename)
 {
 	ModelManager::GetInstance()->LoadModel(directoryPath, filename);
 	animationBase_ = std::make_unique<AnimationBase>();
@@ -60,6 +60,12 @@ void Animation::SetSceneRenderer()
 		.offscreen = true
 	};
 	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+}
+
+void Animation::RemoveRenderer()
+{
+	DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
+	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
 void Animation::Update()
@@ -106,7 +112,7 @@ void Animation::Draw()
 	commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(6, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(8, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
+	commandList->SetGraphicsRootConstantBufferView(9, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
 
 	if (model_) {
 		D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {

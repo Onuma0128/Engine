@@ -180,19 +180,23 @@ float Input::NormalizeStickValue(SHORT value, SHORT deadzone)
 }
 
 float Input::GetGamepadLeftStickX() const {
-	return NormalizeStickValue(xInputState_.Gamepad.sThumbLX, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
+	int deadzone = static_cast<int>(static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) * deadzoneScale_);
+	return NormalizeStickValue(xInputState_.Gamepad.sThumbLX, deadzone);
 }
 
 float Input::GetGamepadLeftStickY() const {
-	return NormalizeStickValue(xInputState_.Gamepad.sThumbLY, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
+	int deadzone = static_cast<int>(static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) * deadzoneScale_);
+	return NormalizeStickValue(xInputState_.Gamepad.sThumbLY, deadzone);
 }
 
 float Input::GetGamepadRightStickX() const {
-	return NormalizeStickValue(xInputState_.Gamepad.sThumbRX, XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);
+	int deadzone = static_cast<int>(static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) * deadzoneScale_);
+	return NormalizeStickValue(xInputState_.Gamepad.sThumbRX, deadzone);
 }
 
 float Input::GetGamepadRightStickY() const {
-	return NormalizeStickValue(xInputState_.Gamepad.sThumbRY, XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);
+	int deadzone = static_cast<int>(static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) * deadzoneScale_);
+	return NormalizeStickValue(xInputState_.Gamepad.sThumbRY, deadzone);
 }
 
 float Input::GetGamepadLeftTrigger() const

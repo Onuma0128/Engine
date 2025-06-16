@@ -21,6 +21,9 @@ void GamePlayScene::Initialize()
 	skyBox_->GetTransform().scale = { 512.0f,512.0f ,512.0f };
 	skyBox_->SetSceneRenderer();
 
+	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
+	fieldObjectFactory_->Init(loader);
+
 	player_ = std::make_unique<Player>();
 	player_->Init(loader);
 
@@ -32,9 +35,6 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->SetPlayer(player_.get());
 	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
 	enemySpawnerFactory_->Init(loader);
-
-	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
-	fieldObjectFactory_->Init(loader);
 
 	emitter_ = std::make_unique<ParticleEmitter>("test");
 	ParticleManager::GetInstance()->CreateParticleGroup(emitter_);

@@ -64,7 +64,6 @@ void PlayerBulletEffect::OnceBulletEffect(const WorldTransform& transform)
 	bulletExplosionEmitter_->onceEmit();
 	bulletSparkEmitter_->onceEmit();
 	bulletSmokeEmitter_->onceEmit();
-	bulletCartridgeEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
 	Quaternion rotate = transform.rotation_;
@@ -79,6 +78,17 @@ void PlayerBulletEffect::OnceBulletEffect(const WorldTransform& transform)
 	// 煙
 	bulletSmokeEmitter_->SetPosition(position);
 	bulletSmokeEmitter_->SetRotation(rotate);
+}
+
+void PlayerBulletEffect::OnceBulletReloadEffect(const WorldTransform& transform)
+{
+	// Particleを一回生成
+	bulletCartridgeEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
 	// 薬莢
 	bulletCartridgeEmitter_->SetPosition(position);
 	bulletCartridgeEmitter_->SetRotation(rotate);
