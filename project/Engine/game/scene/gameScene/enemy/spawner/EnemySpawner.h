@@ -16,8 +16,10 @@ public:
 	void Update();
 
 	void Draw();
+	
+	void EnemySpawn();
 
-	std::list<std::unique_ptr<Enemy>>& GetEnemyList() { return enemys_; }
+	/* ============================== ポインタ ============================== */
 	
 	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }
@@ -25,13 +27,19 @@ public:
 	GameCamera* GetGameCamera() { return gameCamera_; }
 	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
 
-	void EnemySpawn();
+	EnemyAdjustItem* GetItem() { return items_; }
+	void SetItem(EnemyAdjustItem* item) { items_ = item; }
+
+	/* ============================== アクセッサ ============================== */
+
+	std::list<std::unique_ptr<Enemy>>& GetEnemyList() { return enemys_; }
 
 private:
 
 	// ゲッターで貰ったポインタ
 	Player* player_ = nullptr;
 	GameCamera* gameCamera_ = nullptr;
+	EnemyAdjustItem* items_ = nullptr;
 
 	// 敵のリスト
 	std::list<std::unique_ptr<Enemy>> enemys_;

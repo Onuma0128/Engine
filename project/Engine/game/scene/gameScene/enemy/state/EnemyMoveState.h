@@ -15,5 +15,17 @@ public:
 	void Update()override;
 
 	void Draw()override;
+
+private:
+
+	// 敵のタイプごとのスピードを取得する
+	const float GetTypeSpeed();
+
+	// 敵のタイプごとの攻撃ステートへの距離を取得する
+	const float GetTypeAttackDistance();
+
+	// 敵のタイプごとのステートに遷移する
+	void TypeChengeAttackState();
+
 };
 

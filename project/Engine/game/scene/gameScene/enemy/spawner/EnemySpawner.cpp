@@ -58,6 +58,7 @@ void EnemySpawner::EnemySpawn()
 	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>();
 	enemy->SetPlayer(player_);
 	enemy->SetGameCamera(gameCamera_);
+	enemy->SetItem(items_);
 	enemy->Init();
 	enemy->GetTransform().translation_ = transform_.translation_;
 	enemys_.push_back(std::move(enemy));

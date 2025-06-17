@@ -4,6 +4,7 @@
 
 #include "gameScene/enemy/Enemy.h"
 #include "EnemySpawner.h"
+#include "../adjustItem/EnemyAdjustItem.h"
 #include "SceneJsonLoader.h"
 
 class EnemySpawnerFactory
@@ -30,6 +31,10 @@ private:
 	Player* player_ = nullptr;
 	GameCamera* gameCamera_ = nullptr;
 
+	// 敵のスポナー配列
 	std::list<std::unique_ptr<EnemySpawner>> enemySpawners_;
+
+	// 敵の調整項目
+	std::unique_ptr<EnemyAdjustItem> items_ = nullptr;
 
 };

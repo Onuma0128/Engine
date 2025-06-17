@@ -29,7 +29,11 @@ public:
     // スカラー倍
     static Vector3 Multiply(float scalar, const Vector3& v);
 
+    // 長さ
     float Length()const;
+
+    // 距離
+    static float Distance(const Vector3& v1, const Vector3& v2);
 
     // 内積
     static float Dot(const Vector3& v1, const Vector3& v2);

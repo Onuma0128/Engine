@@ -10,6 +10,7 @@
 
 class Player;
 class GameCamera;
+class EnemyAdjustItem;
 
 class Enemy:public Object3d,Collider
 {
@@ -29,14 +30,24 @@ public:
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
 
+	/* ============================== ポインタ ============================== */
+
 	EnemyEffect* GetEffect() { return effect_.get(); }
 
 	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }
-	const Vector3& GetPlayerBullet() { return playerBulletPosition_; }
 
 	GameCamera* GetGameCamera() { return gameCamera_; }
 	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
+
+	EnemyAdjustItem* GetItem() { return items_; }
+	void SetItem(EnemyAdjustItem* item) { items_ = item; }
+
+	/* ============================== アクセッサ ============================== */
+
+	EnemyType GetType()const { return type_; }
+	
+	const Vector3& GetPlayerBullet() { return playerBulletPosition_; }
 
 	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
 	const Vector3& GetVelocity() { return velocity_; }
@@ -51,9 +62,10 @@ private:
 	// ゲッターで貰ったポインタ
 	Player* player_ = nullptr;
 	GameCamera* gameCamera_ = nullptr;
+	EnemyAdjustItem* items_ = nullptr;
 
 	// 敵のタイプ
-	EnemyType type_;
+	EnemyType type_ = EnemyType::Melee;
 	// 状態遷移
 	std::unique_ptr<EnemyBaseState> state_ = nullptr;
 	// エフェクト

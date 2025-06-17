@@ -31,6 +31,12 @@ float Vector3::Length() const
     return std::sqrt(x * x + y * y + z * z);
 }
 
+float Vector3::Distance(const Vector3& v1, const Vector3& v2)
+{
+    Vector3 result = v1 - v2;
+    return std::sqrt(result.x * result.x + result.y * result.y + result.z * result.z);
+}
+
 // 内積
 float Vector3::Dot(const Vector3& v1, const Vector3& v2) {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
