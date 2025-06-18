@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Collider.h"
+
 class Enemy;
 
-class EnemyBaseState
+class EnemyBaseState : public Collider
 {
 public:
 

@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <memory>
 
 #include "Object3d.h"
@@ -6,6 +7,7 @@
 
 #include "gameScene/enemy/state/EnemyBaseState.h"
 #include "gameScene/enemy/effect/EnemyEffect.h"
+#include "gameScene/enemy/bullet/EnemyBullet.h"
 #include "gameScene/enemy/type/EnemyType.h"
 
 class Player;
@@ -26,6 +28,8 @@ public:
 
 	void ChengeState(std::unique_ptr<EnemyBaseState> newState);
 
+	void Reset(const Vector3& position);
+
 	void OnCollisionEnter(Collider* other) override;
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
@@ -33,6 +37,8 @@ public:
 	/* ============================== ポインタ ============================== */
 
 	EnemyEffect* GetEffect() { return effect_.get(); }
+
+	std::vector<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
 
 	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }
@@ -59,17 +65,23 @@ public:
 
 private:
 
+	void BulletInit();
+
+private:
+
 	// ゲッターで貰ったポインタ
 	Player* player_ = nullptr;
 	GameCamera* gameCamera_ = nullptr;
 	EnemyAdjustItem* items_ = nullptr;
 
 	// 敵のタイプ
-	EnemyType type_ = EnemyType::Melee;
+	EnemyType type_ = EnemyType::Ranged;
 	// 状態遷移
 	std::unique_ptr<EnemyBaseState> state_ = nullptr;
 	// エフェクト
 	std::unique_ptr<EnemyEffect> effect_ = nullptr;
+	// 弾
+	std::vector<std::unique_ptr<EnemyBullet>> bullets_;
 
 	// 速度
 	Vector3 velocity_{};

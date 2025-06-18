@@ -15,5 +15,10 @@ public:
 	void Update()override;
 
 	void Draw()override;
+
+private:
+
+	float chengeStateTime_ = 0.0f;
+
 };
 

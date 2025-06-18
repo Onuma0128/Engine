@@ -6,8 +6,8 @@
             "name": "Cube",
             "transform": {
                 "translation": [
-                    -20.0,
-                    0.0,
+                    -25.0,
+                    21.209999084472656,
                     1.0
                 ],
                 "rotation": [
@@ -50,7 +50,7 @@
             "name": "Cube.001",
             "transform": {
                 "translation": [
-                    20.0,
+                    25.0,
                     0.0,
                     1.0
                 ],
@@ -73,8 +73,8 @@
             "name": "Cube.002",
             "transform": {
                 "translation": [
-                    0.0,
-                    20.0,
+                    15.0,
+                    25.0,
                     1.0
                 ],
                 "rotation": [
@@ -97,7 +97,7 @@
             "transform": {
                 "translation": [
                     0.0,
-                    -20.0,
+                    -25.0,
                     1.0
                 ],
                 "rotation": [
@@ -299,7 +299,7 @@
             "name": "DeadTree_5",
             "transform": {
                 "translation": [
-                    -7.62999963760376,
+                    -7.549999713897705,
                     9.769999504089355,
                     0.0
                 ],
@@ -352,6 +352,236 @@
             },
             "file_name": "ground.obj",
             "tag_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.005",
+            "transform": {
+                "translation": [
+                    -25.0,
+                    13.5,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.006",
+            "transform": {
+                "translation": [
+                    -25.0,
+                    6.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.007",
+            "transform": {
+                "translation": [
+                    -16.0,
+                    25.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.008",
+            "transform": {
+                "translation": [
+                    20.0,
+                    25.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.009",
+            "transform": {
+                "translation": [
+                    10.0,
+                    25.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.010",
+            "transform": {
+                "translation": [
+                    25.0,
+                    15.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.011",
+            "transform": {
+                "translation": [
+                    25.0,
+                    -15.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.012",
+            "transform": {
+                "translation": [
+                    -15.0,
+                    -25.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.013",
+            "transform": {
+                "translation": [
+                    18.0,
+                    -25.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.014",
+            "transform": {
+                "translation": [
+                    -25.0,
+                    -16.0,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "EnemySpawner"
         }
     ]
 }

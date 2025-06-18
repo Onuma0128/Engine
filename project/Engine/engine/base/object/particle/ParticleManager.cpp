@@ -141,6 +141,8 @@ void ParticleManager::Update()
             std::memcpy(group.instancingData, staging.data(), bytes);
             ++it;
 
+        } else {
+            ++it;
         }
     }
 }

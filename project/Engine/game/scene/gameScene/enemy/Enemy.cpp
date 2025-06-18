@@ -12,6 +12,10 @@ void Enemy::Finalize()
 {
 	Object3d::RemoveRenderer();
 	Collider::RemoveCollider();
+
+	for (auto& bullet : bullets_) {
+		bullet->Finalize();
+	}
 }
 
 void Enemy::Init()
@@ -34,6 +38,11 @@ void Enemy::Init()
 	Collider::colliderName_ = "Enemy";
 	Collider::size_ = transform_.scale_;
 	Collider::DrawCollider();
+
+	int type = rand() % 2;
+	type_ = static_cast<EnemyType>(type);
+
+	BulletInit();
 }
 
 void Enemy::Update()
@@ -41,6 +50,12 @@ void Enemy::Update()
 	state_->Update();
 
 	effect_->Update();
+
+	for (auto& bullet : bullets_) {
+		bullet->Update();
+		// 弾が消えた時のコールバック関数
+		bullet->SetOnDeactivateCallback([]() {});
+	}
 
 	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Shrinking) {
 		if (isAlive_) {
@@ -72,6 +87,19 @@ void Enemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 	state_->Init();
 }
 
+void Enemy::Reset(const Vector3& position)
+{
+	transform_.scale_ = { 0.5f,0.75f,0.5f };
+	transform_.rotation_ = Quaternion::IdentityQuaternion();
+	transform_.translation_ = position;
+
+	ChengeState(std::make_unique<EnemyMoveState>(this));
+	Collider::isActive_ = true;
+	isAlive_ = true;
+	isDead_ = false;
+	hitReticle_ = false;
+}
+
 void Enemy::OnCollisionEnter(Collider* other)
 {
 	// プレイヤーの弾と当たっているなら
@@ -101,7 +129,11 @@ void Enemy::OnCollisionEnter(Collider* other)
 		ChengeState(std::make_unique<EnemyDeadState>(this));
 	}
 
+	// プレイヤーのレティクルと当たっているなら
 	if (other->GetColliderName() == "PlayerReticle") {
+		hitReticle_ = true;
+		Object3d::GetRenderOptions().offscreen = false;
+		Collider::isActive_ = false;
 	}
 }
 
@@ -109,7 +141,6 @@ void Enemy::OnCollisionStay(Collider* other)
 {
 	// プレイヤーと当たっているなら
 	if (other->GetColliderName() == "Player") {
-		//Object3d::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
 		const float speed = 2.0f;
 		transform_.translation_ -= velocity_ * speed * DeltaTimer::GetDeltaTime();
 		Object3d::Update();
@@ -117,7 +148,6 @@ void Enemy::OnCollisionStay(Collider* other)
 
 	// 敵と当たっているなら
 	if (other->GetColliderName() == "Enemy") {
-		//Object3d::SetColor(Vector4{ 0.0f,1.0f,0.0f,1.0f });
 		const float speed = 1.0f;
 		Vector3 velocity = transform_.translation_ - other->GetCenterPosition();
 		velocity.y = 0.0f;
@@ -126,12 +156,12 @@ void Enemy::OnCollisionStay(Collider* other)
 		Object3d::Update();
 	}
 
-	// プレイヤーのレティクルと当たっているなら
-	if (other->GetColliderName() == "PlayerReticle") {
-		hitReticle_ = true;
-		Object3d::GetRenderOptions().offscreen = false;
-		Collider::isActive_ = false;
-	}
+	//// プレイヤーのレティクルと当たっているなら
+	//if (other->GetColliderName() == "PlayerReticle") {
+	//	hitReticle_ = true;
+	//	Object3d::GetRenderOptions().offscreen = false;
+	//	Collider::isActive_ = false;
+	//}
 }
 
 void Enemy::OnCollisionExit(Collider* other)
@@ -144,5 +174,31 @@ void Enemy::OnCollisionExit(Collider* other)
 
 	if (other->GetColliderName() == "PlayerReticle") {
 		//Object3d::GetRenderOptions().offscreen = true;
+	}
+}
+
+void Enemy::BulletInit()
+{
+	switch (type_)
+	{
+	case EnemyType::Ranged:
+	{
+		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+		bullet->SetItem(items_);
+		bullet->Init("EnemyRanged", type_);
+		bullets_.push_back(std::move(bullet));
+	}
+		break;
+	case EnemyType::RangedElite:
+	{
+		for (uint32_t i = 0; i < 3; ++i) {
+			std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+			bullet->SetItem(items_);
+			bullet->Init("EnemyRangedElite", type_);
+			bullets_.push_back(std::move(bullet));
+		}
+	}
+		break;
+	default:	break;
 	}
 }

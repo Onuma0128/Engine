@@ -336,6 +336,9 @@
     <ClCompile Include="Engine\game\scene\gameScene\enemy\adjustItem\EnemyAdjustItem.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\bullet\EnemyBullet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\2d\LoadTexture.h">
@@ -705,6 +708,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\adjustItem\EnemyAdjustItem.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\bullet\EnemyBullet.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

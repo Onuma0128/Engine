@@ -25,7 +25,10 @@ public:
 	void SetColliderActive(bool flag) { Collider::isActive_ = flag; }
 
 	std::vector<WorldTransform>& GetEnemyTransforms() { return enemyTransforms_; }
-	void ResetHitCount() { hitCount_ = 0; }
+	void ResetHitCount() { 
+		hitCount_ = 0;
+		Collider::isActive_ = false;
+	}
 
 private:
 

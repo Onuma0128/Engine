@@ -15,5 +15,16 @@ public:
 	void Update()override;
 
 	void Draw()override;
+
+private:
+
+	void Attack();
+
+private:
+
+	float chengeStateTime_ = 0.0f;
+
+	bool isAttack_ = false;
+
 };
 

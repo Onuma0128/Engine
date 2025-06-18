@@ -1,10 +1,16 @@
-#include "PlayerBullet.h"
+#include "EnemyBullet.h"
 
 #include "DeltaTimer.h"
 
-#include "gameScene/player/adjustItem/PlayerAdjustItem.h"
+#include "../adjustItem/EnemyAdjustItem.h"
 
-void PlayerBullet::Init(const std::string& colliderName)
+void EnemyBullet::Finalize()
+{
+	Object3d::RemoveRenderer();
+	Collider::RemoveCollider();
+}
+
+void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 {
 	Object3d::Initialize("Box.obj");
 	Object3d::SetSceneRenderer();
@@ -13,9 +19,7 @@ void PlayerBullet::Init(const std::string& colliderName)
 
 	isActive_ = false;
 	activeFrame_ = 0.0f;
-
-	effect_ = std::make_unique<PlayerBulletEffect>();
-	effect_->Init();
+	type_ = type;
 
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::OBB;
@@ -23,11 +27,9 @@ void PlayerBullet::Init(const std::string& colliderName)
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
 	Collider::DrawCollider();
-
-	speed_ = 20.0f;
 }
 
-void PlayerBullet::Update()
+void EnemyBullet::Update()
 {
 	// フレームが60立ったらIsActiveをfalseにする
 	if (isActive_) {
@@ -38,12 +40,11 @@ void PlayerBullet::Update()
 			Collider::isActive_ = false;
 			Object3d::GetRenderOptions().enabled = false;
 		}
-	} 
+	}
 
 	// コールバック関数
 	if (wasActive_ && !isActive_ && onDeactivatedCallback_) {
 		onDeactivatedCallback_();
-		effect_->OnceBulletDeleteEffect(transform_);
 		Object3d::GetRenderOptions().enabled = false;
 	}
 	wasActive_ = isActive_;
@@ -52,64 +53,48 @@ void PlayerBullet::Update()
 	if (!isActive_) {
 		Collider::Update();
 		Object3d::Update();
-		effect_->Update();
 		return;
 	}
 
 	// 移動処理
-	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed_;
+	float speed = GetTypeBulletSpeed();
+	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed;
 
-	effect_->OnceBulletTrailEffect(transform_);
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::Update();
 	Object3d::Update();
 }
 
-void PlayerBullet::OnCollisionEnter(Collider* other)
+void EnemyBullet::OnCollisionEnter(Collider* other)
 {
 	// 敵と当たったらなエフェクトを出す
-	if (other->GetColliderName() == "Enemy") {
-		IsCollision();
-		effect_->OnceBulletDeleteEffect(transform_);
+	if (other->GetColliderName() == "Player") {
+
 	}
 
 	if (other->GetColliderName() == "FieldObject") {
-		IsCollision();
-		effect_->OnceBulletDeleteEffect(transform_);
+
 	}
 }
 
-void PlayerBullet::Reload(const WorldTransform& transform, bool isEmit)
-{
-	isReload_ = true;
-
-	// Emitがtureならリロードのエフェクトを出す
-	if (isEmit == false) { return; }
-	effect_->OnceBulletReloadEffect(transform);
-}
-
-void PlayerBullet::Attack(const WorldTransform& transform, float speed)
+void EnemyBullet::Attack(const WorldTransform& transform)
 {
 	// 回転と座標を取得
 	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform.rotation_);
 	transform_.rotation_ = transform.rotation_;
-	transform_.translation_ = transform.translation_ + item_->GetBulletData().position.Transform(rotateMatrix);
+	transform_.translation_ = transform.translation_;
 
 	// 速度(向き)を取得
-	speed_ = speed;
 	velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix);
 
-	activeFrame_ = 0.0f;
-	isReload_ = false;
+	activeFrame_ = 0.0f; 
 	isActive_ = true;
 	Collider::isActive_ = true;
 	Object3d::GetRenderOptions().enabled = true;
-
-	effect_->OnceBulletEffect(transform);
 }
 
-void PlayerBullet::IsCollision()
+void EnemyBullet::IsCollision()
 {
 	activeFrame_ = 1.0f;
 	wasActive_ = false;
@@ -118,7 +103,19 @@ void PlayerBullet::IsCollision()
 	Object3d::GetRenderOptions().enabled = false;
 }
 
-void PlayerBullet::SetOnDeactivateCallback(const std::function<void()>& callback)
+void EnemyBullet::SetOnDeactivateCallback(const std::function<void()>& callback)
 {
 	onDeactivatedCallback_ = callback;
+}
+
+const float EnemyBullet::GetTypeBulletSpeed()
+{
+	switch (type_)
+	{
+	case EnemyType::Ranged:			return item_->GetRangedData().bulletSpeed;
+	case EnemyType::RangedElite:	return item_->GetRangedEliteData().bulletSpeed;
+	default:
+		break;
+	}
+	return 0.0f;
 }

@@ -13,16 +13,22 @@ struct EnemyTemplate {
 	float attackStartupTime;	// 攻撃を開始する硬直時間
 	float attackActiveTime;		// 攻撃を行っている硬直時間
 	float attackRecoveryTime;	// 攻撃が終わってから硬直時間
+	float attackCoolTime;		// 攻撃が終了した後、次の攻撃までのクールタイム
 };
 
 // 近接敵の項目
 struct MeleeData {
 	EnemyTemplate tempData;
+	float colliderSize;			// コライダーのサイズ
+	Vector3 colliderOffset;		// コライダーの座標(敵ペアレント時の)
 };
 
 // 遠距離敵の項目
 struct RangedData {
 	EnemyTemplate tempData;
+	float bulletSpeed;			// 撃つ弾の速度
+	Vector3 colliderSize;		// コライダーのサイズ
+	Vector3 colliderOffset;		// コライダーの座標
 };
 
 // 盾持ち敵の項目
@@ -33,6 +39,7 @@ struct ShieldBearerData {
 // 遠距離敵(強化版)の項目
 struct RangedEliteData {
 	EnemyTemplate tempData;
+	float bulletSpeed;			// 撃つ弾の速度
 };
 
 class EnemyAdjustItem

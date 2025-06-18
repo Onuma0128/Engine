@@ -7,6 +7,8 @@
 Collider::~Collider()
 {
 	DirectXEngine::GetCollisionMgr()->RemoveCollider(this);
+	if (line_ == nullptr) { return; }
+	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
 void Collider::AddCollider()
@@ -17,6 +19,7 @@ void Collider::AddCollider()
 void Collider::RemoveCollider()
 {
 	DirectXEngine::GetCollisionMgr()->RemoveCollider(this);
+	if (line_ == nullptr) { return; }
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
@@ -41,6 +44,7 @@ void Collider::Update()
 		linePos = linePos.Transform(rotateMatrix) + translate;
 	}
 	line_->SetPositions(linePositions_);
+	line_->GetRenderOptions().enabled = isActive_;
 	line_->Update();
 }
 

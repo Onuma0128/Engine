@@ -4,40 +4,44 @@
 #include "Object3d.h"
 #include "Collider.h"
 
-#include "gameScene/player/effect/PlayerBulletEffect.h"
+#include "../type/EnemyType.h"
 
-class PlayerAdjustItem;
+class EnemyAdjustItem;
 
-class PlayerBullet : public Object3d,Collider
+class EnemyBullet : public Object3d,Collider
 {
 public:
 
-	void Init(const std::string& colliderName);
+	void Finalize();
+
+	void Init(const std::string& colliderName, EnemyType type);
 
 	void Update();
 
 	void OnCollisionEnter(Collider* other)override;
 
-	// リロードをする関数
-	void Reload(const WorldTransform& transform, bool isEmit = false);
 	// 攻撃をする関数
-	void Attack(const WorldTransform& transform, float speed = 20.0f);
+	void Attack(const WorldTransform& transform);
 
 	bool GetIsActive()const { return isActive_; }
-	bool GetIsReload()const { return isReload_; }
-	void IsCollision();
 
 	// isActiveがfalseになった瞬間のコールバック関数
 	void SetOnDeactivateCallback(const std::function<void()>& callback);
 
-	void SetItem(PlayerAdjustItem* item) { item_ = item; }
+	void SetItem(EnemyAdjustItem* item) { item_ = item; }
 
 private:
 
-	// 弾のエフェクト呼び出し
-	std::unique_ptr<PlayerBulletEffect> effect_ = nullptr;
+	void IsCollision();
+	
+	const float GetTypeBulletSpeed();
+
+private:
+
 	// 調整項目
-	PlayerAdjustItem* item_ = nullptr;
+	EnemyAdjustItem* item_ = nullptr;
+	// 敵のタイプを取得する
+	EnemyType type_;
 
 	// 今動いているか
 	bool isActive_ = false;
@@ -47,12 +51,9 @@ private:
 	std::function<void()> onDeactivatedCallback_;
 
 	// 速度
-	float speed_ = 0.0f;
 	Vector3 velocity_;
 	// 動いている時間
 	float activeFrame_ = 0.0f;
-	// リロードされているか
-	bool isReload_ = true;
 
 };
 

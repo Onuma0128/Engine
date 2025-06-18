@@ -31,8 +31,7 @@ void EnemySpawner::Update()
 		(*it)->Update();
 
 		if ((*it)->GetIsDead()) {
-			(*it)->Finalize();
-			it = enemys_.erase(it);
+			(*it)->Reset(transform_.translation_);
 		} else {
 			++it;
 		}

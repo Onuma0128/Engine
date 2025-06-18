@@ -19,6 +19,7 @@ EnemyMoveState::EnemyMoveState(Enemy* enemy) :EnemyBaseState(enemy) {}
 
 void EnemyMoveState::Init()
 {
+	attackCoolTime_ = GetTypeAttackCoolTime();
 }
 
 void EnemyMoveState::Finalize()
@@ -27,13 +28,12 @@ void EnemyMoveState::Finalize()
 
 void EnemyMoveState::Update()
 {
-	// 移動処理
+	// 方向を計算
 	const float speed = GetTypeSpeed();
 	Vector3 velocity = 
 		Vector3(enemy_->GetPlayer()->GetTransform().translation_ - enemy_->GetTransform().translation_);
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
-	enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
 	enemy_->SetVelocity(velocity);
 
 	// 移動時の回転の処理
@@ -51,10 +51,21 @@ void EnemyMoveState::Update()
 		enemy_->GetTransform().rotation_ = result;
 	}
 
-	// 攻撃ステートに遷移
-	if (Vector3::Distance(enemy_->GetTransform().translation_, enemy_->GetPlayer()->GetTransform().translation_) <=
-		enemy_->GetItem()->GetMeleeData().tempData.attackDistance) {
-		TypeChengeAttackState();
+	// 攻撃のクールタイムを縮める
+	attackCoolTime_ -= DeltaTimer::GetDeltaTime();
+	attackCoolTime_ = std::clamp(attackCoolTime_, 0.0f, 100.0f);
+
+	// 攻撃のクールタイムが0になっているなら攻撃ステートに遷移
+	Vector3 playerPos = enemy_->GetPlayer()->GetTransform().translation_;
+	Vector3 enemyPos = enemy_->GetTransform().translation_;
+	if (Vector3::Distance(enemyPos, playerPos) <= GetTypeAttackDistance()) {
+		if (attackCoolTime_ <= 0.0f) {
+			TypeChengeAttackState();
+			return;
+		}
+	} else {
+		// 距離があれば移動処理をする
+		enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
 	}
 }
 
@@ -81,6 +92,18 @@ const float EnemyMoveState::GetTypeAttackDistance()
 	case EnemyType::Ranged:			return enemy_->GetItem()->GetRangedData().tempData.attackDistance;
 	case EnemyType::ShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackDistance;
 	case EnemyType::RangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackDistance;
+	default:break;
+	}
+	return 0.0f;
+}
+
+const float EnemyMoveState::GetTypeAttackCoolTime()
+{
+	switch (enemy_->GetType()) {
+	case EnemyType::Melee:			return enemy_->GetItem()->GetMeleeData().tempData.attackCoolTime;
+	case EnemyType::Ranged:			return enemy_->GetItem()->GetRangedData().tempData.attackCoolTime;
+	case EnemyType::ShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackCoolTime;
+	case EnemyType::RangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackCoolTime;
 	default:break;
 	}
 	return 0.0f;

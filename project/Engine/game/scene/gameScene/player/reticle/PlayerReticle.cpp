@@ -88,6 +88,9 @@ void PlayerReticle::OnCollisionExit(Collider* other)
 
 void PlayerReticle::SegmentUpdate()
 {
+	if (hitCount_ >= 6) { Collider::isActive_ = false; }
+	else { Collider::isActive_ = true; }
+
 	Vector2 position = transform_.position;
 	Vector3 ndc = {
 		(position.x / WinApp::kClientWidth) * 2.0f - 1.0f,
