@@ -22,12 +22,18 @@ void CollisionManager::CheckAllCollisions()
     }
 
     // 前フレームにあって今フレームに無いペアを判定
+    std::vector<std::pair<Collider*, Collider*>> exited;
     for (auto& pair : previousFrame_) {
-        if (!thisFrame.contains(pair)) {
+        if (!thisFrame.contains(pair)) { exited.push_back(pair); }
+    }
+
+    for (auto& pair : exited) {
+        if (pair.first && pair.second) {
             pair.first->OnCollisionExit(pair.second);
             pair.second->OnCollisionExit(pair.first);
         }
     }
+
     previousFrame_.swap(thisFrame);
 }
 

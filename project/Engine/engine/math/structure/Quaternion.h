@@ -40,6 +40,10 @@ public:
     // 任意軸回転を表すQuaternion
     static Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle);
 
+    // VelocityからQuaternionを計算
+    static Quaternion DirectionToQuaternion(const Quaternion& quaternion, const Vector3& direction, const float lerp);
+    static Quaternion DirectionToQuaternion(const Quaternion& quaternion, const Vector3 addFoward, const Vector3& direction, const float lerp);
+
     // Vector3をQuaternionで回転させた結果のVector3を求める
     static Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 

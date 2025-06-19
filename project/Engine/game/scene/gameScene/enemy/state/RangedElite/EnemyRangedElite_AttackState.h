@@ -18,7 +18,13 @@ public:
 
 private:
 
+	void Attack();
+
+private:
+
 	float chengeStateTime_ = 0.0f;
+
+	bool isAttack_ = false;
 
 };
 

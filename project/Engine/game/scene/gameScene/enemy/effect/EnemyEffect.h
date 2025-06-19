@@ -26,10 +26,18 @@ public:
 	void OnceBulletHitExplosionEffect(const WorldTransform& transform);
 	// 死んだ時に出るエフェクトを出すか
 	void SetDeadEffect(bool flag) { deadEmitter_->SetIsCreate(flag); }
+	// 敵の弾発射時のエフェクトを出すか
+	void SetBulletPredictionEffect(bool flag);
 
 private:
 
+	// レティクルがヒットした時のエフェクト
+	void HitReticleInit();
 	void HitReticleUpdate();
+
+	// 敵の弾発射時のエフェクト(予測線)
+	void BulletPredictionInit();
+	void BulletPredictionUpdate();
 
 private:
 
@@ -52,8 +60,8 @@ private:
 	// 死亡のエフェクト
 	std::shared_ptr<ParticleEmitter> deadEmitter_ = nullptr;
 
+	/* ==================== レティクルがヒットした時のエフェクト ==================== */
 
-	// レティクルがヒットした時のエフェクト
 	struct HitReticleEffect {
 		std::unique_ptr<PrimitiveDrawr> cylinder_;
 		float frame_;
@@ -61,5 +69,11 @@ private:
 	};
 	HitReticleEffect hitReticleEffect_;
 
+	/* ==================== 敵が弾発射時のエフェクト(予測線) ==================== */
+
+	struct BulletPredictionEffect {
+		std::unique_ptr<PrimitiveDrawr> plane_;
+	};
+	std::vector<BulletPredictionEffect> bulletPredictionEffect_;
 
 };

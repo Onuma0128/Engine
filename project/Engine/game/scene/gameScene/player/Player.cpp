@@ -185,6 +185,8 @@ void Player::SpecialAttackBullet()
 	// 敵のTransformを取得した分だけ回す
 	uint32_t count = 0;
 	for (auto& transform : reticle_->GetEnemyTransforms()) {
+		Vector3 dir = (transform.translation_ - transform_.translation_).Normalize();
+		transform.rotation_ = Quaternion::DirectionToQuaternion(transform.rotation_, dir, 1.0f);
 		transform.translation_ = transform_.translation_;
 		specialBullets_[count]->Attack(transform, items_->GetBulletData().speed_sp);
 		++count;

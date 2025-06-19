@@ -4,6 +4,8 @@
 
 #include "gameScene/enemy/state/EnemyMoveState.h"
 #include "gameScene/enemy/state/EnemyDeadState.h"
+#include "gameScene/enemy/weapon/axe/EnemyAxe.h"
+#include "gameScene/enemy/weapon/shield/EnemyShield.h"
 
 #include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
@@ -20,6 +22,9 @@ void Enemy::Finalize()
 
 void Enemy::Init()
 {
+	int type = rand() % 4;
+	type_ = static_cast<EnemyType>(type);
+
 	Object3d::Initialize("Box.obj");
 	Object3d::SetSceneRenderer();
 	Object3d::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
@@ -39,24 +44,28 @@ void Enemy::Init()
 	Collider::size_ = transform_.scale_;
 	Collider::DrawCollider();
 
-	int type = rand() % 2;
-	type_ = static_cast<EnemyType>(type);
-
-	BulletInit();
+	EnemyTypeInit();
 }
 
 void Enemy::Update()
 {
+	// ステートの更新
 	state_->Update();
 
+	// エフェクトの更新
 	effect_->Update();
 
+	// ウエポンの更新
+	if (enemyWeapon_ != nullptr) { enemyWeapon_->Update(); }
+
+	// 弾の更新
 	for (auto& bullet : bullets_) {
 		bullet->Update();
 		// 弾が消えた時のコールバック関数
 		bullet->SetOnDeactivateCallback([]() {});
 	}
 
+	// 必殺技が打たれている時の敵の描画を変更
 	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Shrinking) {
 		if (isAlive_) {
 			Collider::isActive_ = true;
@@ -66,10 +75,12 @@ void Enemy::Update()
 		Object3d::GetRenderOptions().offscreen = true;
 	}
 
+	// 敵コライダーの更新
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::rotate_ = transform_.rotation_;
 	Collider::Update();
 
+	// オブジェクトの更新
 	Object3d::Update();
 }
 
@@ -155,13 +166,6 @@ void Enemy::OnCollisionStay(Collider* other)
 		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
 		Object3d::Update();
 	}
-
-	//// プレイヤーのレティクルと当たっているなら
-	//if (other->GetColliderName() == "PlayerReticle") {
-	//	hitReticle_ = true;
-	//	Object3d::GetRenderOptions().offscreen = false;
-	//	Collider::isActive_ = false;
-	//}
 }
 
 void Enemy::OnCollisionExit(Collider* other)
@@ -171,26 +175,39 @@ void Enemy::OnCollisionExit(Collider* other)
 	if (other->GetColliderName() == "Player" ||
 		other->GetColliderName() == "Enemy") {
 	}
-
-	if (other->GetColliderName() == "PlayerReticle") {
-		//Object3d::GetRenderOptions().offscreen = true;
-	}
 }
 
-void Enemy::BulletInit()
+void Enemy::EnemyTypeInit()
 {
+	// タイプごとに作成する
 	switch (type_)
 	{
+	case EnemyType::Melee:
+	{
+		// 近接攻撃用のコライダーを作成
+		enemyWeapon_ = std::make_unique<EnemyAxe>(this);
+		enemyWeapon_->Init(ColliderType::Sphere, "EnemyMelee");
+	}
+	break;
 	case EnemyType::Ranged:
 	{
+		// 弾を1つ作成
 		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
 		bullet->SetItem(items_);
 		bullet->Init("EnemyRanged", type_);
 		bullets_.push_back(std::move(bullet));
 	}
-		break;
+	break;
+	case EnemyType::ShieldBearer:
+	{
+		// シールド用のコライダーを作成
+		enemyWeapon_ = std::make_unique<EnemyShield>(this);
+		enemyWeapon_->Init(ColliderType::OBB, "EnemyShieldBearer");
+	}
+	break;
 	case EnemyType::RangedElite:
 	{
+		// 弾を3つ作成
 		for (uint32_t i = 0; i < 3; ++i) {
 			std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
 			bullet->SetItem(items_);
@@ -198,7 +215,8 @@ void Enemy::BulletInit()
 			bullets_.push_back(std::move(bullet));
 		}
 	}
+	break;
+	default:
 		break;
-	default:	break;
 	}
 }

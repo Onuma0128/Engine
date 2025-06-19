@@ -92,6 +92,34 @@ Quaternion Quaternion::MakeRotateAxisAngleQuaternion(const Vector3& axis, float 
 	};
 }
 
+Quaternion Quaternion::DirectionToQuaternion(const Quaternion& quaternion,const Vector3& direction, const float lerp)
+{
+	Vector3 foward = Vector3::ExprUnitZ;
+	Vector3 targetDir = Vector3{ -direction.x,0.0f,direction.z };
+
+	// directionから回転を求める
+	Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
+	Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
+	Quaternion currentRotation = quaternion;
+	Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, lerp);
+
+	return result;
+}
+
+Quaternion Quaternion::DirectionToQuaternion(const Quaternion& quaternion, const Vector3 addFoward, const Vector3& direction, const float lerp)
+{
+	Vector3 foward = Vector3::ExprUnitZ + addFoward;
+	Vector3 targetDir = Vector3{ -direction.x,0.0f,direction.z };
+
+	// directionから回転を求める
+	Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
+	Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
+	Quaternion currentRotation = quaternion;
+	Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, lerp);
+
+	return result;
+}
+
 Vector3 Quaternion::RotateVector(const Vector3& vector, const Quaternion& quaternion)
 {
 	Quaternion conjugate = Conjugate(quaternion);

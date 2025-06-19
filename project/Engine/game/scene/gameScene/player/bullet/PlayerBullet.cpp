@@ -29,6 +29,8 @@ void PlayerBullet::Init(const std::string& colliderName)
 
 void PlayerBullet::Update()
 {
+	BulletData data = item_->GetBulletData();
+
 	// フレームが60立ったらIsActiveをfalseにする
 	if (isActive_) {
 		activeFrame_ += DeltaTimer::GetDeltaTime() * 2.0f;
@@ -60,8 +62,10 @@ void PlayerBullet::Update()
 	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed_;
 
 	effect_->OnceBulletTrailEffect(transform_);
+	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform_.rotation_);
+	Collider::size_ = transform_.scale_ + data.colliderSize;
 	Collider::rotate_ = transform_.rotation_;
-	Collider::centerPosition_ = transform_.translation_;
+	Collider::centerPosition_ = transform_.translation_ + data.colliderPosition.Transform(rotateMatrix);
 	Collider::Update();
 	Object3d::Update();
 }

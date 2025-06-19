@@ -9,6 +9,7 @@
 #include "gameScene/enemy/effect/EnemyEffect.h"
 #include "gameScene/enemy/bullet/EnemyBullet.h"
 #include "gameScene/enemy/type/EnemyType.h"
+#include "gameScene/enemy/weapon/EnemyWeaponBase.h"
 
 class Player;
 class GameCamera;
@@ -40,6 +41,8 @@ public:
 
 	std::vector<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
 
+	EnemyWeaponBase* GetWeapon() { return enemyWeapon_.get(); }
+
 	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }
 
@@ -65,7 +68,7 @@ public:
 
 private:
 
-	void BulletInit();
+	void EnemyTypeInit();
 
 private:
 
@@ -80,8 +83,10 @@ private:
 	std::unique_ptr<EnemyBaseState> state_ = nullptr;
 	// エフェクト
 	std::unique_ptr<EnemyEffect> effect_ = nullptr;
-	// 弾
+	// 弾(Ranged用)
 	std::vector<std::unique_ptr<EnemyBullet>> bullets_;
+	// 弾持ち以外のウエポン
+	std::unique_ptr<EnemyWeaponBase> enemyWeapon_ = nullptr;
 
 	// 速度
 	Vector3 velocity_{};

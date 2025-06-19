@@ -115,6 +115,8 @@ public:
 	std::string GetCopyName()const { return emitter_.copyName; }
 	std::string GetName()const { return emitter_.name; }
 
+	void SetDrawLine(bool flag) { line_->GetRenderOptions().enabled = flag; }
+
 private:
 
 	static std::list<ParticleManager::Particle> Emit(const Emitter& emitter, std::mt19937& randomEngine);
@@ -134,7 +136,6 @@ private:
 
 	// エミッタの範囲を可視化
 	std::vector<Vector3> linePosition_;
-	std::vector<std::unique_ptr<Line3d>> lines_;
 	std::unique_ptr<Line3d> line_;
 
 	// Transform変数を作る

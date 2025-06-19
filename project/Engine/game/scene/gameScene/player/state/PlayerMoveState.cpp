@@ -35,7 +35,7 @@ void PlayerMoveState::Update()
 	// 移動時の回転の処理
 	if (velocity.Length() != 0.0f) {
 		// 回転を適応
-		player_->GetTransform().rotation_ = VelocityToQuaternion(velocity, 0.1f);
+		player_->GetTransform().rotation_ = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, velocity, 0.1f);
 		// 移動時のエフェクト
 		player_->GetEffect()->OnceMoveEffect();
 	}
@@ -46,7 +46,7 @@ void PlayerMoveState::Update()
 	if (velocity.Length() != 0.0f) {
 		rightStickVelocity_ = velocity;
 		// StickのVelocityから回転を計算
-		rightStickQuaternion_ = VelocityToQuaternion(rightStickVelocity_, 1.0f);
+		rightStickQuaternion_ = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rightStickVelocity_, 1.0f);
 		Quaternion target = Quaternion::Slerp(player_->GetRightStickQua(), rightStickQuaternion_, 0.3f);
 		player_->SetRightStickQua(target);
 	}
@@ -101,18 +101,4 @@ void PlayerMoveState::ReloadBullet()
 			player_->ReloadBullet();
 		}
 	}
-}
-
-Quaternion PlayerMoveState::VelocityToQuaternion(const Vector3& velocity, const float lerp)
-{
-	Vector3 foward = Vector3::ExprUnitZ;
-	Vector3 targetDir = Vector3{ -velocity.x,0.0f,velocity.z };
-
-	// velocityから回転を求める
-	Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
-	Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
-	Quaternion currentRotation = player_->GetTransform().rotation_;
-	Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, lerp);
-
-	return result;
 }

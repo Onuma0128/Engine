@@ -152,8 +152,8 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 	// ② 各 OBB のローカル軸（列ベクトルを抽出）
 	Vector3 u1[3], u2[3];
 	for (int i = 0; i < 3; ++i) {
-		u1[i] = { obb1.rotateMatrix.m[0][i], obb1.rotateMatrix.m[1][i], obb1.rotateMatrix.m[2][i] };
-		u2[i] = { obb2.rotateMatrix.m[0][i], obb2.rotateMatrix.m[1][i], obb2.rotateMatrix.m[2][i] };
+		u1[i] = { obb1.rotateMatrix.m[i][0], obb1.rotateMatrix.m[i][1], obb1.rotateMatrix.m[i][2] };
+		u2[i] = { obb2.rotateMatrix.m[i][0], obb2.rotateMatrix.m[i][1], obb2.rotateMatrix.m[i][2] };
 	}
 
 	// ③ 回転行列 R と |R|

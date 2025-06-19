@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 
 #include "JsonFunction.h"
 
@@ -29,6 +30,8 @@ struct RangedData {
 	float bulletSpeed;			// 撃つ弾の速度
 	Vector3 colliderSize;		// コライダーのサイズ
 	Vector3 colliderOffset;		// コライダーの座標
+	Vector3 planeSize;			// プレーンエフェクトのサイズ
+	Vector3 planeOffset;		// プレーンエフェクトの座標
 };
 
 // 盾持ち敵の項目
@@ -39,7 +42,10 @@ struct ShieldBearerData {
 // 遠距離敵(強化版)の項目
 struct RangedEliteData {
 	EnemyTemplate tempData;
-	float bulletSpeed;			// 撃つ弾の速度
+	float bulletSpeed;					// 撃つ弾の速度
+	float bulletRadSpace;				// 弾同士の間隔の角度
+	std::array<Vector3, 3> planeSize;	// プレーンエフェクトのサイズ
+	std::array<Vector3, 3> planeOffset;	// プレーンエフェクトの座標
 };
 
 class EnemyAdjustItem

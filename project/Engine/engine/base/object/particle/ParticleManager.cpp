@@ -85,6 +85,7 @@ void ParticleManager::Update()
             for (auto& g_emitter : group.emitters) {
                 if (auto emitter = g_emitter.lock()) {
                     emitter->SetEmitter(group.editor->GetBaseEmitter());
+                    emitter->SetDrawLine(drawEmitter_);
                     emitter->Update();
                 }
             }
@@ -288,6 +289,8 @@ void ParticleManager::ParticleEditorUpdate()
         }
         ImGui::EndCombo();
     }
+    ImGui::SameLine();                      
+    ImGui::Checkbox("DrawEmitter", &drawEmitter_);
 
     // 選択中のnameを取得、ImGuiを描画
     std::string selectedName = items[current];

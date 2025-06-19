@@ -139,6 +139,8 @@ private:
 
 	// パーティクルグループコンテナ
 	std::unordered_map<std::string, ParticleGroup> particleGroups_;
+	// ラインの描画を決める
+	bool drawEmitter_ = false;
 
 
 };

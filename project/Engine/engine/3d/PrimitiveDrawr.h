@@ -69,16 +69,16 @@ public:
 
 	/* =============== アクセッサ(全体) =============== */
 
-	EulerTransform& GetTransform() { return transform_; }
+	Transform3D& GetTransform() { return transform_; }
 	Transform2D& GetUVTransform() { return uvTransform_; }
 	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
 	const Vector4& GetColor() { return materialData_->color; }
 	PrimitiveType GetPrimitiveType()const { return type_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
-	void SetTransform(EulerTransform transform) { transform_ = transform; }
+	void SetTransform(Transform3D transform) { transform_ = transform; }
 	void SetUVTransform(Transform2D transform) { uvTransform_ = transform; }
-	void SetTexture(const std::string& directoryPath, const std::string& filePath);
+	void SetTexture(const std::string& filePath);
 	void SetColor(const Vector3& color) {
 		materialData_->color.x = color.x;
 		materialData_->color.y = color.y;
@@ -180,7 +180,7 @@ private:
 
 	PrimitiveType type_ = PrimitiveType::None;
 
-	EulerTransform transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
+	Transform3D transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform2D uvTransform_ = { {1.0f,1.0f},{0.0f},{0.0f,0.0f} };
 
 	BlendMode blendMode_ = BlendMode::kBlendModeNormal;

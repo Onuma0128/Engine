@@ -94,7 +94,8 @@ void PlayerEffect::UpdatePostEffect()
 			// Cylinderのスケール、回転を適応
 			float scale = t * 20.0f;
 			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
-			cylinder_->GetTransform().rotation.y = t * 3.14f;
+			float angle = t * 3.14f;
+			cylinder_->GetTransform().rotation = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, angle);
 
 			if (specialMoveFrame_ >= expandDuration) {
 				specialMoveFrame_ = 0.0f;
@@ -132,7 +133,8 @@ void PlayerEffect::UpdatePostEffect()
 			// Cylinderのスケール、回転を適応
 			float scale = t * 20.0f;
 			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
-			cylinder_->GetTransform().rotation.y = t * 3.14f;
+			float angle = t * 3.14f;
+			cylinder_->GetTransform().rotation = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, angle);
 
 			if (specialMoveFrame_ >= shrinkDuration) {
 				specialMoveFrame_ = 0.0f;

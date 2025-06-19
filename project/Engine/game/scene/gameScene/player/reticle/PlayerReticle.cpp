@@ -67,7 +67,7 @@ void PlayerReticle::OnCollisionEnter(Collider* other)
 		Sprite::SetColor({ 1.0f,0.0f,0.0f,1.0f });
 		++hitCount_;
 		WorldTransform transform;
-		transform.rotation_ = other->GetRotate() * Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, 3.14f);
+		transform.translation_ = other->GetCenterPosition();
 		enemyTransforms_.push_back(transform);
 	}
 }

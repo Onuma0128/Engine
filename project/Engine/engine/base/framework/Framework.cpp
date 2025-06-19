@@ -46,6 +46,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "smoke.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "circle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "woodChip.png");
+	TextureManager::GetInstance()->LoadTexture("resources", "gradationLine.png");
 	TextureManager::GetInstance()->LoadTexture("resources", "white1x1.png");
 	TextureManager::GetInstance()->LoadTexture("resources", "uvChecker.png");
 	TextureManager::GetInstance()->LoadTexture("resources", "output.dds");

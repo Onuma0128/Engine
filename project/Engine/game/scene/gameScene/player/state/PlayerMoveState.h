@@ -23,8 +23,6 @@ private:
 
 	void ReloadBullet();
 
-	Quaternion VelocityToQuaternion(const Vector3& velocity, const float lerp);
-
 private:
 
 	// 今弾をリロードしているか

@@ -2,7 +2,7 @@
     "Texture": "gradationLine.png",
     "BlendMode": 2,
     "Move": true,
-    "EmitCount": 5,
+    "EmitCount": 10,
     "FrequencyTime": 4.0,
     "LifeTime": 0.5,
     "Acceleration": {

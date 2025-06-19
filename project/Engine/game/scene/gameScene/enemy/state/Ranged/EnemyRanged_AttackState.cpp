@@ -16,10 +16,13 @@ void EnemyRanged_AttackState::Init()
 	chengeStateTime_ = 0.0f;
 
 	isAttack_ = false;
+
+	enemy_->GetEffect()->SetBulletPredictionEffect(true);
 }
 
 void EnemyRanged_AttackState::Finalize()
 {
+	enemy_->GetEffect()->SetBulletPredictionEffect(false);
 }
 
 void EnemyRanged_AttackState::Update()
@@ -38,6 +41,7 @@ void EnemyRanged_AttackState::Update()
 		if (time < chengeStateTime_) {
 			// 攻撃が終わってからの硬直時間
 			time += data.tempData.attackRecoveryTime;
+			enemy_->GetEffect()->SetBulletPredictionEffect(false);
 			if (time < chengeStateTime_) {
 				enemy_->ChengeState(std::make_unique<EnemyMoveState>(enemy_));
 				return;
@@ -57,4 +61,8 @@ void EnemyRanged_AttackState::Attack()
 		bullet->Attack(enemy_->GetTransform());
 	}
 	isAttack_ = true;
+}
+
+void EnemyRanged_AttackState::LookOn()
+{
 }

@@ -4,32 +4,35 @@
 
 // プレイヤーの項目
 struct PlayerData {
-	float speed;			// 移動速度
+	float speed;				// 移動速度
 };
 
 // 弾の項目
 struct BulletData {
-	float speed;			// 弾の速度
-	float speed_sp;			// 必殺技の弾の速度
-	Vector3 position;		// 弾が出てくる座標
+	float speed;				// 弾の速度
+	float speed_sp;				// 必殺技の弾の速度
+	Vector3 position;			// 弾が出てくる座標
+
+	Vector3 colliderSize;		// コライダーのサイズ
+	Vector3 colliderPosition;	// コライダーの中心座標
 };
 
 // 弾の予測オブジェクトの項目
 struct PreObjectData {
-	float interval;			// オブジェクトごとの間隔
-	Vector3 startPosition;	// 最初のZ座標
+	float interval;				// オブジェクトごとの間隔
+	Vector3 startPosition;		// 最初のZ座標
 };
 
 // リボルバーの項目
 struct RevolverData {
-	Vector3 offset;			// ペアレントして固定する座標
+	Vector3 offset;				// ペアレントして固定する座標
 };
 
 // 弾UIの項目
 struct BulletUIData {
-	Vector2 size;			// UIのサイズ
-	Vector2 position;		// 座標(一つ一つの間隔的な)
-	float startPosition;	// 最初の座標
+	Vector2 size;				// UIのサイズ
+	Vector2 position;			// 座標(一つ一つの間隔的な)
+	float startPosition;		// 最初の座標
 };
 
 class PlayerAdjustItem

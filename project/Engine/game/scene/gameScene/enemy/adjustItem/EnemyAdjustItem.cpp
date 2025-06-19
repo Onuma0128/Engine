@@ -25,11 +25,15 @@ void EnemyAdjustItem::LoadItems()
 		rangedJson_.Set("bulletSpeed", 0.0f);
 		rangedJson_.Set("colliderSize", Vector3{});
 		rangedJson_.Set("colliderOffset", Vector3{});
+		rangedJson_.Set("planeSize", Vector3{});
+		rangedJson_.Set("planeOffset", Vector3{});
 	} else {
 		rangedData_.tempData = GetTemplateData(rangedJson_);
 		rangedData_.bulletSpeed = rangedJson_.Get("bulletSpeed", rangedData_.bulletSpeed);
 		rangedData_.colliderSize = rangedJson_.Get("colliderSize", rangedData_.colliderSize);
 		rangedData_.colliderOffset = rangedJson_.Get("colliderOffset", rangedData_.colliderOffset);
+		rangedData_.planeSize = rangedJson_.Get("planeSize", rangedData_.planeSize);
+		rangedData_.planeOffset = rangedJson_.Get("planeOffset", rangedData_.planeOffset);
 	}
 
 	/* ============================== ShieldBearer ============================== */
@@ -47,9 +51,19 @@ void EnemyAdjustItem::LoadItems()
 	if (!rangedEliteJson_.Load()) {
 		SetJsonParameter(rangedEliteJson_);
 		rangedEliteJson_.Set("bulletSpeed", 0.0f);
+		rangedEliteJson_.Set("bulletRadSpace", 0.0f);
+		for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
+			rangedEliteJson_.Set("planeSize" + std::to_string(i), Vector3{});
+			rangedEliteJson_.Set("planeOffset" + std::to_string(i), Vector3{});
+		}
 	} else {
 		rangedEliteData_.tempData = GetTemplateData(rangedEliteJson_);
 		rangedEliteData_.bulletSpeed = rangedEliteJson_.Get("bulletSpeed", rangedEliteData_.bulletSpeed);
+		rangedEliteData_.bulletRadSpace = rangedEliteJson_.Get("bulletRadSpace", rangedEliteData_.bulletRadSpace);
+		for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
+			rangedEliteData_.planeSize[i] = rangedEliteJson_.Get("planeSize" + std::to_string(i), rangedEliteData_.planeSize[i]);
+			rangedEliteData_.planeOffset[i] = rangedEliteJson_.Get("planeOffset" + std::to_string(i), rangedEliteData_.planeOffset[i]);
+		}
 	}
 }
 
@@ -82,11 +96,15 @@ void EnemyAdjustItem::Editor()
 		ImGui::DragFloat("bulletSpeed", &rangedData_.bulletSpeed, 0.01f);
 		ImGui::DragFloat3("colliderSize", &rangedData_.colliderSize.x, 0.01f);
 		ImGui::DragFloat3("colliderOffset", &rangedData_.colliderOffset.x, 0.01f);
+		ImGui::DragFloat3("planeSize", &rangedData_.planeSize.x, 0.01f);
+		ImGui::DragFloat3("planeOffset", &rangedData_.planeOffset.x, 0.01f);
 		if (ImGui::Button("Save")) {
 			SetTemplateData(rangedJson_, rangedData_.tempData);
 			rangedJson_.Set("bulletSpeed", rangedData_.bulletSpeed);
 			rangedJson_.Set("colliderSize", rangedData_.colliderSize);
 			rangedJson_.Set("colliderOffset", rangedData_.colliderOffset);
+			rangedJson_.Set("planeSize", rangedData_.planeSize);
+			rangedJson_.Set("planeOffset", rangedData_.planeOffset);
 			rangedJson_.Save();
 		}
 		ImGui::TreePop();
@@ -112,9 +130,21 @@ void EnemyAdjustItem::Editor()
 
 		SetImGuiData(rangedEliteJson_, rangedEliteData_.tempData);
 		ImGui::DragFloat("bulletSpeed", &rangedEliteData_.bulletSpeed, 0.01f);
+		ImGui::DragFloat("bulletRadSpace", &rangedEliteData_.bulletRadSpace, 0.01f);
+		for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
+			std::string labelSize = "planeSize" + std::to_string(i);
+			std::string labelOffset = "planeOffset" + std::to_string(i);
+			ImGui::DragFloat3(labelSize.c_str(), &rangedEliteData_.planeSize[i].x, 0.01f);
+			ImGui::DragFloat3(labelOffset.c_str(), &rangedEliteData_.planeOffset[i].x, 0.01f);
+		}
 		if (ImGui::Button("Save")) {
 			SetTemplateData(rangedEliteJson_, rangedEliteData_.tempData);
 			rangedEliteJson_.Set("bulletSpeed", rangedEliteData_.bulletSpeed);
+			rangedEliteJson_.Set("bulletRadSpace", rangedEliteData_.bulletRadSpace);
+			for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
+				rangedEliteJson_.Set("planeSize" + std::to_string(i), rangedEliteData_.planeSize[i]);
+				rangedEliteJson_.Set("planeOffset" + std::to_string(i), rangedEliteData_.planeOffset[i]);
+			}
 			rangedEliteJson_.Save();
 		}
 		ImGui::TreePop();

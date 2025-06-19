@@ -20,6 +20,8 @@ private:
 
 	void Attack();
 
+	void LookOn();
+
 private:
 
 	float chengeStateTime_ = 0.0f;
