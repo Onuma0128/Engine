@@ -132,7 +132,10 @@ void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)
 
 void Player::OnCollisionEnter(Collider* other)
 {
-	if (other->GetColliderName() == "EnemyMelee") {
+	if (other->GetColliderName() == "EnemyMelee" ||
+		other->GetColliderName() == "EnemyRanged" ||
+		other->GetColliderName() == "EnemyShieldBearer" ||
+		other->GetColliderName() == "EnemyRangedElite") {
 		Object3d::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
 	}
 }
@@ -143,7 +146,10 @@ void Player::OnCollisionStay(Collider* other)
 
 void Player::OnCollisionExit(Collider* other)
 {
-	if (other->GetColliderName() == "EnemyMelee") {
+	if (other->GetColliderName() == "EnemyMelee" ||
+		other->GetColliderName() == "EnemyRanged" ||
+		other->GetColliderName() == "EnemyShieldBearer" ||
+		other->GetColliderName() == "EnemyRangedElite") {
 		Object3d::SetColor(Vector4{ 1.0f,1.0f,1.0f,1.0f });
 	}
 }

@@ -108,6 +108,9 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
     ModelData modelData;
     size_t vertexOffset = 0;
+    // ファイルを保存
+    modelData.directoryPath = directoryPath;
+    modelData.filePath = filename;
 
     // meshを解析
     for (uint32_t meshIndex = 0; meshIndex < scene->mNumMeshes; ++meshIndex) {
@@ -117,6 +120,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         SubMesh subMesh{};
         subMesh.indexStart = static_cast<uint32_t>(modelData.indices.size());
         subMesh.materialIndex = mesh->mMaterialIndex;
+        uint32_t baseVertexOffset = static_cast<uint32_t>(modelData.vertices.size());
         //modelData.vertices.resize(mesh->mNumVertices);
 
         for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
@@ -140,7 +144,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
             for (uint32_t element = 0; element < face.mNumIndices; ++element) {
                 uint32_t vertexIndex = face.mIndices[element];
-                modelData.indices.push_back(static_cast<uint32_t>(vertexOffset) + vertexIndex);
+                modelData.indices.push_back(static_cast<uint32_t>(baseVertexOffset) + vertexIndex);
             }
         }
         subMesh.indexCount = static_cast<uint32_t>(modelData.indices.size()) - subMesh.indexStart;
@@ -164,7 +168,10 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
             jointWeightData.inverseBindPosMatrix = Matrix4x4::Inverse(bindPoseMatrix);
 
             for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
-                jointWeightData.vertexWeights.push_back({ bone->mWeights[weightIndex].mWeight,bone->mWeights[weightIndex].mVertexId });
+                const auto& w = bone->mWeights[weightIndex];
+
+                uint32_t globalIndex = static_cast<uint32_t>(baseVertexOffset) + w.mVertexId;
+                jointWeightData.vertexWeights.push_back({ w.mWeight,globalIndex });
             }
         }
     }

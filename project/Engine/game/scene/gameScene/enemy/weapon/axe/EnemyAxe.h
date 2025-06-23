@@ -8,6 +8,8 @@ public:
 
 	EnemyAxe(Enemy* enemy);
 
+	void Finalize() override;
+
 	void Init(ColliderType type, const std::string& name) override;
 
 	void Update() override;

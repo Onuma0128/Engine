@@ -18,9 +18,8 @@
 
 #include "CreateBufferResource.h"
 
-void Animation::Initialize(const std::string& directoryPath, const std::string& filename)
+void Animation::Initialize(const std::string& filename)
 {
-	ModelManager::GetInstance()->LoadModel(directoryPath, filename);
 	animationBase_ = std::make_unique<AnimationBase>();
 	animationBase_->Initialize();
 
@@ -28,7 +27,11 @@ void Animation::Initialize(const std::string& directoryPath, const std::string& 
 	SetModel(filename);
 	MakeMaterialData();
 
-	animationData_ = LoadAnimationFile(directoryPath, filename);
+	animationDatas_ = LoadAnimationFile(model_->GetModelData().directoryPath, filename);
+	for (size_t i = 0; i < animationDatas_.size(); ++i) {
+		nameToIx_[animationDatas_[i].name] = i;
+	}
+	currentAnim_ = 0;
 
 	skeleton_ = CreateSkeleton(model_->GetModelData().rootNode);
 	skinCluster_ = CreateSkinCluster(DirectXEngine::GetDevice(), skeleton_, model_->GetModelData());
@@ -48,9 +51,11 @@ void Animation::Initialize(const std::string& directoryPath, const std::string& 
 		}
 	}
 
+#ifdef _DEBUG
 	// Line3dを初期化
 	line_ = std::make_unique<Line3d>();
 	line_->Initialize(linePositions);
+#endif // _DEBUG
 }
 
 void Animation::SetSceneRenderer()
@@ -65,40 +70,61 @@ void Animation::SetSceneRenderer()
 void Animation::RemoveRenderer()
 {
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
+	if (line_ == nullptr) { return; }
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
 void Animation::Update()
 {
-	animationTime_ += DeltaTimer::GetDeltaTime();
-	animationTime_ = std::fmod(animationTime_, animationData_.duration);
-	
-	ApplyAnimation(skeleton_, animationData_, animationTime_);
-	SkeletonUpdate(skeleton_);
-	SkinClusterUpdate(skinCluster_, skeleton_);
+	if (!blend_.active) {
 
-	transform_.TransferMatrix(Matrix4x4::Identity());
+		const AnimationData& clip = animationDatas_[currentAnim_];
+		animationTime_ += DeltaTimer::GetDeltaTime();
+		animationTime_ = std::fmod(animationTime_, clip.duration);
+		ApplyAnimation(skeleton_, clip, animationTime_, clip.duration);
 
-	int32_t count = 0;
-	std::vector<Vector3> linePositions{};
-	for (const Joint& joint : skeleton_.joints) {
-		if (joint.parent) {
-			// 初期の位置を取得
-			Matrix4x4 parentMatrix = skeleton_.joints[*joint.parent].skeletonSpaceMatrix * transform_.matWorld_;
-			Matrix4x4 jointMatrix = joint.skeletonSpaceMatrix * transform_.matWorld_;
+	} else {
 
-			Vector3 parentPos = Vector3{}.Transform(parentMatrix);
-			Vector3 jointPos = Vector3{}.Transform(jointMatrix);
+		const AnimationData& clipA = animationDatas_[blend_.fromIndex];
+		blend_.fromTime += DeltaTimer::GetDeltaTime();
+		blend_.fromTime = std::fmod(blend_.fromTime, clipA.duration);
+		Skeleton poseA = skeleton_;		// スケルトンのコピー
+		ApplyAnimation(poseA, clipA, blend_.fromTime, clipA.duration);
 
-			linePositions.push_back(parentPos);
-			linePositions.push_back(jointPos);
+		const AnimationData& clipB = animationDatas_[blend_.toIndex];
+		blend_.toTime += DeltaTimer::GetDeltaTime();
+		blend_.toTime = std::fmod(blend_.toTime, clipB.duration);
+		Skeleton poseB = skeleton_;		// スケルトンのコピー
+		ApplyAnimation(poseB, clipB, blend_.toTime, clipB.duration);
 
-			++count;
+		// 補完をする
+		float alpha = blend_.time / blend_.duration;
+		alpha = std::clamp(alpha, 0.0f, 1.0f);
+
+		for (size_t j = 0; j < skeleton_.joints.size(); ++j) {
+			auto& dst = skeleton_.joints[j];
+			const auto& a = poseA.joints[j];
+			const auto& b = poseB.joints[j];
+
+			dst.transform.translation = Vector3::Lerp(a.transform.translation, b.transform.translation, alpha);
+			dst.transform.scale = Vector3::Lerp(a.transform.scale, b.transform.scale, alpha);
+			dst.transform.rotation = Quaternion::Slerp(a.transform.rotation, b.transform.rotation, alpha);
+		}
+
+		blend_.time += DeltaTimer::GetDeltaTime();
+		if (blend_.time >= blend_.duration) {
+			/*====== フェード完了 ======*/
+			blend_.active = false;
+			currentAnim_ = blend_.toIndex;
+			animationTime_ = blend_.toTime;   // 継続時間を引き継ぐ
 		}
 	}
 
-	line_->SetPositions(linePositions);
-	line_->Update();
+	SkeletonUpdate(skeleton_);
+	SkinClusterUpdate(skinCluster_, skeleton_);
+	transform_.TransferMatrix(Matrix4x4::Identity());
+	if (line_ == nullptr) { return; }
+	LineUpdate();
 }
 
 void Animation::Draw()
@@ -124,47 +150,76 @@ void Animation::Draw()
 	}
 }
 
-AnimationData Animation::LoadAnimationFile(const std::string& directoryPath, const std::string& filename)
+std::vector<AnimationData> Animation::LoadAnimationFile(const std::string& directoryPath, const std::string& filename)
 {
-	AnimationData animationData;
+	std::vector<AnimationData> animationDatas;
 	Assimp::Importer importer;
 	std::string filePath = directoryPath + "/" + filename;
 	const aiScene* scene = importer.ReadFile(filePath.c_str(), 0);
 	assert(scene->mNumAnimations != 0);
-	aiAnimation* animationAssimp = scene->mAnimations[0];
-	animationData.duration = float(animationAssimp->mDuration / animationAssimp->mTicksPerSecond);
 
-	for (uint32_t channelIndex = 0; channelIndex < animationAssimp->mNumChannels; ++channelIndex) {
-		aiNodeAnim* nodeAnimationAssimp = animationAssimp->mChannels[channelIndex];
-		NodeAnimation& nodeAnimation = animationData.nodeAnimations[nodeAnimationAssimp->mNodeName.C_Str()];
-		
-		// 座標
-		for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumPositionKeys; ++keyIndex) {
-			aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
-			KeyFrameVector3 keyframe;
-			keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
-			keyframe.value = { -keyAssimp.mValue.x,keyAssimp.mValue.y,keyAssimp.mValue.z };
-			nodeAnimation.translate.keyframes.push_back(keyframe);
+	for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; ++animationIndex) {
+
+		aiAnimation* animationAssimp = scene->mAnimations[animationIndex];
+		AnimationData animationData;
+		animationData.name = animationAssimp->mName.C_Str();
+		animationData.duration = float(animationAssimp->mDuration / animationAssimp->mTicksPerSecond);
+
+		for (uint32_t channelIndex = 0; channelIndex < animationAssimp->mNumChannels; ++channelIndex) {
+			aiNodeAnim* nodeAnimationAssimp = animationAssimp->mChannels[channelIndex];
+			NodeAnimation& nodeAnimation = animationData.nodeAnimations[nodeAnimationAssimp->mNodeName.C_Str()];
+
+			// 座標
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumPositionKeys; ++keyIndex) {
+				aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
+				KeyFrameVector3 keyframe;
+				keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				keyframe.value = { -keyAssimp.mValue.x,keyAssimp.mValue.y,keyAssimp.mValue.z };
+				nodeAnimation.translate.keyframes.push_back(keyframe);
+			}
+			// 回転
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {
+				aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
+				KeyFrameQuaternion keyframe;
+				keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				keyframe.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
+				nodeAnimation.rotate.keyframes.push_back(keyframe);
+			}
+			// スケール
+			for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; ++keyIndex) {
+				aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
+				KeyFrameVector3 keyframe;
+				keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+				keyframe.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+				nodeAnimation.scale.keyframes.push_back(keyframe);
+			}
 		}
-		// 回転
-		for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {
-			aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
-			KeyFrameQuaternion keyframe;
-			keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
-			keyframe.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
-			nodeAnimation.rotate.keyframes.push_back(keyframe);
-		}
-		// スケール
-		for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; ++keyIndex) {
-			aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
-			KeyFrameVector3 keyframe;
-			keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
-			keyframe.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
-			nodeAnimation.scale.keyframes.push_back(keyframe);
-		}
+		animationDatas.push_back(std::move(animationData));
 	}
 
-	return animationData;
+	return animationDatas;
+}
+
+void Animation::Play(size_t idx, float fadeTime)
+{
+	if (idx >= animationDatas_.size() || idx == currentAnim_) { return; }
+
+	blend_.active = true;
+	blend_.fromIndex = currentAnim_;
+	blend_.toIndex = idx;
+	blend_.duration = std::fmax(0.001f, fadeTime);
+	blend_.time = 0.0f;
+	blend_.fromTime = animationTime_;   // 現在の再生位置を保持
+	blend_.toTime = 0.0f;             // 新クリップは 0 秒から
+}
+
+bool Animation::PlayByName(const std::string& clipName, float fadeTime)
+{
+	auto it = nameToIx_.find(clipName);
+	if (it == nameToIx_.end()) { return false; }          // 名前なし
+
+	Play(it->second, fadeTime);                           // index 切替 (前回答参照)
+	return true;
 }
 
 Skeleton Animation::CreateSkeleton(const Node& rootNode)
@@ -283,14 +338,14 @@ void Animation::SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skel
 	}
 }
 
-void Animation::ApplyAnimation(Skeleton& skeleton, const AnimationData& animation, float animationTime)
+void Animation::ApplyAnimation(Skeleton& skeleton, const AnimationData& animation, float animationTime, float duration)
 {
 	for (Joint& joint : skeleton.joints) {
 		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
 			const NodeAnimation& rootNodeAnimation = (*it).second;
-			joint.transform.translation = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime);
-			joint.transform.rotation = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime);
-			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime);
+			joint.transform.translation = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime, duration);
+			joint.transform.rotation = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime, duration);
+			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime, duration);
 		}
 	}
 }
@@ -310,40 +365,56 @@ void Animation::SetColor(const Vector4& color)
 	materialData_->color = color;
 }
 
-Vector3 Animation::CalculateValue(const std::vector<KeyFrameVector3>& keyframes, float time)
+Vector3 Animation::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)
 {
-	assert(!keyframes.empty());
-	if (keyframes.size() == 1 || time <= keyframes[0].time) {
-		return keyframes[0].value;
-	}
-	for (size_t index = 0; index < keyframes.size() - 1; ++index) {
-		size_t nextIndex = index + 1;
+	assert(!keys.empty());
 
-		if (keyframes[index].time <= time && time <= keyframes[nextIndex].time) {
-			float t = (time = keyframes[index].time) / (keyframes[nextIndex].time - keyframes[index].time);
-			return Vector3::Lerp(keyframes[index].value, keyframes[nextIndex].value, t);
+	// 最後から最初の補間を処理
+	if (time < keys.front().time) {
+		const auto& last = keys.back();
+		const auto& first = keys.front();
+
+		float span = (clipDuration - last.time) + first.time;
+		float t = (time + clipDuration - last.time) / span;
+		return Vector3::Lerp(last.value, first.value, t);
+	}
+
+	// 既存ロジック
+	if (keys.size() == 1 || time <= keys[0].time) { return keys[0].value; }
+	for (size_t i = 0; i < keys.size() - 1; ++i) {
+		size_t j = i + 1;
+		if (keys[i].time <= time && time <= keys[j].time) {
+			float t = (time - keys[i].time) / (keys[j].time - keys[i].time);
+			return Vector3::Lerp(keys[i].value, keys[j].value, t);
 		}
 	}
-
-	return (*keyframes.rbegin()).value;
+	return keys.back().value;
 }
 
-Quaternion Animation::CalculateValue(const std::vector<KeyFrameQuaternion>& keyframes, float time)
+Quaternion Animation::CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration)
 {
-	assert(!keyframes.empty());
-	if (keyframes.size() == 1 || time <= keyframes[0].time) {
-		return keyframes[0].value;
-	}
-	for (size_t index = 0; index < keyframes.size() - 1; ++index) {
-		size_t nextIndex = index + 1;
+	assert(!keys.empty());
 
-		if (keyframes[index].time <= time && time <= keyframes[nextIndex].time) {
-			float t = (time - keyframes[index].time) / (keyframes[nextIndex].time - keyframes[index].time);
-			return Quaternion::Lerp(keyframes[index].value, keyframes[nextIndex].value, t);
+	// 最後から最初の補間を処理
+	if (time < keys.front().time) {
+		const auto& last = keys.back();
+		const auto& first = keys.front();
+
+		float span = (clipDuration - last.time) + first.time;
+		float t = (time + clipDuration - last.time) / span;
+		return Quaternion::Slerp(last.value, first.value, t);
+	}
+
+	// 既存ロジック
+	if (keys.size() == 1 || time <= keys[0].time) { return keys[0].value; }
+	for (size_t i = 0; i < keys.size() - 1; ++i) {
+		size_t j = i + 1;
+		if (keys[i].time <= time && time <= keys[j].time) {
+			float t = (time - keys[i].time) / (keys[j].time - keys[i].time);
+			return Quaternion::Slerp(keys[i].value, keys[j].value, t);
 		}
 	}
-
-	return (*keyframes.rbegin()).value;
+	return keys.back().value;
 }
 
 void Animation::MakeMaterialData()
@@ -358,4 +429,28 @@ void Animation::MakeMaterialData()
 	materialData_->uvTransform = Matrix4x4::Identity();
 	materialData_->shininess = 20.0f;
 	materialData_->environmentCoefficient = 0;
+}
+
+void Animation::LineUpdate()
+{
+	int32_t count = 0;
+	std::vector<Vector3> linePositions{};
+	for (const Joint& joint : skeleton_.joints) {
+		if (joint.parent) {
+			// 初期の位置を取得
+			Matrix4x4 parentMatrix = skeleton_.joints[*joint.parent].skeletonSpaceMatrix * transform_.matWorld_;
+			Matrix4x4 jointMatrix = joint.skeletonSpaceMatrix * transform_.matWorld_;
+
+			Vector3 parentPos = Vector3{}.Transform(parentMatrix);
+			Vector3 jointPos = Vector3{}.Transform(jointMatrix);
+
+			linePositions.push_back(parentPos);
+			linePositions.push_back(jointPos);
+
+			++count;
+		}
+	}
+
+	line_->SetPositions(linePositions);
+	line_->Update();
 }

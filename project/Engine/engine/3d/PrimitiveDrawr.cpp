@@ -9,6 +9,11 @@
 #include "Camera.h"
 #include "CameraManager.h"
 
+PrimitiveDrawr::~PrimitiveDrawr()
+{
+	RemoveRenderer();
+}
+
 void PrimitiveDrawr::Init(std::vector<Vector3> pos)
 {
 	primitiveDrawrBase_ = std::make_unique<PrimitiveDrawrBase>();
@@ -103,6 +108,11 @@ void PrimitiveDrawr::SetSceneRenderer()
 		.offscreen = true
 	};
 	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+}
+
+void PrimitiveDrawr::RemoveRenderer()
+{
+	DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
 }
 
 void PrimitiveDrawr::TypeDraw()

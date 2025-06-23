@@ -73,14 +73,13 @@ void PlayerBullet::Update()
 void PlayerBullet::OnCollisionEnter(Collider* other)
 {
 	// 敵と当たったらなエフェクトを出す
-	if (other->GetColliderName() == "Enemy") {
-		IsCollision();
-		effect_->OnceBulletDeleteEffect(transform_);
-	}
-
-	if (other->GetColliderName() == "FieldObject") {
-		IsCollision();
-		effect_->OnceBulletDeleteEffect(transform_);
+	if (other->GetColliderName() == "Enemy" ||
+		other->GetColliderName() == "EnemyShield" ||
+		other->GetColliderName() == "FieldObject") {
+		if (Collider::colliderName_ == "PlayerBullet") {
+			IsCollision();
+			effect_->OnceBulletDeleteEffect(transform_);
+		}
 	}
 }
 

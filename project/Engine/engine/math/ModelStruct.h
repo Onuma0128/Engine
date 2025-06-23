@@ -73,6 +73,8 @@ struct JointWeightData {
 };
 
 struct ModelData {
+	std::string directoryPath;
+	std::string filePath;
 	std::map<std::string, JointWeightData> skinClusterData;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;

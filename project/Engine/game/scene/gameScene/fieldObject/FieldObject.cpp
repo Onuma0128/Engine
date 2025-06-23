@@ -36,7 +36,8 @@ void FieldObject::Update()
 void FieldObject::OnCollisionEnter(Collider* other)
 {
 	// 弾が当たったら
-	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial") {
+	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial" ||
+		other->GetColliderName() == "EnemyRanged" || other->GetColliderName() == "EnemyRangedElite") {
 		// シェイクさせる
 		shake_ = { 5.0f,0.0f,5.0f };
 		// 弾が飛んできた方向を取得

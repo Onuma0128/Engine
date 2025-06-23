@@ -18,12 +18,17 @@ void Enemy::Finalize()
 	for (auto& bullet : bullets_) {
 		bullet->Finalize();
 	}
+
+	if (weapon_ != nullptr) { weapon_->Finalize(); }
+	if (shieldWeapon_ != nullptr) { shieldWeapon_->Finalize(); }
 }
 
 void Enemy::Init()
 {
-	int type = rand() % 4;
-	type_ = static_cast<EnemyType>(type);
+	// ランダムで敵のタイプを決める
+	std::mt19937 randomEngine_(seedGenerator_());
+	std::uniform_int_distribution<int> enemyType(0, 3);
+	type_ = static_cast<EnemyType>(enemyType(randomEngine_));
 
 	Object3d::Initialize("Box.obj");
 	Object3d::SetSceneRenderer();
@@ -56,7 +61,8 @@ void Enemy::Update()
 	effect_->Update();
 
 	// ウエポンの更新
-	if (enemyWeapon_ != nullptr) { enemyWeapon_->Update(); }
+	if (weapon_ != nullptr) { weapon_->Update(); }
+	if (shieldWeapon_ != nullptr) { shieldWeapon_->Update(); }
 
 	// 弾の更新
 	for (auto& bullet : bullets_) {
@@ -185,8 +191,8 @@ void Enemy::EnemyTypeInit()
 	case EnemyType::Melee:
 	{
 		// 近接攻撃用のコライダーを作成
-		enemyWeapon_ = std::make_unique<EnemyAxe>(this);
-		enemyWeapon_->Init(ColliderType::Sphere, "EnemyMelee");
+		weapon_ = std::make_unique<EnemyAxe>(this);
+		weapon_->Init(ColliderType::Sphere, "EnemyMelee");
 	}
 	break;
 	case EnemyType::Ranged:
@@ -201,8 +207,11 @@ void Enemy::EnemyTypeInit()
 	case EnemyType::ShieldBearer:
 	{
 		// シールド用のコライダーを作成
-		enemyWeapon_ = std::make_unique<EnemyShield>(this);
-		enemyWeapon_->Init(ColliderType::OBB, "EnemyShieldBearer");
+		weapon_ = std::make_unique<EnemyShield>(this);
+		weapon_->Init(ColliderType::OBB, "EnemyShield");
+		// 攻撃コライダーを作成
+		shieldWeapon_ = std::make_unique<EnemyAxe>(this);
+		shieldWeapon_->Init(ColliderType::Sphere, "EnemyShieldBearer");
 	}
 	break;
 	case EnemyType::RangedElite:

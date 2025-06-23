@@ -13,6 +13,8 @@ public:
 	~EnemyWeaponBase() = default;
 	EnemyWeaponBase(Enemy* enemy);
 
+	virtual void Finalize() = 0;
+
 	virtual void Init(ColliderType type, const std::string& name) = 0;
 
 	virtual void Update() = 0;

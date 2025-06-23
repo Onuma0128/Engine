@@ -1,0 +1,35 @@
+{
+    "attackColliderSize": 1.0,
+    "attackColliderOffset": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.75
+    },
+    "shieldSize": {
+        "x": 0.75,
+        "y": 1.0,
+        "z": 0.25
+    },
+    "shieldOffset": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+    },
+    "shieldColliderSize": {
+        "x": 0.75,
+        "y": 1.0,
+        "z": 0.25
+    },
+    "shieldColliderOffset": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+    },
+    "speed": 3.0,
+    "attackDistance": 2.0,
+    "attackStartupTime": 0.75,
+    "attackActiveTime": 0.30000001192092896,
+    "attackRecoveryTime": 0.5,
+    "attackCoolTime": 1.0,
+    "lerpSpeed": 0.019999999552965164
+}

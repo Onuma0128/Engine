@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <random>
 
 #include "Object3d.h"
 #include "Collider.h"
@@ -41,7 +42,8 @@ public:
 
 	std::vector<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
 
-	EnemyWeaponBase* GetWeapon() { return enemyWeapon_.get(); }
+	EnemyWeaponBase* GetWeapon() { return weapon_.get(); }
+	EnemyWeaponBase* GetShieldWeapon() { return shieldWeapon_.get(); }
 
 	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }
@@ -79,6 +81,7 @@ private:
 
 	// 敵のタイプ
 	EnemyType type_ = EnemyType::Ranged;
+	std::random_device seedGenerator_;
 	// 状態遷移
 	std::unique_ptr<EnemyBaseState> state_ = nullptr;
 	// エフェクト
@@ -86,7 +89,8 @@ private:
 	// 弾(Ranged用)
 	std::vector<std::unique_ptr<EnemyBullet>> bullets_;
 	// 弾持ち以外のウエポン
-	std::unique_ptr<EnemyWeaponBase> enemyWeapon_ = nullptr;
+	std::unique_ptr<EnemyWeaponBase> weapon_ = nullptr;
+	std::unique_ptr<EnemyWeaponBase> shieldWeapon_ = nullptr;
 
 	// 速度
 	Vector3 velocity_{};

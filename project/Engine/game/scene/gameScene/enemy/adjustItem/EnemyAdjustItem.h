@@ -37,6 +37,14 @@ struct RangedData {
 // 盾持ち敵の項目
 struct ShieldBearerData {
 	EnemyTemplate tempData;
+	float attackColliderSize;			// コライダーのサイズ
+	Vector3 attackColliderOffset;		// コライダーの座標(敵ペアレント時の)
+
+	float lerpSpeed;					// 盾が回転するラープ速度
+	Vector3 shieldSize;					// 盾のサイズ
+	Vector3 shieldOffset;				// 盾の座標(敵ペアレント時の)
+	Vector3 shieldColliderSize;			// 盾コライダーのサイズ
+	Vector3 shieldColliderOffset;		// 盾コライダーの座標(敵ペアレント時の)
 };
 
 // 遠距離敵(強化版)の項目

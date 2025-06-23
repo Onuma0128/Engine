@@ -41,8 +41,22 @@ void EnemyAdjustItem::LoadItems()
 	shieldBearerJson_.Init("EnemyShieldBearer");
 	if (!shieldBearerJson_.Load()) {
 		SetJsonParameter(shieldBearerJson_);
+		shieldBearerJson_.Set("attackColliderSize", 0.0f);
+		shieldBearerJson_.Set("attackColliderOffset", Vector3{});
+		shieldBearerJson_.Set("lerpSpeed", 0.0f);
+		shieldBearerJson_.Set("shieldSize", Vector3{});
+		shieldBearerJson_.Set("shieldOffset", Vector3{});
+		shieldBearerJson_.Set("shieldColliderSize", Vector3{});
+		shieldBearerJson_.Set("shieldColliderOffset", Vector3{});
 	} else {
 		shieldBearerData_.tempData = GetTemplateData(shieldBearerJson_);
+		shieldBearerData_.attackColliderSize = shieldBearerJson_.Get("attackColliderSize", shieldBearerData_.attackColliderSize);
+		shieldBearerData_.attackColliderOffset = shieldBearerJson_.Get("attackColliderOffset", shieldBearerData_.attackColliderOffset);
+		shieldBearerData_.lerpSpeed = shieldBearerJson_.Get("lerpSpeed", shieldBearerData_.lerpSpeed);
+		shieldBearerData_.shieldSize = shieldBearerJson_.Get("shieldSize", shieldBearerData_.shieldSize);
+		shieldBearerData_.shieldOffset = shieldBearerJson_.Get("shieldOffset", shieldBearerData_.shieldOffset);
+		shieldBearerData_.shieldColliderSize = shieldBearerJson_.Get("shieldColliderSize", shieldBearerData_.shieldColliderSize);
+		shieldBearerData_.shieldColliderOffset = shieldBearerJson_.Get("shieldColliderOffset", shieldBearerData_.shieldColliderOffset);
 	}
 
 	/* ============================== RangedElite ============================== */
@@ -116,8 +130,22 @@ void EnemyAdjustItem::Editor()
 	if (ImGui::TreeNode("ShieldBearer")) {
 
 		SetImGuiData(shieldBearerJson_, shieldBearerData_.tempData);
+		ImGui::DragFloat("attackColliderSize", &shieldBearerData_.attackColliderSize, 0.01f);
+		ImGui::DragFloat3("attackColliderOffset", &shieldBearerData_.attackColliderOffset.x, 0.01f);
+		ImGui::DragFloat("lerpSpeed", &shieldBearerData_.lerpSpeed, 0.01f);
+		ImGui::DragFloat3("shieldSize", &shieldBearerData_.shieldSize.x, 0.01f);
+		ImGui::DragFloat3("shieldOffset", &shieldBearerData_.shieldOffset.x, 0.01f);
+		ImGui::DragFloat3("shieldColliderSize", &shieldBearerData_.shieldColliderSize.x, 0.01f);
+		ImGui::DragFloat3("shieldColliderOffset", &shieldBearerData_.shieldColliderOffset.x, 0.01f);
 		if (ImGui::Button("Save")) {
 			SetTemplateData(shieldBearerJson_, shieldBearerData_.tempData);
+			shieldBearerJson_.Set("attackColliderSize", shieldBearerData_.attackColliderSize);
+			shieldBearerJson_.Set("attackColliderOffset", shieldBearerData_.attackColliderOffset);
+			shieldBearerJson_.Set("lerpSpeed", shieldBearerData_.lerpSpeed);
+			shieldBearerJson_.Set("shieldSize", shieldBearerData_.shieldSize);
+			shieldBearerJson_.Set("shieldOffset", shieldBearerData_.shieldOffset);
+			shieldBearerJson_.Set("shieldColliderSize", shieldBearerData_.shieldColliderSize);
+			shieldBearerJson_.Set("shieldColliderOffset", shieldBearerData_.shieldColliderOffset);
 			shieldBearerJson_.Save();
 		}
 		ImGui::TreePop();

@@ -48,6 +48,8 @@ public:
 		float padding[2];
 	};
 
+	~PrimitiveDrawr();
+
 	/* =============== トレイルエフェクト =============== */
 
 	void Init(std::vector<Vector3> pos);
@@ -60,6 +62,7 @@ public:
 
 	void TypeInit(PrimitiveType type, uint32_t kIndex = 0);
 	void SetSceneRenderer();
+	void RemoveRenderer();
 
 	void TypeDraw();
 

@@ -68,13 +68,10 @@ void EnemyBullet::Update()
 
 void EnemyBullet::OnCollisionEnter(Collider* other)
 {
-	// 敵と当たったらなエフェクトを出す
-	if (other->GetColliderName() == "Player") {
-
-	}
-
-	if (other->GetColliderName() == "FieldObject") {
-
+	// 当たったらな消す
+	if (other->GetColliderName() == "Player" ||
+		other->GetColliderName() == "FieldObject") {
+		IsCollision();
 	}
 }
 

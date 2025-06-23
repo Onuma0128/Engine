@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include <vector>
+#include <unordered_map>
 
 #include "AnimationBase.h"
 #include "WorldTransform.h"
@@ -14,7 +16,7 @@ class Animation
 {
 public:
 
-	void Initialize(const std::string& directoryPath, const std::string& filename);
+	void Initialize(const std::string& filename);
 	void SetSceneRenderer();
 	void RemoveRenderer();
 
@@ -22,7 +24,11 @@ public:
 
 	void Draw();
 
-	AnimationData LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
+	std::vector<AnimationData> LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
+
+	// 再生するアニメーションを選択
+	void Play(size_t idx, float fadeTime = 0.3f);
+	bool PlayByName(const std::string& clipName, float fadeTime = 0.3f);
 
 	/*==================== アクセッサ ====================*/
 
@@ -42,14 +48,16 @@ private:
 		const ComPtr<ID3D12Device>& device, const Skeleton& skeleton, const ModelData& modelData
 	);
 
-	Vector3 CalculateValue(const std::vector<KeyFrameVector3>& keyframes, float time);
-	Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keyframes, float time);
+	Vector3 CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration);
+	Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration);
 
 	void SkeletonUpdate(Skeleton& skeleton);
 	void SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skeleton);
-	void ApplyAnimation(Skeleton& skeleton, const AnimationData& animation, float animationTime);
+	void ApplyAnimation(Skeleton& skeleton, const AnimationData& animation, float animationTime, float duration);
 
 	void MakeMaterialData();
+
+	void LineUpdate();
 
 protected:
 
@@ -60,7 +68,10 @@ private:
 	std::unique_ptr<AnimationBase> animationBase_ = nullptr;
 	Model* model_ = nullptr;
 
-	AnimationData animationData_;
+	std::vector<AnimationData> animationDatas_;
+	std::unordered_map<std::string, size_t> nameToIx_;
+	AnimationBlendState blend_;
+	size_t currentAnim_ = 0;
 	float animationTime_ = 0.0f;
 
 	SkinCluster skinCluster_;

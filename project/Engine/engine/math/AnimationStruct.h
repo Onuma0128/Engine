@@ -19,8 +19,8 @@ using Microsoft::WRL::ComPtr;
 
 
 /// <summary>
-	/// AnimationのTransform用構造体
-	/// </summary>
+/// AnimationのTransform用構造体
+/// </summary>
 template <typename tValue>
 struct KeyFrame {
 	tValue value;		// キーフレームの値
@@ -46,8 +46,19 @@ struct NodeAnimation {
 /// Animationを表現する用構造体
 /// </summary>
 struct AnimationData {
-	float duration;	// アニメーション全体の尺
+	std::string name;	// アニメーションの名前
+	float duration;		// アニメーション全体の尺
 	std::map<std::string, NodeAnimation> nodeAnimations;
+};
+
+struct AnimationBlendState {
+	bool   active = false;		// フェード中？
+	size_t fromIndex = 0;       // 直前のクリップ
+	size_t toIndex = 0;			// 目標クリップ
+	float  time = 0.0f;			// 経過
+	float  duration = 0.3f;	    // フェード時間
+	float  fromTime = 0.0f;		// fromClip の再生秒
+	float  toTime = 0.0f;		// toClip   の再生秒
 };
 
 /// <summary>

@@ -5,6 +5,11 @@
 
 EnemyAxe::EnemyAxe(Enemy* enemy) : EnemyWeaponBase(enemy) {}
 
+void EnemyAxe::Finalize()
+{
+	Collider::RemoveCollider();
+}
+
 void EnemyAxe::Init(ColliderType type, const std::string& name)
 {
 	Collider::AddCollider();
@@ -16,11 +21,21 @@ void EnemyAxe::Init(ColliderType type, const std::string& name)
 
 void EnemyAxe::Update()
 {
-	MeleeData data = enemy_->GetItem()->GetMeleeData();
+	if ("EnemyMelee" == Collider::colliderName_) {
+		MeleeData data = enemy_->GetItem()->GetMeleeData();
 
-	Collider::radius_ = data.colliderSize;
-	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
-	Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.colliderOffset.Transform(rotateMatrix);
+		Collider::radius_ = data.colliderSize;
+		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
+		Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.colliderOffset.Transform(rotateMatrix);
+
+	} else {
+		ShieldBearerData data = enemy_->GetItem()->GetShieldBearerData();
+
+		Collider::radius_ = data.attackColliderSize;
+		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
+		Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.attackColliderOffset.Transform(rotateMatrix);
+	}
+
 	Collider::Update();
 }
 

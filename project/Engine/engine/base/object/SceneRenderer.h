@@ -68,6 +68,10 @@ template<>
 inline void SceneRenderer::SetDrawList<PrimitiveDrawr>(PrimitiveDrawr* primitive) {
 	primitiveDrawrs_.push_back(primitive);
 }
+template<>
+inline void SceneRenderer::SetRemoveList<PrimitiveDrawr>(PrimitiveDrawr* primitive) {
+	primitiveDrawrs_.remove(primitive);
+}
 
 template<>
 inline void SceneRenderer::SetDrawList<Animation>(Animation* animation) {
