@@ -39,6 +39,7 @@ void GamePlayScene::Initialize()
 	emitter_ = std::make_unique<ParticleEmitter>("test");
 	ParticleManager::GetInstance()->CreateParticleGroup(emitter_);
 
+
 }
 
 void GamePlayScene::Finalize()
