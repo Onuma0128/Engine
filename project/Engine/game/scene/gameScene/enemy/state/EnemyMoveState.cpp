@@ -20,6 +20,8 @@ EnemyMoveState::EnemyMoveState(Enemy* enemy) :EnemyBaseState(enemy) {}
 void EnemyMoveState::Init()
 {
 	attackCoolTime_ = GetTypeAttackCoolTime();
+
+	chengeAniamtion_ = false;
 }
 
 void EnemyMoveState::Finalize()
@@ -59,11 +61,15 @@ void EnemyMoveState::Update()
 	Vector3 playerPos = enemy_->GetPlayer()->GetTransform().translation_;
 	Vector3 enemyPos = enemy_->GetTransform().translation_;
 	if (Vector3::Distance(enemyPos, playerPos) <= GetTypeAttackDistance()) {
+		// 待機時アニメーションにする
+		AttackCoolTimeAnimation();
 		if (attackCoolTime_ <= 0.0f) {
 			TypeChengeAttackState();
 			return;
 		}
 	} else {
+		// 移動時アニメーションにする
+		MoveAnimation();
 		// 距離があれば移動処理をする
 		enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
 	}
@@ -117,5 +123,35 @@ void EnemyMoveState::TypeChengeAttackState()
 	case EnemyType::ShieldBearer:	enemy_->ChengeState(std::make_unique<EnemyShieldBearer_AttackState>(enemy_)); break;
 	case EnemyType::RangedElite:	enemy_->ChengeState(std::make_unique<EnemyRangedElite_AttackState>(enemy_)); break;
 	default:break;
+	}
+}
+
+void EnemyMoveState::MoveAnimation()
+{
+	if (chengeAniamtion_) {
+
+		switch (enemy_->GetType()) {
+		case EnemyType::Melee:			enemy_->PlayByName("Run_Arms"); break;
+		case EnemyType::Ranged:			enemy_->PlayByName("Run"); break;
+		case EnemyType::ShieldBearer:	enemy_->PlayByName("Run_Arms"); break;
+		case EnemyType::RangedElite:	enemy_->PlayByName("Run"); break;
+		default:break;
+		}
+		chengeAniamtion_ = false;
+	}
+}
+
+void EnemyMoveState::AttackCoolTimeAnimation()
+{
+	if (!chengeAniamtion_) {
+
+		switch (enemy_->GetType()) {
+		case EnemyType::Melee:			enemy_->PlayByName("Idle"); break;
+		case EnemyType::Ranged:			enemy_->PlayByName("Idle"); break;
+		case EnemyType::ShieldBearer:	enemy_->PlayByName("Idle"); break;
+		case EnemyType::RangedElite:	enemy_->PlayByName("Idle"); break;
+		default:break;
+		}
+		chengeAniamtion_ = true;
 	}
 }

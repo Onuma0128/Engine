@@ -76,11 +76,29 @@ void Animation::RemoveRenderer()
 
 void Animation::Update()
 {
+	if (stopped_) {
+		transform_.TransferMatrix(Matrix4x4::Identity());
+		if (line_ == nullptr) { return; }
+		LineUpdate();
+		return;
+	}
+
 	if (!blend_.active) {
 
 		const AnimationData& clip = animationDatas_[currentAnim_];
 		animationTime_ += DeltaTimer::GetDeltaTime();
-		animationTime_ = std::fmod(animationTime_, clip.duration);
+
+		// アニメーションを止める
+		if (timeStop_) {
+			if (animationTime_ >= clip.duration) {
+				animationTime_ = clip.duration;
+				stopped_ = true;
+			}
+		// ループさせないので std::fmod は呼ばない
+		} else {
+			animationTime_ = std::fmod(animationTime_, clip.duration);
+		}
+
 		ApplyAnimation(skeleton_, clip, animationTime_, clip.duration);
 
 	} else {
@@ -211,6 +229,8 @@ void Animation::Play(size_t idx, float fadeTime)
 	blend_.time = 0.0f;
 	blend_.fromTime = animationTime_;   // 現在の再生位置を保持
 	blend_.toTime = 0.0f;             // 新クリップは 0 秒から
+	timeStop_ = false;
+	stopped_ = false;
 }
 
 bool Animation::PlayByName(const std::string& clipName, float fadeTime)

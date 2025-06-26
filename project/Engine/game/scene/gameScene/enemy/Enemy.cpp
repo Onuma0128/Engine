@@ -9,10 +9,11 @@
 
 #include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
+#include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 
 void Enemy::Finalize()
 {
-	Object3d::RemoveRenderer();
+	Animation::RemoveRenderer();
 	Collider::RemoveCollider();
 
 	for (auto& bullet : bullets_) {
@@ -29,13 +30,17 @@ void Enemy::Init()
 	std::mt19937 randomEngine_(seedGenerator_());
 	std::uniform_int_distribution<int> enemyType(0, 3);
 	type_ = static_cast<EnemyType>(enemyType(randomEngine_));
+	//type_ = static_cast<EnemyType>(0);
+	if (type_ == EnemyType::Melee || type_ == EnemyType::ShieldBearer) {
+		Animation::Initialize("Zombie_Basic.gltf");
+		Animation::PlayByName("Run_Arms");
+	} else {
+		Animation::Initialize("Characters_Shaun.gltf");
+		Animation::PlayByName("Run");
+	}
+	Animation::SetSceneRenderer();
 
-	Object3d::Initialize("Box.obj");
-	Object3d::SetSceneRenderer();
-	Object3d::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
-
-	transform_.scale_ = { 0.5f,0.75f,0.5f };
-	transform_.translation_ = { 0.0f,0.75f,0.0f };
+	transform_.scale_ *= 1.5f;
 
 	ChengeState(std::make_unique<EnemyMoveState>(this));
 
@@ -78,16 +83,17 @@ void Enemy::Update()
 			hitReticle_ = false;
 		}
 	} else if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::None) {
-		Object3d::GetRenderOptions().offscreen = true;
+		Animation::GetRenderOptions().offscreen = true;
 	}
 
 	// 敵コライダーの更新
-	Collider::centerPosition_ = transform_.translation_;
+	Collider::size_ = items_->GetMainData().colliderSize;
 	Collider::rotate_ = transform_.rotation_;
+	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
 	Collider::Update();
 
 	// オブジェクトの更新
-	Object3d::Update();
+	Animation::Update();
 }
 
 void Enemy::Draw()
@@ -106,7 +112,14 @@ void Enemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 
 void Enemy::Reset(const Vector3& position)
 {
-	transform_.scale_ = { 0.5f,0.75f,0.5f };
+	if (type_ == EnemyType::Melee || type_ == EnemyType::ShieldBearer) {
+		Animation::PlayByName("Run_Arms");
+	} else {
+		Animation::PlayByName("Run");
+	}
+	Animation::GetTimeStop() = false;
+
+	transform_.scale_ = { 1.5f,1.5f,1.5f };
 	transform_.rotation_ = Quaternion::IdentityQuaternion();
 	transform_.translation_ = position;
 
@@ -149,7 +162,7 @@ void Enemy::OnCollisionEnter(Collider* other)
 	// プレイヤーのレティクルと当たっているなら
 	if (other->GetColliderName() == "PlayerReticle") {
 		hitReticle_ = true;
-		Object3d::GetRenderOptions().offscreen = false;
+		Animation::GetRenderOptions().offscreen = false;
 		Collider::isActive_ = false;
 	}
 }
@@ -160,7 +173,7 @@ void Enemy::OnCollisionStay(Collider* other)
 	if (other->GetColliderName() == "Player") {
 		const float speed = 2.0f;
 		transform_.translation_ -= velocity_ * speed * DeltaTimer::GetDeltaTime();
-		Object3d::Update();
+		Animation::TransformUpdate();
 	}
 
 	// 敵と当たっているなら
@@ -170,7 +183,7 @@ void Enemy::OnCollisionStay(Collider* other)
 		velocity.y = 0.0f;
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
-		Object3d::Update();
+		Animation::TransformUpdate();
 	}
 }
 

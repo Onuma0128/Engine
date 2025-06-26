@@ -72,6 +72,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BirchTree_1.obj");
 
 	ModelManager::GetInstance()->LoadModel("resources/enemy", "Zombie_Basic.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/enemy", "Characters_Shaun.gltf");
 }
 
 void Framework::Run()

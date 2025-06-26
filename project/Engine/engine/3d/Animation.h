@@ -21,6 +21,7 @@ public:
 	void RemoveRenderer();
 
 	void Update();
+	void TransformUpdate() { transform_.TransferMatrix(Matrix4x4::Identity()); }
 
 	void Draw();
 
@@ -37,6 +38,7 @@ public:
 	void SetColor(const Vector4& color);
 
 	WorldTransform& GetTransform() { return transform_; }
+	bool& GetTimeStop() { return timeStop_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 	Material* GetMaterial() { return materialData_; }
 
@@ -73,6 +75,8 @@ private:
 	AnimationBlendState blend_;
 	size_t currentAnim_ = 0;
 	float animationTime_ = 0.0f;
+	bool timeStop_ = false;
+	bool stopped_ = false;
 
 	SkinCluster skinCluster_;
 	Skeleton skeleton_;

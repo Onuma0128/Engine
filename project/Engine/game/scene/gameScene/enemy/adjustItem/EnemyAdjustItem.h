@@ -17,6 +17,14 @@ struct EnemyTemplate {
 	float attackCoolTime;		// 攻撃が終了した後、次の攻撃までのクールタイム
 };
 
+// 敵全体の項目
+struct EnemyMainData {
+
+	Vector3 colliderSize;		// 敵本体のコライダーサイズ
+	Vector3 colliderOffset;		// 敵本体のコライダー座標
+
+};
+
 // 近接敵の項目
 struct MeleeData {
 	EnemyTemplate tempData;
@@ -66,13 +74,15 @@ public:
 
 	/* ============================== ゲッター ============================== */
 
-	// プレイヤーの項目
+	// 敵全体の項目
+	EnemyMainData GetMainData()const { return mainData_; }
+	// 近接敵の項目
 	MeleeData GetMeleeData()const { return meleeData_; }
-	// 弾の項目
+	// 遠距離敵の項目
 	RangedData GetRangedData()const { return rangedData_; }
-	// 弾の予測オブジェクトの項目
+	// 盾持ち敵の項目
 	ShieldBearerData GetShieldBearerData()const { return shieldBearerData_; }
-	// リボルバーの項目
+	// 遠距離敵(強化版)の項目
 	RangedEliteData GetRangedEliteData()const { return rangedEliteData_; }
 
 private:
@@ -88,11 +98,14 @@ private:
 private:
 
 	// Jsonファイルを読み込むローダー
+	JsonFunction mainJson_;
 	JsonFunction meleeJson_;
 	JsonFunction rangedJson_;
 	JsonFunction shieldBearerJson_;
 	JsonFunction rangedEliteJson_;
 
+	// 敵全体の項目
+	EnemyMainData mainData_;
 	// 近接敵の項目
 	MeleeData meleeData_;
 	// 遠距離敵の項目

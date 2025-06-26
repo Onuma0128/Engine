@@ -23,7 +23,7 @@ struct VertexData {
 	Vector2 texcoord;
 	Vector3 normal;
 };
-struct SubMesh {
+struct MeshData {
 	uint32_t indexStart;
 	uint32_t indexCount;
 	uint32_t materialIndex;
@@ -58,6 +58,7 @@ struct KdColor {
 struct Node {
 	Transform3D transform;
 	Matrix4x4 localMatrix;
+	Matrix4x4 globalMatrix;
 	std::string name;
 	std::vector<Node> children;
 };
@@ -78,7 +79,7 @@ struct ModelData {
 	std::map<std::string, JointWeightData> skinClusterData;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
-	std::vector<SubMesh> subMeshes;
+	std::vector<MeshData> meshs;
 	std::vector<MaterialData> materials;
 	Node rootNode;
 };

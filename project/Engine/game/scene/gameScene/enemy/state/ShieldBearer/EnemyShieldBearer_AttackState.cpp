@@ -20,6 +20,7 @@ void EnemyShieldBearer_AttackState::Init()
 
 void EnemyShieldBearer_AttackState::Finalize()
 {
+	enemy_->PlayByName("Run_Arms");
 	enemy_->GetShieldWeapon()->SetIsActive(false);
 	enemy_->GetShieldWeapon()->Update();
 }
@@ -46,7 +47,22 @@ void EnemyShieldBearer_AttackState::Update()
 			if (time < chengeStateTime_) {
 				enemy_->ChengeState(std::make_unique<EnemyMoveState>(enemy_));
 				return;
+			} else {
+				if (!chengeAniamtion_) {
+					chengeAniamtion_ = true;
+					enemy_->PlayByName("Idle");
+				}
 			}
+		} else {
+			if (chengeAniamtion_) {
+				chengeAniamtion_ = false;
+				enemy_->PlayByName("Idle_Attack");
+			}
+		}
+	} else {
+		if (!chengeAniamtion_) {
+			chengeAniamtion_ = true;
+			enemy_->PlayByName("Idle");
 		}
 	}
 }

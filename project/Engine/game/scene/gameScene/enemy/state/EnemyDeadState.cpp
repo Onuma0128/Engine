@@ -34,6 +34,9 @@ void EnemyDeadState::Init()
 	velocity_ = enemy_->GetVelocity();
 	// ノックバックの際に敵が起こすアクションの計算
 	ResultTargetOffset();
+
+	enemy_->PlayByName("Death");
+	enemy_->GetTimeStop() = true;
 }
 
 void EnemyDeadState::Finalize()
@@ -50,7 +53,7 @@ void EnemyDeadState::Update()
 	if (deadFrame_ > (maxDeadFrame_ - knockbackFrame_)) {
 		float t = std::clamp(1.0f - (deadFrame_ - 4.0f), 0.0f, 1.0f);
 		Vector3 enemyPosition = enemy_->GetTransform().translation_;
-		if (enemy_->GetTransform().translation_.y >= 0.5f) {
+		if (enemy_->GetTransform().translation_.y > 0.5f) {
 			enemyPosition.y += velocity_.y * DeltaTimer::GetDeltaTime();
 			target_.y += velocity_.y * DeltaTimer::GetDeltaTime();
 		}
@@ -87,23 +90,20 @@ void EnemyDeadState::ResultTargetOffset()
 	// 敵のローカル空間で弾の座標が左か右にいるか計算
 	isLeft_ = false;
 	Vector3 localPosition = Vector3(enemy_->GetPlayerBullet()).Transform(Matrix4x4::Inverse(enemy_->GetTransform().matWorld_));
-	Quaternion rotateX = Quaternion::IdentityQuaternion();
-	Quaternion rotateZ = Quaternion::IdentityQuaternion();
+	Quaternion rotateY = Quaternion::IdentityQuaternion();
 	// 弾が敵の左にあるか判定
 	if (0.0f > localPosition.x) {
 		isLeft_ = true;
 	}
 	// 左なら
 	if (isLeft_) {
-		rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, -std::numbers::pi_v<float> / 2.0f);
-		rotateZ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitZ, std::numbers::pi_v<float> / 2.0f);
+		rotateY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, -std::numbers::pi_v<float> / 2.0f);
 	// 右なら
 	} else {
-		rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, std::numbers::pi_v<float> / 2.0f);
-		rotateZ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitZ, -std::numbers::pi_v<float> / 2.0f);
+		rotateY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, std::numbers::pi_v<float> / 2.0f);
 	}
 	defaultRotate_ = enemy_->GetTransform().rotation_;
-	targetRotate_ = enemy_->GetTransform().rotation_ * rotateX * rotateZ;
+	targetRotate_ = enemy_->GetTransform().rotation_ * rotateY;
 
 	// デフォルトのScaleを取得
 	defaultScale_ = enemy_->GetTransform().scale_;

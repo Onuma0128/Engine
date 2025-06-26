@@ -30,9 +30,16 @@ private:
 	// 敵のタイプごとのステートに遷移する
 	void TypeChengeAttackState();
 
+	// 敵のタイプごとのアニメーションを用意する
+	void MoveAnimation();
+	void AttackCoolTimeAnimation();
+
+
 private:
 
 	float attackCoolTime_ = 0.0f;
+
+	bool chengeAniamtion_ = false;
 
 };
 

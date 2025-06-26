@@ -85,7 +85,9 @@ void ParticleManager::Update()
             for (auto& g_emitter : group.emitters) {
                 if (auto emitter = g_emitter.lock()) {
                     emitter->SetEmitter(group.editor->GetBaseEmitter());
+#ifdef _DEBUG
                     emitter->SetDrawLine(drawEmitter_);
+#endif // _DEBUG
                     emitter->Update();
                 }
             }
