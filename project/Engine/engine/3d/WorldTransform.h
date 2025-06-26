@@ -51,6 +51,9 @@ public:
 	Matrix4x4 matWorld_ = Matrix4x4::Identity();
 	// 親となるワールド変換へのポインタ
 	const WorldTransform* parent_ = nullptr;
+	// Instance描画用行列
+	TransformationMatrix instanceMatrix_;
+
 
 private:
 

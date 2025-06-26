@@ -26,6 +26,7 @@ ComPtr<ID3D12GraphicsCommandList> DirectXEngine::commandList_ = nullptr;
 std::unique_ptr<PipelineState> DirectXEngine::pipelineState_ = nullptr;
 std::unique_ptr<PostEffectManager> DirectXEngine::postEffectManager_ = nullptr;
 std::unique_ptr<SceneRenderer> DirectXEngine::sceneRendrer_ = nullptr;
+std::unique_ptr<ModelInstanceRenderer> DirectXEngine::modelInstanceRenderer_ = nullptr;
 std::unique_ptr<CollisionManager> DirectXEngine::collisionManager_ = nullptr;
 
 DirectXEngine::~DirectXEngine()
@@ -46,6 +47,8 @@ DirectXEngine::~DirectXEngine()
 	postEffectManager_.reset();
 	sceneRendrer_->Finalize();
 	sceneRendrer_.reset();
+	modelInstanceRenderer_->Finalize();
+	modelInstanceRenderer_.reset();
 	collisionManager_.reset();
 
 	//解放の処理
@@ -113,6 +116,8 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	postEffectManager_->Initialize(this);
 
 	sceneRendrer_ = std::make_unique<SceneRenderer>();
+
+	modelInstanceRenderer_ = std::make_unique<ModelInstanceRenderer>();
 
 	collisionManager_ = std::make_unique<CollisionManager>();
 }

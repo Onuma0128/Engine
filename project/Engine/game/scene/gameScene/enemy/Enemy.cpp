@@ -12,7 +12,7 @@
 
 void Enemy::Finalize()
 {
-	Object3d::RemoveRenderer();
+	Animation::RemoveRenderer();
 	Collider::RemoveCollider();
 
 	for (auto& bullet : bullets_) {
@@ -30,9 +30,9 @@ void Enemy::Init()
 	std::uniform_int_distribution<int> enemyType(0, 3);
 	type_ = static_cast<EnemyType>(enemyType(randomEngine_));
 
-	Object3d::Initialize("Box.obj");
-	Object3d::SetSceneRenderer();
-	Object3d::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
+	Animation::Initialize("Zombie_Basic.gltf");
+	Animation::SetSceneRenderer();
+	Animation::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
 
 	transform_.scale_ = { 0.5f,0.75f,0.5f };
 	transform_.translation_ = { 0.0f,0.75f,0.0f };
@@ -78,7 +78,7 @@ void Enemy::Update()
 			hitReticle_ = false;
 		}
 	} else if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::None) {
-		Object3d::GetRenderOptions().offscreen = true;
+		Animation::GetRenderOptions().offscreen = true;
 	}
 
 	// 敵コライダーの更新
@@ -87,7 +87,7 @@ void Enemy::Update()
 	Collider::Update();
 
 	// オブジェクトの更新
-	Object3d::Update();
+	Animation::Update();
 }
 
 void Enemy::Draw()
@@ -149,7 +149,7 @@ void Enemy::OnCollisionEnter(Collider* other)
 	// プレイヤーのレティクルと当たっているなら
 	if (other->GetColliderName() == "PlayerReticle") {
 		hitReticle_ = true;
-		Object3d::GetRenderOptions().offscreen = false;
+		Animation::GetRenderOptions().offscreen = false;
 		Collider::isActive_ = false;
 	}
 }
@@ -160,7 +160,7 @@ void Enemy::OnCollisionStay(Collider* other)
 	if (other->GetColliderName() == "Player") {
 		const float speed = 2.0f;
 		transform_.translation_ -= velocity_ * speed * DeltaTimer::GetDeltaTime();
-		Object3d::Update();
+		Animation::Update();
 	}
 
 	// 敵と当たっているなら
@@ -170,7 +170,7 @@ void Enemy::OnCollisionStay(Collider* other)
 		velocity.y = 0.0f;
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
-		Object3d::Update();
+		Animation::Update();
 	}
 }
 

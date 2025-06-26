@@ -65,11 +65,13 @@ void Animation::SetSceneRenderer()
 		.offscreen = true
 	};
 	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+	DirectXEngine::GetModelRenderer()->Push(this);
 }
 
 void Animation::RemoveRenderer()
 {
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
+	DirectXEngine::GetModelRenderer()->Remove(this);
 	if (line_ == nullptr) { return; }
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
@@ -362,7 +364,7 @@ void Animation::SetTexture(const std::string& directoryPath, const std::string& 
 
 void Animation::SetColor(const Vector4& color)
 {
-	materialData_->color = color;
+	color_ = color;
 }
 
 Vector3 Animation::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)

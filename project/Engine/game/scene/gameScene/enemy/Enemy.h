@@ -4,6 +4,7 @@
 #include <random>
 
 #include "Object3d.h"
+#include "Animation.h"
 #include "Collider.h"
 
 #include "gameScene/enemy/state/EnemyBaseState.h"
@@ -16,7 +17,7 @@ class Player;
 class GameCamera;
 class EnemyAdjustItem;
 
-class Enemy:public Object3d,Collider
+class Enemy:public Animation,Collider
 {
 public:
 

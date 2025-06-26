@@ -52,7 +52,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources", "output.dds");
 	TextureManager::GetInstance()->LoadTexture("resources/player/texture", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "bulletUI.png");
-	TextureManager::GetInstance()->LoadTexture("resources/fieldObject", "ground.png");
+	//TextureManager::GetInstance()->LoadTexture("resources/fieldObject", "ground.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "blood.png");
 
 	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");

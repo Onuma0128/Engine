@@ -225,6 +225,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\fieldObject\Factory\FieldObjectFactory.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\fieldObject\effect\FieldObjectEffect.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\revolver\Revolver.cpp" />
+    <ClCompile Include="Engine\engine\base\object\model\ModelInstanceRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\weapon\axe\EnemyAxe.h" />
@@ -354,6 +355,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\fieldObject\Factory\FieldObjectFactory.h" />
     <ClInclude Include="Engine\game\scene\gameScene\fieldObject\effect\FieldObjectEffect.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\revolver\Revolver.h" />
+    <ClInclude Include="Engine\engine\base\object\model\ModelInstanceRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

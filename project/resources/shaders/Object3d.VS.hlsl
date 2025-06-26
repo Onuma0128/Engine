@@ -1,12 +1,13 @@
-#include "object3d.hlsli"
+#include "Object3d.hlsli"
 
-struct TransformationMatrix
+struct InstanceData
 {
     float4x4 WVP;
     float4x4 World;
     float4x4 WorldInverseTranspose;
+    float4 color;
 };
-ConstantBuffer<TransformationMatrix> gTransformationMatrix : register(b0);
+StructuredBuffer<InstanceData> gInstanceData : register(t0);
 
 struct VertexShaderInput
 {
@@ -15,12 +16,12 @@ struct VertexShaderInput
     float3 normal : NORMAL0;
 };
 
-VertexShaderOutput main(VertexShaderInput input)
+VertexShaderOutput main(VertexShaderInput input, uint InstID : SV_InstanceID)
 {
     VertexShaderOutput output;
-    output.position = mul(input.position, gTransformationMatrix.WVP);
+    output.position = mul(input.position, gInstanceData[InstID].WVP);
     output.texcoord = input.texcoord;
-    output.normal = normalize(mul(input.normal, (float3x3) gTransformationMatrix.WorldInverseTranspose));
-    output.worldPosition = mul(input.position, gTransformationMatrix.World).xyz;
+    output.normal = normalize(mul(input.normal, (float3x3) gInstanceData[InstID].WorldInverseTranspose));
+    output.worldPosition = mul(input.position, gInstanceData[InstID].World).xyz;
     return output;
 }

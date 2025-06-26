@@ -29,11 +29,13 @@ void Object3d::SetSceneRenderer()
         .offscreen = true
     };
     DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+    DirectXEngine::GetModelRenderer()->Push(this);
 }
 
 void Object3d::RemoveRenderer()
 {
     DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
+    DirectXEngine::GetModelRenderer()->Remove(this);
 }
 
 void Object3d::Update()
@@ -47,15 +49,15 @@ void Object3d::Draw()
 
     auto commandList = DirectXEngine::GetCommandList();
     commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-    commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
+    //commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(3, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(6, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
 
-    if (model_) {
+   /* if (model_) {
         model_->Draw(false);
-    }
+    }*/
 
 }
 
@@ -76,7 +78,7 @@ void Object3d::SetTexture_ENV(const std::string& directoryPath, const std::strin
 
 void Object3d::SetColor(const Vector4& color)
 {
-    materialData_->color = color;
+    color_ = color;
 }
 
 void Object3d::MakeMaterialData()

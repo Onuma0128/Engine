@@ -46,7 +46,7 @@ void Model::Draw(bool isAnimation)
     }
     commandList->IASetIndexBuffer(&indexBufferView_);
 
-    for (const auto& subMesh : modelData_.subMeshes) {
+    for (const auto& subMesh : modelData_.meshes) {
         const auto& material = modelData_.materials[subMesh.materialIndex];
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, material.textureIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, material.ENV_TextureIndex);
@@ -54,6 +54,24 @@ void Model::Draw(bool isAnimation)
         // 描画
         commandList->DrawIndexedInstanced(subMesh.indexCount, 1, subMesh.indexStart, 0, 0);
     }
+}
+
+void Model::BindBuffers(bool isAnimation) const
+{
+    auto commandList = modelBase_->GetDxEngine()->GetCommandList();
+    if (!isAnimation) {
+        commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
+    }
+    commandList->IASetIndexBuffer(&indexBufferView_);
+}
+
+void Model::BindMaterial(uint32_t meshIdx) const
+{
+    auto commandList = modelBase_->GetDxEngine()->GetCommandList();
+    const auto& material = modelData_.materials[meshIdx];
+    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, material.textureIndex);
+    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, material.ENV_TextureIndex);
+    commandList->SetGraphicsRootConstantBufferView(8, material.kdColorResource->GetGPUVirtualAddress());
 }
 
 void Model::MakeVertexData()
@@ -148,7 +166,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
             }
         }
         subMesh.indexCount = static_cast<uint32_t>(modelData.indices.size()) - subMesh.indexStart;
-        modelData.subMeshes.push_back(subMesh);
+        modelData.meshes.push_back(subMesh);
         vertexOffset = modelData.vertices.size();
 
         for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
@@ -177,13 +195,21 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
     }
 
     // materialを解析
-    modelData.materials.resize(scene->mNumMaterials);
+    //modelData.materials.resize(scene->mNumMaterials);
     for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
         aiMaterial* material = scene->mMaterials[materialIndex];
         MaterialData materialData{};
         aiString textureFilePath;
         aiColor3D kd(1, 1, 1);
         Vector4 kdColor = { 1.0f,1.0f,1.0f,1.0f };
+        // デフォルトマテリアルをスキップする
+        if (scene->mNumMaterials > 1) {
+            aiString name;
+            material->Get(AI_MATKEY_NAME, name);
+            if (std::strcmp(name.C_Str(), "DefaultMaterial") == 0) {
+                continue;
+            }
+        }
 
         // Diffuseテクスチャを確認
         if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath) == AI_SUCCESS) {
@@ -200,7 +226,9 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         }
 
         materialData.kdColor = kdColor;
-        modelData.materials[materialIndex] = materialData;
+        //modelData.materials[materialIndex] = materialData;
+        modelData.materials.push_back(materialData);
+        if (materialIndex == scene->mNumMaterials - 1) { break; }
     }
 
     modelData.rootNode = ReadNode(scene->mRootNode);

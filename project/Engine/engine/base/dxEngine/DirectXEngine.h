@@ -12,6 +12,7 @@
 #include "PostEffectManager.h"
 #include "RenderTexture.h"
 #include "SceneRenderer.h"
+#include "ModelInstanceRenderer.h"
 #include "CollisionManager.h"
 
 class WinApp;
@@ -78,6 +79,8 @@ public:
 	static PostEffectManager* GetPostEffectMgr() { return postEffectManager_.get(); }
 	// 全ての描画
 	static SceneRenderer* GetSceneRenderer() { return sceneRendrer_.get(); }
+	// モデル全ての描画
+	static ModelInstanceRenderer* GetModelRenderer() { return modelInstanceRenderer_.get(); }
 	// 当たり判定
 	static CollisionManager* GetCollisionMgr() { return collisionManager_.get(); }
 	// RenderTexture
@@ -100,6 +103,8 @@ private:
 	static ComPtr<ID3D12GraphicsCommandList> commandList_;
 	// SceneRendrer
 	static std::unique_ptr<SceneRenderer> sceneRendrer_;
+	// ModelInstanceRenderer
+	static std::unique_ptr<ModelInstanceRenderer> modelInstanceRenderer_;
 	// CollisionManager
 	static std::unique_ptr<CollisionManager> collisionManager_;
 

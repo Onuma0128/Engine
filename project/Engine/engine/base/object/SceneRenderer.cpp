@@ -1,6 +1,8 @@
 #include "SceneRenderer.h"
 
+#include "DirectXEngine.h"
 #include "ParticleManager.h"
+#include "ModelInstanceRenderer.h"
 
 void SceneRenderer::Finalize()
 {
@@ -14,10 +16,9 @@ void SceneRenderer::Finalize()
 void SceneRenderer::AllDraw()
 {
 	/// ============================== Object3d ============================== ///
-	for (auto& object : objects_) {
-		if (!object->GetRenderOptions().enabled || !object->GetRenderOptions().offscreen) { continue; }
-		object->Draw();
-	}
+	
+	DirectXEngine::GetModelRenderer()->AllDraw();
+
 	/// ============================== Sprite ============================== ///
 	for (auto& sprite : sprites_) {
 		if (!sprite->GetRenderOptions().enabled || !sprite->GetRenderOptions().offscreen) { continue; }
@@ -47,10 +48,9 @@ void SceneRenderer::AllDraw()
 void SceneRenderer::OutAllDraw()
 {
 	/// ============================== Object3d ============================== ///
-	for (auto& object : objects_) {
-		if (!object->GetRenderOptions().enabled || object->GetRenderOptions().offscreen) { continue; }
-		object->Draw();
-	}
+
+
+
 	/// ============================== Sprite ============================== ///
 	for (auto& sprite : sprites_) {
 		if (!sprite->GetRenderOptions().enabled || sprite->GetRenderOptions().offscreen) { continue; }

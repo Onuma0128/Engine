@@ -14,11 +14,13 @@ class Model
 public:
 	/*==================== メンバ関数 ====================*/
 
-		// 初期化
+	// 初期化
 	void Initialize(const std::string& directoryPath, const std::string& filename);
 
 	// 描画
 	void Draw(bool isAnimation);
+	void BindBuffers(bool isAnimation) const;
+	void BindMaterial(uint32_t meshIdx) const;
 
 	const ModelData GetModelData()const { return modelData_; }
 	const D3D12_VERTEX_BUFFER_VIEW GetVertexBuffer() { return vertexBufferView_; }

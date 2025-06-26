@@ -37,7 +37,9 @@ public:
 	void SetColor(const Vector4& color);
 
 	WorldTransform& GetTransform() { return transform_; }
+	Model* GetModel() { return model_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
+	Vector4& GetColor() { return color_; }
 	Material* GetMaterial() { return materialData_; }
 
 private:
@@ -62,6 +64,8 @@ private:
 protected:
 
 	WorldTransform transform_;
+
+	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
 
 private:
 

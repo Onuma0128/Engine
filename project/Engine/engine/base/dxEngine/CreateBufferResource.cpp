@@ -14,7 +14,7 @@ ComPtr<ID3D12Resource> CreateBufferResource(ComPtr<ID3D12Device> device, size_t 
 	// 頂点リソースの設定
 	D3D12_RESOURCE_DESC vertexResourceDesc = {};
 	vertexResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	vertexResourceDesc.Width = sizeof(Material) * sizeInBytes;
+	vertexResourceDesc.Width = sizeInBytes;
 	vertexResourceDesc.Height = 1;
 	vertexResourceDesc.DepthOrArraySize = 1;
 	vertexResourceDesc.MipLevels = 1;

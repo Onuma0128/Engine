@@ -78,7 +78,7 @@ struct ModelData {
 	std::map<std::string, JointWeightData> skinClusterData;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
-	std::vector<SubMesh> subMeshes;
+	std::vector<SubMesh> meshes;
 	std::vector<MaterialData> materials;
 	Node rootNode;
 };

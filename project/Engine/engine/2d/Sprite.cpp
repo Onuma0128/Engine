@@ -101,7 +101,7 @@ void Sprite::MaterialDataInitialize()
 
 void Sprite::TransformationMatrixDataInitialize()
 {
-	transformationMatrixResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4));
+	transformationMatrixResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(TransformationMatrix));
 	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
 	transformationMatrixData_->WVP = Matrix4x4::Identity();
 	transformationMatrixData_->World = Matrix4x4::Identity();

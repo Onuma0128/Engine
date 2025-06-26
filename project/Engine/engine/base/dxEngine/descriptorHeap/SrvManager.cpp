@@ -5,7 +5,7 @@
 #include "DirectXEngine.h"
 #include "DescriptorHeap.h"
 
-const uint32_t SrvManager::kMaxSRVCount_ = 512;
+const uint32_t SrvManager::kMaxSRVCount_ = 2048;
 
 SrvManager* SrvManager::instance_ = nullptr;
 

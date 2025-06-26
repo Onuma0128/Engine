@@ -42,6 +42,7 @@ public:
 	WorldTransform& GetTransform() { return transform_; }
 	Model* GetModel() { return model_; }
 	Material* GetMaterial() { return materialData_; }
+	Vector4& GetColor() { return color_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
 private:
@@ -52,6 +53,8 @@ private:
 protected:
 
 	WorldTransform transform_;
+
+	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
 
 private:
 
