@@ -91,16 +91,19 @@ void EnemyDeadState::ResultTargetOffset()
 	isLeft_ = false;
 	Vector3 localPosition = Vector3(enemy_->GetPlayerBullet()).Transform(Matrix4x4::Inverse(enemy_->GetTransform().matWorld_));
 	Quaternion rotateY = Quaternion::IdentityQuaternion();
+	std::mt19937 randomEngine_(seedGenerator_());
 	// 弾が敵の左にあるか判定
 	if (0.0f > localPosition.x) {
 		isLeft_ = true;
 	}
 	// 左なら
 	if (isLeft_) {
-		rotateY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, -std::numbers::pi_v<float> / 2.0f);
+		std::uniform_real_distribution<float> RotateY(-std::numbers::pi_v<float> / 2.0f, 0.0f);
+		rotateY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, RotateY(randomEngine_));
 	// 右なら
 	} else {
-		rotateY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, std::numbers::pi_v<float> / 2.0f);
+		std::uniform_real_distribution<float> RotateY(0.0f, std::numbers::pi_v<float> / 2.0f);
+		rotateY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, RotateY(randomEngine_));
 	}
 	defaultRotate_ = enemy_->GetTransform().rotation_;
 	targetRotate_ = enemy_->GetTransform().rotation_ * rotateY;

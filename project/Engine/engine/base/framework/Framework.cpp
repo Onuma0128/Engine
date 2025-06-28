@@ -54,6 +54,8 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "bulletUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/fieldObject", "ground.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "blood.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "numbers.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "title.png");
 
 	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");

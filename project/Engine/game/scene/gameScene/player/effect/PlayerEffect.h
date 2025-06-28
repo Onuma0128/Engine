@@ -20,6 +20,8 @@ class PlayerEffect
 {
 public:
 
+	~PlayerEffect();
+
 	void Init();
 
 	void Update();

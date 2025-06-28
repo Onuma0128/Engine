@@ -1,5 +1,7 @@
 #pragma once
 
+#include <random>
+
 #include "EnemyBaseState.h"
 
 #include "Vector3.h"
@@ -50,6 +52,8 @@ private:
 	Vector3 defaultScale_{};
 	// 死亡時の回転を取得
 	Quaternion defaultRotate_ = Quaternion::IdentityQuaternion();
+	// ランダムデバイス
+	std::random_device seedGenerator_;
 
 };
 

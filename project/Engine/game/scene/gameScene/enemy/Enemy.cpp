@@ -173,6 +173,7 @@ void Enemy::OnCollisionEnter(Collider* other)
 	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial") {
 		Collider::isActive_ = false;
 		stateParam_.isAlive_ = false;
+		if (shieldWeapon_ != nullptr) { shieldWeapon_->SetIsActive(false); }
 		// 敵がノックバックする方向を取得
 		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
 		velocity_ = Vector3::ExprUnitZ.Transform(rotate);

@@ -18,6 +18,8 @@ class PostEffectManager
 {
 public:
 
+    void Finalize();
+
 	void Initialize(DirectXEngine* dxEngine);
 
     void CreatePostEffect(PostEffectType type);

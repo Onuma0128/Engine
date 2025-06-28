@@ -36,8 +36,10 @@ void EnemySpawnerFactory::Update()
 	RandomSpawnEnemy();
 
 	// スポナーの更新
+	uint32_t kNockdownCount = 0;
 	for (auto& spawner : enemySpawners_) {
 		spawner->Update();
+		kNockdownCount += spawner->GetNockdownCount();
 	}
 
 	// スポーンしていない敵の更新処理
@@ -52,6 +54,7 @@ void EnemySpawnerFactory::Draw()
 	for (auto& spawner : enemySpawners_) {
 		spawner->Draw();
 	}
+
 }
 
 void EnemySpawnerFactory::CreateSpawner(SceneObject object)

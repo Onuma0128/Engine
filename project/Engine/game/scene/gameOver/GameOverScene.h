@@ -1,13 +1,14 @@
 #pragma once
+
 #include <memory>
 
 #include "BaseScene.h"
 
 #include "Camera.h"
+#include "Animation.h"
 #include "scene/sceneFade/SceneFade.h"
-#include "scene/titleScene/titleUI/TitleUI.h"
 
-class TitleScene : public BaseScene
+class GameOverScene : public BaseScene
 {
 public:
 
@@ -26,6 +27,7 @@ private:
 	std::unique_ptr<SceneFade> sceneFade_ = nullptr;
 	bool isFade_ = false;
 
-	std::unique_ptr<TitleUI> titleUI_ = nullptr;
+	std::unique_ptr<Animation> enemy_ = nullptr;
 
 };
+

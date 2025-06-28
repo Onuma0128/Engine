@@ -5,12 +5,12 @@
 
 #include "AnimationBase.h"
 #include "WorldTransform.h"
+#include "Line3d.h"
 
 #include "AnimationStruct.h"
 #include "ModelStruct.h"
 
 class Model;
-class Line3d;
 
 class Animation
 {

@@ -1,37 +1,41 @@
-#include "TitleScene.h"
+#include "GameOverScene.h"
 
 #include "SceneManager.h"
 #include "CameraManager.h"
 #include "Input.h"
 
-void TitleScene::Initialize()
+void GameOverScene::Initialize()
 {
 	// カメラの初期化
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize();
 	CameraManager::GetInstance()->SetCamera(camera_.get());
 	CameraManager::GetInstance()->SetActiveCamera(0);
+	camera_->SetTranslation(Vector3{ 0.0f,1.75f,-4.0f });
 	camera_->Update();
 
 	sceneFade_ = std::make_unique<SceneFade>();
 	sceneFade_->Init();
 	sceneFade_->FadeIn(2.0f);
 
-	titleUI_ = std::make_unique<TitleUI>();
-	titleUI_->Init();
+	enemy_ = std::make_unique<Animation>();
+	enemy_->Initialize("Zombie_Basic.gltf");
+	enemy_->PlayByName("Wave");
+	enemy_->SetSceneRenderer();
+	enemy_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, 3.14f);
 }
 
-void TitleScene::Finalize()
+void GameOverScene::Finalize()
 {
 }
 
-void TitleScene::Update()
+void GameOverScene::Update()
 {
 	Input* input = Input::GetInstance();
 
 	camera_->Update();
 
-	titleUI_->Update();
+	enemy_->Update();
 
 	sceneFade_->Update();
 
@@ -41,11 +45,11 @@ void TitleScene::Update()
 	}
 	// フェードが終わったらシーン遷移する
 	if (isFade_ && !sceneFade_->GetIsFade()) {
-		SceneManager::GetInstance()->ChangeScene("Game");
+		SceneManager::GetInstance()->ChangeScene("Title");
 	}
 }
 
-void TitleScene::Draw()
+void GameOverScene::Draw()
 {
 	sceneFade_->Draw();
 }

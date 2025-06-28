@@ -25,6 +25,7 @@ public:
 
 	bool GetIsActive()const { return isActive_; }
 	bool GetIsReload()const { return isReload_; }
+	uint32_t GetNockdownCount()const { return kNockdownCount_; }
 	void IsCollision();
 
 	// isActiveがfalseになった瞬間のコールバック関数
@@ -53,6 +54,8 @@ private:
 	float activeFrame_ = 0.0f;
 	// リロードされているか
 	bool isReload_ = true;
+	// 敵を倒した数を保存する
+	uint32_t kNockdownCount_ = 0;
 
 };
 
