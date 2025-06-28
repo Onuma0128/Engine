@@ -61,6 +61,8 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources", "plane.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "suzanne.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "Box.obj");
+	ModelManager::GetInstance()->LoadModel("resources/shadow", "shadow.obj");
+
 	ModelManager::GetInstance()->LoadModel("resources/player/revolver", "Revolver.obj");
 
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "ground.obj");
@@ -71,6 +73,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_5.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BirchTree_1.obj");
 
+	ModelManager::GetInstance()->LoadModel("resources/enemy/shield", "Shield_Heater.obj");
 	ModelManager::GetInstance()->LoadModel("resources/enemy", "Zombie_Basic.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/enemy", "Characters_Shaun.gltf");
 }

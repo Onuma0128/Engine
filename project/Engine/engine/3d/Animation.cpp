@@ -27,7 +27,7 @@ void Animation::Initialize(const std::string& filename)
 	SetModel(filename);
 	MakeMaterialData();
 
-	animationDatas_ = LoadAnimationFile(model_->GetModelData().directoryPath, filename);
+	animationDatas_ = model_->GetModelData().animations;
 	for (size_t i = 0; i < animationDatas_.size(); ++i) {
 		nameToIx_[animationDatas_[i].name] = i;
 	}
@@ -383,6 +383,12 @@ void Animation::SetTexture(const std::string& directoryPath, const std::string& 
 void Animation::SetColor(const Vector4& color)
 {
 	materialData_->color = color;
+}
+
+void Animation::SetDrawBone(bool flag)
+{
+	if (line_ == nullptr) { return; }
+	line_->GetRenderOptions().enabled = false;
 }
 
 Vector3 Animation::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)

@@ -17,7 +17,7 @@ public:
 
 	void Draw();
 
-	void EnemySpawn();
+	void EnemySpawn(Enemy* enemy);
 
 	/* ============================== ポインタ ============================== */
 	
@@ -32,7 +32,9 @@ public:
 
 	/* ============================== アクセッサ ============================== */
 
-	std::list<std::unique_ptr<Enemy>>& GetEnemyList() { return enemys_; }
+	std::list<Enemy*>& GetEnemyList() { return enemys_; }
+
+	uint32_t GetNockdownCount()const { return kNockdownCount_; }
 
 private:
 
@@ -42,7 +44,9 @@ private:
 	EnemyAdjustItem* items_ = nullptr;
 
 	// 敵のリスト
-	std::list<std::unique_ptr<Enemy>> enemys_;
+	std::list<Enemy*> enemys_;
+	// 敵を倒した数を保存する
+	uint32_t kNockdownCount_ = 0;
 
 	float spawnFrame_ = 0.0f;
 

@@ -40,6 +40,7 @@ public:
 	WorldTransform& GetTransform() { return transform_; }
 	bool& GetTimeStop() { return timeStop_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
+	void SetDrawBone(bool flag);
 	Material* GetMaterial() { return materialData_; }
 
 private:

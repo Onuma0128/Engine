@@ -22,7 +22,7 @@ void EnemyMelee_AttackState::Init()
 
 void EnemyMelee_AttackState::Finalize()
 {
-	enemy_->PlayByName("Run_Arms");
+	//enemy_->PlayByName("Run_Arms");
 	enemy_->GetWeapon()->SetIsActive(false);
 	enemy_->GetWeapon()->Update();
 }

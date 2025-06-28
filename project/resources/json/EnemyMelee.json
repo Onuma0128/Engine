@@ -1,6 +1,6 @@
 {
     "speed": 3.0,
-    "attackDistance": 2.0,
+    "attackDistance": 1.5,
     "attackStartupTime": 0.5,
     "attackActiveTime": 1.2999999523162842,
     "attackRecoveryTime": 0.5,

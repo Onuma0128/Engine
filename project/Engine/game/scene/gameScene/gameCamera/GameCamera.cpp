@@ -19,7 +19,7 @@ void GameCamera::Init()
 	Vector3 translation = data_.Get<Vector3>("mainPosition");
 	mainCamera_->SetTranslation(translation + player_->GetTransform().translation_);
 	CameraManager::GetInstance()->SetCamera(mainCamera_.get());
-	CameraManager::GetInstance()->SetActiveCamera(1);
+	CameraManager::GetInstance()->SetActiveCamera(0);
 	mainCamera_->Update();
 
 	sabCamera_ = std::make_unique<Camera>();

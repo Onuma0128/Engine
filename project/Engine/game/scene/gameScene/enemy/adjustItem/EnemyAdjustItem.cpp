@@ -8,11 +8,13 @@ void EnemyAdjustItem::LoadItems()
 
 	mainJson_.Init("EnemyMain");
 	if (!mainJson_.Load()) {
-		mainJson_.Set("colliderSize", 0.0f);
+		mainJson_.Set("colliderSize", Vector3{});
 		mainJson_.Set("colliderOffset", Vector3{});
+		mainJson_.Set("margin", 1.0f);
 	} else {
 		mainData_.colliderSize = mainJson_.Get("colliderSize", mainData_.colliderSize);
 		mainData_.colliderOffset = mainJson_.Get("colliderOffset", mainData_.colliderOffset);
+		mainData_.margin = mainJson_.Get("margin", mainData_.margin);
 	}
 
 	/* ============================== Melee ============================== */
@@ -103,9 +105,11 @@ void EnemyAdjustItem::Editor()
 
 		ImGui::DragFloat3("colliderSize", &mainData_.colliderSize.x, 0.01f);
 		ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f);
+		ImGui::DragFloat("margin", &mainData_.margin, 0.01f);
 		if (ImGui::Button("Save")) {
 			mainJson_.Set("colliderSize", mainData_.colliderSize);
 			mainJson_.Set("colliderOffset", mainData_.colliderOffset);
+			mainJson_.Set("margin", mainData_.margin);
 			mainJson_.Save();
 		}
 		ImGui::TreePop();

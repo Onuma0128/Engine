@@ -5,7 +5,8 @@
 
 #include "DeltaTimer.h"
 
-#include "gameScene/enemy/enemy.h"
+#include "gameScene/player/Player.h"
+#include "gameScene/enemy/Enemy.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 #include "../EnemyMoveState.h"
 
@@ -50,6 +51,27 @@ void EnemyRangedElite_AttackState::Update()
 				enemy_->ChengeState(std::make_unique<EnemyMoveState>(enemy_));
 				return;
 			}
+		}
+	} else {
+		// 時間ギリギリまで追従する
+		Vector3 velocity = Vector3(enemy_->GetPlayer()->GetTransform().translation_ - enemy_->GetTransform().translation_);
+		velocity.y = 0.0f;
+		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
+		enemy_->SetVelocity(velocity);
+
+		// 移動時の回転の処理
+		if (velocity.Length() != 0.0f) {
+			Vector3 foward = Vector3::ExprUnitZ;
+			Vector3 targetDir = Vector3{ -velocity.x,0.0f,velocity.z };
+
+			// velocityから回転を求める
+			Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
+			Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
+			Quaternion currentRotation = enemy_->GetTransform().rotation_;
+			Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, 0.5f);
+
+			// 回転を適応
+			enemy_->GetTransform().rotation_ = result;
 		}
 	}
 }

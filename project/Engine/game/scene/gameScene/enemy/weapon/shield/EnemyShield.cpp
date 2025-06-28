@@ -1,5 +1,7 @@
 #include "EnemyShield.h"
 
+#include "DeltaTimer.h"
+
 #include "gameScene/player/Player.h"
 #include "gameScene/enemy/Enemy.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
@@ -14,7 +16,7 @@ void EnemyShield::Finalize()
 
 void EnemyShield::Init(ColliderType type, const std::string& name)
 {
-	Object3d::Initialize("Box.obj");
+	Object3d::Initialize("Shield_Heater.obj");
 	Object3d::SetSceneRenderer();
 
 	Collider::AddCollider();
@@ -34,7 +36,7 @@ void EnemyShield::Update()
 	direction.y = 0.0f;
 	if (direction.Length() != 0.0f) {
 		direction = direction.Normalize();
-		rotateY_ = Quaternion::DirectionToQuaternion(rotateY_, direction, data.lerpSpeed);
+		rotateY_ = Quaternion::DirectionToQuaternion(rotateY_, direction, data.lerpSpeed * DeltaTimer::GetDeltaTime());
 		rotateMatrix_ = Quaternion::MakeRotateMatrix(rotateY_);
 	}
 	Collider::size_ = data.shieldColliderSize;
@@ -62,5 +64,6 @@ void EnemyShield::OnCollisionExit(Collider* other)
 
 void EnemyShield::SetIsActive(bool flag)
 {
+	Object3d::GetRenderOptions().enabled = flag;
 	Collider::isActive_ = flag;
 }

@@ -21,15 +21,15 @@ void EnemyShieldBearer_AttackState::Init()
 void EnemyShieldBearer_AttackState::Finalize()
 {
 	enemy_->PlayByName("Run_Arms");
-	enemy_->GetShieldWeapon()->SetIsActive(false);
-	enemy_->GetShieldWeapon()->Update();
+	enemy_->GetWeapon()->SetIsActive(false);
+	enemy_->GetWeapon()->Update();
 }
 
 void EnemyShieldBearer_AttackState::Update()
 {
 	// 近接攻撃のデータを取得
 	ShieldBearerData data = enemy_->GetItem()->GetShieldBearerData();
-	EnemyWeaponBase* weapon = enemy_->GetShieldWeapon();
+	EnemyWeaponBase* weapon = enemy_->GetWeapon();
 
 	chengeStateTime_ += DeltaTimer::GetDeltaTime();
 

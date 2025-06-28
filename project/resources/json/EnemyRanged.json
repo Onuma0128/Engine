@@ -13,8 +13,8 @@
     "attackDistance": 10.0,
     "attackStartupTime": 1.5,
     "attackActiveTime": 1.0,
-    "attackRecoveryTime": 1.0,
-    "attackCoolTime": 2.0,
+    "attackRecoveryTime": 0.30000001192092896,
+    "attackCoolTime": 3.0,
     "bulletSpeed": 25.0,
     "planeSize": {
         "x": 0.20000000298023224,
@@ -23,7 +23,7 @@
     },
     "planeOffset": {
         "x": 0.0,
-        "y": -0.8999999761581421,
+        "y": 0.10000000149011612,
         "z": 6.0
     }
 }

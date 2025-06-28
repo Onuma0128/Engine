@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\shadow\EnemyShadow.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\weapon\axe\EnemyAxe.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\weapon\shield\EnemyShield.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\weapon\EnemyWeaponBase.cpp" />
@@ -227,6 +228,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\revolver\Revolver.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\shadow\EnemyShadow.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\weapon\axe\EnemyAxe.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\weapon\shield\EnemyShield.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\weapon\EnemyWeaponBase.h" />

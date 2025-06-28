@@ -11,6 +11,7 @@
 #include "Vector4.h"
 #include "Matrix4x4.h"
 #include "Transform.h"
+#include "AnimationStruct.h"
 
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
@@ -77,6 +78,7 @@ struct ModelData {
 	std::string directoryPath;
 	std::string filePath;
 	std::map<std::string, JointWeightData> skinClusterData;
+	std::vector<AnimationData> animations;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
 	std::vector<MeshData> meshs;

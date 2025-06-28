@@ -205,6 +205,49 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 
     modelData.rootNode = ReadNode(scene->mRootNode);
 
+    // アニメーションがあればアニメーションを読む
+    if (scene->mNumAnimations > 0) {
+
+        for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; ++animationIndex) {
+
+            aiAnimation* animationAssimp = scene->mAnimations[animationIndex];
+            AnimationData animationData;
+            animationData.name = animationAssimp->mName.C_Str();
+            animationData.duration = float(animationAssimp->mDuration / animationAssimp->mTicksPerSecond);
+
+            for (uint32_t channelIndex = 0; channelIndex < animationAssimp->mNumChannels; ++channelIndex) {
+                aiNodeAnim* nodeAnimationAssimp = animationAssimp->mChannels[channelIndex];
+                NodeAnimation& nodeAnimation = animationData.nodeAnimations[nodeAnimationAssimp->mNodeName.C_Str()];
+
+                // 座標
+                for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumPositionKeys; ++keyIndex) {
+                    aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
+                    KeyFrameVector3 keyframe;
+                    keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+                    keyframe.value = { -keyAssimp.mValue.x,keyAssimp.mValue.y,keyAssimp.mValue.z };
+                    nodeAnimation.translate.keyframes.push_back(keyframe);
+                }
+                // 回転
+                for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {
+                    aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
+                    KeyFrameQuaternion keyframe;
+                    keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+                    keyframe.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
+                    nodeAnimation.rotate.keyframes.push_back(keyframe);
+                }
+                // スケール
+                for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; ++keyIndex) {
+                    aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
+                    KeyFrameVector3 keyframe;
+                    keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+                    keyframe.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+                    nodeAnimation.scale.keyframes.push_back(keyframe);
+                }
+            }
+            modelData.animations.push_back(std::move(animationData));
+        }
+    }
+
     return modelData;
 }
 

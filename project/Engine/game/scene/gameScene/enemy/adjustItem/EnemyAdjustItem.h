@@ -23,6 +23,7 @@ struct EnemyMainData {
 	Vector3 colliderSize;		// 敵本体のコライダーサイズ
 	Vector3 colliderOffset;		// 敵本体のコライダー座標
 
+	float margin;				// 敵のアニメーションを判定しない余白距離
 };
 
 // 近接敵の項目

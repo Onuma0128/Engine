@@ -39,7 +39,10 @@ private:
 
 	float attackCoolTime_ = 0.0f;
 
-	bool chengeAniamtion_ = false;
+	bool isMoveAnima_ = false;
+	bool isIdleAnima_ = false;
+
+	bool inAttackRange_ = false;
 
 };
 
