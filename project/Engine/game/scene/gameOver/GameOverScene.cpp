@@ -23,6 +23,9 @@ void GameOverScene::Initialize()
 	enemy_->PlayByName("Wave");
 	enemy_->SetSceneRenderer();
 	enemy_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, 3.14f);
+
+	gameOverUI_ = std::make_unique<GameOverUI>();
+	gameOverUI_->Init();
 }
 
 void GameOverScene::Finalize()
@@ -36,6 +39,8 @@ void GameOverScene::Update()
 	camera_->Update();
 
 	enemy_->Update();
+
+	gameOverUI_->Update();
 
 	sceneFade_->Update();
 

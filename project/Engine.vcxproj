@@ -114,6 +114,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameClear\gameClearUI\GameClearUI.cpp" />
+    <ClCompile Include="Engine\game\scene\gameOver\gameOverUI\GameOverUI.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\ui\PlayerKillCountUI.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\shadow\EnemyShadow.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\weapon\axe\EnemyAxe.cpp" />
@@ -233,6 +235,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\titleScene\titleUI\TitleUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameClear\gameClearUI\GameClearUI.h" />
+    <ClInclude Include="Engine\game\scene\gameOver\gameOverUI\GameOverUI.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\ui\PlayerKillCountUI.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\shadow\EnemyShadow.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\weapon\axe\EnemyAxe.h" />

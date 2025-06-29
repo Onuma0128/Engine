@@ -23,6 +23,9 @@ void GameClearScene::Initialize()
 	enemy_->PlayByName("Yes");
 	enemy_->SetSceneRenderer();
 	enemy_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, 3.14f);
+
+	gameClearUI_ = std::make_unique<GameClearUI>();
+	gameClearUI_->Init();
 }
 
 void GameClearScene::Finalize()
@@ -36,6 +39,8 @@ void GameClearScene::Update()
 	camera_->Update();
 
 	enemy_->Update();
+
+	gameClearUI_->Update();
 
 	sceneFade_->Update();
 

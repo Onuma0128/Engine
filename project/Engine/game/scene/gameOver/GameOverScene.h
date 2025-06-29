@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Animation.h"
 #include "scene/sceneFade/SceneFade.h"
+#include "scene/gameOver/gameOverUI/GameOverUI.h"
 
 class GameOverScene : public BaseScene
 {
@@ -28,6 +29,8 @@ private:
 	bool isFade_ = false;
 
 	std::unique_ptr<Animation> enemy_ = nullptr;
+
+	std::unique_ptr<GameOverUI> gameOverUI_ = nullptr;
 
 };
 

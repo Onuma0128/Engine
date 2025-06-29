@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "Animation.h"
 #include "scene/sceneFade/SceneFade.h"
+#include "scene/gameClear/gameClearUI/GameClearUI.h"
 
 class GameClearScene : public BaseScene
 {
@@ -27,6 +28,8 @@ private:
 	bool isFade_ = false;
 
 	std::unique_ptr<Animation> enemy_ = nullptr;
+
+	std::unique_ptr<GameClearUI> gameClearUI_ = nullptr;
 
 };
 
