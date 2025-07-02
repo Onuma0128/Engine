@@ -31,15 +31,20 @@ void PlayerReticle::GlobalInit()
 {
 }
 
-void PlayerReticle::Update()
+void PlayerReticle::Update(bool isPlayingMouse)
 {
 	Input* input = Input::GetInstance();
 
 	// 移動の処理
 	const float reticleSpeed = 10.0f;
 	Vector2 velocity{};
-	velocity.x = input->GetGamepadRightStickX();
-	velocity.y = -input->GetGamepadRightStickY();
+	if (!isPlayingMouse) {
+		velocity.x = input->GetGamepadRightStickX();
+		velocity.y = -input->GetGamepadRightStickY();
+	} else {
+		transform_.position.x = input->GetMousePosX();
+		transform_.position.y = input->GetMousePosY();
+	}
 
 	if (transform_.size.x >= 64.0f) {
 		transform_.position += velocity * reticleSpeed;

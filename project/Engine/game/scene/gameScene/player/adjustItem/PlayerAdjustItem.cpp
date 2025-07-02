@@ -20,12 +20,16 @@ void PlayerAdjustItem::LoadItems()
 		bulletJson_.Set("speed", 1.0f);
 		bulletJson_.Set("speed_sp", 1.0f);
 		bulletJson_.Set("position", Vector3{});
+		bulletJson_.Set("reloadStartTime", 1.0f);
+		bulletJson_.Set("reloadTime", 1.0f);
 		bulletJson_.Set("colliderSize", Vector3{});
 		bulletJson_.Set("colliderCenterPosition", Vector3{});
 	} else {
 		bulletData_.speed = bulletJson_.Get("speed", bulletData_.speed);
 		bulletData_.speed_sp = bulletJson_.Get("speed_sp", bulletData_.speed_sp);
 		bulletData_.position = bulletJson_.Get("position", bulletData_.position);
+		bulletData_.reloadStartTime = bulletJson_.Get("reloadStartTime", bulletData_.reloadStartTime);
+		bulletData_.reloadTime = bulletJson_.Get("reloadTime", bulletData_.reloadTime);
 		bulletData_.colliderSize = bulletJson_.Get("colliderSize", bulletData_.colliderSize);
 		bulletData_.colliderPosition = bulletJson_.Get("colliderPosition", bulletData_.colliderPosition);
 	}
@@ -88,12 +92,16 @@ void PlayerAdjustItem::Editor()
 		ImGui::DragFloat("speed", &bulletData_.speed, 0.01f);
 		ImGui::DragFloat("speed_sp", &bulletData_.speed_sp, 0.01f);
 		ImGui::DragFloat3("position", &bulletData_.position.x, 0.01f);
+		ImGui::DragFloat("reloadStartTime", &bulletData_.reloadStartTime, 0.01f);
+		ImGui::DragFloat("reloadTime", &bulletData_.reloadTime, 0.01f);
 		ImGui::DragFloat3("colliderSize", &bulletData_.colliderSize.x, 0.01f);
 		ImGui::DragFloat3("colliderPosition", &bulletData_.colliderPosition.x, 0.01f);
 		if (ImGui::Button("Save")) {
 			bulletJson_.Set("speed", bulletData_.speed);
 			bulletJson_.Set("speed_sp", bulletData_.speed_sp);
 			bulletJson_.Set("position", bulletData_.position);
+			bulletJson_.Set("reloadStartTime", bulletData_.reloadStartTime);
+			bulletJson_.Set("reloadTime", bulletData_.reloadTime);
 			bulletJson_.Set("colliderSize", bulletData_.colliderSize);
 			bulletJson_.Set("colliderPosition", bulletData_.colliderPosition);
 			bulletJson_.Save();

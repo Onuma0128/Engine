@@ -13,6 +13,9 @@ struct BulletData {
 	float speed_sp;				// 必殺技の弾の速度
 	Vector3 position;			// 弾が出てくる座標
 
+	float reloadStartTime;		// 弾のリロードを開始する時間
+	float reloadTime;			// 弾をリロードする時間
+
 	Vector3 colliderSize;		// コライダーのサイズ
 	Vector3 colliderPosition;	// コライダーの中心座標
 };

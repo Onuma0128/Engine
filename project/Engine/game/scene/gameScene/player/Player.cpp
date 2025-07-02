@@ -149,7 +149,9 @@ void Player::OnCollisionEnter(Collider* other)
 		other->GetColliderName() == "EnemyRanged" ||
 		other->GetColliderName() == "EnemyShieldBearer" ||
 		other->GetColliderName() == "EnemyRangedElite") {
-		isAlive_ = false;
+		if (!isAvoid_) {
+			isAlive_ = false;
+		}
 	}
 }
 

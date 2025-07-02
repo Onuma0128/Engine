@@ -56,6 +56,11 @@ public:
 	bool GetIsAlive()const { return isAlive_; }
 	uint32_t GetNockdownCount()const { return kNockdownCount_; }
 
+	bool GetIsPlayingMouse()const { return isPlayingMouse_; }
+	void SetIsPlayingMouse(bool flag) { isPlayingMouse_ = flag; }
+
+	void SetIsAvoid(bool flag) { isAvoid_ = flag; }
+
 private:
 
 	void BulletInit();
@@ -89,5 +94,9 @@ private:
 	std::unique_ptr<PlayerAdjustItem> items_;
 	// 今生きているか
 	bool isAlive_ = true;
+	// 今避けているのか
+	bool isAvoid_ = false;
+	// マウスを使ってプレイしているか
+	bool isPlayingMouse_ = false;
 
 };
