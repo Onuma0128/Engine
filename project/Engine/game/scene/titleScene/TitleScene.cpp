@@ -35,7 +35,7 @@ void TitleScene::Update()
 
 	sceneFade_->Update();
 
-	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_A) && !isFade_) {
+    if ((input->TriggerGamepadButton(XINPUT_GAMEPAD_A) || input->TriggerKey(DIK_SPACE)) && !isFade_) {
 		isFade_ = true;
 		sceneFade_->FadeOut();
 	}

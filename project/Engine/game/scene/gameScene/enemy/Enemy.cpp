@@ -91,7 +91,7 @@ void Enemy::Update()
 	Collider::Update();
 
 	// オブジェクトの更新
-	Animation::Update();
+	Animation::TransformUpdate();
 }
 
 void Enemy::TransformUpdate() 
@@ -103,7 +103,7 @@ void Enemy::TransformUpdate()
 		// 影の更新
 		shadow_->Update();
 		// オブジェクトの更新
-		Animation::Update();
+		Animation::TransformUpdate();
 	}
 }
 

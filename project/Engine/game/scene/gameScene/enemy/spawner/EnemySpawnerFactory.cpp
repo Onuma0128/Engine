@@ -33,7 +33,7 @@ void EnemySpawnerFactory::Update()
 	items_->Editor();
 
 	// 敵のランダムスポーン
-	RandomSpawnEnemy();
+	//RandomSpawnEnemy();
 
 	// スポナーの更新
 	uint32_t kNockdownCount = 0;

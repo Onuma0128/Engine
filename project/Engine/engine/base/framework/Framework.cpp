@@ -69,7 +69,9 @@ void Framework::LoadFiles()
 
 	ModelManager::GetInstance()->LoadModel("resources/player/revolver", "Revolver.obj");
 
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "fence.obj");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "ground.obj");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "TowerWindmill.obj");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_1.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_2.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_3.gltf");

@@ -14,11 +14,11 @@ void GamePlayScene::Initialize()
 {
 	// シーンのロード
 	SceneJsonLoader loader;
-	loader.Load("sceneObject");
+	loader.Load("sceneObject2");
 
 	skyBox_ = std::make_unique<PrimitiveDrawr>();
 	skyBox_->TypeInit(PrimitiveType::Skybox);
-	skyBox_->GetTransform().scale = { 512.0f,512.0f ,512.0f };
+	skyBox_->GetTransform().scale = { 1024.0f,1024.0f ,1024.0f };
 	skyBox_->SetSceneRenderer();
 
 	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
