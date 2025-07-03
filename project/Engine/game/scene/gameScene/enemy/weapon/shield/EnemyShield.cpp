@@ -64,6 +64,6 @@ void EnemyShield::OnCollisionExit(Collider* other)
 
 void EnemyShield::SetIsActive(bool flag)
 {
-	Object3d::GetRenderOptions().enabled = flag;
+	Object3d::GetMaterial().enableDraw = flag;
 	Collider::isActive_ = flag;
 }

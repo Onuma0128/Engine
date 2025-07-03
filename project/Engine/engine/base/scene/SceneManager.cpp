@@ -23,6 +23,7 @@ void SceneManager::Update()
 			CameraManager::GetInstance()->Clear();
 			ParticleManager::GetInstance()->Clear();
 			DirectXEngine::GetSceneRenderer()->Finalize();
+			DirectXEngine::GetModelRenderer()->Finalize();
 			scene_->Finalize();
 			delete scene_;
 		}

@@ -14,7 +14,7 @@ void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 {
 	Object3d::Initialize("Box.obj");
 	Object3d::SetSceneRenderer();
-	Object3d::GetRenderOptions().enabled = false;
+	Object3d::GetMaterial().enableDraw = false;
 	transform_.scale_ = { 0.1f,0.1f ,0.3f };
 
 	isActive_ = false;
@@ -38,14 +38,14 @@ void EnemyBullet::Update()
 			activeFrame_ = 1.0f;
 			isActive_ = false;
 			Collider::isActive_ = false;
-			Object3d::GetRenderOptions().enabled = false;
+			Object3d::GetMaterial().enableDraw = false;
 		}
 	}
 
 	// コールバック関数
 	if (wasActive_ && !isActive_ && onDeactivatedCallback_) {
 		onDeactivatedCallback_();
-		Object3d::GetRenderOptions().enabled = false;
+		Object3d::GetMaterial().enableDraw = false;
 	}
 	wasActive_ = isActive_;
 
@@ -88,7 +88,7 @@ void EnemyBullet::Attack(const WorldTransform& transform)
 	activeFrame_ = 0.0f; 
 	isActive_ = true;
 	Collider::isActive_ = true;
-	Object3d::GetRenderOptions().enabled = true;
+	Object3d::GetMaterial().enableDraw = true;
 }
 
 void EnemyBullet::IsCollision()
@@ -97,7 +97,7 @@ void EnemyBullet::IsCollision()
 	wasActive_ = false;
 	isActive_ = false;
 	Collider::isActive_ = false;
-	Object3d::GetRenderOptions().enabled = false;
+	Object3d::GetMaterial().enableDraw = false;
 }
 
 void EnemyBullet::SetOnDeactivateCallback(const std::function<void()>& callback)

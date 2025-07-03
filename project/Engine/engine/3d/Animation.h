@@ -40,7 +40,10 @@ public:
 	WorldTransform& GetTransform() { return transform_; }
 	bool& GetTimeStop() { return timeStop_; }
 	Model* GetModel() { return model_; }
-	RenderOptions& GetRenderOptions() { return renderOptions_; }
+	Skeleton GetSkeleton() { return skeleton_; }
+	std::vector<WellForGPU>& GetWellForGPU() { return skinCluster_.mappedPalettes; }
+
+	//RenderOptions& GetRenderOptions() { return renderOptions_; }
 	Vector4& GetColor() { return materialData_.color; }
 	Material& GetMaterial() { return materialData_; }
 	void SetDrawBone(bool flag);
@@ -91,6 +94,6 @@ private:
 	Material materialData_;
 
 	// 描画するか
-	RenderOptions renderOptions_;
+	//RenderOptions renderOptions_;
 
 };

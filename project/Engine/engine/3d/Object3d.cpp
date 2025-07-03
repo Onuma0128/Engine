@@ -24,10 +24,10 @@ void Object3d::Initialize(const std::string& filePath)
 
 void Object3d::SetSceneRenderer()
 {
-    renderOptions_ = {
+    /*renderOptions_ = {
         .enabled = true,
         .offscreen = true
-    };
+    };*/
     //DirectXEngine::GetSceneRenderer()->SetDrawList(this);
     DirectXEngine::GetModelRenderer()->Push(this);
 }
@@ -84,6 +84,7 @@ void Object3d::SetColor(const Vector4& color)
 void Object3d::MakeMaterialData()
 {
     materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    materialData_.enableDraw = true;
     materialData_.enableLighting = true;
     materialData_.uvTransform = Matrix4x4::Identity();
     materialData_.shininess = 20.0f;

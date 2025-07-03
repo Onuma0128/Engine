@@ -39,7 +39,7 @@ public:
 		materialRnage[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
 
 		//RootParameterの作成。複数設定できるので配列。今回は結果1つだけなので長さ1の配列
-		D3D12_ROOT_PARAMETER rootParameters[10] = {};
+		D3D12_ROOT_PARAMETER rootParameters[11] = {};
 		rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; //DescriptorTableを使う
 		rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //VertexShaderで使う
 		rootParameters[0].DescriptorTable.pDescriptorRanges = materialRnage; //Tableの中身の配列を指定
@@ -49,9 +49,6 @@ public:
 		rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; //VertexShaderで使う
 		rootParameters[1].DescriptorTable.pDescriptorRanges = descriptorRange; //Tableの中身の配列を指定
 		rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange); //Tableで利用する数
-		//rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-		//rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; //VertexShaderで使う
-		//rootParameters[1].Descriptor.ShaderRegister = 0;
 
 		rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE; //DescriptorTableを使う
 		rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
@@ -86,7 +83,9 @@ public:
 		rootParameters[9].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
 		rootParameters[9].Descriptor.ShaderRegister = 4;
 
-
+		rootParameters[10].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+		rootParameters[10].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; //PixelShaderで使う
+		rootParameters[10].Descriptor.ShaderRegister = 0;
 
 		rootSignatureDesc.pParameters = rootParameters;
 		rootSignatureDesc.NumParameters = _countof(rootParameters);

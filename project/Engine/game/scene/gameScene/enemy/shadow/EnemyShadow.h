@@ -10,7 +10,7 @@ public:
 
 	void Update();
 
-	void SetDraw(bool flag) { Object3d::GetRenderOptions().enabled = flag; }
+	void SetDraw(bool flag) { Object3d::GetMaterial().enableDraw = flag; }
 
 };
 

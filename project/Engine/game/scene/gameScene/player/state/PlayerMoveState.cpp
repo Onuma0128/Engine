@@ -73,7 +73,7 @@ void PlayerMoveState::Update()
 			Vector3 hitPos = {};
 
 			// 地面と平行か計算
-			const float EPS = 1e-6;
+			const float EPS = 1e-6f;
 			if (std::fabs(denom) > EPS) {
 				float planeY = 0.5f;
 				float t = (planeY - nearPos.y) / denom;

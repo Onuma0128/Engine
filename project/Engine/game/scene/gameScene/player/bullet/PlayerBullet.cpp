@@ -8,7 +8,7 @@ void PlayerBullet::Init(const std::string& colliderName)
 {
 	Object3d::Initialize("Box.obj");
 	Object3d::SetSceneRenderer();
-	Object3d::GetRenderOptions().enabled = false;
+	Object3d::GetMaterial().enableDraw = false;
 	transform_.scale_ = { 0.1f,0.1f ,0.3f };
 
 	isActive_ = false;
@@ -38,7 +38,7 @@ void PlayerBullet::Update()
 			activeFrame_ = 1.0f;
 			isActive_ = false;
 			Collider::isActive_ = false;
-			Object3d::GetRenderOptions().enabled = false;
+			Object3d::GetMaterial().enableDraw = false;
 		}
 	} 
 
@@ -46,7 +46,7 @@ void PlayerBullet::Update()
 	if (wasActive_ && !isActive_ && onDeactivatedCallback_) {
 		onDeactivatedCallback_();
 		effect_->OnceBulletDeleteEffect(transform_);
-		Object3d::GetRenderOptions().enabled = false;
+		Object3d::GetMaterial().enableDraw = false;
 	}
 	wasActive_ = isActive_;
 
@@ -110,7 +110,7 @@ void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 	isReload_ = false;
 	isActive_ = true;
 	Collider::isActive_ = true;
-	Object3d::GetRenderOptions().enabled = true;
+	Object3d::GetMaterial().enableDraw = true;
 
 	effect_->OnceBulletEffect(transform);
 }
@@ -121,7 +121,7 @@ void PlayerBullet::IsCollision()
 	wasActive_ = false;
 	isActive_ = false;
 	Collider::isActive_ = false;
-	Object3d::GetRenderOptions().enabled = false;
+	Object3d::GetMaterial().enableDraw = false;
 }
 
 void PlayerBullet::SetOnDeactivateCallback(const std::function<void()>& callback)

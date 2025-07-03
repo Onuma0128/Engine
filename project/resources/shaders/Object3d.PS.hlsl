@@ -4,10 +4,10 @@ struct Material
 {
     float4 color;
     float4x4 uvTransform;
+    int enableDraw;
     int enableLighting;
     float shininess;
     float environmentCoefficient;
-    float padding0;
 };
 struct DirectionalLightData
 {
@@ -65,6 +65,8 @@ PixelShaderOutput main(VertexShaderOutput input)
 {    
     uint instID = input.instID;
     PixelShaderOutput output;
+    // 描画を切っているならdiscardする
+    if (!gMaterial[instID].enableDraw) { discard; }
     float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial[instID].uvTransform);
     float4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
     float3 baseColor = textureColor.rgb * gKdColor.color.rgb;

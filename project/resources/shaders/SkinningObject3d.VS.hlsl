@@ -11,9 +11,14 @@ struct Well
     float4x4 skeletonSpaceMatrix;
     float4x4 skeletonSpaceInverseTransposeMatrix;
 };
+struct JointCount
+{
+    uint jointCount;
+};
 
 StructuredBuffer<InstanceData> gInstanceData : register(t0);
 StructuredBuffer<Well> gMatrixPalette : register(t1);
+ConstantBuffer<JointCount> gJointCount : register(b0);
 
 struct VertexShaderInput
 {
@@ -29,20 +34,22 @@ struct Skinned
     float3 normal;
 };
 
-Skinned Skinning(VertexShaderInput input)
+Skinned Skinning(VertexShaderInput input, uint id)
 {
-    Skinned skinned;
+    Skinned skinned; 
     
-    skinned.position = mul(input.position, gMatrixPalette[input.index.x].skeletonSpaceMatrix) * input.weight.x;
-    skinned.position += mul(input.position, gMatrixPalette[input.index.y].skeletonSpaceMatrix) * input.weight.y;
-    skinned.position += mul(input.position, gMatrixPalette[input.index.z].skeletonSpaceMatrix) * input.weight.z;
-    skinned.position += mul(input.position, gMatrixPalette[input.index.w].skeletonSpaceMatrix) * input.weight.w;
+    int index = (gJointCount.jointCount * id);
+    
+    skinned.position = mul(input.position, gMatrixPalette[input.index.x + index].skeletonSpaceMatrix) * input.weight.x;
+    skinned.position += mul(input.position, gMatrixPalette[input.index.y + index].skeletonSpaceMatrix) * input.weight.y;
+    skinned.position += mul(input.position, gMatrixPalette[input.index.z + index].skeletonSpaceMatrix) * input.weight.z;
+    skinned.position += mul(input.position, gMatrixPalette[input.index.w + index].skeletonSpaceMatrix) * input.weight.w;
     skinned.position.w = 1.0f;
     
-    skinned.normal = mul(input.normal, (float3x3) gMatrixPalette[input.index.x].skeletonSpaceInverseTransposeMatrix) * input.weight.x;
-    skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[input.index.y].skeletonSpaceInverseTransposeMatrix) * input.weight.y;
-    skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[input.index.z].skeletonSpaceInverseTransposeMatrix) * input.weight.z;
-    skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[input.index.w].skeletonSpaceInverseTransposeMatrix) * input.weight.w;
+    skinned.normal = mul(input.normal, (float3x3) gMatrixPalette[input.index.x + index].skeletonSpaceInverseTransposeMatrix) * input.weight.x;
+    skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[input.index.y + index].skeletonSpaceInverseTransposeMatrix) * input.weight.y;
+    skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[input.index.z + index].skeletonSpaceInverseTransposeMatrix) * input.weight.z;
+    skinned.normal += mul(input.normal, (float3x3) gMatrixPalette[input.index.w + index].skeletonSpaceInverseTransposeMatrix) * input.weight.w;
     skinned.normal = normalize(skinned.normal);
     
     return skinned;
@@ -51,7 +58,7 @@ Skinned Skinning(VertexShaderInput input)
 VertexShaderOutput main(VertexShaderInput input, uint InstID : SV_InstanceID)
 {
     VertexShaderOutput output;
-    Skinned skinned = Skinning(input);
+    Skinned skinned = Skinning(input,InstID);
     
     output.position = mul(skinned.position, gInstanceData[InstID].WVP);
     output.worldPosition = mul(skinned.position, gInstanceData[InstID].World).xyz;

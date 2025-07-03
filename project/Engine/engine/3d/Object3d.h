@@ -43,7 +43,7 @@ public:
 	Model* GetModel() { return model_; }
 	Material& GetMaterial() { return materialData_; }
 	Vector4& GetColor() { return materialData_.color; }
-	RenderOptions& GetRenderOptions() { return renderOptions_; }
+	//RenderOptions& GetRenderOptions() { return renderOptions_; }
 
 private:
 
@@ -66,6 +66,6 @@ private:
 	Material materialData_;
 
 	// 描画するか
-	RenderOptions renderOptions_;
+	//RenderOptions renderOptions_;
 
 };

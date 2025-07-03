@@ -78,7 +78,7 @@ void Enemy::Update()
 			stateParam_.hitReticle_ = false;
 		}
 	} else if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::None) {
-		Animation::GetRenderOptions().offscreen = true;
+		//Animation::GetRenderOptions().offscreen = true;
 	}
 
 	// 影の更新
@@ -123,7 +123,7 @@ void Enemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 
 void Enemy::Dead()
 {
-	Animation::GetRenderOptions().enabled = false;
+	Animation::GetMaterial().enableDraw = false;
 	Animation::GetTimeStop() = true;
 	Collider::isActive_ = false;
 
@@ -140,8 +140,8 @@ void Enemy::Reset(const Vector3& position)
 	} else {
 		Animation::PlayByName("Run");
 	}
-	Animation::GetRenderOptions().enabled = true;
-	Animation::GetRenderOptions().offscreen = true;
+	Animation::GetMaterial().enableDraw = true;
+	//Animation::GetRenderOptions().offscreen = true;
 
 	transform_.scale_ = { 1.5f,1.5f,1.5f };
 	transform_.rotation_ = Quaternion::IdentityQuaternion();
@@ -193,7 +193,7 @@ void Enemy::OnCollisionEnter(Collider* other)
 	// プレイヤーのレティクルと当たっているなら
 	if (other->GetColliderName() == "PlayerReticle") {
 		stateParam_.hitReticle_ = true;
-		Animation::GetRenderOptions().offscreen = false;
+		//Animation::GetRenderOptions().offscreen = false;
 		Collider::isActive_ = false;
 	}
 }
@@ -287,7 +287,7 @@ void Enemy::TypeInit()
 	}
 
 	Animation::SetSceneRenderer();
-	Animation::GetRenderOptions().enabled = false;
+	Animation::GetMaterial().enableDraw = false;
 	Animation::SetDrawBone(false);
 	Animation::GetTimeStop() = true;
 	transform_.scale_ *= 1.5f;

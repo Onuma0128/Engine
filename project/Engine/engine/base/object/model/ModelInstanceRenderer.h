@@ -24,6 +24,10 @@ public:
         Matrix4x4 World;
         Matrix4x4 WorldInvT;
     };
+    struct JointCount 
+    {
+        uint32_t jointCount;
+    };
 
     /* ========================= Object3d ========================= */
 
@@ -55,6 +59,8 @@ private:
 
     void AnimationReserveBatch(Model* model, uint32_t maxInstance = 128);
     void AnimationUpdate();
+
+    int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
 
 private:
 
@@ -93,6 +99,13 @@ private:
         ComPtr<ID3D12Resource> materialBuffer;      // StructuredBuffer
         Material* materialData;                     // Mapしたポインタ
         uint32_t materialSrvIndex;                  // SRV番地 (material)
+
+        ComPtr<ID3D12Resource> jointBuffer;         // ConstantBuffer
+        JointCount* jointData;                       // Mapしたポインタ
+
+        ComPtr<ID3D12Resource> paletteBuffer;       // StructuredBuffer
+        WellForGPU* paletteData;                    // Mapしたポインタ
+        uint32_t paletteSrvIndex;                   // SRV番地 (matrixPalette)
     };
     std::unordered_map<Model*, AnimationBatch> animationBatches_;
 

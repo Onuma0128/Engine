@@ -60,10 +60,10 @@ void Animation::Initialize(const std::string& filename)
 
 void Animation::SetSceneRenderer()
 {
-	renderOptions_ = {
+	/*renderOptions_ = {
 		.enabled = true,
 		.offscreen = true
-	};
+	};*/
 	//DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 	DirectXEngine::GetModelRenderer()->Push(this);
 }
@@ -152,9 +152,6 @@ void Animation::Draw()
 	animationBase_->DrawBase();
 
 	auto commandList = DirectXEngine::GetCommandList();
-	//commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-	//commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
-	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, skinCluster_.srvHandleIndex);
 	commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(6, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());
@@ -279,15 +276,6 @@ SkinCluster Animation::CreateSkinCluster(const ComPtr<ID3D12Device>& device, con
 	SkinCluster skinCluster;
 	SrvManager* srvManager = SrvManager::GetInstance();
 
-	// **パレットリソースの作成**
-	size_t paletteSize = skeleton.joints.size() * sizeof(WellForGPU);
-	skinCluster.paletteResource = CreateBufferResource(device, paletteSize);
-
-	// **パレットのマッピング**
-	WellForGPU* mappedPalette = nullptr;
-	skinCluster.paletteResource->Map(0, nullptr, reinterpret_cast<void**>(&mappedPalette));
-	skinCluster.mappedPalette = std::span<WellForGPU>(mappedPalette, skeleton.joints.size());
-
 	// **Influenceリソースの作成**
 	size_t influenceSize = modelData.vertices.size() * sizeof(VertexInfluence);
 	skinCluster.infuenceResource = CreateBufferResource(device, influenceSize);
@@ -303,10 +291,11 @@ SkinCluster Animation::CreateSkinCluster(const ComPtr<ID3D12Device>& device, con
 	skinCluster.influenceBufferView.SizeInBytes = static_cast<UINT>(influenceSize);
 	skinCluster.influenceBufferView.StrideInBytes = sizeof(VertexInfluence);
 
-	// **SRVの作成**
-	skinCluster.srvHandleIndex = srvManager->Allocate() + TextureManager::kSRVIndexTop; // 空きSRVスロットを取得
-	srvManager->CreateSRVforStructuredBuffer(skinCluster.srvHandleIndex, skinCluster.paletteResource.Get(), static_cast<UINT>(skeleton.joints.size()), sizeof(WellForGPU));
-
+	skinCluster.mappedPalettes.resize(skeleton.joints.size());
+	for (size_t i = 0; i < skinCluster.mappedPalettes.size(); ++i) {
+		skinCluster.mappedPalettes[i].skeletonSpaceMatrix = Matrix4x4::Identity();
+		skinCluster.mappedPalettes[i].skeletonSpaceInverseTransposeMatrix = Matrix4x4::Identity();
+	}
 	skinCluster.inverseBindPoseMatrices.resize(skeleton.joints.size());
 	for (size_t i = 0; i < skinCluster.inverseBindPoseMatrices.size(); ++i) {
 		skinCluster.inverseBindPoseMatrices[i] = Matrix4x4::Identity();
@@ -353,10 +342,10 @@ void Animation::SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skel
 {
 	for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); ++jointIndex) {
 		assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
-		skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix =
+		skinCluster.mappedPalettes[jointIndex].skeletonSpaceMatrix =
 			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
-		skinCluster.mappedPalette[jointIndex].skeletonSpaceInverseTransposeMatrix =
-			Matrix4x4::Inverse(skinCluster.mappedPalette[jointIndex].skeletonSpaceMatrix).Transpose();
+		skinCluster.mappedPalettes[jointIndex].skeletonSpaceInverseTransposeMatrix =
+			Matrix4x4::Inverse(skinCluster.mappedPalettes[jointIndex].skeletonSpaceMatrix).Transpose();
 	}
 }
 
@@ -448,6 +437,7 @@ Quaternion Animation::CalculateValue(const std::vector<KeyFrameQuaternion>& keys
 void Animation::MakeMaterialData()
 {
 	materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	materialData_.enableDraw = true;
 	materialData_.enableLighting = true;
 	materialData_.uvTransform = Matrix4x4::Identity();
 	materialData_.shininess = 20.0f;

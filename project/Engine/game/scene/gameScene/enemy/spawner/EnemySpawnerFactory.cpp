@@ -20,10 +20,10 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 	}
 
 	// 敵をタイプごとに初期化
-	InitTypeEnemy(EnemyType::Melee, enemyMelees_, 1);
-	InitTypeEnemy(EnemyType::Ranged, enemyRnageds_, 1);
-	InitTypeEnemy(EnemyType::ShieldBearer, enemyShieldBearers_, 0);
-	InitTypeEnemy(EnemyType::RangedElite, enemyRnagedElites_, 0);
+	InitTypeEnemy(EnemyType::Melee, enemyMelees_, 20);
+	InitTypeEnemy(EnemyType::Ranged, enemyRnageds_, 20);
+	InitTypeEnemy(EnemyType::ShieldBearer, enemyShieldBearers_, 10);
+	InitTypeEnemy(EnemyType::RangedElite, enemyRnagedElites_, 10);
 
 	spawnInterval_ = 10.0f;
 }

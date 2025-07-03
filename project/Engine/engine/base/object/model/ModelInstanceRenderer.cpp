@@ -46,6 +46,7 @@ void ModelInstanceRenderer::ObjReserveBatch(Model* model, uint32_t maxInstance)
     batch.materialBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.materialData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
         batch.materialData[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        batch.materialData[i].enableDraw = true;
         batch.materialData[i].enableLighting = true;
         batch.materialData[i].uvTransform = Matrix4x4::Identity();
         batch.materialData[i].shininess = 20.0f;
@@ -86,6 +87,19 @@ void ModelInstanceRenderer::AnimationReserveBatch(Model* model, uint32_t maxInst
     batch.materialBuffer = CreateBufferResource(
         DirectXEngine::GetDevice(),
         sizeof(Material) * maxInstance);
+    // --- GPU リソース確保 Joint ---
+    batch.jointBuffer = CreateBufferResource(
+        DirectXEngine::GetDevice(),
+        sizeof(JointCount));
+    // --- GPU リソース確保 MatrixPalette ---
+    Skeleton skeleton;
+    skeleton.root = CreateJoint(model->GetModelData().rootNode, {}, skeleton.joints);
+    for (const Joint& joint : skeleton.joints) {
+        skeleton.jointMap.emplace(joint.name, joint.index);
+    }
+    batch.paletteBuffer = CreateBufferResource(
+        DirectXEngine::GetDevice(),
+        sizeof(WellForGPU) * maxInstance * skeleton.joints.size());
 
 
     // --- CPU 側から書き込むために永続 WorldMatrix ---
@@ -99,10 +113,20 @@ void ModelInstanceRenderer::AnimationReserveBatch(Model* model, uint32_t maxInst
     batch.materialBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.materialData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
         batch.materialData[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        batch.materialData[i].enableDraw = true;
         batch.materialData[i].enableLighting = true;
         batch.materialData[i].uvTransform = Matrix4x4::Identity();
         batch.materialData[i].shininess = 20.0f;
         batch.materialData[i].environmentCoefficient = 0;
+    }
+    // --- CPU 側から書き込むために永続 Joint ---
+    batch.jointBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.jointData));
+    batch.jointData->jointCount = static_cast<uint32_t>(skeleton.joints.size());
+    // --- CPU 側から書き込むために永続 Palette ---
+    batch.paletteBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.paletteData));
+    for (uint32_t i = 0; i < maxInstance; ++i) {
+        batch.paletteData[i].skeletonSpaceMatrix = Matrix4x4::Identity();
+        batch.paletteData[i].skeletonSpaceInverseTransposeMatrix = Matrix4x4::Identity();
     }
 
     // --- SRV を作成して Heap へ登録 WorldMatrix ---
@@ -113,6 +137,11 @@ void ModelInstanceRenderer::AnimationReserveBatch(Model* model, uint32_t maxInst
     batch.materialSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
         batch.materialSrvIndex, batch.materialBuffer.Get(), maxInstance, sizeof(Material));
+    // --- SRV を作成して Heap へ登録 Palette ---
+    batch.paletteSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
+        batch.paletteSrvIndex, batch.paletteBuffer.Get(), maxInstance * static_cast<UINT>(skeleton.joints.size()), sizeof(WellForGPU));
+
 
     animationBatches_[model] = std::move(batch);
 }
@@ -140,7 +169,7 @@ void ModelInstanceRenderer::Push(Object3d* obj)
 
     // 書き込み先 Material
     Material& material = batch.materialData[batch.count];
-    // カラーを代入
+    // Materialを代入
     material = obj->GetMaterial();
 
     ++batch.count;
@@ -181,10 +210,8 @@ void ModelInstanceRenderer::Push(Animation* animation)
     matrix.World = animation->GetTransform().instanceMatrix_.World;
     matrix.WorldInvT = animation->GetTransform().instanceMatrix_.WorldInverseTranspose;
     matrix.WVP = animation->GetTransform().instanceMatrix_.WVP;
-
     // 書き込み先 Material
     Material& material = batch.materialData[batch.count];
-    // カラーを代入
     material = animation->GetMaterial();
 
     ++batch.count;
@@ -221,13 +248,9 @@ void ModelInstanceRenderer::ObjUpdate()
             matrix.World = batch.objects[i]->GetTransform().instanceMatrix_.World;
             matrix.WorldInvT = batch.objects[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
             matrix.WVP = batch.objects[i]->GetTransform().instanceMatrix_.WVP;
-            // カラーを代入
+            // Materialを代入
             Material& material = batch.materialData[i];
-            material.color = batch.objects[i]->GetMaterial().color;
-            material.enableLighting = batch.objects[i]->GetMaterial().enableLighting;
-            material.uvTransform = batch.objects[i]->GetMaterial().uvTransform;
-            material.shininess = batch.objects[i]->GetMaterial().shininess;
-            material.environmentCoefficient = batch.objects[i]->GetMaterial().environmentCoefficient;
+            material = batch.objects[i]->GetMaterial();
         }
         ++it;
     }
@@ -249,16 +272,42 @@ void ModelInstanceRenderer::AnimationUpdate()
             matrix.World = batch.animations[i]->GetTransform().instanceMatrix_.World;
             matrix.WorldInvT = batch.animations[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
             matrix.WVP = batch.animations[i]->GetTransform().instanceMatrix_.WVP;
-            // カラーを代入
+            // Materialを代入
             Material& material = batch.materialData[i];
-            material.color = batch.animations[i]->GetMaterial().color;
-            material.enableLighting = batch.animations[i]->GetMaterial().enableLighting;
-            material.uvTransform = batch.animations[i]->GetMaterial().uvTransform;
-            material.shininess = batch.animations[i]->GetMaterial().shininess;
-            material.environmentCoefficient = batch.animations[i]->GetMaterial().environmentCoefficient;
+            material = batch.animations[i]->GetMaterial();
+            // 描画するか
+            if (material.enableDraw) {
+                // 描画をしているならPaletteの更新
+                Skeleton skeleton = batch.animations[i]->GetSkeleton();
+                for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); ++jointIndex) {
+                    const size_t dst = i * skeleton.joints.size() + jointIndex;
+                    WellForGPU& wellForGPU = batch.paletteData[dst];
+                    wellForGPU.skeletonSpaceMatrix = batch.animations[i]->GetWellForGPU()[jointIndex].skeletonSpaceMatrix;
+                    wellForGPU.skeletonSpaceInverseTransposeMatrix =
+                        batch.animations[i]->GetWellForGPU()[jointIndex].skeletonSpaceInverseTransposeMatrix;
+                }
+            }
         }
         ++it;
     }
+}
+
+int32_t ModelInstanceRenderer::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
+{
+    Joint joint;
+    joint.name = node.name;
+    joint.localMatrix = node.localMatrix;
+    joint.skeletonSpaceMatrix = Matrix4x4::Identity();
+    joint.transform = node.transform;
+    joint.index = int32_t(joints.size());
+    joint.parent = parent;
+    joints.push_back(joint);
+    for (const Node& child : node.children) {
+        int32_t childIndex = CreateJoint(child, joint.index, joints);
+        joints[joint.index].children.push_back(childIndex);
+    }
+
+    return joint.index;
 }
 
 void ModelInstanceRenderer::AllDraw()
@@ -300,6 +349,8 @@ void ModelInstanceRenderer::AllDraw()
         model->BindBuffers(true);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.paletteSrvIndex);
+        commandList->SetGraphicsRootConstantBufferView(10, batch.jointBuffer->GetGPUVirtualAddress());
 
         /* ---------- Mesh ループ ---------- */
         const auto& mesh = model->GetModelData().meshs;

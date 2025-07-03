@@ -33,10 +33,10 @@ struct MeshData {
 struct Material {
 	Vector4 color;
 	Matrix4x4 uvTransform;
+	int32_t enableDraw;
 	int32_t enableLighting;
 	float shininess;
 	float environmentCoefficient;
-	float padding[1];
 };
 
 struct MaterialData {
@@ -105,10 +105,7 @@ struct SkinCluster {
 	D3D12_VERTEX_BUFFER_VIEW influenceBufferView;
 	std::span<VertexInfluence> mappedInfluence;
 	// MatrixPalette
-	ComPtr<ID3D12Resource> paletteResource;
-	std::span<WellForGPU> mappedPalette;
-	uint32_t srvHandleIndex;
-	std::pair<D3D12_CPU_DESCRIPTOR_HANDLE, D3D12_GPU_DESCRIPTOR_HANDLE> paletteSrvHandle;
+	std::vector<WellForGPU> mappedPalettes;
 };
 
 struct RenderOptions {

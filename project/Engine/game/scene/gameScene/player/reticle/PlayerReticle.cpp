@@ -42,8 +42,8 @@ void PlayerReticle::Update(bool isPlayingMouse)
 		velocity.x = input->GetGamepadRightStickX();
 		velocity.y = -input->GetGamepadRightStickY();
 	} else {
-		transform_.position.x = input->GetMousePosX();
-		transform_.position.y = input->GetMousePosY();
+		transform_.position.x = static_cast<float>(input->GetMousePosX());
+		transform_.position.y = static_cast<float>(input->GetMousePosY());
 	}
 
 	if (transform_.size.x >= 64.0f) {
@@ -98,8 +98,8 @@ void PlayerReticle::SegmentUpdate()
 
 	Vector2 position = transform_.position;
 	Vector3 ndc = {
-		(position.x / WinApp::kClientWidth) * 2.0f - 1.0f,
-		-((position.y / WinApp::kClientHeight) * 2.0f - 1.0f),
+		(position.x / static_cast<float>(WinApp::kClientWidth)) * 2.0f - 1.0f,
+		-((position.y / static_cast<float>(WinApp::kClientHeight)) * 2.0f - 1.0f),
 		1.0f
 	};
 	Matrix4x4 invVP = Matrix4x4::Inverse(CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix());
