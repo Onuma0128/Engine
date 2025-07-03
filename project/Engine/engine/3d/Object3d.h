@@ -41,8 +41,8 @@ public:
 
 	WorldTransform& GetTransform() { return transform_; }
 	Model* GetModel() { return model_; }
-	Material* GetMaterial() { return materialData_; }
-	Vector4& GetColor() { return color_; }
+	Material& GetMaterial() { return materialData_; }
+	Vector4& GetColor() { return materialData_.color; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
 private:
@@ -54,8 +54,6 @@ protected:
 
 	WorldTransform transform_;
 
-	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
-
 private:
 
 	std::unique_ptr<Object3dBase> object3dBase_ = nullptr;
@@ -64,10 +62,8 @@ private:
 
 	/*==================== マテリアル ====================*/
 
-	// バッファリソース
-	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 	// バッファリソース内のデータを指すポインタ
-	Material* materialData_ = nullptr;
+	Material materialData_;
 
 	// 描画するか
 	RenderOptions renderOptions_;

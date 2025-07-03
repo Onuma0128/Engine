@@ -1,6 +1,6 @@
-#include "Object3d.hlsli"
+#include "object3d.hlsli"
 
-struct TransformationMatrix
+struct InstanceData
 {
     float4x4 WVP;
     float4x4 World;
@@ -12,7 +12,7 @@ struct Well
     float4x4 skeletonSpaceInverseTransposeMatrix;
 };
 
-ConstantBuffer<TransformationMatrix> gTransformationMatrix : register(b0);
+StructuredBuffer<InstanceData> gInstanceData : register(t0);
 StructuredBuffer<Well> gMatrixPalette : register(t1);
 
 struct VertexShaderInput
@@ -48,14 +48,15 @@ Skinned Skinning(VertexShaderInput input)
     return skinned;
 }
 
-VertexShaderOutput main(VertexShaderInput input)
+VertexShaderOutput main(VertexShaderInput input, uint InstID : SV_InstanceID)
 {
     VertexShaderOutput output;
     Skinned skinned = Skinning(input);
     
-    output.position = mul(skinned.position, gTransformationMatrix.WVP);
-    output.worldPosition = mul(skinned.position, gTransformationMatrix.World).xyz;
+    output.position = mul(skinned.position, gInstanceData[InstID].WVP);
+    output.worldPosition = mul(skinned.position, gInstanceData[InstID].World).xyz;
     output.texcoord = input.texcoord;
-    output.normal = normalize(mul(skinned.normal, (float3x3) gTransformationMatrix.WorldInverseTranspose));
+    output.normal = normalize(mul(skinned.normal, (float3x3) gInstanceData[InstID].WorldInverseTranspose));
+    output.instID = InstID;
     return output;
 }

@@ -32,7 +32,7 @@ void Enemy::Init()
 
 	Animation::Initialize("Zombie_Basic.gltf");
 	Animation::SetSceneRenderer();
-	Animation::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
+	//Animation::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
 
 	transform_.scale_ = { 0.5f,0.75f,0.5f };
 	transform_.translation_ = { 0.0f,0.75f,0.0f };

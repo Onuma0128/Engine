@@ -70,7 +70,7 @@ void Animation::SetSceneRenderer()
 
 void Animation::RemoveRenderer()
 {
-	DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
+	//DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
 	DirectXEngine::GetModelRenderer()->Remove(this);
 	if (line_ == nullptr) { return; }
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
@@ -134,8 +134,8 @@ void Animation::Draw()
 	animationBase_->DrawBase();
 
 	auto commandList = DirectXEngine::GetCommandList();
-	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
+	//commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
+	//commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
 	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, skinCluster_.srvHandleIndex);
 	commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
@@ -148,7 +148,7 @@ void Animation::Draw()
 			skinCluster_.influenceBufferView
 		};
 		commandList->IASetVertexBuffers(0, 2, vbvs);
-		model_->Draw(true);
+		//model_->Draw(true);
 	}
 }
 
@@ -364,7 +364,7 @@ void Animation::SetTexture(const std::string& directoryPath, const std::string& 
 
 void Animation::SetColor(const Vector4& color)
 {
-	color_ = color;
+	materialData_.color = color;
 }
 
 Vector3 Animation::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)
@@ -421,16 +421,11 @@ Quaternion Animation::CalculateValue(const std::vector<KeyFrameQuaternion>& keys
 
 void Animation::MakeMaterialData()
 {
-	// マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-	materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material));
-	// 書き込むためのアドレスを取得
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
-	// 今回は白を書き込んでいく
-	materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	materialData_->enableLighting = true;
-	materialData_->uvTransform = Matrix4x4::Identity();
-	materialData_->shininess = 20.0f;
-	materialData_->environmentCoefficient = 0;
+	materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	materialData_.enableLighting = true;
+	materialData_.uvTransform = Matrix4x4::Identity();
+	materialData_.shininess = 20.0f;
+	materialData_.environmentCoefficient = 0;
 }
 
 void Animation::LineUpdate()

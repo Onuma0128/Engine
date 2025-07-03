@@ -16,12 +16,12 @@ EnemyMelee_AttackState::EnemyMelee_AttackState(Enemy* enemy) :EnemyBaseState(ene
 void EnemyMelee_AttackState::Init()
 {
 	chengeStateTime_ = 0.0f;
-	enemy_->SetColor(Vector4{ 0.0f,0.0f,1.0f,1.0f });
+	//enemy_->SetColor(Vector4{ 0.0f,0.0f,1.0f,1.0f });
 }
 
 void EnemyMelee_AttackState::Finalize()
 {
-	enemy_->SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
+	//enemy_->SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
 	enemy_->GetWeapon()->SetIsActive(false);
 	enemy_->GetWeapon()->Update();
 }

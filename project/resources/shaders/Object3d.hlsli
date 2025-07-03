@@ -4,6 +4,7 @@ struct VertexShaderOutput
     float2 texcoord : TEXCOORD0;
     float3 normal : NORMAL0;
     float3 worldPosition : POSITION0;
+    nointerpolation uint instID : INSTANCEID0;
 };
 struct GSOutput
 {
@@ -11,5 +12,4 @@ struct GSOutput
     float2 texcoord : TEXCOORD0;
     float3 normal : NORMAL0;
     float3 worldPosition : POSITION0;
-    float4 color : COLOR0;
 };

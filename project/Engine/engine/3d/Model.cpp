@@ -195,21 +195,13 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
     }
 
     // materialを解析
-    //modelData.materials.resize(scene->mNumMaterials);
+    modelData.materials.resize(scene->mNumMaterials);
     for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
         aiMaterial* material = scene->mMaterials[materialIndex];
         MaterialData materialData{};
         aiString textureFilePath;
         aiColor3D kd(1, 1, 1);
         Vector4 kdColor = { 1.0f,1.0f,1.0f,1.0f };
-        // デフォルトマテリアルをスキップする
-        if (scene->mNumMaterials > 1) {
-            aiString name;
-            material->Get(AI_MATKEY_NAME, name);
-            if (std::strcmp(name.C_Str(), "DefaultMaterial") == 0) {
-                continue;
-            }
-        }
 
         // Diffuseテクスチャを確認
         if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath) == AI_SUCCESS) {
@@ -226,9 +218,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         }
 
         materialData.kdColor = kdColor;
-        //modelData.materials[materialIndex] = materialData;
-        modelData.materials.push_back(materialData);
-        if (materialIndex == scene->mNumMaterials - 1) { break; }
+        modelData.materials[materialIndex] = materialData;
     }
 
     modelData.rootNode = ReadNode(scene->mRootNode);

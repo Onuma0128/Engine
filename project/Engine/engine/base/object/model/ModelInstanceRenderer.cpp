@@ -11,6 +11,10 @@
 
 #include "CreateBufferResource.h"
 
+/// =====================================================================
+///                           Object3d_Resource
+/// =====================================================================
+
 void ModelInstanceRenderer::ObjReserveBatch(Model* model, uint32_t maxInstance)
 {
     // 二重確保ガード
@@ -21,59 +25,101 @@ void ModelInstanceRenderer::ObjReserveBatch(Model* model, uint32_t maxInstance)
     batch.maxInstance = maxInstance;
     batch.count = 0;
 
-    // --- GPU リソース確保 ---
-    batch.gpuBuffer = CreateBufferResource(
+    // --- GPU リソース確保 WorldMatrix ---
+    batch.worldMatrixBuffer = CreateBufferResource(
         DirectXEngine::GetDevice(),
         sizeof(InstanceData) * maxInstance);
+    // --- GPU リソース確保 Material ---
+    batch.materialBuffer = CreateBufferResource(
+        DirectXEngine::GetDevice(),
+        sizeof(Material) * maxInstance);
 
-    // --- CPU 側から書き込むために永続 Map ---
-    batch.gpuBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.cpuPtr));
+
+    // --- CPU 側から書き込むために永続 WorldMatrix ---
+    batch.worldMatrixBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.instanceData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
-        batch.cpuPtr[i].WVP = Matrix4x4::Identity();
-        batch.cpuPtr[i].World = Matrix4x4::Identity();
-        batch.cpuPtr[i].WorldInvT = Matrix4x4::Identity();
-        batch.cpuPtr[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
+        batch.instanceData[i].WVP = Matrix4x4::Identity();
+        batch.instanceData[i].World = Matrix4x4::Identity();
+        batch.instanceData[i].WorldInvT = Matrix4x4::Identity();
+    }
+    // --- CPU 側から書き込むために永続 Material ---
+    batch.materialBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.materialData));
+    for (uint32_t i = 0; i < maxInstance; ++i) {
+        batch.materialData[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        batch.materialData[i].enableLighting = true;
+        batch.materialData[i].uvTransform = Matrix4x4::Identity();
+        batch.materialData[i].shininess = 20.0f;
+        batch.materialData[i].environmentCoefficient = 0;
     }
 
-    // --- SRV を作成して Heap へ登録 ---
-    batch.srvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    // --- SRV を作成して Heap へ登録 WorldMatrix ---
+    batch.instSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
-        batch.srvIndex, batch.gpuBuffer.Get(), maxInstance, sizeof(InstanceData));
+        batch.instSrvIndex, batch.worldMatrixBuffer.Get(), maxInstance, sizeof(InstanceData));
+    // --- SRV を作成して Heap へ登録 Material ---
+    batch.materialSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
+        batch.materialSrvIndex, batch.materialBuffer.Get(), maxInstance, sizeof(Material));
 
     objBatches_[model] = std::move(batch);
 }
 
-void ModelInstanceRenderer::AnimaReserveBatch(Model* model, uint32_t maxInstance)
+/// =====================================================================
+///                           Animation_Resource
+/// =====================================================================
+
+void ModelInstanceRenderer::AnimationReserveBatch(Model* model, uint32_t maxInstance)
 {
     // 二重確保ガード
-    if (animaBatches_.contains(model)) return;
+    if (animationBatches_.contains(model)) return;
 
     AnimationBatch batch{};
     batch.model = model;
     batch.maxInstance = maxInstance;
     batch.count = 0;
 
-    // --- GPU リソース確保 ---
-    batch.gpuBuffer = CreateBufferResource(
+    // --- GPU リソース確保 WorldMatrix ---
+    batch.worldMatrixBuffer = CreateBufferResource(
         DirectXEngine::GetDevice(),
         sizeof(InstanceData) * maxInstance);
+    // --- GPU リソース確保 Material ---
+    batch.materialBuffer = CreateBufferResource(
+        DirectXEngine::GetDevice(),
+        sizeof(Material) * maxInstance);
 
-    // --- CPU 側から書き込むために永続 Map ---
-    batch.gpuBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.cpuPtr));
+
+    // --- CPU 側から書き込むために永続 WorldMatrix ---
+    batch.worldMatrixBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.instanceData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
-        batch.cpuPtr[i].WVP = Matrix4x4::Identity();
-        batch.cpuPtr[i].World = Matrix4x4::Identity();
-        batch.cpuPtr[i].WorldInvT = Matrix4x4::Identity();
-        batch.cpuPtr[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
+        batch.instanceData[i].WVP = Matrix4x4::Identity();
+        batch.instanceData[i].World = Matrix4x4::Identity();
+        batch.instanceData[i].WorldInvT = Matrix4x4::Identity();
+    }
+    // --- CPU 側から書き込むために永続 Material ---
+    batch.materialBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.materialData));
+    for (uint32_t i = 0; i < maxInstance; ++i) {
+        batch.materialData[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        batch.materialData[i].enableLighting = true;
+        batch.materialData[i].uvTransform = Matrix4x4::Identity();
+        batch.materialData[i].shininess = 20.0f;
+        batch.materialData[i].environmentCoefficient = 0;
     }
 
-    // --- SRV を作成して Heap へ登録 ---
-    batch.srvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    // --- SRV を作成して Heap へ登録 WorldMatrix ---
+    batch.instSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
-        batch.srvIndex, batch.gpuBuffer.Get(), maxInstance, sizeof(InstanceData));
+        batch.instSrvIndex, batch.worldMatrixBuffer.Get(), maxInstance, sizeof(InstanceData));
+    // --- SRV を作成して Heap へ登録 Material ---
+    batch.materialSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
+        batch.materialSrvIndex, batch.materialBuffer.Get(), maxInstance, sizeof(Material));
 
-    animaBatches_[model] = std::move(batch);
+    animationBatches_[model] = std::move(batch);
 }
+
+/// =====================================================================
+///                      Object3d_Push & Remove
+/// =====================================================================
 
 void ModelInstanceRenderer::Push(Object3d* obj)
 {
@@ -84,35 +130,20 @@ void ModelInstanceRenderer::Push(Object3d* obj)
     ObjectBatch& batch = objBatches_[model];
     if (batch.count >= batch.maxInstance) return;    // あふれ防止
 
-    // 書き込み先
     batch.objects.push_back(obj);
-    InstanceData& dst = batch.cpuPtr[batch.count++];
-
+    // 書き込み先 WorldMatrix
+    InstanceData& matrix = batch.instanceData[batch.count];
     // 行列計算 (CPU 側で済ませても VS で WVP かけ直してもどちらでも可)
-    dst.World = obj->GetTransform().instanceMatrix_.World;
-    dst.WorldInvT = obj->GetTransform().instanceMatrix_.WorldInverseTranspose;
-    dst.WVP = obj->GetTransform().instanceMatrix_.WVP;
-    dst.color = obj->GetColor();
-}
+    matrix.World = obj->GetTransform().instanceMatrix_.World;
+    matrix.WorldInvT = obj->GetTransform().instanceMatrix_.WorldInverseTranspose;
+    matrix.WVP = obj->GetTransform().instanceMatrix_.WVP;
 
-void ModelInstanceRenderer::Push(Animation* anima)
-{
-    // 未確保なら Reserve
-    Model* model = anima->GetModel();
-    if (!animaBatches_.contains(model)) { AnimaReserveBatch(model); }
+    // 書き込み先 Material
+    Material& material = batch.materialData[batch.count];
+    // カラーを代入
+    material = obj->GetMaterial();
 
-    AnimationBatch& batch = animaBatches_[model];
-    if (batch.count >= batch.maxInstance) return;    // あふれ防止
-
-    // 書き込み先
-    batch.animations.push_back(anima);
-    InstanceData& dst = batch.cpuPtr[batch.count++];
-
-    // 行列計算 (CPU 側で済ませても VS で WVP かけ直してもどちらでも可)
-    dst.World = anima->GetTransform().instanceMatrix_.World;
-    dst.WorldInvT = anima->GetTransform().instanceMatrix_.WorldInverseTranspose;
-    dst.WVP = anima->GetTransform().instanceMatrix_.WVP;
-    dst.color = anima->GetColor();
+    ++batch.count;
 }
 
 void ModelInstanceRenderer::Remove(Object3d* obj)
@@ -130,13 +161,42 @@ void ModelInstanceRenderer::Remove(Object3d* obj)
     }
 }
 
-void ModelInstanceRenderer::Remove(Animation* anima)
+/// =====================================================================
+///                     Animation_Push & Remove
+/// =====================================================================
+
+void ModelInstanceRenderer::Push(Animation* animation)
 {
-    Model* model = anima->GetModel();
-    AnimationBatch& batch = animaBatches_[model];
+    // 未確保なら Reserve
+    Model* model = animation->GetModel();
+    if (!animationBatches_.contains(model)) { AnimationReserveBatch(model); }
+
+    AnimationBatch& batch = animationBatches_[model];
+    if (batch.count >= batch.maxInstance) return;    // あふれ防止
+
+    batch.animations.push_back(animation);
+    // 書き込み先 WorldMatrix
+    InstanceData& matrix = batch.instanceData[batch.count];
+    // 行列計算 (CPU 側で済ませても VS で WVP かけ直してもどちらでも可)
+    matrix.World = animation->GetTransform().instanceMatrix_.World;
+    matrix.WorldInvT = animation->GetTransform().instanceMatrix_.WorldInverseTranspose;
+    matrix.WVP = animation->GetTransform().instanceMatrix_.WVP;
+
+    // 書き込み先 Material
+    Material& material = batch.materialData[batch.count];
+    // カラーを代入
+    material = animation->GetMaterial();
+
+    ++batch.count;
+}
+
+void ModelInstanceRenderer::Remove(Animation* animation)
+{
+    Model* model = animation->GetModel();
+    AnimationBatch& batch = animationBatches_[model];
 
     for (auto it = batch.animations.begin(); it != batch.animations.end();) {
-        if (anima == (*it)) {
+        if (animation == (*it)) {
             it = batch.animations.erase(it);
             --batch.count;
             break;
@@ -145,37 +205,57 @@ void ModelInstanceRenderer::Remove(Animation* anima)
     }
 }
 
+/// =====================================================================
+///                          Object3d_Update
+/// =====================================================================
+
 void ModelInstanceRenderer::ObjUpdate()
 {
     for (auto it = objBatches_.begin(); it != objBatches_.end();) {
 
         ObjectBatch& batch = objBatches_[it->first];
         for (uint32_t i = 0; i < batch.count; ++i) {
-            InstanceData& dst = batch.cpuPtr[i];
 
-            // 行列計算 (CPU 側で済ませても VS で WVP かけ直してもどちらでも可)
-            dst.World = batch.objects[i]->GetTransform().instanceMatrix_.World;
-            dst.WorldInvT = batch.objects[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
-            dst.WVP = batch.objects[i]->GetTransform().instanceMatrix_.WVP;
-            dst.color = batch.objects[i]->GetColor();
+            // 行列計算
+            InstanceData& matrix = batch.instanceData[i];
+            matrix.World = batch.objects[i]->GetTransform().instanceMatrix_.World;
+            matrix.WorldInvT = batch.objects[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
+            matrix.WVP = batch.objects[i]->GetTransform().instanceMatrix_.WVP;
+            // カラーを代入
+            Material& material = batch.materialData[i];
+            material.color = batch.objects[i]->GetMaterial().color;
+            material.enableLighting = batch.objects[i]->GetMaterial().enableLighting;
+            material.uvTransform = batch.objects[i]->GetMaterial().uvTransform;
+            material.shininess = batch.objects[i]->GetMaterial().shininess;
+            material.environmentCoefficient = batch.objects[i]->GetMaterial().environmentCoefficient;
         }
         ++it;
     }
 }
 
-void ModelInstanceRenderer::AnimaUpdate()
+/// =====================================================================
+///                         Animation_Update
+/// =====================================================================
+
+void ModelInstanceRenderer::AnimationUpdate()
 {
-    for (auto it = animaBatches_.begin(); it != animaBatches_.end();) {
+    for (auto it = animationBatches_.begin(); it != animationBatches_.end();) {
 
-        AnimationBatch& batch = animaBatches_[it->first];
+        AnimationBatch& batch = animationBatches_[it->first];
         for (uint32_t i = 0; i < batch.count; ++i) {
-            InstanceData& dst = batch.cpuPtr[i];
 
-            // 行列計算 (CPU 側で済ませても VS で WVP かけ直してもどちらでも可)
-            dst.World = batch.animations[i]->GetTransform().instanceMatrix_.World;
-            dst.WorldInvT = batch.animations[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
-            dst.WVP = batch.animations[i]->GetTransform().instanceMatrix_.WVP;
-            dst.color = batch.animations[i]->GetColor();
+            // 行列計算
+            InstanceData& matrix = batch.instanceData[i];
+            matrix.World = batch.animations[i]->GetTransform().instanceMatrix_.World;
+            matrix.WorldInvT = batch.animations[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
+            matrix.WVP = batch.animations[i]->GetTransform().instanceMatrix_.WVP;
+            // カラーを代入
+            Material& material = batch.materialData[i];
+            material.color = batch.animations[i]->GetMaterial().color;
+            material.enableLighting = batch.animations[i]->GetMaterial().enableLighting;
+            material.uvTransform = batch.animations[i]->GetMaterial().uvTransform;
+            material.shininess = batch.animations[i]->GetMaterial().shininess;
+            material.environmentCoefficient = batch.animations[i]->GetMaterial().environmentCoefficient;
         }
         ++it;
     }
@@ -194,36 +274,41 @@ void ModelInstanceRenderer::AllDraw()
             object->Draw();
         }
         model->BindBuffers(false);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.srvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
 
         /* ---------- Mesh ループ ---------- */
         const auto& mesh = model->GetModelData().meshes;
         for (uint32_t i = 0; i < mesh.size(); ++i) {
-            model->BindMaterial(i);
+            model->BindMaterial(mesh[i].materialIndex);
             commandList->DrawIndexedInstanced(
                 mesh[i].indexCount, batch.count,
                 mesh[i].indexStart, 0, 0);
         }
     }
 
-    //for (auto& [model, batch] : animaBatches_) {
-    //    if (batch.count == 0) continue;
 
-    //    /* ---------- IA 共通バインド ---------- */
-    //    for (auto& anima : batch.animations) {
-    //        AnimaUpdate();
-    //        anima->Draw();
-    //    }
-    //    model->BindBuffers(true);
-    //    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.srvIndex);
 
-    //    /* ---------- Mesh ループ ---------- */
-    //    const auto& mesh = model->GetModelData().meshes;
-    //    for (uint32_t i = 0; i < mesh.size(); ++i) {
-    //        model->BindMaterial(i);
-    //        commandList->DrawIndexedInstanced(
-    //            mesh[i].indexCount, batch.count,
-    //            mesh[i].indexStart, 0, 0);
-    //    }
-    //}
+    for (auto& [model, batch] : animationBatches_) {
+        if (batch.count == 0) continue;
+
+        /* ---------- IA 共通バインド ---------- */
+        for (auto& animation : batch.animations) {
+            AnimationUpdate();
+            animation->Draw();
+        }
+        model->BindBuffers(true);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
+
+        /* ---------- Mesh ループ ---------- */
+        const auto& mesh = model->GetModelData().meshes;
+        for (uint32_t i = 0; i < mesh.size(); ++i) {
+            model->BindMaterial(mesh[i].materialIndex);
+            commandList->DrawIndexedInstanced(
+                mesh[i].indexCount, batch.count,
+                mesh[i].indexStart, 0, 0);
+        }
+    }
+
 }

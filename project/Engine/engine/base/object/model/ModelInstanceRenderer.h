@@ -23,16 +23,22 @@ public:
         Matrix4x4 WVP;
         Matrix4x4 World;
         Matrix4x4 WorldInvT;
-        Vector4   color;
     };
 
+    /* ========================= Object3d ========================= */
+
     void Push(Object3d* obj);
-    void Push(Animation* anima);
     void Remove(Object3d* obj);
-    void Remove(Animation* anima);
+
+    /* ========================= Animation ========================= */
+
+    void Push(Animation* animation);
+    void Remove(Animation* animation);
+
+
     void Finalize() { 
         objBatches_.clear();
-        animaBatches_.clear();
+        animationBatches_.clear();
     }
 
     // 全ての描画
@@ -40,39 +46,55 @@ public:
 
 private:
 
-    void ObjReserveBatch(Model* model, uint32_t maxInstance = 128);
-    void AnimaReserveBatch(Model* model, uint32_t maxInstance = 128);
+    /* ========================= Object3d ========================= */
 
+    void ObjReserveBatch(Model* model, uint32_t maxInstance = 128);
     void ObjUpdate();
-    void AnimaUpdate();
+
+    /* ========================= Animation ========================= */
+
+    void AnimationReserveBatch(Model* model, uint32_t maxInstance = 128);
+    void AnimationUpdate();
 
 private:
 
+    /* ========================= Object3d ========================= */
+
     struct ObjectBatch
     {
-        Model* model;                         // キー
-        std::vector<Object3d*> objects;       // Objects
-        uint32_t maxInstance;                 // 初期確保上限 (128)
-        uint32_t count;                       // 今フレーム登録数
+        Model* model;                               // キー
+        std::vector<Object3d*> objects;             // Objects
+        uint32_t maxInstance;                       // 初期確保上限 (128)
+        uint32_t count;                             // 今フレーム登録数
 
-        ComPtr<ID3D12Resource> gpuBuffer;     // StructuredBuffer
-        InstanceData* cpuPtr;                 // Mapしたポインタ
-        uint32_t srvIndex;                    // SRV番地 (descriptor heap 上)
+        ComPtr<ID3D12Resource> worldMatrixBuffer;   // StructuredBuffer
+        InstanceData* instanceData;                 // Mapしたポインタ
+        uint32_t instSrvIndex;                      // SRV番地 (worldMatrix)
+
+        ComPtr<ID3D12Resource> materialBuffer;      // StructuredBuffer
+        Material* materialData;                     // Mapしたポインタ
+        uint32_t materialSrvIndex;                  // SRV番地 (material)
     };
     std::unordered_map<Model*, ObjectBatch> objBatches_;
 
+    /* ========================= Animation ========================= */
 
     struct AnimationBatch
     {
-        Model* model;                         // キー
-        std::vector<Animation*> animations;   // Animations
-        uint32_t maxInstance;                 // 初期確保上限 (128)
-        uint32_t count;                       // 今フレーム登録数
-        ComPtr<ID3D12Resource> gpuBuffer;     // StructuredBuffer
-        InstanceData* cpuPtr;                 // Mapしたポインタ
-        uint32_t srvIndex;                    // SRV番地 (descriptor heap 上)
+        Model* model;                               // キー
+        std::vector<Animation*> animations;         // Animations
+        uint32_t maxInstance;                       // 初期確保上限 (128)
+        uint32_t count;                             // 今フレーム登録数
+
+        ComPtr<ID3D12Resource> worldMatrixBuffer;   // StructuredBuffer
+        InstanceData* instanceData;                 // Mapしたポインタ
+        uint32_t instSrvIndex;                      // SRV番地 (worldMatrix)
+
+        ComPtr<ID3D12Resource> materialBuffer;      // StructuredBuffer
+        Material* materialData;                     // Mapしたポインタ
+        uint32_t materialSrvIndex;                  // SRV番地 (material)
     };
-    std::unordered_map<Model*, AnimationBatch> animaBatches_;
+    std::unordered_map<Model*, AnimationBatch> animationBatches_;
 
 };
 

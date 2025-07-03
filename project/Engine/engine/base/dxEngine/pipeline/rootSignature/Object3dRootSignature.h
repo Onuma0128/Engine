@@ -26,21 +26,22 @@ public:
 		environmentRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; //SRVを使う
 		environmentRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
 
-		//D3D12_DESCRIPTOR_RANGE matrixRange[1] = {};
-		//matrixRange[0].BaseShaderRegister = 2; //3から始まる
-		//matrixRange[0].NumDescriptors = 1; //数は2つ
-		//matrixRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; //SRVを使う
-		//matrixRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
+		D3D12_DESCRIPTOR_RANGE materialRnage[1] = {};
+		materialRnage[0].BaseShaderRegister = 2; //3から始まる
+		materialRnage[0].NumDescriptors = 1; //数は2つ
+		materialRnage[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; //SRVを使う
+		materialRnage[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
 
 		//RootParameterの作成。複数設定できるので配列。今回は結果1つだけなので長さ1の配列
 		D3D12_ROOT_PARAMETER rootParameters[9] = {};
-		rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
-		rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL; //PixelShaderで使う
-		rootParameters[0].Descriptor.ShaderRegister = 0;
+		rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		//DescriptorTableを使う
+		rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;					//VertexShaderで使う
+		rootParameters[0].DescriptorTable.pDescriptorRanges = materialRnage;				//Tableの中身の配列を指定
+		rootParameters[0].DescriptorTable.NumDescriptorRanges = _countof(materialRnage);	//Tableで利用する数
 		rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		//DescriptorTableを使う
 		rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;				//VertexShaderで使う
-		rootParameters[1].DescriptorTable.pDescriptorRanges = descriptorRange;					//Tableの中身の配列を指定
-		rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);		//Tableで利用する数
+		rootParameters[1].DescriptorTable.pDescriptorRanges = descriptorRange;				//Tableの中身の配列を指定
+		rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);	//Tableで利用する数
 		rootParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		//DescriptorTableを使う
 		rootParameters[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;					//PixelShaderで使う
 		rootParameters[2].DescriptorTable.pDescriptorRanges = descriptorRange;				//Tableの中身の配列を指定
