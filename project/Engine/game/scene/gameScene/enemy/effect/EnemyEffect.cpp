@@ -173,7 +173,7 @@ void EnemyEffect::BulletPredictionUpdate()
 		Vector3 offset = data.planeOffset.Transform(rotateMatrix);
 		effect.plane_->GetTransform().translation = enemy_->GetTransform().translation_ + offset;
 		// 回転を更新
-		Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, std::numbers::pi_v<float> / 2.0f);
+		Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, -std::numbers::pi_v<float> / 2.0f);
 		Vector3 direction = (effect.plane_->GetTransform().translation - enemy_->GetTransform().translation_);
 		direction.y = 0.0f;
 		if (direction.Length() != 0.0f) {

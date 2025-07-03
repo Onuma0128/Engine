@@ -14,7 +14,7 @@ public:
 
 	void GlobalInit();
 
-	void Update();
+	void Update(bool isPlayingMouse);
 
 	void Draw();
 

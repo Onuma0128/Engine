@@ -8,6 +8,12 @@
 #include "Easing.h"
 #include "gameScene/player/Player.h"
 
+PlayerEffect::~PlayerEffect()
+{
+	DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 0.0f;
+	DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = 0.0f;
+}
+
 void PlayerEffect::Init()
 {
 	// 移動時のエフェクト

@@ -278,7 +278,7 @@ void ModelInstanceRenderer::AllDraw()
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
 
         /* ---------- Mesh ループ ---------- */
-        const auto& mesh = model->GetModelData().meshes;
+        const auto& mesh = model->GetModelData().meshs;
         for (uint32_t i = 0; i < mesh.size(); ++i) {
             model->BindMaterial(mesh[i].materialIndex);
             commandList->DrawIndexedInstanced(
@@ -302,7 +302,7 @@ void ModelInstanceRenderer::AllDraw()
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
 
         /* ---------- Mesh ループ ---------- */
-        const auto& mesh = model->GetModelData().meshes;
+        const auto& mesh = model->GetModelData().meshs;
         for (uint32_t i = 0; i < mesh.size(); ++i) {
             model->BindMaterial(mesh[i].materialIndex);
             commandList->DrawIndexedInstanced(

@@ -54,6 +54,10 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "bulletUI.png");
 	//TextureManager::GetInstance()->LoadTexture("resources/fieldObject", "ground.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "blood.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "numbers.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "title.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameClear.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameOver.png");
 
 	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");
@@ -61,9 +65,13 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources", "plane.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "suzanne.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "Box.obj");
+	ModelManager::GetInstance()->LoadModel("resources/shadow", "shadow.obj");
+
 	ModelManager::GetInstance()->LoadModel("resources/player/revolver", "Revolver.obj");
 
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "fence.obj");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "ground.obj");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "TowerWindmill.obj");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_1.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_2.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_3.gltf");
@@ -71,7 +79,9 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_5.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BirchTree_1.obj");
 
+	ModelManager::GetInstance()->LoadModel("resources/enemy/shield", "Shield_Heater.obj");
 	ModelManager::GetInstance()->LoadModel("resources/enemy", "Zombie_Basic.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/enemy", "Characters_Shaun.gltf");
 }
 
 void Framework::Run()

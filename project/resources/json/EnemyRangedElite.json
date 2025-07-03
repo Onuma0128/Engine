@@ -7,7 +7,7 @@
     },
     "planeOffset0": {
         "x": -0.8999999761581421,
-        "y": -0.8999999761581421,
+        "y": 0.10000000149011612,
         "z": 9.0
     },
     "planeSize1": {
@@ -17,7 +17,7 @@
     },
     "planeOffset1": {
         "x": 0.0,
-        "y": -0.8999999761581421,
+        "y": 0.10000000149011612,
         "z": 9.0
     },
     "planeSize2": {
@@ -27,14 +27,14 @@
     },
     "planeOffset2": {
         "x": 0.8999999761581421,
-        "y": -0.8999999761581421,
+        "y": 0.10000000149011612,
         "z": 9.0
     },
     "speed": 2.5,
     "attackDistance": 10.0,
-    "attackStartupTime": 1.0,
+    "attackStartupTime": 1.5,
     "attackActiveTime": 1.0,
-    "attackRecoveryTime": 1.0,
-    "attackCoolTime": 2.0,
+    "attackRecoveryTime": 0.30000001192092896,
+    "attackCoolTime": 3.0,
     "bulletRadSpace": 0.11999999731779099
 }

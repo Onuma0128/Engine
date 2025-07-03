@@ -27,7 +27,7 @@ void Animation::Initialize(const std::string& filename)
 	SetModel(filename);
 	MakeMaterialData();
 
-	animationDatas_ = LoadAnimationFile(model_->GetModelData().directoryPath, filename);
+	animationDatas_ = model_->GetModelData().animations;
 	for (size_t i = 0; i < animationDatas_.size(); ++i) {
 		nameToIx_[animationDatas_[i].name] = i;
 	}
@@ -64,7 +64,7 @@ void Animation::SetSceneRenderer()
 		.enabled = true,
 		.offscreen = true
 	};
-	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+	//DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 	DirectXEngine::GetModelRenderer()->Push(this);
 }
 
@@ -78,11 +78,29 @@ void Animation::RemoveRenderer()
 
 void Animation::Update()
 {
+	if (stopped_) {
+		transform_.TransferMatrix(Matrix4x4::Identity());
+		if (line_ == nullptr) { return; }
+		LineUpdate();
+		return;
+	}
+
 	if (!blend_.active) {
 
 		const AnimationData& clip = animationDatas_[currentAnim_];
 		animationTime_ += DeltaTimer::GetDeltaTime();
-		animationTime_ = std::fmod(animationTime_, clip.duration);
+
+		// アニメーションを止める
+		if (timeStop_) {
+			if (animationTime_ >= clip.duration) {
+				animationTime_ = clip.duration;
+				stopped_ = true;
+			}
+		// ループさせないので std::fmod は呼ばない
+		} else {
+			animationTime_ = std::fmod(animationTime_, clip.duration);
+		}
+
 		ApplyAnimation(skeleton_, clip, animationTime_, clip.duration);
 
 	} else {
@@ -213,6 +231,8 @@ void Animation::Play(size_t idx, float fadeTime)
 	blend_.time = 0.0f;
 	blend_.fromTime = animationTime_;   // 現在の再生位置を保持
 	blend_.toTime = 0.0f;             // 新クリップは 0 秒から
+	timeStop_ = false;
+	stopped_ = false;
 }
 
 bool Animation::PlayByName(const std::string& clipName, float fadeTime)
@@ -365,6 +385,12 @@ void Animation::SetTexture(const std::string& directoryPath, const std::string& 
 void Animation::SetColor(const Vector4& color)
 {
 	materialData_.color = color;
+}
+
+void Animation::SetDrawBone(bool flag)
+{
+	if (line_ == nullptr) { return; }
+	line_->GetRenderOptions().enabled = false;
 }
 
 Vector3 Animation::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)

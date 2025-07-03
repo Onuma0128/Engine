@@ -46,13 +46,13 @@ void Model::Draw(bool isAnimation)
     }
     commandList->IASetIndexBuffer(&indexBufferView_);
 
-    for (const auto& subMesh : modelData_.meshes) {
-        const auto& material = modelData_.materials[subMesh.materialIndex];
+    for (const auto& mesh : modelData_.meshs) {
+        const auto& material = modelData_.materials[mesh.materialIndex];
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, material.textureIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, material.ENV_TextureIndex);
         commandList->SetGraphicsRootConstantBufferView(8, material.kdColorResource->GetGPUVirtualAddress());
         // 描画
-        commandList->DrawIndexedInstanced(subMesh.indexCount, 1, subMesh.indexStart, 0, 0);
+        commandList->DrawIndexedInstanced(mesh.indexCount, 1, mesh.indexStart, 0, 0);
     }
 }
 
@@ -121,7 +121,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
 {
     Assimp::Importer importer;
     std::string filePath = directoryPath + "/" + filename;
-    const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs);
+    const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs | aiProcess_RemoveRedundantMaterials);
     assert(scene->HasMeshes());
 
     ModelData modelData;
@@ -135,9 +135,9 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         aiMesh* mesh = scene->mMeshes[meshIndex];
         assert(mesh->HasNormals());
 
-        SubMesh subMesh{};
-        subMesh.indexStart = static_cast<uint32_t>(modelData.indices.size());
-        subMesh.materialIndex = mesh->mMaterialIndex;
+        MeshData meshData{};
+        meshData.indexStart = static_cast<uint32_t>(modelData.indices.size());
+        meshData.materialIndex = mesh->mMaterialIndex;
         uint32_t baseVertexOffset = static_cast<uint32_t>(modelData.vertices.size());
         //modelData.vertices.resize(mesh->mNumVertices);
 
@@ -165,8 +165,8 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
                 modelData.indices.push_back(static_cast<uint32_t>(baseVertexOffset) + vertexIndex);
             }
         }
-        subMesh.indexCount = static_cast<uint32_t>(modelData.indices.size()) - subMesh.indexStart;
-        modelData.meshes.push_back(subMesh);
+        meshData.indexCount = static_cast<uint32_t>(modelData.indices.size()) - meshData.indexStart;
+        modelData.meshs.push_back(meshData);
         vertexOffset = modelData.vertices.size();
 
         for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
@@ -184,7 +184,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
                 Vector3{ -translate.x,translate.y,translate.z }
             );
             jointWeightData.inverseBindPosMatrix = Matrix4x4::Inverse(bindPoseMatrix);
-
+            
             for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
                 const auto& w = bone->mWeights[weightIndex];
 
@@ -222,6 +222,49 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
     }
 
     modelData.rootNode = ReadNode(scene->mRootNode);
+
+    // アニメーションがあればアニメーションを読む
+    if (scene->mNumAnimations > 0) {
+
+        for (uint32_t animationIndex = 0; animationIndex < scene->mNumAnimations; ++animationIndex) {
+
+            aiAnimation* animationAssimp = scene->mAnimations[animationIndex];
+            AnimationData animationData;
+            animationData.name = animationAssimp->mName.C_Str();
+            animationData.duration = float(animationAssimp->mDuration / animationAssimp->mTicksPerSecond);
+
+            for (uint32_t channelIndex = 0; channelIndex < animationAssimp->mNumChannels; ++channelIndex) {
+                aiNodeAnim* nodeAnimationAssimp = animationAssimp->mChannels[channelIndex];
+                NodeAnimation& nodeAnimation = animationData.nodeAnimations[nodeAnimationAssimp->mNodeName.C_Str()];
+
+                // 座標
+                for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumPositionKeys; ++keyIndex) {
+                    aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
+                    KeyFrameVector3 keyframe;
+                    keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+                    keyframe.value = { -keyAssimp.mValue.x,keyAssimp.mValue.y,keyAssimp.mValue.z };
+                    nodeAnimation.translate.keyframes.push_back(keyframe);
+                }
+                // 回転
+                for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumRotationKeys; ++keyIndex) {
+                    aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
+                    KeyFrameQuaternion keyframe;
+                    keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+                    keyframe.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
+                    nodeAnimation.rotate.keyframes.push_back(keyframe);
+                }
+                // スケール
+                for (uint32_t keyIndex = 0; keyIndex < nodeAnimationAssimp->mNumScalingKeys; ++keyIndex) {
+                    aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
+                    KeyFrameVector3 keyframe;
+                    keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
+                    keyframe.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+                    nodeAnimation.scale.keyframes.push_back(keyframe);
+                }
+            }
+            modelData.animations.push_back(std::move(animationData));
+        }
+    }
 
     return modelData;
 }
@@ -289,7 +332,7 @@ Node Model::ReadNode(aiNode* node)
     result.transform.rotation = { rotate.x,-rotate.y,-rotate.z,rotate.w };
     result.transform.translation = { -translate.x,translate.y,translate.z };
     result.localMatrix = Matrix4x4::Affine(result.transform.scale, result.transform.rotation, result.transform.translation);
-
+    result.globalMatrix = result.localMatrix;
     result.name = node->mName.C_Str();
     result.children.resize(node->mNumChildren);
     for (uint32_t childIndex = 0; childIndex < node->mNumChildren; ++childIndex) {

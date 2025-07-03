@@ -20,15 +20,16 @@ void EnemyShieldBearer_AttackState::Init()
 
 void EnemyShieldBearer_AttackState::Finalize()
 {
-	enemy_->GetShieldWeapon()->SetIsActive(false);
-	enemy_->GetShieldWeapon()->Update();
+	enemy_->PlayByName("Run_Arms");
+	enemy_->GetWeapon()->SetIsActive(false);
+	enemy_->GetWeapon()->Update();
 }
 
 void EnemyShieldBearer_AttackState::Update()
 {
 	// 近接攻撃のデータを取得
 	ShieldBearerData data = enemy_->GetItem()->GetShieldBearerData();
-	EnemyWeaponBase* weapon = enemy_->GetShieldWeapon();
+	EnemyWeaponBase* weapon = enemy_->GetWeapon();
 
 	chengeStateTime_ += DeltaTimer::GetDeltaTime();
 
@@ -46,7 +47,22 @@ void EnemyShieldBearer_AttackState::Update()
 			if (time < chengeStateTime_) {
 				enemy_->ChengeState(std::make_unique<EnemyMoveState>(enemy_));
 				return;
+			} else {
+				if (!chengeAniamtion_) {
+					chengeAniamtion_ = true;
+					enemy_->PlayByName("Idle");
+				}
 			}
+		} else {
+			if (chengeAniamtion_) {
+				chengeAniamtion_ = false;
+				enemy_->PlayByName("Idle_Attack");
+			}
+		}
+	} else {
+		if (!chengeAniamtion_) {
+			chengeAniamtion_ = true;
+			enemy_->PlayByName("Idle");
 		}
 	}
 }

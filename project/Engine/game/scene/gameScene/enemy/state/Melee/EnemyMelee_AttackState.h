@@ -20,5 +20,7 @@ private:
 
 	float chengeStateTime_ = 0.0f;
 
+	bool chengeAniamtion_ = false;
+
 };
 

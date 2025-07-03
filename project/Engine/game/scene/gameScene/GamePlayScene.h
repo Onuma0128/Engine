@@ -8,6 +8,7 @@
 #include "PrimitiveDrawr.h"
 #include "ParticleEmitter.h"
 
+#include "scene/sceneFade/SceneFade.h"
 #include "gameScene/player/Player.h"
 #include "gameScene/enemy/spawner/EnemySpawnerFactory.h"
 #include "gameScene/gameCamera/GameCamera.h"
@@ -42,5 +43,9 @@ private:
 
 	// ゲームカメラの生成
 	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
+
+	// シーンフェード
+	std::unique_ptr<SceneFade> sceneFade_ = nullptr;
+	bool isFade_ = false;
 };
 

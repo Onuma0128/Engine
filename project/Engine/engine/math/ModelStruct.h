@@ -11,6 +11,7 @@
 #include "Vector4.h"
 #include "Matrix4x4.h"
 #include "Transform.h"
+#include "AnimationStruct.h"
 
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
@@ -23,7 +24,7 @@ struct VertexData {
 	Vector2 texcoord;
 	Vector3 normal;
 };
-struct SubMesh {
+struct MeshData {
 	uint32_t indexStart;
 	uint32_t indexCount;
 	uint32_t materialIndex;
@@ -58,6 +59,7 @@ struct KdColor {
 struct Node {
 	Transform3D transform;
 	Matrix4x4 localMatrix;
+	Matrix4x4 globalMatrix;
 	std::string name;
 	std::vector<Node> children;
 };
@@ -76,9 +78,10 @@ struct ModelData {
 	std::string directoryPath;
 	std::string filePath;
 	std::map<std::string, JointWeightData> skinClusterData;
+	std::vector<AnimationData> animations;
 	std::vector<VertexData> vertices;
 	std::vector<uint32_t> indices;
-	std::vector<SubMesh> meshes;
+	std::vector<MeshData> meshs;
 	std::vector<MaterialData> materials;
 	Node rootNode;
 };

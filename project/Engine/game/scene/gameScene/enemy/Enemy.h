@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include <random>
+#include <string>
 
 #include "Object3d.h"
 #include "Animation.h"
 #include "Collider.h"
 
+#include "gameScene/enemy/shadow/EnemyShadow.h"
 #include "gameScene/enemy/state/EnemyBaseState.h"
 #include "gameScene/enemy/effect/EnemyEffect.h"
 #include "gameScene/enemy/bullet/EnemyBullet.h"
@@ -23,14 +24,16 @@ public:
 
 	void Finalize();
 
-	void Init();
+	void Init(EnemyType type);
 
 	void Update();
+	void TransformUpdate();
 
 	void Draw();
 
 	void ChengeState(std::unique_ptr<EnemyBaseState> newState);
 
+	void Dead();
 	void Reset(const Vector3& position);
 
 	void OnCollisionEnter(Collider* other) override;
@@ -64,14 +67,16 @@ public:
 	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
 	const Vector3& GetVelocity() { return velocity_; }
 
-	bool GetHitReticle()const { return hitReticle_; }
+	bool GetEnableMove()const { return stateParam_.enableMove_; }
 
-	bool GetIsDead()const { return isDead_; }
-	void SetIsDead(bool flag) { isDead_ = flag; }
+	bool GetHitReticle()const { return stateParam_.hitReticle_; }
+	
+	bool GetIsDead()const { return stateParam_.isDead_; }
+	void SetIsDead(bool flag) { stateParam_.isDead_ = flag; }
 
 private:
 
-	void EnemyTypeInit();
+	void TypeInit();
 
 private:
 
@@ -81,8 +86,7 @@ private:
 	EnemyAdjustItem* items_ = nullptr;
 
 	// 敵のタイプ
-	EnemyType type_ = EnemyType::Ranged;
-	std::random_device seedGenerator_;
+	EnemyType type_ = EnemyType::Melee;
 	// 状態遷移
 	std::unique_ptr<EnemyBaseState> state_ = nullptr;
 	// エフェクト
@@ -92,15 +96,24 @@ private:
 	// 弾持ち以外のウエポン
 	std::unique_ptr<EnemyWeaponBase> weapon_ = nullptr;
 	std::unique_ptr<EnemyWeaponBase> shieldWeapon_ = nullptr;
+	// 影
+	std::unique_ptr<EnemyShadow> shadow_ = nullptr;
 
 	// 速度
 	Vector3 velocity_{};
-	// 生きているか
-	bool isAlive_ = true;
-	// 死んだ瞬間
-	bool isDead_ = false;
-	// プレイヤーのReticleに当たっているか
-	bool hitReticle_ = false;
+
+	// 敵が今どうなっているか
+	struct EnemyStateParam {
+		// 敵を動かして描画するか管理用
+		bool enableMove_ = false;
+		// 生きているか
+		bool isAlive_ = true;
+		// 死んだ瞬間
+		bool isDead_ = false;
+		// プレイヤーのReticleに当たっているか
+		bool hitReticle_ = false;
+	};
+	EnemyStateParam stateParam_;
 
 	// 当たったプレイヤーの弾の座標を保存
 	Vector3 playerBulletPosition_{};

@@ -16,12 +16,13 @@ EnemyMelee_AttackState::EnemyMelee_AttackState(Enemy* enemy) :EnemyBaseState(ene
 void EnemyMelee_AttackState::Init()
 {
 	chengeStateTime_ = 0.0f;
-	//enemy_->SetColor(Vector4{ 0.0f,0.0f,1.0f,1.0f });
+
+	chengeAniamtion_ = false;
 }
 
 void EnemyMelee_AttackState::Finalize()
 {
-	//enemy_->SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
+	//enemy_->PlayByName("Run_Arms");
 	enemy_->GetWeapon()->SetIsActive(false);
 	enemy_->GetWeapon()->Update();
 }
@@ -48,7 +49,22 @@ void EnemyMelee_AttackState::Update()
 			if (time < chengeStateTime_) {
 				enemy_->ChengeState(std::make_unique<EnemyMoveState>(enemy_));
 				return;
+			} else {
+				if (!chengeAniamtion_) {
+					chengeAniamtion_ = true;
+					enemy_->PlayByName("Idle");
+				}
 			}
+		} else {
+			if (chengeAniamtion_) {
+				chengeAniamtion_ = false;
+				enemy_->PlayByName("Idle_Attack");
+			}
+		}
+	} else {
+		if (!chengeAniamtion_) {
+			chengeAniamtion_ = true;
+			enemy_->PlayByName("Idle");
 		}
 	}
 }

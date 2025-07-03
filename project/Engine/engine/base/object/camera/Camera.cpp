@@ -12,7 +12,7 @@ void Camera::Initialize()
 	fovY_ = 0.45f;
 	aspectRatio_ = float(WinApp::kClientWidth) / float(WinApp::kClientHeight);
 	nearClip_ = 0.1f;
-	farClip_ = 100.0f;
+	farClip_ = 1024.0f;
 
 	UpdateMatrix(transform_);
 	isDebug_ = false;

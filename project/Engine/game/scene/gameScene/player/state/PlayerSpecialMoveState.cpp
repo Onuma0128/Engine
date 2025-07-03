@@ -58,7 +58,7 @@ void PlayerSpecialMoveState::Update()
 	}
 
 	// レティクルの更新
-	player_->GetReticle()->Update();
+	player_->GetReticle()->Update(player_->GetIsPlayingMouse());
 }
 
 void PlayerSpecialMoveState::Draw()

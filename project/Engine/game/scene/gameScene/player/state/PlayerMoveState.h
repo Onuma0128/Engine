@@ -23,10 +23,14 @@ private:
 
 	void ReloadBullet();
 
+	const Vector3 CreateVelocity();
+
 private:
 
 	// 今弾をリロードしているか
 	bool isReloadBullet_ = false;
+	// リロードをはじめる時間
+	float reloadStartTime_ = 0.0f;
 	// 一つの弾をリロードする時間
 	float reloadBulletTime_;
 

@@ -14,6 +14,12 @@
 #include "RenderTexture.h"
 #include "CreateBufferResource.h"
 
+void PostEffectManager::Finalize()
+{
+    enabledEffects_.clear();
+    passes_.clear();
+}
+
 void PostEffectManager::Initialize(DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;

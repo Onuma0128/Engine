@@ -30,11 +30,11 @@ void SceneRenderer::AllDraw()
 		if (line->GetIsMultiple()) { line->Draws(); }
 		else { line->Draws(); }
 	}
-	/// ============================== Animation ============================== ///
+	/*/// ============================== Animation ============================== ///
 	for (auto& animation : animations_) {
 		if (!animation->GetRenderOptions().enabled || !animation->GetRenderOptions().offscreen) { continue; }
 		animation->Draw();
-	}
+	}*/
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
 		if (!primitive->GetRenderOptions().enabled || !primitive->GetRenderOptions().offscreen) { continue; }
@@ -62,11 +62,11 @@ void SceneRenderer::OutAllDraw()
 		if (line->GetIsMultiple()) { line->Draws(); }
 		else { line->Draws(); }
 	}
-	/// ============================== Animation ============================== ///
+	/*/// ============================== Animation ============================== ///
 	for (auto& animation : animations_) {
 		if (!animation->GetRenderOptions().enabled || animation->GetRenderOptions().offscreen) { continue; }
 		animation->Draw();
-	}
+	}*/
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
 		if (!primitive->GetRenderOptions().enabled || primitive->GetRenderOptions().offscreen) { continue; }

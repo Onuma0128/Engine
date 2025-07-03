@@ -64,6 +64,8 @@ void Player::Update()
 
 	// 今リロードが終わっている弾のを取得する
 	size_t bulletCount = 0;
+	// キル数を保持する
+	kNockdownCount_ = 0;
 	// 弾の更新,弾UIの更新
 	for (auto& bullet : bullets_) {
 		bullet->Update();
@@ -71,12 +73,18 @@ void Player::Update()
 		bullet->SetOnDeactivateCallback([]() {});
 		// 弾のリロードが終わっているならカウントに追加
 		if (bullet->GetIsReload()) { ++bulletCount; }
+		// キル数を取得
+		kNockdownCount_ += bullet->GetNockdownCount();
 	}
 	for (auto& bullet : specialBullets_) {
 		bullet->Update();
 		// 弾が消えた時のコールバック関数
 		bullet->SetOnDeactivateCallback([]() {});
+		// キル数を取得
+		kNockdownCount_ += bullet->GetNockdownCount();
 	}
+
+	killCountUI_->Update(kNockdownCount_);
 
 	size_t bulletUICount = 0;
 	for (auto& bulletUI : bulletUIs_) {
@@ -108,11 +116,16 @@ void Player::Update()
 	Object3d::Update();
 }
 
-void Player::Draw()
+void Player::EffectDraw()
 {
 	effect_->Draw();
-	
+}
+
+void Player::Draw()
+{	
 	reticle_->Draw();
+
+	killCountUI_->Draw();
 
 	for (auto& bulletUI : bulletUIs_) {
 		if (bulletUI->GetRenderOptions().enabled) {
@@ -136,7 +149,9 @@ void Player::OnCollisionEnter(Collider* other)
 		other->GetColliderName() == "EnemyRanged" ||
 		other->GetColliderName() == "EnemyShieldBearer" ||
 		other->GetColliderName() == "EnemyRangedElite") {
-		Object3d::SetColor(Vector4{ 1.0f,0.0f,0.0f,1.0f });
+		if (!isAvoid_) {
+			isAlive_ = false;
+		}
 	}
 }
 
@@ -146,12 +161,6 @@ void Player::OnCollisionStay(Collider* other)
 
 void Player::OnCollisionExit(Collider* other)
 {
-	if (other->GetColliderName() == "EnemyMelee" ||
-		other->GetColliderName() == "EnemyRanged" ||
-		other->GetColliderName() == "EnemyShieldBearer" ||
-		other->GetColliderName() == "EnemyRangedElite") {
-		Object3d::SetColor(Vector4{ 1.0f,1.0f,1.0f,1.0f });
-	}
 }
 
 void Player::ReloadBullet()
@@ -222,6 +231,9 @@ void Player::BulletInit()
 		bulletUIs_[i] = std::make_unique<PlayerBulletUI>();
 		bulletUIs_[i]->Init(Vector2{ (i * 32.0f) + 32.0f,32.0f });
 	}
+	// Kill数UIの初期化
+	killCountUI_ = std::make_unique<PlayerKillCountUI>();
+	killCountUI_->Init();
 }
 
 void Player::PredictionObjInit()

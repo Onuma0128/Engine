@@ -28,13 +28,13 @@ void Object3d::SetSceneRenderer()
         .enabled = true,
         .offscreen = true
     };
-    DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+    //DirectXEngine::GetSceneRenderer()->SetDrawList(this);
     DirectXEngine::GetModelRenderer()->Push(this);
 }
 
 void Object3d::RemoveRenderer()
 {
-    DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
+    //DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
     DirectXEngine::GetModelRenderer()->Remove(this);
 }
 

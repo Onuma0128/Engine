@@ -81,6 +81,9 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 			effect_->OnceBulletDeleteEffect(transform_);
 		}
 	}
+	if (other->GetColliderName() == "Enemy") {
+		++kNockdownCount_;
+	}
 }
 
 void PlayerBullet::Reload(const WorldTransform& transform, bool isEmit)

@@ -18,11 +18,15 @@ void EnemyRanged_AttackState::Init()
 	isAttack_ = false;
 
 	enemy_->GetEffect()->SetBulletPredictionEffect(true);
+
+	enemy_->PlayByName("Idle_Gun");
 }
 
 void EnemyRanged_AttackState::Finalize()
 {
 	enemy_->GetEffect()->SetBulletPredictionEffect(false);
+
+	enemy_->PlayByName("Run");
 }
 
 void EnemyRanged_AttackState::Update()

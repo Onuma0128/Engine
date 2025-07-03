@@ -14,6 +14,7 @@
 #include "gameScene/player/bullet/PlayerBullet.h"
 #include "gameScene/player/revolver/Revolver.h"
 #include "gameScene/player/ui/PlayerBulletUI.h"
+#include "gameScene/player/ui/PlayerKillCountUI.h"
 #include "gameScene/player/reticle/PlayerReticle.h"
 #include "gameScene/player/adjustItem/PlayerAdjustItem.h"
 
@@ -27,6 +28,7 @@ public:
 
 	void Update();
 
+	void EffectDraw();
 	void Draw();
 
 	void ChengeState(std::unique_ptr<PlayerBaseState> newState);
@@ -50,6 +52,14 @@ public:
 
 	Quaternion GetRightStickQua()const { return rightStickQuaternion_; }
 	void SetRightStickQua(const Quaternion& q) { rightStickQuaternion_ = q; }
+
+	bool GetIsAlive()const { return isAlive_; }
+	uint32_t GetNockdownCount()const { return kNockdownCount_; }
+
+	bool GetIsPlayingMouse()const { return isPlayingMouse_; }
+	void SetIsPlayingMouse(bool flag) { isPlayingMouse_ = flag; }
+
+	void SetIsAvoid(bool flag) { isAvoid_ = flag; }
 
 private:
 
@@ -77,7 +87,16 @@ private:
 	std::unique_ptr<Revolver> revolver_ = nullptr;
 	// 必殺技用の弾を6つ生成
 	std::vector<std::unique_ptr<PlayerBullet>> specialBullets_;
+	// 敵のキル数UI
+	std::unique_ptr<PlayerKillCountUI> killCountUI_ = nullptr;
+	uint32_t kNockdownCount_ = 0;
 	// 調整項目
 	std::unique_ptr<PlayerAdjustItem> items_;
+	// 今生きているか
+	bool isAlive_ = true;
+	// 今避けているのか
+	bool isAvoid_ = false;
+	// マウスを使ってプレイしているか
+	bool isPlayingMouse_ = false;
 
 };

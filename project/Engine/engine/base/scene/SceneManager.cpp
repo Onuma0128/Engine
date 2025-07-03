@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include <cassert>
 
+#include "DirectXEngine.h"
 #include "CameraManager.h"
 #include "ParticleManager.h"
 
@@ -21,6 +22,7 @@ void SceneManager::Update()
 		if (scene_) {
 			CameraManager::GetInstance()->Clear();
 			ParticleManager::GetInstance()->Clear();
+			DirectXEngine::GetSceneRenderer()->Finalize();
 			scene_->Finalize();
 			delete scene_;
 		}
