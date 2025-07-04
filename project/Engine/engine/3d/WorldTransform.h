@@ -31,14 +31,6 @@ public:
 
 	/*==================== アクセッサ ====================*/
 
-	// 定数バッファの取得
-	ID3D12Resource* GetConstBuffer()const { return constBuffer_.Get(); }
-
-private:
-
-	// 定数バッファ
-	void CreateConstBuffer();
-
 public:
 
 	// ローカルスケール
@@ -56,12 +48,5 @@ public:
 
 
 private:
-
-	/*==================== 座標変換行列 ====================*/
-
-	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuffer_ = nullptr;
-	// マッピングアドレス
-	TransformationMatrix* constMap_ = nullptr;
 
 };

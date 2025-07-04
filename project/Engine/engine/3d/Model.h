@@ -18,11 +18,12 @@ public:
 	void Initialize(const std::string& directoryPath, const std::string& filename);
 
 	// 描画
-	void Draw(bool isAnimation);
 	void BindBuffers(bool isAnimation) const;
 	void BindMaterial(uint32_t meshIdx) const;
 
 	const ModelData GetModelData()const { return modelData_; }
+	const Matrix4x4 GetLocalMatrix()const { return modelData_.rootNode.localMatrix; }
+	const std::vector<MeshData>& GetMeshData()const { return modelData_.meshs; }
 	const D3D12_VERTEX_BUFFER_VIEW GetVertexBuffer() { return vertexBufferView_; }
 
 	static ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);

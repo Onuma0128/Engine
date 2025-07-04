@@ -3,6 +3,8 @@
 #include "assimp//Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
+#include <execution>
+#include <numeric>
 
 #include "DirectXEngine.h"
 #include "SrvManager.h"
@@ -60,17 +62,11 @@ void Animation::Initialize(const std::string& filename)
 
 void Animation::SetSceneRenderer()
 {
-	/*renderOptions_ = {
-		.enabled = true,
-		.offscreen = true
-	};*/
-	//DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 	DirectXEngine::GetModelRenderer()->Push(this);
 }
 
 void Animation::RemoveRenderer()
 {
-	//DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
 	DirectXEngine::GetModelRenderer()->Remove(this);
 	if (line_ == nullptr) { return; }
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
@@ -163,7 +159,6 @@ void Animation::Draw()
 			skinCluster_.influenceBufferView
 		};
 		commandList->IASetVertexBuffers(0, 2, vbvs);
-		//model_->Draw(true);
 	}
 }
 
@@ -351,14 +346,30 @@ void Animation::SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skel
 
 void Animation::ApplyAnimation(Skeleton& skeleton, const AnimationData& animation, float animationTime, float duration)
 {
-	for (Joint& joint : skeleton.joints) {
-		if (auto it = animation.nodeAnimations.find(joint.name); it != animation.nodeAnimations.end()) {
-			const NodeAnimation& rootNodeAnimation = (*it).second;
-			joint.transform.translation = CalculateValue(rootNodeAnimation.translate.keyframes, animationTime, duration);
-			joint.transform.rotation = CalculateValue(rootNodeAnimation.rotate.keyframes, animationTime, duration);
-			joint.transform.scale = CalculateValue(rootNodeAnimation.scale.keyframes, animationTime, duration);
-		}
-	}
+	// index配列を用意
+	std::vector<size_t> indices(skeleton_.joints.size());
+	// 0からsize分までの連続した値を作成する
+	std::iota(indices.begin(), indices.end(), 0);
+	const auto& nodeAnims = animation.nodeAnimations;
+
+	// par_unseqで並列処理
+	std::for_each(std::execution::par_unseq,indices.begin(), indices.end(),[&](size_t jointIdx)
+    {
+        auto& joint = skeleton.joints[jointIdx];
+
+        // 対応する NodeAnimation が無ければスキップ
+        auto it = nodeAnims.find(joint.name);
+        if (it == nodeAnims.end()) return;
+
+        const NodeAnimation& track = it->second;
+
+        joint.transform.translation =
+            CalculateValue(track.translate.keyframes, animationTime, duration);
+        joint.transform.rotation   =
+            CalculateValue(track.rotate.keyframes, animationTime, duration);
+        joint.transform.scale      =
+            CalculateValue(track.scale.keyframes, animationTime, duration);
+    });
 }
 
 void Animation::SetModel(const std::string& filePath)

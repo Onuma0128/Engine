@@ -13,6 +13,7 @@ void FieldObject::Init(SceneObject object)
 		Collider::myType_ = object.collider.type;
 		Collider::offsetPosition_ = object.collider.center;
 		Collider::size_ = object.collider.size;
+		Collider::radius_ = object.collider.radius;
 		Collider::DrawCollider();
 	}
 

@@ -993,7 +993,16 @@
                 ]
             },
             "file_name": "TowerWindmill.obj",
-            "tag_name": "FieldObject"
+            "tag_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    1.8499999046325684
+                ],
+                "radius": 2.239999771118164
+            }
         }
     ]
 }

@@ -52,12 +52,12 @@ private:
 
     /* ========================= Object3d ========================= */
 
-    void ObjReserveBatch(Model* model, uint32_t maxInstance = 128);
+    void ObjReserveBatch(Object3d* object, uint32_t maxInstance = 128);
     void ObjUpdate();
 
     /* ========================= Animation ========================= */
 
-    void AnimationReserveBatch(Model* model, uint32_t maxInstance = 128);
+    void AnimationReserveBatch(Animation* animation, uint32_t maxInstance = 128);
     void AnimationUpdate();
 
     int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);

@@ -15,6 +15,7 @@ struct ColliderData {
     ColliderType type;
     Vector3 center{};
     Vector3 size{};
+    float radius;
     bool active;
 };
 

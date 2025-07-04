@@ -79,22 +79,28 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 		ColliderData col;
 		const auto& c = json["collider"];
 		std::string type = c["type"].get<std::string>();
-		if (type == "Box") { col.type = ColliderType::OBB; }
-		else if (type == "sphere") { col.type = ColliderType::Sphere; }
+		if (type == "Box") { 
+			col.type = ColliderType::OBB;
+			Vector3 size = {
+			static_cast<float>(c["size"][0]),
+			static_cast<float>(c["size"][2]),
+			static_cast<float>(c["size"][1]),
+			};
+			col.size = size;
+
+		} else if (type == "Sphere") { 
+			col.type = ColliderType::Sphere; 
+			float radius = static_cast<float>(c["radius"]);
+			col.radius = radius;
+		}
 
 		Vector3 center = {
 			static_cast<float>(c["center"][0]),
 			static_cast<float>(c["center"][2]),
 			static_cast<float>(c["center"][1]),
 		};
-		Vector3 size = {
-			static_cast<float>(c["size"][0]),
-			static_cast<float>(c["size"][2]),
-			static_cast<float>(c["size"][1]),
-		};
 
 		col.center = center;
-		col.size = size;
 		col.active = true;
 		object.collider = col;
 	} else {

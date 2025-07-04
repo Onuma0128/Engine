@@ -10,7 +10,7 @@
 
 WorldTransform::WorldTransform()
 {
-    CreateConstBuffer();
+    
 }
 
 void WorldTransform::TransferMatrix(const Model* model)
@@ -24,11 +24,6 @@ void WorldTransform::TransferMatrix(const Model* model)
     instanceMatrix_.WVP = model->GetModelData().rootNode.localMatrix * worldViewProjectionMatrixObject; // ワールドビュープロジェクション行列を更新
     instanceMatrix_.World = model->GetModelData().rootNode.localMatrix * matWorld_; // ワールド座標行列を更新
     instanceMatrix_.WorldInverseTranspose = model->GetModelData().rootNode.localMatrix * Matrix4x4::Inverse(matWorld_).Transpose();
-
-    if (constMap_ == nullptr) { return; }
-    constMap_->WVP = model->GetModelData().rootNode.localMatrix * worldViewProjectionMatrixObject; // ワールドビュープロジェクション行列を更新
-    constMap_->World = model->GetModelData().rootNode.localMatrix * matWorld_; // ワールド座標行列を更新
-    constMap_->WorldInverseTranspose = model->GetModelData().rootNode.localMatrix * Matrix4x4::Inverse(matWorld_).Transpose();
 }
 
 void WorldTransform::TransferMatrix(const Matrix4x4& localMatrix)
@@ -42,17 +37,4 @@ void WorldTransform::TransferMatrix(const Matrix4x4& localMatrix)
     instanceMatrix_.WVP = localMatrix * worldViewProjectionMatrixObject; // ワールドビュープロジェクション行列を更新
     instanceMatrix_.World = localMatrix * matWorld_; // ワールド座標行列を更新
     instanceMatrix_.WorldInverseTranspose = Matrix4x4::Inverse(matWorld_).Transpose();
-    if (constMap_ == nullptr) { return; }
-    constMap_->WVP = localMatrix * worldViewProjectionMatrixObject; // ワールドビュープロジェクション行列を更新
-    constMap_->World = localMatrix * matWorld_; // ワールド座標行列を更新
-    constMap_->WorldInverseTranspose = Matrix4x4::Inverse(matWorld_).Transpose();
-}
-
-void WorldTransform::CreateConstBuffer()
-{
-    constBuffer_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(TransformationMatrix));
-    constBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&constMap_));
-    constMap_->WVP = Matrix4x4::Identity();
-    constMap_->World = Matrix4x4::Identity();
-    constMap_->WorldInverseTranspose = Matrix4x4::Identity();
 }

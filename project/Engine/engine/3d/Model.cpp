@@ -38,24 +38,6 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
     MakeIndexData();
 }
 
-void Model::Draw(bool isAnimation)
-{
-    auto commandList = modelBase_->GetDxEngine()->GetCommandList();
-    if (!isAnimation) {
-        commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
-    }
-    commandList->IASetIndexBuffer(&indexBufferView_);
-
-    for (const auto& mesh : modelData_.meshs) {
-        const auto& material = modelData_.materials[mesh.materialIndex];
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, material.textureIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, material.ENV_TextureIndex);
-        commandList->SetGraphicsRootConstantBufferView(8, material.kdColorResource->GetGPUVirtualAddress());
-        // 描画
-        commandList->DrawIndexedInstanced(mesh.indexCount, 1, mesh.indexStart, 0, 0);
-    }
-}
-
 void Model::BindBuffers(bool isAnimation) const
 {
     auto commandList = modelBase_->GetDxEngine()->GetCommandList();

@@ -15,13 +15,13 @@
 ///                           Object3d_Resource
 /// =====================================================================
 
-void ModelInstanceRenderer::ObjReserveBatch(Model* model, uint32_t maxInstance)
+void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstance)
 {
     // 二重確保ガード
-    if (objBatches_.contains(model)) return;
+    if (objBatches_.contains(object->GetModel())) return;
 
     ObjectBatch batch{};
-    batch.model = model;
+    batch.model = object->GetModel();
     batch.maxInstance = maxInstance;
     batch.count = 0;
 
@@ -62,20 +62,20 @@ void ModelInstanceRenderer::ObjReserveBatch(Model* model, uint32_t maxInstance)
     SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
         batch.materialSrvIndex, batch.materialBuffer.Get(), maxInstance, sizeof(Material));
 
-    objBatches_[model] = std::move(batch);
+    objBatches_[object->GetModel()] = std::move(batch);
 }
 
 /// =====================================================================
 ///                           Animation_Resource
 /// =====================================================================
 
-void ModelInstanceRenderer::AnimationReserveBatch(Model* model, uint32_t maxInstance)
+void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t maxInstance)
 {
     // 二重確保ガード
-    if (animationBatches_.contains(model)) return;
+    if (animationBatches_.contains(animation->GetModel())) return;
 
     AnimationBatch batch{};
-    batch.model = model;
+    batch.model = animation->GetModel();
     batch.maxInstance = maxInstance;
     batch.count = 0;
 
@@ -92,14 +92,9 @@ void ModelInstanceRenderer::AnimationReserveBatch(Model* model, uint32_t maxInst
         DirectXEngine::GetDevice(),
         sizeof(JointCount));
     // --- GPU リソース確保 MatrixPalette ---
-    Skeleton skeleton;
-    skeleton.root = CreateJoint(model->GetModelData().rootNode, {}, skeleton.joints);
-    for (const Joint& joint : skeleton.joints) {
-        skeleton.jointMap.emplace(joint.name, joint.index);
-    }
     batch.paletteBuffer = CreateBufferResource(
         DirectXEngine::GetDevice(),
-        sizeof(WellForGPU) * maxInstance * skeleton.joints.size());
+        sizeof(WellForGPU) * maxInstance * animation->GetJointSize());
 
 
     // --- CPU 側から書き込むために永続 WorldMatrix ---
@@ -121,7 +116,7 @@ void ModelInstanceRenderer::AnimationReserveBatch(Model* model, uint32_t maxInst
     }
     // --- CPU 側から書き込むために永続 Joint ---
     batch.jointBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.jointData));
-    batch.jointData->jointCount = static_cast<uint32_t>(skeleton.joints.size());
+    batch.jointData->jointCount = static_cast<uint32_t>(animation->GetJointSize());
     // --- CPU 側から書き込むために永続 Palette ---
     batch.paletteBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.paletteData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
@@ -140,10 +135,10 @@ void ModelInstanceRenderer::AnimationReserveBatch(Model* model, uint32_t maxInst
     // --- SRV を作成して Heap へ登録 Palette ---
     batch.paletteSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
-        batch.paletteSrvIndex, batch.paletteBuffer.Get(), maxInstance * static_cast<UINT>(skeleton.joints.size()), sizeof(WellForGPU));
+        batch.paletteSrvIndex, batch.paletteBuffer.Get(), maxInstance * static_cast<UINT>(animation->GetJointSize()), sizeof(WellForGPU));
 
 
-    animationBatches_[model] = std::move(batch);
+    animationBatches_[animation->GetModel()] = std::move(batch);
 }
 
 /// =====================================================================
@@ -154,7 +149,7 @@ void ModelInstanceRenderer::Push(Object3d* obj)
 {
     // 未確保なら Reserve
     Model* model = obj->GetModel();
-    if (!objBatches_.contains(model)) { ObjReserveBatch(model); }
+    if (!objBatches_.contains(model)) { ObjReserveBatch(obj); }
 
     ObjectBatch& batch = objBatches_[model];
     if (batch.count >= batch.maxInstance) return;    // あふれ防止
@@ -198,7 +193,7 @@ void ModelInstanceRenderer::Push(Animation* animation)
 {
     // 未確保なら Reserve
     Model* model = animation->GetModel();
-    if (!animationBatches_.contains(model)) { AnimationReserveBatch(model); }
+    if (!animationBatches_.contains(model)) { AnimationReserveBatch(animation); }
 
     AnimationBatch& batch = animationBatches_[model];
     if (batch.count >= batch.maxInstance) return;    // あふれ防止
@@ -278,9 +273,9 @@ void ModelInstanceRenderer::AnimationUpdate()
             // 描画するか
             if (material.enableDraw) {
                 // 描画をしているならPaletteの更新
-                Skeleton skeleton = batch.animations[i]->GetSkeleton();
-                for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); ++jointIndex) {
-                    const size_t dst = i * skeleton.joints.size() + jointIndex;
+                size_t jointSize = batch.animations[i]->GetJointSize();
+                for (size_t jointIndex = 0; jointIndex < jointSize; ++jointIndex) {
+                    const size_t dst = i * jointSize + jointIndex;
                     WellForGPU& wellForGPU = batch.paletteData[dst];
                     wellForGPU.skeletonSpaceMatrix = batch.animations[i]->GetWellForGPU()[jointIndex].skeletonSpaceMatrix;
                     wellForGPU.skeletonSpaceInverseTransposeMatrix =
@@ -327,7 +322,7 @@ void ModelInstanceRenderer::AllDraw()
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
 
         /* ---------- Mesh ループ ---------- */
-        const auto& mesh = model->GetModelData().meshs;
+        const auto& mesh = model->GetMeshData();
         for (uint32_t i = 0; i < mesh.size(); ++i) {
             model->BindMaterial(mesh[i].materialIndex);
             commandList->DrawIndexedInstanced(
@@ -353,7 +348,7 @@ void ModelInstanceRenderer::AllDraw()
         commandList->SetGraphicsRootConstantBufferView(10, batch.jointBuffer->GetGPUVirtualAddress());
 
         /* ---------- Mesh ループ ---------- */
-        const auto& mesh = model->GetModelData().meshs;
+        const auto& mesh = model->GetMeshData();
         for (uint32_t i = 0; i < mesh.size(); ++i) {
             model->BindMaterial(mesh[i].materialIndex);
             commandList->DrawIndexedInstanced(

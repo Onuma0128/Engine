@@ -24,23 +24,17 @@ void Object3d::Initialize(const std::string& filePath)
 
 void Object3d::SetSceneRenderer()
 {
-    /*renderOptions_ = {
-        .enabled = true,
-        .offscreen = true
-    };*/
-    //DirectXEngine::GetSceneRenderer()->SetDrawList(this);
     DirectXEngine::GetModelRenderer()->Push(this);
 }
 
 void Object3d::RemoveRenderer()
 {
-    //DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
     DirectXEngine::GetModelRenderer()->Remove(this);
 }
 
 void Object3d::Update()
 {
-    transform_.TransferMatrix(model_);
+    transform_.TransferMatrix(model_->GetLocalMatrix());
 }
 
 void Object3d::Draw()
@@ -48,17 +42,10 @@ void Object3d::Draw()
     object3dBase_->DrawBase();
 
     auto commandList = DirectXEngine::GetCommandList();
-    //commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
-    //commandList->SetGraphicsRootConstantBufferView(1, transform_.GetConstBuffer()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(3, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(6, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
-
-   /* if (model_) {
-        model_->Draw(false);
-    }*/
-
 }
 
 void Object3d::SetModel(const std::string& filePath)
