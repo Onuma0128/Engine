@@ -14,7 +14,7 @@ void GamePlayScene::Initialize()
 {
 	// シーンのロード
 	SceneJsonLoader loader;
-	loader.Load("sceneObject2");
+	loader.Load("sceneObject");
 
 	skyBox_ = std::make_unique<PrimitiveDrawr>();
 	skyBox_->TypeInit(PrimitiveType::Skybox);

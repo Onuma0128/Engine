@@ -24,7 +24,8 @@ struct SceneObject {
     std::string type;                       // 何のObejctなのか
     std::string name;                       // そのObejctの名前
     std::string fileName;                   // Meshのファイルの名前
-    std::string tag;                        // 
+    std::string groupName;                  // どのObjectGroupに属しているか
+    std::string tag;                        // Groupの中の仕分けtag
     WorldTransform transform;               // ObjectのTransform
     ColliderData collider;                  // 判定用データ
     std::vector<SceneObject> children;      // ペアレントされているObject再帰構造

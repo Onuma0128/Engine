@@ -84,17 +84,26 @@ void Animation::Update()
 	if (!blend_.active) {
 
 		const AnimationData& clip = animationDatas_[currentAnim_];
-		animationTime_ += DeltaTimer::GetDeltaTime();
-
-		// アニメーションを止める
-		if (timeStop_) {
-			if (animationTime_ >= clip.duration) {
-				animationTime_ = clip.duration;
-				stopped_ = true;
+		if (reversePlay_) {
+			animationTime_ -= DeltaTimer::GetDeltaTime();
+			if (animationTime_ < 0.0f) {
+				if (timeStop_) {
+					animationTime_ = 0.0f;
+					stopped_ = true;
+				} else {
+					animationTime_ = std::fmod(animationTime_ + clip.duration, clip.duration);
+				}
 			}
-		// ループさせないので std::fmod は呼ばない
 		} else {
-			animationTime_ = std::fmod(animationTime_, clip.duration);
+			animationTime_ += DeltaTimer::GetDeltaTime();
+			if (timeStop_) {
+				if (animationTime_ >= clip.duration) {
+					animationTime_ = clip.duration;
+					stopped_ = true;
+				}
+			} else {
+				animationTime_ = std::fmod(animationTime_, clip.duration);
+			}
 		}
 
 		ApplyAnimation(skeleton_, clip, animationTime_, clip.duration);
@@ -231,6 +240,7 @@ bool Animation::PlayByName(const std::string& clipName, float fadeTime)
 {
 	auto it = nameToIx_.find(clipName);
 	if (it == nameToIx_.end()) { return false; }          // 名前なし
+	if (blend_.active) { return false; }
 
 	Play(it->second, fadeTime);                           // index 切替 (前回答参照)
 	return true;

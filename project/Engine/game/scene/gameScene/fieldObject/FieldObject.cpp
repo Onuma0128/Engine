@@ -9,7 +9,7 @@ void FieldObject::Init(SceneObject object)
 
 	if (object.collider.active) {
 		Collider::AddCollider();
-		Collider::colliderName_ = "FieldObject";
+		Collider::colliderName_ = object.tag;
 		Collider::myType_ = object.collider.type;
 		Collider::offsetPosition_ = object.collider.center;
 		Collider::size_ = object.collider.size;
@@ -39,16 +39,24 @@ void FieldObject::OnCollisionEnter(Collider* other)
 	// 弾が当たったら
 	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial" ||
 		other->GetColliderName() == "EnemyRanged" || other->GetColliderName() == "EnemyRangedElite") {
-		// シェイクさせる
-		shake_ = { 5.0f,0.0f,5.0f };
-		// 弾が飛んできた方向を取得
-		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
-		Vector3 velocity = Vector3::ExprUnitZ.Transform(rotate);
-		// エフェクトを描画
-		WorldTransform transform;
-		transform.rotation_ = transform_.rotation_;
-		transform.translation_ = transform_.translation_ - (velocity * 0.2f);
-		effect_->OnceWoodChipEffect(transform);
+		if (Collider::colliderName_ == "DeadTree") {
+			// シェイクさせる
+			shake_ = { 5.0f,0.0f,5.0f };
+			// 弾が飛んできた方向を取得
+			Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
+			Vector3 velocity = Vector3::ExprUnitZ.Transform(rotate);
+			// エフェクトを描画
+			WorldTransform transform;
+			transform.rotation_ = transform_.rotation_;
+			transform.translation_ = transform_.translation_ - (velocity * 0.2f);
+			effect_->OnceWoodChipEffect(transform);
+		} else if (Collider::colliderName_ == "Building") {
+			// シェイクさせる
+			shake_ = { 2.0f,0.0f,2.0f };
+		} else {
+			// シェイクさせる
+			shake_ = { 5.0f,0.0f,5.0f };
+		}
 	}
 }
 

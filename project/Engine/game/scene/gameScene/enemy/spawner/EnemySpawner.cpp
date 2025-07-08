@@ -14,7 +14,7 @@ void EnemySpawner::Init(SceneObject object)
 	if (object.collider.active) {
 		Collider::AddCollider();
 		Collider::myType_ = object.collider.type;
-		Collider::colliderName_ = "EnemySpawner";
+		Collider::colliderName_ = object.tag;
 		Collider::offsetPosition_ = object.collider.center;
 		Collider::size_ = object.collider.size;
 		Collider::DrawCollider();

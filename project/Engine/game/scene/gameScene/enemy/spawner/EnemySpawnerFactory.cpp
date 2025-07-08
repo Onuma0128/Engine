@@ -13,7 +13,7 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 	items_->LoadItems();
 	
 	for (auto it = loader.GetData().begin(); it != loader.GetData().end();) {
-		if (it->second.tag == "EnemySpawner") {
+		if (it->second.groupName == "EnemySpawner") {
 			CreateSpawner(it->second);
 		}
 		++it;
@@ -89,6 +89,10 @@ void EnemySpawnerFactory::UpdateTypeEnemy(std::list<std::unique_ptr<Enemy>>& ene
 
 void EnemySpawnerFactory::RandomSpawnEnemy()
 {
+#ifdef _DEBUG
+	if (!items_->GetMainData().debugIsSpawn) { return; }
+#endif // _DEBUG
+
 	// 湧き上限を超えていないかチェックする
 	size_t enemySpawnCount = 0;
 	uint32_t kNockdownCount = 0;

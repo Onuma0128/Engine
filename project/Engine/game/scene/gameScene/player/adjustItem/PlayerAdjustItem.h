@@ -5,6 +5,11 @@
 // プレイヤーの項目
 struct PlayerData {
 	float speed;				// 移動速度
+
+	float avoidTime;			// 避けの時間
+	float avoid_speed;			// 避けの速度
+	float avoid_velocityY;		// 避けのジャンプ高さ
+	float avoid_acceleration;	// 避けの加速度
 };
 
 // 弾の項目

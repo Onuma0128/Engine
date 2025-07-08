@@ -7,6 +7,8 @@
 class CollisionManager
 {
 public:
+
+    // 判定の更新
     void CheckAllCollisions();
     void AddCollider(Collider* c) { colliders_.push_back(c); }
     void RemoveCollider(Collider* c) {

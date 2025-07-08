@@ -15,6 +15,7 @@ void EnemyAdjustItem::LoadItems()
 		mainData_.colliderSize = mainJson_.Get("colliderSize", mainData_.colliderSize);
 		mainData_.colliderOffset = mainJson_.Get("colliderOffset", mainData_.colliderOffset);
 		mainData_.margin = mainJson_.Get("margin", mainData_.margin);
+		mainData_.debugIsSpawn = false;
 	}
 
 	/* ============================== Melee ============================== */
@@ -98,6 +99,8 @@ void EnemyAdjustItem::Editor()
 {
 
 	ImGui::Begin("EnemyParameters");
+
+	ImGui::Checkbox("isSpawn", &mainData_.debugIsSpawn);
 
 	/* ============================== Main ============================== */
 

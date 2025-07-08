@@ -20,7 +20,6 @@ void EnemyShieldBearer_AttackState::Init()
 
 void EnemyShieldBearer_AttackState::Finalize()
 {
-	enemy_->PlayByName("Run_Arms");
 	enemy_->GetWeapon()->SetIsActive(false);
 	enemy_->GetWeapon()->Update();
 }

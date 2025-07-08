@@ -19,7 +19,7 @@ struct EnemyTemplate {
 
 // 敵全体の項目
 struct EnemyMainData {
-
+	bool debugIsSpawn;			// デバッグ中のみ使えるスポーンするかしないか
 	Vector3 colliderSize;		// 敵本体のコライダーサイズ
 	Vector3 colliderOffset;		// 敵本体のコライダー座標
 

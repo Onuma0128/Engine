@@ -19,8 +19,9 @@ void Player::Init(SceneJsonLoader loader)
 		}
 		++it;
 	}
-	Object3d::Initialize(player.fileName);
-	Object3d::SetSceneRenderer();
+	Animation::Initialize(player.fileName);
+	Animation::SetSceneRenderer();
+	Animation::PlayByName("Idle_Gun");
 	transform_ = player.transform;
 	if (player.collider.active) {
 		Collider::AddCollider();
@@ -113,7 +114,7 @@ void Player::Update()
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::Update();
-	Object3d::Update();
+	Animation::Update();
 }
 
 void Player::EffectDraw()

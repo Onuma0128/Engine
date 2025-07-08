@@ -26,7 +26,7 @@ void EnemyRanged_AttackState::Finalize()
 {
 	enemy_->GetEffect()->SetBulletPredictionEffect(false);
 
-	enemy_->PlayByName("Run");
+	//enemy_->PlayByName("Run");
 }
 
 void EnemyRanged_AttackState::Update()

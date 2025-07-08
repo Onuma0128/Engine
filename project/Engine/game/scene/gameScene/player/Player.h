@@ -3,7 +3,7 @@
 #include <array>
 #include <vector>
 
-#include "Object3d.h"
+#include "Animation.h"
 #include "Collider.h"
 #include "SceneJsonLoader.h"
 #include "JsonFunction.h"
@@ -18,7 +18,7 @@
 #include "gameScene/player/reticle/PlayerReticle.h"
 #include "gameScene/player/adjustItem/PlayerAdjustItem.h"
 
-class Player : public Object3d,Collider
+class Player : public Animation,Collider
 {
 public:
 
@@ -92,6 +92,7 @@ private:
 	uint32_t kNockdownCount_ = 0;
 	// 調整項目
 	std::unique_ptr<PlayerAdjustItem> items_;
+
 	// 今生きているか
 	bool isAlive_ = true;
 	// 今避けているのか

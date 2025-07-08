@@ -75,7 +75,8 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	// 敵と当たったらなエフェクトを出す
 	if (other->GetColliderName() == "Enemy" ||
 		other->GetColliderName() == "EnemyShield" ||
-		other->GetColliderName() == "FieldObject") {
+		other->GetColliderName() == "DeadTree" ||
+		other->GetColliderName() == "Building") {
 		if (Collider::colliderName_ == "PlayerBullet") {
 			IsCollision();
 			effect_->OnceBulletDeleteEffect(transform_);

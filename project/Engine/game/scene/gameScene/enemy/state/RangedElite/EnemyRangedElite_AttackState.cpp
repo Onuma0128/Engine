@@ -27,7 +27,7 @@ void EnemyRangedElite_AttackState::Finalize()
 {
 	enemy_->GetEffect()->SetBulletPredictionEffect(false);
 
-	enemy_->PlayByName("Run");
+	//enemy_->PlayByName("Run");
 }
 
 void EnemyRangedElite_AttackState::Update()

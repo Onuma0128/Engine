@@ -52,7 +52,6 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources", "output.dds");
 	TextureManager::GetInstance()->LoadTexture("resources/player/texture", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "bulletUI.png");
-	//TextureManager::GetInstance()->LoadTexture("resources/fieldObject", "ground.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "blood.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "numbers.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "title.png");
@@ -78,6 +77,11 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_4.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_5.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BirchTree_1.obj");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "Well.obj");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "OpenBarn.obj");
+	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BigBarn.obj");
+
+	ModelManager::GetInstance()->LoadModel("resources/player", "Player.gltf");
 
 	ModelManager::GetInstance()->LoadModel("resources/enemy/shield", "Shield_Heater.obj");
 	ModelManager::GetInstance()->LoadModel("resources/enemy", "Zombie_Basic.gltf");

@@ -2,6 +2,8 @@
 
 #include <assert.h>
 
+#include "imgui.h"
+
 void SceneJsonLoader::Load(const std::string filePath)
 {
 	// ファイルのフルパスを取得
@@ -46,6 +48,9 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 
 	if (json.contains("file_name")) {
 		object.fileName = json["file_name"].get<std::string>();
+	}
+	if (json.contains("group_name")) {
+		object.groupName = json["group_name"].get<std::string>();
 	}
 	if (json.contains("tag_name")) {
 		object.tag = json["tag_name"].get<std::string>();

@@ -39,6 +39,7 @@ public:
 
 	WorldTransform& GetTransform() { return transform_; }
 	bool& GetTimeStop() { return timeStop_; }
+	bool& GetReversePlay() { return reversePlay_; }
 	Model* GetModel() { return model_; }
 	size_t GetJointSize() { return skeleton_.joints.size(); }
 	std::vector<WellForGPU>& GetWellForGPU() { return skinCluster_.mappedPalettes; }
@@ -80,8 +81,9 @@ private:
 	AnimationBlendState blend_;
 	size_t currentAnim_ = 0;
 	float animationTime_ = 0.0f;
-	bool timeStop_ = false;
-	bool stopped_ = false;
+	bool timeStop_ = false;			// アニメーションを止める
+	bool stopped_ = false;			// アニメーションが止まっている
+	bool reversePlay_ = false;		// アニメーションを逆再生させるか
 
 	SkinCluster skinCluster_;
 	Skeleton skeleton_;

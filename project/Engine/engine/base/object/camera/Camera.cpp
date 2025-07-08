@@ -5,6 +5,8 @@
 #endif // _DEBUG
 #include "Input.h"
 
+#include "DeltaTimer.h"
+
 void Camera::Initialize()
 {
 	debugTransform_ = { {1.0f,1.0f,1.0f},{0.26f,0.0f,0.0f},{0.0f,4.0f,-15.0f} };
@@ -152,6 +154,8 @@ void Camera::CameraImGui()
 	Vector3 translation = transform_.translation;
 	ImGui::DragFloat3("rotate", &rotation.x, 0.01f);
 	ImGui::DragFloat3("translate", &translation.x, 0.01f);
+	float fps = 1.0f / DeltaTimer::GetRawDeltaTime();
+	ImGui::Text("FPS: %.2f", fps);
 	transform_.rotation = rotation;
 	transform_.translation = translation;
 

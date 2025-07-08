@@ -20,10 +20,11 @@ public:
 	void Draw()override;
 
 private:
-
+	void SomeAction();
 	void ReloadBullet();
 
-	const Vector3 CreateVelocity();
+	const Vector3 CreateMoveVelocity();
+	const Vector3 CreateRotateVelocity();
 
 private:
 
@@ -37,6 +38,8 @@ private:
 	// 最後に向けたRightStickを保存する
 	Vector3 rightStickVelocity_{};
 	Quaternion rightStickQuaternion_{};
+	bool chengeAniamtion_ = false;
+	bool isReversePlay_ = false;
 
 };
 

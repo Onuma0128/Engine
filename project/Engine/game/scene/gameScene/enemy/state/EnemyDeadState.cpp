@@ -34,9 +34,6 @@ void EnemyDeadState::Init()
 	velocity_ = enemy_->GetVelocity();
 	// ノックバックの際に敵が起こすアクションの計算
 	ResultTargetOffset();
-
-	enemy_->PlayByName("Death");
-	enemy_->GetTimeStop() = true;
 }
 
 void EnemyDeadState::Finalize()
@@ -74,6 +71,13 @@ void EnemyDeadState::Update()
 	// 5秒経ったら消す
 	if (deadFrame_ <= 0.0f) {
 		enemy_->SetIsDead(true);
+	} else {
+		if (!chengeAnimation_) {
+			if (enemy_->PlayByName("Death"),0.1f) {
+				enemy_->GetTimeStop() = true;
+				chengeAnimation_ = true;
+			}
+		}
 	}
 }
 

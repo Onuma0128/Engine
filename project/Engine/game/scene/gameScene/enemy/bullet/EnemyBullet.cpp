@@ -70,7 +70,8 @@ void EnemyBullet::OnCollisionEnter(Collider* other)
 {
 	// 当たったらな消す
 	if (other->GetColliderName() == "Player" ||
-		other->GetColliderName() == "FieldObject") {
+		other->GetColliderName() == "DeadTree" ||
+		other->GetColliderName() == "Building") {
 		IsCollision();
 	}
 }

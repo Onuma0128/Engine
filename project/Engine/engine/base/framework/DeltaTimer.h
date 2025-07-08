@@ -11,6 +11,7 @@ public:
     static void Update();
 
     static float GetDeltaTime() { return deltaTime_ * timeScale_; }
+    static float GetRawDeltaTime() { return deltaTime_; }
 
     static void  SetTimeScaleForSeconds(float scale, float duration);
 
