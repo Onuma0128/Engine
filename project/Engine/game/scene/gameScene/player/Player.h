@@ -12,7 +12,6 @@
 #include "gameScene/player/effect/PlayerEffect.h"
 #include "gameScene/player/bullet/PredictionObject.h"
 #include "gameScene/player/bullet/PlayerBullet.h"
-#include "gameScene/player/revolver/Revolver.h"
 #include "gameScene/player/ui/PlayerBulletUI.h"
 #include "gameScene/player/ui/PlayerKillCountUI.h"
 #include "gameScene/player/reticle/PlayerReticle.h"
@@ -83,8 +82,6 @@ private:
 	// 弾を6つ生成する
 	std::vector<std::unique_ptr<PlayerBullet>> bullets_;
 	std::vector<std::unique_ptr<PlayerBulletUI>> bulletUIs_;
-	// リボルバー銃を生成
-	std::unique_ptr<Revolver> revolver_ = nullptr;
 	// 必殺技用の弾を6つ生成
 	std::vector<std::unique_ptr<PlayerBullet>> specialBullets_;
 	// 敵のキル数UI

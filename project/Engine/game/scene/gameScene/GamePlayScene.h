@@ -30,7 +30,6 @@ public:
 private:
 
 	std::unique_ptr<PrimitiveDrawr> skyBox_ = nullptr;
-	std::shared_ptr<ParticleEmitter> emitter_ = nullptr;
 	
 	// プレイヤーの生成
 	std::unique_ptr<Player> player_ = nullptr;

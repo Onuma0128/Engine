@@ -318,9 +318,6 @@
     <ClCompile Include="Engine\game\scene\gameScene\fieldObject\effect\FieldObjectEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\game\scene\gameScene\player\revolver\Revolver.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\game\scene\gameScene\enemy\state\Melee\EnemyMelee_AttackState.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -723,9 +720,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\game\scene\gameScene\fieldObject\effect\FieldObjectEffect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\game\scene\gameScene\player\revolver\Revolver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\type\EnemyType.h">

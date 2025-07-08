@@ -36,9 +36,6 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
 	enemySpawnerFactory_->Init(loader);
 
-	emitter_ = std::make_unique<ParticleEmitter>("test");
-	ParticleManager::GetInstance()->CreateParticleGroup(emitter_);
-
 	sceneFade_ = std::make_unique<SceneFade>();
 	sceneFade_->Init();
 	sceneFade_->FadeIn(3.0f);

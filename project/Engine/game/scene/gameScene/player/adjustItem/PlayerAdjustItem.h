@@ -31,11 +31,6 @@ struct PreObjectData {
 	Vector3 startPosition;		// 最初のZ座標
 };
 
-// リボルバーの項目
-struct RevolverData {
-	Vector3 offset;				// ペアレントして固定する座標
-};
-
 // 弾UIの項目
 struct BulletUIData {
 	Vector2 size;				// UIのサイズ
@@ -59,8 +54,6 @@ public:
 	BulletData GetBulletData()const { return bulletData_; }
 	// 弾の予測オブジェクトの項目
 	PreObjectData GetPreObjectData()const { return preObjectData_; }
-	// リボルバーの項目
-	RevolverData GetRevolverData()const { return revolverData_; }
 	// 弾UIの項目
 	BulletUIData GetBulletUIData()const { return bulletUIData_; }
 
@@ -70,7 +63,6 @@ private:
 	JsonFunction playerJson_;
 	JsonFunction bulletJson_;
 	JsonFunction preObjectJson_;
-	JsonFunction revolverJson_;
 	JsonFunction bulletUIJson_;
 
 	// プレイヤーの項目
@@ -79,8 +71,6 @@ private:
 	BulletData bulletData_;
 	// 弾の予測オブジェクトの項目
 	PreObjectData preObjectData_;
-	// リボルバーの項目
-	RevolverData revolverData_;
 	// 弾UIの項目
 	BulletUIData bulletUIData_;
 

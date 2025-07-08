@@ -101,8 +101,6 @@ void Player::Update()
 		}
 	}
 
-	revolver_->Update();
-
 	for (size_t i = 0; i < predictionObjects_.size(); ++i) {
 		float interval = items_->GetPreObjectData().interval;
 		Vector3 startPosition = items_->GetPreObjectData().startPosition;
@@ -239,16 +237,10 @@ void Player::BulletInit()
 
 void Player::PredictionObjInit()
 {
-	// リボルバー銃の初期化
-	revolver_ = std::make_unique<Revolver>();
-	revolver_->SetPlayer(this);
-	revolver_->Init();
-
 	// 弾の予測オブジェクトの初期化
 	for (auto& object : predictionObjects_) {
 		object = std::make_unique<PredictionObject>();
 		object->SetPlayer(this);
 		object->Init();
 	}
-
 }

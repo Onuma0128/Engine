@@ -53,15 +53,6 @@ void PlayerAdjustItem::LoadItems()
 		preObjectData_.startPosition = preObjectJson_.Get("startPosition", preObjectData_.startPosition);
 	}
 
-	/* ============================== Revover ============================== */
-
-	revolverJson_.Init("PlayerRevover");
-	if (!revolverJson_.Load()) {
-		revolverJson_.Set("offset", Vector3{});
-	} else {
-		revolverData_.offset = revolverJson_.Get("offset", revolverData_.offset);
-	}
-
 	/* ============================== BulletUI ============================== */
 
 	bulletUIJson_.Init("PlayerBulletUI");
@@ -138,19 +129,6 @@ void PlayerAdjustItem::Editor()
 			preObjectJson_.Set("interval", preObjectData_.interval);
 			preObjectJson_.Set("startPosition", preObjectData_.startPosition);
 			preObjectJson_.Save();
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Separator();
-
-	/* ============================== Revover ============================== */
-
-	if (ImGui::TreeNode("Revover")) {
-
-		ImGui::DragFloat3("offset", &revolverData_.offset.x, 0.01f);
-		if (ImGui::Button("Save")) {
-			revolverJson_.Set("offset", revolverData_.offset);
-			revolverJson_.Save();
 		}
 		ImGui::TreePop();
 	}
