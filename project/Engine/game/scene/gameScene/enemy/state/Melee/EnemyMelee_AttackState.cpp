@@ -2,16 +2,14 @@
 
 #include <memory>
 
-#include "Collider.h"
 #include "DeltaTimer.h"
 
-#include "gameScene/enemy/enemy.h"
+#include "gameScene/enemy/base/BaseEnemy.h"
 #include "gameScene/enemy/weapon/EnemyWeaponBase.h"
-#include "gameScene/enemy/weapon/axe/EnemyAxe.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 #include "../EnemyMoveState.h"
 
-EnemyMelee_AttackState::EnemyMelee_AttackState(Enemy* enemy) :EnemyBaseState(enemy) {}
+EnemyMelee_AttackState::EnemyMelee_AttackState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 
 void EnemyMelee_AttackState::Init()
 {
@@ -22,7 +20,6 @@ void EnemyMelee_AttackState::Init()
 
 void EnemyMelee_AttackState::Finalize()
 {
-	//enemy_->PlayByName("Run_Arms");
 	enemy_->GetWeapon()->SetIsActive(false);
 	enemy_->GetWeapon()->Update();
 }

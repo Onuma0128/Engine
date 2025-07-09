@@ -2,11 +2,11 @@
 
 #include "DeltaTimer.h"
 
+#include "gameScene/enemy/base/BaseEnemy.h"
 #include "gameScene/player/Player.h"
-#include "gameScene/enemy/Enemy.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 
-EnemyShield::EnemyShield(Enemy* enemy) : EnemyWeaponBase(enemy) {}
+EnemyShield::EnemyShield(BaseEnemy* enemy) : EnemyWeaponBase(enemy) {}
 
 void EnemyShield::Finalize()
 {

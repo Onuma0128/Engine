@@ -4,7 +4,8 @@
 
 #include "DeltaTimer.h"
 
-#include "gameScene/enemy/enemy.h"
+#include "../base/BaseEnemy.h"
+
 #include "gameScene/player/Player.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 
@@ -15,7 +16,7 @@
 #include "ShieldBearer/EnemyShieldBearer_AttackState.h"
 #include "RangedElite/EnemyRangedElite_AttackState.h"
 
-EnemyMoveState::EnemyMoveState(Enemy* enemy) :EnemyBaseState(enemy) {}
+EnemyMoveState::EnemyMoveState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 
 void EnemyMoveState::Init()
 {

@@ -6,7 +6,7 @@ class EnemyShield : public EnemyWeaponBase
 {
 public:
 
-	EnemyShield(Enemy* enemy);
+	EnemyShield(BaseEnemy* enemy);
 
 	void Finalize() override;
 

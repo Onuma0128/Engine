@@ -1,8 +1,11 @@
 #include "EnemySpawnerFactory.h"
 
-#include <thread>
-
 #include "DeltaTimer.h"
+
+#include "../base/MeleeEnemy.h"
+#include "../base/RangedEnemy.h"
+#include "../base/ShieldBearerEnemy.h"
+#include "../base/RangedEliteEnemy.h"
 
 #include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
@@ -67,20 +70,26 @@ void EnemySpawnerFactory::CreateSpawner(SceneObject object)
 	enemySpawners_.push_back(std::move(spawner));
 }
 
-void EnemySpawnerFactory::InitTypeEnemy(EnemyType type, std::list<std::unique_ptr<Enemy>>& enemys, size_t size)
+void EnemySpawnerFactory::InitTypeEnemy(EnemyType type, std::list<std::unique_ptr<BaseEnemy>>& enemys, size_t size)
 {
 	enemys.resize(size);
 
 	for (auto& enemy : enemys) {
-		enemy = std::make_unique<Enemy>();
+		switch (type) {
+		case EnemyType::Melee:			enemy = std::make_unique<MeleeEnemy>(); break;
+		case EnemyType::Ranged:			enemy = std::make_unique<RangedEnemy>(); break;
+		case EnemyType::ShieldBearer:	enemy = std::make_unique<ShieldBearerEnemy>(); break;
+		case EnemyType::RangedElite:	enemy = std::make_unique<RangedEliteEnemy>(); break;
+		default:break;
+		}
 		enemy->SetPlayer(player_);
 		enemy->SetGameCamera(gameCamera_);
 		enemy->SetItem(items_.get());
-		enemy->Init(type);
+		enemy->Initialize();
 	}
 }
 
-void EnemySpawnerFactory::UpdateTypeEnemy(std::list<std::unique_ptr<Enemy>>& enemys)
+void EnemySpawnerFactory::UpdateTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& enemys)
 {
 	for (auto& enemy : enemys) {
 		enemy->TransformUpdate();
@@ -143,7 +152,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 	}
 }
 
-void EnemySpawnerFactory::ResetTypeEnemy(std::list<std::unique_ptr<Enemy>>& enemys, std::unique_ptr<EnemySpawner>& spawner)
+void EnemySpawnerFactory::ResetTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& enemys, std::unique_ptr<EnemySpawner>& spawner)
 {
 	for (auto& enemy : enemys) {
 		if (!enemy->GetEnableMove()) {

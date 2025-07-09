@@ -6,7 +6,7 @@ class EnemyShieldBearer_AttackState : public EnemyBaseState
 {
 public:
 
-	EnemyShieldBearer_AttackState(Enemy* enemy);
+	EnemyShieldBearer_AttackState(BaseEnemy* enemy);
 
 	void Init()override;
 

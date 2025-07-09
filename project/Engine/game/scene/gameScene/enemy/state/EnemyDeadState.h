@@ -11,7 +11,7 @@ class EnemyDeadState : public EnemyBaseState
 {
 public:
 
-	EnemyDeadState(Enemy* enemy);
+	EnemyDeadState(BaseEnemy* enemy);
 
 	void GlobalInit();
 

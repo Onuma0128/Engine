@@ -5,10 +5,10 @@
 #include "DeltaTimer.h"
 #include "Easing.h"
 
-#include "gameScene/enemy/enemy.h"
-#include "gameScene/enemy/state/EnemyMoveState.h"
+#include "../base/BaseEnemy.h"
+#include "../weapon/EnemyWeaponBase.h"
 
-EnemyDeadState::EnemyDeadState(Enemy* enemy) :EnemyBaseState(enemy) {}
+EnemyDeadState::EnemyDeadState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 
 void EnemyDeadState::GlobalInit()
 {
@@ -34,6 +34,8 @@ void EnemyDeadState::Init()
 	velocity_ = enemy_->GetVelocity();
 	// ノックバックの際に敵が起こすアクションの計算
 	ResultTargetOffset();
+	// シールドを持っているなら
+	if (enemy_->GetShieldWeapon() != nullptr) { enemy_->GetShieldWeapon()->SetIsActive(false); }
 }
 
 void EnemyDeadState::Finalize()

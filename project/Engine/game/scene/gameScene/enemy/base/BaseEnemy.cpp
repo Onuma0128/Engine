@@ -1,36 +1,17 @@
-#include "Enemy.h"
+#include "BaseEnemy.h"
 
 #include "DeltaTimer.h"
-
-#include "gameScene/enemy/state/EnemyMoveState.h"
-#include "gameScene/enemy/state/EnemyDeadState.h"
-#include "gameScene/enemy/weapon/axe/EnemyAxe.h"
-#include "gameScene/enemy/weapon/shield/EnemyShield.h"
 
 #include "gameScene/player/Player.h"
 #include "gameScene/gameCamera/GameCamera.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 
-void Enemy::Finalize()
+#include "../state/EnemyMoveState.h"
+#include "../state/EnemyDeadState.h"
+
+void BaseEnemy::Initialize()
 {
-	Animation::RemoveRenderer();
-	Collider::RemoveCollider();
-
-	for (auto& bullet : bullets_) {
-		bullet->Finalize();
-	}
-
-	if (weapon_ != nullptr) { weapon_->Finalize(); }
-	if (shieldWeapon_ != nullptr) { shieldWeapon_->Finalize(); }
-}
-
-void Enemy::Init(EnemyType type)
-{
-	// タイプごとに敵を初期化する
-	type_ = type;
-	TypeInit();
-
-	// 最初は移動ステート開始
+	// ステートを初期化
 	ChengeState(std::make_unique<EnemyMoveState>(this));
 
 	// エフェクトの初期化
@@ -52,7 +33,7 @@ void Enemy::Init(EnemyType type)
 	Collider::DrawCollider();
 }
 
-void Enemy::Update()
+void BaseEnemy::Update()
 {
 	// ステートの更新
 	state_->Update();
@@ -60,25 +41,12 @@ void Enemy::Update()
 	// エフェクトの更新
 	effect_->Update();
 
-	// ウエポンの更新
-	if (weapon_ != nullptr) { weapon_->Update(); }
-	if (shieldWeapon_ != nullptr) { shieldWeapon_->Update(); }
-
-	// 弾の更新
-	for (auto& bullet : bullets_) {
-		bullet->Update();
-		// 弾が消えた時のコールバック関数
-		bullet->SetOnDeactivateCallback([]() {});
-	}
-
 	// 必殺技が打たれている時の敵の描画を変更
 	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Shrinking) {
 		if (stateParam_.isAlive_) {
 			Collider::isActive_ = true;
 			stateParam_.hitReticle_ = false;
 		}
-	} else if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::None) {
-		//Animation::GetRenderOptions().offscreen = true;
 	}
 
 	// 影の更新
@@ -90,16 +58,14 @@ void Enemy::Update()
 	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
 	Collider::Update();
 
-	// オブジェクトの更新
+	// アニメーションの更新
 	Animation::Update();
 }
 
-void Enemy::TransformUpdate() 
+void BaseEnemy::TransformUpdate()
 {
 	// 敵の行動許可が出ていなければ更新できない
 	if (!stateParam_.enableMove_) {
-		// ウエポンの更新
-		if (shieldWeapon_ != nullptr) { shieldWeapon_->Update(); }
 		// 影の更新
 		shadow_->Update();
 		// オブジェクトの更新
@@ -107,12 +73,7 @@ void Enemy::TransformUpdate()
 	}
 }
 
-void Enemy::Draw()
-{
-	effect_->Draw();
-}
-
-void Enemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
+void BaseEnemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 {
 	if (state_ != nullptr) {
 		state_->Finalize();
@@ -121,38 +82,29 @@ void Enemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 	state_->Init();
 }
 
-void Enemy::Dead()
+void BaseEnemy::Dead()
 {
+	// 描画とColliderを切る
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetTimeStop() = true;
 	Collider::isActive_ = false;
-
-	if (shieldWeapon_ != nullptr) { shieldWeapon_->SetIsActive(false); }
+	// 影の描画も切る
 	shadow_->SetDraw(false);
-
 	stateParam_.enableMove_ = false;
 }
 
-void Enemy::Reset(const Vector3& position)
+void BaseEnemy::Reset(const Vector3& position)
 {
-	if (type_ == EnemyType::Melee || type_ == EnemyType::ShieldBearer) {
-		Animation::PlayByName("Run_Arms");
-	} else {
-		Animation::PlayByName("Run");
-	}
+	// 描画をする
 	Animation::GetMaterial().enableDraw = true;
-	//Animation::GetRenderOptions().offscreen = true;
-
+	// Transformを初期化
 	transform_.scale_ = { 1.5f,1.5f,1.5f };
 	transform_.rotation_ = Quaternion::IdentityQuaternion();
 	transform_.translation_ = position;
 	Animation::TransformUpdate();
-
-	ChengeState(std::make_unique<EnemyMoveState>(this));
-
-	if (shieldWeapon_ != nullptr) { shieldWeapon_->SetIsActive(true); }
+	// 影を描画する
 	shadow_->SetDraw(true);
-
+	// ColliderをActiveに戻す
 	Collider::isActive_ = true;
 	stateParam_.isAlive_ = true;
 	stateParam_.isDead_ = false;
@@ -160,7 +112,7 @@ void Enemy::Reset(const Vector3& position)
 	stateParam_.enableMove_ = true;
 }
 
-void Enemy::OnCollisionEnter(Collider* other)
+void BaseEnemy::OnCollisionEnter(Collider* other)
 {
 	// プレイヤーの弾と当たっているなら
 	if (other->GetColliderName() == "PlayerBullet") {
@@ -173,7 +125,6 @@ void Enemy::OnCollisionEnter(Collider* other)
 	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial") {
 		Collider::isActive_ = false;
 		stateParam_.isAlive_ = false;
-		if (shieldWeapon_ != nullptr) { shieldWeapon_->SetIsActive(false); }
 		// 敵がノックバックする方向を取得
 		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
 		velocity_ = Vector3::ExprUnitZ.Transform(rotate);
@@ -193,12 +144,11 @@ void Enemy::OnCollisionEnter(Collider* other)
 	// プレイヤーのレティクルと当たっているなら
 	if (other->GetColliderName() == "PlayerReticle") {
 		stateParam_.hitReticle_ = true;
-		//Animation::GetRenderOptions().offscreen = false;
 		Collider::isActive_ = false;
 	}
 }
 
-void Enemy::OnCollisionStay(Collider* other)
+void BaseEnemy::OnCollisionStay(Collider* other)
 {
 	// プレイヤーと当たっているなら
 	if (other->GetColliderName() == "Player") {
@@ -218,77 +168,6 @@ void Enemy::OnCollisionStay(Collider* other)
 	}
 }
 
-void Enemy::OnCollisionExit(Collider* other)
+void BaseEnemy::OnCollisionExit(Collider* other)
 {
-	// プレイヤーと当たっているなら
-	// 敵と当たっているなら
-	if (other->GetColliderName() == "Player" ||
-		other->GetColliderName() == "Enemy") {
-	}
-}
-
-void Enemy::TypeInit()
-{
-	// タイプごとに作成する
-	switch (type_)
-	{
-	case EnemyType::Melee:
-	{
-		// 敵Animationの初期化
-		Animation::Initialize("Zombie_Basic.gltf");
-		Animation::PlayByName("Idle");
-		// 近接攻撃用のコライダーを作成
-		weapon_ = std::make_unique<EnemyAxe>(this);
-		weapon_->Init(ColliderType::Sphere, "EnemyMelee");
-	}
-	break;
-	case EnemyType::Ranged:
-	{
-		// 敵Animationの初期化
-		Animation::Initialize("Characters_Shaun.gltf");
-		Animation::PlayByName("Idle");
-		// 弾を1つ作成
-		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-		bullet->SetItem(items_);
-		bullet->Init("EnemyRanged", type_);
-		bullets_.push_back(std::move(bullet));
-	}
-	break;
-	case EnemyType::ShieldBearer:
-	{
-		// 敵Animationの初期化
-		Animation::Initialize("Zombie_Basic.gltf");
-		Animation::PlayByName("Idle");
-		// シールド用のコライダーを作成
-		shieldWeapon_ = std::make_unique<EnemyShield>(this);
-		shieldWeapon_->Init(ColliderType::OBB, "EnemyShield");
-		shieldWeapon_->SetIsActive(false);
-		// 攻撃コライダーを作成
-		weapon_ = std::make_unique<EnemyAxe>(this);
-		weapon_->Init(ColliderType::Sphere, "EnemyShieldBearer");
-	}
-	break;
-	case EnemyType::RangedElite:
-	{
-		// 敵Animationの初期化
-		Animation::Initialize("Characters_Shaun.gltf");
-		Animation::PlayByName("Idle");
-		// 弾を3つ作成
-		for (uint32_t i = 0; i < 3; ++i) {
-			std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
-			bullet->SetItem(items_);
-			bullet->Init("EnemyRangedElite", type_);
-			bullets_.push_back(std::move(bullet));
-		}
-	}
-	break;
-	default:
-		break;
-	}
-
-	Animation::SetSceneRenderer();
-	Animation::GetMaterial().enableDraw = false;
-	Animation::SetDrawBone(false);
-	Animation::GetTimeStop() = true;
-	transform_.scale_ *= 1.5f;
 }

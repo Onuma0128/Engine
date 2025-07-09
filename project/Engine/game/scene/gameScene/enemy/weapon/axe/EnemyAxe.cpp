@@ -1,9 +1,9 @@
 #include "EnemyAxe.h"
 
-#include "gameScene/enemy/Enemy.h"
+#include "gameScene/enemy/base/BaseEnemy.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 
-EnemyAxe::EnemyAxe(Enemy* enemy) : EnemyWeaponBase(enemy) {}
+EnemyAxe::EnemyAxe(BaseEnemy* enemy) : EnemyWeaponBase(enemy) {}
 
 void EnemyAxe::Finalize()
 {

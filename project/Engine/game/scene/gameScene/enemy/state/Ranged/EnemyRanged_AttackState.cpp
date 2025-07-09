@@ -4,12 +4,12 @@
 
 #include "DeltaTimer.h"
 
-#include "gameScene/enemy/enemy.h"
+#include "gameScene/enemy/base/BaseEnemy.h"
 #include "gameScene/enemy/bullet/EnemyBullet.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 #include "../EnemyMoveState.h"
 
-EnemyRanged_AttackState::EnemyRanged_AttackState(Enemy* enemy) :EnemyBaseState(enemy) {}
+EnemyRanged_AttackState::EnemyRanged_AttackState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 
 void EnemyRanged_AttackState::Init()
 {
@@ -25,8 +25,6 @@ void EnemyRanged_AttackState::Init()
 void EnemyRanged_AttackState::Finalize()
 {
 	enemy_->GetEffect()->SetBulletPredictionEffect(false);
-
-	//enemy_->PlayByName("Run");
 }
 
 void EnemyRanged_AttackState::Update()

@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\base\BaseEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameClear\gameClearUI\GameClearUI.cpp" />
     <ClCompile Include="Engine\game\scene\gameOver\gameOverUI\GameOverUI.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\ui\PlayerKillCountUI.cpp" />
@@ -146,7 +147,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\base\dxEngine\pipeline\blendState\BlendStateBase.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.cpp" />
     <ClCompile Include="Engine\engine\base\collider\Collision3D.cpp" />
-    <ClCompile Include="Engine\game\scene\gameScene\enemy\Enemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\ui\PlayerBulletUI.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerBaseState.cpp" />
     <ClCompile Include="Engine\engine\base\framework\DeltaTimer.cpp" />
@@ -233,8 +233,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\sceneFade\SceneFade.cpp" />
     <ClCompile Include="Engine\game\scene\titleScene\titleUI\TitleUI.cpp" />
     <ClCompile Include="Engine\engine\base\object\model\ModelInstanceRenderer.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\base\MeleeEnemy.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\base\ShieldBearerEnemy.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEnemy.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\base\BaseEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameClear\gameClearUI\GameClearUI.h" />
     <ClInclude Include="Engine\game\scene\gameOver\gameOverUI\GameOverUI.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\ui\PlayerKillCountUI.h" />
@@ -278,7 +283,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\math\PipelineStruct.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\effect\EnemyEffect.h" />
     <ClInclude Include="Engine\engine\base\collider\Collision3D.h" />
-    <ClInclude Include="Engine\game\scene\gameScene\enemy\Enemy.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\ui\PlayerBulletUI.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerBaseState.h" />
     <ClInclude Include="Engine\engine\base\framework\DeltaTimer.h" />
@@ -370,6 +374,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\sceneFade\SceneFade.h" />
     <ClInclude Include="Engine\game\scene\titleScene\titleUI\TitleUI.h" />
     <ClInclude Include="Engine\engine\base\object\model\ModelInstanceRenderer.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\base\MeleeEnemy.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\base\ShieldBearerEnemy.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEnemy.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

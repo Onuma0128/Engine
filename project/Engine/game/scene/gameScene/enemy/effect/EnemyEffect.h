@@ -7,7 +7,7 @@
 
 #include "WorldTransform.h"
 
-class Enemy;
+class BaseEnemy;
 
 class EnemyEffect
 {
@@ -19,7 +19,7 @@ public:
 
 	void Draw();
 
-	void SetEnemy(Enemy* enemy) { enemy_ = enemy; }
+	void SetEnemy(BaseEnemy* enemy) { enemy_ = enemy; }
 
 	// 弾がヒットした時のエフェクトを呼び出す
 	void OnceBulletHitEffect(const WorldTransform& transform);
@@ -41,7 +41,7 @@ private:
 
 private:
 
-	Enemy* enemy_ = nullptr;
+	BaseEnemy* enemy_ = nullptr;
 
 	// パーティクルを管理する
 	ParticleManager* particleManager_ = ParticleManager::GetInstance();

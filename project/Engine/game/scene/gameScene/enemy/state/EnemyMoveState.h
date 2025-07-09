@@ -6,7 +6,7 @@ class EnemyMoveState : public EnemyBaseState
 {
 public:
 
-	EnemyMoveState(Enemy* enemy);
+	EnemyMoveState(BaseEnemy* enemy);
 
 	void Init()override;
 

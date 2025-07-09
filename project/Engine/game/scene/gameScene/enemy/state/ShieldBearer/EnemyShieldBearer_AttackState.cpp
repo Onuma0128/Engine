@@ -2,16 +2,14 @@
 
 #include <memory>
 
-#include "Collider.h"
 #include "DeltaTimer.h"
 
-#include "gameScene/enemy/enemy.h"
+#include "gameScene/enemy/base/BaseEnemy.h"
 #include "gameScene/enemy/weapon/EnemyWeaponBase.h"
-#include "gameScene/enemy/weapon/axe/EnemyAxe.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 #include "../EnemyMoveState.h"
 
-EnemyShieldBearer_AttackState::EnemyShieldBearer_AttackState(Enemy* enemy) : EnemyBaseState(enemy) {}
+EnemyShieldBearer_AttackState::EnemyShieldBearer_AttackState(BaseEnemy* enemy) : EnemyBaseState(enemy) {}
 
 void EnemyShieldBearer_AttackState::Init()
 {

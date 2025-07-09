@@ -1,3 +1,3 @@
 #include "EnemyWeaponBase.h"
 
-EnemyWeaponBase::EnemyWeaponBase(Enemy* enemy) :enemy_(enemy) {}
+EnemyWeaponBase::EnemyWeaponBase(BaseEnemy* enemy) :enemy_(enemy) {}

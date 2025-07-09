@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 #include <memory>
-#include "gameScene/enemy/Enemy.h"
+#include "gameScene/enemy/base/BaseEnemy.h"
 
 #include "Object3d.h"
 #include "Collider.h"
@@ -17,7 +17,7 @@ public:
 
 	void Draw();
 
-	void EnemySpawn(Enemy* enemy);
+	void EnemySpawn(BaseEnemy* enemy);
 
 	/* ============================== ポインタ ============================== */
 	
@@ -32,7 +32,7 @@ public:
 
 	/* ============================== アクセッサ ============================== */
 
-	std::list<Enemy*>& GetEnemyList() { return enemys_; }
+	std::list<BaseEnemy*>& GetEnemyList() { return enemys_; }
 
 	uint32_t GetNockdownCount()const { return kNockdownCount_; }
 
@@ -44,7 +44,7 @@ private:
 	EnemyAdjustItem* items_ = nullptr;
 
 	// 敵のリスト
-	std::list<Enemy*> enemys_;
+	std::list<BaseEnemy*> enemys_;
 	// 敵を倒した数を保存する
 	uint32_t kNockdownCount_ = 0;
 

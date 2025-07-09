@@ -1,13 +1,13 @@
 #pragma once
 
-class Enemy;
+class BaseEnemy;
 
 class EnemyBaseState
 {
 public:
 
 	~EnemyBaseState() = default;
-	EnemyBaseState(Enemy* enemy);
+	EnemyBaseState(BaseEnemy* enemy);
 
 	virtual void Init() = 0;
 
@@ -19,5 +19,6 @@ public:
 
 protected:
 
-	Enemy* enemy_ = nullptr;
+	BaseEnemy* enemy_ = nullptr;
+
 };

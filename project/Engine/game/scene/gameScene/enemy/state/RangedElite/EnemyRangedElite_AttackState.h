@@ -6,7 +6,7 @@ class EnemyRangedElite_AttackState : public EnemyBaseState
 {
 public:
 
-	EnemyRangedElite_AttackState(Enemy* enemy);
+	EnemyRangedElite_AttackState(BaseEnemy* enemy);
 
 	void Init()override;
 

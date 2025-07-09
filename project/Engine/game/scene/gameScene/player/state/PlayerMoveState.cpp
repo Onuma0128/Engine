@@ -92,8 +92,8 @@ void PlayerMoveState::Update()
 		}
 	}
 
+	// StickのVelocityから回転を計算
 	if (rotateVelocity.Length() != 0.0f) {
-		// StickのVelocityから回転を計算
 		rightStickVelocity_ = rotateVelocity;
 		rightStickQuaternion_ = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rightStickVelocity_, 1.0f);
 		Quaternion target = Quaternion::Slerp(player_->GetRightStickQua(), rightStickQuaternion_, 0.3f);

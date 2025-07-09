@@ -3,7 +3,7 @@
 #include "DeltaTimer.h"
 #include "Easing.h"
 
-#include "gameScene/enemy/Enemy.h"
+#include "gameScene/enemy/base/BaseEnemy.h"
 #include "gameScene/enemy/type/EnemyType.h"
 #include "gameScene/enemy/adjustItem/EnemyAdjustItem.h"
 

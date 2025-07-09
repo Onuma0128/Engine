@@ -1,5 +1,5 @@
 {
-    "attackColliderSize": 0.5,
+    "attackColliderSize": 1.0,
     "attackColliderOffset": {
         "x": 0.0,
         "y": 0.6800000071525574,

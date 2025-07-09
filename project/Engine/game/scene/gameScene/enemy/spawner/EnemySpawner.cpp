@@ -49,7 +49,7 @@ void EnemySpawner::Draw()
 	}
 }
 
-void EnemySpawner::EnemySpawn(Enemy* enemy)
+void EnemySpawner::EnemySpawn(BaseEnemy* enemy)
 {
 	// 敵を生成
 	Vector3 pos = transform_.translation_;

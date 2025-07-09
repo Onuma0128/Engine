@@ -1,3 +1,4 @@
 #include "EnemyBaseState.h"
 
-EnemyBaseState::EnemyBaseState(Enemy* enemy) :enemy_(enemy) {}
+EnemyBaseState::EnemyBaseState(BaseEnemy* enemy) :enemy_(enemy) {}
+

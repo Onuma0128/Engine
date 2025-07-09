@@ -4,14 +4,14 @@
 #include "Object3d.h"
 #include "Collider.h"
 
-class Enemy;
+class BaseEnemy;
 
 class EnemyWeaponBase : public Object3d, public Collider
 {
 public:
 
 	~EnemyWeaponBase() = default;
-	EnemyWeaponBase(Enemy* enemy);
+	EnemyWeaponBase(BaseEnemy* enemy);
 
 	virtual void Finalize() = 0;
 
@@ -23,7 +23,7 @@ public:
 
 protected:
 
-	Enemy* enemy_ = nullptr;
+	BaseEnemy* enemy_ = nullptr;
 
 };
 

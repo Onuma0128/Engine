@@ -6,7 +6,7 @@ class EnemyAxe : public EnemyWeaponBase
 {
 public:
 
-	EnemyAxe(Enemy* enemy);
+	EnemyAxe(BaseEnemy* enemy);
 
 	void Finalize() override;
 

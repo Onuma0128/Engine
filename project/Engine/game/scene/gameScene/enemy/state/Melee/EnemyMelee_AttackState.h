@@ -6,7 +6,7 @@ class EnemyMelee_AttackState : public EnemyBaseState
 {
 public:
 
-	EnemyMelee_AttackState(Enemy* enemy);
+	EnemyMelee_AttackState(BaseEnemy* enemy);
 
 	void Init()override;
 
@@ -19,7 +19,6 @@ public:
 private:
 
 	float chengeStateTime_ = 0.0f;
-
 	bool chengeAniamtion_ = false;
 
 };
