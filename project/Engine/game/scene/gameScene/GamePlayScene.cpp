@@ -5,8 +5,6 @@
 #include "SceneManager.h"
 #include "SceneJsonLoader.h"
 
-#include "gameScene/enemy/Enemy.h"
-
 #include "Collision3D.h"
 #include "Vector3.h"
 
