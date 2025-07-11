@@ -83,7 +83,7 @@ void PlayerEffect::UpdatePostEffect()
 {
 	const float expandDuration = 1.0f;  // 60フレーム
 	const float holdDuration = 3.0f;	// 180フレーム
-	const float shrinkDuration = 1.0f;  // 60フレーム
+	const float shrinkDuration = 0.5f;  // 60フレーム
 
 	float delta = 1.0f / 60.0f;
 
@@ -116,7 +116,7 @@ void PlayerEffect::UpdatePostEffect()
 		{
 			// PostEffectへの値を適応
 			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 1.0f;
-			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.5f);
+			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.2f);
 
 			if (Input::GetInstance()->GetGamepadLeftTrigger() == 0.0f &&
 				specialMoveFrame_ >= holdDuration) {
@@ -150,7 +150,7 @@ void PlayerEffect::UpdatePostEffect()
 				DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = 0.0f;
 				cylinder_->GetTransform().scale = {};
 				cylinder_->GetRenderOptions().enabled = false;
-				player_->SpecialAttackBullet();
+				//player_->SpecialAttackBullet();
 			}
 		}
 		break;
@@ -159,7 +159,7 @@ void PlayerEffect::UpdatePostEffect()
 		if (isSpecialMove_) {
 			specialMoveState_ = SpecialMoveState::Expanding;
 			cylinder_->GetRenderOptions().enabled = true;
-			DeltaTimer::SetTimeScaleForSeconds(0.1f, 2.0f);
+			DeltaTimer::SetTimeScaleForSeconds(0.1f, 5.0f);
 		}
 		break;
 

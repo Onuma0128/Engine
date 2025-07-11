@@ -82,6 +82,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BigBarn.obj");
 
 	ModelManager::GetInstance()->LoadModel("resources/player", "Player.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/player", "BrainStem.gltf");
 
 	ModelManager::GetInstance()->LoadModel("resources/enemy/shield", "Shield_Heater.obj");
 	ModelManager::GetInstance()->LoadModel("resources/enemy", "Zombie_Basic.gltf");

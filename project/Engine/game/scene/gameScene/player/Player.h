@@ -5,6 +5,7 @@
 
 #include "Animation.h"
 #include "Collider.h"
+#include "Collision3D.h"
 #include "SceneJsonLoader.h"
 #include "JsonFunction.h"
 
@@ -60,6 +61,8 @@ public:
 
 	void SetIsAvoid(bool flag) { isAvoid_ = flag; }
 
+	bool GetIsPushMove()const { return isPushMove_; }
+
 private:
 
 	void BulletInit();
@@ -94,6 +97,8 @@ private:
 	bool isAlive_ = true;
 	// 今避けているのか
 	bool isAvoid_ = false;
+	// 押し出し処理をしているか
+	bool isPushMove_ = false;
 	// マウスを使ってプレイしているか
 	bool isPlayingMouse_ = false;
 

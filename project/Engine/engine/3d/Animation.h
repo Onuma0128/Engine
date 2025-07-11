@@ -30,6 +30,7 @@ public:
 	// 再生するアニメーションを選択
 	void Play(size_t idx, float fadeTime = 0.3f);
 	bool PlayByName(const std::string& clipName, float fadeTime = 0.3f);
+	void SetAnimationTime(float animationTime) { animationTime_ = animationTime; }
 
 	/*==================== アクセッサ ====================*/
 

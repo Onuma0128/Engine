@@ -39,7 +39,8 @@ void PlayerAvoidState::Update()
 {
 	PlayerData data = player_->GetItem()->GetPlayerData();
 
-	const float speed = data.avoid_speed;
+	float speed = data.avoid_speed;
+	if (player_->GetIsPushMove()) { speed = data.speed; }
 	avoidTime_ += DeltaTimer::GetDeltaTime() * (1.0f / data.avoidTime);
 	avoidTime_ = std::clamp(avoidTime_, 0.0f, 1.0f);
 
@@ -49,12 +50,10 @@ void PlayerAvoidState::Update()
 	player_->GetTransform().rotation_ = rotateY_ * rotateX;
 	// 座標を更新
 	player_->GetTransform().translation_ += velocity_ * speed * DeltaTimer::GetDeltaTime();
-
 	velocityY_ -= acceleration_ * DeltaTimer::GetDeltaTime();
 	player_->GetTransform().translation_.y += velocityY_;
 
 	if (avoidTime_ >= 1.0f) {
-		player_->PlayByName("Idle");
 		player_->GetTimeStop() = false;
 		player_->SetIsAvoid(false);
 		player_->GetTransform().translation_.y = 0.0f;

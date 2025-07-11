@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 
+#include "DeltaTimer.h"
 #include "state/PlayerMoveState.h"
 
 void Player::Init(SceneJsonLoader loader)
@@ -21,7 +22,7 @@ void Player::Init(SceneJsonLoader loader)
 	}
 	Animation::Initialize(player.fileName);
 	Animation::SetSceneRenderer();
-	Animation::PlayByName("Idle_Gun");
+	Animation::PlayByName("Idle_Gun", 0.0f);
 	transform_ = player.transform;
 	if (player.collider.active) {
 		Collider::AddCollider();
@@ -29,6 +30,7 @@ void Player::Init(SceneJsonLoader loader)
 		Collider::myType_ = player.collider.type;
 		Collider::offsetPosition_ = player.collider.center;
 		Collider::size_ = player.collider.size;
+		Collider::radius_ = player.collider.radius;
 		Collider::DrawCollider();
 	}
 
@@ -156,10 +158,34 @@ void Player::OnCollisionEnter(Collider* other)
 
 void Player::OnCollisionStay(Collider* other)
 {
+	// 建物系の押し出し判定(OBB,Sphere)、木の押し出し判定(OBB)
+	if (other->GetColliderName() == "Building" || 
+		other->GetColliderName() == "DeadTree" ||
+		other->GetColliderName() == "fence") {
+		isPushMove_ = true;
+		Vector3 push{};
+		if (other->GetMyColliderType() == ColliderType::OBB) {
+			push = Collision3D::GetOBBSpherePushVector(other, this);
+		} else if (other->GetMyColliderType() == ColliderType::Sphere) {
+			push = Collision3D::GetSphereSpherePushVector(other, this);
+		}
+		push.y = 0.0f;
+		transform_.translation_ += push * items_->GetPlayerData().pushSpeed * DeltaTimer::GetDeltaTime();
+		Collider::centerPosition_ = transform_.translation_;
+		Collider::Update();
+		Animation::TransformUpdate();
+	}
 }
 
 void Player::OnCollisionExit(Collider* other)
 {
+	// 建物系の押し出し判定(OBB,Sphere)
+	// 木の押し出し判定(OBB)
+	if (other->GetColliderName() == "Building" || 
+		other->GetColliderName() == "DeadTree" ||
+		other->GetColliderName() == "fence") {
+		isPushMove_ = false;
+	}
 }
 
 void Player::ReloadBullet()
@@ -192,21 +218,24 @@ void Player::AttackBullet()
 
 void Player::SpecialAttackBullet()
 {
-	if (reticle_->GetEnemyTransforms().empty()) { return; }
-	for (auto& bullet : specialBullets_) {
-		bullet->Reload(WorldTransform());
-	}
 	// 敵のTransformを取得した分だけ回す
-	uint32_t count = 0;
-	for (auto& transform : reticle_->GetEnemyTransforms()) {
-		Vector3 dir = (transform.translation_ - transform_.translation_).Normalize();
-		transform.rotation_ = Quaternion::DirectionToQuaternion(transform.rotation_, dir, 1.0f);
-		transform.translation_ = transform_.translation_;
-		specialBullets_[count]->Attack(transform, items_->GetBulletData().speed_sp);
-		++count;
+	uint32_t count = static_cast<uint32_t>(reticle_->GetEnemyTransforms().size() - 1);
+	auto& transform = reticle_->GetEnemyTransforms().back();
+
+	Vector3 dir = (transform.translation_ - transform_.translation_).Normalize();
+	transform.rotation_ = Quaternion::DirectionToQuaternion(transform.rotation_, dir, 1.0f);
+	transform.translation_ = transform_.translation_;
+	transform_.rotation_ = transform.rotation_;
+	specialBullets_[count]->Attack(transform, items_->GetBulletData().speed_sp);
+	reticle_->GetEnemyTransforms().pop_back();
+
+	if (reticle_->GetEnemyTransforms().empty()) {
+		for (auto& bullet : specialBullets_) {
+			bullet->Reload(WorldTransform());
+		}
+		reticle_->GetEnemyTransforms().clear();
+		reticle_->ResetHitCount();
 	}
-	reticle_->GetEnemyTransforms().clear();
-	reticle_->ResetHitCount();
 }
 
 void Player::BulletInit()

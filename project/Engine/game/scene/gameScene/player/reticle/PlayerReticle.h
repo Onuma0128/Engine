@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <list>
 
 #include "WorldTransform.h"
 #include "Collider.h"
@@ -24,7 +25,7 @@ public:
 
 	void SetColliderActive(bool flag) { Collider::isActive_ = flag; }
 
-	std::vector<WorldTransform>& GetEnemyTransforms() { return enemyTransforms_; }
+	std::list<WorldTransform>& GetEnemyTransforms() { return enemyTransforms_; }
 	void ResetHitCount() { 
 		hitCount_ = 0;
 		Collider::isActive_ = false;
@@ -37,7 +38,7 @@ private:
 private:
 
 	// 敵のTransformを取得用
-	std::vector<WorldTransform> enemyTransforms_;
+	std::list<WorldTransform> enemyTransforms_;
 	// 何体敵と当たったかカウント用
 	uint32_t hitCount_ = 0;
 

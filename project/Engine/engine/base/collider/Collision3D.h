@@ -33,6 +33,7 @@ public:
 
 	// 球と球の衝突判定
 	static bool SphereSphere(const Collider* a, const Collider* b);
+	static Vector3 GetSphereSpherePushVector(const Collider* a, const Collider* b);
 
 	// AABBと球の衝突判定
 	static bool AABBSphere(const AABB aabb, const Sphere sphere);
@@ -42,6 +43,8 @@ public:
 
 	// OBBと球の衝突判定 
 	static bool OBBSphere(const Collider* a, const Collider* b);
+	// OBBと球の押し出し処理
+	static Vector3 GetOBBSpherePushVector(const Collider* a, const Collider* b);
 
 	// OBBとSegmentの衝突判定
 	static bool OBBSegment(const Collider* a, const Collider* b);

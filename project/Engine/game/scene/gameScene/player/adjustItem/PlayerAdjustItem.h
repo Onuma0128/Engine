@@ -5,6 +5,8 @@
 // プレイヤーの項目
 struct PlayerData {
 	float speed;				// 移動速度
+	float backSpeed;			// 後ろ歩きの移動速度
+	float pushSpeed;			// 押し出し判定の押し出し速度
 
 	float avoidTime;			// 避けの時間
 	float avoid_speed;			// 避けの速度
