@@ -4,7 +4,6 @@
 #include "BaseScene.h"
 
 #include "Camera.h"
-#include "Animation.h"
 #include "scene/sceneFade/SceneFade.h"
 #include "scene/titleScene/titleUI/TitleUI.h"
 
@@ -28,7 +27,5 @@ private:
 	bool isFade_ = false;
 
 	std::unique_ptr<TitleUI> titleUI_ = nullptr;
-
-	std::vector<std::unique_ptr<Animation>> testAnimas_;
 
 };

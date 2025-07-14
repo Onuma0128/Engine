@@ -237,6 +237,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\ShieldBearerEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\BaseEnemy.h" />
@@ -378,6 +379,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\ShieldBearerEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

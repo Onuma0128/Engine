@@ -14,7 +14,6 @@ void RangedEnemy::Initialize()
 	Animation::GetMaterial().enableDraw = false;
 	Animation::SetDrawBone(false);
 	Animation::GetTimeStop() = true;
-	Animation::transform_.scale_ *= 1.5f;
 
 	// 弾を1つ作成
 	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();

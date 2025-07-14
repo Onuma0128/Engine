@@ -384,6 +384,9 @@
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\2d\LoadTexture.h">
@@ -801,6 +804,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -22,23 +22,6 @@ void TitleScene::Initialize()
 
 	titleUI_ = std::make_unique<TitleUI>();
 	titleUI_->Init();
-
-	for (uint32_t i = 0; i < 8; ++i) {
-		for (uint32_t j = 0; j < 8; ++j) {
-			std::unique_ptr<Animation> animation = std::make_unique<Animation>();
-			animation->Initialize("BrainStem.gltf");
-			animation->SetSceneRenderer();
-			float posX = (static_cast<float>(i) - 4.0f);
-			float posZ = (static_cast<float>(j) - 4.0f);
-			EulerTransform transform = { {1.0f,1.0f,1.0f},{0.0f,180.0f,0.0f},{posX,1.0f,posZ} };
-			animation->GetTransform().rotation_ = Vector3::FromEuler(transform.rotation);
-			animation->GetTransform().translation_ = transform.translation;
-			float time = static_cast<float>(i) / 14.0f + static_cast<float>(j) / 14.0f;
-			animation->SetAnimationTime(time);
-			animation->SetColor(Vector4{ 1.0f ,time ,time ,1.0f });
-			testAnimas_.push_back(std::move(animation));
-		}
-	}
 }
 
 void TitleScene::Finalize()
@@ -54,10 +37,6 @@ void TitleScene::Update()
 	titleUI_->Update();
 
 	sceneFade_->Update();
-
-	for (auto& animation : testAnimas_) {
-		animation->Update();
-	}
 
     if ((input->TriggerGamepadButton(XINPUT_GAMEPAD_A) || input->TriggerKey(DIK_SPACE)) && !isFade_) {
 		isFade_ = true;

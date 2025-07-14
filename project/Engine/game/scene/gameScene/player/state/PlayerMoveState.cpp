@@ -7,6 +7,7 @@
 #include "Camera.h"
 
 #include "gameScene/player/Player.h"
+#include "gameScene/player/bullet/PlayerShot.h"
 #include "PlayerAvoidState.h"
 #include "PlayerSpecialMoveState.h"
 

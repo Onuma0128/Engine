@@ -14,7 +14,6 @@ void RangedEliteEnemy::Initialize()
 	Animation::GetMaterial().enableDraw = false;
 	Animation::SetDrawBone(false);
 	Animation::GetTimeStop() = true;
-	Animation::transform_.scale_ *= 1.5f;
 
 	// 弾を3つ作成
 	for (uint32_t i = 0; i < 3; ++i) {

@@ -17,7 +17,6 @@ void MeleeEnemy::Initialize()
 	Animation::GetMaterial().enableDraw = false;
 	Animation::SetDrawBone(false);
 	Animation::GetTimeStop() = true;
-	Animation::transform_.scale_ *= 1.5f;
 
 	// 近接攻撃用のコライダーを作成
 	weapon_ = std::make_unique<EnemyAxe>(this);

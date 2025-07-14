@@ -98,7 +98,6 @@ void BaseEnemy::Reset(const Vector3& position)
 	// 描画をする
 	Animation::GetMaterial().enableDraw = true;
 	// Transformを初期化
-	transform_.scale_ = { 1.5f,1.5f,1.5f };
 	transform_.rotation_ = Quaternion::IdentityQuaternion();
 	transform_.translation_ = position;
 	Animation::TransformUpdate();
