@@ -73,7 +73,7 @@ void PlayerReticle::OnCollisionEnter(Collider* other)
 		++hitCount_;
 		WorldTransform transform;
 		transform.translation_ = other->GetCenterPosition();
-		enemyTransforms_.push_back(transform);
+		enemyTransforms_.push_front(transform);
 	}
 }
 

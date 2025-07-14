@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 
+#include "DeltaTimer.h"
 #include "state/PlayerMoveState.h"
 
 void Player::Init(SceneJsonLoader loader)
@@ -21,7 +22,7 @@ void Player::Init(SceneJsonLoader loader)
 	}
 	Animation::Initialize(player.fileName);
 	Animation::SetSceneRenderer();
-	Animation::PlayByName("Idle_Gun");
+	Animation::PlayByName("Idle_Gun", 0.0f);
 	transform_ = player.transform;
 	if (player.collider.active) {
 		Collider::AddCollider();
@@ -29,6 +30,7 @@ void Player::Init(SceneJsonLoader loader)
 		Collider::myType_ = player.collider.type;
 		Collider::offsetPosition_ = player.collider.center;
 		Collider::size_ = player.collider.size;
+		Collider::radius_ = player.collider.radius;
 		Collider::DrawCollider();
 	}
 
@@ -42,15 +44,7 @@ void Player::Init(SceneJsonLoader loader)
 	reticle_ = std::make_unique<PlayerReticle>();
 	reticle_->Init();
 
-	BulletInit();
-	PredictionObjInit();
-
-	rightStickQuaternion_ = Quaternion::IdentityQuaternion();
-}
-
-void Player::GlobalInit()
-{
-
+	PlayerShot::Init(this);
 }
 
 void Player::Update()
@@ -63,51 +57,9 @@ void Player::Update()
 
 	effect_->Update();
 
-	// 今リロードが終わっている弾のを取得する
-	size_t bulletCount = 0;
-	// キル数を保持する
-	kNockdownCount_ = 0;
-	// 弾の更新,弾UIの更新
-	for (auto& bullet : bullets_) {
-		bullet->Update();
-		// 弾が消えた時のコールバック関数
-		bullet->SetOnDeactivateCallback([]() {});
-		// 弾のリロードが終わっているならカウントに追加
-		if (bullet->GetIsReload()) { ++bulletCount; }
-		// キル数を取得
-		kNockdownCount_ += bullet->GetNockdownCount();
-	}
-	for (auto& bullet : specialBullets_) {
-		bullet->Update();
-		// 弾が消えた時のコールバック関数
-		bullet->SetOnDeactivateCallback([]() {});
-		// キル数を取得
-		kNockdownCount_ += bullet->GetNockdownCount();
-	}
-
-	killCountUI_->Update(kNockdownCount_);
-
-	size_t bulletUICount = 0;
-	for (auto& bulletUI : bulletUIs_) {
-		bulletUI->Update(
-			items_->GetBulletUIData().size,
-			Vector2{ (bulletUICount * items_->GetBulletUIData().position.x) + items_->GetBulletUIData().startPosition,items_->GetBulletUIData().position.y });
-		++bulletUICount;
-
-		if (bulletCount >= bulletUICount) {
-			bulletUI->GetRenderOptions().enabled = true;
-		} else {
-			bulletUI->GetRenderOptions().enabled = false;
-		}
-	}
-
-	for (size_t i = 0; i < predictionObjects_.size(); ++i) {
-		float interval = items_->GetPreObjectData().interval;
-		Vector3 startPosition = items_->GetPreObjectData().startPosition;
-		predictionObjects_[i]->Update(
-			(Vector3::ExprUnitZ * (static_cast<float>(i) * interval) + startPosition)
-		);
-	}
+	// 弾の更新
+	PlayerShot::Update();
+	PlayerShot::UpdateUI();
 
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
@@ -124,13 +76,8 @@ void Player::Draw()
 {	
 	reticle_->Draw();
 
-	killCountUI_->Draw();
-
-	for (auto& bulletUI : bulletUIs_) {
-		if (bulletUI->GetRenderOptions().enabled) {
-			bulletUI->Draw();
-		}
-	}
+	// 弾UIのDraw処理
+	PlayerShot::DrawUI();
 }
 
 void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)
@@ -156,91 +103,32 @@ void Player::OnCollisionEnter(Collider* other)
 
 void Player::OnCollisionStay(Collider* other)
 {
+	// 建物系の押し出し判定(OBB,Sphere)、木の押し出し判定(OBB)
+	if (other->GetColliderName() == "Building" || 
+		other->GetColliderName() == "DeadTree" ||
+		other->GetColliderName() == "fence") {
+		isPushMove_ = true;
+		Vector3 push{};
+		if (other->GetMyColliderType() == ColliderType::OBB) {
+			push = Collision3D::GetOBBSpherePushVector(other, this);
+		} else if (other->GetMyColliderType() == ColliderType::Sphere) {
+			push = Collision3D::GetSphereSpherePushVector(other, this);
+		}
+		push.y = 0.0f;
+		transform_.translation_ += push * items_->GetPlayerData().pushSpeed * DeltaTimer::GetDeltaTime();
+		Collider::centerPosition_ = transform_.translation_;
+		Collider::Update();
+		Animation::TransformUpdate();
+	}
 }
 
 void Player::OnCollisionExit(Collider* other)
 {
-}
-
-void Player::ReloadBullet()
-{
-	// 動きが終わっている弾からリロードをする
-	for (auto& bullet : bullets_) {
-		if (!bullet->GetIsActive() && !bullet->GetIsReload()) {
-			WorldTransform transform;
-			transform.rotation_ = rightStickQuaternion_;
-			transform.translation_ = transform_.translation_;
-			bullet->Reload(transform, true);
-			break;
-		}
-	}
-}
-
-void Player::AttackBullet()
-{
-	// リロードが終わっていて動いていない弾を発射する
-	for (auto& bullet : bullets_) {
-		if (!bullet->GetIsActive() && bullet->GetIsReload()) {
-			WorldTransform transform;
-			transform.rotation_ = rightStickQuaternion_;
-			transform.translation_ = transform_.translation_;
-			bullet->Attack(transform, items_->GetBulletData().speed);
-			break;
-		}
-	}
-}
-
-void Player::SpecialAttackBullet()
-{
-	if (reticle_->GetEnemyTransforms().empty()) { return; }
-	for (auto& bullet : specialBullets_) {
-		bullet->Reload(WorldTransform());
-	}
-	// 敵のTransformを取得した分だけ回す
-	uint32_t count = 0;
-	for (auto& transform : reticle_->GetEnemyTransforms()) {
-		Vector3 dir = (transform.translation_ - transform_.translation_).Normalize();
-		transform.rotation_ = Quaternion::DirectionToQuaternion(transform.rotation_, dir, 1.0f);
-		transform.translation_ = transform_.translation_;
-		specialBullets_[count]->Attack(transform, items_->GetBulletData().speed_sp);
-		++count;
-	}
-	reticle_->GetEnemyTransforms().clear();
-	reticle_->ResetHitCount();
-}
-
-void Player::BulletInit()
-{
-	// 弾を初期化
-	bullets_.resize(6);
-	specialBullets_.resize(6);
-	bulletUIs_.resize(6);
-	for (auto& bullet : bullets_) {
-		bullet = std::make_unique<PlayerBullet>();
-		bullet->SetItem(items_.get());
-		bullet->Init("PlayerBullet");
-	}
-	for (auto& bullet : specialBullets_) {
-		bullet = std::make_unique<PlayerBullet>();
-		bullet->SetItem(items_.get());
-		bullet->Init("PlayerBulletSpecial");
-	}
-	// 弾UIを初期化
-	for (size_t i = 0; i < bulletUIs_.size(); ++i) {
-		bulletUIs_[i] = std::make_unique<PlayerBulletUI>();
-		bulletUIs_[i]->Init(Vector2{ (i * 32.0f) + 32.0f,32.0f });
-	}
-	// Kill数UIの初期化
-	killCountUI_ = std::make_unique<PlayerKillCountUI>();
-	killCountUI_->Init();
-}
-
-void Player::PredictionObjInit()
-{
-	// 弾の予測オブジェクトの初期化
-	for (auto& object : predictionObjects_) {
-		object = std::make_unique<PredictionObject>();
-		object->SetPlayer(this);
-		object->Init();
+	// 建物系の押し出し判定(OBB,Sphere)
+	// 木の押し出し判定(OBB)
+	if (other->GetColliderName() == "Building" || 
+		other->GetColliderName() == "DeadTree" ||
+		other->GetColliderName() == "fence") {
+		isPushMove_ = false;
 	}
 }

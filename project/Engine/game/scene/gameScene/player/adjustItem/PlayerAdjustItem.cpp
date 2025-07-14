@@ -9,12 +9,16 @@ void PlayerAdjustItem::LoadItems()
 	playerJson_.Init("Player");
 	if (!playerJson_.Load()) {
 		playerJson_.Set("speed", 1.0f);
+		playerJson_.Set("backSpeed", 1.0f);
+		playerJson_.Set("pushSpeed", 1.0f);
 		playerJson_.Set("avoidTime", 1.0f);
 		playerJson_.Set("avoid_speed", 1.0f);
 		playerJson_.Set("avoid_velocityY", 1.0f);
 		playerJson_.Set("avoid_acceleration", 1.0f);
 	} else {
 		playerData_.speed = playerJson_.Get("speed", playerData_.speed);
+		playerData_.backSpeed = playerJson_.Get("backSpeed", playerData_.backSpeed);
+		playerData_.pushSpeed = playerJson_.Get("pushSpeed", playerData_.pushSpeed);
 		playerData_.avoidTime = playerJson_.Get("avoidTime", playerData_.avoidTime);
 		playerData_.avoid_speed = playerJson_.Get("avoid_speed", playerData_.avoid_speed);
 		playerData_.avoid_velocityY = playerJson_.Get("avoid_velocityY", playerData_.avoid_velocityY);
@@ -76,6 +80,8 @@ void PlayerAdjustItem::Editor()
 	if (ImGui::TreeNode("Player")) {
 
 		ImGui::DragFloat("speed", &playerData_.speed, 0.01f);
+		ImGui::DragFloat("backSpeed", &playerData_.backSpeed, 0.01f);
+		ImGui::DragFloat("pushSpeed", &playerData_.pushSpeed, 0.01f);
 		ImGui::Separator();
 		ImGui::DragFloat("avoidTime", &playerData_.avoidTime, 0.01f);
 		ImGui::DragFloat("avoid_speed", &playerData_.avoid_speed, 0.01f);
@@ -84,6 +90,8 @@ void PlayerAdjustItem::Editor()
 
 		if (ImGui::Button("Save")) {
 			playerJson_.Set("speed", playerData_.speed);
+			playerJson_.Set("backSpeed", playerData_.backSpeed);
+			playerJson_.Set("pushSpeed", playerData_.pushSpeed);
 			playerJson_.Set("avoidTime", playerData_.avoidTime);
 			playerJson_.Set("avoid_speed", playerData_.avoid_speed);
 			playerJson_.Set("avoid_velocityY", playerData_.avoid_velocityY);

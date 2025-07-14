@@ -18,7 +18,6 @@ void ShieldBearerEnemy::Initialize()
 	Animation::GetMaterial().enableDraw = false;
 	Animation::SetDrawBone(false);
 	Animation::GetTimeStop() = true;
-	Animation::transform_.scale_ *= 1.5f;
 
 	// シールド用のコライダーを作成
 	shieldWeapon_ = std::make_unique<EnemyShield>(this);

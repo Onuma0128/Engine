@@ -7,6 +7,7 @@
 #include "Camera.h"
 
 #include "gameScene/player/Player.h"
+#include "gameScene/player/bullet/PlayerShot.h"
 #include "PlayerAvoidState.h"
 #include "PlayerSpecialMoveState.h"
 
@@ -61,12 +62,12 @@ void PlayerMoveState::Update()
 	Input* input = Input::GetInstance();
 
 	// 後ろ歩きしているか
-	float power = 0.0f;
-	if (isReversePlay_) { power = 0.5f; }
-	else { power = 1.0f; }
+	float speed = 0.0f;
+	if (isReversePlay_) { speed = player_->GetItem()->GetPlayerData().backSpeed; }
+	else { speed = player_->GetItem()->GetPlayerData().speed; }
 
 	// 移動の処理
-	const float playerSpeed = player_->GetItem()->GetPlayerData().speed * power;
+	const float playerSpeed = speed;
 	Vector3 moveVelocity = CreateMoveVelocity();
 	player_->GetTransform().translation_ += moveVelocity * DeltaTimer::GetDeltaTime() * playerSpeed;
 
@@ -81,7 +82,7 @@ void PlayerMoveState::Update()
 	// 右のスティックの入力が無ければ
 	} else {
 		// マウスを取得するか
-		if (input->TriggerMouseButton(0) && input->PushMouseButton(1) && !player_->GetIsPlayingMouse()) {
+		if (input->TriggerMouseButton(0) && !player_->GetIsPlayingMouse()) {
 			player_->SetIsPlayingMouse(true);
 
 		} else if (player_->GetIsPlayingMouse()) {
@@ -255,7 +256,7 @@ const Vector3 PlayerMoveState::CreateRotateVelocity()
 	// 地面と平行か計算
 	const float EPS = 1e-6f;
 	if (std::fabs(denom) > EPS) {
-		float planeY = 0.5f;
+		float planeY = 1.5f;
 		float t = (planeY - nearPos.y) / denom;
 		if (t >= 0.0f) {
 			hitPos = nearPos + dir * t;

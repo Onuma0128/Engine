@@ -17,6 +17,31 @@ bool Collision3D::SphereSphere(const Collider* a, const Collider* b)
 	}
 }
 
+Vector3 Collision3D::GetSphereSpherePushVector(const Collider* a, const Collider* b) {
+	Sphere sA = ChangeSphere(a);
+	Sphere sB = ChangeSphere(b);
+
+	Vector3 dir = sB.center - sA.center;
+	float dist = dir.Length();
+	float penetration = sA.radius + sB.radius - dist;
+
+	// 重なっていない or ちょうど接触している
+	if (penetration <= 0.0f) {
+		return Vector3{ 0, 0, 0 };
+	}
+
+	if (dist < 1e-5f) {
+		// 完全に重なってる → 適当な方向に押し出す
+		dir = Vector3{ 0, 1, 0 };
+		dist = 1.0f;
+	}
+
+	// A を B から押し出すベクトル
+	Vector3 pushDir = dir.Normalize();
+	return pushDir * penetration;
+}
+
+
 bool Collision3D::AABBSphere(const AABB aabb, const Sphere sphere)
 {
 	//最近接点を求める
@@ -99,6 +124,67 @@ bool Collision3D::OBBSphere(const Collider* a, const Collider* b)
 	} else {
 		return false;
 	}
+}
+
+Vector3 Collision3D::GetOBBSpherePushVector(const Collider* a, const Collider* b) {
+	OBB obb = ChangeOBB(a);
+	Sphere sphere = ChangeSphere(b);
+
+	// OBBのワールド→ローカル変換行列
+	Matrix4x4 worldToLocal = Matrix4x4::Identity();
+	for (int i = 0; i < 3; ++i) {
+		worldToLocal.m[i][0] = obb.rotateMatrix.m[i][0];
+		worldToLocal.m[i][1] = obb.rotateMatrix.m[i][1];
+		worldToLocal.m[i][2] = obb.rotateMatrix.m[i][2];
+	}
+	worldToLocal.m[3][0] = obb.center.x;
+	worldToLocal.m[3][1] = obb.center.y;
+	worldToLocal.m[3][2] = obb.center.z;
+	worldToLocal.m[3][3] = 1.0f;
+
+	Matrix4x4 localToWorld = Matrix4x4::Inverse(worldToLocal);
+	Vector3 sphereLocal = Vector3::Transform(sphere.center, localToWorld);
+
+	AABB aabb = { -obb.size, obb.size };
+	Vector3 closest = {
+		std::clamp(sphereLocal.x, aabb.min.x, aabb.max.x),
+		std::clamp(sphereLocal.y, aabb.min.y, aabb.max.y),
+		std::clamp(sphereLocal.z, aabb.min.z, aabb.max.z)
+	};
+
+	Vector3 pushLocal = sphereLocal - closest;
+	float len = pushLocal.Length();
+
+	// ① 通常の押し出し（外部から接触）
+	if (len > 1e-5f) {
+		float penetration = sphere.radius - len;
+		if (penetration > 0.0f) {
+			Vector3 push = pushLocal.Normalize() * penetration;
+			return Vector3::TransformNormal(push, obb.rotateMatrix);
+		}
+	}
+
+	// ② 完全内部にめり込んでいる場合（中心がAABB内）
+	bool isInsideOBB =
+		(sphereLocal.x > aabb.min.x && sphereLocal.x < aabb.max.x) &&
+		(sphereLocal.y > aabb.min.y && sphereLocal.y < aabb.max.y) &&
+		(sphereLocal.z > aabb.min.z && sphereLocal.z < aabb.max.z);
+
+	if (isInsideOBB) {
+		// 中心間ベクトルを使った押し出し
+		Vector3 dir = sphere.center - obb.center;
+		float dist = dir.Length();
+		if (dist < 1e-5f) {
+			dir = Vector3{ 0, 1, 0 }; // ゼロ距離回避
+			dist = 1.0f;
+		}
+		float penetration = sphere.radius;
+		Vector3 push = dir.Normalize() * penetration;
+		return push;
+	}
+
+	// 押し出し不要
+	return Vector3{};
 }
 
 bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
