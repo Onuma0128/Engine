@@ -16,7 +16,7 @@
 
 #include "gameScene/player/bullet/PlayerShot.h"
 
-class Player : public Animation,Collider,public PlayerShot
+class Player : public Animation,Collider
 {
 public:
 
@@ -33,6 +33,7 @@ public:
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
 
+	PlayerShot* GetShot() { return shot_.get(); }
 	PlayerEffect* GetEffect() { return effect_.get(); }
 	PlayerReticle* GetReticle() { return reticle_.get(); }
 	PlayerAdjustItem* GetItem() const { return items_.get(); }
@@ -47,6 +48,8 @@ private:
 
 	// 状態遷移
 	std::unique_ptr<PlayerBaseState> state_ = nullptr;
+	// 弾
+	std::unique_ptr<PlayerShot> shot_ = nullptr;
 	// エフェクト
 	std::unique_ptr<PlayerEffect> effect_ = nullptr;
 	// 必殺技時にロックオンするためのレティクル

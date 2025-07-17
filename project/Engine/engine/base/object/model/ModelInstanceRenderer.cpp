@@ -313,8 +313,8 @@ void ModelInstanceRenderer::AllDraw()
         if (batch.count == 0) continue;
 
         /* ---------- IA 共通バインド ---------- */
+        ObjUpdate();
         for (auto& object : batch.objects) {
-            ObjUpdate();
             object->Draw();
         }
         model->BindBuffers(false);
@@ -337,8 +337,8 @@ void ModelInstanceRenderer::AllDraw()
         if (batch.count == 0) continue;
 
         /* ---------- IA 共通バインド ---------- */
+        AnimationUpdate();
         for (auto& animation : batch.animations) {
-            AnimationUpdate();
             animation->Draw();
         }
         model->BindBuffers(true);

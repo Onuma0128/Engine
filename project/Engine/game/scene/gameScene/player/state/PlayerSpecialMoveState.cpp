@@ -46,7 +46,7 @@ void PlayerSpecialMoveState::Update()
 
 		// 必殺技が終わったらターゲットしている敵に弾を出す
 		if (!player_->GetReticle()->GetEnemyTransforms().empty()) {
-			player_->SpecialAttackBullet();
+			player_->GetShot()->SpecialAttackBullet();
 		}
 		if (t <= 0.0f) {
 			player_->GetReticle()->GetTransform().size = Vector2{ 0.0f,0.0f };

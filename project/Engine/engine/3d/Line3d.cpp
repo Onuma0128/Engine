@@ -207,3 +207,34 @@ std::vector<Vector3> Line3d::CreateSphere(const float& radius)
 
 	return linePosition;
 }
+
+std::vector<Vector3> Line3d::CreateGrid(float cell, float size, float y)
+{
+	assert(cell > 0.0f && size > 0.0f && "cell と size は正の値で");
+
+	// 線を引く範囲（±half で左右対称に敷く）
+	const float half = size * 0.5f;
+
+	// 端を含めて何本引くか
+	const int lineCount = static_cast<int>(std::floor(size / cell)) + 1;
+
+	std::vector<Vector3> pos;
+	pos.reserve(lineCount * 4);     // “横線 + 縦線” で 4 頂点/本
+
+	// Z 方向の横線（X 軸と平行）
+	for (int i = 0; i < lineCount; ++i)
+	{
+		float z = -half + i * cell;
+		pos.emplace_back(-half, y, z); // ← 左端
+		pos.emplace_back(half, y, z); // → 右端
+	}
+
+	// X 方向の縦線（Z 軸と平行）
+	for (int i = 0; i < lineCount; ++i)
+	{
+		float x = -half + i * cell;
+		pos.emplace_back(x, y, -half); // ↑ 奥
+		pos.emplace_back(x, y, half); // ↓ 手前
+	}
+	return pos;
+}

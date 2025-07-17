@@ -60,7 +60,8 @@ void GamePlayScene::Update()
 	sceneFade_->Update();
 
 	// プレイヤーが死んだかクリアをしたらフェードをする
-	if ((!player_->GetIsAlive() || player_->GetNockdownCount() >= 100) && !isFade_) {
+	uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);
+	if ((!player_->GetIsAlive() || player_->GetShot()->GetNockdownCount() >= clearKill) && !isFade_) {
 		isFade_ = true;
 		sceneFade_->FadeOut();
 	}

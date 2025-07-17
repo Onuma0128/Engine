@@ -13,27 +13,26 @@ class Player;
 
 class PlayerShot
 {
-protected:
-
-	// 弾の初期化処理
-	virtual void Init(Player* player);
-	// 弾の更新処理
-	virtual void Update();
-	virtual void UpdateUI();
-	// 弾UIの描画処理
-	virtual void DrawUI();
-
 public:
 
+	// 弾の初期化処理
+	void Init(Player* player);
+	// 弾の更新処理
+	void Update();
+	void UpdateUI();
+	// 弾UIの描画処理
+	void DrawUI();
+
 	// 弾のリロードを管理する関数
-	virtual void ReloadBullet();
+	void ReloadBullet();
+	void AllReloadBullet();
 
 	// 弾を発射する関数
-	virtual void AttackBullet();			// 通常弾
-	virtual void SpecialAttackBullet();		// 必殺技の弾
+	void AttackBullet();			// 通常弾
+	void SpecialAttackBullet();		// 必殺技の弾
 
 	// キル数
-	virtual uint32_t GetNockdownCount()const { return kNockdownCount_; }
+	uint32_t GetNockdownCount()const { return kNockdownCount_; }
 
 	// 弾を撃つ方向の回転
 	Quaternion GetRightStickQua()const { return rightStickQuaternion_; }

@@ -5,5 +5,6 @@
     "avoid_velocityY": 0.7099999785423279,
     "avoid_acceleration": 4.0,
     "backSpeed": 3.0,
-    "pushSpeed": 30.0
+    "pushSpeed": 30.0,
+    "clearKill": 30
 }

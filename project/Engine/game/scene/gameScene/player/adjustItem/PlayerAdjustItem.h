@@ -4,6 +4,9 @@
 
 // プレイヤーの項目
 struct PlayerData {
+	bool isInvincible;			// 無敵(デバッグ用)
+	int clearKill;				// クリアに遷移するキル数
+
 	float speed;				// 移動速度
 	float backSpeed;			// 後ろ歩きの移動速度
 	float pushSpeed;			// 押し出し判定の押し出し速度

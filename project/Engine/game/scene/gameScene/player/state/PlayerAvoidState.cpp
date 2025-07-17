@@ -57,7 +57,7 @@ void PlayerAvoidState::Update()
 		player_->GetTimeStop() = false;
 		player_->SetIsAvoid(false);
 		player_->GetTransform().translation_.y = 0.0f;
-		player_->GetTransform().rotation_ = player_->GetRightStickQua();
+		player_->GetTransform().rotation_ = player_->GetShot()->GetRightStickQua();
 		player_->ChengeState(std::make_unique<PlayerMoveState>(player_));
 	} else {
 		if (!chengeAnimation_) {
