@@ -82,7 +82,7 @@ void PlayerMoveState::Update()
 	// 右のスティックの入力が無ければ
 	} else {
 		// マウスを取得するか
-		if (input->TriggerMouseButton(0) && !player_->GetIsPlayingMouse()) {
+		if (input->TriggerMouseButton(0) && input->PushMouseButton(1) && !player_->GetIsPlayingMouse()) {
 			player_->SetIsPlayingMouse(true);
 
 		} else if (player_->GetIsPlayingMouse()) {
@@ -97,8 +97,8 @@ void PlayerMoveState::Update()
 	if (rotateVelocity.Length() != 0.0f) {
 		rightStickVelocity_ = rotateVelocity;
 		rightStickQuaternion_ = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rightStickVelocity_, 1.0f);
-		Quaternion target = Quaternion::Slerp(player_->GetRightStickQua(), rightStickQuaternion_, 0.3f);
-		player_->SetRightStickQua(target);
+		Quaternion target = Quaternion::Slerp(player_->GetShot()->GetRightStickQua(), rightStickQuaternion_, 0.3f);
+		player_->GetShot()->SetRightStickQua(target);
 		// 回転を適応
 		player_->GetTransform().rotation_ = target;
 	}
@@ -151,7 +151,7 @@ void PlayerMoveState::SomeAction()
 		isReloadBullet_ = false;
 		reloadBulletTime_ = 0.0f;
 		reloadStartTime_ = 0.0f;
-		player_->AttackBullet();
+		player_->GetShot()->AttackBullet();
 	}
 	// 弾のリロードを開始する
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_LEFT_SHOULDER) ||
@@ -197,7 +197,7 @@ void PlayerMoveState::ReloadBullet()
 
 		// 1秒立ったらリロードをする
 		if (previousTime != currentTime) {
-			player_->ReloadBullet();
+			player_->GetShot()->ReloadBullet();
 		}
 	}
 }

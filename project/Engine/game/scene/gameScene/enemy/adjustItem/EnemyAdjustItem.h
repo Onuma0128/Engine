@@ -20,6 +20,12 @@ struct EnemyTemplate {
 // 敵全体の項目
 struct EnemyMainData {
 	bool debugIsSpawn;			// デバッグ中のみ使えるスポーンするかしないか
+	bool nowSpawn;				// 今スポーンをさせる
+	uint32_t spawnIndex;		// スポーンさせる時のIndex
+
+	int maxSpawn;			// 敵が最大マップに何体まで出せるか上限
+	int nextWaveKillCount;	// 敵を何体倒したら強い敵が出てくるかカウント
+
 	Vector3 colliderSize;		// 敵本体のコライダーサイズ
 	Vector3 colliderOffset;		// 敵本体のコライダー座標
 

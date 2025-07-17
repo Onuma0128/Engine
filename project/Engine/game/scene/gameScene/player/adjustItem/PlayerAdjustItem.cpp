@@ -8,6 +8,7 @@ void PlayerAdjustItem::LoadItems()
 
 	playerJson_.Init("Player");
 	if (!playerJson_.Load()) {
+		playerJson_.Set("clearKill", 1);
 		playerJson_.Set("speed", 1.0f);
 		playerJson_.Set("backSpeed", 1.0f);
 		playerJson_.Set("pushSpeed", 1.0f);
@@ -16,6 +17,8 @@ void PlayerAdjustItem::LoadItems()
 		playerJson_.Set("avoid_velocityY", 1.0f);
 		playerJson_.Set("avoid_acceleration", 1.0f);
 	} else {
+		playerData_.isInvincible = false;
+		playerData_.clearKill = playerJson_.Get("clearKill", playerData_.clearKill);
 		playerData_.speed = playerJson_.Get("speed", playerData_.speed);
 		playerData_.backSpeed = playerJson_.Get("backSpeed", playerData_.backSpeed);
 		playerData_.pushSpeed = playerJson_.Get("pushSpeed", playerData_.pushSpeed);
@@ -77,8 +80,14 @@ void PlayerAdjustItem::Editor()
 
 	ImGui::Begin("PlayerParameters");
 
+	ImGui::Checkbox("invincible", &playerData_.isInvincible);
+
+	ImGui::PushItemWidth(150);
+
 	if (ImGui::TreeNode("Player")) {
 
+		ImGui::DragInt("clearKill", &playerData_.clearKill);
+		ImGui::Separator();
 		ImGui::DragFloat("speed", &playerData_.speed, 0.01f);
 		ImGui::DragFloat("backSpeed", &playerData_.backSpeed, 0.01f);
 		ImGui::DragFloat("pushSpeed", &playerData_.pushSpeed, 0.01f);
@@ -89,6 +98,7 @@ void PlayerAdjustItem::Editor()
 		ImGui::DragFloat("avoid_acceleration", &playerData_.avoid_acceleration, 0.01f);
 
 		if (ImGui::Button("Save")) {
+			playerJson_.Set("clearKill", playerData_.clearKill);
 			playerJson_.Set("speed", playerData_.speed);
 			playerJson_.Set("backSpeed", playerData_.backSpeed);
 			playerJson_.Set("pushSpeed", playerData_.pushSpeed);

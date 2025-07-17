@@ -114,6 +114,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\engine\base\collider\Collision2D.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\DrawGrid.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\BaseEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameClear\gameClearUI\GameClearUI.cpp" />
     <ClCompile Include="Engine\game\scene\gameOver\gameOverUI\GameOverUI.cpp" />
@@ -240,6 +242,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\engine\base\collider\Collision2D.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\DrawGrid.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\BaseEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameClear\gameClearUI\GameClearUI.h" />
     <ClInclude Include="Engine\game\scene\gameOver\gameOverUI\GameOverUI.h" />

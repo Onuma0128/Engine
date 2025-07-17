@@ -99,6 +99,17 @@ void EnemySpawnerFactory::UpdateTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>&
 void EnemySpawnerFactory::RandomSpawnEnemy()
 {
 #ifdef _DEBUG
+	if (items_->GetMainData().nowSpawn) {
+		// タイプごとに敵を生成
+		EnemyType type = static_cast<EnemyType>(items_->GetMainData().spawnIndex);
+		switch (type) {
+		case EnemyType::Melee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[0]); break;
+		case EnemyType::Ranged:			ResetTypeEnemy(enemyRnageds_, enemySpawners_[0]); break;
+		case EnemyType::ShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[0]); break;
+		case EnemyType::RangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[0]); break;
+		default: break;
+		}
+	}
 	if (!items_->GetMainData().debugIsSpawn) { return; }
 #endif // _DEBUG
 
@@ -109,7 +120,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		enemySpawnCount += spawner->GetEnemyList().size();
 		kNockdownCount += spawner->GetNockdownCount();
 	}
-	if (enemySpawnCount >= 20) { return; }
+	if (enemySpawnCount >= items_->GetMainData().maxSpawn) { return; }
 
 	// スポーンタイムを更新
 	spawnTime_ += DeltaTimer::GetDeltaTime();
@@ -141,7 +152,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		}
 
 		// スポーン時間を初期化
-		if (kNockdownCount <= 25) {
+		if (kNockdownCount <= static_cast<uint32_t>(items_->GetMainData().nextWaveKillCount)) {
 			std::uniform_int_distribution<int> interval(1, 5);
 			spawnInterval_ = static_cast<float>(interval(randomEngine_)) * 0.8f;
 		} else {

@@ -44,7 +44,8 @@ void Player::Init(SceneJsonLoader loader)
 	reticle_ = std::make_unique<PlayerReticle>();
 	reticle_->Init();
 
-	PlayerShot::Init(this);
+	shot_ = std::make_unique<PlayerShot>();
+	shot_->Init(this);
 }
 
 void Player::Update()
@@ -58,9 +59,11 @@ void Player::Update()
 	effect_->Update();
 
 	// 弾の更新
-	PlayerShot::Update();
-	PlayerShot::UpdateUI();
+	shot_->Update();
+	shot_->UpdateUI();
 
+	transform_.translation_.x = std::clamp(transform_.translation_.x, -50.0f, 50.0f);
+	transform_.translation_.z = std::clamp(transform_.translation_.z, -50.0f, 50.0f);
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::Update();
@@ -77,7 +80,7 @@ void Player::Draw()
 	reticle_->Draw();
 
 	// 弾UIのDraw処理
-	PlayerShot::DrawUI();
+	shot_->DrawUI();
 }
 
 void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)
@@ -95,7 +98,7 @@ void Player::OnCollisionEnter(Collider* other)
 		other->GetColliderName() == "EnemyRanged" ||
 		other->GetColliderName() == "EnemyShieldBearer" ||
 		other->GetColliderName() == "EnemyRangedElite") {
-		if (!isAvoid_) {
+		if (!isAvoid_ && !items_->GetPlayerData().isInvincible) {
 			isAlive_ = false;
 		}
 	}

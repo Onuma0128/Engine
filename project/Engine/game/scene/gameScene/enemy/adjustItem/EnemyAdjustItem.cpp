@@ -8,10 +8,16 @@ void EnemyAdjustItem::LoadItems()
 
 	mainJson_.Init("EnemyMain");
 	if (!mainJson_.Load()) {
+		mainData_.spawnIndex = 0;
+		mainJson_.Set("maxSpawn", 0);
+		mainJson_.Set("nextWaveKillCount", 0);
 		mainJson_.Set("colliderSize", Vector3{});
 		mainJson_.Set("colliderOffset", Vector3{});
 		mainJson_.Set("margin", 1.0f);
 	} else {
+		mainData_.spawnIndex = 0;
+		mainData_.maxSpawn = mainJson_.Get("maxSpawn", mainData_.maxSpawn);
+		mainData_.nextWaveKillCount = mainJson_.Get("nextWaveKillCount", mainData_.nextWaveKillCount);
 		mainData_.colliderSize = mainJson_.Get("colliderSize", mainData_.colliderSize);
 		mainData_.colliderOffset = mainJson_.Get("colliderOffset", mainData_.colliderOffset);
 		mainData_.margin = mainJson_.Get("margin", mainData_.margin);
@@ -102,14 +108,34 @@ void EnemyAdjustItem::Editor()
 
 	ImGui::Checkbox("isSpawn", &mainData_.debugIsSpawn);
 
+	std::vector<std::string>items = { "Melee","Ranged","ShieldBearer", "RangedElite" };
+	// ブレンドを選択
+	if (ImGui::BeginCombo("EnemyType", items[mainData_.spawnIndex].c_str())) {
+		for (int i = 0; i < items.size(); ++i) {
+			const bool is_selected = (mainData_.spawnIndex == i);
+			if (ImGui::Selectable(items[i].c_str(), is_selected)) { mainData_.spawnIndex = i; }
+			if (is_selected) { ImGui::SetItemDefaultFocus(); }
+		}
+		ImGui::EndCombo();
+	}
+	mainData_.nowSpawn = false;
+	if (ImGui::Button("spawn")) {
+		mainData_.nowSpawn = true;
+	}
+
 	/* ============================== Main ============================== */
 
+	ImGui::PushItemWidth(150);
 	if (ImGui::TreeNode("Main")) {
 
+		ImGui::DragInt("maxSpawn", &mainData_.maxSpawn);
+		ImGui::DragInt("nextWaveKillCount", &mainData_.nextWaveKillCount);
 		ImGui::DragFloat3("colliderSize", &mainData_.colliderSize.x, 0.01f);
 		ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f);
 		ImGui::DragFloat("margin", &mainData_.margin, 0.01f);
 		if (ImGui::Button("Save")) {
+			mainJson_.Set("maxSpawn", mainData_.maxSpawn);
+			mainJson_.Set("nextWaveKillCount", mainData_.nextWaveKillCount);
 			mainJson_.Set("colliderSize", mainData_.colliderSize);
 			mainJson_.Set("colliderOffset", mainData_.colliderOffset);
 			mainJson_.Set("margin", mainData_.margin);

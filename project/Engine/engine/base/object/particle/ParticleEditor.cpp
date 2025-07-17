@@ -144,6 +144,7 @@ void ParticleEditor::Update()
 {
 	ImGui::Separator();
 
+	ImGui::PushItemWidth(150);
 	if (ImGui::TreeNode("Particle/Emitter Parameters")) {
 
 		/* ==================== 選択できるテクスチャ ==================== */

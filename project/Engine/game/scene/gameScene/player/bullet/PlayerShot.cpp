@@ -122,6 +122,19 @@ void PlayerShot::ReloadBullet()
 	}
 }
 
+void PlayerShot::AllReloadBullet()
+{
+	// 動きが終わっている弾からリロードをする
+	for (auto& bullet : bullets_) {
+		if (!bullet->GetIsActive() && !bullet->GetIsReload()) {
+			WorldTransform transform;
+			transform.rotation_ = rightStickQuaternion_;
+			transform.translation_ = player_->GetTransform().translation_;
+			bullet->Reload(transform, true);
+		}
+	}
+}
+
 void PlayerShot::AttackBullet()
 {
 	// リロードが終わっていて動いていない弾を発射する
@@ -155,5 +168,6 @@ void PlayerShot::SpecialAttackBullet()
 		}
 		player_->GetReticle()->GetEnemyTransforms().clear();
 		player_->GetReticle()->ResetHitCount();
+		AllReloadBullet();
 	}
 }
