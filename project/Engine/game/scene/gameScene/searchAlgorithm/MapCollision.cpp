@@ -1,0 +1,101 @@
+#include "MapCollision.h"
+
+#include "Collider.h"
+
+void MapCollision::Init(SceneJsonLoader loader)
+{
+	// OBBの判定が付いてる用
+	std::list<OBB_2D> objects_obb_;
+	// Sphereの判定が付いている用
+	std::list<Circle> objects_circle_;
+
+	// フィールドに配置されているObjectを取得する
+	for (auto it = loader.GetData().begin(); it != loader.GetData().end();) {
+		if (it->second.groupName == "FieldObject") {
+			auto& object = it->second;
+			if (object.collider.active) {
+				if (object.collider.type == ColliderType::OBB) {
+					OBB_2D obb = {
+						.center = object.collider.defPosition,
+						.rotate = object.collider.rotate,
+						.size = {object.collider.size.x,object.collider.size.z}
+					};
+					objects_obb_.push_back(obb);
+				} else {
+					Circle circle = {
+						.center = object.collider.defPosition,
+						.radius = object.collider.radius
+					};
+					objects_circle_.push_back(circle);
+				}
+			}
+		}
+		++it;
+	}
+
+	cell_ = 1.0f;			// グリッドの1マスの幅
+	size_ = 120.0f;			// グリッドの全体サイズ
+	half_ = size_ * 0.5f;	// グリッドの半径
+
+	// グリッドを初期化
+	grid_ = std::make_unique<DrawGrid>();
+	grid_->Init(cell_, size_);
+
+	// サイズを決める
+	uint32_t maxSize = static_cast<uint32_t>(size_ / cell_);
+	mapDatas_.resize(static_cast<size_t>(maxSize));
+	for (uint32_t i = 0; i < maxSize; ++i) {			// z軸(縦)
+		mapDatas_[i].resize(maxSize);
+		for (uint32_t j = 0; j < maxSize; ++j) {		// x軸(横)
+			Maptip map;
+			float minX = -half_ + j * cell_;
+			float minY = -half_ + i * cell_;
+			map.aabb.min = { minX, minY };
+			map.aabb.max = { minX + cell_, minY + cell_ };
+			Vector2 center = (map.aabb.min + map.aabb.max) * 0.5f;
+			map.center = { center.x,0.0f,center.y };
+			map.isEnable = true;
+			mapDatas_[i][j] = map;
+		}
+	}
+
+	// フィールドオブジェクトとの判定
+	for (auto& maptips : mapDatas_) {
+		for (auto& block : maptips) {
+			// OBB
+			for (auto& obb : objects_obb_) {		
+				if (Collision2D::OBBAABB(obb, block.aabb)) {
+					block.isEnable = false;
+					grid_->HitAABB(block.aabb);
+					break;
+				}
+			}
+			if (!block.isEnable) { continue; }
+			// Circle
+			for (auto& circle : objects_circle_) {
+				if (Collision2D::CircleAABB(circle, block.aabb)) {
+					block.isEnable = false;
+					grid_->HitAABB(block.aabb);
+					break;
+				}
+			}
+		}
+	}
+
+	grid_->HitGridInit();
+}
+
+void MapCollision::Update()
+{
+	grid_->Update();
+}
+
+uint32_t MapCollision::ArrayIndex_X(const float x) const
+{
+	return static_cast<uint32_t>((half_ + x) / cell_);
+}
+
+uint32_t MapCollision::ArrayIndex_Z(const float z) const
+{
+	return static_cast<uint32_t>((half_ + z) / cell_);
+}

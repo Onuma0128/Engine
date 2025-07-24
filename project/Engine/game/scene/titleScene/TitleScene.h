@@ -2,6 +2,8 @@
 #include <memory>
 
 #include "BaseScene.h"
+#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 
 #include "Camera.h"
 #include "scene/sceneFade/SceneFade.h"
@@ -27,5 +29,10 @@ private:
 	bool isFade_ = false;
 
 	std::unique_ptr<TitleUI> titleUI_ = nullptr;
+
+	// パーティクルを管理する
+	ParticleManager* particleManager = ParticleManager::GetInstance();
+	// エフェクト
+	std::shared_ptr<ParticleEmitter> test = nullptr;
 
 };

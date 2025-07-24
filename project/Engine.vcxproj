@@ -240,6 +240,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\MapCollision.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\PathFinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\base\collider\Collision2D.h" />
@@ -384,6 +386,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\MapCollision.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\PathFinder.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

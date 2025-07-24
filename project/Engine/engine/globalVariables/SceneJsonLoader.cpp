@@ -1,6 +1,7 @@
 #include "SceneJsonLoader.h"
 
 #include <assert.h>
+#include <numbers>
 
 #include "imgui.h"
 
@@ -56,6 +57,8 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 		object.tag = json["tag_name"].get<std::string>();
 	}
 
+	Vector2 defPos{};
+	float defRotate = 0.0f;
 	if (json.contains("transform")) {
 		auto& transform = json["transform"];
 
@@ -78,6 +81,8 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 		object.transform.translation_ = translation;
 		object.transform.rotation_ = Vector3::FromEuler(rotate);
 		object.transform.scale_ = scaling;
+		defPos = { translation.x,translation.z };
+		defRotate = rotate.y;
 	}
 
 	if (json.contains("collider")) {
@@ -107,6 +112,8 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 
 		col.center = center;
 		col.active = true;
+		col.defPosition = defPos;
+		col.rotate = defRotate * (std::numbers::pi_v<float> / 180.0f);
 		object.collider = col;
 	} else {
 		object.collider.active = false;

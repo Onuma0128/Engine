@@ -1,4 +1,9 @@
+struct Material
+{
+    float4 color;
+};
 
+ConstantBuffer<Material> gMaterial : register(b0);
 
 struct PS_Output
 {
@@ -8,6 +13,6 @@ struct PS_Output
 PS_Output main()
 {
     PS_Output output;
-    output.color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    output.color = gMaterial.color;
     return output; // 頂点から受け取った色をそのまま出力
 }

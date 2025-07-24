@@ -16,6 +16,8 @@ struct ColliderData {
     Vector3 center{};
     Vector3 size{};
     float radius;
+    Vector2 defPosition;
+    float rotate{};
     bool active;
 };
 
