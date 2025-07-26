@@ -387,16 +387,22 @@
     <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\DrawGrid.cpp">
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\debug\DrawGrid.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\engine\base\collider\Collision2D.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\MapCollision.cpp">
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\collision\MapCollision.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\PathFinder.cpp">
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\navigation\PathFinder.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\sample\AlgorithmTest.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\movement\SplineMover.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -821,16 +827,22 @@
     <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\DrawGrid.h">
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\debug\DrawGrid.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\collider\Collision2D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\MapCollision.h">
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\collision\MapCollision.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\PathFinder.h">
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\navigation\PathFinder.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\sample\AlgorithmTest.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\movement\SplineMover.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

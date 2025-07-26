@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include <cassert>
+#include <vector>
 
 #include "Matrix4x4.h"
 #include "Quaternion.h"
@@ -56,6 +57,10 @@ public:
     static float AxisComponent(const Vector3& v, int axis);
 
     static Quaternion FromEuler(const Vector3& eulerDeg);
+
+    static Vector3 CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t);
+
+    static Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t);
 
     // 単項演算子オーバーロード
     Vector3 operator+() const;

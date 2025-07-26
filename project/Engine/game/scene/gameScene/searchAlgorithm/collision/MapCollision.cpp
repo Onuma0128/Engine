@@ -89,13 +89,3 @@ void MapCollision::Update()
 {
 	grid_->Update();
 }
-
-uint32_t MapCollision::ArrayIndex_X(const float x) const
-{
-	return static_cast<uint32_t>((half_ + x) / cell_);
-}
-
-uint32_t MapCollision::ArrayIndex_Z(const float z) const
-{
-	return static_cast<uint32_t>((half_ + z) / cell_);
-}

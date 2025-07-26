@@ -6,7 +6,7 @@
 #include "Collision2D.h"
 #include "SceneJsonLoader.h"
 
-#include "DrawGrid.h"
+#include "gameScene/searchAlgorithm/debug/DrawGrid.h"
 
 // マップ1つ1つ用
 struct Maptip {
@@ -15,8 +15,6 @@ struct Maptip {
 	bool isEnable;		// 有効かどうか
 };
 
-struct GridPos { uint32_t x, z; };
-
 class MapCollision
 {
 public:
@@ -24,10 +22,6 @@ public:
 	void Init(SceneJsonLoader loader);
 
 	void Update();
-
-	// 座標を入れたら配列番号に変換する関数
-	uint32_t ArrayIndex_X(const float x) const;
-	uint32_t ArrayIndex_Z(const float z) const;
 
 	// アクセッサ
 	const std::vector<std::vector<Maptip>>& GetMapData()const { return mapDatas_; }

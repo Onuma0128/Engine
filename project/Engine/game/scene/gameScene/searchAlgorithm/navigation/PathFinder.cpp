@@ -4,12 +4,19 @@
 #include <array>
 #include <limits>
 
-bool PathFinder::Search(const Vector3& startW, const Vector3& goalW, std::vector<Vector3>& outputPositions)
-{
-    if (mapDatas_.empty()) return false;
+#include "gameScene/searchAlgorithm/collision/MapCollision.h"
 
-    const uint32_t hSize = static_cast<uint32_t>(mapDatas_.size());
-    const uint32_t vSize = static_cast<uint32_t>(mapDatas_[0].size());
+void PathFinder::Update(const float speed, float lookAt_t)
+{
+    splineMover_.Update(speed, lookAt_t);
+}
+
+void PathFinder::Search(const Vector3& startW, const Vector3& goalW)
+{
+    if (mapColl_->GetMapData().empty()) return;
+
+    const uint32_t hSize = static_cast<uint32_t>(mapColl_->GetMapData().size());
+    const uint32_t vSize = static_cast<uint32_t>(mapColl_->GetMapData()[0].size());
 
     auto toIndex = [&](const Vector3& w) -> GridPos {
         // MapCollisionと同じ計算をローカルで行う
@@ -22,16 +29,19 @@ bool PathFinder::Search(const Vector3& startW, const Vector3& goalW, std::vector
     // スタートとゴールからグリッドのIndexを割り当てる
     GridPos s = toIndex(startW);
     GridPos g = toIndex(goalW);
-    if (!mapDatas_[s.z][s.x].isEnable || !mapDatas_[g.z][g.x].isEnable) return false;
     // 推定コストを計算
     auto heur = [&](GridPos a, GridPos b) {
         int dx = int(a.x) - int(b.x);
         int dz = int(a.z) - int(b.z);
         return static_cast<uint32_t>(10 * (std::abs(dx) + std::abs(dz)));
         };
+    auto isWalkable = [&](int x, int z)->bool {
+        if (x == static_cast<int>(g.x) && z == static_cast<int>(g.z)) return true;
+        return mapColl_->GetMapData()[z][x].isEnable;
+        };
     auto cmp = [](A_StarNode* a, A_StarNode* b) { return a->score > b->score; };
     std::priority_queue<A_StarNode*, std::vector<A_StarNode*>, decltype(cmp)> open(cmp);
-
+    
     std::vector<std::vector<A_StarNode>> nodes(vSize,
         std::vector<A_StarNode>(hSize));
 
@@ -56,12 +66,25 @@ bool PathFinder::Search(const Vector3& startW, const Vector3& goalW, std::vector
     while (!open.empty()) {
         A_StarNode* cur = open.top(); open.pop();
         if (cur->pos.x == g.x && cur->pos.z == g.z) {     // ゴール
+            // スプラインを初期化
+            splineMover_.ClearSplinePositions();
             // 経路復元
+            Vector3 lastPos{};
             for (A_StarNode* n = cur; n; n = n->parent) {
-                outputPositions.push_back(mapDatas_[n->pos.z][n->pos.x].center);
+                splineMover_.PushSplinePositions(mapColl_->GetMapData()[n->pos.z][n->pos.x].center);
+                lastPos = mapColl_->GetMapData()[n->pos.z][n->pos.x].center;
             }
-            std::reverse(outputPositions.begin(), outputPositions.end());
-            return true;
+            // スタート位置がマップ1ブロック内にあれば削除し追加する
+            GridPos last = toIndex(lastPos);
+            if (last.x == s.x && last.z == s.z) {
+                splineMover_.BackSplinePositions();
+            }
+            splineMover_.PushSplinePositions(startW);
+            // 逆転させる
+            splineMover_.ReverseSplinePositions();
+            // スプライン上の距離を格納する
+            splineMover_.ComputeArcLengths();
+            return;
         }
         closed.push_back(cur);
 
@@ -69,7 +92,7 @@ bool PathFinder::Search(const Vector3& startW, const Vector3& goalW, std::vector
             int nx = int(cur->pos.x) + dx[i];
             int nz = int(cur->pos.z) + dz[i];
             if (nx < 0 || nz < 0 || nx >= int(hSize) || nz >= int(vSize)) continue;
-            if (!mapDatas_[nz][nx].isEnable) continue;
+            if (!isWalkable(nx, nz)) continue;
 
             A_StarNode* nei = &nodes[nz][nx];
             uint32_t gNew = cur->actualCost + cost[i];
@@ -82,5 +105,5 @@ bool PathFinder::Search(const Vector3& startW, const Vector3& goalW, std::vector
             }
         }
     }
-    return false;   // ゴールに到達できなかった
+    return;   // ゴールに到達できなかった
 }

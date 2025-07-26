@@ -138,6 +138,77 @@ Quaternion Vector3::FromEuler(const Vector3& eulerDeg)
     return q;
 }
 
+Vector3 Vector3::CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t) {
+    constexpr float kEps = 1e-5f;            // ← ゼロ除算防止
+    auto horizDist = [](const Vector3& a, const Vector3& b) {
+        float dx = a.x - b.x;
+        float dz = a.z - b.z;                // 高さ(Y)は無視
+        return std::sqrt(dx * dx + dz * dz);
+        };
+
+    //─── α = 0.5 なので √distance を足していく ─────────────
+    float t0 = 0.0f;
+    float t1 = t0 + std::pow(std::max(horizDist(p0, p1), kEps), 0.6f);
+    float t2 = t1 + std::pow(std::max(horizDist(p1, p2), kEps), 0.6f);
+    float t3 = t2 + std::pow(std::max(horizDist(p2, p3), kEps), 0.6f);
+
+    //   区間 p1‑p2 の実パラメータ tt を求める
+    float tt = std::lerp(t1, t2, std::clamp(t, 0.0f, 1.0f));
+
+    //─── Shoemake (1985) の幾何的定義  ──────────────
+    // まず A1,A2,A3
+    float inv_t10 = 1.0f / std::max(t1 - t0, kEps);
+    float inv_t21 = 1.0f / std::max(t2 - t1, kEps);
+    float inv_t32 = 1.0f / std::max(t3 - t2, kEps);
+
+    Vector3 A1 = Lerp(p0, p1, (tt - t0) * inv_t10);
+    Vector3 A2 = Lerp(p1, p2, (tt - t1) * inv_t21);
+    Vector3 A3 = Lerp(p2, p3, (tt - t2) * inv_t32);
+
+    // 次に B1,B2
+    float inv_t20 = 1.0f / std::max(t2 - t0, kEps);
+    float inv_t31 = 1.0f / std::max(t3 - t1, kEps);
+
+    Vector3 B1 = Lerp(A1, A2, (tt - t0) * inv_t20);
+    Vector3 B2 = Lerp(A2, A3, (tt - t1) * inv_t31);
+
+    // 最終点 C (= 補間結果)
+    float inv_t21b = 1.0f / std::max(t2 - t1, kEps);
+    Vector3 C = Lerp(B1, B2, (tt - t1) * inv_t21b);
+
+    return C;
+}
+
+Vector3 Vector3::CatmullRomPosition(const std::vector<Vector3>& points, float t) {
+    assert(points.size() >= 4 && "制御点が足りません");
+
+    // 区間数は制御点の数 - 1
+    size_t division = points.size() - 1;
+    // 1区間の長さ (全体を 1.0 とした割合)
+    float areaWidth = 1.0f / division;
+    // 区間番号
+    size_t index = static_cast<size_t>(t / areaWidth);
+    // 区間番号が上限を超えないように収める
+    index = std::clamp(index, size_t(0), division - 1);
+    // 区間内の始点を 0.0f、終点を 1.0f とした時の現在位置
+    float t_2 = (t - index * areaWidth) / areaWidth;
+    t_2 = std::clamp(t_2, 0.0f, 1.0f);
+
+    // 4点分のインデックス
+    size_t index0 = (index == 0) ? 0 : index - 1;
+    size_t index1 = index;
+    size_t index2 = index + 1;
+    size_t index3 = (index + 2 >= points.size()) ? points.size() - 1 : index + 2;
+
+    // 4点の座標
+    const Vector3& p0 = points[index0];
+    const Vector3& p1 = points[index1];
+    const Vector3& p2 = points[index2];
+    const Vector3& p3 = points[index3];
+
+    return CatmullRomInterpolation(p0, p1, p2, p3, t_2);
+}
+
 // 単項演算子オーバーロード
 Vector3 Vector3::operator+() const {
     return *this;

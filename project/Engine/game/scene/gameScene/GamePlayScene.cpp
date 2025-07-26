@@ -38,20 +38,13 @@ void GamePlayScene::Initialize()
 	mapCollision_ = std::make_unique<MapCollision>();
 	mapCollision_->Init(loader);
 
+	test_ = std::make_unique<AlgorithmTest>();
+	test_->SetMapCollision(mapCollision_.get());
+	test_->Init();
+
 	sceneFade_ = std::make_unique<SceneFade>();
 	sceneFade_->Init();
 	sceneFade_->FadeIn(3.0f);
-
-	/*PathFinder pathFinder;
-	pathFinder.SetMapData(mapCollision_->GetMapData());
-	pathFinder.Search(Vector3{ 0.0f,0.0f,45.0f }, player_->GetTransform().translation_, positions);
-
-	time = 0.0f;
-	count = 0;
-	test_ = std::make_unique<Object3d>();
-	test_->Initialize("Box.obj");
-	test_->SetSceneRenderer();
-	test_->GetTransform().translation_ = positions[count];*/
 }
 
 void GamePlayScene::Finalize()
@@ -62,27 +55,6 @@ void GamePlayScene::Update()
 {
 	mapCollision_->Update();
 
-	/*ImGui::Begin("A_star");
-	ImGui::DragFloat2("startPos", &startPos.x);
-	if (ImGui::Button("start")) {
-		time = 0.0f;
-		count = 0;
-		positions.clear();
-		PathFinder pathFinder;
-		pathFinder.SetMapData(mapCollision_->GetMapData());
-		pathFinder.Search(Vector3{ startPos.x,0.0f,startPos.y }, player_->GetTransform().translation_, positions);
-		test_->GetTransform().translation_ = positions[count];
-	}
-	ImGui::End();
-
-	time += 0.1f;
-	if (time > 1.0f && count != positions.size() - 1) {
-		time = 0.0f;
-		++count;
-		test_->GetTransform().translation_ = positions[count];
-	}
-	test_->Update();*/
-
 	player_->Update();
 
 	enemySpawnerFactory_->Update();
@@ -92,6 +64,8 @@ void GamePlayScene::Update()
 	gameCamera_->Update();
 
 	skyBox_->Update();
+
+	test_->Update(player_->GetTransform().translation_);
 
 	ParticleManager::GetInstance()->Update();
 

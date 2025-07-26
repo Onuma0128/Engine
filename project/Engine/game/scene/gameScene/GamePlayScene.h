@@ -13,8 +13,8 @@
 #include "gameScene/enemy/spawner/EnemySpawnerFactory.h"
 #include "gameScene/gameCamera/GameCamera.h"
 #include "gameScene/fieldObject/Factory/FieldObjectFactory.h"
-#include "gameScene/searchAlgorithm/MapCollision.h"
-#include "gameScene/searchAlgorithm/PathFinder.h"
+#include "gameScene/searchAlgorithm/collision/MapCollision.h"
+#include "gameScene/searchAlgorithm/sample/AlgorithmTest.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -46,11 +46,7 @@ private:
 
 	// 探索アルゴリズムの判定
 	std::unique_ptr<MapCollision> mapCollision_ = nullptr;
-	/*std::unique_ptr<Object3d> test_ = nullptr;
-	std::vector<Vector3> positions;
-	Vector2 startPos;
-	int count;
-	float time;*/
+	std::unique_ptr<AlgorithmTest> test_ = nullptr;
 
 	// シーンフェード
 	std::unique_ptr<SceneFade> sceneFade_ = nullptr;
