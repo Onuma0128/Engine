@@ -104,6 +104,8 @@ void Line3d::SetPositions(const std::vector<Vector3>& positions)
 	if (newLines > capacityLines_) {
 		capacityLines_ = newLines;
 		CreateInstanceVB(positions, capacityLines_);
+	} else {
+		lineCount_ = newLines;
 	}
 	std::vector<LineInstance> inst(newLines);
 

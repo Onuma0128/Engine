@@ -17,7 +17,8 @@ public:
 	void ComputeArcLengths();
 
 	// 今の座標と回転を取得
-	const Vector3& GetNewPosition() { return position_; }
+	const Vector3& GetVelocity() { return velocity_; }
+	const Vector3& GetPosition() { return position_; }
 	const Quaternion& GetRotation() { return yRotation_; }
 	void DebugSpline() { if (splines_) splines_->GetRenderOptions().enabled = true; }
 
@@ -52,6 +53,7 @@ private:
 	// 今の座標と次の座標
 	Vector3 position_;
 	Vector3 lookAtPosition_;
+	Vector3 velocity_;
 	// 今の座標から見た回転
 	Quaternion yRotation_;
 

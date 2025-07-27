@@ -139,49 +139,42 @@ Quaternion Vector3::FromEuler(const Vector3& eulerDeg)
 }
 
 Vector3 Vector3::CatmullRomInterpolation(const Vector3& p0, const Vector3& p1, const Vector3& p2, const Vector3& p3, float t) {
-    constexpr float kEps = 1e-5f;            // ← ゼロ除算防止
-    auto horizDist = [](const Vector3& a, const Vector3& b) {
-        float dx = a.x - b.x;
-        float dz = a.z - b.z;                // 高さ(Y)は無視
-        return std::sqrt(dx * dx + dz * dz);
-        };
+    
+    float T = 0.0f;
+    // ---------- Catmull‑Rom 由来の接線 ------------------------
+    Vector3 m1 = (p2 - p0) * 0.5f * (1.0f - T);   // T=0 → 0.5,  T=1 → 0
+    Vector3 m2 = (p3 - p1) * 0.5f * (1.0f - T);
 
-    //─── α = 0.5 なので √distance を足していく ─────────────
-    float t0 = 0.0f;
-    float t1 = t0 + std::pow(std::max(horizDist(p0, p1), kEps), 0.6f);
-    float t2 = t1 + std::pow(std::max(horizDist(p1, p2), kEps), 0.6f);
-    float t3 = t2 + std::pow(std::max(horizDist(p2, p3), kEps), 0.6f);
+    // ---------- Cubic Hermite 補間 ----------------------------
+    float t2 = t * t;
+    float t3 = t2 * t;
 
-    //   区間 p1‑p2 の実パラメータ tt を求める
-    float tt = std::lerp(t1, t2, std::clamp(t, 0.0f, 1.0f));
+    float h00 = 2.0f * t3 - 3.0f * t2 + 1.0f;
+    float h10 = t3 - 2.0f * t2 + t;
+    float h01 = -2.0f * t3 + 3.0f * t2;
+    float h11 = t3 - t2;
 
-    //─── Shoemake (1985) の幾何的定義  ──────────────
-    // まず A1,A2,A3
-    float inv_t10 = 1.0f / std::max(t1 - t0, kEps);
-    float inv_t21 = 1.0f / std::max(t2 - t1, kEps);
-    float inv_t32 = 1.0f / std::max(t3 - t2, kEps);
-
-    Vector3 A1 = Lerp(p0, p1, (tt - t0) * inv_t10);
-    Vector3 A2 = Lerp(p1, p2, (tt - t1) * inv_t21);
-    Vector3 A3 = Lerp(p2, p3, (tt - t2) * inv_t32);
-
-    // 次に B1,B2
-    float inv_t20 = 1.0f / std::max(t2 - t0, kEps);
-    float inv_t31 = 1.0f / std::max(t3 - t1, kEps);
-
-    Vector3 B1 = Lerp(A1, A2, (tt - t0) * inv_t20);
-    Vector3 B2 = Lerp(A2, A3, (tt - t1) * inv_t31);
-
-    // 最終点 C (= 補間結果)
-    float inv_t21b = 1.0f / std::max(t2 - t1, kEps);
-    Vector3 C = Lerp(B1, B2, (tt - t1) * inv_t21b);
-
-    return C;
+    return  h00 * p1 +              // 始点
+        h10 * m1 +              // 始点接線
+        h01 * p2 +              // 終点
+        h11 * m2;               // 終点接線
 }
 
 Vector3 Vector3::CatmullRomPosition(const std::vector<Vector3>& points, float t) {
-    assert(points.size() >= 4 && "制御点が足りません");
+    // 2点だけなら線形補間
+    if (points.size() == 2) {
+        return points[0] + (points[1] - points[0]) * std::clamp(t, 0.0f, 1.0f);
+    }
 
+    // 3点だけならベジエ補間
+    if (points.size() == 3) {
+        float u = 1.0f - t;
+        return  u * u * points[0] +
+            2 * u * t * points[1] +
+            t * t * points[2];
+    }
+
+    // 4点以上で曲線補間
     // 区間数は制御点の数 - 1
     size_t division = points.size() - 1;
     // 1区間の長さ (全体を 1.0 とした割合)
