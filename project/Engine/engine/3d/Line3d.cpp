@@ -12,7 +12,7 @@ void Line3d::Initialize(const std::vector<Vector3>& positions, uint32_t maxLines
 {
 	assert((positions.size() & 1u) == 0 && "偶数個の座標が必要です");
 	lineCount_ = static_cast<uint32_t>(positions.size() / 2);
-	capacityLines_ = std::fmaxf(lineCount_, maxLinesReserve);
+	capacityLines_ = std::max(lineCount_, maxLinesReserve);
 
 	line3dBase_ = std::make_unique<Line3dBase>();
 	line3dBase_->Initialize();
