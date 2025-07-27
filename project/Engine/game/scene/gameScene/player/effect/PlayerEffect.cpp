@@ -29,6 +29,7 @@ void PlayerEffect::Init()
 	// PostEffectを初期化
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::OutLine);
 
 	cylinder_ = std::make_unique<PrimitiveDrawr>();
 	cylinder_->TypeInit(PrimitiveType::Cylinder, 32);

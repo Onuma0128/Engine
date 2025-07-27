@@ -43,6 +43,8 @@ public:
 	virtual Vector3 GetOrigin()const { return origin_; }
 	virtual Vector3 GetDiff()const { return diff_; }
 
+	void SetColor(const Vector3& color);
+
 protected:
 
 	// コライダーの名前

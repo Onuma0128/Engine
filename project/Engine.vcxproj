@@ -114,8 +114,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\sample\AlgorithmTest.cpp" />
     <ClCompile Include="Engine\engine\base\collider\Collision2D.cpp" />
-    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\DrawGrid.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\debug\DrawGrid.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\BaseEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameClear\gameClearUI\GameClearUI.cpp" />
     <ClCompile Include="Engine\game\scene\gameOver\gameOverUI\GameOverUI.cpp" />
@@ -240,10 +241,14 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\collision\MapCollision.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\navigation\PathFinder.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\movement\SplineMover.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\sample\AlgorithmTest.h" />
     <ClInclude Include="Engine\engine\base\collider\Collision2D.h" />
-    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\DrawGrid.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\debug\DrawGrid.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\BaseEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameClear\gameClearUI\GameClearUI.h" />
     <ClInclude Include="Engine\game\scene\gameOver\gameOverUI\GameOverUI.h" />
@@ -384,6 +389,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\base\RangedEliteEnemy.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\bullet\PlayerShot.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\collision\MapCollision.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\navigation\PathFinder.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\movement\SplineMover.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

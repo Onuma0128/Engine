@@ -22,6 +22,10 @@ void TitleScene::Initialize()
 
 	titleUI_ = std::make_unique<TitleUI>();
 	titleUI_->Init();
+
+	test = std::make_unique<ParticleEmitter>("particleName");
+	particleManager->CreateParticleGroup(test);
+	test->SetIsCreate(false);
 }
 
 void TitleScene::Finalize()
@@ -37,6 +41,8 @@ void TitleScene::Update()
 	titleUI_->Update();
 
 	sceneFade_->Update();
+
+	particleManager->Update();
 
     if ((input->TriggerGamepadButton(XINPUT_GAMEPAD_A) || input->TriggerKey(DIK_SPACE)) && !isFade_) {
 		isFade_ = true;

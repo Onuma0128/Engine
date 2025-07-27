@@ -30,7 +30,9 @@ void CollisionManager::CheckAllCollisions()
     for (auto& pair : exited) {
         if (pair.first && pair.second) {
             pair.first->OnCollisionExit(pair.second);
+            pair.first->SetColor(Vector3{ 1.0f,1.0f,1.0f });
             pair.second->OnCollisionExit(pair.first);
+            pair.second->SetColor(Vector3{ 1.0f,1.0f,1.0f });
         }
     }
 
@@ -94,7 +96,9 @@ void CollisionManager::CheckCollisionPair(Collider* a, Collider* b, PairSet& thi
     if (previousFrame_.contains(key)) {
         // 前フレームも衝突していた
         a->OnCollisionStay(b);
+        a->SetColor(Vector3{ 1.0f,0.0f,0.0f });
         b->OnCollisionStay(a);
+        b->SetColor(Vector3{ 1.0f,0.0f,0.0f });
     } else {
         // 今回初めて衝突した
         a->OnCollisionEnter(b);

@@ -4,6 +4,7 @@
 #include "ParticleManager.h"
 #include "SceneManager.h"
 #include "SceneJsonLoader.h"
+#include "PostEffectManager.h"
 
 #include "Collision3D.h"
 #include "Vector3.h"
@@ -34,6 +35,13 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
 	enemySpawnerFactory_->Init(loader);
 
+	mapCollision_ = std::make_unique<MapCollision>();
+	mapCollision_->Init(loader);
+
+	test_ = std::make_unique<AlgorithmTest>();
+	test_->SetMapCollision(mapCollision_.get());
+	test_->Init();
+
 	sceneFade_ = std::make_unique<SceneFade>();
 	sceneFade_->Init();
 	sceneFade_->FadeIn(3.0f);
@@ -45,6 +53,8 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
+	mapCollision_->Update();
+
 	player_->Update();
 
 	enemySpawnerFactory_->Update();
@@ -54,6 +64,8 @@ void GamePlayScene::Update()
 	gameCamera_->Update();
 
 	skyBox_->Update();
+
+	test_->Update(player_->GetTransform().translation_);
 
 	ParticleManager::GetInstance()->Update();
 

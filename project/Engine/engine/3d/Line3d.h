@@ -17,7 +17,7 @@ class Line3d
 {
 public:
 
-	void Initialize(const std::vector<Vector3>& positions);
+	void Initialize(const std::vector<Vector3>& positions, uint32_t maxLinesReserve = 0);
 
 	void Update();
 
@@ -27,13 +27,14 @@ public:
 private:
 	
 	void CreateLocalVB();
-	void CreateInstanceVB(const std::vector<Vector3>& pos);
+	void CreateInstanceVB(const std::vector<Vector3>& pos, uint32_t capacity);
 	void CreateCB();
 
 	/*==================== アクセッサ ====================*/
 public:
 
 	void SetPositions(const std::vector<Vector3>& positions);
+	void SetColor(const Vector3& color);
 
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 	bool GetIsMultiple()const { return isMultiple_; }
@@ -53,12 +54,15 @@ private:
 	ComPtr<ID3D12Resource> localVB_ = nullptr;
 	ComPtr<ID3D12Resource> instanceVB_ = nullptr;
 	ComPtr<ID3D12Resource> wvpResource_ = nullptr;
+	ComPtr<ID3D12Resource> materialResource_ = nullptr;
 
 	D3D12_VERTEX_BUFFER_VIEW vbvLocal_{};
 	D3D12_VERTEX_BUFFER_VIEW vbvInst_{};
 	Matrix4x4* wvpData_ = nullptr;
+	Vector4* color_ = nullptr;
 
 	uint32_t lineCount_ = 0;
+	uint32_t capacityLines_ = 0;
 
 	// 描画するか
 	RenderOptions renderOptions_;

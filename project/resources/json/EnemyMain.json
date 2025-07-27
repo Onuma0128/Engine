@@ -11,5 +11,5 @@
     },
     "margin": 2.0,
     "maxSpawn": 10,
-    "nextWaveKillCount": 15
+    "nextWaveKillCount": 10
 }

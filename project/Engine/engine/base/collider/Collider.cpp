@@ -48,6 +48,12 @@ void Collider::Update()
 	line_->Update();
 }
 
+void Collider::SetColor(const Vector3& color)
+{
+	if (line_ == nullptr) { return; }
+	line_->SetColor(color);
+}
+
 std::vector<Vector3> Collider::CreateLinePositions()
 {
 	// Line用の座標を作成
