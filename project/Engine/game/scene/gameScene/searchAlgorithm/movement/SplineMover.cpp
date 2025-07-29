@@ -4,6 +4,14 @@
 
 void SplineMover::Update(const float speed, float lookAt_t)
 {
+
+#ifdef _DEBUG
+	if (splines_ != nullptr) {
+		splines_->GetRenderOptions().enabled = false;
+		splines_->Update();
+	}
+#endif // _DEBUG
+
 	// 速度に応じて距離を進める
 	currentDistance_ += speed * DeltaTimer::GetDeltaTime();
 	float t = GetArcLengthParam(currentDistance_);
@@ -21,10 +29,6 @@ void SplineMover::Update(const float speed, float lookAt_t)
 		yRotation_ = Quaternion::FormRotationMatrix(rotationMatrix);
 	}
 
-#ifdef _DEBUG
-	splines_->GetRenderOptions().enabled = false;
-	splines_->Update();  
-#endif // _DEBUG
 
 }
 

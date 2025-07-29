@@ -13,6 +13,12 @@ struct Segment {
 	Vector3 origin;
 	Vector3 diff;
 };
+// レイ
+struct RaycastHit {
+	Vector3 point;
+	Vector3 normal;
+	float   t;
+};
 // 回転無しボックス
 struct AABB {
 	Vector3 min;
@@ -46,8 +52,13 @@ public:
 	// OBBと球の押し出し処理
 	static Vector3 GetOBBSpherePushVector(const Collider* a, const Collider* b);
 
+	// 球とSegmentの衝突判定
+	static bool SphereSegment(const Collider* sphereCol,const Collider* segCol);
+	static bool SphereSegment(const Collider* sphereCol, const Collider* segCol, RaycastHit* hit);
+
 	// OBBとSegmentの衝突判定
 	static bool OBBSegment(const Collider* a, const Collider* b);
+	static bool OBBSegment(const Collider* obbCol, const Collider* segCol, RaycastHit* hit);
 
 	// OBBとOBBの衝突判定
 	static bool OBBOBB(const Collider* a, const Collider* b);

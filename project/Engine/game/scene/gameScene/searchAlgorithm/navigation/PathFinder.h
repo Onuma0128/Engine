@@ -24,7 +24,7 @@ public:
 	const Vector3& GetVelocity() { return splineMover_.GetVelocity(); }
 	const Vector3& GetPosition() { return splineMover_.GetPosition(); }
 	const Quaternion& GetRotation() { return splineMover_.GetRotation(); }
-	void DebugSpline() { splineMover_.DebugSpline(); }
+	void DebugSpline(bool flag) { splineMover_.DebugSpline(flag); }
 
 	// マップデータを取得する
 	void SetMapData(MapCollision* mapColl) { mapColl_ = mapColl; }

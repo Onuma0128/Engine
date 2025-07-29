@@ -250,3 +250,13 @@ Vector3& Vector3::operator*=(float scalar) {
 Vector3 operator*(float scalar, const Vector3& v) {
     return v * scalar;
 }
+
+float& Vector3::operator[](int i) {
+    assert(i >= 0 && i < 3);
+    return *(&x + i);
+}
+
+const float& Vector3::operator[](int i) const {
+    assert(i >= 0 && i < 3);
+    return *(&x + i);
+}

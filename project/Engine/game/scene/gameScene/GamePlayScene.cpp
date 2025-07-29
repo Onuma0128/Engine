@@ -15,6 +15,9 @@ void GamePlayScene::Initialize()
 	SceneJsonLoader loader;
 	loader.Load("sceneObject");
 
+	mapCollision_ = std::make_unique<MapCollision>();
+	mapCollision_->Init(loader);
+
 	skyBox_ = std::make_unique<PrimitiveDrawr>();
 	skyBox_->TypeInit(PrimitiveType::Skybox);
 	skyBox_->GetTransform().scale = { 1024.0f,1024.0f ,1024.0f };
@@ -33,10 +36,8 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_ = std::make_unique<EnemySpawnerFactory>();
 	enemySpawnerFactory_->SetPlayer(player_.get());
 	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
+	enemySpawnerFactory_->SetMapData(mapCollision_.get());
 	enemySpawnerFactory_->Init(loader);
-
-	mapCollision_ = std::make_unique<MapCollision>();
-	mapCollision_->Init(loader);
 
 	test_ = std::make_unique<AlgorithmTest>();
 	test_->SetMapCollision(mapCollision_.get());

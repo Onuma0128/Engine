@@ -35,7 +35,7 @@ void AlgorithmTest::Update(const Vector3& goal)
 
 	// 時間や座標、回転の更新
 	pathFinder_.Update(speed_);
-	if (drawSpline_)pathFinder_.DebugSpline();
+	pathFinder_.DebugSpline(drawSpline_);
 
 	// 移動をする
 	Vector3 position = pathFinder_.GetPosition();

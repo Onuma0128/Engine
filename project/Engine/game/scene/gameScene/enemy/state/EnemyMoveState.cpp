@@ -24,35 +24,46 @@ void EnemyMoveState::Init()
 
 	isMoveAnima_ = false;
 	isIdleAnima_ = false;
+
+	enemy_->ResetSearch();
+
+	ray_ = std::make_unique<EnemyRay>();
+	ray_->Init();
 }
 
 void EnemyMoveState::Finalize()
 {
+	auto& pathFinder = enemy_->GetPathFinder();
+	pathFinder.DebugSpline(false);
+
+	ray_->Finalize();
 }
 
 void EnemyMoveState::Update()
 {
+	// 探索をする
+	searchTime_ += DeltaTimer::GetDeltaTime();
+	if (searchTime_ > enemy_->GetItem()->GetMainData().searchUpdateTime) {
+		searchTime_ = 0.0f;
+		enemy_->ResetSearch();
+	}
+
 	// 方向を計算
 	const float speed = GetTypeSpeed();
-	Vector3 velocity =
-		Vector3(enemy_->GetPlayer()->GetTransform().translation_ - enemy_->GetTransform().translation_);
+	auto& pathFinder = enemy_->GetPathFinder();
+
+	// 探索の更新
+	pathFinder.Update(speed);
+	pathFinder.DebugSpline(true);
+	Vector3 velocity = pathFinder.GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 	enemy_->SetVelocity(velocity);
 
 	// 移動時の回転の処理
 	if (velocity.Length() != 0.0f) {
-		Vector3 foward = Vector3::ExprUnitZ;
-		Vector3 targetDir = Vector3{ -velocity.x,0.0f,velocity.z };
-
-		// velocityから回転を求める
-		Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
-		Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
-		Quaternion currentRotation = enemy_->GetTransform().rotation_;
-		Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, 0.1f);
-
-		// 回転を適応
-		enemy_->GetTransform().rotation_ = result;
+		Quaternion yRotation = pathFinder.GetRotation();
+		enemy_->GetTransform().rotation_ = Quaternion::Slerp(enemy_->GetTransform().rotation_, yRotation, 0.2f);
 	}
 
 	// 攻撃のクールタイムを縮める
@@ -70,10 +81,19 @@ void EnemyMoveState::Update()
 	if (!inAttackRange_ && dist <= attackIn)  inAttackRange_ = true;
 	if (inAttackRange_ && dist >= attackOut) inAttackRange_ = false;
 
+	ray_->Update(enemyPos, velocity * attackIn);
+
 	if (inAttackRange_) {
-		// 待機時アニメーションにする
-		AttackCoolTimeAnimation();
-		if (attackCoolTime_ <= 0.0f) {
+		if (ray_->GetLooking()) {
+			// 待機時アニメーションにする
+			AttackCoolTimeAnimation();
+		} else {
+			// 移動時アニメーションにする
+			MoveAnimation();
+			// 距離があれば移動処理をする
+			enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+		}
+		if (attackCoolTime_ <= 0.0f && ray_->GetLooking()) {
 			TypeChengeAttackState();
 			return;
 		}

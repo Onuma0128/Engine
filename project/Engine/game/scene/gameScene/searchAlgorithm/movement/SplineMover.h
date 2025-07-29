@@ -20,7 +20,7 @@ public:
 	const Vector3& GetVelocity() { return velocity_; }
 	const Vector3& GetPosition() { return position_; }
 	const Quaternion& GetRotation() { return yRotation_; }
-	void DebugSpline() { if (splines_) splines_->GetRenderOptions().enabled = true; }
+	void DebugSpline(bool flag) { if (splines_) splines_->GetRenderOptions().enabled = flag; }
 
 	// スプラインの座標を取得
 	void ReverseSplinePositions() {

@@ -78,4 +78,7 @@ public:
 
     // フレンド関数：スカラー倍の演算子オーバーロード
     friend Vector3 operator*(float scalar, const Vector3& v);
+
+    float& operator[](int i);             // 書き込み用
+    const float& operator[](int i) const; // 読み取り用
 };

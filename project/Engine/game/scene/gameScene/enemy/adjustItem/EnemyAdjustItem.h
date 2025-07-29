@@ -23,13 +23,15 @@ struct EnemyMainData {
 	bool nowSpawn;				// 今スポーンをさせる
 	uint32_t spawnIndex;		// スポーンさせる時のIndex
 
-	int maxSpawn;			// 敵が最大マップに何体まで出せるか上限
-	int nextWaveKillCount;	// 敵を何体倒したら強い敵が出てくるかカウント
+	int maxSpawn;				// 敵が最大マップに何体まで出せるか上限
+	int nextWaveKillCount;		// 敵を何体倒したら強い敵が出てくるかカウント
 
 	Vector3 colliderSize;		// 敵本体のコライダーサイズ
 	Vector3 colliderOffset;		// 敵本体のコライダー座標
 
 	float margin;				// 敵のアニメーションを判定しない余白距離
+
+	float searchUpdateTime;		// 敵の探索を更新する時間
 };
 
 // 近接敵の項目

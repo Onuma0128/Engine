@@ -14,6 +14,7 @@ void EnemyAdjustItem::LoadItems()
 		mainJson_.Set("colliderSize", Vector3{});
 		mainJson_.Set("colliderOffset", Vector3{});
 		mainJson_.Set("margin", 1.0f);
+		mainJson_.Set("searchUpdateTime", 1.0f);
 	} else {
 		mainData_.spawnIndex = 0;
 		mainData_.maxSpawn = mainJson_.Get("maxSpawn", mainData_.maxSpawn);
@@ -21,6 +22,7 @@ void EnemyAdjustItem::LoadItems()
 		mainData_.colliderSize = mainJson_.Get("colliderSize", mainData_.colliderSize);
 		mainData_.colliderOffset = mainJson_.Get("colliderOffset", mainData_.colliderOffset);
 		mainData_.margin = mainJson_.Get("margin", mainData_.margin);
+		mainData_.searchUpdateTime = mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
 		mainData_.debugIsSpawn = false;
 	}
 
@@ -133,12 +135,14 @@ void EnemyAdjustItem::Editor()
 		ImGui::DragFloat3("colliderSize", &mainData_.colliderSize.x, 0.01f);
 		ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f);
 		ImGui::DragFloat("margin", &mainData_.margin, 0.01f);
+		ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f);
 		if (ImGui::Button("Save")) {
 			mainJson_.Set("maxSpawn", mainData_.maxSpawn);
 			mainJson_.Set("nextWaveKillCount", mainData_.nextWaveKillCount);
 			mainJson_.Set("colliderSize", mainData_.colliderSize);
 			mainJson_.Set("colliderOffset", mainData_.colliderOffset);
 			mainJson_.Set("margin", mainData_.margin);
+			mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
 			mainJson_.Save();
 		}
 		ImGui::TreePop();

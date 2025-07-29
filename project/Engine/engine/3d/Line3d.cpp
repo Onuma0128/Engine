@@ -234,6 +234,16 @@ std::vector<Vector3> Line3d::CreateSphere(const float& radius)
 	return linePosition;
 }
 
+std::vector<Vector3> Line3d::CreateSegment(const Vector3& start, const Vector3& direction)
+{
+	std::vector<Vector3> linePosition;
+
+	linePosition.push_back(start);
+	linePosition.push_back(start + direction);
+
+	return linePosition;
+}
+
 std::vector<Vector3> Line3d::CreateGrid(float cell, float size, float y)
 {
 	assert(cell > 0.0f && size > 0.0f && "cell と size は正の値で");

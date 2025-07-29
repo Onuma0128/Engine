@@ -24,6 +24,9 @@ void BaseEnemy::Initialize()
 	shadow_->Init(transform_);
 	shadow_->SetDraw(false);
 
+	// 探索アルゴリズムの初期化
+	pathFinder_.Search(Animation::transform_.translation_, Vector3{});
+
 	// コライダーを設定
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::OBB;
@@ -110,6 +113,11 @@ void BaseEnemy::Reset(const Vector3& position)
 	stateParam_.isDead_ = false;
 	stateParam_.hitReticle_ = false;
 	stateParam_.enableMove_ = true;
+}
+
+void BaseEnemy::ResetSearch()
+{
+	pathFinder_.Search(Animation::transform_.translation_, player_->GetTransform().translation_);
 }
 
 void BaseEnemy::OnCollisionEnter(Collider* other)

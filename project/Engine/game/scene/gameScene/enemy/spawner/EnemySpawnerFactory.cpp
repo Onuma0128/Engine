@@ -63,9 +63,6 @@ void EnemySpawnerFactory::Draw()
 void EnemySpawnerFactory::CreateSpawner(SceneObject object)
 {
 	std::unique_ptr<EnemySpawner> spawner = std::make_unique<EnemySpawner>();
-	spawner->SetPlayer(player_);
-	spawner->SetGameCamera(gameCamera_);
-	spawner->SetItem(items_.get());
 	spawner->Init(object);
 	enemySpawners_.push_back(std::move(spawner));
 }
@@ -85,6 +82,7 @@ void EnemySpawnerFactory::InitTypeEnemy(EnemyType type, std::list<std::unique_pt
 		enemy->SetPlayer(player_);
 		enemy->SetGameCamera(gameCamera_);
 		enemy->SetItem(items_.get());
+		enemy->SetMapData(mapData_);
 		enemy->Initialize();
 	}
 }

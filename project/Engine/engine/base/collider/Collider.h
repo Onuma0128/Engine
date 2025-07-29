@@ -24,6 +24,7 @@ public:
 	virtual void RemoveCollider();
 	virtual void DrawCollider();
 	virtual void Update();
+	virtual void LineUpdate();
 
 	virtual void OnCollisionEnter(Collider* other) {};
 	virtual void OnCollisionStay(Collider* other) {};

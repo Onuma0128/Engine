@@ -2,9 +2,6 @@
 
 #include "DeltaTimer.h"
 
-#include "gameScene/player/Player.h"
-#include "gameScene/gameCamera/GameCamera.h"
-
 void EnemySpawner::Init(SceneObject object)
 {
 	Object3d::Initialize(object.fileName);

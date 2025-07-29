@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\game\scene\gameScene\enemy\ray\EnemyRay.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\sample\AlgorithmTest.cpp" />
     <ClCompile Include="Engine\engine\base\collider\Collision2D.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\debug\DrawGrid.cpp" />
@@ -246,6 +247,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\game\scene\gameScene\searchAlgorithm\movement\SplineMover.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\game\scene\gameScene\enemy\ray\EnemyRay.h" />
     <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\sample\AlgorithmTest.h" />
     <ClInclude Include="Engine\engine\base\collider\Collision2D.h" />
     <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\debug\DrawGrid.h" />
