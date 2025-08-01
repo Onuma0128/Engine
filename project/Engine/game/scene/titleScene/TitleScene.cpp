@@ -27,8 +27,13 @@ void TitleScene::Initialize()
 	particleManager->CreateParticleGroup(test);
 	test->SetIsCreate(false);
 
-	for (uint32_t i = 0; i < 8; ++i) {
-		for (uint32_t j = 0; j < 8; ++j) {
+	skyBox_ = std::make_unique<PrimitiveDrawr>();
+	skyBox_->TypeInit(PrimitiveType::Skybox);
+	skyBox_->GetTransform().scale = { 1024.0f,1024.0f ,1024.0f };
+	skyBox_->SetSceneRenderer();
+
+	for (uint32_t i = 0; i < 5; ++i) {
+		for (uint32_t j = 0; j < 5; ++j) {
 			std::unique_ptr<Animation> animation = std::make_unique<Animation>();
 			animation->Initialize("BrainStem.gltf");
 			animation->SetSceneRenderer();
@@ -39,10 +44,16 @@ void TitleScene::Initialize()
 			animation->GetTransform().translation_ = transform.translation;
 			float time = static_cast<float>(i) / 8.0f + static_cast<float>(j) / 8.0f;
 			animation->SetAnimationTime(time);
-			animation->SetColor(Vector4{ 1.0f ,time ,time ,1.0f });
+			animation->GetMaterial().environmentCoefficient = time;
 			testAnimas_.push_back(std::move(animation));
 		}
 	}
+
+	box_ = std::make_unique<Object3d>();
+	box_->Initialize("Box.obj");
+	box_->SetSceneRenderer();
+	box_->GetTransform().translation_ = { 2.5f,2.0f,-2.0f };
+	box_->GetMaterial().environmentCoefficient = 0.5f;
 }
 
 void TitleScene::Finalize()
@@ -58,6 +69,12 @@ void TitleScene::Update()
 	titleUI_->Update();
 
 	sceneFade_->Update();
+
+	skyBox_->Update();
+
+	t += 0.005f;
+	box_->GetTransform().rotation_ = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, t);
+	box_->Update();
 
 	for (auto& animation : testAnimas_) {
 		animation->Update();

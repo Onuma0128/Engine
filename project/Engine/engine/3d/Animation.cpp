@@ -416,17 +416,18 @@ void Animation::SkeletonUpdate(Skeleton& skeleton)
 
 void Animation::SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skeleton)
 {
+	if (!materialData_.enableDraw) { return; }
+
 	for (size_t jointIndex = 0; jointIndex < skeleton.joints.size(); ++jointIndex) {
 		assert(jointIndex < skinCluster.inverseBindPoseMatrices.size());
-		skinCluster.mappedPalettes[jointIndex].skeletonSpaceMatrix =
-			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
-		skinCluster.mappedPalettes[jointIndex].skeletonSpaceInverseTransposeMatrix =
-			Matrix4x4::Inverse(skinCluster.mappedPalettes[jointIndex].skeletonSpaceMatrix).Transpose();
 
-		paletteData_[jointIndex].skeletonSpaceMatrix =
-			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
-		paletteData_[jointIndex].skeletonSpaceInverseTransposeMatrix = 
-			Matrix4x4::Inverse(skinCluster.mappedPalettes[jointIndex].skeletonSpaceMatrix).Transpose();
+		Matrix4x4 skelM = skinCluster.inverseBindPoseMatrices[jointIndex] *
+			skeleton.joints[jointIndex].skeletonSpaceMatrix;
+
+		Matrix4x4 invT = Matrix4x4::Inverse(skelM).Transpose();   // 逆 → 転置
+
+		paletteData_[jointIndex].skeletonSpaceMatrix = skelM;
+		paletteData_[jointIndex].skeletonSpaceInverseTransposeMatrix = invT;
 	}
 }
 
@@ -436,7 +437,6 @@ void Animation::ApplyAnimation(Skeleton& skeleton, const AnimationData& animatio
 	std::vector<size_t> indices(skeleton_.joints.size());
 	// 0からsize分までの連続した値を作成する
 	std::iota(indices.begin(), indices.end(), 0);
-	const auto& nodeAnims = animation.nodeAnimations;
 
 	// par_unseqで並列処理
 	std::for_each(std::execution::par_unseq,indices.begin(), indices.end(),[&](size_t jointIdx)
@@ -444,8 +444,8 @@ void Animation::ApplyAnimation(Skeleton& skeleton, const AnimationData& animatio
         auto& joint = skeleton.joints[jointIdx];
 
         // 対応する NodeAnimation が無ければスキップ
-        auto it = nodeAnims.find(joint.name);
-        if (it == nodeAnims.end()) return;
+        auto it = animation.nodeAnimations.find(joint.name);
+        if (it == animation.nodeAnimations.end()) return;
 
         const NodeAnimation& track = it->second;
 

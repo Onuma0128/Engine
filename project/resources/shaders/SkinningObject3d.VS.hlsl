@@ -9,8 +9,7 @@ struct InstanceData
 };
 
 StructuredBuffer<InstanceData> gInstanceData : register(t0);
-StructuredBuffer<Well> gMatrixPalette : register(t1);
-StructuredBuffer<Vertex> gVertexData : register(t2);
+StructuredBuffer<Vertex> gVertexData : register(t1);
 ConstantBuffer<NumVertices> gNumVertices : register(b0);
 
 struct VertexShaderInput

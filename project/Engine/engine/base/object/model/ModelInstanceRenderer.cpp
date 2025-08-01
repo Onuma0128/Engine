@@ -87,10 +87,6 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
     batch.materialBuffer = CreateBufferResource(
         DirectXEngine::GetDevice(),
         sizeof(Material) * maxInstance);
-    // --- GPU リソース確保 MatrixPalette ---
-    batch.paletteBuffer = CreateBufferResource(
-        DirectXEngine::GetDevice(),
-        sizeof(WellForGPU) * maxInstance * animation->GetJointSize());
     // --- GPU リソース確保 VertexData ---
     batch.vertexUavBuffer = CreateUAVBufferResource(
         DirectXEngine::GetDevice(),
@@ -115,12 +111,6 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
         batch.materialData[i].shininess = 20.0f;
         batch.materialData[i].environmentCoefficient = 0;
     }
-    // --- CPU 側から書き込むために永続 Palette ---
-    batch.paletteBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.paletteData));
-    for (uint32_t i = 0; i < maxInstance; ++i) {
-        batch.paletteData[i].skeletonSpaceMatrix = Matrix4x4::Identity();
-        batch.paletteData[i].skeletonSpaceInverseTransposeMatrix = Matrix4x4::Identity();
-    }
     // --- CPU 側から書き込むために永続 vertices ---
     batch.verticesBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.numVerticesData));
     batch.numVerticesData->size = static_cast<uint32_t>(batch.model->GetModelData().vertices.size());
@@ -134,10 +124,6 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
     batch.materialSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
         batch.materialSrvIndex, batch.materialBuffer.Get(), maxInstance, sizeof(Material));
-    // --- SRV を作成して Heap へ登録 Palette ---
-    batch.paletteSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
-    SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
-        batch.paletteSrvIndex, batch.paletteBuffer.Get(), maxInstance * static_cast<UINT>(animation->GetJointSize()), sizeof(WellForGPU));
     // --- SRV を作成して Heap へ登録 vertexData ---
     batch.vertexUavIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateUAVforStructuredBuffer(
@@ -287,39 +273,9 @@ void ModelInstanceRenderer::AnimationUpdate()
             // Materialを代入
             Material& material = batch.materialData[i];
             material = batch.animations[i]->GetMaterial();
-            // 描画するか
-            if (material.enableDraw) {
-                // 描画をしているならPaletteの更新
-                size_t jointSize = batch.animations[i]->GetJointSize();
-                for (size_t jointIndex = 0; jointIndex < jointSize; ++jointIndex) {
-                    const size_t dst = i * jointSize + jointIndex;
-                    WellForGPU& wellForGPU = batch.paletteData[dst];
-                    wellForGPU.skeletonSpaceMatrix = batch.animations[i]->GetWellForGPU()[jointIndex].skeletonSpaceMatrix;
-                    wellForGPU.skeletonSpaceInverseTransposeMatrix =
-                        batch.animations[i]->GetWellForGPU()[jointIndex].skeletonSpaceInverseTransposeMatrix;
-                }
-            }
         }
         ++it;
     }
-}
-
-int32_t ModelInstanceRenderer::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
-{
-    Joint joint;
-    joint.name = node.name;
-    joint.localMatrix = node.localMatrix;
-    joint.skeletonSpaceMatrix = Matrix4x4::Identity();
-    joint.transform = node.transform;
-    joint.index = int32_t(joints.size());
-    joint.parent = parent;
-    joints.push_back(joint);
-    for (const Node& child : node.children) {
-        int32_t childIndex = CreateJoint(child, joint.index, joints);
-        joints[joint.index].children.push_back(childIndex);
-    }
-
-    return joint.index;
 }
 
 void ModelInstanceRenderer::AllDraw()
@@ -362,9 +318,8 @@ void ModelInstanceRenderer::AllDraw()
         model->BindBuffers(true);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.paletteSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(10, batch.vertexSrvIndex);
-        commandList->SetGraphicsRootConstantBufferView(11, batch.verticesBuffer->GetGPUVirtualAddress());
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.vertexSrvIndex);
+        commandList->SetGraphicsRootConstantBufferView(10, batch.verticesBuffer->GetGPUVirtualAddress());
 
         /* ---------- Mesh ループ ---------- */
         const auto& mesh = model->GetMeshData();

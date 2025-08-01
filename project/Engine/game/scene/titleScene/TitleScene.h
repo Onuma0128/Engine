@@ -2,9 +2,11 @@
 #include <memory>
 
 #include "BaseScene.h"
+#include "Object3d.h"
 #include "Animation.h"
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+#include "PrimitiveDrawr.h"
 
 #include "Camera.h"
 #include "scene/sceneFade/SceneFade.h"
@@ -31,10 +33,14 @@ private:
 
 	std::unique_ptr<TitleUI> titleUI_ = nullptr;
 
+	// スカイボックス
+	std::unique_ptr<PrimitiveDrawr> skyBox_ = nullptr;
+
 	// パーティクルを管理する
 	ParticleManager* particleManager = ParticleManager::GetInstance();
 	// エフェクト
 	std::shared_ptr<ParticleEmitter> test = nullptr;
-
 	std::vector<std::unique_ptr<Animation>> testAnimas_;
+	std::unique_ptr<Object3d> box_ = nullptr;
+	float t = 0.0f;
 };
