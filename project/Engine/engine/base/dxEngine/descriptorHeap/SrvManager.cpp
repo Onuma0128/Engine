@@ -32,6 +32,11 @@ void SrvManager::SetGraphicsRootDescriptorTable(UINT RootParameterIndex, uint32_
 	dxEngine_->GetCommandList()->SetGraphicsRootDescriptorTable(RootParameterIndex, GetGPUDescriptorHandle(srvIndex));
 }
 
+void SrvManager::SetComputeRootDescriptorTable(UINT RootParameterIndex, uint32_t srvIndex)
+{
+	dxEngine_->GetCommandList()->SetComputeRootDescriptorTable(RootParameterIndex, GetGPUDescriptorHandle(srvIndex));
+}
+
 void SrvManager::PreDraw()
 {
 	ID3D12DescriptorHeap* descriptorHeaps[] = { descriptorHeap_.Get() };
@@ -110,6 +115,20 @@ void SrvManager::CreateSRVforTextureCube(uint32_t srvIndex, ID3D12Resource* pRes
 	srvDesc.TextureCube.ResourceMinLODClamp = 0.0f;
 	// SRVの生成
 	dxEngine_->GetDevice()->CreateShaderResourceView(pResource, &srvDesc, GetCPUDescriptorHandle(srvIndex));
+}
+
+void SrvManager::CreateUAVforStructuredBuffer(uint32_t srvIndex, ID3D12Resource* pResource, UINT numElements, UINT structureByteStride)
+{
+	D3D12_UNORDERED_ACCESS_VIEW_DESC uavDesc{};
+	uavDesc.Format = DXGI_FORMAT_UNKNOWN;
+	uavDesc.ViewDimension = D3D12_UAV_DIMENSION_BUFFER;
+	uavDesc.Buffer.FirstElement = 0;
+	uavDesc.Buffer.NumElements = numElements;
+	uavDesc.Buffer.CounterOffsetInBytes = 0;
+	uavDesc.Buffer.Flags = D3D12_BUFFER_UAV_FLAG_NONE;
+	uavDesc.Buffer.StructureByteStride = structureByteStride;
+	// SRVの生成
+	dxEngine_->GetDevice()->CreateUnorderedAccessView(pResource, nullptr, &uavDesc, GetCPUDescriptorHandle(srvIndex));
 }
 
 uint32_t SrvManager::Allocate()

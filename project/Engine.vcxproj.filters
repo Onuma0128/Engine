@@ -851,6 +851,9 @@
     <ClInclude Include="Engine\game\scene\gameScene\enemy\ray\EnemyRay.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\SkinningRootSignature.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl" />
@@ -874,6 +877,7 @@
     <FxCompile Include="resources\shaders\BoxFilter.PS.hlsl" />
     <FxCompile Include="resources\shaders\GaussianFilter.PS.hlsl" />
     <FxCompile Include="resources\shaders\LuminanceBasedOutline.PS.hlsl" />
+    <FxCompile Include="resources\shaders\Skinning.CS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\Object3d.hlsli" />
@@ -883,5 +887,6 @@
     <None Include="resources\shaders\Fullscreen.hlsli" />
     <None Include="resources\shaders\Sprite.hlsli" />
     <None Include="resources\shaders\Skybox.hlsli" />
+    <None Include="resources\shaders\Skinning.hlsli" />
   </ItemGroup>
 </Project>

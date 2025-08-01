@@ -24,9 +24,10 @@ public:
         Matrix4x4 World;
         Matrix4x4 WorldInvT;
     };
-    struct JointCount 
+    struct NumVertices
     {
-        uint32_t jointCount;
+        uint32_t size;
+        int pad[3];
     };
 
     /* ========================= Object3d ========================= */
@@ -38,6 +39,7 @@ public:
 
     void Push(Animation* animation);
     void Remove(Animation* animation);
+    uint32_t GetAnimationModelSize(Animation* animation);
 
 
     void Finalize() { 
@@ -100,13 +102,19 @@ private:
         Material* materialData;                     // Mapしたポインタ
         uint32_t materialSrvIndex;                  // SRV番地 (material)
 
-        ComPtr<ID3D12Resource> jointBuffer;         // ConstantBuffer
-        JointCount* jointData;                       // Mapしたポインタ
-
         ComPtr<ID3D12Resource> paletteBuffer;       // StructuredBuffer
         WellForGPU* paletteData;                    // Mapしたポインタ
         uint32_t paletteSrvIndex;                   // SRV番地 (matrixPalette)
+
+        ComPtr<ID3D12Resource> vertexUavBuffer;     // StructuredBuffer
+        VertexData* vertexUavData;                  // Mapしたポインタ
+        uint32_t vertexUavIndex;					// UAV番地
+        uint32_t vertexSrvIndex;                    // SRV番地
+
+        ComPtr<ID3D12Resource> verticesBuffer;	    // ConstantBuffer
+        NumVertices* numVerticesData;               // Mapしたポインタ
     };
+
     std::unordered_map<Model*, AnimationBatch> animationBatches_;
 
 };

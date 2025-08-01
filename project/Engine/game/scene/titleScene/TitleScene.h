@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "BaseScene.h"
+#include "Animation.h"
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
 
@@ -35,4 +36,5 @@ private:
 	// エフェクト
 	std::shared_ptr<ParticleEmitter> test = nullptr;
 
+	std::vector<std::unique_ptr<Animation>> testAnimas_;
 };

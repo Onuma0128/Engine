@@ -25,6 +25,13 @@ public:
 		PostEffectType effectType = PostEffectType::None
 	);
 
+	static D3D12_SHADER_BYTECODE& GetCompileShader_CS(
+		PipelineType type,
+		ComPtr<IDxcUtils> dxcUtils,
+		ComPtr<IDxcCompiler3>& dxcCompiler,
+		ComPtr<IDxcIncludeHandler> includeHandler
+	);
+
 	static D3D12_SHADER_BYTECODE CreateCompileShader(
 		const std::wstring& filePath,
 		const wchar_t* profile,
@@ -83,6 +90,11 @@ public:
 		);
 		return psBytecode;
 	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override
+	{
+		return csBytecode;
+	}
 };
 
 // ============================================================
@@ -115,6 +127,11 @@ public:
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
 		return psBytecode;
+	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override
+	{
+		return csBytecode;
 	}
 };
 
@@ -149,6 +166,11 @@ public:
 		);
 		return psBytecode;
 	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override
+	{
+		return csBytecode;
+	}
 };
 
 // ============================================================
@@ -182,6 +204,11 @@ public:
 		);
 		return psBytecode;
 	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override
+	{
+		return csBytecode;
+	}
 };
 
 // ============================================================
@@ -214,6 +241,11 @@ public:
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
 		return psBytecode;
+	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override
+	{
+		return csBytecode;
 	}
 };
 
@@ -282,6 +314,11 @@ public:
 		
 		return psBytecode;
 	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override
+	{
+		return csBytecode;
+	}
 };
 
 // ============================================================
@@ -314,6 +351,11 @@ public:
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
 		return psBytecode;
+	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override
+	{
+		return csBytecode;
 	}
 };
 
@@ -348,6 +390,45 @@ public:
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
 		return psBytecode;
+	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override
+	{
+		return csBytecode;
+	}
+};
+
+// ============================================================
+// ComputeShader
+// ============================================================
+
+class SkinningComputeShader : public CompileShaderBase
+{
+public:
+
+	SkinningComputeShader(
+		ComPtr<IDxcUtils> dxcUtils,
+		ComPtr<IDxcCompiler3>& dxcCompiler,
+		ComPtr<IDxcIncludeHandler> includeHandler
+	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+	}
+
+	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
+	{
+		return vsBytecode;
+	}
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
+	{
+		return psBytecode;
+	}
+
+	D3D12_SHADER_BYTECODE& BuildCS_Shader() override 
+	{
+		csBytecode = CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/Skinning.CS.hlsl", L"cs_6_0",
+			dxcUtils_, dxcCompiler_, includeHandler_
+		);
+		return csBytecode;
 	}
 };
 

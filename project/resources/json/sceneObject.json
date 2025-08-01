@@ -188,39 +188,6 @@
         },
         {
             "type": "MESH",
-            "name": "TowerWindmill.004",
-            "transform": {
-                "translation": [
-                    0.41999998688697815,
-                    8.380000114440918,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -177.00000834056831
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "TowerWindmill.obj",
-            "tag_name": "Building",
-            "group_name": "FieldObject",
-            "collider": {
-                "type": "Sphere",
-                "center": [
-                    0.0,
-                    0.0,
-                    1.4199999570846558
-                ],
-                "radius": 2.440000057220459
-            }
-        },
-        {
-            "type": "MESH",
             "name": "BigBarn.004",
             "transform": {
                 "translation": [
@@ -287,6 +254,72 @@
                     1.3020000194311123
                 ],
                 "radius": 1.0850001239776645
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "TowerWindmill.002",
+            "transform": {
+                "translation": [
+                    0.0,
+                    14.979999542236328,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -179.999991348578
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "TowerWindmill.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    1.4199999570846558
+                ],
+                "radius": 2.440000057220459
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "TowerWindmill.003",
+            "transform": {
+                "translation": [
+                    -11.34999942779541,
+                    15.75,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -162.99999201387476
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "TowerWindmill.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    1.4199999570846558
+                ],
+                "radius": 2.440000057220459
             }
         },
         {
@@ -987,43 +1020,6 @@
         },
         {
             "type": "MESH",
-            "name": "BigBarn.001",
-            "transform": {
-                "translation": [
-                    -11.391876220703125,
-                    22.483482360839844,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    0.0,
-                    -66.00000183661733
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "BigBarn.obj",
-            "tag_name": "Building",
-            "group_name": "FieldObject",
-            "collider": {
-                "type": "Box",
-                "center": [
-                    0.0,
-                    -0.07999999821186066,
-                    2.3899998664855957
-                ],
-                "size": [
-                    3.5399999618530273,
-                    4.085000038146973,
-                    2.4699997901916504
-                ]
-            }
-        },
-        {
-            "type": "MESH",
             "name": "BigBarn.002",
             "transform": {
                 "translation": [
@@ -1179,72 +1175,6 @@
                     0.0,
                     -0.0,
                     139.99999934239548
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "TowerWindmill.obj",
-            "tag_name": "Building",
-            "group_name": "FieldObject",
-            "collider": {
-                "type": "Sphere",
-                "center": [
-                    0.0,
-                    0.0,
-                    1.4199999570846558
-                ],
-                "radius": 2.440000057220459
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "TowerWindmill.002",
-            "transform": {
-                "translation": [
-                    -17.18000030517578,
-                    9.550000190734863,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    -130.99999567685308
-                ],
-                "scaling": [
-                    0.9999999403953552,
-                    0.9999999403953552,
-                    1.0
-                ]
-            },
-            "file_name": "TowerWindmill.obj",
-            "tag_name": "Building",
-            "group_name": "FieldObject",
-            "collider": {
-                "type": "Sphere",
-                "center": [
-                    0.0,
-                    0.0,
-                    1.4199999570846558
-                ],
-                "radius": 2.440000057220459
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "TowerWindmill.003",
-            "transform": {
-                "translation": [
-                    18.270000457763672,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    166.999983018266
                 ],
                 "scaling": [
                     1.0,

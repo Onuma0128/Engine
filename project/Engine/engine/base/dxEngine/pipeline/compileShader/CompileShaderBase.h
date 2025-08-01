@@ -21,6 +21,7 @@ public:
 	virtual ~CompileShaderBase() = default;
 	virtual D3D12_SHADER_BYTECODE& BuildVS_Shader() = 0;
 	virtual D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) = 0;
+	virtual D3D12_SHADER_BYTECODE& BuildCS_Shader() = 0;
 
 protected:
 
@@ -30,6 +31,7 @@ protected:
 
 	D3D12_SHADER_BYTECODE vsBytecode{};
 	D3D12_SHADER_BYTECODE psBytecode{};
+	D3D12_SHADER_BYTECODE csBytecode{};
 
 };
 

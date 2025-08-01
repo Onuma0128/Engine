@@ -24,6 +24,15 @@ D3D12_SHADER_BYTECODE& CompileShaderFactory::GetCompileShader_PS(PipelineType ty
 	return compileShader->BuildPS_Shader(effectType);
 }
 
+D3D12_SHADER_BYTECODE& CompileShaderFactory::GetCompileShader_CS(PipelineType type, ComPtr<IDxcUtils> dxcUtils, ComPtr<IDxcCompiler3>& dxcCompiler, ComPtr<IDxcIncludeHandler> includeHandler)
+{
+	static std::unique_ptr<CompileShaderBase> compileShader = nullptr;
+
+	compileShader = GetCompileShaderPtr(type, dxcUtils, dxcCompiler, includeHandler);
+
+	return compileShader->BuildCS_Shader();
+}
+
 D3D12_SHADER_BYTECODE CompileShaderFactory::CreateCompileShader(
 	//CompilerするShaderファイルへのパス
 	const std::wstring& filePath,
@@ -141,6 +150,9 @@ std::unique_ptr<CompileShaderBase> CompileShaderFactory::GetCompileShaderPtr(Pip
 		break;
 	case PipelineType::Skybox:
 		compileShader[type] = std::make_unique<SkyboxCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		break;
+	case PipelineType::Skinning:
+		compileShader[type] = std::make_unique<SkinningComputeShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	default:
 		assert(false && "Invalid CompileShaderType");

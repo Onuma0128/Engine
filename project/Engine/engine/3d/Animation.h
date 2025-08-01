@@ -23,6 +23,7 @@ public:
 	void Update();
 	void TransformUpdate() { transform_.TransferMatrix(Matrix4x4::Identity()); }
 
+	void BindSkinning(ComPtr<ID3D12Resource> vertexUavBuffer, uint32_t UavIndex);
 	void Draw();
 
 	std::vector<AnimationData> LoadAnimationFile(const std::string& directoryPath, const std::string& filename);
@@ -56,6 +57,7 @@ private:
 	SkinCluster CreateSkinCluster(
 		const ComPtr<ID3D12Device>& device, const Skeleton& skeleton, const ModelData& modelData
 	);
+	void CreateComputeBindBuffer();
 
 	Vector3 CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration);
 	Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration);
@@ -88,8 +90,25 @@ private:
 
 	SkinCluster skinCluster_;
 	Skeleton skeleton_;
-
 	std::unique_ptr<Line3d> line_;
+
+	/*==================== Skinning ====================*/
+
+	// Palette
+	ComPtr<ID3D12Resource> paletteBuffer_;      // StructuredBuffer
+	WellForGPU* paletteData_;                   // Mapしたポインタ
+	uint32_t paletteSrvIndex_;                  // SRV番地 (matrixPalette)
+	// Vertex
+	ComPtr<ID3D12Resource> vertexBuffer_;       // StructuredBuffer
+	VertexData* vertexData_;                    // Mapしたポインタ
+	uint32_t vertexSrvIndex_;                   // SRV番地 (Vertex)
+	// VertexInfuence
+	ComPtr<ID3D12Resource> vertexInfBuffer_;    // StructuredBuffer
+	VertexInfluence* vertexInfData_;            // Mapしたポインタ
+	uint32_t vertexInfSrvIndex_;                // SRV番地 (VertexInfluence)
+	// SkinningInformation
+	ComPtr<ID3D12Resource> skinningInfBuffer_;	// ConstantBuffer
+	SkinningInformation* skinningInfData_;      // Mapしたポインタ
 
 	/*==================== マテリアル ====================*/
 

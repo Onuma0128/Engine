@@ -11,6 +11,8 @@ public:
 
 	void Initialize();
 
+	void BindSkinningBase();
+
 	void DrawBase();
 
 private:
@@ -19,5 +21,11 @@ private:
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	// パイプラインステート
 	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
+
+	// Skinning
+	// ルートシグネチャ
+	ComPtr<ID3D12RootSignature> skinningRootSignature_ = nullptr;
+	// パイプラインステート
+	ComPtr<ID3D12PipelineState> skinningPipelineState_ = nullptr;
 };
 

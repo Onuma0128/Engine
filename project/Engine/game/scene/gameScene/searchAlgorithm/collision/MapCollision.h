@@ -43,6 +43,7 @@ private:
 	float cell_;		// グリッドの1マスの幅
 	float size_;		// グリッドの全体サイズ
 	float half_;		// グリッドの半径
+	bool isEnabled_;	// 描画するか
 
 	// マップの座標を格納する多重配列
 	std::vector<std::vector<Maptip>> mapDatas_;

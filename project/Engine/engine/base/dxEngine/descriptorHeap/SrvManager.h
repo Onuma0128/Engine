@@ -30,6 +30,7 @@ public:
 	void Initialize(DirectXEngine* dxEngine);
 
 	void SetGraphicsRootDescriptorTable(UINT RootParameterIndex, uint32_t srvIndex);
+	void SetComputeRootDescriptorTable(UINT RootParameterIndex, uint32_t srvIndex);
 
 	void PreDraw();
 
@@ -50,6 +51,9 @@ public:
 	void CreateSRVforRenderTexture(uint32_t srvIndex, ID3D12Resource* pResource, PostEffectType type = PostEffectType::None);
 	// SRV生成(DDSテクスチャ用)
 	void CreateSRVforTextureCube(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format, UINT MipLevels);
+	// SRV生成(UAV用)
+	void CreateUAVforStructuredBuffer(uint32_t srvIndex, ID3D12Resource* pResource, UINT numElements, UINT structureByteStride);
+
 
 	uint32_t Allocate();
 

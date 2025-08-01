@@ -18,7 +18,7 @@ void PipelineState::Initialize(
 	dxcCompiler_ = dxcCompiler;
 	includeHandler_ = includeHandler;
 
-	// 必要な全ての組み合わせで初期化（例：ポストエフェクト含む）
+	// 必要な全ての組み合わせで初期化
 	std::vector<PipelineType> pipelineTypes = {
 		PipelineType::Object3d, PipelineType::Sprite, PipelineType::Line3d,
 		PipelineType::Particle, PipelineType::PrimitiveDrawr,
@@ -61,6 +61,10 @@ void PipelineState::Initialize(
 			}
 		}
 	}
+
+	PipelineKey key{ PipelineType::Skinning, PostEffectType::None, BlendMode::kBlendModeNormal };
+	rootSignatures_[key] = CreateRootSignature(PipelineType::Skinning);
+	pipelineStates_[key] = CreateComputePipelineState(PipelineType::Skinning);
 }
 
 ComPtr<ID3D12RootSignature> PipelineState::CreateRootSignature(PipelineType type,PostEffectType effectType)
@@ -91,6 +95,18 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 
 	ComPtr<ID3D12PipelineState> pipelineState;
 	hr_ = device_->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState));
+	assert(SUCCEEDED(hr_));
+	return pipelineState;
+}
+
+ComPtr<ID3D12PipelineState> PipelineState::CreateComputePipelineState(PipelineType type)
+{
+	D3D12_COMPUTE_PIPELINE_STATE_DESC psoDesc{};
+	psoDesc.CS = CompileShaderFactory::GetCompileShader_CS(type, dxcUtils_, dxcCompiler_, includeHandler_);
+	psoDesc.pRootSignature = GetRootSignature(type).Get();
+
+	ComPtr<ID3D12PipelineState> pipelineState;
+	hr_ = device_->CreateComputePipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(hr_));
 	return pipelineState;
 }

@@ -26,6 +26,7 @@ private:
 	ComPtr<ID3D12RootSignature> CreateRootSignature(PipelineType type, PostEffectType effectType = PostEffectType::None);
 	// パイプライン
 	ComPtr<ID3D12PipelineState> CreatePipelineState(PipelineType type, PostEffectType effectType = PostEffectType::None, BlendMode blendMode = BlendMode::kBlendModeNormal);
+	ComPtr<ID3D12PipelineState> CreateComputePipelineState(PipelineType type);
 
 	///==============================================================================================================
 

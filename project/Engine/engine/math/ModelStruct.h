@@ -108,6 +108,12 @@ struct SkinCluster {
 	std::vector<WellForGPU> mappedPalettes;
 };
 
+struct SkinningInformation {
+	uint32_t numVertices;
+	uint32_t paletteStart;
+	uint32_t jointIndex;
+};
+
 struct RenderOptions {
 	bool enabled;		// 描画をするか
 	bool offscreen;		// オフスク描画をするか

@@ -52,12 +52,14 @@ void MapCollision::Update()
 	ImGui::Begin("map");
 	ImGui::DragFloat("size", &size_, 0.01f, 0.01f, 1000.0f);
 	ImGui::DragFloat("cell", &cell_, 0.01f, 0.1f, 10.0f);
+	ImGui::Checkbox("enabled", &isEnabled_);
 	if (ImGui::Button("Reload")) {
 		// マップを再ロードする
 		ReloadMap();
 	}
 	ImGui::End();
 
+	grid_->SetDrawGrid(isEnabled_);
 	grid_->Update();
 }
 

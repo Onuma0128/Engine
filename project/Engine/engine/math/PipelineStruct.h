@@ -9,7 +9,8 @@ enum class PipelineType {
 	PrimitiveDrawr,
 	Animation,
 	RenderTexture,
-	Skybox
+	Skybox,
+	Skinning
 };
 
 enum class BlendMode {

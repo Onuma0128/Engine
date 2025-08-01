@@ -7,6 +7,17 @@ void AnimationBase::Initialize()
 {
 	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::Animation).Get();
 	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::Animation).Get();
+
+	skinningRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::Skinning).Get();
+	skinningPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::Skinning).Get();
+
+}
+
+void AnimationBase::BindSkinningBase()
+{
+	auto commandList = DirectXEngine::GetCommandList();
+	commandList->SetComputeRootSignature(skinningRootSignature_.Get());
+	commandList->SetPipelineState(skinningPipelineState_.Get());
 }
 
 void AnimationBase::DrawBase()

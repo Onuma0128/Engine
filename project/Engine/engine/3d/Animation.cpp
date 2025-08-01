@@ -25,10 +25,11 @@ void Animation::Initialize(const std::string& filename)
 	animationBase_ = std::make_unique<AnimationBase>();
 	animationBase_->Initialize();
 
+	// モデルの初期化
 	transform_ = WorldTransform();
 	SetModel(filename);
 	MakeMaterialData();
-
+	// アニメーションの読み込み
 	animationDatas_ = model_->GetModelData().animations;
 	for (size_t i = 0; i < animationDatas_.size(); ++i) {
 		nameToIx_[animationDatas_[i].name] = i;
@@ -38,6 +39,10 @@ void Animation::Initialize(const std::string& filename)
 	skeleton_ = CreateSkeleton(model_->GetModelData().rootNode);
 	skinCluster_ = CreateSkinCluster(DirectXEngine::GetDevice(), skeleton_, model_->GetModelData());
 
+	CreateComputeBindBuffer();
+
+	// Line3dを初期化
+#ifdef _DEBUG
 	std::vector<Vector3> linePositions{};
 	for (const Joint& joint : skeleton_.joints) {
 		if (joint.parent) {
@@ -52,9 +57,6 @@ void Animation::Initialize(const std::string& filename)
 			linePositions.push_back(jointPos);
 		}
 	}
-
-#ifdef _DEBUG
-	// Line3dを初期化
 	line_ = std::make_unique<Line3d>();
 	line_->Initialize(linePositions);
 #endif // _DEBUG
@@ -150,6 +152,26 @@ void Animation::Update()
 	transform_.TransferMatrix(Matrix4x4::Identity());
 	if (line_ == nullptr) { return; }
 	LineUpdate();
+}
+
+void Animation::BindSkinning(ComPtr<ID3D12Resource> vertexUavBuffer, uint32_t UavIndex)
+{
+	animationBase_->BindSkinningBase();
+
+	auto commandList = DirectXEngine::GetCommandList();
+	auto srv = SrvManager::GetInstance();
+
+	srv->SetComputeRootDescriptorTable(0, paletteSrvIndex_);
+	srv->SetComputeRootDescriptorTable(1, vertexSrvIndex_);
+	srv->SetComputeRootDescriptorTable(2, vertexInfSrvIndex_);
+	srv->SetComputeRootDescriptorTable(3, UavIndex);
+	commandList->SetComputeRootConstantBufferView(4, skinningInfBuffer_->GetGPUVirtualAddress());
+	commandList->Dispatch(UINT(model_->GetModelData().vertices.size() + 1023) / 1024, 1, 1);
+
+	D3D12_RESOURCE_BARRIER uavBarrier{};
+	uavBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+	uavBarrier.UAV.pResource = vertexUavBuffer.Get();
+	commandList->ResourceBarrier(1, &uavBarrier);
 }
 
 void Animation::Draw()
@@ -331,6 +353,55 @@ SkinCluster Animation::CreateSkinCluster(const ComPtr<ID3D12Device>& device, con
 	return skinCluster;
 }
 
+void Animation::CreateComputeBindBuffer()
+{
+	// ========== Buffer ========== //
+
+	paletteBuffer_ = CreateBufferResource(
+		DirectXEngine::GetDevice(), sizeof(WellForGPU) * skeleton_.joints.size());
+	vertexBuffer_ = CreateBufferResource(
+		DirectXEngine::GetDevice(), sizeof(VertexData) * model_->GetModelData().vertices.size());
+	vertexInfBuffer_ = CreateBufferResource(
+		DirectXEngine::GetDevice(), sizeof(VertexInfluence) * model_->GetModelData().vertices.size());
+	skinningInfBuffer_ = CreateBufferResource(
+		DirectXEngine::GetDevice(), sizeof(SkinningInformation));
+
+	// ========== Map ========== //
+
+	paletteBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&paletteData_));
+	for (size_t i = 0; i < skeleton_.joints.size(); ++i) {
+		paletteData_[i].skeletonSpaceMatrix = Matrix4x4::Identity();
+		paletteData_[i].skeletonSpaceInverseTransposeMatrix = Matrix4x4::Identity();
+	}
+	vertexBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
+	//vertexUavBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&vertexUavData_));
+	vertexInfBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&vertexInfData_));
+	for (size_t i = 0; i < model_->GetModelData().vertices.size(); ++i) {
+		vertexData_[i] = model_->GetModelData().vertices[i];
+	}
+	std::memcpy(vertexInfData_, skinCluster_.mappedInfluence.data(),
+		sizeof(VertexInfluence) * model_->GetModelData().vertices.size());
+	skinningInfBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&skinningInfData_));
+	skinningInfData_->numVertices = static_cast<uint32_t>(model_->GetModelData().vertices.size());
+	skinningInfData_->paletteStart = DirectXEngine::GetModelRenderer()->GetAnimationModelSize(this);
+	skinningInfData_->jointIndex = static_cast<uint32_t>(skeleton_.joints.size());
+
+	// ========== SRV ========== //
+
+	paletteSrvIndex_ = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+	SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
+		paletteSrvIndex_, paletteBuffer_.Get(), static_cast<UINT>(skeleton_.joints.size()), sizeof(WellForGPU));
+	
+	vertexSrvIndex_ = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+	SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
+		vertexSrvIndex_, vertexBuffer_.Get(), static_cast<UINT>(model_->GetModelData().vertices.size()), sizeof(VertexData));
+	
+	vertexInfSrvIndex_ = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+	SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
+		vertexInfSrvIndex_, vertexInfBuffer_.Get(), static_cast<UINT>(model_->GetModelData().vertices.size()), sizeof(VertexInfluence));
+
+}
+
 void Animation::SkeletonUpdate(Skeleton& skeleton)
 {
 	for (Joint& joint : skeleton.joints) {
@@ -350,6 +421,11 @@ void Animation::SkinClusterUpdate(SkinCluster& skinCluster, const Skeleton& skel
 		skinCluster.mappedPalettes[jointIndex].skeletonSpaceMatrix =
 			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
 		skinCluster.mappedPalettes[jointIndex].skeletonSpaceInverseTransposeMatrix =
+			Matrix4x4::Inverse(skinCluster.mappedPalettes[jointIndex].skeletonSpaceMatrix).Transpose();
+
+		paletteData_[jointIndex].skeletonSpaceMatrix =
+			skinCluster.inverseBindPoseMatrices[jointIndex] * skeleton.joints[jointIndex].skeletonSpaceMatrix;
+		paletteData_[jointIndex].skeletonSpaceInverseTransposeMatrix = 
 			Matrix4x4::Inverse(skinCluster.mappedPalettes[jointIndex].skeletonSpaceMatrix).Transpose();
 	}
 }

@@ -87,15 +87,16 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
     batch.materialBuffer = CreateBufferResource(
         DirectXEngine::GetDevice(),
         sizeof(Material) * maxInstance);
-    // --- GPU リソース確保 Joint ---
-    batch.jointBuffer = CreateBufferResource(
-        DirectXEngine::GetDevice(),
-        sizeof(JointCount));
     // --- GPU リソース確保 MatrixPalette ---
     batch.paletteBuffer = CreateBufferResource(
         DirectXEngine::GetDevice(),
         sizeof(WellForGPU) * maxInstance * animation->GetJointSize());
-
+    // --- GPU リソース確保 VertexData ---
+    batch.vertexUavBuffer = CreateUAVBufferResource(
+        DirectXEngine::GetDevice(),
+        sizeof(VertexData) * maxInstance * batch.model->GetModelData().vertices.size());
+    // --- GPU リソース確保 VertexData ---
+    batch.verticesBuffer = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(NumVertices));
 
     // --- CPU 側から書き込むために永続 WorldMatrix ---
     batch.worldMatrixBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.instanceData));
@@ -114,15 +115,16 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
         batch.materialData[i].shininess = 20.0f;
         batch.materialData[i].environmentCoefficient = 0;
     }
-    // --- CPU 側から書き込むために永続 Joint ---
-    batch.jointBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.jointData));
-    batch.jointData->jointCount = static_cast<uint32_t>(animation->GetJointSize());
     // --- CPU 側から書き込むために永続 Palette ---
     batch.paletteBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.paletteData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
         batch.paletteData[i].skeletonSpaceMatrix = Matrix4x4::Identity();
         batch.paletteData[i].skeletonSpaceInverseTransposeMatrix = Matrix4x4::Identity();
     }
+    // --- CPU 側から書き込むために永続 vertices ---
+    batch.verticesBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.numVerticesData));
+    batch.numVerticesData->size = static_cast<uint32_t>(batch.model->GetModelData().vertices.size());
+
 
     // --- SRV を作成して Heap へ登録 WorldMatrix ---
     batch.instSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
@@ -136,7 +138,15 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
     batch.paletteSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
         batch.paletteSrvIndex, batch.paletteBuffer.Get(), maxInstance * static_cast<UINT>(animation->GetJointSize()), sizeof(WellForGPU));
-
+    // --- SRV を作成して Heap へ登録 vertexData ---
+    batch.vertexUavIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    SrvManager::GetInstance()->CreateUAVforStructuredBuffer(
+        batch.vertexUavIndex, batch.vertexUavBuffer.Get(),
+        static_cast<UINT>(batch.model->GetModelData().vertices.size() * maxInstance), sizeof(VertexData));
+    batch.vertexSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
+        batch.vertexSrvIndex, batch.vertexUavBuffer.Get(),
+        static_cast<UINT>(batch.model->GetModelData().vertices.size() * maxInstance), sizeof(VertexData));
 
     animationBatches_[animation->GetModel()] = std::move(batch);
 }
@@ -225,6 +235,13 @@ void ModelInstanceRenderer::Remove(Animation* animation)
         }
         ++it;
     }
+}
+
+uint32_t ModelInstanceRenderer::GetAnimationModelSize(Animation* animation)
+{
+    Model* model = animation->GetModel();
+    if (!animationBatches_.contains(model)) { AnimationReserveBatch(animation); }
+    return static_cast<uint32_t>(animationBatches_[model].animations.size());
 }
 
 /// =====================================================================
@@ -339,13 +356,15 @@ void ModelInstanceRenderer::AllDraw()
         /* ---------- IA 共通バインド ---------- */
         AnimationUpdate();
         for (auto& animation : batch.animations) {
+            animation->BindSkinning(batch.vertexUavBuffer, batch.vertexUavIndex);
             animation->Draw();
         }
         model->BindBuffers(true);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.paletteSrvIndex);
-        commandList->SetGraphicsRootConstantBufferView(10, batch.jointBuffer->GetGPUVirtualAddress());
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(10, batch.vertexSrvIndex);
+        commandList->SetGraphicsRootConstantBufferView(11, batch.verticesBuffer->GetGPUVirtualAddress());
 
         /* ---------- Mesh ループ ---------- */
         const auto& mesh = model->GetMeshData();
