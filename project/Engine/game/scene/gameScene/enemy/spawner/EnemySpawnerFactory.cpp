@@ -28,7 +28,7 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 	InitTypeEnemy(EnemyType::ShieldBearer, enemyShieldBearers_, 10);
 	InitTypeEnemy(EnemyType::RangedElite, enemyRnagedElites_, 10);
 
-	spawnInterval_ = 10.0f;
+	spawnInterval_ = 1.0f;
 }
 
 void EnemySpawnerFactory::Update()

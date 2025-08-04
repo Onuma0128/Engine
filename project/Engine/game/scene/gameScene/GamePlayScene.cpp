@@ -39,10 +39,6 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->SetMapData(mapCollision_.get());
 	enemySpawnerFactory_->Init(loader);
 
-	test_ = std::make_unique<AlgorithmTest>();
-	test_->SetMapCollision(mapCollision_.get());
-	test_->Init();
-
 	sceneFade_ = std::make_unique<SceneFade>();
 	sceneFade_->Init();
 	sceneFade_->FadeIn(3.0f);
@@ -65,8 +61,6 @@ void GamePlayScene::Update()
 	gameCamera_->Update();
 
 	skyBox_->Update();
-
-	test_->Update(player_->GetTransform().translation_);
 
 	ParticleManager::GetInstance()->Update();
 
