@@ -16,7 +16,6 @@ void ShieldBearerEnemy::Initialize()
 	Animation::PlayByName("Idle");
 	Animation::SetSceneRenderer();
 	Animation::GetMaterial().enableDraw = false;
-	Animation::SetDrawBone(false);
 	Animation::GetTimeStop() = true;
 
 	// シールド用のコライダーを作成

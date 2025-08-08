@@ -86,28 +86,6 @@ struct ModelData {
 	Node rootNode;
 };
 
-static const uint32_t kNumMaxInfluence = 4;
-struct VertexInfluence {
-	std::array<float, kNumMaxInfluence> weights;
-	std::array<uint32_t, kNumMaxInfluence> jointIndices;
-};
-
-struct WellForGPU {
-	Matrix4x4 skeletonSpaceMatrix;
-	Matrix4x4 skeletonSpaceInverseTransposeMatrix;
-};
-
-struct SkinCluster {
-	// Indexを保存
-	std::vector<Matrix4x4> inverseBindPoseMatrices;
-	// Influence
-	ComPtr<ID3D12Resource> infuenceResource;
-	D3D12_VERTEX_BUFFER_VIEW influenceBufferView;
-	std::span<VertexInfluence> mappedInfluence;
-	// MatrixPalette
-	std::vector<WellForGPU> mappedPalettes;
-};
-
 struct RenderOptions {
 	bool enabled;		// 描画をするか
 	bool offscreen;		// オフスク描画をするか

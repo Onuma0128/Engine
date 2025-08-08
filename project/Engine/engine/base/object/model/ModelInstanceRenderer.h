@@ -60,8 +60,6 @@ private:
     void AnimationReserveBatch(Animation* animation, uint32_t maxInstance = 128);
     void AnimationUpdate();
 
-    int32_t CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints);
-
 private:
 
     /* ========================= Object3d ========================= */
