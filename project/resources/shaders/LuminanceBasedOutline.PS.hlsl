@@ -8,6 +8,8 @@ struct OutlineData
 ConstantBuffer<OutlineData> gOutLineData : register(b0);
 Texture2D<float4> gTexture : register(t0);
 Texture2D<float> gDepthTexture : register(t1);
+Texture2D<float> gOutlineMask : register(t2);
+
 SamplerState gSampler : register(s0);
 SamplerState gSamplerPoint : register(s1);
 
@@ -52,7 +54,15 @@ float Luminance(float3 v)
 }
 
 PixelShaderOutpot main(VertexShaderOutput input)
-{    
+{
+    float m = gOutlineMask.Sample(gSamplerPoint, input.texcoord);
+    if (m < 0.1f)
+    {
+        PixelShaderOutpot output;
+        output.color = gTexture.Sample(gSampler, input.texcoord);
+        return output;
+    }
+    
     int width, height;
     gTexture.GetDimensions(width, height);
     float2 uvStepSize = float2(rcp((float) width), rcp((float) height));

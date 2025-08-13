@@ -20,10 +20,10 @@ void PipelineState::Initialize(
 
 	// 必要な全ての組み合わせで初期化（例：ポストエフェクト含む）
 	std::vector<PipelineType> pipelineTypes = {
-		PipelineType::Object3d, PipelineType::Sprite, PipelineType::Line3d,
-		PipelineType::Particle, PipelineType::PrimitiveDrawr,
-		PipelineType::Animation, PipelineType::RenderTexture,
-		PipelineType::Skybox
+		PipelineType::Object3d,		PipelineType::Sprite,		PipelineType::Line3d,
+		PipelineType::Particle,		PipelineType::PrimitiveDrawr,
+		PipelineType::Animation,	PipelineType::RenderTexture,
+		PipelineType::Skybox,		PipelineType::OutLineMask,
 	};
 
 	std::vector<PostEffectType> postEffectTypes = {
@@ -49,7 +49,7 @@ void PipelineState::Initialize(
 				}
 			// その他設定
 			} else {
-				if (type == PipelineType::RenderTexture) {
+				if (type == PipelineType::RenderTexture || type == PipelineType::OutLineMask) {
 					PipelineKey key{ type, effect, BlendMode::kBlendModeNone };
 					rootSignatures_[key] = CreateRootSignature(type, effect);
 					pipelineStates_[key] = CreatePipelineState(type, effect, BlendMode::kBlendModeNone);
@@ -80,7 +80,8 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(type, dxcUtils_, dxcCompiler_, includeHandler_, effectType);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(type);
 	psoDesc.PrimitiveTopologyType = (type == PipelineType::Line3d) ? D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE : D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	if(type == PipelineType::OutLineMask){ psoDesc.RTVFormats[0] = DXGI_FORMAT_R8_UNORM; }
+	else { psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; }
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = UINT_MAX;
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(type);

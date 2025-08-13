@@ -73,6 +73,7 @@ void Object3d::MakeMaterialData()
     materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
     materialData_.enableDraw = true;
     materialData_.enableLighting = true;
+    materialData_.outlineMask = false;
     materialData_.uvTransform = Matrix4x4::Identity();
     materialData_.shininess = 20.0f;
     materialData_.environmentCoefficient = 0;

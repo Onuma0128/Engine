@@ -33,6 +33,9 @@ D3D12_INPUT_LAYOUT_DESC& InputLayoutFactory::GetInputLayout(PipelineType type)
 	case PipelineType::Skybox:
 		inputLayout[type] = std::make_unique<SkyboxInputLayout>();
 		break;
+	case PipelineType::OutLineMask:
+		inputLayout[type] = std::make_unique<OutLineMaskInputLayout>();
+		break;
 	default:
 		assert(false && "Invalid InputLayoutType");
 		break;

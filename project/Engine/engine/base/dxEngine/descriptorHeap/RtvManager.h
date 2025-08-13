@@ -30,7 +30,7 @@ public:
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCPUDescriptorHandle(uint32_t index);
 
 	// RTV作成
-	void CreateRTV(uint32_t index, ID3D12Resource* resource);
+	void CreateRTV(uint32_t index, ID3D12Resource* resource,DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB);
 
 	// 自動割当
 	uint32_t Allocate();

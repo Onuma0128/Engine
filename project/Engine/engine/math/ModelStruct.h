@@ -35,6 +35,7 @@ struct Material {
 	Matrix4x4 uvTransform;
 	int32_t enableDraw;
 	int32_t enableLighting;
+	int32_t outlineMask;
 	float shininess;
 	float environmentCoefficient;
 };

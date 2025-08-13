@@ -48,6 +48,8 @@ public:
     // 全ての描画
     void AllDraw();
 
+    void AllDrawOutlineMask();
+
 private:
 
     /* ========================= Object3d ========================= */
@@ -70,6 +72,8 @@ private:
         std::vector<Object3d*> objects;             // Objects
         uint32_t maxInstance;                       // 初期確保上限 (128)
         uint32_t count;                             // 今フレーム登録数
+
+
 
         ComPtr<ID3D12Resource> worldMatrixBuffer;   // StructuredBuffer
         InstanceData* instanceData;                 // Mapしたポインタ

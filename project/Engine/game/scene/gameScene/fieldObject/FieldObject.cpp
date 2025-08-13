@@ -4,6 +4,7 @@ void FieldObject::Init(SceneObject object)
 {
 	Object3d::Initialize(object.fileName);
 	Object3d::SetSceneRenderer();
+	Object3d::GetMaterial().outlineMask = true;
 	transform_ = object.transform;
 	centerPosition_ = transform_.translation_;
 

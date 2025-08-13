@@ -142,6 +142,9 @@ std::unique_ptr<CompileShaderBase> CompileShaderFactory::GetCompileShaderPtr(Pip
 	case PipelineType::Skybox:
 		compileShader[type] = std::make_unique<SkyboxCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
+	case PipelineType::OutLineMask:
+		compileShader[type] = std::make_unique<OutLineMaskCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		break;
 	default:
 		assert(false && "Invalid CompileShaderType");
 		break;
