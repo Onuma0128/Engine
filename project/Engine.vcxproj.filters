@@ -884,6 +884,9 @@
     <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\OutLineMaskRootSignature.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\AnimationOutLineMaskRootSignature.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl" />

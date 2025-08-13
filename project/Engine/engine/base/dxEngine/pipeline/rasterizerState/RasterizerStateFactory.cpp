@@ -33,8 +33,11 @@ D3D12_RASTERIZER_DESC& RasterizerStateFactory::GetRasterizerDesc(PipelineType ty
 	case PipelineType::Skybox:
 		rasterizerState[type] = std::make_unique<SkyboxRasterizerState>();
 		break;
-	case PipelineType::OutLineMask:
-		rasterizerState[type] = std::make_unique<OutLineMaskRasterizerState>();
+	case PipelineType::ObjectOutLineMask:
+		rasterizerState[type] = std::make_unique<ObjectOutLineMaskRasterizerState>();
+		break;
+	case PipelineType::AnimationOutLineMask:
+		rasterizerState[type] = std::make_unique<AnimationOutLineMaskRasterizerState>();
 		break;
 	default:
 		assert(false && "Invalid RasterizerStateType");

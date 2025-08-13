@@ -34,6 +34,10 @@ void BaseEnemy::Initialize()
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
 	Collider::DrawCollider();
+
+	Animation::GetMaterial().outlineMask = true;
+	Animation::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
+	outlineColor_ = { 0.0f,0.0f,0.0f };
 }
 
 void BaseEnemy::Update()
@@ -51,6 +55,15 @@ void BaseEnemy::Update()
 			stateParam_.hitReticle_ = false;
 		}
 	}
+	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Holding) {
+		if (!stateParam_.hitReticle_) {
+			outlineColor_ = Vector3::Lerp(outlineColor_, Vector3::ExprUnitX, 0.1f);
+		} else {
+			outlineColor_ = Vector3::Lerp(outlineColor_, Vector3{1.0f,1.0f,0.0f}, 0.1f);
+		}
+	} else {
+		outlineColor_ = Vector3::Lerp(outlineColor_, Vector3::ExprZero, 0.1f);
+	}
 
 	// 影の更新
 	shadow_->Update();
@@ -62,6 +75,7 @@ void BaseEnemy::Update()
 	Collider::Update();
 
 	// アニメーションの更新
+	Animation::GetMaterial().outlineColor = outlineColor_;
 	Animation::Update();
 }
 

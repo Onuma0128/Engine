@@ -23,6 +23,9 @@ void Player::Init(SceneJsonLoader loader)
 	Animation::Initialize(player.fileName);
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Idle_Gun", 0.0f);
+	Animation::GetMaterial().outlineMask = true;
+	Animation::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
+
 	transform_ = player.transform;
 	if (player.collider.active) {
 		Collider::AddCollider();

@@ -235,7 +235,7 @@ void PostEffectManager::CreateOutLineMaskResource()
         dxEngine_->GetDevice(),
         WinApp::kClientWidth,
         WinApp::kClientHeight,
-        DXGI_FORMAT_R8_UNORM,
+        DXGI_FORMAT_R8G8B8A8_UNORM,
         { 0.0f,0.0f,0.0f,0.0f }
     );
 
@@ -244,7 +244,7 @@ void PostEffectManager::CreateOutLineMaskResource()
     RtvManager::GetInstance()->CreateRTV(
         maskPass_.rtvIndex, 
         maskPass_.outlineMask.Get(),
-        DXGI_FORMAT_R8_UNORM
+        DXGI_FORMAT_R8G8B8A8_UNORM
     );
 
     maskPass_.depthDsvIndex = DsvManager::GetInstance()->Allocate();
@@ -255,7 +255,7 @@ void PostEffectManager::CreateOutLineMaskResource()
 
     maskPass_.srvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforTexture2D(
-        maskPass_.srvIndex, maskPass_.outlineMask.Get(), DXGI_FORMAT_R8_UNORM, 1);
+        maskPass_.srvIndex, maskPass_.outlineMask.Get(), DXGI_FORMAT_R8G8B8A8_UNORM, 1);
 }
 
 void PostEffectManager::Update()

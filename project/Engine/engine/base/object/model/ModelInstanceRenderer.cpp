@@ -3,6 +3,9 @@
 #include "DirectXEngine.h"
 #include "SrvManager.h"
 #include "TextureManager.h"
+#include "PipelineState.h"
+#include "PipelineStruct.h"
+#include "PostEffectType.h"
 
 #include "Object3d.h"
 #include "Animation.h"
@@ -10,6 +13,28 @@
 #include "WorldTransform.h"
 
 #include "CreateBufferResource.h"
+
+
+void ModelInstanceRenderer::Initialize()
+{
+    objMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+        PipelineType::ObjectOutLineMask,
+        PostEffectType::None,
+        BlendMode::kBlendModeNone);
+    objMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+        PipelineType::ObjectOutLineMask,
+        PostEffectType::None,
+        BlendMode::kBlendModeNone);
+
+    animaMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+        PipelineType::AnimationOutLineMask ,
+        PostEffectType::None,
+        BlendMode::kBlendModeNone);
+    animaMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+        PipelineType::AnimationOutLineMask,
+        PostEffectType::None,
+        BlendMode::kBlendModeNone);
+}
 
 /// =====================================================================
 ///                           Object3d_Resource
@@ -292,14 +317,11 @@ void ModelInstanceRenderer::AnimationUpdate()
 void ModelInstanceRenderer::AllDrawOutlineMask() {
     auto* commandList = DirectXEngine::GetCommandList();
 
-    commandList->SetPipelineState(DirectXEngine::GetPipelineState()->GetPipelineState(
-        PipelineType::OutLineMask,
-        PostEffectType::None,
-        BlendMode::kBlendModeNone).Get());
-    commandList->SetGraphicsRootSignature(DirectXEngine::GetPipelineState()->GetRootSignature(
-        PipelineType::OutLineMask,
-        PostEffectType::None,
-        BlendMode::kBlendModeNone).Get());
+    if (!objBatches_.empty()) {
+        commandList->SetPipelineState(objMaskPipelineState_.Get());
+        commandList->SetGraphicsRootSignature(objMaskRootSignature_.Get());
+        commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    }
 
     // === Object3d バッチ ===
     for (auto& [model, batch] : objBatches_) {
@@ -315,23 +337,28 @@ void ModelInstanceRenderer::AllDrawOutlineMask() {
         }
     }
 
-    //// === Animation バッチ ===
-    //for (auto& [model, batch] : animationBatches_) {
-    //    if (batch.count == 0) continue;
-    //    AnimationUpdate();                   // 行列/Material/Palette更新（既存）:contentReference[oaicite:5]{index=5}
+    if (!animationBatches_.empty()) {
+        commandList->SetPipelineState(animaMaskPipelineState_.Get());
+        commandList->SetGraphicsRootSignature(animaMaskRootSignature_.Get());
+        commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    }
 
-    //    model->BindBuffers(true);            // スキン側のVB/IB（既存APIそのまま）:contentReference[oaicite:6]{index=6}
-    //    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
-    //    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
-    //    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.paletteSrvIndex);
-    //    cmd->SetGraphicsRootConstantBufferView(10, batch.jointBuffer->GetGPUVirtualAddress());
+    // === Animation バッチ ===
+    for (auto& [model, batch] : animationBatches_) {
+        if (batch.count == 0) continue;
 
-    //    const auto& mesh = model->GetMeshData();
-    //    for (uint32_t i = 0; i < mesh.size(); ++i) {
-    //        model->BindMaterial(mesh[i].materialIndex);
-    //        cmd->DrawIndexedInstanced(mesh[i].indexCount, batch.count, mesh[i].indexStart, 0, 0);
-    //    }
-    //}
+        model->BindBuffers(true);
+        batch.animations[0]->SetVertexBuffer();
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, batch.materialSrvIndex);
+        commandList->SetGraphicsRootConstantBufferView(3, batch.jointBuffer->GetGPUVirtualAddress());
+
+        const auto& mesh = model->GetMeshData();
+        for (uint32_t i = 0; i < mesh.size(); ++i) {
+            commandList->DrawIndexedInstanced(mesh[i].indexCount, batch.count, mesh[i].indexStart, 0, 0);
+        }
+    }
 }
 
 

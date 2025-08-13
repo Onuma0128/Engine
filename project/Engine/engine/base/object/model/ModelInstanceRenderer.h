@@ -29,6 +29,8 @@ public:
         uint32_t jointCount;
     };
 
+    void Initialize();
+
     /* ========================= Object3d ========================= */
 
     void Push(Object3d* obj);
@@ -73,8 +75,6 @@ private:
         uint32_t maxInstance;                       // 初期確保上限 (128)
         uint32_t count;                             // 今フレーム登録数
 
-
-
         ComPtr<ID3D12Resource> worldMatrixBuffer;   // StructuredBuffer
         InstanceData* instanceData;                 // Mapしたポインタ
         uint32_t instSrvIndex;                      // SRV番地 (worldMatrix)
@@ -84,6 +84,9 @@ private:
         uint32_t materialSrvIndex;                  // SRV番地 (material)
     };
     std::unordered_map<Model*, ObjectBatch> objBatches_;
+
+    ComPtr<ID3D12RootSignature> objMaskRootSignature_; // ルートシグネチャ
+    ComPtr<ID3D12PipelineState> objMaskPipelineState_; // パイプラインステート
 
     /* ========================= Animation ========================= */
 
@@ -110,6 +113,9 @@ private:
         uint32_t paletteSrvIndex;                   // SRV番地 (matrixPalette)
     };
     std::unordered_map<Model*, AnimationBatch> animationBatches_;
+
+    ComPtr<ID3D12RootSignature> animaMaskRootSignature_; // ルートシグネチャ
+    ComPtr<ID3D12PipelineState> animaMaskPipelineState_; // パイプラインステート
 
 };
 

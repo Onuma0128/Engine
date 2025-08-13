@@ -25,6 +25,7 @@ public:
 	void Update();
 	void TransformUpdate() { transform_.TransferMatrix(Matrix4x4::Identity()); }
 
+	void SetVertexBuffer();
 	void Draw();
 
 	// 再生するアニメーションを選択

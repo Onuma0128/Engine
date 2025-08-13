@@ -10,7 +10,8 @@ enum class PipelineType {
 	Animation,
 	RenderTexture,
 	Skybox,
-	OutLineMask
+	ObjectOutLineMask,
+	AnimationOutLineMask
 };
 
 enum class BlendMode {

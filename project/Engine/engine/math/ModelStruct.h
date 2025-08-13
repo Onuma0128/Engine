@@ -36,6 +36,7 @@ struct Material {
 	int32_t enableDraw;
 	int32_t enableLighting;
 	int32_t outlineMask;
+	Vector3 outlineColor;
 	float shininess;
 	float environmentCoefficient;
 };
