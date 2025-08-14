@@ -56,7 +56,7 @@ void BaseEnemy::Update()
 			stateParam_.hitReticle_ = false;
 		}
 	}
-	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Holding) {
+	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Holding && stateParam_.isAlive_) {
 		if (!stateParam_.hitReticle_) {
 			outlineColor_ = Vector3::Lerp(outlineColor_, Vector3::ExprUnitX, 0.1f);
 		} else {
