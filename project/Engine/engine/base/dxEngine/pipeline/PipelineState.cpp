@@ -85,14 +85,16 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 	psoDesc.PrimitiveTopologyType = (type == PipelineType::Line3d) ? D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE : D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	if(type == PipelineType::ObjectOutLineMask || type == PipelineType::AnimationOutLineMask){ 
 		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+		psoDesc.RTVFormats[1] = DXGI_FORMAT_R32_UINT;
+		psoDesc.NumRenderTargets = 2;
 	} else {
 		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		psoDesc.NumRenderTargets = 1;
 	}
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = UINT_MAX;
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(type);
 	psoDesc.BlendState = BlendStateFactory::GetBlendState(blendMode);
-	psoDesc.NumRenderTargets = 1;
 	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(type);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 

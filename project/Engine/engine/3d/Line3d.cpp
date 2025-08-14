@@ -23,7 +23,7 @@ void Line3d::Initialize(const std::vector<Vector3>& positions, uint32_t maxLines
 
 	renderOptions_ = {
 		.enabled = true,
-		.offscreen = true
+		.offscreen = false
 	};
 	isMultiple_ = true;
 	DirectXEngine::GetSceneRenderer()->SetDrawList(this);

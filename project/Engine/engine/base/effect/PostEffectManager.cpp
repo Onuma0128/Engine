@@ -72,7 +72,7 @@ void PostEffectManager::BeginOutlineMaskPass()
 {
     auto* cmd = DirectXEngine::GetCommandList();
 
-    // --- 1) リソース遷移：Mask RT を RTV へ
+    // 1) outlineMask: SRV -> RTV
     D3D12_RESOURCE_BARRIER b{};
     b.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
     b.Transition.pResource = maskPass_.outlineMask.Get();
@@ -81,36 +81,51 @@ void PostEffectManager::BeginOutlineMaskPass()
     b.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
     cmd->ResourceBarrier(1, &b);
 
-    // --- 2) リソース遷移：本編Depthを ReadOnly 利用へ（= Depth Read）
+    // 2) objectID: SRV -> RTV
+    b.Transition.pResource = maskPass_.objectID.Get();
+    b.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+    b.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+    cmd->ResourceBarrier(1, &b);
+
+    // 3) Depth: WRITE -> READ (Maskパスは深度読みのみ)
     b.Transition.pResource = dxEngine_->GetRenderTexrure()->GetDSVResource();
     b.Transition.StateBefore = D3D12_RESOURCE_STATE_DEPTH_WRITE;
     b.Transition.StateAfter = D3D12_RESOURCE_STATE_DEPTH_READ;
-    cmd->ResourceBarrier(1, &b);  // 後でWriteに戻します
+    cmd->ResourceBarrier(1, &b);
 
-    // --- 3) RTV/DSVバインド：RTV=Mask, DSV=本編Depth(ReadOnly)
-    auto rtv = RtvManager::GetInstance()->GetCPUDescriptorHandle(maskPass_.rtvIndex);
+    // 4) MRT + DSV をバインド
+    D3D12_CPU_DESCRIPTOR_HANDLE rtvs[2] = {
+        RtvManager::GetInstance()->GetCPUDescriptorHandle(maskPass_.rtvIndex),    // Mask
+        RtvManager::GetInstance()->GetCPUDescriptorHandle(maskPass_.rtvIndexID)   // ObjectID
+    };
     auto dsv = DsvManager::GetInstance()->GetCPUDescriptorHandle(maskPass_.depthDsvIndex);
-    cmd->OMSetRenderTargets(1, &rtv, FALSE, &dsv);
+    cmd->OMSetRenderTargets(2, rtvs, FALSE, &dsv);
 
-    // --- 4) クリア（0=非対象）
-    const FLOAT clear[4] = { 0,0,0,0 };
-    cmd->ClearRenderTargetView(rtv, clear, 0, nullptr);
+    // 5) クリア（Mask=黒、ID=0）
+    const FLOAT clearMask[4] = { 0,0,0,0 };
+    cmd->ClearRenderTargetView(rtvs[0], clearMask, 0, nullptr);
+    const FLOAT clearID[4] = { 0,0,0,0 }; // 整数RTでも0ならOK
+    cmd->ClearRenderTargetView(rtvs[1], clearID, 0, nullptr);
 }
 
 void PostEffectManager::EndOutlineMaskPass()
 {
     auto* cmd = DirectXEngine::GetCommandList();
-
-    // --- 1) マスク RT：RTV → SRV（ポストでサンプリング）
     D3D12_RESOURCE_BARRIER b{};
+
+    // Mask: RTV -> SRV
     b.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
     b.Transition.pResource = maskPass_.outlineMask.Get();
     b.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
     b.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
     b.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-    cmd->ResourceBarrier(1, &b);   
+    cmd->ResourceBarrier(1, &b);
 
-    // --- 2) Depth：Read → Write へ戻す（このあと RenderTextureDraws 側で DepthをPSRに遷移して使う設計）:contentReference[oaicite:11]{index=11}
+    // ObjectID: RTV -> SRV
+    b.Transition.pResource = maskPass_.objectID.Get();
+    cmd->ResourceBarrier(1, &b);
+
+    // Depth: READ -> WRITE（元に戻す）
     b.Transition.pResource = dxEngine_->GetRenderTexrure()->GetDSVResource();
     b.Transition.StateBefore = D3D12_RESOURCE_STATE_DEPTH_READ;
     b.Transition.StateAfter = D3D12_RESOURCE_STATE_DEPTH_WRITE;
@@ -153,6 +168,7 @@ void PostEffectManager::RenderTextureDraws(uint32_t inputSRVIndex)
         if (type == PostEffectType::OutLine) { 
             SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, pass.depthSrvIndex);
             SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, maskPass_.srvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, maskPass_.srvIndexID);
         }
         PostEffectCommand(type);
         cmdList->DrawInstanced(3, 1, 0, 0);
@@ -203,7 +219,7 @@ void PostEffectManager::PostEffectCommand(PostEffectType type)
 
     case PostEffectType::OutLine:
 
-        cmdList->SetGraphicsRootConstantBufferView(3, outlineResource_->GetGPUVirtualAddress());
+        cmdList->SetGraphicsRootConstantBufferView(4, outlineResource_->GetGPUVirtualAddress());
 
         break;
     default:
@@ -238,6 +254,13 @@ void PostEffectManager::CreateOutLineMaskResource()
         DXGI_FORMAT_R8G8B8A8_UNORM,
         { 0.0f,0.0f,0.0f,0.0f }
     );
+    maskPass_.objectID = RenderTexture::CreateResource(
+        dxEngine_->GetDevice(),
+        WinApp::kClientWidth,
+        WinApp::kClientHeight,
+        DXGI_FORMAT_R32_UINT,
+        { 0.0f,0.0f,0.0f,0.0f }
+    );
 
     // DSV/RTV/SRV 登録
     maskPass_.rtvIndex = RtvManager::GetInstance()->Allocate();
@@ -245,6 +268,12 @@ void PostEffectManager::CreateOutLineMaskResource()
         maskPass_.rtvIndex, 
         maskPass_.outlineMask.Get(),
         DXGI_FORMAT_R8G8B8A8_UNORM
+    );
+    maskPass_.rtvIndexID = RtvManager::GetInstance()->Allocate();
+    RtvManager::GetInstance()->CreateRTV(
+        maskPass_.rtvIndexID,
+        maskPass_.objectID.Get(),
+        DXGI_FORMAT_R32_UINT
     );
 
     maskPass_.depthDsvIndex = DsvManager::GetInstance()->Allocate();
@@ -256,6 +285,10 @@ void PostEffectManager::CreateOutLineMaskResource()
     maskPass_.srvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforTexture2D(
         maskPass_.srvIndex, maskPass_.outlineMask.Get(), DXGI_FORMAT_R8G8B8A8_UNORM, 1);
+
+    maskPass_.srvIndexID = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    SrvManager::GetInstance()->CreateSRVforTexture2D(
+        maskPass_.srvIndexID, maskPass_.objectID.Get(), DXGI_FORMAT_R32_UINT, 1);
 }
 
 void PostEffectManager::Update()

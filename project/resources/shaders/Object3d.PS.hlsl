@@ -7,6 +7,7 @@ struct Material
     int enableDraw;
     int enableLighting;
     int outlineMask;
+    int outlineSceneColor;
     float3 outlineColor;
     float shininess;
     float environmentCoefficient;

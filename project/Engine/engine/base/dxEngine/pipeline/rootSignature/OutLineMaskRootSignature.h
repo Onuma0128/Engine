@@ -36,7 +36,7 @@ public:
 		rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;					//VertexShaderで使う
 		rootParameters[1].DescriptorTable.pDescriptorRanges = materialRnage;				//Tableの中身の配列を指定
 		rootParameters[1].DescriptorTable.NumDescriptorRanges = _countof(materialRnage);	//Tableで利用する数
-		
+
 		rootSignatureDesc.pParameters = rootParameters;
 		rootSignatureDesc.NumParameters = _countof(rootParameters);
 

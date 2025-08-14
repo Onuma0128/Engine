@@ -57,9 +57,12 @@ private:
     };
     struct OutLineMaskPass {
         ComPtr<ID3D12Resource> outlineMask;
+        ComPtr<ID3D12Resource> objectID;
         uint32_t rtvIndex = 0;
+        uint32_t rtvIndexID = 0;
         uint32_t depthDsvIndex = 0;
         uint32_t srvIndex = 0;
+        uint32_t srvIndexID = 0;
     };
 
 

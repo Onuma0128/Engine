@@ -6,6 +6,7 @@ void FieldObject::Init(SceneObject object)
 	Object3d::SetSceneRenderer();
 	if (object.name != "ground") {
 		Object3d::GetMaterial().outlineMask = true;
+		Object3d::GetMaterial().outlineSceneColor = true;
 		Object3d::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
 	}
 	transform_ = object.transform;

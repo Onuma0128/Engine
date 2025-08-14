@@ -115,6 +115,7 @@ void Animation::MakeMaterialData()
 	materialData_.enableDraw = true;
 	materialData_.enableLighting = true;
 	materialData_.outlineMask = false;
+	materialData_.outlineSceneColor = false;
 	materialData_.uvTransform = Matrix4x4::Identity();
 	materialData_.shininess = 20.0f;
 	materialData_.environmentCoefficient = 0;

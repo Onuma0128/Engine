@@ -366,11 +366,12 @@ void ModelInstanceRenderer::AllDraw()
 {
     auto* commandList = DirectXEngine::GetCommandList();
 
+    ObjUpdate();
+
     for (auto& [model, batch] : objBatches_) {
         if (batch.count == 0) continue;
 
         /* ---------- IA 共通バインド ---------- */
-        ObjUpdate();
         for (auto& object : batch.objects) {
             object->Draw();
         }
@@ -388,13 +389,12 @@ void ModelInstanceRenderer::AllDraw()
         }
     }
 
-
+    AnimationUpdate();
 
     for (auto& [model, batch] : animationBatches_) {
         if (batch.count == 0) continue;
 
         /* ---------- IA 共通バインド ---------- */
-        AnimationUpdate();
         for (auto& animation : batch.animations) {
             animation->Draw();
         }

@@ -7,6 +7,7 @@ struct Material
     int enableDraw;
     int enableLighting;
     int outlineMask;
+    int outlineSceneColor;
     float3 outlineColor;
     float shininess;
     float environmentCoefficient;
@@ -14,14 +15,32 @@ struct Material
 
 StructuredBuffer<Material> gMaterial : register(t0);
 
-float4 main(VertexShaderOutput input) : SV_Target
+struct PSOut
+{
+    float4 mask : SV_Target0; // R=1(マスク), GBA=線色
+    uint id : SV_Target1; // R32_UINT に書く
+};
+
+PSOut main(VertexShaderOutput input)
 {
     uint instID = input.instID;
     if (!gMaterial[instID].enableDraw || !gMaterial[instID].outlineMask)
     {   
-        discard;
+        PSOut o;
+        o.mask = float4(0.0, 0.0, 0.0, 0.0);
+        o.id = 0u;
+        return o;
     }
-    //return 1.0f;
-    float3 outlineColor = gMaterial[instID].outlineColor;
-    return float4(1.0f, outlineColor);
+    if (!gMaterial[instID].outlineSceneColor)
+    {
+        PSOut o;
+        o.mask = float4(0.5, gMaterial[instID].outlineColor);
+        o.id = instID + 1u;
+        return o;
+    }
+
+    PSOut output;
+    output.mask = float4(1.0, gMaterial[instID].outlineColor);
+    output.id = instID + 1u;
+    return output;
 }

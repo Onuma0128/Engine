@@ -35,6 +35,7 @@ void BaseEnemy::Initialize()
 	Collider::isActive_ = false;
 	Collider::DrawCollider();
 
+	Animation::GetTransform().translation_.y = -2.0f;
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
 	outlineColor_ = { 0.0f,0.0f,0.0f };
@@ -102,6 +103,7 @@ void BaseEnemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 void BaseEnemy::Dead()
 {
 	// 描画とColliderを切る
+	Animation::GetTransform().translation_.y = -2.0f;
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetTimeStop() = true;
 	Collider::isActive_ = false;

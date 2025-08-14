@@ -21,7 +21,7 @@ public:
 		descriptorRange[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; //SRVを使う
 		descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
 
-		D3D12_DESCRIPTOR_RANGE depthDescriptorRange[2][1] = {};
+		D3D12_DESCRIPTOR_RANGE depthDescriptorRange[3][1] = {};
 		if (effectType == PostEffectType::OutLine) {
 			depthDescriptorRange[0][0].BaseShaderRegister = 1; //3から始まる
 			depthDescriptorRange[0][0].NumDescriptors = 1; //数は2つ
@@ -31,6 +31,10 @@ public:
 			depthDescriptorRange[1][0].NumDescriptors = 1; //数は2つ
 			depthDescriptorRange[1][0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; //SRVを使う
 			depthDescriptorRange[1][0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
+			depthDescriptorRange[2][0].BaseShaderRegister = 3; //3から始まる
+			depthDescriptorRange[2][0].NumDescriptors = 1; //数は2つ
+			depthDescriptorRange[2][0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; //SRVを使う
+			depthDescriptorRange[2][0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
 		}
 
 		//RootParameterの作成。複数設定できるので配列。今回は結果1つだけなので長さ1の配列
@@ -55,6 +59,12 @@ public:
 			param2.DescriptorTable.pDescriptorRanges = depthDescriptorRange[1];
 			param2.DescriptorTable.NumDescriptorRanges = _countof(depthDescriptorRange[1]);
 			rootParameters.push_back(param2);
+			D3D12_ROOT_PARAMETER param3 = {};
+			param3.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+			param3.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
+			param3.DescriptorTable.pDescriptorRanges = depthDescriptorRange[2];
+			param3.DescriptorTable.NumDescriptorRanges = _countof(depthDescriptorRange[2]);
+			rootParameters.push_back(param3);
 		}
 
 		CreateRootParameters(rootParameters, effectType);
