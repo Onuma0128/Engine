@@ -254,6 +254,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Engine\engine\3d\animation\play\PlayAnimation.h" />
     <ClInclude Include="Engine\engine\3d\animation\debug\DebugBone.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\AnimationOutLineMaskRootSignature.h" />
+    <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\OutLineMaskRootSignature.h" />
     <ClInclude Include="Engine\game\scene\gameScene\enemy\ray\EnemyRay.h" />
     <ClInclude Include="Engine\game\scene\gameScene\searchAlgorithm\sample\AlgorithmTest.h" />
     <ClInclude Include="Engine\engine\base\collider\Collision2D.h" />
@@ -451,6 +453,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="resources\shaders\Object3d.VS.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="resources\shaders\OutlineMask.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>

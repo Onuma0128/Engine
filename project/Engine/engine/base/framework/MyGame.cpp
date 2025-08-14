@@ -67,6 +67,10 @@ void MyGame::Draw()
 
 	directXEngine_->GetSceneRenderer()->AllDraw();
 
+	directXEngine_->GetPostEffectMgr()->BeginOutlineMaskPass();
+	directXEngine_->GetModelRenderer()->AllDrawOutlineMask();
+	directXEngine_->GetPostEffectMgr()->EndOutlineMaskPass();
+
 	directXEngine_->SwapChainDrawSet();
 
 	directXEngine_->GetSceneRenderer()->OutAllDraw();

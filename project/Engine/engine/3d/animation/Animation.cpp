@@ -53,6 +53,19 @@ void Animation::Update()
 	transform_.TransferMatrix(Matrix4x4::Identity());
 }
 
+void Animation::SetVertexBuffer()
+{
+	auto commandList = DirectXEngine::GetCommandList();
+
+	if (model_) {
+		D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {
+			model_->GetVertexBuffer(),
+			skinCluster_.GetInfluenceBufferView()
+		};
+		commandList->IASetVertexBuffers(0, 2, vbvs);
+	}
+}
+
 void Animation::Draw()
 {
 	animationBase_->DrawBase();
@@ -63,13 +76,7 @@ void Animation::Draw()
 	commandList->SetGraphicsRootConstantBufferView(6, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(9, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
 
-	if (model_) {
-		D3D12_VERTEX_BUFFER_VIEW vbvs[2] = {
-			model_->GetVertexBuffer(),
-			skinCluster_.GetInfluenceBufferView()
-		};
-		commandList->IASetVertexBuffers(0, 2, vbvs);
-	}
+	SetVertexBuffer();
 }
 
 void Animation::Play(size_t idx, float fadeTime)
@@ -107,6 +114,8 @@ void Animation::MakeMaterialData()
 	materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData_.enableDraw = true;
 	materialData_.enableLighting = true;
+	materialData_.outlineMask = false;
+	materialData_.outlineSceneColor = false;
 	materialData_.uvTransform = Matrix4x4::Identity();
 	materialData_.shininess = 20.0f;
 	materialData_.environmentCoefficient = 0;

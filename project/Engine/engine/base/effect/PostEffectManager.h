@@ -24,6 +24,9 @@ public:
 
     void CreatePostEffect(PostEffectType type);
 
+    void BeginOutlineMaskPass();
+    void EndOutlineMaskPass();
+
 	// ポストエフェクト全ての描画
     void PostEffectCommand(PostEffectType type);
     void RenderTextureDraws(uint32_t inputSRVIndex);
@@ -40,6 +43,8 @@ private:
 
     void ResourceInitialize();
 
+    void CreateOutLineMaskResource();
+
     void Update();
 
 private:
@@ -50,6 +55,16 @@ private:
         uint32_t rtvIndex = 0;
         uint32_t depthSrvIndex = 0;
     };
+    struct OutLineMaskPass {
+        ComPtr<ID3D12Resource> outlineMask;
+        ComPtr<ID3D12Resource> objectID;
+        uint32_t rtvIndex = 0;
+        uint32_t rtvIndexID = 0;
+        uint32_t depthDsvIndex = 0;
+        uint32_t srvIndex = 0;
+        uint32_t srvIndexID = 0;
+    };
+
 
     DirectXEngine* dxEngine_ = nullptr;
     PipelineState* pipeline_ = nullptr;
@@ -70,5 +85,8 @@ private:
     // OutlineData
     ComPtr<ID3D12Resource> outlineResource_ = nullptr;
     OutlineData* outlineData_;
+    // OutlineMask
+    OutLineMaskPass maskPass_;
+
 };
 

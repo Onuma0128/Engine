@@ -133,5 +133,7 @@ protected:
 	Vector3 velocity_{};
 	// 当たったプレイヤーの弾の座標を保存
 	Vector3 playerBulletPosition_{};
+	// OutLineのColor
+	Vector3 outlineColor_;
 };
 

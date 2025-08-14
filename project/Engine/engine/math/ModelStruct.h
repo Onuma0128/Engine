@@ -35,8 +35,14 @@ struct Material {
 	Matrix4x4 uvTransform;
 	int32_t enableDraw;
 	int32_t enableLighting;
+	int32_t outlineMask;
+	int32_t outlineSceneColor;
+	Vector3 outlineColor;
 	float shininess;
 	float environmentCoefficient;
+};
+struct MeshID {
+	int32_t index;
 };
 
 struct MaterialData {

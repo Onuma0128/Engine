@@ -33,6 +33,7 @@ void SceneManager::Update()
 		nextScene_ = nullptr;
 		// 次シーンを初期化する
 		scene_->Initialize();
+		DirectXEngine::GetModelRenderer()->Initialize();
 	}
 
 	// 実行中のシーンの更新

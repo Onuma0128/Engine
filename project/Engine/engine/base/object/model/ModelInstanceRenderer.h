@@ -29,6 +29,8 @@ public:
         uint32_t jointCount;
     };
 
+    void Initialize();
+
     /* ========================= Object3d ========================= */
 
     void Push(Object3d* obj);
@@ -47,6 +49,8 @@ public:
 
     // 全ての描画
     void AllDraw();
+
+    void AllDrawOutlineMask();
 
 private:
 
@@ -81,6 +85,9 @@ private:
     };
     std::unordered_map<Model*, ObjectBatch> objBatches_;
 
+    ComPtr<ID3D12RootSignature> objMaskRootSignature_; // ルートシグネチャ
+    ComPtr<ID3D12PipelineState> objMaskPipelineState_; // パイプラインステート
+
     /* ========================= Animation ========================= */
 
     struct AnimationBatch
@@ -106,6 +113,9 @@ private:
         uint32_t paletteSrvIndex;                   // SRV番地 (matrixPalette)
     };
     std::unordered_map<Model*, AnimationBatch> animationBatches_;
+
+    ComPtr<ID3D12RootSignature> animaMaskRootSignature_; // ルートシグネチャ
+    ComPtr<ID3D12PipelineState> animaMaskPipelineState_; // パイプラインステート
 
 };
 
