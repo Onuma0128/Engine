@@ -19,11 +19,11 @@ public:
 
 	void Draw();
 
-	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }
 
-	GameCamera* GetGameCamera() { return gameCamera_; }
 	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
+
+	void SetMapData(MapCollision* mapData) { mapData_ = mapData; }
 
 private:
 
@@ -43,6 +43,7 @@ private:
 	// ゲッターで貰ったポインタ
 	Player* player_ = nullptr;
 	GameCamera* gameCamera_ = nullptr;
+	MapCollision* mapData_ = nullptr;
 
 	// 敵のスポナーリスト
 	std::vector<std::unique_ptr<EnemySpawner>> enemySpawners_;

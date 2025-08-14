@@ -10,6 +10,7 @@ enum class PostEffectType {
     Vignette,
     Smoothing,
     OutLine,
+    OutLineMask,
     Count
 };
 

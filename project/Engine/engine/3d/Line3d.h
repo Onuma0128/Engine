@@ -43,6 +43,7 @@ public:
 
 	std::vector<Vector3> CreateBox(const Vector3& min, const Vector3& max);
 	std::vector<Vector3> CreateSphere(const float& radius);
+	std::vector<Vector3> CreateSegment(const Vector3& start, const Vector3& direction);
 	std::vector<Vector3> CreateGrid(float cell, float size, float y = 0.0f);
 
 

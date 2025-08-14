@@ -6,6 +6,9 @@ struct Material
     float4x4 uvTransform;
     int enableDraw;
     int enableLighting;
+    int outlineMask;
+    int outlineSceneColor;
+    float3 outlineColor;
     float shininess;
     float environmentCoefficient;
 };

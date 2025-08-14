@@ -3,6 +3,9 @@
 #include "DirectXEngine.h"
 #include "SrvManager.h"
 #include "TextureManager.h"
+#include "PipelineState.h"
+#include "PipelineStruct.h"
+#include "PostEffectType.h"
 
 #include "Object3d.h"
 #include "Animation.h"
@@ -10,6 +13,28 @@
 #include "WorldTransform.h"
 
 #include "CreateBufferResource.h"
+
+
+void ModelInstanceRenderer::Initialize()
+{
+    objMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+        PipelineType::ObjectOutLineMask,
+        PostEffectType::None,
+        BlendMode::kBlendModeNone);
+    objMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+        PipelineType::ObjectOutLineMask,
+        PostEffectType::None,
+        BlendMode::kBlendModeNone);
+
+    animaMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+        PipelineType::AnimationOutLineMask ,
+        PostEffectType::None,
+        BlendMode::kBlendModeNone);
+    animaMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+        PipelineType::AnimationOutLineMask,
+        PostEffectType::None,
+        BlendMode::kBlendModeNone);
+}
 
 /// =====================================================================
 ///                           Object3d_Resource
@@ -48,6 +73,7 @@ void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstan
         batch.materialData[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         batch.materialData[i].enableDraw = true;
         batch.materialData[i].enableLighting = true;
+        batch.materialData[i].outlineMask = false;
         batch.materialData[i].uvTransform = Matrix4x4::Identity();
         batch.materialData[i].shininess = 20.0f;
         batch.materialData[i].environmentCoefficient = 0;
@@ -110,6 +136,7 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
         batch.materialData[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         batch.materialData[i].enableDraw = true;
         batch.materialData[i].enableLighting = true;
+        batch.materialData[i].outlineMask = false;
         batch.materialData[i].uvTransform = Matrix4x4::Identity();
         batch.materialData[i].shininess = 20.0f;
         batch.materialData[i].environmentCoefficient = 0;
@@ -287,33 +314,64 @@ void ModelInstanceRenderer::AnimationUpdate()
     }
 }
 
-int32_t ModelInstanceRenderer::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
-{
-    Joint joint;
-    joint.name = node.name;
-    joint.localMatrix = node.localMatrix;
-    joint.skeletonSpaceMatrix = Matrix4x4::Identity();
-    joint.transform = node.transform;
-    joint.index = int32_t(joints.size());
-    joint.parent = parent;
-    joints.push_back(joint);
-    for (const Node& child : node.children) {
-        int32_t childIndex = CreateJoint(child, joint.index, joints);
-        joints[joint.index].children.push_back(childIndex);
+void ModelInstanceRenderer::AllDrawOutlineMask() {
+    auto* commandList = DirectXEngine::GetCommandList();
+
+    if (!objBatches_.empty()) {
+        commandList->SetPipelineState(objMaskPipelineState_.Get());
+        commandList->SetGraphicsRootSignature(objMaskRootSignature_.Get());
+        commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     }
 
-    return joint.index;
+    // === Object3d バッチ ===
+    for (auto& [model, batch] : objBatches_) {
+        if (batch.count == 0) continue;
+
+        model->BindBuffers(false);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.materialSrvIndex);
+
+        const auto& mesh = model->GetMeshData();
+        for (uint32_t i = 0; i < mesh.size(); ++i) {
+            commandList->DrawIndexedInstanced(mesh[i].indexCount, batch.count, mesh[i].indexStart, 0, 0);
+        }
+    }
+
+    if (!animationBatches_.empty()) {
+        commandList->SetPipelineState(animaMaskPipelineState_.Get());
+        commandList->SetGraphicsRootSignature(animaMaskRootSignature_.Get());
+        commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    }
+
+    // === Animation バッチ ===
+    for (auto& [model, batch] : animationBatches_) {
+        if (batch.count == 0) continue;
+
+        model->BindBuffers(true);
+        batch.animations[0]->SetVertexBuffer();
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, batch.materialSrvIndex);
+        commandList->SetGraphicsRootConstantBufferView(3, batch.jointBuffer->GetGPUVirtualAddress());
+
+        const auto& mesh = model->GetMeshData();
+        for (uint32_t i = 0; i < mesh.size(); ++i) {
+            commandList->DrawIndexedInstanced(mesh[i].indexCount, batch.count, mesh[i].indexStart, 0, 0);
+        }
+    }
 }
+
 
 void ModelInstanceRenderer::AllDraw()
 {
     auto* commandList = DirectXEngine::GetCommandList();
 
+    ObjUpdate();
+
     for (auto& [model, batch] : objBatches_) {
         if (batch.count == 0) continue;
 
         /* ---------- IA 共通バインド ---------- */
-        ObjUpdate();
         for (auto& object : batch.objects) {
             object->Draw();
         }
@@ -331,13 +389,12 @@ void ModelInstanceRenderer::AllDraw()
         }
     }
 
-
+    AnimationUpdate();
 
     for (auto& [model, batch] : animationBatches_) {
         if (batch.count == 0) continue;
 
         /* ---------- IA 共通バインド ---------- */
-        AnimationUpdate();
         for (auto& animation : batch.animations) {
             animation->Draw();
         }

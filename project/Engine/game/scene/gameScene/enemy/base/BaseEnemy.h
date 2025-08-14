@@ -12,6 +12,8 @@
 #include "../effect/EnemyEffect.h"
 #include "../shadow/EnemyShadow.h"
 
+#include "gameScene/searchAlgorithm/navigation/PathFinder.h"
+
 // 敵が今どうなっているか
 struct EnemyStateParam {
 	// 敵を動かして描画するか管理用
@@ -26,6 +28,7 @@ struct EnemyStateParam {
 
 class Player;
 class GameCamera;
+class MapCollision;
 class EnemyAdjustItem;
 
 class EnemyWeaponBase;
@@ -76,6 +79,8 @@ public:
 	// 速度
 	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
 	const Vector3& GetVelocity() { return velocity_; }
+	// 探索をリセットする
+	void ResetSearch();
 
 	// 動けるのが有効か
 	bool GetEnableMove()const { return stateParam_.enableMove_; }
@@ -96,6 +101,9 @@ public:
 	// 調整項目
 	EnemyAdjustItem* GetItem() { return items_; }
 	void SetItem(EnemyAdjustItem* item) { items_ = item; }
+	// 探索アルゴリズム
+	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
+	PathFinder& GetPathFinder() { return pathFinder_; }
 
 protected:
 
@@ -119,9 +127,13 @@ protected:
 	// 敵が今どうなっているか
 	EnemyStateParam stateParam_;
 
+	// 探索アルゴリズム
+	PathFinder pathFinder_;
 	// 速度
 	Vector3 velocity_{};
 	// 当たったプレイヤーの弾の座標を保存
 	Vector3 playerBulletPosition_{};
+	// OutLineのColor
+	Vector3 outlineColor_;
 };
 

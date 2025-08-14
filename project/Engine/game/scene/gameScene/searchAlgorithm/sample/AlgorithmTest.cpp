@@ -19,19 +19,26 @@ void AlgorithmTest::Update(const Vector3& goal)
 	ImGui::Begin("A_star");
 	ImGui::DragFloat("speed", &speed_, 0.01f);
 	ImGui::DragFloat("lerpSpeed", &lerpSpeed_, 0.01f);
+	ImGui::DragFloat("SearchTime", &searchDecisionTime_, 0.01f);
 	ImGui::Checkbox("drawSpline", &drawSpline_);
 	if (ImGui::Button("start")) {
 		Reset(goal);
 	}
 	ImGui::End();
 
+	// 自動で探索をする
+	isSearchTime_ += DeltaTimer::GetDeltaTime();
+	if (isSearchTime_ >= searchDecisionTime_) {
+		isSearchTime_ = 0.0f;
+		Reset(goal);
+	}
 
 	// 時間や座標、回転の更新
 	pathFinder_.Update(speed_);
-	if (drawSpline_)pathFinder_.DebugSpline();
+	pathFinder_.DebugSpline(drawSpline_);
 
 	// 移動をする
-	Vector3 position = pathFinder_.GetNewPosition();
+	Vector3 position = pathFinder_.GetPosition();
 	Object3d::transform_.translation_ = position;
 	// 回転をする
 	Quaternion yRotation = pathFinder_.GetRotation();

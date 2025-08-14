@@ -19,7 +19,7 @@ void MyGame::Initialize()
 
 	DeltaTimer::Initialize();
 
-	GlobalVariables::GetInstance()->LoadFiles();
+	//GlobalVariables::GetInstance()->LoadFiles();
 }
 
 void MyGame::Finalize()
@@ -46,7 +46,7 @@ void MyGame::Update()
 	SceneManager::GetInstance()->Update();
 
 	// GlobalVariablesの更新
-	GlobalVariables::GetInstance()->Update();
+	//GlobalVariables::GetInstance()->Update();
 
 	// カメラの更新
 	CameraManager::GetInstance()->Debug_ImGui();
@@ -66,6 +66,10 @@ void MyGame::Draw()
 	directXEngine_->PreDraw();
 
 	directXEngine_->GetSceneRenderer()->AllDraw();
+
+	directXEngine_->GetPostEffectMgr()->BeginOutlineMaskPass();
+	directXEngine_->GetModelRenderer()->AllDrawOutlineMask();
+	directXEngine_->GetPostEffectMgr()->EndOutlineMaskPass();
 
 	directXEngine_->SwapChainDrawSet();
 

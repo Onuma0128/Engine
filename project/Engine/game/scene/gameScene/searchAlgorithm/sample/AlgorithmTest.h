@@ -29,6 +29,9 @@ private:
 	// 探索アルゴリズム
 	PathFinder pathFinder_;
 
+	float isSearchTime_ = 0.0f;
+	float searchDecisionTime_ = 1.0f;
+
 	float speed_;
 	float lerpSpeed_;
 	bool drawSpline_ = false;

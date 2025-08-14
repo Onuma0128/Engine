@@ -15,7 +15,6 @@ void MeleeEnemy::Initialize()
 	Animation::PlayByName("Idle");
 	Animation::SetSceneRenderer();
 	Animation::GetMaterial().enableDraw = false;
-	Animation::SetDrawBone(false);
 	Animation::GetTimeStop() = true;
 
 	// 近接攻撃用のコライダーを作成

@@ -57,12 +57,12 @@ bool CollisionManager::Dispatch(Collider* a, Collider* b)
         switch (typeB) {
         case ColliderType::Sphere:   return Collision3D::SphereSphere(a, b);
         case ColliderType::OBB:      return Collision3D::OBBSphere(b, a);
-        case ColliderType::Segment:  return false;
+        case ColliderType::Segment:  return Collision3D::SphereSegment(a, b);
         }
         break;
     case ColliderType::Segment:
         switch (typeB) {
-        case ColliderType::Sphere:   return false;
+        case ColliderType::Sphere:   return Collision3D::SphereSegment(b,a);
         case ColliderType::OBB:      return Collision3D::OBBSegment(b, a);
         case ColliderType::Segment:  return false;
         }

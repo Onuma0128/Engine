@@ -48,6 +48,16 @@ void Collider::Update()
 	line_->Update();
 }
 
+void Collider::LineUpdate()
+{
+	if (line_ == nullptr) { return; }
+
+	linePositions_ = CreateLinePositions();
+	line_->SetPositions(linePositions_);
+	line_->GetRenderOptions().enabled = isActive_;
+	line_->Update();
+}
+
 void Collider::SetColor(const Vector3& color)
 {
 	if (line_ == nullptr) { return; }
@@ -64,6 +74,7 @@ std::vector<Vector3> Collider::CreateLinePositions()
 		linePositions = line_->CreateSphere(radius_);
 		break;
 	case ColliderType::Segment:
+		linePositions = line_->CreateSegment(origin_, diff_);
 		break;
 	case ColliderType::OBB:
 		linePositions = line_->CreateBox(-size_, size_);

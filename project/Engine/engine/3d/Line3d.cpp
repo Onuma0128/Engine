@@ -23,7 +23,7 @@ void Line3d::Initialize(const std::vector<Vector3>& positions, uint32_t maxLines
 
 	renderOptions_ = {
 		.enabled = true,
-		.offscreen = true
+		.offscreen = false
 	};
 	isMultiple_ = true;
 	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
@@ -104,6 +104,8 @@ void Line3d::SetPositions(const std::vector<Vector3>& positions)
 	if (newLines > capacityLines_) {
 		capacityLines_ = newLines;
 		CreateInstanceVB(positions, capacityLines_);
+	} else {
+		lineCount_ = newLines;
 	}
 	std::vector<LineInstance> inst(newLines);
 
@@ -228,6 +230,16 @@ std::vector<Vector3> Line3d::CreateSphere(const float& radius)
 			linePosition.push_back(p2);
 		}
 	}
+
+	return linePosition;
+}
+
+std::vector<Vector3> Line3d::CreateSegment(const Vector3& start, const Vector3& direction)
+{
+	std::vector<Vector3> linePosition;
+
+	linePosition.push_back(start);
+	linePosition.push_back(start + direction);
 
 	return linePosition;
 }

@@ -21,9 +21,10 @@ public:
 	void Update(const float speed, float lookAt_t = 0.01f);
 
 	// 今の座標と次の座標を取得
-	const Vector3& GetNewPosition() { return splineMover_.GetNewPosition(); }
+	const Vector3& GetVelocity() { return splineMover_.GetVelocity(); }
+	const Vector3& GetPosition() { return splineMover_.GetPosition(); }
 	const Quaternion& GetRotation() { return splineMover_.GetRotation(); }
-	void DebugSpline() { splineMover_.DebugSpline(); }
+	void DebugSpline(bool flag) { splineMover_.DebugSpline(flag); }
 
 	// マップデータを取得する
 	void SetMapData(MapCollision* mapColl) { mapColl_ = mapColl; }

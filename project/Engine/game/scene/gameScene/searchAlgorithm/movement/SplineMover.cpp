@@ -4,6 +4,14 @@
 
 void SplineMover::Update(const float speed, float lookAt_t)
 {
+
+#ifdef _DEBUG
+	if (splines_ != nullptr) {
+		splines_->GetRenderOptions().enabled = false;
+		splines_->Update();
+	}
+#endif // _DEBUG
+
 	// 速度に応じて距離を進める
 	currentDistance_ += speed * DeltaTimer::GetDeltaTime();
 	float t = GetArcLengthParam(currentDistance_);
@@ -14,24 +22,20 @@ void SplineMover::Update(const float speed, float lookAt_t)
 
 	if (t < 1.0f) {
 		// ベクトルの方向に回転
-		Vector3 velocity = { lookAtPosition_ - position_ };
-		Vector3 targetDirection = { -velocity.x, 0.0f, velocity.z };
+		velocity_ = { lookAtPosition_ - position_ };
+		Vector3 targetDirection = { -velocity_.x, 0.0f, velocity_.z };
 		Vector3 currentDirection = Vector3{ 0.0f,0.0f,1.0f };
 		Matrix4x4 rotationMatrix = Matrix4x4::DirectionToDirection(currentDirection, targetDirection);
 		yRotation_ = Quaternion::FormRotationMatrix(rotationMatrix);
 	}
 
-#ifdef _DEBUG
-	splines_->GetRenderOptions().enabled = false;
-	splines_->Update();  
-#endif // _DEBUG
 
 }
 
 void SplineMover::ComputeArcLengths()
 {
 	// スプラインサイズが4より小さければ即return
-	if (splinePositions_.size() < 4) {
+	if (splinePositions_.size() <= 1) {
 		splinePositions_.clear();
 		return;
 	}

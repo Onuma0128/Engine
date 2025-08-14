@@ -14,7 +14,6 @@
 #include "gameScene/gameCamera/GameCamera.h"
 #include "gameScene/fieldObject/Factory/FieldObjectFactory.h"
 #include "gameScene/searchAlgorithm/collision/MapCollision.h"
-#include "gameScene/searchAlgorithm/sample/AlgorithmTest.h"
 
 class GamePlayScene : public BaseScene
 {
@@ -46,7 +45,6 @@ private:
 
 	// 探索アルゴリズムの判定
 	std::unique_ptr<MapCollision> mapCollision_ = nullptr;
-	std::unique_ptr<AlgorithmTest> test_ = nullptr;
 
 	// シーンフェード
 	std::unique_ptr<SceneFade> sceneFade_ = nullptr;

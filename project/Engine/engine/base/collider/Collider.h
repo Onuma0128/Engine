@@ -24,24 +24,25 @@ public:
 	virtual void RemoveCollider();
 	virtual void DrawCollider();
 	virtual void Update();
+	virtual void LineUpdate();
 
 	virtual void OnCollisionEnter(Collider* other) {};
 	virtual void OnCollisionStay(Collider* other) {};
 	virtual void OnCollisionExit(Collider* other) {};
 
-	virtual ColliderType GetMyColliderType()const { return myType_; }
-	virtual ColliderType GetTargetColliderType()const { return targetType_; }
-	virtual bool GetActive()const { return isActive_; }
+	virtual const ColliderType& GetMyColliderType()const { return myType_; }
+	virtual const ColliderType& GetTargetColliderType()const { return targetType_; }
+	virtual const bool& GetActive()const { return isActive_; }
 
-	virtual Vector3 GetSize() const { return size_; }
-	virtual Quaternion GetRotate() const { return rotate_; }
-	virtual Vector3 GetCenterPosition() const { return centerPosition_; }
-	virtual Vector3 GetOffsetPosition() const { return offsetPosition_; }
+	virtual const Vector3& GetSize() const { return size_; }
+	virtual const Quaternion& GetRotate() const { return rotate_; }
+	virtual const Vector3& GetCenterPosition() const { return centerPosition_; }
+	virtual const Vector3& GetOffsetPosition() const { return offsetPosition_; }
 
-	virtual std::string GetColliderName()const { return colliderName_; }
-	virtual float GetRadius()const { return radius_; }
-	virtual Vector3 GetOrigin()const { return origin_; }
-	virtual Vector3 GetDiff()const { return diff_; }
+	virtual const std::string& GetColliderName()const { return colliderName_; }
+	virtual const float& GetRadius()const { return radius_; }
+	virtual const Vector3& GetOrigin()const { return origin_; }
+	virtual const Vector3& GetDiff()const { return diff_; }
 
 	void SetColor(const Vector3& color);
 

@@ -1,14 +1,11 @@
 #include "MapCollision.h"
 
+#include "imgui.h"
+
 #include "Collider.h"
 
 void MapCollision::Init(SceneJsonLoader loader)
 {
-	// OBBの判定が付いてる用
-	std::list<OBB_2D> objects_obb_;
-	// Sphereの判定が付いている用
-	std::list<Circle> objects_circle_;
-
 	// フィールドに配置されているObjectを取得する
 	for (auto it = loader.GetData().begin(); it != loader.GetData().end();) {
 		if (it->second.groupName == "FieldObject") {
@@ -41,6 +38,31 @@ void MapCollision::Init(SceneJsonLoader loader)
 	grid_ = std::make_unique<DrawGrid>();
 	grid_->Init(cell_, size_);
 
+	// マップを作成する
+	CreateMap();
+
+	// フィールドオブジェクトとの判定
+	CreateMapCollision();
+
+	grid_->HitGridInit();
+}
+
+void MapCollision::Update()
+{
+	ImGui::Begin("map");
+	ImGui::DragFloat("size", &size_, 0.01f, 0.01f, 1000.0f);
+	ImGui::DragFloat("cell", &cell_, 0.01f, 0.1f, 10.0f);
+	if (ImGui::Button("Reload")) {
+		// マップを再ロードする
+		ReloadMap();
+	}
+	ImGui::End();
+
+	grid_->Update();
+}
+
+void MapCollision::CreateMap()
+{
 	// サイズを決める
 	uint32_t maxSize = static_cast<uint32_t>(size_ / cell_);
 	mapDatas_.resize(static_cast<size_t>(maxSize));
@@ -58,12 +80,15 @@ void MapCollision::Init(SceneJsonLoader loader)
 			mapDatas_[i][j] = map;
 		}
 	}
+}
 
+void MapCollision::CreateMapCollision()
+{
 	// フィールドオブジェクトとの判定
 	for (auto& maptips : mapDatas_) {
 		for (auto& block : maptips) {
 			// OBB
-			for (auto& obb : objects_obb_) {		
+			for (auto& obb : objects_obb_) {
 				if (Collision2D::OBBAABB(obb, block.aabb)) {
 					block.isEnable = false;
 					grid_->HitAABB(block.aabb);
@@ -81,11 +106,18 @@ void MapCollision::Init(SceneJsonLoader loader)
 			}
 		}
 	}
-
-	grid_->HitGridInit();
 }
 
-void MapCollision::Update()
+void MapCollision::ReloadMap()
 {
-	grid_->Update();
+	// グリッドの半径を作成
+	half_ = size_ * 0.5f;
+	// グリッドを作成
+	grid_->SetGridPositions(cell_, size_);
+	grid_->HitAABBClear();
+	// マップを作成する
+	CreateMap();
+	// フィールドオブジェクトとの判定
+	CreateMapCollision();
+	grid_->SetHitAABBPositions();
 }

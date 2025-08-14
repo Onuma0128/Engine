@@ -20,10 +20,13 @@ void PathFinder::Search(const Vector3& startW, const Vector3& goalW)
 
     auto toIndex = [&](const Vector3& w) -> GridPos {
         // MapCollisionと同じ計算をローカルで行う
-        float half = static_cast<float>(hSize) * 0.5f;
-        uint32_t ix = static_cast<uint32_t>((half + w.x));
-        uint32_t iz = static_cast<uint32_t>((half + w.z));
-        return { std::clamp(ix, 0u, hSize - 1), std::clamp(iz, 0u, vSize - 1) };
+        float half = mapColl_->GetHalf();
+        float cell = mapColl_->GetCell();
+        uint32_t ix = static_cast<uint32_t>((w.x + half) / cell);
+        uint32_t iz = static_cast<uint32_t>((w.z + half) / cell);
+        ix = std::clamp(ix, 0u, hSize - 1);
+        iz = std::clamp(iz, 0u, vSize - 1);
+        return { ix, iz };
     };
 
     // スタートとゴールからグリッドのIndexを割り当てる
@@ -82,6 +85,9 @@ void PathFinder::Search(const Vector3& startW, const Vector3& goalW)
             splineMover_.PushSplinePositions(startW);
             // 逆転させる
             splineMover_.ReverseSplinePositions();
+            // ゴールの座標を置き換える
+            splineMover_.BackSplinePositions();
+            splineMover_.PushSplinePositions(goalW);
             // スプライン上の距離を格納する
             splineMover_.ComputeArcLengths();
             return;
