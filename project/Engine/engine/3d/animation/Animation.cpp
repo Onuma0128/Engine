@@ -50,7 +50,9 @@ void Animation::Update()
 
 	skeleton_.SkeletonUpdate(transform_);
 	skinCluster_.SkinClusterUpdate(skeleton_);
+
 	transform_.TransferMatrix(Matrix4x4::Identity());
+	skeleton_.DebugBoneUpdate(transform_);
 }
 
 void Animation::SetVertexBuffer()
