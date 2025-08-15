@@ -107,8 +107,16 @@ public:
 		descs[2].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA;
 		descs[2].InstanceDataStepRate = 1;
 
+		descs[3].SemanticName = "LINEINDEX";
+		descs[3].SemanticIndex = 0;
+		descs[3].Format = DXGI_FORMAT_R32_UINT;
+		descs[3].InputSlot = 1;
+		descs[3].AlignedByteOffset = 24;
+		descs[3].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_INSTANCE_DATA;
+		descs[3].InstanceDataStepRate = 1;
+
 		layoutDesc.pInputElementDescs = descs.data();
-		layoutDesc.NumElements = 3;
+		layoutDesc.NumElements = 4;
 
 		return layoutDesc;
 	}

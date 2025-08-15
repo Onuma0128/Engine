@@ -12,6 +12,7 @@ struct VS_Input
     float t : LOCAL;
     float3 startPos : STARTPOS;
     float3 endPos : ENDPOS;
+    uint lineIndex : LINEINDEX;
 };
 
 VS_Output main(VS_Input input)
@@ -20,6 +21,6 @@ VS_Output main(VS_Input input)
     VS_Output output;
 
     output.position = mul(float4(world, 1.0f), gWorldViewProjection.WVP);
-
+    output.instID = input.lineIndex;
     return output;
 }
