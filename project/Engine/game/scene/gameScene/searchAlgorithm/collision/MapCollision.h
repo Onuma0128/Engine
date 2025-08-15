@@ -53,6 +53,7 @@ private:
 
 	// グリッドを表示
 	std::unique_ptr<DrawGrid> grid_ = nullptr;
+	bool debugLine_ = true;
 
 };
 

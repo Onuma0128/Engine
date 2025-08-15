@@ -44,7 +44,11 @@ void Collider::Update()
 		linePos = linePos.Transform(rotateMatrix) + translate;
 	}
 	line_->SetPositions(linePositions_);
-	line_->GetRenderOptions().enabled = isActive_;
+	if (debugDrawEnable_) {
+		line_->GetRenderOptions().enabled = isActive_;
+	} else {
+		line_->GetRenderOptions().enabled = debugDrawEnable_;
+	}
 	line_->Update();
 }
 
@@ -62,6 +66,11 @@ void Collider::SetColor(const Vector3& color)
 {
 	if (line_ == nullptr) { return; }
 	line_->SetColor(color);
+}
+
+void Collider::SetDebugDrawEnable(bool flag)
+{
+	debugDrawEnable_ = flag;
 }
 
 std::vector<Vector3> Collider::CreateLinePositions()

@@ -23,6 +23,8 @@ public:
         }
     }
 
+    void DebugImGui();
+
 private:
     // ペアをソート
     static std::pair<Collider*, Collider*> MakeKey(Collider* a, Collider* b) {
@@ -42,4 +44,5 @@ private:
 
     std::list<Collider*> colliders_;
     PairSet previousFrame_;
+    bool debugColliderEnable_ = true;
 };

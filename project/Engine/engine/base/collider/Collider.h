@@ -45,6 +45,7 @@ public:
 	virtual const Vector3& GetDiff()const { return diff_; }
 
 	void SetColor(const Vector3& color);
+	void SetDebugDrawEnable(bool flag);
 
 protected:
 
@@ -57,6 +58,7 @@ protected:
 
 	// コライダーをON/OFF
 	bool isActive_ = true;
+	bool debugDrawEnable_ = false;
 
 	// 中心座標
 	Vector3 centerPosition_;
