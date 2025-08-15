@@ -32,9 +32,11 @@ void Skeleton::SkeletonUpdate(const WorldTransform& transform)
 			joint.GetSkeletonSpaceMatrix() = joint.GetLocalMatrix();
 		}
 	}
+}
 
+void Skeleton::DebugBoneUpdate(const WorldTransform& transform)
+{
 	// DebugBoneの更新
-
 #ifdef _DEBUG
 
 	debugBone_->SetPositions(debugBone_->GetPositions(transform, item_.joints));
