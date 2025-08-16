@@ -72,9 +72,9 @@ void LineInstanceRenderer::CreateSB()
         materialDatas_[i].environmentCoefficient = 0;
     }
 
-    colorSrvIndex_ = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
+    materialSrvIndex_ = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforStructuredBuffer(
-        colorSrvIndex_, sbPS_.Get(), maxInstance, sizeof(Material));
+        materialSrvIndex_, sbPS_.Get(), maxInstance, sizeof(Material));
 }
 
 void LineInstanceRenderer::GrowIfNeeded(uint32_t needInstances)
@@ -200,17 +200,15 @@ void LineInstanceRenderer::Update()
 
 void LineInstanceRenderer::Draws()
 {
-    Update();
-
     if (totalInstances_ == 0) return;
 
-    base_->DrawBase(); // PSO/RS/Topology をセット（IA: LINELIST など）
+    base_->DrawBase();
 
     D3D12_VERTEX_BUFFER_VIEW views[2] = { vbvLocal_, vbvInst_ };
     DirectXEngine::GetCommandList()->IASetVertexBuffers(0, 2, views);
 
     DirectXEngine::GetCommandList()->SetGraphicsRootConstantBufferView(0, cbVS_->GetGPUVirtualAddress());
-    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, colorSrvIndex_);
+    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, materialSrvIndex_);
 
     DirectXEngine::GetCommandList()->DrawInstanced(2, totalInstances_, 0, 0);
 }

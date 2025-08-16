@@ -119,12 +119,12 @@ void CollisionManager::CheckCollisionPair(Collider* a, Collider* b, PairSet& thi
     if (previousFrame_.contains(key)) {
         // 前フレームも衝突していた
         a->OnCollisionStay(b);
-        a->SetColor(Vector3{ 1.0f,0.0f,0.0f });
         b->OnCollisionStay(a);
-        b->SetColor(Vector3{ 1.0f,0.0f,0.0f });
     } else {
         // 今回初めて衝突した
         a->OnCollisionEnter(b);
+        a->SetColor(Vector3{ 1.0f,0.0f,0.0f });
         b->OnCollisionEnter(a);
+        b->SetColor(Vector3{ 1.0f,0.0f,0.0f });
     }
 }

@@ -82,7 +82,7 @@ private:
     // PS用 SB (Color)
     ComPtr<ID3D12Resource> sbPS_;
     Material* materialDatas_;               
-    uint32_t colorSrvIndex_;            
+    uint32_t materialSrvIndex_;            
 
     // 管理
     std::unordered_map<Line3d*, Entry> entries_;
