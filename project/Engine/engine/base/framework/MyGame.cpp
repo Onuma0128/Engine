@@ -45,8 +45,8 @@ void MyGame::Update()
 	// シーンの更新
 	SceneManager::GetInstance()->Update();
 
-	// GlobalVariablesの更新
-	//GlobalVariables::GetInstance()->Update();
+	// 登録済みのLineを更新
+	directXEngine_->GetLineRenderer()->Update();
 
 	// カメラの更新
 	CameraManager::GetInstance()->Debug_ImGui();
@@ -76,6 +76,10 @@ void MyGame::Draw()
 	directXEngine_->GetSceneRenderer()->OutAllDraw();
 
 	SceneManager::GetInstance()->Draw();
+
+	// Lineの描画
+	//directXEngine_->GetLineRenderer()->Draws();
+
 
 	// ImGuiの描画
 	imGuiManager_->Draw();

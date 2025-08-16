@@ -24,6 +24,7 @@ void SceneManager::Update()
 			ParticleManager::GetInstance()->Clear();
 			DirectXEngine::GetSceneRenderer()->Finalize();
 			DirectXEngine::GetModelRenderer()->Finalize();
+			DirectXEngine::GetLineRenderer()->Finalize();
 			scene_->Finalize();
 			delete scene_;
 		}

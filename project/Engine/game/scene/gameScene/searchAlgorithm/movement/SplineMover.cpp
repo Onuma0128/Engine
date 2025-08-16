@@ -7,7 +7,7 @@ void SplineMover::Update(const float speed, float lookAt_t)
 
 #ifdef _DEBUG
 	if (splines_ != nullptr) {
-		splines_->GetRenderOptions().enabled = false;
+		splines_->GetMaterial().enableDraw = false;
 		splines_->Update();
 	}
 #endif // _DEBUG

@@ -250,6 +250,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\3d\animation\skeleton\Skeleton.cpp" />
     <ClCompile Include="Engine\engine\3d\animation\joint\Joint.cpp" />
     <ClCompile Include="Engine\engine\3d\animation\skinCluster\SkinCluster.cpp" />
+    <ClCompile Include="Engine\engine\base\object\model\LineInstanceRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\3d\animation\play\PlayAnimation.h" />
@@ -406,6 +407,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\3d\animation\skeleton\Skeleton.h" />
     <ClInclude Include="Engine\engine\3d\animation\joint\Joint.h" />
     <ClInclude Include="Engine\engine\3d\animation\skinCluster\SkinCluster.h" />
+    <ClInclude Include="Engine\engine\base\object\model\LineInstanceRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

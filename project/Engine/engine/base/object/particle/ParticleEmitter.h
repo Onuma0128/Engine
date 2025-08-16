@@ -115,7 +115,7 @@ public:
 	std::string GetCopyName()const { return emitter_.copyName; }
 	std::string GetName()const { return emitter_.name; }
 
-	void SetDrawLine(bool flag) { line_->GetRenderOptions().enabled = flag; }
+	void SetDrawLine(bool flag) { line_->GetMaterial().enableDraw = flag; }
 
 private:
 

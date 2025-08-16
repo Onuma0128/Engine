@@ -45,9 +45,9 @@ void Collider::Update()
 	}
 	line_->SetPositions(linePositions_);
 	if (debugDrawEnable_) {
-		line_->GetRenderOptions().enabled = isActive_;
+		line_->GetMaterial().enableDraw = isActive_;
 	} else {
-		line_->GetRenderOptions().enabled = debugDrawEnable_;
+		line_->GetMaterial().enableDraw = debugDrawEnable_;
 	}
 	line_->Update();
 }
@@ -58,7 +58,7 @@ void Collider::LineUpdate()
 
 	linePositions_ = CreateLinePositions();
 	line_->SetPositions(linePositions_);
-	line_->GetRenderOptions().enabled = isActive_;
+	line_->GetMaterial().enableDraw = isActive_;
 	line_->Update();
 }
 
