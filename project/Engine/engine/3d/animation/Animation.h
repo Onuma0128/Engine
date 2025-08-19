@@ -18,6 +18,8 @@ class Animation
 {
 public:
 
+	~Animation();
+
 	void Initialize(const std::string& filename);
 	void SetSceneRenderer();
 	void RemoveRenderer();

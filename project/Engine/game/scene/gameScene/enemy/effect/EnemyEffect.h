@@ -24,6 +24,8 @@ public:
 	// 弾がヒットした時のエフェクトを呼び出す
 	void OnceBulletHitEffect(const WorldTransform& transform);
 	void OnceBulletHitExplosionEffect(const WorldTransform& transform);
+	void SetMeleeAttackEffect(const WorldTransform& transform);
+	void CreateMeleeAttackEffect(bool flag) { enemyMeleeAttack_->SetIsCreate(flag); }
 	// 死んだ時に出るエフェクトを出すか
 	void SetDeadEffect(bool flag) { deadEmitter_->SetIsCreate(flag); }
 	// 敵の弾発射時のエフェクトを出すか
@@ -55,10 +57,14 @@ private:
 	// 弾がヒットした時のエフェクト(爆発)
 	std::shared_ptr<ParticleEmitter> hitRingEmitter_;
 
-	/* ==================== プレイヤーが死亡時のエフェクト ==================== */
+	/* ==================== 敵が死亡時のエフェクト ==================== */
 
 	// 死亡のエフェクト
 	std::shared_ptr<ParticleEmitter> deadEmitter_ = nullptr;
+
+	/* ==================== 敵の攻撃時のエフェクト ==================== */
+
+	std::shared_ptr<ParticleEmitter> enemyMeleeAttack_ = nullptr;
 
 	/* ==================== レティクルがヒットした時のエフェクト ==================== */
 

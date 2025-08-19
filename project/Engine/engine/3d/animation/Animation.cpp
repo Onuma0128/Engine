@@ -11,8 +11,19 @@
 #include "LightManager.h"
 #include "CameraManager.h"
 
+Animation::~Animation()
+{
+	skinCluster_.Reset();
+	skeleton_.Reset(); 
+	playAnim_.Reset();
+}
+
 void Animation::Initialize(const std::string& filename)
 {
+	skinCluster_.Reset();
+	skeleton_.Reset();
+	playAnim_.Reset();
+
 	animationBase_ = std::make_unique<AnimationBase>();
 	animationBase_->Initialize();
 

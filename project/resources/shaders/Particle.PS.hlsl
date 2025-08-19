@@ -5,6 +5,9 @@ struct Material
     float4 color;
     int enableLighting;
     float4x4 uvTransform;
+    float shininess;
+    int isUVFlipX;
+    int isUVFlipY;
 };
 struct DirectionalLight
 {
@@ -25,7 +28,10 @@ struct PixelShaderOutput
 PixelShaderOutput main(VertexShaderOutput input)
 {
     PixelShaderOutput output;
-    float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial.uvTransform);
+    float2 texcoord = input.texcoord;
+    if (gMaterial.isUVFlipX != 0){ texcoord.x = 1.0f - texcoord.x; }
+    if (gMaterial.isUVFlipY != 0){ texcoord.y = 1.0f - texcoord.y; }
+    float4 transformedUV = mul(float4(texcoord, 0.0f, 1.0f), gMaterial.uvTransform);
     float4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
     output.color = gMaterial.color * textureColor * input.color;
     if (output.color.a == 0.0f)

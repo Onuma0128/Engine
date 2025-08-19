@@ -35,6 +35,8 @@ private:
 
 public:
 
+	void Reset();
+
 	void CreateSkinCluster(Skeleton& skeleton, const ModelData& modelData);
 
 	void SkinClusterUpdate(Skeleton& skeleton);

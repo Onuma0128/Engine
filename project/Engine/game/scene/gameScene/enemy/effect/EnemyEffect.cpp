@@ -31,6 +31,10 @@ void EnemyEffect::Init()
 	deadEmitter_ = std::make_unique<ParticleEmitter>("enemyDead");
 	particleManager_->CreateParticleGroup(deadEmitter_);
 	deadEmitter_->SetIsCreate(false);
+
+	enemyMeleeAttack_ = std::make_unique<ParticleEmitter>("enemyMeleeAttack");
+	particleManager_->CreateParticleGroup(enemyMeleeAttack_);
+	enemyMeleeAttack_->SetIsCreate(false);
 }
 
 void EnemyEffect::Update()
@@ -75,6 +79,16 @@ void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
 	hitExplosionEmitter_->SetPosition(position);
 	hitRingEmitter_->SetRotation(rotate);
 	hitRingEmitter_->SetPosition(position);
+}
+
+void EnemyEffect::SetMeleeAttackEffect(const WorldTransform& transform)
+{
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	enemyMeleeAttack_->SetRotation(rotate);
+	enemyMeleeAttack_->SetPosition(position);
 }
 
 void EnemyEffect::SetBulletPredictionEffect(bool flag)

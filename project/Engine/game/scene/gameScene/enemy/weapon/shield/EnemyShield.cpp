@@ -67,3 +67,8 @@ void EnemyShield::SetIsActive(bool flag)
 	Object3d::GetMaterial().enableDraw = flag;
 	Collider::isActive_ = flag;
 }
+
+bool EnemyShield::GetIsActive()
+{
+	return Collider::isActive_;
+}

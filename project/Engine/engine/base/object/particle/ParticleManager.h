@@ -4,6 +4,8 @@
 #include <list>
 #include <unordered_map>
 
+#define NOMINMAX
+
 #include "Model.h"
 
 #include "ModelStruct.h"
@@ -31,6 +33,9 @@ public:
 		float padding[3];
 		Matrix4x4 uvTransform;
 		float shininess;
+		int32_t isUVFlipX;
+		int32_t isUVFlipY;
+		int32_t _pad1;
 	};
 
 	struct Particle {
@@ -104,6 +109,8 @@ private:
 	void CreateIndexResource();
 
 	void CreateMatrialResource(ParticleGroup& group);
+
+	void EnsureInstanceCapacity(ParticleGroup& group, uint32_t required);
 
 private:
 

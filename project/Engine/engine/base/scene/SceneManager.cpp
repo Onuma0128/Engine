@@ -2,6 +2,7 @@
 #include <cassert>
 
 #include "DirectXEngine.h"
+#include "SrvManager.h"
 #include "CameraManager.h"
 #include "ParticleManager.h"
 
@@ -25,6 +26,7 @@ void SceneManager::Update()
 			DirectXEngine::GetSceneRenderer()->Finalize();
 			DirectXEngine::GetModelRenderer()->Finalize();
 			DirectXEngine::GetLineRenderer()->Finalize();
+			DirectXEngine::GetCollisionMgr()->ClearCollider();
 			scene_->Finalize();
 			delete scene_;
 		}

@@ -25,6 +25,8 @@ public:
 
     void DebugImGui();
 
+    void ClearCollider() { colliders_.clear(); }
+
 private:
     // ペアをソート
     static std::pair<Collider*, Collider*> MakeKey(Collider* a, Collider* b) {

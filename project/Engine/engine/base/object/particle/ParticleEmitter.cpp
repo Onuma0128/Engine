@@ -237,10 +237,6 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     std::uniform_real_distribution<float> distPosY(emitter.emitterSize.min.y, emitter.emitterSize.max.y);
     std::uniform_real_distribution<float> distPosZ(emitter.emitterSize.min.z, emitter.emitterSize.max.z);
 
-    std::uniform_real_distribution<float> distVelocityX(emitter.minVelocity.x, emitter.maxVelocity.x);
-    std::uniform_real_distribution<float> distVelocityY(emitter.minVelocity.y, emitter.maxVelocity.y);
-    std::uniform_real_distribution<float> distVelocityZ(emitter.minVelocity.z, emitter.maxVelocity.z);
-
     std::uniform_real_distribution<float> distScaleX(emitter.minScale.x, emitter.maxScale.x);
     std::uniform_real_distribution<float> distScaleY(emitter.minScale.y, emitter.maxScale.y);
     std::uniform_real_distribution<float> distScaleZ(emitter.minScale.z, emitter.maxScale.z);
@@ -266,8 +262,27 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     Vector3 randomTranslate = { distPosX(randomEngine),distPosY(randomEngine) ,distPosZ(randomEngine) };
     Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter.transform.rotation);
     particle.transform.translation = emitter.transform.translation + randomTranslate.Transform(rotateMatrix);
-    Vector3 velocity = { distVelocityX(randomEngine),distVelocityY(randomEngine),distVelocityZ(randomEngine) };
-    particle.velocity = velocity.Transform(Quaternion::MakeRotateMatrix(emitter.transform.rotation));
+    
+    if (!emitter.isLockDirection) {
+        std::uniform_real_distribution<float> distVelocityX(emitter.minVelocity.x, emitter.maxVelocity.x);
+        std::uniform_real_distribution<float> distVelocityY(emitter.minVelocity.y, emitter.maxVelocity.y);
+        std::uniform_real_distribution<float> distVelocityZ(emitter.minVelocity.z, emitter.maxVelocity.z);
+
+        Vector3 velocity = { distVelocityX(randomEngine),distVelocityY(randomEngine),distVelocityZ(randomEngine) };
+        particle.velocity = velocity.Transform(Quaternion::MakeRotateMatrix(emitter.transform.rotation));
+    } else {
+        Vector3 d = emitter.transform.translation - particle.transform.translation;
+        d.z = 0.0f; // XY平面に限定
+        float len2 = d.x * d.x + d.y * d.y;
+        if (len2 < 1e-12f) { d = Vector3::ExprUnitY; } 
+        else { d = d * (1.0f / std::sqrt(len2)); }
+        float roll = std::atan2(-d.x, d.y);
+        particle.transform.rotation = { 0.0f, 0.0f, roll };
+        Vector3 forwardXY = { -std::sin(roll), std::cos(roll), 0.0f };
+        particle.velocity = forwardXY * emitter.directionSpeed;
+        particle.rotateSpeed = Vector3::ExprZero;
+    }
+
     particle.color = { 1.0f,1.0f,1.0f,1.0f };
     particle.lifeTime = emitter.lifeTime;
     particle.currentTime = 0.0f;

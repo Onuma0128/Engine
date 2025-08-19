@@ -1,6 +1,7 @@
 #include "GamePlayScene.h"
 
 #include "imgui.h"
+#include "Input.h"
 #include "ParticleManager.h"
 #include "SceneManager.h"
 #include "SceneJsonLoader.h"
@@ -72,6 +73,11 @@ void GamePlayScene::Update()
 		isFade_ = true;
 		sceneFade_->FadeOut();
 	}
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		isFade_ = true;
+		sceneFade_->FadeOut();
+	}
+
 	// フェードが終わったらシーン遷移する
 	if (isFade_ && !sceneFade_->GetIsFade()) {
 		if (!player_->GetIsAlive()) {

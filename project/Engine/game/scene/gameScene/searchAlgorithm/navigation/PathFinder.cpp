@@ -6,6 +6,11 @@
 
 #include "gameScene/searchAlgorithm/collision/MapCollision.h"
 
+void PathFinder::Reset()
+{
+    splineMover_.Reset();
+}
+
 void PathFinder::Update(const float speed, float lookAt_t)
 {
     splineMover_.Update(speed, lookAt_t);

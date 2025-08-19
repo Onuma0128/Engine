@@ -34,6 +34,8 @@ public:
 	void OnceMoveEffect();
 	// 避けた時のエフェクトを呼び出す
 	void OnceAvoidEffect();
+	// 攻撃を受けた時のエフェクトを呼び出す
+	void OnceHitEffect();
 	// 必殺技を撃った時のエフェクト
 	void UpdatePostEffect();
 	SpecialMoveState GetSpecialState()const { return specialMoveState_; }
@@ -68,5 +70,9 @@ private:
 	bool isSpecialMove_ = false;
 	// 必殺技のフレーム
 	float specialMoveFrame_ = 0.0f;
+
+	/* ==================== プレイヤーが攻撃を受けた時のエフェクト ==================== */
+
+	std::shared_ptr<ParticleEmitter> playerHit_ = nullptr;
 };
 

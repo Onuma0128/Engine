@@ -2,6 +2,12 @@
 
 #include "DeltaTimer.h"
 
+void SplineMover::Reset()
+{
+	splinePositions_.clear();
+	arcLengths_.clear();
+}
+
 void SplineMover::Update(const float speed, float lookAt_t)
 {
 

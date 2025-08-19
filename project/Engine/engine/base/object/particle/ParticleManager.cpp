@@ -93,6 +93,8 @@ void ParticleManager::Update()
             }
             Emit(it->first);
 
+            EnsureInstanceCapacity(group, static_cast<uint32_t>(group.particles.size()));
+
             // 各パーティクルを更新
             for (auto p_it = group.particles.begin(); p_it != group.particles.end();) {
                 if (p_it->lifeTime <= p_it->currentTime) {
@@ -124,6 +126,9 @@ void ParticleManager::Update()
                     }
                 }
 
+                // uvFlip
+                group.materialData_->isUVFlipX = group.editor->GetBaseEmitter().isUvFlipX;
+                group.materialData_->isUVFlipY = group.editor->GetBaseEmitter().isUvFlipY;
                 // uvTranslate
                 group.materialData_->uvTransform = Matrix4x4::Translate(p_it->uvTranslate);
 
@@ -277,6 +282,7 @@ void ParticleManager::ParticleEditorUpdate()
         items.push_back(name);
         ++it;
     }
+    if (items.size() < current) { current = 0; }
     // ImGuiの描画
     ImGui::Begin("ParicleEditor");
     if (ImGui::BeginCombo("EditorFile", items[current].c_str())) {
@@ -293,6 +299,7 @@ void ParticleManager::ParticleEditorUpdate()
     }
     ImGui::SameLine();                      
     ImGui::Checkbox("DrawEmitter", &drawEmitter_);
+    ImGui::Text("%d", particleGroups_[items[current]].particles.size());
 
     // 選択中のnameを取得、ImGuiを描画
     std::string selectedName = items[current];
@@ -421,3 +428,39 @@ void ParticleManager::CreateMatrialResource(ParticleGroup& group)
     group.materialData_->enableLighting = false;
     group.materialData_->uvTransform = Matrix4x4::Identity();
 }
+
+void ParticleManager::EnsureInstanceCapacity(ParticleGroup& group, uint32_t required)
+{
+    if (required <= group.maxInstance) return;
+
+    // 成長戦略: 2倍ずつ（必要数を下回らない最小の2冪）
+    uint32_t newCap = std::max(1u, group.maxInstance);
+    while (newCap < required) { newCap *= 2; }
+
+    // 新しいアップロードバッファを確保
+    group.instancingResource = CreateBufferResource(
+        dxEngine_->GetDevice(),
+        sizeof(ParticleForGPU) * newCap
+    );
+
+    // 再マップ（ポインタ更新）
+    group.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&group.instancingData));
+
+    // 必要なら初期化（省略可）
+    for (uint32_t i = 0; i < newCap; ++i) {
+        group.instancingData[i].WVP = Matrix4x4::Identity();
+        group.instancingData[i].World = Matrix4x4::Identity();
+        group.instancingData[i].color = Vector4{ 1,1,1,1 };
+    }
+
+    group.maxInstance = newCap;
+
+    // SRV を同じインデックスで作り直して差し替え
+    srvManager_->CreateSRVforStructuredBuffer(
+        group.srvIndex,
+        group.instancingResource.Get(),
+        newCap,
+        sizeof(ParticleForGPU)
+    );
+}
+

@@ -44,6 +44,7 @@ public:
 
 		Vector3 minVelocity;		// Particle発生時の最小velocity
 		Vector3 maxVelocity;		// Particle発生時の最大velocity
+		float directionSpeed;		// Particle発生時のSpeed
 
 		Vector3 acceleration;		// Particleの全体の加速度
 		Vector3 minAccelerField;	// 加速度が掛かるフィールドの最小size
@@ -65,10 +66,13 @@ public:
 
 		bool isLock;				// Emitterを固定するか
 		bool isMoveStart;			// Particleを動かすか
+		bool isLockDirection;		// Particle発生時のvelocityを固定
 		bool isFieldStart;			// ParticleにAccelerationを掛けるか
 		bool isReflect;				// Y軸の高さで反射をするか
 		bool isChangeScale;			// 生きている時間でScaleを変えるか
 		bool isBillboard;			// ビルボードしているか
+		bool isUvFlipX;				// UvFlipX
+		bool isUvFlipY;				// UvFlipY
 	};
 
 	struct AccelerationField {

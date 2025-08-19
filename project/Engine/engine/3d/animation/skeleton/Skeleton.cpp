@@ -79,6 +79,13 @@ void Skeleton::LerpTransformUpdate(const size_t index, const float alpha, const 
 	dst.GetTransform().rotation = Quaternion::Slerp(a.GetTransform().rotation, b.GetTransform().rotation, alpha);
 }
 
+void Skeleton::Reset()
+{
+	item_.jointMap.clear();
+	item_.joints.clear();
+	item_.root = 0;
+}
+
 bool Skeleton::CheckJointName(const std::string name)
 {
 	auto checkName = item_.jointMap.find(name);

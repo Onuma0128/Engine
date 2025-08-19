@@ -10,6 +10,8 @@ class SplineMover
 {
 public:
 
+	void Reset();
+
 	// スプライン座標の更新
 	void Update(const float speed, float lookAt_t);
 

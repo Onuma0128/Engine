@@ -40,7 +40,7 @@ public:
 		const Skeleton& poseA, 
 		const Skeleton& poseB
 	);
-
+	void Reset();
 
 	// SkeletonItem
 	const SkeletonItem& GetItem()const { return item_; }
