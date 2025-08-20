@@ -81,7 +81,7 @@ void EnemyBullet::Attack(const WorldTransform& transform)
 	// 回転と座標を取得
 	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform.rotation_);
 	transform_.rotation_ = transform.rotation_;
-	transform_.translation_ = transform.translation_;
+	transform_.translation_ = transform.translation_ + Vector3{ 0.0f,1.0f,0.0f };
 
 	// 速度(向き)を取得
 	velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix);

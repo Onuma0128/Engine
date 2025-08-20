@@ -95,4 +95,5 @@ void EnemyRangedElite_AttackState::Attack()
 		rad += data.bulletRadSpace;
 	}
 	isAttack_ = true;
+	enemy_->GetEffect()->OnceBulletEffect(enemy_->GetTransform());
 }

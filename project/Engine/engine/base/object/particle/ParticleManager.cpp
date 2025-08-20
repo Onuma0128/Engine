@@ -199,7 +199,11 @@ void ParticleManager::Finalize()
 
 void ParticleManager::Clear()
 {
-    particleGroups_.clear();
+    for (auto& group : particleGroups_) {
+        group.second.particles.clear();
+        group.second.emitters.clear();
+        group.second.instanceCount = 0;
+    }
 }
 
 void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitter)

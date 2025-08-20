@@ -44,7 +44,7 @@ void GameClearScene::Update()
 
 	sceneFade_->Update();
 
-	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_A) && !isFade_) {
+	if ((input->TriggerKey(DIK_SPACE) || input->TriggerGamepadButton(XINPUT_GAMEPAD_A)) && !isFade_) {
 		isFade_ = true;
 		sceneFade_->FadeOut();
 	}

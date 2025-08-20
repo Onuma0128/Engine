@@ -21,6 +21,8 @@ public:
 
 	void SetEnemy(BaseEnemy* enemy) { enemy_ = enemy; }
 
+	// 弾を撃つ時のエフェクトを呼び出す
+	void OnceBulletEffect(const WorldTransform& transform);
 	// 弾がヒットした時のエフェクトを呼び出す
 	void OnceBulletHitEffect(const WorldTransform& transform);
 	void OnceBulletHitExplosionEffect(const WorldTransform& transform);
@@ -81,5 +83,12 @@ private:
 		std::unique_ptr<PrimitiveDrawr> plane_;
 	};
 	std::vector<BulletPredictionEffect> bulletPredictionEffect_;
+
+	// 弾を撃った時の爆発
+	std::shared_ptr<ParticleEmitter> bulletExplosionEmitter_ = nullptr;
+	// 弾を撃った時の火花
+	std::shared_ptr<ParticleEmitter> bulletSparkEmitter_ = nullptr;
+	// 弾を撃った後の煙
+	std::shared_ptr<ParticleEmitter> bulletSmokeEmitter_ = nullptr;
 
 };

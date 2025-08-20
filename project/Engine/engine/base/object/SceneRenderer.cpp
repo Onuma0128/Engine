@@ -54,7 +54,6 @@ void SceneRenderer::OutAllDraw()
 	
 	DirectXEngine::GetLineRenderer()->Draws();
 
-
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
 		if (!primitive->GetRenderOptions().enabled || primitive->GetRenderOptions().offscreen) { continue; }

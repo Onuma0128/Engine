@@ -25,13 +25,15 @@ void TitleScene::Initialize()
 
 	test = std::make_unique<ParticleEmitter>("particleName");
 	particleManager->CreateParticleGroup(test);
-	//test->SetIsCreate(false);
+	test->SetIsCreate(false);
 
 	enemyMeleeAttack_ = std::make_unique<ParticleEmitter>("enemyMeleeAttack");
 	particleManager->CreateParticleGroup(enemyMeleeAttack_);
+	enemyMeleeAttack_->SetIsCreate(false);
 
 	playerHit_ = std::make_unique<ParticleEmitter>("playerHit");
 	particleManager->CreateParticleGroup(playerHit_);
+	playerHit_->SetIsCreate(false);
 }
 
 void TitleScene::Finalize()

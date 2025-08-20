@@ -156,6 +156,7 @@ void LineInstanceRenderer::Finalize()
 {
     entries_.clear();
     merged_.clear();
+    nextLineID_ = 0;
     totalInstances_ = 0;
     mergedDirty_ = true;
 }
