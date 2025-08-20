@@ -49,6 +49,8 @@ void MapCollision::Init(SceneJsonLoader loader)
 
 void MapCollision::Update()
 {
+#ifdef _DEBUG
+
 	ImGui::Begin("map");
 	ImGui::DragFloat("size", &size_, 0.01f, 0.01f, 1000.0f);
 	ImGui::DragFloat("cell", &cell_, 0.01f, 0.1f, 10.0f);
@@ -56,8 +58,13 @@ void MapCollision::Update()
 		// マップを再ロードする
 		ReloadMap();
 	}
+	ImGui::SameLine();
+	ImGui::Checkbox("debugLine", &debugLine_);
 	ImGui::End();
 
+#endif // _DEBUG
+
+	grid_->SetDrawGrid(debugLine_);
 	grid_->Update();
 }
 

@@ -43,8 +43,14 @@ public:
 
 
     void Finalize() { 
-        objBatches_.clear();
-        animationBatches_.clear();
+        for (auto& obj : objBatches_) {
+            obj.second.objects.clear();
+            obj.second.count = 0;
+        }
+        for (auto& anima : animationBatches_) {
+            anima.second.animations.clear();
+            anima.second.count = 0;
+        }
     }
 
     // 全ての描画

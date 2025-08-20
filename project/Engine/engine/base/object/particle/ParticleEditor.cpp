@@ -21,6 +21,9 @@ void ParticleEditor::Initialize(std::string filePath)
 		for (int i = 0; i < items.size(); ++i) {
 			if (baseEmitter_.texture == items[i]) { textureIndex_ = i; }
 		}
+		// UvFlipX,Y
+		parameters_.Set("UvFlipX", false);
+		parameters_.Set("UvFlipY", false);
 		// Model
 		parameters_.Set("Model", 0);
 		// BlendMode
@@ -56,6 +59,8 @@ void ParticleEditor::Initialize(std::string filePath)
 		// 速度
 		parameters_.Set("MinVelocity", Vector3{});
 		parameters_.Set("MaxVelocity", Vector3{});
+		parameters_.Set("LockDirection", false);
+		parameters_.Set("DirectionSpeed", 0.0f);
 		// 回転
 		parameters_.Set("Billboard", true);
 		parameters_.Set("MinRotate", Vector3{});
@@ -85,6 +90,9 @@ void ParticleEditor::Initialize(std::string filePath)
 		for (int i = 0; i < items.size(); ++i) {
 			if (baseEmitter_.texture == items[i]) { textureIndex_ = i; }
 		}
+		// UvFlipX,Y
+		baseEmitter_.isUvFlipX = parameters_.Get<bool>("UvFlipX", baseEmitter_.isUvFlipX);
+		baseEmitter_.isUvFlipY = parameters_.Get<bool>("UvFlipY", baseEmitter_.isUvFlipY);
 		// Model
 		baseEmitter_.model_ = parameters_.Get<int>("Model", static_cast<int>(baseEmitter_.model_));
 		modelIndex_ = baseEmitter_.model_;
@@ -121,6 +129,8 @@ void ParticleEditor::Initialize(std::string filePath)
 		// 速度
 		baseEmitter_.minVelocity = parameters_.Get<Vector3>("MinVelocity", baseEmitter_.minVelocity);
 		baseEmitter_.maxVelocity = parameters_.Get<Vector3>("MaxVelocity", baseEmitter_.maxVelocity);
+		baseEmitter_.directionSpeed = parameters_.Get<float>("DirectionSpeed", baseEmitter_.directionSpeed);
+		baseEmitter_.isLockDirection = parameters_.Get<bool>("LockDirection", baseEmitter_.isLockDirection);
 		// 回転
 		baseEmitter_.isBillboard = parameters_.Get<bool>("Billboard", baseEmitter_.isBillboard);
 		baseEmitter_.minRotate = parameters_.Get<Vector3>("MinRotate", baseEmitter_.minRotate);
@@ -160,6 +170,10 @@ void ParticleEditor::Update()
 			ImGui::EndCombo();
 		}
 		baseEmitter_.texture = items[textureIndex_];
+
+		ImGui::Checkbox("UVFlipX", &baseEmitter_.isUvFlipX);
+		ImGui::SameLine();
+		ImGui::Checkbox("UVFlipY", &baseEmitter_.isUvFlipY);
 
 		/* ==================== 選択できるモデル ==================== */
 
@@ -238,6 +252,8 @@ void ParticleEditor::Update()
 			// 速度
 			ImGui::DragFloat3("MinVelocity", &baseEmitter_.minVelocity.x, 0.01f);
 			ImGui::DragFloat3("MaxVelocity", &baseEmitter_.maxVelocity.x, 0.01f);
+			ImGui::Checkbox("LockDirection", &baseEmitter_.isLockDirection);
+			ImGui::DragFloat("DirectionSpeed", &baseEmitter_.directionSpeed, 0.01f);
 			ImGui::Separator();
 			// 回転
 			ImGui::Checkbox("Billboard", &baseEmitter_.isBillboard);
@@ -281,6 +297,9 @@ void ParticleEditor::Save()
 
 	// Texture
 	parameters_.Set("Texture", baseEmitter_.texture);
+	// UvFlipX,Y
+	parameters_.Set("UvFlipX", baseEmitter_.isUvFlipX);
+	parameters_.Set("UvFlipY", baseEmitter_.isUvFlipY);
 	// BlendMode
 	parameters_.Set("Model", static_cast<int>(baseEmitter_.model_));
 	// BlendMode
@@ -315,6 +334,8 @@ void ParticleEditor::Save()
 	// 速度
 	parameters_.Set("MinVelocity", baseEmitter_.minVelocity);
 	parameters_.Set("MaxVelocity", baseEmitter_.maxVelocity);
+	parameters_.Set("LockDirection", baseEmitter_.isLockDirection);
+	parameters_.Set("DirectionSpeed", baseEmitter_.directionSpeed);
 	// 回転
 	parameters_.Set("Billboard", baseEmitter_.isBillboard);
 	parameters_.Set("MinRotate", baseEmitter_.minRotate);

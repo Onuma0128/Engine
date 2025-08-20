@@ -63,6 +63,7 @@ void EnemyRanged_AttackState::Attack()
 		bullet->Attack(enemy_->GetTransform());
 	}
 	isAttack_ = true;
+	enemy_->GetEffect()->OnceBulletEffect(enemy_->GetTransform());
 }
 
 void EnemyRanged_AttackState::LookOn()

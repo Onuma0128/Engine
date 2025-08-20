@@ -18,6 +18,8 @@ class Animation
 {
 public:
 
+	~Animation();
+
 	void Initialize(const std::string& filename);
 	void SetSceneRenderer();
 	void RemoveRenderer();
@@ -37,6 +39,7 @@ public:
 
 	void SetModel(const std::string& filePath);
 	void SetTexture(const std::string& directoryPath, const std::string& filePath);
+	void SetBoneEnableDraw(bool flag) { skeleton_.SetBoneEnableDraw(flag); }
 
 	WorldTransform& GetTransform() { return transform_; }
 	bool& GetTimeStop() { return playAnim_.GetTimeStop(); }

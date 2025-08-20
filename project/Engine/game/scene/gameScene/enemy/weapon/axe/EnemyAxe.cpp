@@ -55,3 +55,8 @@ void EnemyAxe::SetIsActive(bool flag)
 {
 	Collider::isActive_ = flag;
 }
+
+bool EnemyAxe::GetIsActive()
+{
+	return Collider::isActive_;
+}

@@ -19,5 +19,6 @@ public:
 	void OnCollisionExit(Collider* other) override;
 
 	void SetIsActive(bool flag) override;
+	bool GetIsActive()override;
 };
 

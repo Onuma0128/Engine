@@ -11,8 +11,19 @@
 #include "LightManager.h"
 #include "CameraManager.h"
 
+Animation::~Animation()
+{
+	skinCluster_.Reset();
+	skeleton_.Reset(); 
+	playAnim_.Reset();
+}
+
 void Animation::Initialize(const std::string& filename)
 {
+	skinCluster_.Reset();
+	skeleton_.Reset();
+	playAnim_.Reset();
+
 	animationBase_ = std::make_unique<AnimationBase>();
 	animationBase_->Initialize();
 
@@ -50,7 +61,9 @@ void Animation::Update()
 
 	skeleton_.SkeletonUpdate(transform_);
 	skinCluster_.SkinClusterUpdate(skeleton_);
+
 	transform_.TransferMatrix(Matrix4x4::Identity());
+	skeleton_.DebugBoneUpdate(transform_);
 }
 
 void Animation::SetVertexBuffer()

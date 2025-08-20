@@ -38,6 +38,7 @@ public:
 
 	void AnimationPlayUpdate(Skeleton& skeleton);
 
+	void Reset();
 
 	// 再生するアニメーションを選択
 	void Play(size_t idx, float fadeTime);

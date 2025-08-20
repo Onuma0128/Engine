@@ -4,6 +4,7 @@
 
 #include "DeltaTimer.h"
 #include "state/PlayerMoveState.h"
+#include "state/PlayerDeadState.h"
 
 void Player::Init(SceneJsonLoader loader)
 {
@@ -102,7 +103,8 @@ void Player::OnCollisionEnter(Collider* other)
 		other->GetColliderName() == "EnemyShieldBearer" ||
 		other->GetColliderName() == "EnemyRangedElite") {
 		if (!isAvoid_ && !items_->GetPlayerData().isInvincible) {
-			isAlive_ = false;
+			//isAlive_ = false;
+			ChengeState(std::make_unique<PlayerDeadState>(this));
 		}
 	}
 }

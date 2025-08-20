@@ -21,10 +21,10 @@ public:
 	void BindBuffers(bool isAnimation) const;
 	void BindMaterial(uint32_t meshIdx) const;
 
-	const ModelData GetModelData()const { return modelData_; }
-	const Matrix4x4 GetLocalMatrix()const { return modelData_.rootNode.localMatrix; }
+	const ModelData& GetModelData()const { return modelData_; }
+	const Matrix4x4& GetLocalMatrix()const { return modelData_.rootNode.localMatrix; }
 	const std::vector<MeshData>& GetMeshData()const { return modelData_.meshs; }
-	const D3D12_VERTEX_BUFFER_VIEW GetVertexBuffer() { return vertexBufferView_; }
+	const D3D12_VERTEX_BUFFER_VIEW& GetVertexBuffer() { return vertexBufferView_; }
 
 	static ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
 

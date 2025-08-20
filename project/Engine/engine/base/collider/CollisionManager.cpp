@@ -2,8 +2,13 @@
 
 #include "Collision3D.h"
 
+#include "imgui.h"
+
 void CollisionManager::CheckAllCollisions()
 {
+    // デバッグ用
+    DebugImGui();
+
     // 今フレームに衝突したペアを格納するコンテナ
     PairSet thisFrame;
 
@@ -37,6 +42,24 @@ void CollisionManager::CheckAllCollisions()
     }
 
     previousFrame_.swap(thisFrame);
+}
+
+void CollisionManager::DebugImGui()
+{
+#ifdef _DEBUG
+
+    bool change = debugColliderEnable_;
+    ImGui::Begin("ColliderManager");
+    ImGui::Checkbox("debugCollider", &debugColliderEnable_);
+    ImGui::End();
+
+    if (debugColliderEnable_ != change) {
+        for (auto& collider : colliders_) {
+            collider->SetDebugDrawEnable(debugColliderEnable_);
+        }
+    }
+
+#endif // _DEBUG
 }
 
 bool CollisionManager::Dispatch(Collider* a, Collider* b)
@@ -96,12 +119,12 @@ void CollisionManager::CheckCollisionPair(Collider* a, Collider* b, PairSet& thi
     if (previousFrame_.contains(key)) {
         // 前フレームも衝突していた
         a->OnCollisionStay(b);
-        a->SetColor(Vector3{ 1.0f,0.0f,0.0f });
         b->OnCollisionStay(a);
-        b->SetColor(Vector3{ 1.0f,0.0f,0.0f });
     } else {
         // 今回初めて衝突した
         a->OnCollisionEnter(b);
+        a->SetColor(Vector3{ 1.0f,0.0f,0.0f });
         b->OnCollisionEnter(a);
+        b->SetColor(Vector3{ 1.0f,0.0f,0.0f });
     }
 }

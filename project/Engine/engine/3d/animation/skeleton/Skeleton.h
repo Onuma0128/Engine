@@ -30,6 +30,7 @@ public:
 	void CreateSkeleton(const WorldTransform& transform, const Node& rootNode);
 	// 更新
 	void SkeletonUpdate(const WorldTransform& transform);
+	void DebugBoneUpdate(const WorldTransform& transform);
 	// Joint更新
 	void ApplyAnimation(const AnimationData& animation, float animationTime, float duration);
 	// Jointの補完更新
@@ -39,7 +40,7 @@ public:
 		const Skeleton& poseA, 
 		const Skeleton& poseB
 	);
-
+	void Reset();
 
 	// SkeletonItem
 	const SkeletonItem& GetItem()const { return item_; }
@@ -49,6 +50,7 @@ public:
 	Joint& GetJoint(const size_t index) { return item_.joints[index]; }
 	const std::vector<Joint>& GetJoints()const { return item_.joints; }
 	void SetJoints(const std::vector<Joint>& joints) { item_.joints = joints; }
+	void SetBoneEnableDraw(bool flag) { debugBone_->SetEnableDraw(flag); }
 
 private:
 

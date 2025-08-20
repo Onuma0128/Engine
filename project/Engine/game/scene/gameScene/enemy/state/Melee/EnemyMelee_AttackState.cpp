@@ -64,6 +64,13 @@ void EnemyMelee_AttackState::Update()
 			enemy_->PlayByName("Idle");
 		}
 	}
+
+	if (weapon->GetIsActive()) {
+		enemy_->GetEffect()->SetMeleeAttackEffect(enemy_->GetTransform());
+		enemy_->GetEffect()->CreateMeleeAttackEffect(true);
+	} else {
+		enemy_->GetEffect()->CreateMeleeAttackEffect(false);
+	}
 }
 
 void EnemyMelee_AttackState::Draw()

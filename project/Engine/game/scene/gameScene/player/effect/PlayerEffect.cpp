@@ -26,6 +26,11 @@ void PlayerEffect::Init()
 	particleManager_->CreateParticleGroup(avoidDustEmitter_);
 	avoidDustEmitter_->SetIsCreate(false);
 
+	// 攻撃を受けた時のエフェクト
+	playerHit_ = std::make_unique<ParticleEmitter>("playerHit");
+	particleManager_->CreateParticleGroup(playerHit_);
+	playerHit_->SetIsCreate(false);
+
 	// PostEffectを初期化
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
@@ -78,6 +83,18 @@ void PlayerEffect::OnceAvoidEffect()
 
 	avoidDustEmitter_->SetPosition(position);
 	avoidDustEmitter_->SetRotation(rotate);
+}
+
+void PlayerEffect::OnceHitEffect()
+{
+	playerHit_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = player_->GetTransform().rotation_;
+	Vector3 position = player_->GetTransform().translation_;
+
+	playerHit_->SetPosition(position);
+	//playerHit_->SetRotation(rotate);
 }
 
 void PlayerEffect::UpdatePostEffect()

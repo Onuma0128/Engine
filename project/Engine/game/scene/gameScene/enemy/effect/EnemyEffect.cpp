@@ -31,6 +31,10 @@ void EnemyEffect::Init()
 	deadEmitter_ = std::make_unique<ParticleEmitter>("enemyDead");
 	particleManager_->CreateParticleGroup(deadEmitter_);
 	deadEmitter_->SetIsCreate(false);
+
+	enemyMeleeAttack_ = std::make_unique<ParticleEmitter>("enemyMeleeAttack");
+	particleManager_->CreateParticleGroup(enemyMeleeAttack_);
+	enemyMeleeAttack_->SetIsCreate(false);
 }
 
 void EnemyEffect::Update()
@@ -48,6 +52,28 @@ void EnemyEffect::Draw()
 	if (hitReticleEffect_.cylinder_->GetRenderOptions().enabled) {
 		hitReticleEffect_.cylinder_->TypeDraw();
 	}
+}
+
+void EnemyEffect::OnceBulletEffect(const WorldTransform& transform)
+{
+	// Particleを一回生成
+	bulletExplosionEmitter_->onceEmit();
+	bulletSparkEmitter_->onceEmit();
+	bulletSmokeEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	// 爆発
+	bulletExplosionEmitter_->SetPosition(position);
+	bulletExplosionEmitter_->SetRotation(rotate);
+	// 火花
+	bulletSparkEmitter_->SetPosition(position);
+	bulletSparkEmitter_->SetRotation(rotate);
+	// 煙
+	bulletSmokeEmitter_->SetPosition(position);
+	bulletSmokeEmitter_->SetRotation(rotate);
 }
 
 void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
@@ -77,6 +103,16 @@ void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
 	hitRingEmitter_->SetPosition(position);
 }
 
+void EnemyEffect::SetMeleeAttackEffect(const WorldTransform& transform)
+{
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	enemyMeleeAttack_->SetRotation(rotate);
+	enemyMeleeAttack_->SetPosition(position);
+}
+
 void EnemyEffect::SetBulletPredictionEffect(bool flag)
 {
 	for (auto& effect : bulletPredictionEffect_) {
@@ -101,7 +137,7 @@ void EnemyEffect::BulletPredictionInit()
 {
 	switch (enemy_->GetType())
 	{
-	case EnemyType::Ranged:		 { bulletPredictionEffect_.resize(1); }break;
+	case EnemyType::Ranged: { bulletPredictionEffect_.resize(1); }break;
 	case EnemyType::RangedElite: { bulletPredictionEffect_.resize(3); }break;
 	default:break;
 	}
@@ -117,6 +153,21 @@ void EnemyEffect::BulletPredictionInit()
 		effect.plane_->SetSceneRenderer();
 		effect.plane_->GetRenderOptions().enabled = false;
 	}
+	if (!bulletPredictionEffect_.empty()) {
+		// 弾を撃つ時のエフェクト
+		bulletExplosionEmitter_ = std::make_unique<ParticleEmitter>("bulletExplosion");
+		particleManager_->CreateParticleGroup(bulletExplosionEmitter_);
+		bulletExplosionEmitter_->SetIsCreate(false);
+
+		bulletSparkEmitter_ = std::make_unique<ParticleEmitter>("bulletSpark");
+		particleManager_->CreateParticleGroup(bulletSparkEmitter_);
+		bulletSparkEmitter_->SetIsCreate(false);
+
+		bulletSmokeEmitter_ = std::make_unique<ParticleEmitter>("bulletSmoke");
+		particleManager_->CreateParticleGroup(bulletSmokeEmitter_);
+		bulletSmokeEmitter_->SetIsCreate(false);
+	}
+
 }
 
 void EnemyEffect::HitReticleUpdate()

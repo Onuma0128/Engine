@@ -1,10 +1,13 @@
 {
     "Texture": "circle.png",
+    "UvFlipX": false,
+    "UvFlipY": false,
+    "Model": 1,
     "BlendMode": 2,
-    "Move": false,
-    "EmitCount": 12,
-    "FrequencyTime": 0.6899999976158142,
-    "LifeTime": 0.5799999833106995,
+    "Move": true,
+    "EmitCount": 32,
+    "FrequencyTime": 0.949999988079071,
+    "LifeTime": 0.5,
     "Acceleration": {
         "x": 0.0,
         "y": 0.0,
@@ -12,14 +15,14 @@
     },
     "AcceleField": false,
     "MinAcceleField": {
-        "x": -10.0,
-        "y": -10.0,
-        "z": -10.0
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
     },
     "MaxAcceleField": {
-        "x": 10.0,
-        "y": 10.0,
-        "z": 10.0
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
     },
     "Reflect": false,
     "ReflectY": 0.0,
@@ -29,36 +32,38 @@
         "z": 0.0
     },
     "uvTranslation": {
-        "x": 1.0,
-        "y": 0.0,
+        "x": 0.0,
+        "y": 3.0999999046325684,
         "z": 0.0
     },
     "MinScale": {
-        "x": 0.10000000149011612,
-        "y": 3.0,
+        "x": 0.05000000074505806,
+        "y": 0.6899999976158142,
         "z": 1.0
     },
     "MaxScale": {
-        "x": 1.9600000381469727,
-        "y": 3.8299999237060547,
+        "x": 0.800000011920929,
+        "y": 1.149999976158142,
         "z": 1.0
     },
-    "ChangeScale": true,
+    "ChangeScale": false,
     "EndScale": {
-        "x": 0.019999999552965164,
+        "x": 0.0,
         "y": 0.0,
         "z": 1.0
     },
     "MinVelocity": {
-        "x": -0.5,
-        "y": -0.5,
+        "x": 0.0,
+        "y": 0.0,
         "z": 0.0
     },
     "MaxVelocity": {
-        "x": 0.5,
-        "y": 0.5,
+        "x": 0.0,
+        "y": 0.0,
         "z": 0.0
     },
+    "LockDirection": true,
+    "DirectionSpeed": -2.799999952316284,
     "Billboard": true,
     "MinRotate": {
         "x": 0.0,
@@ -81,24 +86,19 @@
         "z": 0.0
     },
     "MinSize": {
-        "x": -0.25,
-        "y": -0.25,
-        "z": 0.0
+        "x": -0.30000001192092896,
+        "y": -0.28999999165534973,
+        "z": -0.30000001192092896
     },
     "MaxSize": {
-        "x": 0.25,
-        "y": 0.25,
-        "z": 0.0
+        "x": 0.30000001192092896,
+        "y": 0.3700000047683716,
+        "z": 0.30000001192092896
     },
     "Position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
+        "x": 0.03999999910593033,
+        "y": 1.840000033378601,
+        "z": -1.0
     },
-    "Look": false,
-    "Model": 1,
-    "LockDirection": true,
-    "DirectionSpeed": 7.199999809265137,
-    "UvFlipX": false,
-    "UvFlipY": false
+    "Look": true
 }

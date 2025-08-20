@@ -423,6 +423,12 @@
     <ClCompile Include="Engine\engine\3d\animation\play\PlayAnimation.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\engine\base\object\model\LineInstanceRenderer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerDeadState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\engine\2d\LoadTexture.h">
@@ -885,6 +891,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\AnimationOutLineMaskRootSignature.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\engine\base\object\model\LineInstanceRenderer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerDeadState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

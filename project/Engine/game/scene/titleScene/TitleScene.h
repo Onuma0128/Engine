@@ -35,4 +35,10 @@ private:
 	// エフェクト
 	std::shared_ptr<ParticleEmitter> test = nullptr;
 
+	// エフェクト
+	std::shared_ptr<ParticleEmitter> enemyMeleeAttack_ = nullptr;
+	// エフェクト
+	std::shared_ptr<ParticleEmitter> playerHit_ = nullptr;
+
+
 };

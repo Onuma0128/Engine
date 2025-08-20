@@ -8,127 +8,43 @@
 #include "CameraManager.h"
 #include "CreateBufferResource.h"
 
-void Line3d::Initialize(const std::vector<Vector3>& positions, uint32_t maxLinesReserve)
+void Line3d::Initialize(const std::vector<Vector3>& positions)
 {
 	assert((positions.size() & 1u) == 0 && "偶数個の座標が必要です");
-	lineCount_ = static_cast<uint32_t>(positions.size() / 2);
-	capacityLines_ = std::max(lineCount_, maxLinesReserve);
+	
+	DirectXEngine::GetLineRenderer()->RegisterLine(this);
+	lineIndex_ = DirectXEngine::GetLineRenderer()->GetLineID(this);
 
-	line3dBase_ = std::make_unique<Line3dBase>();
-	line3dBase_->Initialize();
-
-	CreateLocalVB();
-	CreateInstanceVB(positions, capacityLines_);
-	CreateCB();
-
-	renderOptions_ = {
-		.enabled = true,
-		.offscreen = false
-	};
-	isMultiple_ = true;
-	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+	MakeMaterialData();
 }
 
 void Line3d::Update()
 {
-	*wvpData_ = CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix();
+	DirectXEngine::GetLineRenderer()->SetMaterial(this, materialData_);
 }
 
-void Line3d::Draws()
+void Line3d::MakeMaterialData()
 {
-	line3dBase_->DrawBase();
-
-	auto commandList = DirectXEngine::GetCommandList();
-	D3D12_VERTEX_BUFFER_VIEW views[2] = { vbvLocal_, vbvInst_ };
-	commandList->IASetVertexBuffers(0, 2, views);
-	commandList->SetGraphicsRootConstantBufferView(0, wvpResource_->GetGPUVirtualAddress());
-	commandList->SetGraphicsRootConstantBufferView(1, materialResource_->GetGPUVirtualAddress());
-	commandList->DrawInstanced(2, lineCount_, 0, 0);
-}
-
-void Line3d::CreateLocalVB()
-{
-	LocalVertex local[2] = { {0.f}, {1.f} };   // t=0 / t=1
-	auto device = DirectXEngine::GetDevice();
-	localVB_ = CreateBufferResource(device, sizeof(local));
-	void* dst{};
-	localVB_->Map(0, nullptr, &dst);
-	memcpy(dst, local, sizeof(local));
-	localVB_->Unmap(0, nullptr);
-
-	vbvLocal_.BufferLocation = localVB_->GetGPUVirtualAddress();
-	vbvLocal_.SizeInBytes = sizeof(local);
-	vbvLocal_.StrideInBytes = sizeof(LocalVertex);
-}
-
-void Line3d::CreateInstanceVB(const std::vector<Vector3>& pos, uint32_t capacity)
-{
-	std::vector<LineInstance> inst(capacity);
-	for (uint32_t i = 0; i < lineCount_; ++i)
-	{
-		inst[i].startPos = pos[i * 2];
-		inst[i].endPos = pos[i * 2 + 1];
-	}
-
-	auto bytes = capacity * sizeof(LineInstance);
-	auto device = DirectXEngine::GetDevice();
-	instanceVB_ = CreateBufferResource(device, bytes);
-
-	void* dst{};
-	instanceVB_->Map(0, nullptr, &dst);
-	memcpy(dst, inst.data(), bytes);
-	instanceVB_->Unmap(0, nullptr);
-
-	vbvInst_.BufferLocation = instanceVB_->GetGPUVirtualAddress();
-	vbvInst_.SizeInBytes = static_cast<UINT>(bytes);
-	vbvInst_.StrideInBytes = sizeof(LineInstance);
-}
-
-// ──────────────────────────────────────────────────────────────
-void Line3d::CreateCB()
-{
-	auto device = DirectXEngine::GetDevice();
-	wvpResource_ = CreateBufferResource(device, sizeof(Matrix4x4));
-	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
-
-	materialResource_ = CreateBufferResource(device, sizeof(Vector4));
-	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&color_));
-	*color_ = Vector4{ 1.0f,1.0f,1.0f,1.0f };
+	materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	materialData_.enableDraw = true;
+	materialData_.enableLighting = true;
+	materialData_.outlineMask = false;
+	materialData_.outlineSceneColor = false;
+	materialData_.uvTransform = Matrix4x4::Identity();
+	materialData_.shininess = 20.0f;
+	materialData_.environmentCoefficient = 0;
 }
 
 void Line3d::SetPositions(const std::vector<Vector3>& positions)
 {
-	uint32_t newLines = static_cast<uint32_t>(positions.size() / 2);
+	assert((positions.size() & 1u) == 0 && "偶数個の座標が必要です");
 
-	// 必要ならバッファ拡張
-	if (newLines > capacityLines_) {
-		capacityLines_ = newLines;
-		CreateInstanceVB(positions, capacityLines_);
-	} else {
-		lineCount_ = newLines;
-	}
-	std::vector<LineInstance> inst(newLines);
-
-	for (uint32_t i = 0; i < lineCount_; ++i)
-	{
-		inst[i].startPos = positions[i * 2];
-		inst[i].endPos = positions[i * 2 + 1];
-	}
-
-	auto bytes = newLines * sizeof(LineInstance);
-	void* dst{};
-	instanceVB_->Map(0, nullptr, &dst);
-	memcpy(dst, inst.data(), bytes);
-
-	lineCount_ = newLines;
-
+	DirectXEngine::GetLineRenderer()->SetLineInstances(this, positions);
 }
 
 void Line3d::SetColor(const Vector3& color)
 {
-	color_->x = color.x;
-	color_->y = color.y;
-	color_->z = color.z;
+	materialData_.color = { color.x,color.y,color.z,1.0f };
 }
 
 std::vector<Vector3> Line3d::CreateBox(const Vector3& min, const Vector3& max)

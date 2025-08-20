@@ -20,6 +20,7 @@ public:
 	virtual void Update() = 0;
 
 	virtual void SetIsActive(bool flag) = 0;
+	virtual bool GetIsActive() = 0;
 
 protected:
 

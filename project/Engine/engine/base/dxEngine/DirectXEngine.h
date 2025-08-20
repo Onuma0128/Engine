@@ -13,6 +13,7 @@
 #include "RenderTexture.h"
 #include "SceneRenderer.h"
 #include "ModelInstanceRenderer.h"
+#include "LineInstanceRenderer.h"
 #include "CollisionManager.h"
 
 class WinApp;
@@ -81,6 +82,8 @@ public:
 	static SceneRenderer* GetSceneRenderer() { return sceneRendrer_.get(); }
 	// モデル全ての描画
 	static ModelInstanceRenderer* GetModelRenderer() { return modelInstanceRenderer_.get(); }
+	// ライン全ての描画
+	static LineInstanceRenderer* GetLineRenderer() { return lineInstanceRenderer_.get(); }
 	// 当たり判定
 	static CollisionManager* GetCollisionMgr() { return collisionManager_.get(); }
 	// RenderTexture
@@ -105,6 +108,8 @@ private:
 	static std::unique_ptr<SceneRenderer> sceneRendrer_;
 	// ModelInstanceRenderer
 	static std::unique_ptr<ModelInstanceRenderer> modelInstanceRenderer_;
+	// LineInstanceRenderer
+	static std::unique_ptr<LineInstanceRenderer> lineInstanceRenderer_;
 	// CollisionManager
 	static std::unique_ptr<CollisionManager> collisionManager_;
 

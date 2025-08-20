@@ -78,6 +78,12 @@ void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 	}
 }
 
+void PlayAnimation::Reset()
+{
+	animationDatas_.clear();
+	nameToIx_.clear();
+}
+
 void PlayAnimation::Play(size_t idx, float fadeTime)
 {
 	if (idx >= animationDatas_.size() || idx == flags_.currentAnim) { return; }

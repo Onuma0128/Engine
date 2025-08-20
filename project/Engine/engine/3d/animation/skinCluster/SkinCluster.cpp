@@ -67,3 +67,15 @@ void SkinCluster::SkinClusterUpdate(Skeleton& skeleton)
 			Matrix4x4::Inverse(item_.mappedPalettes[jointIndex].skeletonSpaceMatrix).Transpose();
 	}
 }
+
+void SkinCluster::Reset()
+{
+	if (item_.infuenceResource) {
+		item_.infuenceResource->Unmap(0, nullptr);
+	}
+	item_.infuenceResource.Reset();
+	item_.influenceBufferView = {};
+	item_.mappedInfluence = {};
+	item_.mappedPalettes.clear();
+	item_.inverseBindPoseMatrices.clear();
+}

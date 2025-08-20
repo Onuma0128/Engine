@@ -15,6 +15,7 @@ class PathFinder
 {
 public:
 
+	void Reset();
 	// 探索をしてSplineを再初期化
 	void Search(const Vector3& startW, const Vector3& goalW);
 	// 時間を進めて座標を更新する

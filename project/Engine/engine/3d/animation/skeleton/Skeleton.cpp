@@ -32,9 +32,11 @@ void Skeleton::SkeletonUpdate(const WorldTransform& transform)
 			joint.GetSkeletonSpaceMatrix() = joint.GetLocalMatrix();
 		}
 	}
+}
 
+void Skeleton::DebugBoneUpdate(const WorldTransform& transform)
+{
 	// DebugBoneの更新
-
 #ifdef _DEBUG
 
 	debugBone_->SetPositions(debugBone_->GetPositions(transform, item_.joints));
@@ -75,6 +77,13 @@ void Skeleton::LerpTransformUpdate(const size_t index, const float alpha, const 
 	dst.GetTransform().translation = Vector3::Lerp(a.GetTransform().translation, b.GetTransform().translation, alpha);
 	dst.GetTransform().scale = Vector3::Lerp(a.GetTransform().scale, b.GetTransform().scale, alpha);
 	dst.GetTransform().rotation = Quaternion::Slerp(a.GetTransform().rotation, b.GetTransform().rotation, alpha);
+}
+
+void Skeleton::Reset()
+{
+	item_.jointMap.clear();
+	item_.joints.clear();
+	item_.root = 0;
 }
 
 bool Skeleton::CheckJointName(const std::string name)

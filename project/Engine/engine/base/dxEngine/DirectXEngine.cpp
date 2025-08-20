@@ -27,6 +27,7 @@ std::unique_ptr<PipelineState> DirectXEngine::pipelineState_ = nullptr;
 std::unique_ptr<PostEffectManager> DirectXEngine::postEffectManager_ = nullptr;
 std::unique_ptr<SceneRenderer> DirectXEngine::sceneRendrer_ = nullptr;
 std::unique_ptr<ModelInstanceRenderer> DirectXEngine::modelInstanceRenderer_ = nullptr;
+std::unique_ptr<LineInstanceRenderer> DirectXEngine::lineInstanceRenderer_ = nullptr;
 std::unique_ptr<CollisionManager> DirectXEngine::collisionManager_ = nullptr;
 
 DirectXEngine::~DirectXEngine()
@@ -49,6 +50,8 @@ DirectXEngine::~DirectXEngine()
 	sceneRendrer_.reset();
 	modelInstanceRenderer_->Finalize();
 	modelInstanceRenderer_.reset();
+	lineInstanceRenderer_->Finalize();
+	lineInstanceRenderer_.reset();
 	collisionManager_.reset();
 
 	//解放の処理
@@ -118,6 +121,9 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	sceneRendrer_ = std::make_unique<SceneRenderer>();
 
 	modelInstanceRenderer_ = std::make_unique<ModelInstanceRenderer>();
+
+	lineInstanceRenderer_ = std::make_unique<LineInstanceRenderer>();
+	lineInstanceRenderer_->Initialize(65536);
 
 	collisionManager_ = std::make_unique<CollisionManager>();
 }
