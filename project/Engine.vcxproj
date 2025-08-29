@@ -114,6 +114,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\engine\2d\BaseUI.cpp" />
     <ClCompile Include="Engine\engine\3d\animation\play\PlayAnimation.cpp" />
     <ClCompile Include="Engine\engine\3d\animation\debug\DebugBone.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\enemy\ray\EnemyRay.cpp" />
@@ -252,8 +253,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\engine\3d\animation\skinCluster\SkinCluster.cpp" />
     <ClCompile Include="Engine\engine\base\object\model\LineInstanceRenderer.cpp" />
     <ClCompile Include="Engine\game\scene\gameScene\player\state\PlayerDeadState.cpp" />
+    <ClCompile Include="Engine\game\scene\gameScene\player\ui\PlayerControlUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\engine\2d\BaseUI.h" />
     <ClInclude Include="Engine\engine\3d\animation\play\PlayAnimation.h" />
     <ClInclude Include="Engine\engine\3d\animation\debug\DebugBone.h" />
     <ClInclude Include="Engine\engine\base\dxEngine\pipeline\rootSignature\AnimationOutLineMaskRootSignature.h" />
@@ -410,6 +413,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\engine\3d\animation\skinCluster\SkinCluster.h" />
     <ClInclude Include="Engine\engine\base\object\model\LineInstanceRenderer.h" />
     <ClInclude Include="Engine\game\scene\gameScene\player\state\PlayerDeadState.h" />
+    <ClInclude Include="Engine\game\scene\gameScene\player\ui\PlayerControlUI.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

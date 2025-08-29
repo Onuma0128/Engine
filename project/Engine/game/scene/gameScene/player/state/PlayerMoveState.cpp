@@ -83,7 +83,7 @@ void PlayerMoveState::Update()
 	} else {
 		// マウスを取得するか
 		if (input->TriggerMouseButton(0) && input->PushMouseButton(1) && !player_->GetIsPlayingMouse()) {
-			player_->SetIsPlayingMouse(true);
+			//player_->SetIsPlayingMouse(true);
 
 		} else if (player_->GetIsPlayingMouse()) {
 			// マウスからのVelocity算出
@@ -171,7 +171,7 @@ void PlayerMoveState::SomeAction()
 	}
 
 	// 必殺技の状態に遷移
-	if ((input->GetGamepadLeftTrigger() != 0.0f ||
+	if ((input->TriggerGamepadButton(XINPUT_GAMEPAD_A) ||
 		(input->TriggerKey(DIK_SPACE) && player_->GetIsPlayingMouse())) &&
 		!player_->GetEffect()->GetIsSpecialMove()) {
 		player_->GetEffect()->SetIsSpecialMove(true);

@@ -108,3 +108,39 @@ bool PlayAnimation::PlayByName(const std::string& clipName, float fadeTime)
 	Play(it->second, fadeTime);                           // index 切替 (前回答参照)
 	return true;
 }
+
+void PlayAnimation::ForcePlay(size_t idx, float startTime, bool keepPhase)
+{
+	if (idx >= animationDatas_.size()) { return; }
+
+	// ブレンドを即時キャンセル
+	blend_.active = false;
+	blend_.time = 0.0f;
+
+	// 新しい再生時間を決める
+	float newTime = startTime;
+	if (keepPhase) {
+		const float oldDur = animationDatas_[flags_.currentAnim].duration;
+		const float newDur = animationDatas_[idx].duration;
+		float norm = (oldDur > 0.0f) ? (flags_.animationTime / oldDur) : 0.0f; // 0~∞ 想定
+		norm = std::clamp(norm, 0.0f, 1.0f);
+		newTime = norm * newDur;
+	}
+	// クランプ（wrapしない＝ハードカットの意図を維持）
+	const float newDur = animationDatas_[idx].duration;
+	newTime = std::clamp(newTime, 0.0f, newDur);
+
+	// 状態を上書き
+	flags_.currentAnim = idx;
+	flags_.animationTime = newTime;
+	flags_.timeStop = false;
+	flags_.stopped = false;
+}
+
+bool PlayAnimation::ForcePlayByName(const std::string& clipName, float startTime, bool keepPhase)
+{
+	auto it = nameToIx_.find(clipName);
+	if (it == nameToIx_.end()) { return false; }
+	ForcePlay(it->second, startTime, keepPhase);
+	return true;
+}

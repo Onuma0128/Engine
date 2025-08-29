@@ -15,6 +15,7 @@
 #include "gameScene/player/adjustItem/PlayerAdjustItem.h"
 
 #include "gameScene/player/bullet/PlayerShot.h"
+#include "gameScene/player/ui/PlayerControlUI.h"
 
 class Player : public Animation,Collider
 {
@@ -54,6 +55,8 @@ private:
 	std::unique_ptr<PlayerEffect> effect_ = nullptr;
 	// 必殺技時にロックオンするためのレティクル
 	std::unique_ptr<PlayerReticle> reticle_ = nullptr;
+	// 
+	std::unique_ptr<PlayerControlUI> controlUI_ = nullptr;
 	// 調整項目
 	std::unique_ptr<PlayerAdjustItem> items_;
 

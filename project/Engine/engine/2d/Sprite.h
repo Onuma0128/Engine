@@ -52,6 +52,9 @@ public:
 	// トランスフォーム
 	Transform2D& GetTransform() { return transform_; }
 
+	// Texture
+	void SetTexture(const std::string fileName);
+
 	// カラー
 	const Vector4& GetColor()const { return materialData_->color; }
 	void SetColor(const Vector4& color) { materialData_->color = color; }

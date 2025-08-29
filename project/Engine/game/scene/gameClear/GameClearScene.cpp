@@ -56,6 +56,8 @@ void GameClearScene::Update()
 
 void GameClearScene::Draw()
 {
+	gameClearUI_->Draw();
+
 	sceneFade_->Draw();
 }
 

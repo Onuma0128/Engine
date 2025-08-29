@@ -2,7 +2,7 @@
 
 #include "BaseUI.h"
 
-class GameClearUI : public BaseUI
+class PlayerControlUI : public BaseUI
 {
 public:
 

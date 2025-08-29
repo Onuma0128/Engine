@@ -20,6 +20,7 @@ void EnemyShieldBearer_AttackState::Finalize()
 {
 	enemy_->GetWeapon()->SetIsActive(false);
 	enemy_->GetWeapon()->Update();
+	enemy_->GetEffect()->CreateMeleeAttackEffect(false);
 }
 
 void EnemyShieldBearer_AttackState::Update()
@@ -61,6 +62,13 @@ void EnemyShieldBearer_AttackState::Update()
 			chengeAniamtion_ = true;
 			enemy_->PlayByName("Idle");
 		}
+	}
+
+	if (weapon->GetIsActive()) {
+		enemy_->GetEffect()->SetMeleeAttackEffect(enemy_->GetTransform());
+		enemy_->GetEffect()->CreateMeleeAttackEffect(true);
+	} else {
+		enemy_->GetEffect()->CreateMeleeAttackEffect(false);
 	}
 }
 

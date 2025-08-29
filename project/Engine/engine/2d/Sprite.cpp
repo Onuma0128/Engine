@@ -60,6 +60,13 @@ void Sprite::Draw()
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
 
+void Sprite::SetTexture(const std::string fileName)
+{
+	textureFilePath_ = fileName;
+	textureIndex_ = TextureManager::GetInstance()->GetSrvIndex(fileName);
+	AdjustTextureSize();
+}
+
 void Sprite::VertexDataInitialize()
 {
 	vertexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VertexData) * 4);
