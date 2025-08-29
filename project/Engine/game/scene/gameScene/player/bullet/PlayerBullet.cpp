@@ -46,6 +46,7 @@ void PlayerBullet::Update()
 	if (wasActive_ && !isActive_ && onDeactivatedCallback_) {
 		onDeactivatedCallback_();
 		effect_->OnceBulletDeleteEffect(transform_);
+		Object3d::GetTransform().translation_.y = -2.0f;
 		Object3d::GetMaterial().enableDraw = false;
 	}
 	wasActive_ = isActive_;
@@ -80,6 +81,7 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 		if (Collider::colliderName_ == "PlayerBullet") {
 			IsCollision();
 			effect_->OnceBulletDeleteEffect(transform_);
+			Object3d::GetTransform().translation_.y = -2.0f;
 		}
 	}
 	if (other->GetColliderName() == "Enemy") {
