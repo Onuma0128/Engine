@@ -50,6 +50,9 @@ void Player::Init(SceneJsonLoader loader)
 
 	shot_ = std::make_unique<PlayerShot>();
 	shot_->Init(this);
+
+	controlUI_ = std::make_unique<PlayerControlUI>();
+	controlUI_->Init();
 }
 
 void Player::Update()
@@ -65,6 +68,8 @@ void Player::Update()
 	// 弾の更新
 	shot_->Update();
 	shot_->UpdateUI();
+
+	controlUI_->Update();
 
 	transform_.translation_.x = std::clamp(transform_.translation_.x, -50.0f, 50.0f);
 	transform_.translation_.z = std::clamp(transform_.translation_.z, -50.0f, 50.0f);
@@ -85,6 +90,8 @@ void Player::Draw()
 
 	// 弾UIのDraw処理
 	shot_->DrawUI();
+
+	controlUI_->Draw();
 }
 
 void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)
@@ -103,7 +110,7 @@ void Player::OnCollisionEnter(Collider* other)
 		other->GetColliderName() == "EnemyShieldBearer" ||
 		other->GetColliderName() == "EnemyRangedElite") {
 		if (!isAvoid_ && !items_->GetPlayerData().isInvincible) {
-			//isAlive_ = false;
+			isAlive_ = false;
 			ChengeState(std::make_unique<PlayerDeadState>(this));
 		}
 	}

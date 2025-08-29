@@ -43,6 +43,9 @@ public:
 	// 再生するアニメーションを選択
 	void Play(size_t idx, float fadeTime);
 	bool PlayByName(const std::string& clipName, float fadeTime);
+	// 再生するアニメーションを強制変更
+	void ForcePlay(size_t idx, float startTime = 0.0f, bool keepPhase = false);
+	bool ForcePlayByName(const std::string& clipName, float startTime = 0.0f, bool keepPhase = false);
 	void SetAnimationTime(float animationTime) { flags_.animationTime = animationTime; }
 
 	bool& GetTimeStop() { return flags_.timeStop; }

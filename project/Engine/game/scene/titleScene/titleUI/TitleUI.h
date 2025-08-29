@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Sprite.h"
+#include "BaseUI.h"
 
-class TitleUI : public Sprite
+class TitleUI : public BaseUI
 {
 public:
 
 	void Init();
 
-	void Update();
+	void Update()override;
+
+	void Draw()override;
 
 };
 

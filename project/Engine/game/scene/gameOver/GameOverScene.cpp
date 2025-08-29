@@ -56,5 +56,7 @@ void GameOverScene::Update()
 
 void GameOverScene::Draw()
 {
+	gameOverUI_->Draw();
+
 	sceneFade_->Draw();
 }

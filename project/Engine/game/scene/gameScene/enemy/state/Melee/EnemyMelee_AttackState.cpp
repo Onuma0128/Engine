@@ -22,6 +22,7 @@ void EnemyMelee_AttackState::Finalize()
 {
 	enemy_->GetWeapon()->SetIsActive(false);
 	enemy_->GetWeapon()->Update();
+	enemy_->GetEffect()->CreateMeleeAttackEffect(false);
 }
 
 void EnemyMelee_AttackState::Update()

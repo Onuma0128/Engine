@@ -102,6 +102,14 @@ bool Animation::PlayByName(const std::string& clipName, float fadeTime)
 	return playAnim_.PlayByName(clipName, fadeTime);
 }
 
+void Animation::ForcePlay(size_t idx, float startTime, bool keepPhase) {
+	playAnim_.ForcePlay(idx, startTime, keepPhase);
+}
+
+bool Animation::ForcePlayByName(const std::string& clipName, float startTime, bool keepPhase) {
+	return playAnim_.ForcePlayByName(clipName, startTime, keepPhase);
+}
+
 void Animation::SetModel(const std::string& filePath)
 {
 	model_ = ModelManager::GetInstance()->FindModel(filePath);

@@ -52,11 +52,16 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources", "output.dds");
 	TextureManager::GetInstance()->LoadTexture("resources/player/texture", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "bulletUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "playerControlUI.png");
+
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "blood.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "numbers.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "title.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "titleUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameClear.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameClearUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameOver.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameOverUI.png");
 
 	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
 	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");

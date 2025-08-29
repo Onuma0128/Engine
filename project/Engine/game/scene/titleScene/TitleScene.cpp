@@ -64,5 +64,7 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
+	titleUI_->Draw();
+
 	sceneFade_->Draw();
 }

@@ -75,7 +75,7 @@ void EnemyDeadState::Update()
 		enemy_->SetIsDead(true);
 	} else {
 		if (!chengeAnimation_) {
-			if (enemy_->PlayByName("Death"),0.1f) {
+			if (enemy_->ForcePlayByName("Death", 0.1f)) {
 				enemy_->GetTimeStop() = true;
 				chengeAnimation_ = true;
 			}

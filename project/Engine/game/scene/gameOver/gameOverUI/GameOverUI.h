@@ -2,13 +2,16 @@
 
 #include "Sprite.h"
 
-class GameOverUI : public Sprite
+#include "BaseUI.h"
+
+class GameOverUI : public BaseUI
 {
 public:
 
 	void Init();
 
-	void Update();
+	void Update()override;
 
+	void Draw()override;
 };
 

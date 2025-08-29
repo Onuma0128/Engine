@@ -1,0 +1,16 @@
+{
+    "Texture": "titleUI.png",
+    "AnchorPoint": {
+        "x": 0.5,
+        "y": 0.5
+    },
+    "Size": {
+        "x": 880.0,
+        "y": 384.0
+    },
+    "Rotate": 0.0,
+    "Position": {
+        "x": 640.0,
+        "y": 460.0
+    }
+}
