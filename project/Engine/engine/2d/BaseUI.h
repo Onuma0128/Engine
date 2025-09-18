@@ -17,6 +17,12 @@ private:
 
 		Vector2 anchorPoint;
 		Transform2D transform;
+
+		bool isAnimation;
+		float animationTime;
+		Transform2D animaTransform;
+
+		int easingType = 0;
 	};
 
 public:
@@ -29,7 +35,12 @@ public:
 
 	void DrawImGui();
 
+	void FadeIn();
+	void FadeOut();
+
 private:
+
+	void UI_Animation();
 
 	void Save();
 
@@ -43,5 +54,12 @@ protected:
 
 	// 選択中インデックス
 	int textureIndex_ = 0;
+
+	// Animation中のTimerとフラグ
+	float playAnimationTimer_ = 0.0f;
+	bool isPlayAnimation_ = false;
+	// 逆再生
+	bool reversePlayBack_ = false;
+
 };
 

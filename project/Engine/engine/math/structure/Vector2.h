@@ -19,6 +19,7 @@ public:
     static Vector2 Multiply(float scalar, const Vector2& v);
     static float Dot(const Vector2& v1, const Vector2& v2);
     static Vector2 Lerp(const Vector2& v1, const Vector2& v2, float t);
+    static Vector2 EaseLerp(const Vector2& v1, const Vector2& v2, float t);
 
     float Length() const;
     Vector2 Normalize() const;
