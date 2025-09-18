@@ -3,6 +3,21 @@
 #include <numbers>
 #include <algorithm>
 
+#include <string>
+#include <array>
+
+enum class EasingType : int32_t {
+    Linear = 0,
+    EaseInSine, EaseOutSine, EaseInOutSine,
+    EaseInQuad, EaseOutQuad, EaseInOutQuad,
+    EaseInCubic, EaseOutCubic, EaseInOutCubic,
+    EaseInQuart, EaseOutQuart, EaseInOutQuart,
+    EaseInQuint, EaseOutQuint, EaseInOutQuint,
+    EaseInExpo, EaseOutExpo, EaseInOutExpo,
+    EaseInCirc, EaseOutCirc, EaseInOutCirc,
+    EaseInBack, EaseOutBack, EaseInOutBack,
+};
+
 class Easing {
 public:
     static float EaseInSine(float t) {
@@ -115,4 +130,72 @@ public:
             ? (std::pow(2.0f * t, 2.0f) * ((c2 + 1.0f) * 2.0f * t - c2)) / 2.0f
             : (std::pow(2.0f * t - 2.0f, 2.0f) * ((c2 + 1.0f) * (t * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
     }
+
+    static constexpr const std::array<const char*, 25>& GetEaseTypeNames() { return easeTypes_; }
+
+    static EasingType FromInt(int v) {
+        if (v < 0) v = 0;
+        if (v >= kEaseCount) v = 0;
+        return static_cast<EasingType>(v);
+    }
+
+    static int ToInt(EasingType type) { return static_cast<int>(type); }
+
+    static float Apply(EasingType type, float t) {
+        t = std::clamp(t, 0.0f, 1.0f);
+        switch (type) {
+        default:
+        case EasingType::Linear:         return t;
+
+        case EasingType::EaseInSine:     return Easing::EaseInSine(t);
+        case EasingType::EaseOutSine:    return Easing::EaseOutSine(t);
+        case EasingType::EaseInOutSine:  return Easing::EaseInOutSine(t);
+
+        case EasingType::EaseInQuad:     return Easing::EaseInQuad(t);
+        case EasingType::EaseOutQuad:    return Easing::EaseOutQuad(t);
+        case EasingType::EaseInOutQuad:  return Easing::EaseInOutQuad(t);
+
+        case EasingType::EaseInCubic:    return Easing::EaseInCubic(t);
+        case EasingType::EaseOutCubic:   return Easing::EaseOutCubic(t);
+        case EasingType::EaseInOutCubic: return Easing::EaseInOutCubic(t);
+
+        case EasingType::EaseInQuart:    return Easing::EaseInQuart(t);
+        case EasingType::EaseOutQuart:   return Easing::EaseOutQuart(t);
+        case EasingType::EaseInOutQuart: return Easing::EaseInOutQuart(t);
+
+        case EasingType::EaseInQuint:    return Easing::EaseInQuint(t);
+        case EasingType::EaseOutQuint:   return Easing::EaseOutQuint(t);
+        case EasingType::EaseInOutQuint: return Easing::EaseInOutQuint(t);
+
+        case EasingType::EaseInExpo:     return Easing::EaseInExpo(t);
+        case EasingType::EaseOutExpo:    return Easing::EaseOutExpo(t);
+        case EasingType::EaseInOutExpo:  return Easing::EaseInOutExpo(t);
+
+        case EasingType::EaseInCirc:     return Easing::EaseInCirc(t);
+        case EasingType::EaseOutCirc:    return Easing::EaseOutCirc(t);
+        case EasingType::EaseInOutCirc:  return Easing::EaseInOutCirc(t);
+
+        case EasingType::EaseInBack:     return Easing::EaseInBack(t);
+        case EasingType::EaseOutBack:    return Easing::EaseOutBack(t);
+        case EasingType::EaseInOutBack:  return Easing::EaseInOutBack(t);
+        }
+    }
+
+
+private:
+
+    static constexpr std::array<const char*, 25> easeTypes_ = {
+        "Linear",
+        "EaseInSine", "EaseOutSine", "EaseInOutSine",
+        "EaseInQuad", "EaseOutQuad", "EaseInOutQuad",
+        "EaseInCubic","EaseOutCubic","EaseInOutCubic",
+        "EaseInQuart","EaseOutQuart","EaseInOutQuart",
+        "EaseInQuint","EaseOutQuint","EaseInOutQuint",
+        "EaseInExpo", "EaseOutExpo", "EaseInOutExpo",
+        "EaseInCirc", "EaseOutCirc", "EaseInOutCirc",
+        "EaseInBack", "EaseOutBack", "EaseInOutBack"
+    };
+
+    static constexpr int kEaseCount = static_cast<int>(sizeof(easeTypes_) / sizeof(easeTypes_[0]));
+
 };

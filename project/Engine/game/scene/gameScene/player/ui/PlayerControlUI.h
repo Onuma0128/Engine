@@ -12,5 +12,9 @@ public:
 
 	void Draw()override;
 
+private:
+
+	bool isPlay_ = false;
+
 };
 
