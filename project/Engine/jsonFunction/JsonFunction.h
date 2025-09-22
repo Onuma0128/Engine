@@ -119,7 +119,7 @@ private:
     // 保存するデータ
     Json datas_;
     // 保存先ファイルパス
-    const std::string kDirectoryPath_ = "resources/json/";
+    const std::string kDirectoryPath_ = "resources/gameData/";
     std::string filePath_ = "";
 
 };
