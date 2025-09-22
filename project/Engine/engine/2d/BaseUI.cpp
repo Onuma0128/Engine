@@ -32,8 +32,10 @@ void BaseUI::Init(const std::string UI_Name)
 		json_.Set("Anima_Position", Vector2{ 0.0f,0.0f });
 		parameters_.animaTransform.size = Vector2{ 1.0f,1.0f };
 		// Easing
-		json_.Set("EasingType", 0);
-		parameters_.easingType = 0;
+		json_.Set("InEasingType", 0);
+		json_.Set("OutEasingType", 0);
+		parameters_.inEasingType = 0;
+		parameters_.outEasingType = 0;
 
 	// ロードするファイルが有れば
 	} else {
@@ -53,10 +55,14 @@ void BaseUI::Init(const std::string UI_Name)
 		parameters_.animaTransform.rotate = json_.Get<float>("Anima_Rotate", 0.0f);
 		parameters_.animaTransform.position = json_.Get<Vector2>("Anima_Position", Vector2{ 0.0f,0.0f });
 		// Easing
-		parameters_.easingType = json_.Get<int>("EasingType", 0);
+		parameters_.inEasingType = json_.Get<int>("InEasingType", 0);
+		parameters_.outEasingType = json_.Get<int>("OutEasingType", 0);
 		const auto& names = Easing::GetEaseTypeNames();
-		if (parameters_.easingType < 0 || parameters_.easingType >= (int)names.size()) {
-			parameters_.easingType = 0;
+		if (parameters_.inEasingType < 0 || parameters_.inEasingType >= (int)names.size()) {
+			parameters_.inEasingType = 0;
+		}
+		if (parameters_.outEasingType < 0 || parameters_.outEasingType >= (int)names.size()) {
+			parameters_.outEasingType = 0;
 		}
 	}
 	// 選択できるテクスチャ
@@ -118,12 +124,23 @@ void BaseUI::DrawImGui()
 	ImGui::DragFloat("AnimationTime", &parameters_.animationTime, 0.01f);
 	if (parameters_.isAnimation) {
 		const auto& names = Easing::GetEaseTypeNames();
-		int idx = std::clamp(parameters_.easingType, 0, (int)names.size() - 1);
-		if (ImGui::BeginCombo("EasingType", names[idx])) {
+		int idx = std::clamp(parameters_.inEasingType, 0, (int)names.size() - 1);
+		if (ImGui::BeginCombo("InEasingType", names[idx])) {
 			for (int i = 0; i < (int)names.size(); ++i) {
-				bool sel = (parameters_.easingType == i);
+				bool sel = (parameters_.inEasingType == i);
 				if (ImGui::Selectable(names[i], sel)) {
-					parameters_.easingType = i;
+					parameters_.inEasingType = i;
+				}
+				if (sel) ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+		idx = std::clamp(parameters_.outEasingType, 0, (int)names.size() - 1);
+		if (ImGui::BeginCombo("OutEasingType", names[idx])) {
+			for (int i = 0; i < (int)names.size(); ++i) {
+				bool sel = (parameters_.outEasingType == i);
+				if (ImGui::Selectable(names[i], sel)) {
+					parameters_.outEasingType = i;
 				}
 				if (sel) ImGui::SetItemDefaultFocus();
 			}
@@ -161,7 +178,8 @@ void BaseUI::Save()
 	json_.Set("Anima_Size", parameters_.animaTransform.size);
 	json_.Set("Anima_Rotate", parameters_.animaTransform.rotate);
 	json_.Set("Anima_Position", parameters_.animaTransform.position);
-	json_.Set("EasingType", parameters_.easingType);
+	json_.Set("InEasingType", parameters_.inEasingType);
+	json_.Set("OutEasingType", parameters_.outEasingType);
 	json_.Save();
 }
 
@@ -190,12 +208,18 @@ void BaseUI::UI_Animation()
 		}
 		float t = std::clamp(playAnimationTimer_, 0.0f, 1.0f);
 		playAnimationTimer_ = t;
-		float et = Easing::Apply(Easing::FromInt(parameters_.easingType), t);
+		// 逆再生なら
+		if (reversePlayBack_) {
+			t = Easing::Apply(Easing::FromInt(parameters_.outEasingType), t);
+		// 逆再生じゃ無いなら
+		} else {
+			t = Easing::Apply(Easing::FromInt(parameters_.inEasingType), t);
+		}
 
 		// TransformをAnimationさせていく
-		ui_->GetTransform().size = Vector2::EaseLerp(parameters_.transform.size, parameters_.animaTransform.size, et);
-		ui_->GetTransform().rotate = (1.0f - et) * parameters_.transform.rotate + et * parameters_.animaTransform.rotate;
-		ui_->GetTransform().position = Vector2::EaseLerp(parameters_.transform.position, parameters_.animaTransform.position, et);
+		ui_->GetTransform().size = Vector2::EaseLerp(parameters_.transform.size, parameters_.animaTransform.size, t);
+		ui_->GetTransform().rotate = (1.0f - t) * parameters_.transform.rotate + t * parameters_.animaTransform.rotate;
+		ui_->GetTransform().position = Vector2::EaseLerp(parameters_.transform.position, parameters_.animaTransform.position, t);
 
 		if (t == 0.0f || t == 1.0f) {
 			isPlayAnimation_ = false;

@@ -22,7 +22,8 @@ private:
 		float animationTime;
 		Transform2D animaTransform;
 
-		int easingType = 0;
+		int inEasingType = 0;
+		int outEasingType = 0;
 	};
 
 public:
