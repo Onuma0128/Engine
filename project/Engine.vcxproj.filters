@@ -129,9 +129,6 @@
     <ClCompile Include="Engine\base\scene\sceneFactory\SceneFactory.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\globalVariables\GlobalVariables.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\input\Input.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -294,13 +291,13 @@
     <ClCompile Include="game\scene\gameScene\enemy\state\EnemyDeadState.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\globalVariables\JsonFunction.cpp">
+    <ClCompile Include="Engine\jsonFunction\JsonFunction.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\base\object\particle\ParticleEditor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\globalVariables\SceneJsonLoader.cpp">
+    <ClCompile Include="Engine\jsonFunction\SceneJsonLoader.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="game\scene\gameScene\player\adjustItem\PlayerAdjustItem.cpp">
@@ -551,9 +548,6 @@
     <ClInclude Include="Engine\base\scene\sceneFactory\SceneFactory.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\globalVariables\GlobalVariables.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\input\Input.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -761,13 +755,13 @@
     <ClInclude Include="game\scene\gameScene\enemy\state\EnemyDeadState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\globalVariables\JsonFunction.h">
+    <ClInclude Include="Engine\jsonFunction\JsonFunction.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\base\object\particle\ParticleEditor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\globalVariables\SceneJsonLoader.h">
+    <ClInclude Include="Engine\jsonFunction\SceneJsonLoader.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="game\scene\gameScene\player\adjustItem\PlayerAdjustItem.h">

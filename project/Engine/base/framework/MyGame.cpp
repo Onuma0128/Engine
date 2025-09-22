@@ -7,8 +7,6 @@
 #include "LightManager.h"
 #include "DeltaTimer.h"
 
-#include "GlobalVariables.h"
-
 void MyGame::Initialize()
 {
 	Framework::Initialize();
@@ -18,8 +16,6 @@ void MyGame::Initialize()
 	SceneManager::GetInstance()->ChangeScene("Title");
 
 	DeltaTimer::Initialize();
-
-	//GlobalVariables::GetInstance()->LoadFiles();
 }
 
 void MyGame::Finalize()
@@ -79,7 +75,6 @@ void MyGame::Draw()
 
 	// Lineの描画
 	//directXEngine_->GetLineRenderer()->Draws();
-
 
 	// ImGuiの描画
 	imGuiManager_->Draw();

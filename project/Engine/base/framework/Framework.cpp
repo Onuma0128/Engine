@@ -46,52 +46,42 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "smoke.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "circle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "woodChip.png");
-	TextureManager::GetInstance()->LoadTexture("resources", "gradationLine.png");
-	TextureManager::GetInstance()->LoadTexture("resources", "white1x1.png");
-	TextureManager::GetInstance()->LoadTexture("resources", "uvChecker.png");
-	TextureManager::GetInstance()->LoadTexture("resources", "output.dds");
-	TextureManager::GetInstance()->LoadTexture("resources/player/texture", "2dReticle.png");
-	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "bulletUI.png");
-	TextureManager::GetInstance()->LoadTexture("resources/player/ui", "playerControlUI.png");
-
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "gradationLine.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "white1x1.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "uvChecker.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "output.dds");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "blood.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "numbers.png");
-	TextureManager::GetInstance()->LoadTexture("resources/texture", "title.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "titleUI.png");
-	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameClear.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameClearUI.png");
-	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameOver.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameOverUI.png");
 
-	ModelManager::GetInstance()->LoadModel("resources", "terrain.obj");
-	ModelManager::GetInstance()->LoadModel("resources", "sphere.obj");
-	ModelManager::GetInstance()->LoadModel("resources", "plane.gltf");
-	ModelManager::GetInstance()->LoadModel("resources", "plane.obj");
-	ModelManager::GetInstance()->LoadModel("resources", "suzanne.obj");
-	ModelManager::GetInstance()->LoadModel("resources", "Box.obj");
-	ModelManager::GetInstance()->LoadModel("resources/shadow", "shadow.obj");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "2dReticle.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "bulletUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "playerControlUI.png");
 
-	ModelManager::GetInstance()->LoadModel("resources/player/revolver", "Revolver.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model", "plane.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model", "Box.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/shadow", "shadow.obj");
 
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "fence.obj");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "ground.obj");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "TowerWindmill.obj");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_1.gltf");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_2.gltf");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_3.gltf");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_4.gltf");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "DeadTree_5.gltf");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BirchTree_1.obj");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "Well.obj");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "OpenBarn.obj");
-	ModelManager::GetInstance()->LoadModel("resources/fieldObject", "BigBarn.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "fence.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "ground.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "TowerWindmill.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "DeadTree_1.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "DeadTree_2.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "DeadTree_3.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "DeadTree_4.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "DeadTree_5.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "BirchTree_1.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "Well.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "OpenBarn.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "BigBarn.obj");
 
-	ModelManager::GetInstance()->LoadModel("resources/player", "Player.gltf");
-	ModelManager::GetInstance()->LoadModel("resources/player", "BrainStem.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/player", "Player.gltf");
 
-	ModelManager::GetInstance()->LoadModel("resources/enemy/shield", "Shield_Heater.obj");
-	ModelManager::GetInstance()->LoadModel("resources/enemy", "Zombie_Basic.gltf");
-	ModelManager::GetInstance()->LoadModel("resources/enemy", "Characters_Shaun.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/enemy/shield", "Shield_Heater.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/enemy", "Zombie_Basic.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/enemy", "Characters_Shaun.gltf");
 }
 
 void Framework::Run()

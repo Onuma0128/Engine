@@ -56,7 +56,7 @@ private:
     std::map<std::string, SceneObject> sceneObjectDatas_;
 
     // 保存先ファイルパス
-    const std::string kDirectoryPath_ = "resources/json/";
+    const std::string kDirectoryPath_ = "resources/gameData/";
     std::string filePath_ = "";
 
 };
