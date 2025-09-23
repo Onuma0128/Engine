@@ -9,6 +9,9 @@ void EnemyRay::Init()
 	Collider::myType_ = ColliderType::Segment;
 	Collider::colliderName_ = "EnemyRay";
 	Collider::isActive_ = true;
+	Collider::targetColliderName_ = {
+		"Player","Building","DeadTree","fence",
+	};
 
 	isLooking_ = false;
 	isFound_ = false;
@@ -45,11 +48,11 @@ void EnemyRay::OnCollisionStay(Collider* other)
 {
 	if (isFound_) { return; }
 
-	auto name = other->GetColliderName();
-	auto type = other->GetMyColliderType();
+	const auto& name = other->GetColliderName();
+	const auto type = other->GetMyColliderType();
 
 	RaycastHit hit{};
-	if (name == "FieldObject") {
+	if (name == "Building" || name == "DeadTree" || name == "fence") {
 		if (type == ColliderType::OBB) {
 			if (Collision3D::OBBSegment(other, this, &hit)) {
 				float length = (hit.point - start_).Length();

@@ -35,6 +35,10 @@ void Player::Init(SceneJsonLoader loader)
 		Collider::offsetPosition_ = player.collider.center;
 		Collider::size_ = player.collider.size;
 		Collider::radius_ = player.collider.radius;
+		Collider::targetColliderName_ = {
+			"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite","EnemyRay",
+			"Building","DeadTree","fence",
+		};
 		Collider::DrawCollider();
 	}
 
@@ -71,8 +75,10 @@ void Player::Update()
 
 	controlUI_->Update();
 
-	transform_.translation_.x = std::clamp(transform_.translation_.x, -50.0f, 50.0f);
-	transform_.translation_.z = std::clamp(transform_.translation_.z, -50.0f, 50.0f);
+	Vector2 min = items_->GetPlayerData().minPlayerClamp;
+	Vector2 max = items_->GetPlayerData().maxPlayerClamp;
+	transform_.translation_.x = std::clamp(transform_.translation_.x, min.x, max.x);
+	transform_.translation_.z = std::clamp(transform_.translation_.z, min.y, max.y);
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::Update();

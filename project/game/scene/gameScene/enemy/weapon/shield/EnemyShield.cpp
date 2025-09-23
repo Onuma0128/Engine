@@ -25,6 +25,9 @@ void EnemyShield::Init(ColliderType type, const std::string& name)
 	Collider::AddCollider();
 	Collider::myType_ = type;
 	Collider::colliderName_ = name;
+	Collider::targetColliderName_ = {
+		"PlayerBullet"
+	};
 	Collider::DrawCollider();
 
 	rotateY_ = Quaternion::IdentityQuaternion();

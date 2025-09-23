@@ -23,7 +23,7 @@ void PlayerReticle::Init()
 	Collider::myType_ = ColliderType::Segment;
 	Collider::colliderName_ = "PlayerReticle";
 	Collider::isActive_ = false;
-
+	Collider::targetColliderName_ = { "Enemy" };
 	hitCount_ = 0;
 }
 

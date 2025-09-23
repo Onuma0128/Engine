@@ -22,6 +22,10 @@ void PlayerBullet::Init(const std::string& colliderName)
 	Collider::colliderName_ = colliderName;
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
+	Collider::targetColliderName_ = {
+			"Enemy","EnemyShield",
+			"Building","DeadTree","fence",
+	};
 	Collider::DrawCollider();
 
 	speed_ = 20.0f;
@@ -77,7 +81,8 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	if (other->GetColliderName() == "Enemy" ||
 		other->GetColliderName() == "EnemyShield" ||
 		other->GetColliderName() == "DeadTree" ||
-		other->GetColliderName() == "Building") {
+		other->GetColliderName() == "Building" ||
+		other->GetColliderName() == "fence") {
 		if (Collider::colliderName_ == "PlayerBullet") {
 			IsCollision();
 			effect_->OnceBulletDeleteEffect(transform_);

@@ -33,6 +33,10 @@ void BaseEnemy::Initialize()
 	Collider::colliderName_ = "Enemy";
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
+	Collider::targetColliderName_ = {
+		"Player","PlayerBullet","PlayerBulletSpecial",
+		"PlayerReticle","Enemy" 
+	};
 	Collider::DrawCollider();
 
 	Animation::GetTransform().translation_.y = -2.0f;

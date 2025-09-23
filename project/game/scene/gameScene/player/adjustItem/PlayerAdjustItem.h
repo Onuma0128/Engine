@@ -6,6 +6,8 @@
 struct PlayerData {
 	bool isInvincible;			// 無敵(デバッグ用)
 	int clearKill;				// クリアに遷移するキル数
+	Vector2 minPlayerClamp;		// プレイヤーが行動できる最小範囲
+	Vector2 maxPlayerClamp;		// プレイヤーが行動できる最大範囲
 
 	float speed;				// 移動速度
 	float backSpeed;			// 後ろ歩きの移動速度

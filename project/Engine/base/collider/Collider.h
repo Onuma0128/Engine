@@ -40,6 +40,7 @@ public:
 	virtual const Vector3& GetOffsetPosition() const { return offsetPosition_; }
 
 	virtual const std::string& GetColliderName()const { return colliderName_; }
+	virtual const std::vector<std::string>& GetTargetColliderName()const { return targetColliderName_; }
 	virtual const float& GetRadius()const { return radius_; }
 	virtual const Vector3& GetOrigin()const { return origin_; }
 	virtual const Vector3& GetDiff()const { return diff_; }
@@ -51,6 +52,7 @@ protected:
 
 	// コライダーの名前
 	std::string colliderName_ = "name";
+	std::vector<std::string> targetColliderName_;
 
 	// コライダーのType
 	ColliderType myType_ = ColliderType::Sphere;

@@ -16,9 +16,13 @@ void FieldObject::Init(SceneObject object)
 		Collider::AddCollider();
 		Collider::colliderName_ = object.tag;
 		Collider::myType_ = object.collider.type;
-		Collider::offsetPosition_ = object.collider.center;
+		Collider::offsetPosition_ = 
+			object.collider.center.Transform(Quaternion::MakeRotateMatrix(object.transform.rotation_));
 		Collider::size_ = object.collider.size;
 		Collider::radius_ = object.collider.radius;
+		Collider::targetColliderName_ = {
+			"Player","PlayerBullet","PlayerBulletSpecial","EnemyRanged","EnemyRangedElite"
+		};
 		Collider::DrawCollider();
 	}
 

@@ -72,6 +72,26 @@ bool CollisionManager::Dispatch(Collider* a, Collider* b)
     if (!a->GetActive() || !b->GetActive()) {
         return false;
     }
+    // お互いのTargetに入っているかを判定する
+    if (a->GetTargetColliderName().empty() || b->GetTargetColliderName().empty()) {
+        return false;
+    } else {
+        const auto& nameA = a->GetColliderName();
+        const auto& nameB = b->GetColliderName();
+        bool hit = false;
+        for (const auto& targetA : a->GetTargetColliderName()) {
+            if (nameB == targetA) {
+                for (const auto& targetB : b->GetTargetColliderName()) {
+                    if (nameA == targetB) {
+                        hit = true;
+                        break;
+                    }
+                }
+                if (hit) { break; }
+            }
+        }
+        if (!hit) { return false; }
+    }
 
     // お互いのTypeで判定を取る
     switch (typeA)
