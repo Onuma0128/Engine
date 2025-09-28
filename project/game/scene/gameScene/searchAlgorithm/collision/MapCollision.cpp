@@ -12,8 +12,12 @@ void MapCollision::Init(SceneJsonLoader loader)
 			auto& object = it->second;
 			if (object.collider.active) {
 				if (object.collider.type == ColliderType::OBB) {
+					Vector2 center = Vector2::Rotate(
+						{ object.collider.center.x,object.collider.center.z },
+						-object.collider.rotate
+					);
 					OBB_2D obb = {
-						.center = object.collider.defPosition,
+						.center = object.collider.defPosition + center,
 						.rotate = object.collider.rotate,
 						.size = {object.collider.size.x,object.collider.size.z}
 					};

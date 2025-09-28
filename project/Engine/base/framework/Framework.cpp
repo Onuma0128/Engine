@@ -76,6 +76,9 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "Well.obj");
 	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "OpenBarn.obj");
 	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "BigBarn.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "Bush.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "ShortStoneWall.obj");
+	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "StoneWall.obj");
 
 	ModelManager::GetInstance()->LoadModel("resources/model/player", "Player.gltf");
 

@@ -9,7 +9,7 @@
     "clearKill": 50,
     "minPlayerClamp": {
         "x": -30.0,
-        "y": -30.0
+        "y": -22.0
     },
     "maxPlayerClamp": {
         "x": 21.0,

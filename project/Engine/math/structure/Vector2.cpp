@@ -43,6 +43,16 @@ Vector2 Vector2::EaseLerp(const Vector2& v1, const Vector2& v2, float t)
     };
 }
 
+Vector2 Vector2::Rotate(const Vector2& v, float rotate)
+{
+    float c = std::cosf(rotate);
+    float s = std::sinf(rotate);
+    return Vector2{
+        v.x * c - v.y * s,
+        v.x * s + v.y * c
+    };
+}
+
 Vector2 Vector2::Normalize() const {
     float len = Length();
     assert(len != 0 && "Zero division during normalization.");

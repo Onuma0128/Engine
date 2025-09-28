@@ -37,7 +37,7 @@ void Player::Init(SceneJsonLoader loader)
 		Collider::radius_ = player.collider.radius;
 		Collider::targetColliderName_ = {
 			"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite","EnemyRay",
-			"Building","DeadTree","fence",
+			"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall"
 		};
 		Collider::DrawCollider();
 	}
@@ -127,7 +127,10 @@ void Player::OnCollisionStay(Collider* other)
 	// 建物系の押し出し判定(OBB,Sphere)、木の押し出し判定(OBB)
 	if (other->GetColliderName() == "Building" || 
 		other->GetColliderName() == "DeadTree" ||
-		other->GetColliderName() == "fence") {
+		other->GetColliderName() == "fence" ||
+		other->GetColliderName() == "Bush" ||
+		other->GetColliderName() == "ShortStoneWall" ||
+		other->GetColliderName() == "StoneWall") {
 		isPushMove_ = true;
 		Vector3 push{};
 		if (other->GetMyColliderType() == ColliderType::OBB) {
@@ -149,7 +152,10 @@ void Player::OnCollisionExit(Collider* other)
 	// 木の押し出し判定(OBB)
 	if (other->GetColliderName() == "Building" || 
 		other->GetColliderName() == "DeadTree" ||
-		other->GetColliderName() == "fence") {
+		other->GetColliderName() == "fence" ||
+		other->GetColliderName() == "Bush" ||
+		other->GetColliderName() == "ShortStoneWall" ||
+		other->GetColliderName() == "StoneWall") {
 		isPushMove_ = false;
 	}
 }
