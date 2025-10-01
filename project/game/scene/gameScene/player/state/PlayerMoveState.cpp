@@ -67,7 +67,9 @@ void PlayerMoveState::Update()
 	else { speed = player_->GetItem()->GetPlayerData().speed; }
 
 	// 移動の処理
-	const float playerSpeed = speed;
+	float reloadSpeed = 1.0f;
+	if (isReloadBullet_) { reloadSpeed = 0.5f; }
+	const float playerSpeed = speed * reloadSpeed;
 	Vector3 moveVelocity = CreateMoveVelocity();
 	player_->GetTransform().translation_ += moveVelocity * DeltaTimer::GetDeltaTime() * playerSpeed;
 
@@ -83,7 +85,7 @@ void PlayerMoveState::Update()
 	} else {
 		// マウスを取得するか
 		if (input->TriggerMouseButton(0) && input->PushMouseButton(1) && !player_->GetIsPlayingMouse()) {
-			//player_->SetIsPlayingMouse(true);
+			player_->SetIsPlayingMouse(true);
 
 		} else if (player_->GetIsPlayingMouse()) {
 			// マウスからのVelocity算出
@@ -162,12 +164,18 @@ void PlayerMoveState::SomeAction()
 	ReloadBullet();
 
 	// 避けの状態に遷移
-	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_B) ||
-		(input->TriggerKey(DIK_LSHIFT) && player_->GetIsPlayingMouse())) {
-		player_->GetEffect()->OnceAvoidEffect();
-		player_->GetReversePlay() = false;
-		player_->ChengeState(std::make_unique<PlayerAvoidState>(player_));
-		return;
+	if (player_->GetAvoidCoolTimer() > 0.0f) {
+		float coolTime = player_->GetAvoidCoolTimer();
+		coolTime -= DeltaTimer::GetDeltaTime();
+		player_->SetAvoidCoolTimer(coolTime);
+	} else {
+		if (input->TriggerGamepadButton(XINPUT_GAMEPAD_B) ||
+			(input->TriggerKey(DIK_LSHIFT) && player_->GetIsPlayingMouse())) {
+			player_->GetEffect()->OnceAvoidEffect();
+			player_->GetReversePlay() = false;
+			player_->ChengeState(std::make_unique<PlayerAvoidState>(player_));
+			return;
+		}
 	}
 
 	// 必殺技の状態に遷移
@@ -198,6 +206,9 @@ void PlayerMoveState::ReloadBullet()
 		// 1秒立ったらリロードをする
 		if (previousTime != currentTime) {
 			player_->GetShot()->ReloadBullet();
+		}
+		if (player_->GetShot()->IsReloadBullet()) {
+			isReloadBullet_ = false;
 		}
 	}
 }

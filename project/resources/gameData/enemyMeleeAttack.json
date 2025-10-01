@@ -5,7 +5,7 @@
     "Model": 1,
     "BlendMode": 2,
     "Move": true,
-    "EmitCount": 10,
+    "EmitCount": 5,
     "FrequencyTime": 0.10999999940395355,
     "LifeTime": 0.3199999928474426,
     "Acceleration": {
@@ -46,10 +46,10 @@
         "y": 1.149999976158142,
         "z": 0.0
     },
-    "ChangeScale": false,
+    "ChangeScale": true,
     "EndScale": {
-        "x": 0.03999999910593033,
-        "y": 3.490000009536743,
+        "x": 0.05999999865889549,
+        "y": 1.1299999952316284,
         "z": 0.0
     },
     "MinVelocity": {

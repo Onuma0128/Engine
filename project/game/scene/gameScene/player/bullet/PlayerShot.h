@@ -26,6 +26,8 @@ public:
 	// 弾のリロードを管理する関数
 	void ReloadBullet();
 	void AllReloadBullet();
+	// リロードできる弾があるか判定
+	bool IsReloadBullet();
 
 	// 弾を発射する関数
 	void AttackBullet();			// 通常弾

@@ -41,7 +41,6 @@ private:
 
 private:
 
-	std::unique_ptr<EnemyRay> ray_ = nullptr;
 	float searchTime_ = 0.0f;
 
 	float attackCoolTime_ = 0.0f;

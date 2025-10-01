@@ -17,6 +17,7 @@ struct PlayerData {
 	float avoid_speed;			// 避けの速度
 	float avoid_velocityY;		// 避けのジャンプ高さ
 	float avoid_acceleration;	// 避けの加速度
+	float avoid_coolTime;		// 避けの待機時間
 };
 
 // 弾の項目

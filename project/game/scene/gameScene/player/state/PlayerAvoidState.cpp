@@ -29,6 +29,8 @@ void PlayerAvoidState::Init()
 			Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, velocity_, 1.0f);
 		rotateY_ = Quaternion::ExtractYawQuaternion(player_->GetTransform().rotation_);
 	}
+
+	player_->SetAvoidCoolTimer(data.avoid_coolTime);
 }
 
 void PlayerAvoidState::Finalize()

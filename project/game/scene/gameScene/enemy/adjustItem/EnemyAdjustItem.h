@@ -32,6 +32,7 @@ struct EnemyMainData {
 	float margin;				// 敵のアニメーションを判定しない余白距離
 
 	float searchUpdateTime;		// 敵の探索を更新する時間
+	bool debugSpline;			// 敵の探索経路デバッグ用
 };
 
 // 近接敵の項目

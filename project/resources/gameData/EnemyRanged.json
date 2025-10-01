@@ -14,7 +14,7 @@
     "attackStartupTime": 1.5,
     "attackActiveTime": 1.0,
     "attackRecoveryTime": 0.30000001192092896,
-    "attackCoolTime": 3.0,
+    "attackCoolTime": 1.0,
     "bulletSpeed": 25.0,
     "planeSize": {
         "x": 0.20000000298023224,

@@ -26,9 +26,8 @@ void EnemyMoveState::Init()
 	isIdleAnima_ = false;
 
 	enemy_->ResetSearch();
-
-	ray_ = std::make_unique<EnemyRay>();
-	ray_->Init();
+	enemy_->GetEnemyRay()->SetActive(true);
+	enemy_->GetEnemyRay()->Reset();
 }
 
 void EnemyMoveState::Finalize()
@@ -36,7 +35,7 @@ void EnemyMoveState::Finalize()
 	auto& pathFinder = enemy_->GetPathFinder();
 	pathFinder.DebugSpline(false);
 
-	ray_->Finalize();
+	enemy_->GetEnemyRay()->SetActive(false);
 }
 
 void EnemyMoveState::Update()
@@ -54,7 +53,7 @@ void EnemyMoveState::Update()
 
 	// 探索の更新
 	pathFinder.Update(speed);
-	pathFinder.DebugSpline(true);
+	pathFinder.DebugSpline(enemy_->GetItem()->GetMainData().debugSpline);
 	Vector3 velocity = pathFinder.GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
@@ -81,10 +80,11 @@ void EnemyMoveState::Update()
 	if (!inAttackRange_ && dist <= attackIn)  inAttackRange_ = true;
 	if (inAttackRange_ && dist >= attackOut) inAttackRange_ = false;
 
-	ray_->Update(enemyPos, velocity * attackIn);
+	Vector3 direction = Vector3::ExprUnitZ.Transform(Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_));
+	enemy_->GetEnemyRay()->Update(enemyPos, direction * attackIn);
 
 	if (inAttackRange_) {
-		if (ray_->GetLooking()) {
+		if (enemy_->GetEnemyRay()->GetLooking()) {
 			// 待機時アニメーションにする
 			AttackCoolTimeAnimation();
 		} else {
@@ -92,8 +92,9 @@ void EnemyMoveState::Update()
 			MoveAnimation();
 			// 距離があれば移動処理をする
 			enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+			enemy_->GetEnemyRay()->Reset();
 		}
-		if (attackCoolTime_ <= 0.0f && ray_->GetLooking()) {
+		if (attackCoolTime_ <= 0.0f && enemy_->GetEnemyRay()->GetLooking()) {
 			TypeChengeAttackState();
 			return;
 		}
@@ -102,6 +103,7 @@ void EnemyMoveState::Update()
 		MoveAnimation();
 		// 距離があれば移動処理をする
 		enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+		enemy_->GetEnemyRay()->Reset();
 	}
 }
 

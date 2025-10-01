@@ -24,7 +24,7 @@ void PlayerBullet::Init(const std::string& colliderName)
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
 			"Enemy","EnemyShield",
-			"Building","DeadTree","fence",
+			"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall"
 	};
 	Collider::DrawCollider();
 
@@ -77,12 +77,12 @@ void PlayerBullet::Update()
 
 void PlayerBullet::OnCollisionEnter(Collider* other)
 {
+	const auto& name = other->GetColliderName();
+
 	// 敵と当たったらなエフェクトを出す
-	if (other->GetColliderName() == "Enemy" ||
-		other->GetColliderName() == "EnemyShield" ||
-		other->GetColliderName() == "DeadTree" ||
-		other->GetColliderName() == "Building" ||
-		other->GetColliderName() == "fence") {
+	if (name == "Enemy" || name == "EnemyShield" || name == "DeadTree" ||
+		name == "Building" || name == "fence" || name == "Bush" ||
+		name == "StoneWall" || name == "ShortStoneWall") {
 		if (Collider::colliderName_ == "PlayerBullet") {
 			IsCollision();
 			effect_->OnceBulletDeleteEffect(transform_);

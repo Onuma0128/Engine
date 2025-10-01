@@ -43,6 +43,8 @@ public:
 	bool GetIsPlayingMouse()const { return isPlayingMouse_; }
 	void SetIsPlayingMouse(bool flag) { isPlayingMouse_ = flag; }
 	void SetIsAvoid(bool flag) { isAvoid_ = flag; }
+	float GetAvoidCoolTimer()const { return avoidCoolTimer_; }
+	void SetAvoidCoolTimer(float time) { avoidCoolTimer_ = time; }
 	bool GetIsPushMove()const { return isPushMove_; }
 
 private:
@@ -55,7 +57,7 @@ private:
 	std::unique_ptr<PlayerEffect> effect_ = nullptr;
 	// 必殺技時にロックオンするためのレティクル
 	std::unique_ptr<PlayerReticle> reticle_ = nullptr;
-	// 
+	// 操作UI
 	std::unique_ptr<PlayerControlUI> controlUI_ = nullptr;
 	// 調整項目
 	std::unique_ptr<PlayerAdjustItem> items_;
@@ -64,6 +66,8 @@ private:
 	bool isAlive_ = true;
 	// 今避けているのか
 	bool isAvoid_ = false;
+	// 次の避けを行える時間
+	float avoidCoolTimer_ = 0.0f;
 	// 押し出し処理をしているか
 	bool isPushMove_ = false;
 	// マウスを使ってプレイしているか

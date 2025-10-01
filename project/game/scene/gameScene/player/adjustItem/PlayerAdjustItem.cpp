@@ -18,6 +18,7 @@ void PlayerAdjustItem::LoadItems()
 		playerJson_.Set("avoid_speed", 1.0f);
 		playerJson_.Set("avoid_velocityY", 1.0f);
 		playerJson_.Set("avoid_acceleration", 1.0f);
+		playerJson_.Set("avoid_coolTime", 1.0f);
 	} else {
 		playerData_.isInvincible = false;
 		playerData_.clearKill = playerJson_.Get("clearKill", playerData_.clearKill);
@@ -30,6 +31,7 @@ void PlayerAdjustItem::LoadItems()
 		playerData_.avoid_speed = playerJson_.Get("avoid_speed", playerData_.avoid_speed);
 		playerData_.avoid_velocityY = playerJson_.Get("avoid_velocityY", playerData_.avoid_velocityY);
 		playerData_.avoid_acceleration = playerJson_.Get("avoid_acceleration", playerData_.avoid_acceleration);
+		playerData_.avoid_coolTime = playerJson_.Get("avoid_coolTime", playerData_.avoid_coolTime);
 	}
 
 	/* ============================== Bullet ============================== */
@@ -102,6 +104,7 @@ void PlayerAdjustItem::Editor()
 		ImGui::DragFloat("avoid_speed", &playerData_.avoid_speed, 0.01f);
 		ImGui::DragFloat("avoid_velocityY", &playerData_.avoid_velocityY, 0.01f);
 		ImGui::DragFloat("avoid_acceleration", &playerData_.avoid_acceleration, 0.01f);
+		ImGui::DragFloat("avoid_coolTime", &playerData_.avoid_coolTime, 0.01f);
 
 		if (ImGui::Button("Save")) {
 			playerJson_.Set("clearKill", playerData_.clearKill);
@@ -114,6 +117,7 @@ void PlayerAdjustItem::Editor()
 			playerJson_.Set("avoid_speed", playerData_.avoid_speed);
 			playerJson_.Set("avoid_velocityY", playerData_.avoid_velocityY);
 			playerJson_.Set("avoid_acceleration", playerData_.avoid_acceleration);
+			playerJson_.Set("avoid_coolTime", playerData_.avoid_coolTime);
 			playerJson_.Save();
 		}
 		ImGui::TreePop();

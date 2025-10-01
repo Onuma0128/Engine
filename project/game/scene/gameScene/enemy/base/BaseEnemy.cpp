@@ -11,6 +11,10 @@
 
 void BaseEnemy::Initialize()
 {
+	// 敵の視線を設定
+	ray_ = std::make_unique<EnemyRay>();
+	ray_->Init();
+
 	// ステートを初期化
 	ChengeState(std::make_unique<EnemyMoveState>(this));
 

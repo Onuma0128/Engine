@@ -298,64 +298,72 @@ bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
 
 bool Collision3D::OBBSegment(const Collider* obbCol, const Collider* segCol, RaycastHit* hit)
 {
-	// ① 既存関数と同じ前処理
-	OBB      obb = ChangeOBB(obbCol);
-	Segment  segW = ChangeSegment(segCol);
+	OBB     obb = ChangeOBB(obbCol);
+	Segment segW = ChangeSegment(segCol);
 
-	// OBB ローカル空間へ変換（既存処理をそのまま使用）
-	Matrix4x4 invM = Matrix4x4::Inverse(
-		Matrix4x4::Translate(obb.center) * obb.rotateMatrix);
+	// 1) ローカル変換を既存実装と“同じ作り方”に統一
+	Matrix4x4 worldM = obb.rotateMatrix;
+	worldM.m[3][0] = obb.center.x;
+	worldM.m[3][1] = obb.center.y;
+	worldM.m[3][2] = obb.center.z;
+	worldM.m[3][3] = 1.0f;
+	Matrix4x4 invM = Matrix4x4::Inverse(worldM);
 
-	Segment segL = {
-		.origin = Vector3::Transform(segW.origin,invM),
-		.diff = Vector3::TransformNormal(segW.diff,invM)
+	Segment segL{
+		Vector3::Transform(segW.origin, invM),
+		Vector3::TransformNormal(segW.diff,  invM)
 	};
 
-	// ② AABB×Segment 判定（ローカル空間）— 元コードをほぼコピペ
-	float tNear = 0.f, tFar = 1.f;
-	int   hitAxis = -1;               // まだ決まっていないことを示す
-	int   hitSign = 0;
 	const Vector3 min = -obb.size, max = obb.size;
 
-	auto Slab = [&](float segO, float segD, float slabMin, float slabMax, int axis)
-		{
-			if (std::abs(segD) < 1e-6f) {        // 平行
-				return (segO < slabMin || segO > slabMax);
-			}
-			float invD = 1.0f / segD;
-			float t1 = (slabMin - segO) * invD;
-			float t2 = (slabMax - segO) * invD;
-			if (t1 > t2) std::swap(t1, t2);
+	float tNear = 0.0f, tFar = 1.0f;
+	int   axisNear = -1, signNear = 0;
+	int   axisFar = -1, signFar = 0;
 
-			// Near で入った面の法線符号：  +diff ⇒ -面， -diff ⇒ +面
-			int signNear = (segD > 0.0f) ? -1 : 1;
-			if (t1 > tNear) { tNear = t1; hitAxis = axis; hitSign = signNear; }
-			if (t2 < tFar) { tFar = t2; }
-			return (tNear > tFar || tFar < 0.f || tNear > 1.f);
+	auto slab = [&](float o, float d, float smin, float smax, int axis)->bool {
+		if (std::abs(d) < 1e-6f) {
+			// 平行：レンジ外なら交差なし
+			return (o < smin || o > smax);
+		}
+		float invD = 1.0f / d;
+		float t1 = (smin - o) * invD;
+		float t2 = (smax - o) * invD;
+		int   s1 = (d > 0.0f) ? -1 : 1; // t1 側の法線符号
+		int   s2 = -s1;                 // t2 側は反対
+
+		if (t1 > t2) { std::swap(t1, t2); std::swap(s1, s2); }
+
+		if (t1 > tNear) { tNear = t1; axisNear = axis; signNear = s1; }
+		if (t2 < tFar) { tFar = t2; axisFar = axis; signFar = s2; }
+
+		// 区間が崩れたら交差なし
+		return (tNear > tFar || tFar < 0.0f || tNear > 1.0f);
 		};
-	if (Slab(segL.origin.x, segL.diff.x, min.x, max.x, 0) ||
-		Slab(segL.origin.y, segL.diff.y, min.y, max.y, 1) ||
-		Slab(segL.origin.z, segL.diff.z, min.z, max.z, 2))
-	{
+
+	if (slab(segL.origin.x, segL.diff.x, min.x, max.x, 0) ||
+		slab(segL.origin.y, segL.diff.y, min.y, max.y, 1) ||
+		slab(segL.origin.z, segL.diff.z, min.z, max.z, 2)) {
 		return false;
 	}
 
-	// ③ ここまで来れば衝突。追加情報が欲しい場合だけ計算
-	if (hit) {
-		// 衝突点（ローカル → ワールド）
-		Vector3 pL = segL.origin + segL.diff * tNear;
-		hit->point = Vector3::Transform(pL, obb.rotateMatrix) + obb.center;
+	if (!hit) return true;
 
-		// 法線（ローカル ±X/Y/Z → ワールド）
-		if (hitAxis < 0) { return false; }
+	// 2) 内側スタート時は tNear < 0 になる。tHit を選び直す
+	float   tHit = (tNear >= 0.0f) ? tNear : tFar;
+	int     axisHit = (tNear >= 0.0f) ? axisNear : axisFar;
+	int     signHit = (tNear >= 0.0f) ? signNear : signFar;
+	tHit = std::clamp(tHit, 0.0f, 1.0f);
 
-		Vector3 nL{};
-		nL[hitAxis] = static_cast<float>(hitSign);
+	Vector3 pL = segL.origin + segL.diff * tHit;
+	Vector3 nL{ 0,0,0 };
+	if (axisHit >= 0) nL[axisHit] = static_cast<float>(signHit);
+
+	// 3) ワールドへ戻す（法線は回転のみ）
+	hit->point = Vector3::Transform(pL, obb.rotateMatrix) + obb.center;
+	if (nL.Length() != 0.0f) {
 		hit->normal = Vector3::TransformNormal(nL, obb.rotateMatrix).Normalize();
-
-		// t 値
-		hit->t = tNear;
 	}
+	hit->t = tHit;
 	return true;
 }
 

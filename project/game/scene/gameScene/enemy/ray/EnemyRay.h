@@ -14,6 +14,10 @@ public:
 
 	bool GetLooking()const { return isLooking_; }
 
+	void SetActive(const bool flag);
+
+	void Reset();
+
 private:
 
 	void OnCollisionEnter(Collider* other) override;
@@ -30,7 +34,6 @@ private:
 
 	// 見えているか
 	bool isLooking_ = false;
-	bool isFound_ = false;
 
 };
 

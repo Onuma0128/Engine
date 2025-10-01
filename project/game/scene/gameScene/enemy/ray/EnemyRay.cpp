@@ -8,13 +8,12 @@ void EnemyRay::Init()
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::Segment;
 	Collider::colliderName_ = "EnemyRay";
-	Collider::isActive_ = true;
+	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
 		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
 
 	isLooking_ = false;
-	isFound_ = false;
 }
 
 void EnemyRay::Update(const Vector3& start, const Vector3& end)
@@ -25,9 +24,6 @@ void EnemyRay::Update(const Vector3& start, const Vector3& end)
 	// 座標を保存
 	start_ = start + Vector3{ 0.0f,0.5f,0.0f };
 	end_ = end;
-
-	// 見つかったなら
-	if (isLooking_) { isFound_ = true; }
 
 	// 反射処理のコライダーを設定
 	Collider::origin_ = start_;
@@ -40,19 +36,30 @@ void EnemyRay::Finalize()
 	Collider::RemoveCollider();
 }
 
+void EnemyRay::SetActive(const bool flag)
+{
+	Collider::isActive_ = flag;
+	Collider::LineUpdate();
+}
+
+void EnemyRay::Reset()
+{
+	isLooking_ = false;
+}
+
 void EnemyRay::OnCollisionEnter(Collider* other)
 {
 }
 
 void EnemyRay::OnCollisionStay(Collider* other)
 {
-	if (isFound_) { return; }
 
 	const auto& name = other->GetColliderName();
 	const auto type = other->GetMyColliderType();
 
 	RaycastHit hit{};
-	if (name == "Building" || name == "DeadTree" || name == "fence") {
+	if (name == "Building" || name == "DeadTree" || name == "fence" ||
+		name == "Bush" || name == "StoneWall" || name == "ShortStoneWall") {
 		if (type == ColliderType::OBB) {
 			if (Collision3D::OBBSegment(other, this, &hit)) {
 				float length = (hit.point - start_).Length();
@@ -81,4 +88,9 @@ void EnemyRay::OnCollisionStay(Collider* other)
 
 void EnemyRay::OnCollisionExit(Collider* other)
 {
+	const auto& name = other->GetColliderName();
+
+	if (name == "Player") {
+		isLooking_ = false;
+	}
 }

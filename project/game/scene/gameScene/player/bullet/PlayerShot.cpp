@@ -135,6 +135,16 @@ void PlayerShot::AllReloadBullet()
 	}
 }
 
+bool PlayerShot::IsReloadBullet()
+{
+	for (auto& bullet : bullets_) {
+		if (!bullet->GetIsReload()) {
+			return false;
+		}
+	}
+	return true;
+}
+
 void PlayerShot::AttackBullet()
 {
 	// リロードが終わっていて動いていない弾を発射する

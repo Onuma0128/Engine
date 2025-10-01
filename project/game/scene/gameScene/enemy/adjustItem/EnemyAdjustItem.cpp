@@ -23,8 +23,9 @@ void EnemyAdjustItem::LoadItems()
 		mainData_.colliderOffset = mainJson_.Get("colliderOffset", mainData_.colliderOffset);
 		mainData_.margin = mainJson_.Get("margin", mainData_.margin);
 		mainData_.searchUpdateTime = mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
-		mainData_.debugIsSpawn = false;
 	}
+	mainData_.debugIsSpawn = false;
+	mainData_.debugSpline = false;
 
 	/* ============================== Melee ============================== */
 
@@ -109,6 +110,7 @@ void EnemyAdjustItem::Editor()
 	ImGui::Begin("EnemyParameters");
 
 	ImGui::Checkbox("isSpawn", &mainData_.debugIsSpawn);
+	ImGui::Checkbox("debugSpline", &mainData_.debugSpline);
 
 	std::vector<std::string>items = { "Melee","Ranged","ShieldBearer", "RangedElite" };
 	// ブレンドを選択

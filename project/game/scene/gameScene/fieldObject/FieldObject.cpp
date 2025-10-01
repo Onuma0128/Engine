@@ -23,7 +23,8 @@ void FieldObject::Init(SceneObject object)
 		Collider::size_ = object.collider.size;
 		Collider::radius_ = object.collider.radius;
 		Collider::targetColliderName_ = {
-			"Player","PlayerBullet","PlayerBulletSpecial","EnemyRanged","EnemyRangedElite"
+			"Player","PlayerBullet","PlayerBulletSpecial",
+			"EnemyRanged","EnemyRangedElite","EnemyRay"
 		};
 		Collider::DrawCollider();
 	}
@@ -52,7 +53,7 @@ void FieldObject::OnCollisionEnter(Collider* other)
 		other->GetColliderName() == "EnemyRanged" || other->GetColliderName() == "EnemyRangedElite") {
 		if (Collider::colliderName_ == "DeadTree") {
 			// シェイクさせる
-			shake_ = { 5.0f,0.0f,5.0f };
+			shake_ = { 2.0f,0.0f,2.0f };
 			// 弾が飛んできた方向を取得
 			Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
 			Vector3 velocity = Vector3::ExprUnitZ.Transform(rotate);
@@ -66,7 +67,7 @@ void FieldObject::OnCollisionEnter(Collider* other)
 			shake_ = { 2.0f,0.0f,2.0f };
 		} else {
 			// シェイクさせる
-			shake_ = { 5.0f,0.0f,5.0f };
+			shake_ = { 2.0f,0.0f,2.0f };
 		}
 	}
 }

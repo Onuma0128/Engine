@@ -6,11 +6,12 @@
 #include "Animation.h"
 #include "Collider.h"
 
-#include "../type/EnemyType.h"
-#include "../state/EnemyBaseState.h"
-#include "../bullet/EnemyBullet.h"
-#include "../effect/EnemyEffect.h"
-#include "../shadow/EnemyShadow.h"
+#include "gameScene/enemy/type/EnemyType.h"
+#include "gameScene/enemy/state/EnemyBaseState.h"
+#include "gameScene/enemy/bullet/EnemyBullet.h"
+#include "gameScene/enemy/effect/EnemyEffect.h"
+#include "gameScene/enemy/shadow/EnemyShadow.h"
+#include "gameScene/enemy/ray/EnemyRay.h"
 
 #include "gameScene/searchAlgorithm/navigation/PathFinder.h"
 
@@ -70,10 +71,12 @@ public:
 	// エフェクト
 	EnemyEffect* GetEffect() { return effect_.get(); }
 	// 弾
-	virtual std::vector<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
+	virtual const std::vector<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
 	// ウエポン
 	virtual EnemyWeaponBase* GetWeapon() { return nullptr; }
 	virtual EnemyWeaponBase* GetShieldWeapon() { return nullptr; }
+	// 敵の目線
+	EnemyRay* GetEnemyRay() { return ray_.get(); }
 	// 当たったプレイヤーの弾座標
 	const Vector3& GetPlayerBullet() { return playerBulletPosition_; }
 	// 速度
@@ -124,6 +127,8 @@ protected:
 	std::unique_ptr<EnemyEffect> effect_ = nullptr;
 	// 影
 	std::unique_ptr<EnemyShadow> shadow_ = nullptr;
+	// 敵の目線
+	std::unique_ptr<EnemyRay> ray_ = nullptr;
 	// 敵が今どうなっているか
 	EnemyStateParam stateParam_;
 

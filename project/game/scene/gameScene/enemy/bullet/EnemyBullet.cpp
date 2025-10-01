@@ -27,7 +27,7 @@ void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
-		"Player","DeadTree","Building","fence"
+		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall"
 	};
 	Collider::DrawCollider();
 }
@@ -71,11 +71,12 @@ void EnemyBullet::Update()
 
 void EnemyBullet::OnCollisionEnter(Collider* other)
 {
+	const auto& name = other->GetColliderName();
+
 	// 当たったらな消す
-	if (other->GetColliderName() == "Player" ||
-		other->GetColliderName() == "DeadTree" ||
-		other->GetColliderName() == "Building" ||
-		other->GetColliderName() == "fence") {
+	if (name == "Player" || name == "DeadTree" ||
+		name == "Building" || name == "fence" || name == "Bush" ||
+		name == "StoneWall" || name == "ShortStoneWall") {
 		IsCollision();
 	}
 }
