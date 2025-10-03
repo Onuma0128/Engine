@@ -58,7 +58,11 @@ void Collider::LineUpdate()
 
 	linePositions_ = CreateLinePositions();
 	line_->SetPositions(linePositions_);
-	line_->GetMaterial().enableDraw = isActive_;
+	if (debugDrawEnable_) {
+		line_->GetMaterial().enableDraw = isActive_;
+	} else {
+		line_->GetMaterial().enableDraw = debugDrawEnable_;
+	}
 	line_->Update();
 }
 

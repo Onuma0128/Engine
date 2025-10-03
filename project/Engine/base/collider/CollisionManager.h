@@ -46,5 +46,5 @@ private:
 
     std::list<Collider*> colliders_;
     PairSet previousFrame_;
-    bool debugColliderEnable_ = true;
+    bool debugColliderEnable_ = false;
 };

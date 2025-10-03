@@ -3,6 +3,7 @@
 #include <array>
 #include <vector>
 
+#include "BaseUI.h"
 #include "Animation.h"
 #include "Collider.h"
 #include "Collision3D.h"
@@ -15,7 +16,6 @@
 #include "gameScene/player/adjustItem/PlayerAdjustItem.h"
 
 #include "gameScene/player/bullet/PlayerShot.h"
-#include "gameScene/player/ui/PlayerControlUI.h"
 
 class Player : public Animation,Collider
 {
@@ -57,8 +57,8 @@ private:
 	std::unique_ptr<PlayerEffect> effect_ = nullptr;
 	// 必殺技時にロックオンするためのレティクル
 	std::unique_ptr<PlayerReticle> reticle_ = nullptr;
-	// 操作UI
-	std::unique_ptr<PlayerControlUI> controlUI_ = nullptr;
+	// 操作系のUI
+	std::vector<std::unique_ptr<BaseUI>> controlUIs_;
 	// 調整項目
 	std::unique_ptr<PlayerAdjustItem> items_;
 

@@ -253,6 +253,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\base\object\model\LineInstanceRenderer.cpp" />
     <ClCompile Include="game\scene\gameScene\player\state\PlayerDeadState.cpp" />
     <ClCompile Include="game\scene\gameScene\player\ui\PlayerControlUI.cpp" />
+    <ClCompile Include="game\scene\gameScene\player\ui\PlayerMenuUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2d\BaseUI.h" />
@@ -412,6 +413,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\base\object\model\LineInstanceRenderer.h" />
     <ClInclude Include="game\scene\gameScene\player\state\PlayerDeadState.h" />
     <ClInclude Include="game\scene\gameScene\player\ui\PlayerControlUI.h" />
+    <ClInclude Include="game\scene\gameScene\player\ui\PlayerMenuUI.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

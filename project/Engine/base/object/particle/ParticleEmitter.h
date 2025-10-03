@@ -28,7 +28,7 @@ public:
 		/* ==================== Emitter ==================== */
 
 		std::string name;			// 何のParticleを保持しているかのname
-		std::string copyName;		// Particleのコピーが出来た時のname
+		uint16_t id;				// Particleのコピーが出来た時のid
 		Vector3 setPosition;		// Emitterを固定する座標
 		Transform3D transform;		// EmitterのTransform
 		AABB emitterSize;			// Emitterのsize
@@ -115,8 +115,8 @@ public:
 
 	int GetBlendMode()const { return emitter_.blendMode_; }
 
-	void SetCopyName(const std::string& name) { emitter_.copyName = name; }
-	std::string GetCopyName()const { return emitter_.copyName; }
+	void SetId(uint16_t id) { emitter_.id = id; }
+	uint16_t GetId()const { return emitter_.id; }
 	std::string GetName()const { return emitter_.name; }
 
 	void SetDrawLine(bool flag) { line_->GetMaterial().enableDraw = flag; }

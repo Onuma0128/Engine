@@ -4,6 +4,8 @@
 
 #include "WinApp.h"
 
+#include "DeltaTimer.h"
+
 Input* Input::instance_ = nullptr;
 
 Input* Input::GetInstance()
@@ -59,42 +61,6 @@ void Input::Initialize(WinApp* winApp)
 	assert(SUCCEEDED(hr));
 
 	mouse_->Acquire();
-
-
-	//// ジョイスティックデバイスの生成
-	//hr = directInput_->CreateDevice(GUID_Joystick, &joystick_, NULL);
-	//assert(SUCCEEDED(hr));
-	//// 入力データ形式のセット
-	//hr = joystick_->SetDataFormat(&c_dfDIJoystick2);
-	//assert(SUCCEEDED(hr));
-	//// 排他制御レベルのセット
-	//hr = joystick_->SetCooperativeLevel(
-	//	winApp_->GetHwnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
-	//assert(SUCCEEDED(hr));
-
-	//// ジョイスティックの取得開始
-	//joystick_->Acquire();
-
-	//// ジョイスティックの範囲設定の初期化
-	//if (joystick_) {
-	//	DIPROPRANGE dipr;
-	//	dipr.diph.dwSize = sizeof(DIPROPRANGE);
-	//	dipr.diph.dwHeaderSize = sizeof(DIPROPHEADER);
-	//	dipr.diph.dwObj = DIJOFS_X; // X軸
-	//	dipr.diph.dwHow = DIPH_BYOFFSET;
-	//	dipr.lMin = -1000; // 最小値
-	//	dipr.lMax = 1000;  // 最大値
-
-	//	joystick_->SetProperty(DIPROP_RANGE, &dipr.diph);
-	//	joystickMinX_ = dipr.lMin;
-	//	joystickMaxX_ = dipr.lMax;
-
-	//	// 同様にY軸にも適用
-	//	dipr.diph.dwObj = DIJOFS_Y; // Y軸
-	//	joystick_->SetProperty(DIPROP_RANGE, &dipr.diph);
-	//	joystickMinY_ = dipr.lMin;
-	//	joystickMaxY_ = dipr.lMax;
-	//}
 }
 
 void Input::Update()
@@ -135,6 +101,24 @@ void Input::Update()
 	if (result != ERROR_SUCCESS) {
 		// コントローラーが接続されていない場合
 		ZeroMemory(&xInputState_, sizeof(XINPUT_STATE));
+	}
+
+	const bool connected = (result == ERROR_SUCCESS);
+	if (!connected) {
+		if (rumble_.active) { StopVibration(); }
+		return;
+	}
+
+	if (rumble_.active) {
+		// ▼ スローモーションに追従させる場合
+		float dt = DeltaTimer::GetDeltaTime();
+
+		// 現実時間で減らしたい場合
+
+		rumble_.remainSec -= dt;
+		if (rumble_.remainSec <= 0.0f) {
+			StopVibration();
+		}
 	}
 }
 
@@ -179,6 +163,15 @@ float Input::NormalizeStickValue(SHORT value, SHORT deadzone)
 	return static_cast<float>(value) / 32767.0f; // -1.0 ～ 1.0 に正規化
 }
 
+void Input::ApplyVibration(float left, float right)
+{
+	auto clamp01 = [](float v) { return v < 0.f ? 0.f : (v > 1.f ? 1.f : v); };
+	XINPUT_VIBRATION vib{};
+	vib.wLeftMotorSpeed = static_cast<WORD>(clamp01(left) * 65535.0f);
+	vib.wRightMotorSpeed = static_cast<WORD>(clamp01(right) * 65535.0f);
+	XInputSetState(0, &vib);
+}
+
 float Input::GetGamepadLeftStickX() const {
 	int deadzone = static_cast<int>(static_cast<float>(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE) * deadzoneScale_);
 	return NormalizeStickValue(xInputState_.Gamepad.sThumbLX, deadzone);
@@ -207,4 +200,19 @@ float Input::GetGamepadLeftTrigger() const
 float Input::GetGamepadRightTrigger() const
 {
 	return static_cast<float>(xInputState_.Gamepad.bRightTrigger) / 255.0f;
+}
+
+void Input::Vibrate(float left, float right, int durationMs)
+{
+	rumble_.active = true;
+	rumble_.left = left;
+	rumble_.right = right;
+	rumble_.remainSec = static_cast<float>(durationMs) * 0.001f;
+	ApplyVibration(left, right);
+}
+
+void Input::StopVibration()
+{
+	rumble_ = {};
+	ApplyVibration(0.0f, 0.0f);
 }

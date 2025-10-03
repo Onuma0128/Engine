@@ -74,6 +74,7 @@ void PlayerReticle::OnCollisionEnter(Collider* other)
 		WorldTransform transform;
 		transform.translation_ = other->GetCenterPosition();
 		enemyTransforms_.push_front(transform);
+		Input::GetInstance()->Vibrate(0.2f, 1.0f, 10);
 	}
 }
 

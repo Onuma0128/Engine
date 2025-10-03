@@ -12,6 +12,7 @@ void EnemyRay::Init()
 	Collider::targetColliderName_ = {
 		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
+	Collider::DrawCollider();
 
 	isLooking_ = false;
 }

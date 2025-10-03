@@ -55,6 +55,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "titleUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameClearUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameOverUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "menuUI.png");
 
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "bulletUI.png");

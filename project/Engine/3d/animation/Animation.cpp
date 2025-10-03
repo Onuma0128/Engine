@@ -46,8 +46,6 @@ void Animation::SetSceneRenderer()
 void Animation::RemoveRenderer()
 {
 	DirectXEngine::GetModelRenderer()->Remove(this);
-	/*if (line_ == nullptr) { return; }
-	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());*/
 }
 
 void Animation::Update()

@@ -1,5 +1,7 @@
 #include "TitleScene.h"
 
+#include "imgui.h"
+
 #include "SceneManager.h"
 #include "CameraManager.h"
 #include "Input.h"
@@ -34,6 +36,10 @@ void TitleScene::Initialize()
 	playerHit_ = std::make_unique<ParticleEmitter>("playerHit");
 	particleManager->CreateParticleGroup(playerHit_);
 	playerHit_->SetIsCreate(false);
+
+	plane_ = std::make_unique<PrimitiveDrawr>();
+	plane_->TypeInit(PrimitiveType::Plane);
+	plane_->SetSceneRenderer();
 }
 
 void TitleScene::Finalize()
@@ -49,6 +55,21 @@ void TitleScene::Update()
 	titleUI_->Update();
 
 	sceneFade_->Update();
+
+	ImGui::Begin("Plane");
+
+	ImGui::Text("Transform");
+	ImGui::DragFloat3("size", &plane_->GetTransform().scale.x, 0.01f);
+	ImGui::DragFloat3("pos", &plane_->GetTransform().translation.x, 0.01f);
+	ImGui::Separator();
+	ImGui::Text("UVTransform");
+	ImGui::DragFloat2("u_size", &plane_->GetUVTransform().size.x, 0.01f);
+	ImGui::DragFloat("u_rotate", &plane_->GetUVTransform().rotate, 0.01f);
+	ImGui::DragFloat2("u_pos", &plane_->GetUVTransform().position.x, 0.01f);
+
+	ImGui::End();
+
+	plane_->Update();
 
 	particleManager->Update();
 

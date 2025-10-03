@@ -6,6 +6,9 @@
 #include "state/PlayerMoveState.h"
 #include "state/PlayerDeadState.h"
 
+#include "gameScene/player/ui/PlayerControlUI.h"
+#include "gameScene/player/ui/PlayerMenuUI.h"
+
 void Player::Init(SceneJsonLoader loader)
 {
 	// 全ての調整項目をロード
@@ -55,8 +58,12 @@ void Player::Init(SceneJsonLoader loader)
 	shot_ = std::make_unique<PlayerShot>();
 	shot_->Init(this);
 
-	controlUI_ = std::make_unique<PlayerControlUI>();
-	controlUI_->Init();
+	std::unique_ptr<PlayerControlUI> controlUI = std::make_unique<PlayerControlUI>();
+	controlUI->Init();
+	controlUIs_.push_back(std::move(controlUI));
+	std::unique_ptr<PlayerMenuUI> menuUI = std::make_unique<PlayerMenuUI>();
+	menuUI->Init();
+	controlUIs_.push_back(std::move(menuUI));
 }
 
 void Player::Update()
@@ -73,7 +80,9 @@ void Player::Update()
 	shot_->Update();
 	shot_->UpdateUI();
 
-	controlUI_->Update();
+	for (auto& ui : controlUIs_) {
+		ui->Update();
+	}
 
 	Vector2 min = items_->GetPlayerData().minPlayerClamp;
 	Vector2 max = items_->GetPlayerData().maxPlayerClamp;
@@ -97,7 +106,9 @@ void Player::Draw()
 	// 弾UIのDraw処理
 	shot_->DrawUI();
 
-	controlUI_->Draw();
+	for (auto& ui : controlUIs_) {
+		ui->Draw();
+	}
 }
 
 void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)

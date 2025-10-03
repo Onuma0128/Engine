@@ -1,6 +1,7 @@
 #include "PlayerBullet.h"
 
 #include "DeltaTimer.h"
+#include "Input.h"
 
 #include "gameScene/player/adjustItem/PlayerAdjustItem.h"
 
@@ -91,6 +92,7 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	}
 	if (other->GetColliderName() == "Enemy") {
 		++kNockdownCount_;
+		Input::GetInstance()->Vibrate(0.4f, 0.75f, 100);
 	}
 }
 

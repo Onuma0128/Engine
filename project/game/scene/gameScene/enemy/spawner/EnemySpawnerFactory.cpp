@@ -22,11 +22,20 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 		++it;
 	}
 
+	// Release用
+	size_t normal = 20;
+	size_t strong = 10;
+	// Debug用
+#ifdef _DEBUG
+	normal = 15;
+	strong = 5;
+#endif // _DEBUG
+
 	// 敵をタイプごとに初期化
-	InitTypeEnemy(EnemyType::Melee, enemyMelees_, 20);
-	InitTypeEnemy(EnemyType::Ranged, enemyRnageds_, 20);
-	InitTypeEnemy(EnemyType::ShieldBearer, enemyShieldBearers_, 10);
-	InitTypeEnemy(EnemyType::RangedElite, enemyRnagedElites_, 10);
+	InitTypeEnemy(EnemyType::Melee, enemyMelees_, normal);
+	InitTypeEnemy(EnemyType::Ranged, enemyRnageds_, normal);
+	InitTypeEnemy(EnemyType::ShieldBearer, enemyShieldBearers_, strong);
+	InitTypeEnemy(EnemyType::RangedElite, enemyRnagedElites_, strong);
 
 	spawnInterval_ = 1.0f;
 }

@@ -47,7 +47,7 @@ public:
 		Vector4 color;
 		float lifeTime;
 		float currentTime;
-		std::string emitterName;
+		uint16_t emitterID;
 	};
 	struct ParticleForGPU {
 		Matrix4x4 WVP;
@@ -70,6 +70,8 @@ public:
 		ParticleForGPU* instancingData;
 		std::vector<std::weak_ptr<ParticleEmitter>> emitters;
 		std::unique_ptr<ParticleEditor> editor;
+
+		uint16_t nextEmitterId = 0;
 	};
 
 private:

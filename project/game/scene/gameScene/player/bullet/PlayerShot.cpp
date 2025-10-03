@@ -1,5 +1,7 @@
 #include "PlayerShot.h"
 
+#include "Input.h"
+
 #include "gameScene/player/Player.h"
 #include "gameScene/player/adjustItem/PlayerAdjustItem.h"
 
@@ -117,6 +119,7 @@ void PlayerShot::ReloadBullet()
 			transform.rotation_ = rightStickQuaternion_;
 			transform.translation_ = player_->GetTransform().translation_;
 			bullet->Reload(transform, true);
+			Input::GetInstance()->Vibrate(0.3f, 0.6f, 60);
 			break;
 		}
 	}
@@ -154,6 +157,7 @@ void PlayerShot::AttackBullet()
 			transform.rotation_ = rightStickQuaternion_;
 			transform.translation_ = player_->GetTransform().translation_;
 			bullet->Attack(transform, player_->GetItem()->GetBulletData().speed);
+			Input::GetInstance()->Vibrate(0.5f, 0.9f, 90);
 			break;
 		}
 	}

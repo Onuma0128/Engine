@@ -24,11 +24,6 @@ void SceneRenderer::AllDraw()
 		if (!sprite->GetRenderOptions().enabled || !sprite->GetRenderOptions().offscreen) { continue; }
 		sprite->Draw();
 	}
-	/*/// ============================== Animation ============================== ///
-	for (auto& animation : animations_) {
-		if (!animation->GetRenderOptions().enabled || !animation->GetRenderOptions().offscreen) { continue; }
-		animation->Draw();
-	}*/
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
 		if (!primitive->GetRenderOptions().enabled || !primitive->GetRenderOptions().offscreen) { continue; }

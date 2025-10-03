@@ -12,7 +12,6 @@ ParticleEmitter::~ParticleEmitter()
 ParticleEmitter::ParticleEmitter(const std::string name)
 {
     emitter_.name = name;
-    emitter_.copyName = name;
     emitter_.setPosition = { 0.0f,0.0f,0.0f };
     emitter_.transform = { {1.0f,1.0f,1.0f},Quaternion::IdentityQuaternion(),{0.0f,0.0f,0.0f} };
     emitter_.frequency = 0.1f;
@@ -54,7 +53,7 @@ void ParticleEmitter::Update()
 
     // コピーしない値を戻す
     emitter_.name = backup.name;
-    emitter_.copyName = backup.copyName;
+    emitter_.id = backup.id;
     emitter_.frequencyTime = backup.frequencyTime;
     emitter_.setPosition = backup.setPosition;
     emitter_.transform.scale = backup.transform.scale;
@@ -286,7 +285,7 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     particle.color = { 1.0f,1.0f,1.0f,1.0f };
     particle.lifeTime = emitter.lifeTime;
     particle.currentTime = 0.0f;
-    particle.emitterName = emitter.copyName;
+    particle.emitterID = emitter.id;
     return particle;
 }
 

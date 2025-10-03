@@ -64,9 +64,15 @@ public:
 	float GetGamepadLeftTrigger() const;
 	float GetGamepadRightTrigger() const;
 
+	// ゲームパッドの振動
+	void Vibrate(float left, float right, int durationMs);
+	void StopVibration();
+
 private:
 	// スティックの正規化
 	static float NormalizeStickValue(SHORT value, SHORT deadzone);
+	//
+	void ApplyVibration(float left, float right);
 
 private:
 	// WindowsAPI
@@ -115,5 +121,13 @@ private:
 	LONG joystickMaxY_ = 1000;
 	// ジョイスティックのデッドゾーン
 	float deadzoneScale_ = 1.0f;
+	// ゲームパッドの振動
+	struct Rumble {
+		bool  active = false;
+		float left = 0.0f;
+		float right = 0.0f;
+		float remainSec = 0.0f;
+	};
+	Rumble rumble_;
 
 };

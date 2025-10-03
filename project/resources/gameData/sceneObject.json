@@ -1359,17 +1359,13 @@
             "tag_name": "Bush",
             "group_name": "FieldObject",
             "collider": {
-                "type": "Box",
+                "type": "Sphere",
                 "center": [
                     0.0,
-                    9.313225746154785e-09,
-                    2.2874999046325684
+                    0.0,
+                    0.6500000506639481
                 ],
-                "size": [
-                    0.8750000596046448,
-                    5.887500047683716,
-                    2.36874982714653
-                ]
+                "radius": 1.1124999821186066
             }
         },
         {
@@ -1394,7 +1390,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1418,7 +1423,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1444,17 +1458,13 @@
             "tag_name": "Bush",
             "group_name": "FieldObject",
             "collider": {
-                "type": "Box",
+                "type": "Sphere",
                 "center": [
                     0.0,
-                    -0.049999989569187164,
-                    2.2874999046325684
+                    0.0,
+                    0.6500000506639481
                 ],
-                "size": [
-                    0.8750000596046448,
-                    2.512499988079071,
-                    2.36874982714653
-                ]
+                "radius": 1.1124999821186066
             }
         },
         {
@@ -1479,7 +1489,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1503,7 +1522,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1529,17 +1557,13 @@
             "tag_name": "Bush",
             "group_name": "FieldObject",
             "collider": {
-                "type": "Box",
+                "type": "Sphere",
                 "center": [
                     0.0,
-                    -0.08749999105930328,
-                    2.2874999046325684
+                    0.0,
+                    0.6500000506639481
                 ],
-                "size": [
-                    0.8750000596046448,
-                    2.21249982714653,
-                    2.36874982714653
-                ]
+                "radius": 1.1124999821186066
             }
         },
         {
@@ -1564,7 +1588,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1588,7 +1621,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1712,17 +1754,13 @@
             "tag_name": "Bush",
             "group_name": "FieldObject",
             "collider": {
-                "type": "Box",
+                "type": "Sphere",
                 "center": [
                     0.0,
-                    9.313225746154785e-09,
-                    2.2874999046325684
+                    0.0,
+                    0.6500000506639481
                 ],
-                "size": [
-                    0.8750000596046448,
-                    2.4937498569488525,
-                    2.36874982714653
-                ]
+                "radius": 1.1124999821186066
             }
         },
         {
@@ -1747,7 +1785,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1771,7 +1818,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1795,7 +1851,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0947001054763774
+            }
         },
         {
             "type": "MESH",
@@ -1819,7 +1884,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1917,7 +1991,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",
@@ -1941,7 +2024,16 @@
             },
             "file_name": "Bush.obj",
             "tag_name": "Bush",
-            "group_name": "FieldObject"
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
         },
         {
             "type": "MESH",

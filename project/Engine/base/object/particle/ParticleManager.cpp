@@ -56,27 +56,27 @@ void ParticleManager::Update()
     for (auto it = particleGroups_.begin(); it != particleGroups_.end();) {
         auto& group = it->second;
 
-        size_t emitterSize = group.emitters.size();
-        group.emitters.erase(
-            std::remove_if(group.emitters.begin(), group.emitters.end(),
-                [](const std::weak_ptr<ParticleEmitter>& w) {
-                    return w.expired(); }),
-                    group.emitters.end());
+        //size_t emitterSize = group.emitters.size();
+        //group.emitters.erase(
+        //    std::remove_if(group.emitters.begin(), group.emitters.end(),
+        //        [](const std::weak_ptr<ParticleEmitter>& w) {
+        //            return w.expired(); }),
+        //            group.emitters.end());
 
-        // Emitterが消えているならCopyのNameを詰める
-        uint32_t emitCount = 0;
-        for (auto& g_emitter : group.emitters) {
-            if (emitterSize == group.emitters.size()) { break; }
-            if (auto emitter = g_emitter.lock()) {
-                std::string name = emitter->GetName();
-                if (emitCount == 0) {
-                    emitter->SetCopyName(name);
-                } else {
-                    emitter->SetCopyName(name + std::to_string(static_cast<uint32_t>(emitCount)));
-                }
-            }
-            ++emitCount;
-        }
+        //// Emitterが消えているならCopyのNameを詰める
+        //uint32_t emitCount = 0;
+        //for (auto& g_emitter : group.emitters) {
+        //    if (emitterSize == group.emitters.size()) { break; }
+        //    if (auto emitter = g_emitter.lock()) {
+        //        std::string name = emitter->GetName();
+        //        if (emitCount == 0) {
+        //            emitter->SetCopyName(name);
+        //        } else {
+        //            emitter->SetCopyName(name + std::to_string(static_cast<uint32_t>(emitCount)));
+        //        }
+        //    }
+        //    ++emitCount;
+        //}
 
         std::vector<ParticleForGPU> staging;
         uint32_t numInstance = 0;
@@ -118,11 +118,10 @@ void ParticleManager::Update()
                 Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
 
                 // パーティクルの更新
-                for (auto& g_emitter : group.emitters) {
-                    if (auto emitter = g_emitter.lock()) {
-                        if (emitter->GetCopyName() == p_it->emitterName) {
-                            emitter->UpdateParticle(p_it);
-                        }
+                uint16_t id = p_it->emitterID;
+                if (id < group.emitters.size()) {
+                    if (auto emitter = group.emitters[id].lock()) {
+                        emitter->UpdateParticle(p_it);
                     }
                 }
 
@@ -203,6 +202,7 @@ void ParticleManager::Clear()
         group.second.particles.clear();
         group.second.emitters.clear();
         group.second.instanceCount = 0;
+        group.second.nextEmitterId = 0;
     }
 }
 
@@ -212,13 +212,9 @@ void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitt
 
     auto it = particleGroups_.find(name);
     if (it != particleGroups_.end()) {
-
-        // 既存グループのエミッターを複製
-        std::string copyName = emitter->GetName();
-        copyName = copyName + std::to_string(static_cast<uint32_t>(it->second.emitters.size()));
-        emitter->SetCopyName(copyName);
-        it->second.emitters.push_back(emitter);
-
+        auto& group = it->second;
+        emitter->SetId(group.nextEmitterId++);
+        group.emitters.push_back(emitter);
         return;
     }
 
@@ -245,6 +241,7 @@ void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitt
         group.instancingData[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
     }
     group.emitters.push_back(emitter);
+    emitter->SetId(group.nextEmitterId++);
     group.editor = std::make_unique<ParticleEditor>();
     group.editor->Initialize(name);
 

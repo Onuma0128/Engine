@@ -67,11 +67,8 @@ void PlayerMoveState::Update()
 	else { speed = player_->GetItem()->GetPlayerData().speed; }
 
 	// 移動の処理
-	float reloadSpeed = 1.0f;
-	if (isReloadBullet_) { reloadSpeed = 0.5f; }
-	const float playerSpeed = speed * reloadSpeed;
 	Vector3 moveVelocity = CreateMoveVelocity();
-	player_->GetTransform().translation_ += moveVelocity * DeltaTimer::GetDeltaTime() * playerSpeed;
+	player_->GetTransform().translation_ += moveVelocity * DeltaTimer::GetDeltaTime() * speed;
 
 	// 右のスティックのvelocityを取得
 	Vector3 rotateVelocity{};

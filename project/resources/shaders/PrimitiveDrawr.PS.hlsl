@@ -6,6 +6,7 @@ struct Material
     float4x4 uvTransform;
     int xTexcoord_alpha;
     int yTexcoord_alpha;
+    int pad[2];
 };
 
 ConstantBuffer<Material> gMaterial : register(b0);
@@ -20,9 +21,8 @@ struct PixelShaderOutput
 PixelShaderOutput main(VertexShaderOutput input)
 {
     PixelShaderOutput output;
-    float4 transformedUV4 = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial.uvTransform);
-    float2 transformedUV = transformedUV4.xy / transformedUV4.w;
-    float4 textureColor = gTexture.Sample(gSampler, transformedUV);
+    float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial.uvTransform);
+    float4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
     if (gMaterial.xTexcoord_alpha != 0)
     {
         textureColor.a *= input.texcoord.x;
