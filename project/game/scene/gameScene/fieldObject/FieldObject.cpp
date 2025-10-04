@@ -30,7 +30,7 @@ void FieldObject::Init(SceneObject object)
 	}
 
 	effect_ = std::make_unique<FieldObjectEffect>();
-	effect_->Init();
+	effect_->Init(object.tag);
 }
 
 void FieldObject::Update()
@@ -51,9 +51,9 @@ void FieldObject::OnCollisionEnter(Collider* other)
 	// 弾が当たったら
 	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial" ||
 		other->GetColliderName() == "EnemyRanged" || other->GetColliderName() == "EnemyRangedElite") {
-		if (Collider::colliderName_ == "DeadTree") {
+		if (Collider::colliderName_ == "DeadTree" || Collider::colliderName_ == "fence") {
 			// シェイクさせる
-			shake_ = { 2.0f,0.0f,2.0f };
+			shake_ = { 1.0f,0.0f,1.0f };
 			// 弾が飛んできた方向を取得
 			Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
 			Vector3 velocity = Vector3::ExprUnitZ.Transform(rotate);
@@ -64,10 +64,10 @@ void FieldObject::OnCollisionEnter(Collider* other)
 			effect_->OnceWoodChipEffect(transform);
 		} else if (Collider::colliderName_ == "Building") {
 			// シェイクさせる
-			shake_ = { 2.0f,0.0f,2.0f };
+			shake_ = { 1.0f,0.0f,1.0f };
 		} else {
 			// シェイクさせる
-			shake_ = { 2.0f,0.0f,2.0f };
+			shake_ = { 1.0f,0.0f,1.0f };
 		}
 	}
 }

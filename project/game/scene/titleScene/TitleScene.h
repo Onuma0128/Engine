@@ -4,7 +4,6 @@
 #include "BaseScene.h"
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
-#include "PrimitiveDrawr.h"
 #include "Camera.h"
 
 #include "scene/sceneFade/SceneFade.h"
@@ -26,8 +25,6 @@ private:
 
 	std::unique_ptr<Camera> camera_ = nullptr;
 
-	std::unique_ptr<PrimitiveDrawr> plane_ = nullptr;
-
 	std::unique_ptr<SceneFade> sceneFade_ = nullptr;
 	bool isFade_ = false;
 
@@ -37,11 +34,6 @@ private:
 	ParticleManager* particleManager = ParticleManager::GetInstance();
 	// エフェクト
 	std::shared_ptr<ParticleEmitter> test = nullptr;
-
-	// エフェクト
-	std::shared_ptr<ParticleEmitter> enemyMeleeAttack_ = nullptr;
-	// エフェクト
-	std::shared_ptr<ParticleEmitter> playerHit_ = nullptr;
 
 
 };

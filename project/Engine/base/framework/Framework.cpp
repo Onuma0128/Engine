@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "ModelManager.h"
 #include "TextureManager.h"
+#include "AudioManager.h"
 
 #include "Input.h"
 
@@ -43,6 +44,8 @@ void Framework::Update()
 
 void Framework::LoadFiles()
 {
+	// ============================== Texture ============================== //
+
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "smoke.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "circle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "woodChip.png");
@@ -60,6 +63,8 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "bulletUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "playerControlUI.png");
+
+	// ============================== Model ============================== //
 
 	ModelManager::GetInstance()->LoadModel("resources/model", "plane.obj");
 	ModelManager::GetInstance()->LoadModel("resources/model", "Box.obj");
@@ -82,10 +87,13 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "StoneWall.obj");
 
 	ModelManager::GetInstance()->LoadModel("resources/model/player", "Player.gltf");
-
 	ModelManager::GetInstance()->LoadModel("resources/model/enemy/shield", "Shield_Heater.obj");
 	ModelManager::GetInstance()->LoadModel("resources/model/enemy", "Zombie_Basic.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/model/enemy", "Characters_Shaun.gltf");
+
+	// ============================== Audio ============================== //
+
+	AudioManager::GetInstance()->LoadAudioFile("resources/audio", "mokugyo.wav");
 }
 
 void Framework::Run()
