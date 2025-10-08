@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # ---- Project specific ignores ----
-/Engine/project/imgui.ini
+**/imgui.ini
