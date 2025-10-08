@@ -21,8 +21,17 @@ struct PixelShaderOutput
 PixelShaderOutput main(VertexShaderOutput input)
 {
     PixelShaderOutput output;
-    float4 transformedUV = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial.uvTransform);
-    float4 textureColor = gTexture.Sample(gSampler, transformedUV.xy);
+    float2 uv = mul(float4(input.texcoord, 0.0f, 1.0f), gMaterial.uvTransform).xy;
+    float2 dudx = ddx(uv);
+    float2 dudy = ddy(uv);
+    float2 uvWrap = uv - floor(uv);
+    
+    uint w, h, levels;
+    gTexture.GetDimensions(0, w, h, levels);
+    float2 texSize = float2(w, h);
+    float2 uvSafe = (uvWrap * (texSize - 1.0f) + 0.5f) / texSize;
+    
+    float4 textureColor = gTexture.SampleGrad(gSampler, uvSafe, dudx, dudy);
     if (gMaterial.xTexcoord_alpha != 0)
     {
         textureColor.a *= input.texcoord.x;

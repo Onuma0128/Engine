@@ -42,9 +42,24 @@ void PrimitiveDrawr::Update()
 	// uvTransformの更新
 	UVTransformUpdate();
 
-	Matrix4x4 matWorld = Matrix4x4::Affine(transform_.scale, transform_.rotation, transform_.translation);
+	//Matrix4x4 matWorld = Matrix4x4::Affine(transform_.scale, transform_.rotation, transform_.translation);
 
-	*wvpData_ = matWorld * CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix();
+	// パーティクルのビルボード化
+	Matrix4x4 billboardMatrix = Matrix4x4::Identity();
+	if (isBillboard_) {
+		billboardMatrix = Quaternion::MakeRotateMatrix(transform_.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
+	} else {
+		billboardMatrix = Quaternion::MakeRotateMatrix(transform_.rotation);
+	}
+	billboardMatrix.m[3][0] = 0.0f;
+	billboardMatrix.m[3][1] = 0.0f;
+	billboardMatrix.m[3][2] = 0.0f;
+	billboardMatrix.m[3][3] = 1.0f;
+	Matrix4x4 worldMatrix = Matrix4x4::Scale(transform_.scale) * billboardMatrix * Matrix4x4::Translate(transform_.translation);
+	Matrix4x4 worldViewMatrix = worldMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetViewMatrix();
+	Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
+
+	*wvpData_ = worldViewProjectionMatrix;
 }
 
 void PrimitiveDrawr::Draw()

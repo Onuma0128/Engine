@@ -25,6 +25,8 @@ public:
     float Length() const;
     Vector2 Normalize() const;
 
+    static Vector2 MochiPuniScaleNormalized(float time, float amplitude = 0.2f, float damping = 0.15f);
+
     Vector2 operator+() const;
     Vector2 operator-() const;
     Vector2 operator+(const Vector2& v) const;

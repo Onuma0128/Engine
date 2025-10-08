@@ -41,6 +41,8 @@ private:
 	std::list<WorldTransform> enemyTransforms_;
 	// 何体敵と当たったかカウント用
 	uint32_t hitCount_ = 0;
+	// ヒット時のcolor値
+	float reticleColorTimer_ = 0.0f;
 
 };
 

@@ -5,8 +5,11 @@
 void EnemySpawner::Init(SceneObject object)
 {
 	Object3d::Initialize(object.fileName);
-	Object3d::SetSceneRenderer();
 	transform_ = object.transform;
+#ifdef _DEBUG
+	Object3d::SetSceneRenderer();
+#endif // _DEBUG
+
 
 	if (object.collider.active) {
 		Collider::AddCollider();

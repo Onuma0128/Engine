@@ -3,6 +3,7 @@
 #include "WinApp.h"
 #include "Input.h"
 #include "CameraManager.h"
+#include "imgui.h"
 
 #include "Camera.h"
 #include "DeltaTimer.h"
@@ -25,6 +26,7 @@ void PlayerReticle::Init()
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = { "Enemy" };
 	hitCount_ = 0;
+	reticleColorTimer_ = 2.0f;
 }
 
 void PlayerReticle::GlobalInit()
@@ -53,6 +55,18 @@ void PlayerReticle::Update(bool isPlayingMouse)
 	// 当たり判定用の線を更新
 	SegmentUpdate();
 
+	// カラーをラープさせる
+	if (reticleColorTimer_ <= 1.0f) {
+		reticleColorTimer_ += 1.0f / 30.0f;
+		float color = std::clamp(reticleColorTimer_, 0.0f, 1.0f);
+		Sprite::SetColor(Vector4{ 1.0f,color,color,1.0f });
+
+		if (reticleColorTimer_ <= 0.0f) {
+			float time = reticleColorTimer_ * -5.0f;
+			transform_.size = (Vector2::MochiPuniScaleNormalized(time) * 64.0f);
+		}
+	}
+
 	// Spriteの更新
 	Sprite::Update();
 }
@@ -69,7 +83,7 @@ void PlayerReticle::OnCollisionEnter(Collider* other)
 	// 当たった敵のTransformを作成して取得する
 	if (other->GetColliderName() == "Enemy" &&
 		hitCount_ < 6) {
-		Sprite::SetColor({ 1.0f,0.0f,0.0f,1.0f });
+		reticleColorTimer_ = -0.2f;
 		++hitCount_;
 		WorldTransform transform;
 		transform.translation_ = other->GetCenterPosition();
@@ -80,16 +94,10 @@ void PlayerReticle::OnCollisionEnter(Collider* other)
 
 void PlayerReticle::OnCollisionStay(Collider* other)
 {
-	if (other->GetColliderName() == "Enemy") {
-		Sprite::SetColor({ 1.0f,0.0f,0.0f,1.0f });
-	}
 }
 
 void PlayerReticle::OnCollisionExit(Collider* other)
 {
-	if (other->GetColliderName() == "Enemy") {
-		Sprite::SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	}
 }
 
 void PlayerReticle::SegmentUpdate()

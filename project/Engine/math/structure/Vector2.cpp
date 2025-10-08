@@ -59,6 +59,28 @@ Vector2 Vector2::Normalize() const {
     return { x / len, y / len };
 }
 
+
+Vector2 Vector2::MochiPuniScaleNormalized(float time, float amplitude, float damping)
+{
+    time = std::clamp(time, 0.0f, 1.0f);
+
+    const float pi = 3.14159265358979323846f;
+    const float twoPi = 6.2831853071795864769f;
+
+    // 0と1で必ず0になる包絡
+    float envelope = std::sin(pi * time);
+
+    // 減衰（0ならそのまま）
+    float decay = (damping > 0.0f) ? std::exp(-damping * time) : 1.0f;
+
+    // X: 通常のsin波, Y: 位相を進める（ただし必ずenvelopeで0終端）
+    float sx = 1.0f + amplitude * std::sin(twoPi * time) * envelope * decay;
+    float sy = 1.0f + amplitude * std::sin(twoPi * time + pi * 0.5f) * envelope * decay;
+
+    return { sx, sy };
+}
+
+
 Vector2 Vector2::operator+() const {
     return *this;
 }

@@ -77,6 +77,7 @@ public:
 	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
 	const Vector4& GetColor() { return materialData_->color; }
 	PrimitiveType GetPrimitiveType()const { return type_; }
+	bool GetIsBillboard()const { return isBillboard_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
 	void SetTransform(Transform3D transform) { transform_ = transform; }
@@ -90,6 +91,7 @@ public:
 	void SetAlpha(const float alpha) { materialData_->color.w = alpha; }
 	void SetTexcoordX_Alpha(bool flag) { materialData_->xTexcoord_alpha = flag; }
 	void SetTexcoordY_Alpha(bool flag) { materialData_->yTexcoord_alpha = flag; }
+	void SetIsBillboard(bool flag) { isBillboard_ = flag; }
 
 private:
 
@@ -187,6 +189,7 @@ private:
 	Transform2D uvTransform_ = { {1.0f,1.0f},{0.0f},{0.0f,0.0f} };
 
 	BlendMode blendMode_ = BlendMode::kBlendModeNormal;
+	bool isBillboard_ = false;
 
 	// 描画するか
 	RenderOptions renderOptions_;

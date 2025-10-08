@@ -42,7 +42,7 @@ public:
 	float GetSpecialMoveFrame()const { return specialMoveFrame_; }
 	bool GetIsSpecialMove()const { return isSpecialMove_; }
 	void SetIsSpecialMove(bool flag) { isSpecialMove_ = flag; }
-
+	void SetIsDrawReloadUI(bool flag) { playerReload_->GetRenderOptions().enabled = flag; }
 private:
 
 	Player* player_ = nullptr;
@@ -59,6 +59,10 @@ private:
 
 	// 避けた時の土埃
 	std::shared_ptr<ParticleEmitter> avoidDustEmitter_ = nullptr;
+
+	/* ==================== プレイヤーがリロードした時のエフェクト ==================== */
+	
+	std::unique_ptr<PrimitiveDrawr> playerReload_ = nullptr;
 
 	/* ==================== プレイヤーが必殺技を撃った時のエフェクト ==================== */
 

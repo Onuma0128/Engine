@@ -84,10 +84,6 @@ void Player::Update()
 		ui->Update();
 	}
 
-	Vector2 min = items_->GetPlayerData().minPlayerClamp;
-	Vector2 max = items_->GetPlayerData().maxPlayerClamp;
-	transform_.translation_.x = std::clamp(transform_.translation_.x, min.x, max.x);
-	transform_.translation_.z = std::clamp(transform_.translation_.z, min.y, max.y);
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::Update();

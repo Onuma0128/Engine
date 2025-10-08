@@ -131,6 +131,13 @@ void PlayerMoveState::Update()
 		}
 	}
 
+	player_->GetEffect()->SetIsDrawReloadUI(isReloadBullet_);
+
+	Vector2 min = player_->GetItem()->GetPlayerData().minPlayerClamp;
+	Vector2 max = player_->GetItem()->GetPlayerData().maxPlayerClamp;
+	player_->GetTransform().translation_.x = std::clamp(player_->GetTransform().translation_.x, min.x, max.x);
+	player_->GetTransform().translation_.z = std::clamp(player_->GetTransform().translation_.z, min.y, max.y);
+
 	// アクションを起こす
 	SomeAction();
 }
@@ -187,6 +194,11 @@ void PlayerMoveState::SomeAction()
 
 void PlayerMoveState::ReloadBullet()
 {
+	if (player_->GetShot()->IsReloadBullet()) {
+		isReloadBullet_ = false;
+		return;
+	}
+
 	if (isReloadBullet_) {
 
 		// リロード開始時間を過ぎているかチェック
@@ -203,9 +215,6 @@ void PlayerMoveState::ReloadBullet()
 		// 1秒立ったらリロードをする
 		if (previousTime != currentTime) {
 			player_->GetShot()->ReloadBullet();
-		}
-		if (player_->GetShot()->IsReloadBullet()) {
-			isReloadBullet_ = false;
 		}
 	}
 }

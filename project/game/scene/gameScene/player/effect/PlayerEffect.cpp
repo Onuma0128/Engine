@@ -31,6 +31,15 @@ void PlayerEffect::Init()
 	particleManager_->CreateParticleGroup(playerHit_);
 	playerHit_->SetIsCreate(false);
 
+	playerReload_ = std::make_unique<PrimitiveDrawr>();
+	playerReload_->TypeInit(PrimitiveType::Plane);
+	playerReload_->SetTexture("reloadUI.png");
+	playerReload_->SetBlendMode(BlendMode::kBlendModeNone);
+	playerReload_->GetRenderOptions().enabled = true;
+	playerReload_->GetRenderOptions().offscreen = false;
+	playerReload_->SetIsBillboard(true);
+	playerReload_->GetTransform().scale = { 0.35f,0.35f,1.0f };
+
 	// PostEffectを初期化
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
@@ -52,12 +61,20 @@ void PlayerEffect::Update()
 	cylinder_->GetTransform().translation = player_->GetTransform().translation_;
 	cylinder_->GetTransform().translation.y = 0.0f;
 	cylinder_->Update();
+
+	playerReload_->GetTransform().translation = player_->GetTransform().translation_ + (Vector3::ExprUnitX * 0.6f);
+	playerReload_->GetTransform().translation.y = 1.6f;
+	playerReload_->GetTransform().rotation *= Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitZ, DeltaTimer::GetDeltaTime() * 9.0f);
+	playerReload_->Update();
 }
 
 void PlayerEffect::Draw()
 {
 	if (cylinder_->GetRenderOptions().enabled) {
 		cylinder_->TypeDraw();
+	}
+	if (playerReload_->GetRenderOptions().enabled) {
+		playerReload_->TypeDraw();
 	}
 }
 
