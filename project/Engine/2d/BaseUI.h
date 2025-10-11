@@ -18,10 +18,12 @@ private:
 
 		Vector2 anchorPoint;
 		Transform2D transform;
+		Vector4 color;
 
 		bool isAnimation;
 		float animationTime;
 		Transform2D animaTransform;
+		Vector4 animaColor;
 
 		int inEasingType = 0;
 		int outEasingType = 0;

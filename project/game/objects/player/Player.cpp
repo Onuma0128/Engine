@@ -6,9 +6,6 @@
 #include "objects/player/state/PlayerMoveState.h"
 #include "objects/player/state/PlayerDeadState.h"
 
-#include "objects/player/ui/PlayerControlUI.h"
-#include "objects/player/ui/PlayerMenuUI.h"
-
 void Player::Init(SceneJsonLoader loader)
 {
 	// 全ての調整項目をロード
@@ -48,6 +45,10 @@ void Player::Init(SceneJsonLoader loader)
 	// プレイヤーの初期化
 	ChengeState(std::make_unique<PlayerMoveState>(this));
 
+	// 影を設定
+	shadow_ = std::make_unique<CharacterShadow>();
+	shadow_->Init();
+
 	effect_ = std::make_unique<PlayerEffect>();
 	effect_->SetPlayer(this);
 	effect_->Init();
@@ -57,13 +58,6 @@ void Player::Init(SceneJsonLoader loader)
 
 	shot_ = std::make_unique<PlayerShot>();
 	shot_->Init(this);
-
-	std::unique_ptr<PlayerControlUI> controlUI = std::make_unique<PlayerControlUI>();
-	controlUI->Init();
-	controlUIs_.push_back(std::move(controlUI));
-	std::unique_ptr<PlayerMenuUI> menuUI = std::make_unique<PlayerMenuUI>();
-	menuUI->Init();
-	controlUIs_.push_back(std::move(menuUI));
 }
 
 void Player::Update()
@@ -74,15 +68,15 @@ void Player::Update()
 
 	state_->Update();
 
+	Vector3 pos = transform_.translation_;
+	shadow_->SetPosition(Vector3{ pos.x,0.01f,pos.z });
+	shadow_->Update();
+
 	effect_->Update();
 
 	// 弾の更新
 	shot_->Update();
 	shot_->UpdateUI();
-
-	for (auto& ui : controlUIs_) {
-		ui->Update();
-	}
 
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
@@ -101,10 +95,6 @@ void Player::Draw()
 
 	// 弾UIのDraw処理
 	shot_->DrawUI();
-
-	for (auto& ui : controlUIs_) {
-		ui->Draw();
-	}
 }
 
 void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)

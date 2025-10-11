@@ -1,0 +1,41 @@
+{
+    "Texture": "white1x1.png",
+    "AnchorPoint": {
+        "x": 0.5,
+        "y": 0.5
+    },
+    "Size": {
+        "x": 0.0,
+        "y": 600.0
+    },
+    "Rotate": 0.0,
+    "Position": {
+        "x": 640.0,
+        "y": 360.0
+    },
+    "Color": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "IsAnimation": true,
+    "AnimationTime": 0.44999998807907104,
+    "Anima_Size": {
+        "x": 1000.0,
+        "y": 600.0
+    },
+    "Anima_Rotate": 0.0,
+    "Anima_Position": {
+        "x": 640.0,
+        "y": 360.0
+    },
+    "Anima_Color": {
+        "x": 0.11764705926179886,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.501960813999176
+    },
+    "InEasingType": 23,
+    "OutEasingType": 23
+}

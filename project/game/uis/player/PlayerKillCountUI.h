@@ -15,6 +15,8 @@ public:
 
 	void Draw();
 
+	void SetPosition(const Vector2& position) { transform_.position = position; }
+
 private:
 };
 
@@ -27,6 +29,8 @@ public:
 	void Update(const uint32_t killCount);
 
 	void Draw();
+
+	void SetPosition(const Vector2& position);
 
 private:
 

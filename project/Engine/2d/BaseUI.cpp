@@ -25,6 +25,9 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		json_.Set("Rotate", 0.0f);
 		json_.Set("Position", Vector2{ 0.0f,0.0f });
 		parameters_.transform.size = Vector2{ 1.0f,1.0f };
+		// Color
+		json_.Set("Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
+		parameters_.color = Vector4{ 1.0f,1.0f,1.0f,1.0f };
 		// Animation
 		json_.Set("IsAnimation", false);
 		json_.Set("AnimationTime", 0.0f);
@@ -32,6 +35,9 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		json_.Set("Anima_Rotate", 0.0f);
 		json_.Set("Anima_Position", Vector2{ 0.0f,0.0f });
 		parameters_.animaTransform.size = Vector2{ 1.0f,1.0f };
+		// Color
+		json_.Set("Anima_Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
+		parameters_.animaColor = Vector4{ 1.0f,1.0f,1.0f,1.0f };
 		// Easing
 		json_.Set("InEasingType", 0);
 		json_.Set("OutEasingType", 0);
@@ -49,6 +55,9 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		parameters_.transform.size = json_.Get<Vector2>("Size", Vector2{ 1.0f,1.0f });
 		parameters_.transform.rotate = json_.Get<float>("Rotate", 0.0f);
 		parameters_.transform.position = json_.Get<Vector2>("Position", Vector2{ 0.0f,0.0f });
+		// Color
+		parameters_.color = json_.Get<Vector4>("Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
+		parameters_.animaColor = json_.Get<Vector4>("Anima_Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
 		// Animation
 		parameters_.isAnimation = json_.Get<bool>("IsAnimation", false);
 		parameters_.animationTime = json_.Get<float>("AnimationTime", 0.0f);
@@ -122,6 +131,8 @@ void BaseUI::DrawImGui()
 		if (!isPlayAnimation_ && playAnimationTimer_ == 0.0f) {
 			ui_->GetTransform() = parameters_.transform;
 		}
+		// Color
+		ImGui::ColorEdit4("Color", &parameters_.color.x);
 		// Animation
 		ImGui::Checkbox("IsAnimation", &parameters_.isAnimation);
 		ImGui::DragFloat("AnimationTime", &parameters_.animationTime, 0.01f);
@@ -155,6 +166,8 @@ void BaseUI::DrawImGui()
 		ImGui::DragFloat2("Anima_Size", &parameters_.animaTransform.size.x, 0.5f);
 		ImGui::DragFloat("Anima_Rotate", &parameters_.animaTransform.rotate, 0.01f);
 		ImGui::DragFloat2("Anima_Position", &parameters_.animaTransform.position.x, 0.5f);
+		// Color
+		ImGui::ColorEdit4("Anima_Color", &parameters_.animaColor.x);
 
 		if (ImGui::Button("Save")) {
 			Save();
@@ -177,6 +190,9 @@ void BaseUI::Save()
 	json_.Set("Size", parameters_.transform.size);
 	json_.Set("Rotate", parameters_.transform.rotate);
 	json_.Set("Position", parameters_.transform.position);
+	// Color
+	json_.Set("Color", parameters_.color);
+	json_.Set("Anima_Color", parameters_.animaColor);
 	// Animation
 	json_.Set("IsAnimation", parameters_.isAnimation);
 	json_.Set("AnimationTime", parameters_.animationTime);
@@ -225,6 +241,7 @@ void BaseUI::UI_Animation()
 		ui_->GetTransform().size = Vector2::EaseLerp(parameters_.transform.size, parameters_.animaTransform.size, t);
 		ui_->GetTransform().rotate = (1.0f - t) * parameters_.transform.rotate + t * parameters_.animaTransform.rotate;
 		ui_->GetTransform().position = Vector2::EaseLerp(parameters_.transform.position, parameters_.animaTransform.position, t);
+		ui_->SetColor(Vector4::Lerp(parameters_.color,parameters_.animaColor,t));
 
 		if (t == 0.0f || t == 1.0f) {
 			isPlayAnimation_ = false;

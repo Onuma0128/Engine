@@ -37,6 +37,16 @@ void PlayerKillCountUI::Draw()
 	}
 }
 
+void PlayerKillCountUI::SetPosition(const Vector2& position)
+{
+	int count = -1;
+	for (auto& number : numbers_) {
+		float posX = static_cast<float>(count) * 40.0f;
+		number->SetPosition(position + Vector2{ posX ,0.0f });
+		++count;
+	}
+}
+
 
 void NumbersUI::Init(const Vector2& position)
 {

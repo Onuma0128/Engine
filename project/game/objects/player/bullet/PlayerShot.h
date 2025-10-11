@@ -6,8 +6,8 @@
 #include "objects/player/bullet/PredictionObject.h"
 #include "objects/player/bullet/PlayerBullet.h"
 
-#include "objects/player/ui/PlayerBulletUI.h"
-#include "objects/player/ui/PlayerKillCountUI.h"
+#include "uis/player/PlayerBulletUI.h"
+#include "uis/player/PlayerKillCountUI.h"
 
 class Player;
 

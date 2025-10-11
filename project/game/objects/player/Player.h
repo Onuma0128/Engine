@@ -3,7 +3,6 @@
 #include <array>
 #include <vector>
 
-#include "BaseUI.h"
 #include "Animation.h"
 #include "Collider.h"
 #include "Collision3D.h"
@@ -16,6 +15,8 @@
 #include "objects/player/adjustItem/PlayerAdjustItem.h"
 
 #include "objects/player/bullet/PlayerShot.h"
+
+#include "objects/shadow/CharacterShadow.h"
 
 class Player : public Animation,Collider
 {
@@ -34,9 +35,9 @@ public:
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
 
-	PlayerShot* GetShot() { return shot_.get(); }
-	PlayerEffect* GetEffect() { return effect_.get(); }
-	PlayerReticle* GetReticle() { return reticle_.get(); }
+	PlayerShot* GetShot() const { return shot_.get(); }
+	PlayerEffect* GetEffect()const { return effect_.get(); }
+	PlayerReticle* GetReticle()const { return reticle_.get(); }
 	PlayerAdjustItem* GetItem() const { return items_.get(); }
 
 	bool GetIsAlive()const { return isAlive_; }
@@ -55,10 +56,10 @@ private:
 	std::unique_ptr<PlayerShot> shot_ = nullptr;
 	// エフェクト
 	std::unique_ptr<PlayerEffect> effect_ = nullptr;
+	// 影
+	std::unique_ptr<CharacterShadow> shadow_ = nullptr;
 	// 必殺技時にロックオンするためのレティクル
 	std::unique_ptr<PlayerReticle> reticle_ = nullptr;
-	// 操作系のUI
-	std::vector<std::unique_ptr<BaseUI>> controlUIs_;
 	// 調整項目
 	std::unique_ptr<PlayerAdjustItem> items_;
 

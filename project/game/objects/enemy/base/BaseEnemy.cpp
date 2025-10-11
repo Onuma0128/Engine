@@ -24,7 +24,7 @@ void BaseEnemy::Initialize()
 	effect_->Init();
 
 	// 影を設定
-	shadow_ = std::make_unique<EnemyShadow>();
+	shadow_ = std::make_unique<CharacterShadow>();
 	shadow_->Init(transform_);
 	shadow_->SetDraw(false);
 

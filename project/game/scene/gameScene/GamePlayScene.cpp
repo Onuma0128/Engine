@@ -39,6 +39,9 @@ void GamePlayScene::Initialize()
 	sceneFade_ = std::make_unique<SceneFade>();
 	sceneFade_->Init();
 	sceneFade_->FadeIn(3.0f);
+
+	gameSceneUis_ = std::make_unique<GameSceneUIs>();
+	gameSceneUis_->Init();
 }
 
 void GamePlayScene::Finalize()
@@ -47,6 +50,10 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
+	if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+		return;
+	}
+
 	mapCollision_->Update();
 
 	player_->Update();
@@ -59,9 +66,11 @@ void GamePlayScene::Update()
 
 	skyBox_->Update();
 
-	ParticleManager::GetInstance()->Update();
-
 	sceneFade_->Update();
+
+	gameSceneUis_->Update();
+
+	ParticleManager::GetInstance()->Update();
 
 	// プレイヤーが死んだかクリアをしたらフェードをする
 	uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);
@@ -87,6 +96,8 @@ void GamePlayScene::Draw()
 	enemySpawnerFactory_->Draw();
 
 	player_->Draw();
+
+	gameSceneUis_->Draw();
 
 	sceneFade_->Draw();
 }

@@ -117,6 +117,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\2d\BaseUI.cpp" />
     <ClCompile Include="Engine\3d\animation\play\PlayAnimation.cpp" />
     <ClCompile Include="Engine\3d\animation\debug\DebugBone.cpp" />
+    <ClCompile Include="game\uis\gameSceneUIs\GameSceneUIs.cpp" />
     <ClCompile Include="game\objects\enemy\ray\EnemyRay.cpp" />
     <ClCompile Include="game\searchAlgorithm\sample\AlgorithmTest.cpp" />
     <ClCompile Include="Engine\base\collider\Collision2D.cpp" />
@@ -124,8 +125,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="game\objects\enemy\base\BaseEnemy.cpp" />
     <ClCompile Include="game\uis\gameClearUI\GameClearUI.cpp" />
     <ClCompile Include="game\uis\gameOverUI\GameOverUI.cpp" />
-    <ClCompile Include="game\objects\player\ui\PlayerKillCountUI.cpp" />
-    <ClCompile Include="game\objects\enemy\shadow\EnemyShadow.cpp" />
+    <ClCompile Include="game\uis\player\PlayerKillCountUI.cpp" />
+    <ClCompile Include="game\objects\shadow\CharacterShadow.cpp" />
     <ClCompile Include="game\objects\enemy\weapon\axe\EnemyAxe.cpp" />
     <ClCompile Include="game\objects\enemy\weapon\shield\EnemyShield.cpp" />
     <ClCompile Include="game\objects\enemy\weapon\EnemyWeaponBase.cpp" />
@@ -154,7 +155,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\base\dxEngine\pipeline\blendState\BlendStateBase.cpp" />
     <ClCompile Include="game\objects\enemy\effect\EnemyEffect.cpp" />
     <ClCompile Include="Engine\base\collider\Collision3D.cpp" />
-    <ClCompile Include="game\objects\player\ui\PlayerBulletUI.cpp" />
+    <ClCompile Include="game\uis\player\PlayerBulletUI.cpp" />
     <ClCompile Include="game\objects\player\state\PlayerBaseState.cpp" />
     <ClCompile Include="Engine\base\framework\DeltaTimer.cpp" />
     <ClCompile Include="Engine\base\object\model\AnimationBase.cpp" />
@@ -252,8 +253,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\3d\animation\skinCluster\SkinCluster.cpp" />
     <ClCompile Include="Engine\base\object\model\LineInstanceRenderer.cpp" />
     <ClCompile Include="game\objects\player\state\PlayerDeadState.cpp" />
-    <ClCompile Include="game\objects\player\ui\PlayerControlUI.cpp" />
-    <ClCompile Include="game\objects\player\ui\PlayerMenuUI.cpp" />
+    <ClCompile Include="game\uis\gameSceneUIs\PlayerControlUI.cpp" />
+    <ClCompile Include="game\uis\gameSceneUIs\PlayerMenuUI.cpp" />
+    <ClCompile Include="game\uis\select\SelectSystem.cpp" />
+    <ClCompile Include="game\uis\select\SelectBackGroundUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2d\BaseUI.h" />
@@ -261,6 +264,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3d\animation\debug\DebugBone.h" />
     <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\AnimationOutLineMaskRootSignature.h" />
     <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\OutLineMaskRootSignature.h" />
+    <ClInclude Include="game\uis\gameSceneUIs\GameSceneUIs.h" />
     <ClInclude Include="game\objects\enemy\ray\EnemyRay.h" />
     <ClInclude Include="game\searchAlgorithm\sample\AlgorithmTest.h" />
     <ClInclude Include="Engine\base\collider\Collision2D.h" />
@@ -268,8 +272,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="game\objects\enemy\base\BaseEnemy.h" />
     <ClInclude Include="game\uis\gameClearUI\GameClearUI.h" />
     <ClInclude Include="game\uis\gameOverUI\GameOverUI.h" />
-    <ClInclude Include="game\objects\player\ui\PlayerKillCountUI.h" />
-    <ClInclude Include="game\objects\enemy\shadow\EnemyShadow.h" />
+    <ClInclude Include="game\uis\player\PlayerKillCountUI.h" />
+    <ClInclude Include="game\objects\shadow\CharacterShadow.h" />
     <ClInclude Include="game\objects\enemy\weapon\axe\EnemyAxe.h" />
     <ClInclude Include="game\objects\enemy\weapon\shield\EnemyShield.h" />
     <ClInclude Include="game\objects\enemy\weapon\EnemyWeaponBase.h" />
@@ -309,7 +313,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\math\PipelineStruct.h" />
     <ClInclude Include="game\objects\enemy\effect\EnemyEffect.h" />
     <ClInclude Include="Engine\base\collider\Collision3D.h" />
-    <ClInclude Include="game\objects\player\ui\PlayerBulletUI.h" />
+    <ClInclude Include="game\uis\player\PlayerBulletUI.h" />
     <ClInclude Include="game\objects\player\state\PlayerBaseState.h" />
     <ClInclude Include="Engine\base\framework\DeltaTimer.h" />
     <ClInclude Include="Engine\base\object\model\AnimationBase.h" />
@@ -412,8 +416,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3d\animation\skinCluster\SkinCluster.h" />
     <ClInclude Include="Engine\base\object\model\LineInstanceRenderer.h" />
     <ClInclude Include="game\objects\player\state\PlayerDeadState.h" />
-    <ClInclude Include="game\objects\player\ui\PlayerControlUI.h" />
-    <ClInclude Include="game\objects\player\ui\PlayerMenuUI.h" />
+    <ClInclude Include="game\uis\gameSceneUIs\PlayerControlUI.h" />
+    <ClInclude Include="game\uis\gameSceneUIs\PlayerMenuUI.h" />
+    <ClInclude Include="game\uis\select\SelectSystem.h" />
+    <ClInclude Include="game\uis\select\SelectBackGroundUI.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

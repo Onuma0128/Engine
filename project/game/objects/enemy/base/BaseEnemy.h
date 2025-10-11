@@ -10,7 +10,7 @@
 #include "objects/enemy/state/EnemyBaseState.h"
 #include "objects/enemy/bullet/EnemyBullet.h"
 #include "objects/enemy/effect/EnemyEffect.h"
-#include "objects/enemy/shadow/EnemyShadow.h"
+#include "objects/shadow/CharacterShadow.h"
 #include "objects/enemy/ray/EnemyRay.h"
 
 #include "searchAlgorithm/navigation/PathFinder.h"
@@ -126,7 +126,7 @@ protected:
 	// エフェクト
 	std::unique_ptr<EnemyEffect> effect_ = nullptr;
 	// 影
-	std::unique_ptr<EnemyShadow> shadow_ = nullptr;
+	std::unique_ptr<CharacterShadow> shadow_ = nullptr;
 	// 敵の目線
 	std::unique_ptr<EnemyRay> ray_ = nullptr;
 	// 敵が今どうなっているか
