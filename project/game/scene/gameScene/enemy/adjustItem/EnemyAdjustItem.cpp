@@ -107,142 +107,147 @@ void EnemyAdjustItem::LoadItems()
 void EnemyAdjustItem::Editor()
 {
 
-	ImGui::Begin("EnemyParameters");
+	ImGui::Begin("GameData");
+	if (ImGui::TreeNode("EnemyParameters")) {
+		ImGui::Separator();
 
-	ImGui::Checkbox("isSpawn", &mainData_.debugIsSpawn);
-	ImGui::Checkbox("debugSpline", &mainData_.debugSpline);
+		ImGui::Checkbox("isSpawn", &mainData_.debugIsSpawn);
+		ImGui::Checkbox("debugSpline", &mainData_.debugSpline);
 
-	std::vector<std::string>items = { "Melee","Ranged","ShieldBearer", "RangedElite" };
-	// ブレンドを選択
-	if (ImGui::BeginCombo("EnemyType", items[mainData_.spawnIndex].c_str())) {
-		for (int i = 0; i < items.size(); ++i) {
-			const bool is_selected = (mainData_.spawnIndex == i);
-			if (ImGui::Selectable(items[i].c_str(), is_selected)) { mainData_.spawnIndex = i; }
-			if (is_selected) { ImGui::SetItemDefaultFocus(); }
-		}
-		ImGui::EndCombo();
-	}
-	mainData_.nowSpawn = false;
-	if (ImGui::Button("spawn")) {
-		mainData_.nowSpawn = true;
-	}
-
-	/* ============================== Main ============================== */
-
-	ImGui::PushItemWidth(150);
-	if (ImGui::TreeNode("Main")) {
-
-		ImGui::DragInt("maxSpawn", &mainData_.maxSpawn);
-		ImGui::DragInt("nextWaveKillCount", &mainData_.nextWaveKillCount);
-		ImGui::DragFloat3("colliderSize", &mainData_.colliderSize.x, 0.01f);
-		ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f);
-		ImGui::DragFloat("margin", &mainData_.margin, 0.01f);
-		ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f);
-		if (ImGui::Button("Save")) {
-			mainJson_.Set("maxSpawn", mainData_.maxSpawn);
-			mainJson_.Set("nextWaveKillCount", mainData_.nextWaveKillCount);
-			mainJson_.Set("colliderSize", mainData_.colliderSize);
-			mainJson_.Set("colliderOffset", mainData_.colliderOffset);
-			mainJson_.Set("margin", mainData_.margin);
-			mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
-			mainJson_.Save();
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Separator();
-
-	/* ============================== Melee ============================== */ 
-
-	if (ImGui::TreeNode("Melee")) {
-
-		SetImGuiData(meleeJson_, meleeData_.tempData);
-		ImGui::DragFloat("colliderSize", &meleeData_.colliderSize, 0.01f);
-		ImGui::DragFloat3("colliderOffset", &meleeData_.colliderOffset.x, 0.01f);
-		if (ImGui::Button("Save")) {
-			SetTemplateData(meleeJson_, meleeData_.tempData);
-			meleeJson_.Set("colliderSize", meleeData_.colliderSize);
-			meleeJson_.Set("colliderOffset", meleeData_.colliderOffset);
-			meleeJson_.Save();
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Separator();
-
-	/* ============================== Ranged ============================== */
-
-	if (ImGui::TreeNode("Ranged")) {
-
-		SetImGuiData(rangedJson_, rangedData_.tempData);
-		ImGui::DragFloat("bulletSpeed", &rangedData_.bulletSpeed, 0.01f);
-		ImGui::DragFloat3("colliderSize", &rangedData_.colliderSize.x, 0.01f);
-		ImGui::DragFloat3("colliderOffset", &rangedData_.colliderOffset.x, 0.01f);
-		ImGui::DragFloat3("planeSize", &rangedData_.planeSize.x, 0.01f);
-		ImGui::DragFloat3("planeOffset", &rangedData_.planeOffset.x, 0.01f);
-		if (ImGui::Button("Save")) {
-			SetTemplateData(rangedJson_, rangedData_.tempData);
-			rangedJson_.Set("bulletSpeed", rangedData_.bulletSpeed);
-			rangedJson_.Set("colliderSize", rangedData_.colliderSize);
-			rangedJson_.Set("colliderOffset", rangedData_.colliderOffset);
-			rangedJson_.Set("planeSize", rangedData_.planeSize);
-			rangedJson_.Set("planeOffset", rangedData_.planeOffset);
-			rangedJson_.Save();
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Separator();
-
-	/* ============================== ShieldBearer ============================== */
-
-	if (ImGui::TreeNode("ShieldBearer")) {
-
-		SetImGuiData(shieldBearerJson_, shieldBearerData_.tempData);
-		ImGui::DragFloat("attackColliderSize", &shieldBearerData_.attackColliderSize, 0.01f);
-		ImGui::DragFloat3("attackColliderOffset", &shieldBearerData_.attackColliderOffset.x, 0.01f);
-		ImGui::DragFloat("lerpSpeed", &shieldBearerData_.lerpSpeed, 0.01f);
-		ImGui::DragFloat3("shieldSize", &shieldBearerData_.shieldSize.x, 0.01f);
-		ImGui::DragFloat3("shieldOffset", &shieldBearerData_.shieldOffset.x, 0.01f);
-		ImGui::DragFloat3("shieldColliderSize", &shieldBearerData_.shieldColliderSize.x, 0.01f);
-		ImGui::DragFloat3("shieldColliderOffset", &shieldBearerData_.shieldColliderOffset.x, 0.01f);
-		if (ImGui::Button("Save")) {
-			SetTemplateData(shieldBearerJson_, shieldBearerData_.tempData);
-			shieldBearerJson_.Set("attackColliderSize", shieldBearerData_.attackColliderSize);
-			shieldBearerJson_.Set("attackColliderOffset", shieldBearerData_.attackColliderOffset);
-			shieldBearerJson_.Set("lerpSpeed", shieldBearerData_.lerpSpeed);
-			shieldBearerJson_.Set("shieldSize", shieldBearerData_.shieldSize);
-			shieldBearerJson_.Set("shieldOffset", shieldBearerData_.shieldOffset);
-			shieldBearerJson_.Set("shieldColliderSize", shieldBearerData_.shieldColliderSize);
-			shieldBearerJson_.Set("shieldColliderOffset", shieldBearerData_.shieldColliderOffset);
-			shieldBearerJson_.Save();
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Separator();
-
-	/* ============================== RangedElite ============================== */
-
-	if (ImGui::TreeNode("RangedElite")) {
-
-		SetImGuiData(rangedEliteJson_, rangedEliteData_.tempData);
-		ImGui::DragFloat("bulletSpeed", &rangedEliteData_.bulletSpeed, 0.01f);
-		ImGui::DragFloat("bulletRadSpace", &rangedEliteData_.bulletRadSpace, 0.01f);
-		for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
-			std::string labelSize = "planeSize" + std::to_string(i);
-			std::string labelOffset = "planeOffset" + std::to_string(i);
-			ImGui::DragFloat3(labelSize.c_str(), &rangedEliteData_.planeSize[i].x, 0.01f);
-			ImGui::DragFloat3(labelOffset.c_str(), &rangedEliteData_.planeOffset[i].x, 0.01f);
-		}
-		if (ImGui::Button("Save")) {
-			SetTemplateData(rangedEliteJson_, rangedEliteData_.tempData);
-			rangedEliteJson_.Set("bulletSpeed", rangedEliteData_.bulletSpeed);
-			rangedEliteJson_.Set("bulletRadSpace", rangedEliteData_.bulletRadSpace);
-			for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
-				rangedEliteJson_.Set("planeSize" + std::to_string(i), rangedEliteData_.planeSize[i]);
-				rangedEliteJson_.Set("planeOffset" + std::to_string(i), rangedEliteData_.planeOffset[i]);
+		std::vector<std::string>items = { "Melee","Ranged","ShieldBearer", "RangedElite" };
+		// ブレンドを選択
+		if (ImGui::BeginCombo("EnemyType", items[mainData_.spawnIndex].c_str())) {
+			for (int i = 0; i < items.size(); ++i) {
+				const bool is_selected = (mainData_.spawnIndex == i);
+				if (ImGui::Selectable(items[i].c_str(), is_selected)) { mainData_.spawnIndex = i; }
+				if (is_selected) { ImGui::SetItemDefaultFocus(); }
 			}
-			rangedEliteJson_.Save();
+			ImGui::EndCombo();
+		}
+		mainData_.nowSpawn = false;
+		if (ImGui::Button("spawn")) {
+			mainData_.nowSpawn = true;
+		}
+
+		/* ============================== Main ============================== */
+
+		ImGui::PushItemWidth(150);
+		if (ImGui::TreeNode("Main")) {
+
+			ImGui::DragInt("maxSpawn", &mainData_.maxSpawn);
+			ImGui::DragInt("nextWaveKillCount", &mainData_.nextWaveKillCount);
+			ImGui::DragFloat3("colliderSize", &mainData_.colliderSize.x, 0.01f);
+			ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f);
+			ImGui::DragFloat("margin", &mainData_.margin, 0.01f);
+			ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f);
+			if (ImGui::Button("Save")) {
+				mainJson_.Set("maxSpawn", mainData_.maxSpawn);
+				mainJson_.Set("nextWaveKillCount", mainData_.nextWaveKillCount);
+				mainJson_.Set("colliderSize", mainData_.colliderSize);
+				mainJson_.Set("colliderOffset", mainData_.colliderOffset);
+				mainJson_.Set("margin", mainData_.margin);
+				mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
+				mainJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+
+		/* ============================== Melee ============================== */
+
+		if (ImGui::TreeNode("Melee")) {
+
+			SetImGuiData(meleeJson_, meleeData_.tempData);
+			ImGui::DragFloat("colliderSize", &meleeData_.colliderSize, 0.01f);
+			ImGui::DragFloat3("colliderOffset", &meleeData_.colliderOffset.x, 0.01f);
+			if (ImGui::Button("Save")) {
+				SetTemplateData(meleeJson_, meleeData_.tempData);
+				meleeJson_.Set("colliderSize", meleeData_.colliderSize);
+				meleeJson_.Set("colliderOffset", meleeData_.colliderOffset);
+				meleeJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+
+		/* ============================== Ranged ============================== */
+
+		if (ImGui::TreeNode("Ranged")) {
+
+			SetImGuiData(rangedJson_, rangedData_.tempData);
+			ImGui::DragFloat("bulletSpeed", &rangedData_.bulletSpeed, 0.01f);
+			ImGui::DragFloat3("colliderSize", &rangedData_.colliderSize.x, 0.01f);
+			ImGui::DragFloat3("colliderOffset", &rangedData_.colliderOffset.x, 0.01f);
+			ImGui::DragFloat3("planeSize", &rangedData_.planeSize.x, 0.01f);
+			ImGui::DragFloat3("planeOffset", &rangedData_.planeOffset.x, 0.01f);
+			if (ImGui::Button("Save")) {
+				SetTemplateData(rangedJson_, rangedData_.tempData);
+				rangedJson_.Set("bulletSpeed", rangedData_.bulletSpeed);
+				rangedJson_.Set("colliderSize", rangedData_.colliderSize);
+				rangedJson_.Set("colliderOffset", rangedData_.colliderOffset);
+				rangedJson_.Set("planeSize", rangedData_.planeSize);
+				rangedJson_.Set("planeOffset", rangedData_.planeOffset);
+				rangedJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+
+		/* ============================== ShieldBearer ============================== */
+
+		if (ImGui::TreeNode("ShieldBearer")) {
+
+			SetImGuiData(shieldBearerJson_, shieldBearerData_.tempData);
+			ImGui::DragFloat("attackColliderSize", &shieldBearerData_.attackColliderSize, 0.01f);
+			ImGui::DragFloat3("attackColliderOffset", &shieldBearerData_.attackColliderOffset.x, 0.01f);
+			ImGui::DragFloat("lerpSpeed", &shieldBearerData_.lerpSpeed, 0.01f);
+			ImGui::DragFloat3("shieldSize", &shieldBearerData_.shieldSize.x, 0.01f);
+			ImGui::DragFloat3("shieldOffset", &shieldBearerData_.shieldOffset.x, 0.01f);
+			ImGui::DragFloat3("shieldColliderSize", &shieldBearerData_.shieldColliderSize.x, 0.01f);
+			ImGui::DragFloat3("shieldColliderOffset", &shieldBearerData_.shieldColliderOffset.x, 0.01f);
+			if (ImGui::Button("Save")) {
+				SetTemplateData(shieldBearerJson_, shieldBearerData_.tempData);
+				shieldBearerJson_.Set("attackColliderSize", shieldBearerData_.attackColliderSize);
+				shieldBearerJson_.Set("attackColliderOffset", shieldBearerData_.attackColliderOffset);
+				shieldBearerJson_.Set("lerpSpeed", shieldBearerData_.lerpSpeed);
+				shieldBearerJson_.Set("shieldSize", shieldBearerData_.shieldSize);
+				shieldBearerJson_.Set("shieldOffset", shieldBearerData_.shieldOffset);
+				shieldBearerJson_.Set("shieldColliderSize", shieldBearerData_.shieldColliderSize);
+				shieldBearerJson_.Set("shieldColliderOffset", shieldBearerData_.shieldColliderOffset);
+				shieldBearerJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+
+		/* ============================== RangedElite ============================== */
+
+		if (ImGui::TreeNode("RangedElite")) {
+
+			SetImGuiData(rangedEliteJson_, rangedEliteData_.tempData);
+			ImGui::DragFloat("bulletSpeed", &rangedEliteData_.bulletSpeed, 0.01f);
+			ImGui::DragFloat("bulletRadSpace", &rangedEliteData_.bulletRadSpace, 0.01f);
+			for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
+				std::string labelSize = "planeSize" + std::to_string(i);
+				std::string labelOffset = "planeOffset" + std::to_string(i);
+				ImGui::DragFloat3(labelSize.c_str(), &rangedEliteData_.planeSize[i].x, 0.01f);
+				ImGui::DragFloat3(labelOffset.c_str(), &rangedEliteData_.planeOffset[i].x, 0.01f);
+			}
+			if (ImGui::Button("Save")) {
+				SetTemplateData(rangedEliteJson_, rangedEliteData_.tempData);
+				rangedEliteJson_.Set("bulletSpeed", rangedEliteData_.bulletSpeed);
+				rangedEliteJson_.Set("bulletRadSpace", rangedEliteData_.bulletRadSpace);
+				for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
+					rangedEliteJson_.Set("planeSize" + std::to_string(i), rangedEliteData_.planeSize[i]);
+					rangedEliteJson_.Set("planeOffset" + std::to_string(i), rangedEliteData_.planeOffset[i]);
+				}
+				rangedEliteJson_.Save();
+			}
+			ImGui::TreePop();
 		}
 		ImGui::TreePop();
 	}
+	ImGui::Separator();
 
 	ImGui::End();
 }

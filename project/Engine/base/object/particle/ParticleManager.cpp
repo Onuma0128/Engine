@@ -56,28 +56,6 @@ void ParticleManager::Update()
     for (auto it = particleGroups_.begin(); it != particleGroups_.end();) {
         auto& group = it->second;
 
-        //size_t emitterSize = group.emitters.size();
-        //group.emitters.erase(
-        //    std::remove_if(group.emitters.begin(), group.emitters.end(),
-        //        [](const std::weak_ptr<ParticleEmitter>& w) {
-        //            return w.expired(); }),
-        //            group.emitters.end());
-
-        //// Emitterが消えているならCopyのNameを詰める
-        //uint32_t emitCount = 0;
-        //for (auto& g_emitter : group.emitters) {
-        //    if (emitterSize == group.emitters.size()) { break; }
-        //    if (auto emitter = g_emitter.lock()) {
-        //        std::string name = emitter->GetName();
-        //        if (emitCount == 0) {
-        //            emitter->SetCopyName(name);
-        //        } else {
-        //            emitter->SetCopyName(name + std::to_string(static_cast<uint32_t>(emitCount)));
-        //        }
-        //    }
-        //    ++emitCount;
-        //}
-
         std::vector<ParticleForGPU> staging;
         uint32_t numInstance = 0;
         if (!group.emitters.empty()) {

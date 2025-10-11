@@ -1,10 +1,10 @@
 {
-    "Texture": "circle.png",
+    "Texture": "blood.png",
     "BlendMode": 2,
-    "Move": false,
-    "EmitCount": 12,
-    "FrequencyTime": 0.6899999976158142,
-    "LifeTime": 0.5799999833106995,
+    "Move": true,
+    "EmitCount": 0,
+    "FrequencyTime": 0.05000000074505806,
+    "LifeTime": 0.2800000011920929,
     "Acceleration": {
         "x": 0.0,
         "y": 0.0,
@@ -25,39 +25,39 @@
     "ReflectY": 0.0,
     "Color": {
         "x": 1.0,
-        "y": 0.0,
+        "y": 0.20588237047195435,
         "z": 0.0
     },
     "uvTranslation": {
-        "x": 1.0,
+        "x": 0.0,
         "y": 0.0,
         "z": 0.0
     },
     "MinScale": {
-        "x": 0.10000000149011612,
-        "y": 3.0,
+        "x": 0.30000001192092896,
+        "y": 0.30000001192092896,
         "z": 1.0
     },
     "MaxScale": {
-        "x": 1.9600000381469727,
-        "y": 3.8299999237060547,
+        "x": 0.30000001192092896,
+        "y": 0.30000001192092896,
         "z": 1.0
     },
     "ChangeScale": true,
     "EndScale": {
-        "x": 0.019999999552965164,
+        "x": 0.0,
         "y": 0.0,
         "z": 1.0
     },
     "MinVelocity": {
         "x": -0.5,
         "y": -0.5,
-        "z": 0.0
+        "z": 2.0
     },
     "MaxVelocity": {
         "x": 0.5,
         "y": 0.5,
-        "z": 0.0
+        "z": 2.0
     },
     "Billboard": true,
     "MinRotate": {
@@ -68,7 +68,7 @@
     "MaxRotate": {
         "x": 0.0,
         "y": 0.0,
-        "z": 0.0
+        "z": 4.389999866485596
     },
     "MinRotateSpeed": {
         "x": 0.0,
@@ -81,24 +81,24 @@
         "z": 0.0
     },
     "MinSize": {
-        "x": -0.25,
-        "y": -0.25,
-        "z": 0.0
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.15000000596046448
     },
     "MaxSize": {
-        "x": 0.25,
-        "y": 0.25,
-        "z": 0.0
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.15000000596046448
     },
     "Position": {
         "x": 0.0,
         "y": 0.0,
-        "z": 0.0
+        "z": -0.10000000149011612
     },
-    "Look": false,
-    "Model": 1,
-    "LockDirection": true,
-    "DirectionSpeed": 7.199999809265137,
+    "Look": true,
+    "Model": 0,
+    "LockDirection": false,
+    "DirectionSpeed": 3.559999942779541,
     "UvFlipX": false,
     "UvFlipY": false
 }

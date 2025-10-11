@@ -42,7 +42,7 @@ public:
     void Load(const std::string filePath);
 
     // nameを入れてデータを取得する
-    std::map<std::string, SceneObject>& GetData() { return sceneObjectDatas_; }
+    const std::map<std::string, SceneObject>& GetData()const { return sceneObjectDatas_; }
 
 private:
 

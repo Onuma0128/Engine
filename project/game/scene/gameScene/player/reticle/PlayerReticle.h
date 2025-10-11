@@ -25,7 +25,9 @@ public:
 
 	void SetColliderActive(bool flag) { Collider::isActive_ = flag; }
 
-	std::list<WorldTransform>& GetEnemyTransforms() { return enemyTransforms_; }
+	const std::list<Collider*>& GetEnemyColliders()const { return enemyColliders_; }
+	void EnemyCollidersPopBack() { enemyColliders_.pop_back(); }
+	void EnemyCollidersClear() { enemyColliders_.clear(); }
 	void ResetHitCount() { 
 		hitCount_ = 0;
 		Collider::isActive_ = false;
@@ -37,8 +39,8 @@ private:
 
 private:
 
-	// 敵のTransformを取得用
-	std::list<WorldTransform> enemyTransforms_;
+	// 敵のColliderを取得用
+	std::list<Collider*> enemyColliders_;
 	// 何体敵と当たったかカウント用
 	uint32_t hitCount_ = 0;
 	// ヒット時のcolor値

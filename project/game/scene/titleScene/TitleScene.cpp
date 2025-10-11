@@ -23,7 +23,7 @@ void TitleScene::Initialize()
 	titleUI_ = std::make_unique<TitleUI>();
 	titleUI_->Init();
 
-	test = std::make_unique<ParticleEmitter>("playerReload");
+	test = std::make_unique<ParticleEmitter>("particleName");
 	particleManager->CreateParticleGroup(test);
 	test->SetIsCreate(false);
 }

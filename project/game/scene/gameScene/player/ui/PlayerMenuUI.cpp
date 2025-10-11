@@ -4,7 +4,7 @@
 
 void PlayerMenuUI::Init()
 {
-	BaseUI::Init("PlayerMenuUI");
+	BaseUI::Init("PlayerMenuUI", "GameData");
 }
 
 void PlayerMenuUI::Update()

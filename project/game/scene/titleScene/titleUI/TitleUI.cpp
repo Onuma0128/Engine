@@ -2,7 +2,7 @@
 
 void TitleUI::Init()
 {
-	BaseUI::Init("TitleUI");
+	BaseUI::Init("TitleUI", "GameData");
 }
 
 void TitleUI::Update()

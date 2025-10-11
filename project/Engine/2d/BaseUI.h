@@ -13,6 +13,7 @@ private:
 	struct UI_Parameters
 	{
 		std::string filename;
+		std::string biginName;
 		std::string texture;
 
 		Vector2 anchorPoint;
@@ -28,7 +29,7 @@ private:
 
 public:
 
-	void Init(const std::string UI_Name);
+	void Init(const std::string uiName, const std::string biginName);
 
 	virtual void Update();
 

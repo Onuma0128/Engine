@@ -84,101 +84,106 @@ void PlayerAdjustItem::Editor()
 {
 	/* ============================== Player ============================== */
 
-	ImGui::Begin("PlayerParameters");
-
-	ImGui::Checkbox("invincible", &playerData_.isInvincible);
-
-	ImGui::PushItemWidth(150);
-
-	if (ImGui::TreeNode("Player")) {
-
-		ImGui::DragInt("clearKill", &playerData_.clearKill);
-		ImGui::DragFloat2("minPlayerClamp", &playerData_.minPlayerClamp.x, 0.1f, -1000.0f, 0.0f);
-		ImGui::DragFloat2("maxPlayerClamp", &playerData_.maxPlayerClamp.x, 0.1f, 0.0f, 1000.0f);
+	ImGui::Begin("GameData");
+	if (ImGui::TreeNode("PlayerParameters")) {
 		ImGui::Separator();
-		ImGui::DragFloat("speed", &playerData_.speed, 0.01f);
-		ImGui::DragFloat("backSpeed", &playerData_.backSpeed, 0.01f);
-		ImGui::DragFloat("pushSpeed", &playerData_.pushSpeed, 0.01f);
+
+		ImGui::Checkbox("invincible", &playerData_.isInvincible);
+
+		ImGui::PushItemWidth(150);
+
+		if (ImGui::TreeNode("Player")) {
+
+			ImGui::DragInt("clearKill", &playerData_.clearKill);
+			ImGui::DragFloat2("minPlayerClamp", &playerData_.minPlayerClamp.x, 0.1f, -1000.0f, 0.0f);
+			ImGui::DragFloat2("maxPlayerClamp", &playerData_.maxPlayerClamp.x, 0.1f, 0.0f, 1000.0f);
+			ImGui::Separator();
+			ImGui::DragFloat("speed", &playerData_.speed, 0.01f);
+			ImGui::DragFloat("backSpeed", &playerData_.backSpeed, 0.01f);
+			ImGui::DragFloat("pushSpeed", &playerData_.pushSpeed, 0.01f);
+			ImGui::Separator();
+			ImGui::DragFloat("avoidTime", &playerData_.avoidTime, 0.01f);
+			ImGui::DragFloat("avoid_speed", &playerData_.avoid_speed, 0.01f);
+			ImGui::DragFloat("avoid_velocityY", &playerData_.avoid_velocityY, 0.01f);
+			ImGui::DragFloat("avoid_acceleration", &playerData_.avoid_acceleration, 0.01f);
+			ImGui::DragFloat("avoid_coolTime", &playerData_.avoid_coolTime, 0.01f);
+
+			if (ImGui::Button("Save")) {
+				playerJson_.Set("clearKill", playerData_.clearKill);
+				playerJson_.Set("minPlayerClamp", playerData_.minPlayerClamp);
+				playerJson_.Set("maxPlayerClamp", playerData_.maxPlayerClamp);
+				playerJson_.Set("speed", playerData_.speed);
+				playerJson_.Set("backSpeed", playerData_.backSpeed);
+				playerJson_.Set("pushSpeed", playerData_.pushSpeed);
+				playerJson_.Set("avoidTime", playerData_.avoidTime);
+				playerJson_.Set("avoid_speed", playerData_.avoid_speed);
+				playerJson_.Set("avoid_velocityY", playerData_.avoid_velocityY);
+				playerJson_.Set("avoid_acceleration", playerData_.avoid_acceleration);
+				playerJson_.Set("avoid_coolTime", playerData_.avoid_coolTime);
+				playerJson_.Save();
+			}
+			ImGui::TreePop();
+		}
 		ImGui::Separator();
-		ImGui::DragFloat("avoidTime", &playerData_.avoidTime, 0.01f);
-		ImGui::DragFloat("avoid_speed", &playerData_.avoid_speed, 0.01f);
-		ImGui::DragFloat("avoid_velocityY", &playerData_.avoid_velocityY, 0.01f);
-		ImGui::DragFloat("avoid_acceleration", &playerData_.avoid_acceleration, 0.01f);
-		ImGui::DragFloat("avoid_coolTime", &playerData_.avoid_coolTime, 0.01f);
 
-		if (ImGui::Button("Save")) {
-			playerJson_.Set("clearKill", playerData_.clearKill);
-			playerJson_.Set("minPlayerClamp", playerData_.minPlayerClamp);
-			playerJson_.Set("maxPlayerClamp", playerData_.maxPlayerClamp);
-			playerJson_.Set("speed", playerData_.speed);
-			playerJson_.Set("backSpeed", playerData_.backSpeed);
-			playerJson_.Set("pushSpeed", playerData_.pushSpeed);
-			playerJson_.Set("avoidTime", playerData_.avoidTime);
-			playerJson_.Set("avoid_speed", playerData_.avoid_speed);
-			playerJson_.Set("avoid_velocityY", playerData_.avoid_velocityY);
-			playerJson_.Set("avoid_acceleration", playerData_.avoid_acceleration);
-			playerJson_.Set("avoid_coolTime", playerData_.avoid_coolTime);
-			playerJson_.Save();
+		/* ============================== Bullet ============================== */
+
+		if (ImGui::TreeNode("Bullet")) {
+
+			ImGui::DragFloat("speed", &bulletData_.speed, 0.01f);
+			ImGui::DragFloat("speed_sp", &bulletData_.speed_sp, 0.01f);
+			ImGui::DragFloat3("position", &bulletData_.position.x, 0.01f);
+			ImGui::DragFloat("reloadStartTime", &bulletData_.reloadStartTime, 0.01f);
+			ImGui::DragFloat("reloadTime", &bulletData_.reloadTime, 0.01f);
+			ImGui::DragFloat3("colliderSize", &bulletData_.colliderSize.x, 0.01f);
+			ImGui::DragFloat3("colliderPosition", &bulletData_.colliderPosition.x, 0.01f);
+			if (ImGui::Button("Save")) {
+				bulletJson_.Set("speed", bulletData_.speed);
+				bulletJson_.Set("speed_sp", bulletData_.speed_sp);
+				bulletJson_.Set("position", bulletData_.position);
+				bulletJson_.Set("reloadStartTime", bulletData_.reloadStartTime);
+				bulletJson_.Set("reloadTime", bulletData_.reloadTime);
+				bulletJson_.Set("colliderSize", bulletData_.colliderSize);
+				bulletJson_.Set("colliderPosition", bulletData_.colliderPosition);
+				bulletJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+
+		/* ============================== PredictionObject ============================== */
+
+		if (ImGui::TreeNode("PredictionObject")) {
+
+			ImGui::DragFloat("interval", &preObjectData_.interval, 0.01f);
+			ImGui::DragFloat3("startPosition", &preObjectData_.startPosition.x, 0.01f);
+			if (ImGui::Button("Save")) {
+				preObjectJson_.Set("interval", preObjectData_.interval);
+				preObjectJson_.Set("startPosition", preObjectData_.startPosition);
+				preObjectJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+
+		/* ============================== BulletUI ============================== */
+
+		if (ImGui::TreeNode("BulletUI")) {
+
+			ImGui::DragFloat2("size", &bulletUIData_.size.x);
+			ImGui::DragFloat("startPosition", &bulletUIData_.startPosition);
+			ImGui::DragFloat2("position", &bulletUIData_.position.x);
+			if (ImGui::Button("Save")) {
+				bulletUIJson_.Set("size", bulletUIData_.size);
+				bulletUIJson_.Set("position", bulletUIData_.position);
+				bulletUIJson_.Set("startPosition", bulletUIData_.startPosition);
+				bulletUIJson_.Save();
+			}
+			ImGui::TreePop();
 		}
 		ImGui::TreePop();
 	}
 	ImGui::Separator();
-
-	/* ============================== Bullet ============================== */
-
-	if (ImGui::TreeNode("Bullet")) {
-
-		ImGui::DragFloat("speed", &bulletData_.speed, 0.01f);
-		ImGui::DragFloat("speed_sp", &bulletData_.speed_sp, 0.01f);
-		ImGui::DragFloat3("position", &bulletData_.position.x, 0.01f);
-		ImGui::DragFloat("reloadStartTime", &bulletData_.reloadStartTime, 0.01f);
-		ImGui::DragFloat("reloadTime", &bulletData_.reloadTime, 0.01f);
-		ImGui::DragFloat3("colliderSize", &bulletData_.colliderSize.x, 0.01f);
-		ImGui::DragFloat3("colliderPosition", &bulletData_.colliderPosition.x, 0.01f);
-		if (ImGui::Button("Save")) {
-			bulletJson_.Set("speed", bulletData_.speed);
-			bulletJson_.Set("speed_sp", bulletData_.speed_sp);
-			bulletJson_.Set("position", bulletData_.position);
-			bulletJson_.Set("reloadStartTime", bulletData_.reloadStartTime);
-			bulletJson_.Set("reloadTime", bulletData_.reloadTime);
-			bulletJson_.Set("colliderSize", bulletData_.colliderSize);
-			bulletJson_.Set("colliderPosition", bulletData_.colliderPosition);
-			bulletJson_.Save();
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Separator();
-
-	/* ============================== PredictionObject ============================== */
-
-	if (ImGui::TreeNode("PredictionObject")) {
-
-		ImGui::DragFloat("interval", &preObjectData_.interval, 0.01f);
-		ImGui::DragFloat3("startPosition", &preObjectData_.startPosition.x, 0.01f);
-		if (ImGui::Button("Save")) {
-			preObjectJson_.Set("interval", preObjectData_.interval);
-			preObjectJson_.Set("startPosition", preObjectData_.startPosition);
-			preObjectJson_.Save();
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Separator();
-
-	/* ============================== BulletUI ============================== */
-
-	if (ImGui::TreeNode("BulletUI")) {
-
-		ImGui::DragFloat2("size", &bulletUIData_.size.x);
-		ImGui::DragFloat("startPosition", &bulletUIData_.startPosition);
-		ImGui::DragFloat2("position", &bulletUIData_.position.x);
-		if (ImGui::Button("Save")) {
-			bulletUIJson_.Set("size", bulletUIData_.size);
-			bulletUIJson_.Set("position", bulletUIData_.position);
-			bulletUIJson_.Set("startPosition", bulletUIData_.startPosition);
-			bulletUIJson_.Save();
-		}
-		ImGui::TreePop();
-	}
 
 	ImGui::End();
 }

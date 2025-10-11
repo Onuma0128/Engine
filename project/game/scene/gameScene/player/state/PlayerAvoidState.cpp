@@ -54,6 +54,10 @@ void PlayerAvoidState::Update()
 	player_->GetTransform().translation_ += velocity_ * speed * DeltaTimer::GetDeltaTime();
 	velocityY_ -= acceleration_ * DeltaTimer::GetDeltaTime();
 	player_->GetTransform().translation_.y += velocityY_;
+	Vector2 min = player_->GetItem()->GetPlayerData().minPlayerClamp;
+	Vector2 max = player_->GetItem()->GetPlayerData().maxPlayerClamp;
+	player_->GetTransform().translation_.x = std::clamp(player_->GetTransform().translation_.x, min.x, max.x);
+	player_->GetTransform().translation_.z = std::clamp(player_->GetTransform().translation_.z, min.y, max.y);
 
 	if (avoidTime_ >= 1.0f) {
 		player_->GetTimeStop() = false;

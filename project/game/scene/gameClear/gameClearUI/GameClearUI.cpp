@@ -2,7 +2,7 @@
 
 void GameClearUI::Init()
 {
-	BaseUI::Init("GameClearUI");
+	BaseUI::Init("GameClearUI", "GameData");
 }
 
 void GameClearUI::Update()

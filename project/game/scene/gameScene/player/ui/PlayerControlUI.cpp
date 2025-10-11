@@ -4,7 +4,7 @@
 
 void PlayerControlUI::Init()
 {
-	BaseUI::Init("PlayerControlUI");
+	BaseUI::Init("PlayerControlUI", "GameData");
 }
 
 void PlayerControlUI::Update()

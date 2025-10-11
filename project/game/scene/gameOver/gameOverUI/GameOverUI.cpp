@@ -2,7 +2,7 @@
 
 void GameOverUI::Init()
 {
-	BaseUI::Init("GameOverUI");
+	BaseUI::Init("GameOverUI", "GameData");
 }
 
 void GameOverUI::Update()

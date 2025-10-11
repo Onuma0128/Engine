@@ -6,10 +6,11 @@
 #include "DeltaTimer.h"
 #include "Easing.h"
 
-void BaseUI::Init(const std::string UI_Name)
+void BaseUI::Init(const std::string uiName, const std::string biginName)
 {
-	parameters_.filename = UI_Name;
-	json_.Init(UI_Name);
+	parameters_.filename = uiName;
+	parameters_.biginName = biginName;
+	json_.Init(uiName);
 
 	// ロードするファイルが無ければ
 	if (!json_.Load()) {
@@ -92,71 +93,75 @@ void BaseUI::DrawImGui()
 {
 #ifdef _DEBUG
 
-	ImGui::Begin(parameters_.filename.c_str());
-	ImGui::PushItemWidth(150);
+	ImGui::Begin(parameters_.biginName.c_str());
+	if (ImGui::TreeNode(parameters_.filename.c_str())) {
+		ImGui::Separator();
+		ImGui::PushItemWidth(150);
 
-	// テクスチャを選択
-	int index = textureIndex_;
-	auto items = TextureManager::GetInstance()->GetTextures();
-	if (ImGui::BeginCombo("Textrue", items[textureIndex_].c_str())) {
-		for (int i = 0; i < items.size(); ++i) {
-			const bool is_selected = (textureIndex_ == i);
-			if (ImGui::Selectable(items[i].c_str(), is_selected)) { textureIndex_ = i; }
-			if (is_selected) { ImGui::SetItemDefaultFocus(); }
-		}
-		ImGui::EndCombo();
-	}
-	parameters_.texture = items[textureIndex_];
-	if (index != textureIndex_) { ui_->SetTexture(parameters_.texture); }
-
-	// AnchorPoint
-	ImGui::DragFloat2("AnchorPoint", &parameters_.anchorPoint.x, 0.01f);
-	ui_->SetAnchorPoint(parameters_.anchorPoint);
-	// Transform
-	ImGui::DragFloat2("Size", &parameters_.transform.size.x, 0.5f);
-	ImGui::DragFloat("Rotate", &parameters_.transform.rotate, 0.01f);
-	ImGui::DragFloat2("Position", &parameters_.transform.position.x, 0.5f);
-	if (!isPlayAnimation_ && playAnimationTimer_ == 0.0f) {
-		ui_->GetTransform() = parameters_.transform;
-	}
-	// Animation
-	ImGui::Checkbox("IsAnimation", &parameters_.isAnimation);
-	ImGui::DragFloat("AnimationTime", &parameters_.animationTime, 0.01f);
-	if (parameters_.isAnimation) {
-		const auto& names = Easing::GetEaseTypeNames();
-		int idx = std::clamp(parameters_.inEasingType, 0, (int)names.size() - 1);
-		if (ImGui::BeginCombo("InEasingType", names[idx])) {
-			for (int i = 0; i < (int)names.size(); ++i) {
-				bool sel = (parameters_.inEasingType == i);
-				if (ImGui::Selectable(names[i], sel)) {
-					parameters_.inEasingType = i;
-				}
-				if (sel) ImGui::SetItemDefaultFocus();
+		// テクスチャを選択
+		int index = textureIndex_;
+		auto items = TextureManager::GetInstance()->GetTextures();
+		if (ImGui::BeginCombo("Textrue", items[textureIndex_].c_str())) {
+			for (int i = 0; i < items.size(); ++i) {
+				const bool is_selected = (textureIndex_ == i);
+				if (ImGui::Selectable(items[i].c_str(), is_selected)) { textureIndex_ = i; }
+				if (is_selected) { ImGui::SetItemDefaultFocus(); }
 			}
 			ImGui::EndCombo();
 		}
-		idx = std::clamp(parameters_.outEasingType, 0, (int)names.size() - 1);
-		if (ImGui::BeginCombo("OutEasingType", names[idx])) {
-			for (int i = 0; i < (int)names.size(); ++i) {
-				bool sel = (parameters_.outEasingType == i);
-				if (ImGui::Selectable(names[i], sel)) {
-					parameters_.outEasingType = i;
-				}
-				if (sel) ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
+		parameters_.texture = items[textureIndex_];
+		if (index != textureIndex_) { ui_->SetTexture(parameters_.texture); }
+
+		// AnchorPoint
+		ImGui::DragFloat2("AnchorPoint", &parameters_.anchorPoint.x, 0.01f);
+		ui_->SetAnchorPoint(parameters_.anchorPoint);
+		// Transform
+		ImGui::DragFloat2("Size", &parameters_.transform.size.x, 0.5f);
+		ImGui::DragFloat("Rotate", &parameters_.transform.rotate, 0.01f);
+		ImGui::DragFloat2("Position", &parameters_.transform.position.x, 0.5f);
+		if (!isPlayAnimation_ && playAnimationTimer_ == 0.0f) {
+			ui_->GetTransform() = parameters_.transform;
 		}
-		if (ImGui::Button("FadeIn")) { FadeIn(); }
-		if (ImGui::Button("FadeOut")) { FadeOut(); }
-	}
-	ImGui::DragFloat2("Anima_Size", &parameters_.animaTransform.size.x, 0.5f);
-	ImGui::DragFloat("Anima_Rotate", &parameters_.animaTransform.rotate, 0.01f);
-	ImGui::DragFloat2("Anima_Position", &parameters_.animaTransform.position.x, 0.5f);
+		// Animation
+		ImGui::Checkbox("IsAnimation", &parameters_.isAnimation);
+		ImGui::DragFloat("AnimationTime", &parameters_.animationTime, 0.01f);
+		if (parameters_.isAnimation) {
+			const auto& names = Easing::GetEaseTypeNames();
+			int idx = std::clamp(parameters_.inEasingType, 0, (int)names.size() - 1);
+			if (ImGui::BeginCombo("InEasingType", names[idx])) {
+				for (int i = 0; i < (int)names.size(); ++i) {
+					bool sel = (parameters_.inEasingType == i);
+					if (ImGui::Selectable(names[i], sel)) {
+						parameters_.inEasingType = i;
+					}
+					if (sel) ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+			idx = std::clamp(parameters_.outEasingType, 0, (int)names.size() - 1);
+			if (ImGui::BeginCombo("OutEasingType", names[idx])) {
+				for (int i = 0; i < (int)names.size(); ++i) {
+					bool sel = (parameters_.outEasingType == i);
+					if (ImGui::Selectable(names[i], sel)) {
+						parameters_.outEasingType = i;
+					}
+					if (sel) ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+			if (ImGui::Button("FadeIn")) { FadeIn(); }
+			if (ImGui::Button("FadeOut")) { FadeOut(); }
+		}
+		ImGui::DragFloat2("Anima_Size", &parameters_.animaTransform.size.x, 0.5f);
+		ImGui::DragFloat("Anima_Rotate", &parameters_.animaTransform.rotate, 0.01f);
+		ImGui::DragFloat2("Anima_Position", &parameters_.animaTransform.position.x, 0.5f);
 
-	if (ImGui::Button("Save")) {
-		Save();
+		if (ImGui::Button("Save")) {
+			Save();
+		}
+		ImGui::TreePop();
 	}
-
+	ImGui::Separator();
 	ImGui::End();
 
 #endif // _DEBUG

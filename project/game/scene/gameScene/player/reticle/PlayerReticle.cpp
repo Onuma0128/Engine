@@ -87,7 +87,7 @@ void PlayerReticle::OnCollisionEnter(Collider* other)
 		++hitCount_;
 		WorldTransform transform;
 		transform.translation_ = other->GetCenterPosition();
-		enemyTransforms_.push_front(transform);
+		enemyColliders_.push_front(other);
 		Input::GetInstance()->Vibrate(0.2f, 1.0f, 10);
 	}
 }

@@ -166,21 +166,24 @@ void PlayerShot::AttackBullet()
 void PlayerShot::SpecialAttackBullet()
 {
 	// 敵のTransformを取得した分だけ回す
-	uint32_t count = static_cast<uint32_t>(player_->GetReticle()->GetEnemyTransforms().size() - 1);
-	auto& transform = player_->GetReticle()->GetEnemyTransforms().back();
+	uint32_t count = static_cast<uint32_t>(player_->GetReticle()->GetEnemyColliders().size() - 1);
+	auto& collider = player_->GetReticle()->GetEnemyColliders().back();
+	WorldTransform transform;
+	transform.rotation_ = collider->GetRotate();
+	transform.translation_ = collider->GetCenterPosition();
 
 	Vector3 dir = (transform.translation_ - player_->GetTransform().translation_).Normalize();
 	transform.rotation_ = Quaternion::DirectionToQuaternion(transform.rotation_, dir, 1.0f);
 	transform.translation_ = player_->GetTransform().translation_;
 	player_->GetTransform().rotation_ = transform.rotation_;
 	specialBullets_[count]->Attack(transform, player_->GetItem()->GetBulletData().speed_sp);
-	player_->GetReticle()->GetEnemyTransforms().pop_back();
+	player_->GetReticle()->EnemyCollidersPopBack();
 
-	if (player_->GetReticle()->GetEnemyTransforms().empty()) {
+	if (player_->GetReticle()->GetEnemyColliders().empty()) {
 		for (auto& bullet : specialBullets_) {
 			bullet->Reload(WorldTransform());
 		}
-		player_->GetReticle()->GetEnemyTransforms().clear();
+		player_->GetReticle()->EnemyCollidersClear();
 		player_->GetReticle()->ResetHitCount();
 		AllReloadBullet();
 	}

@@ -36,7 +36,7 @@ void PlayerBulletEffect::Update()
 
 void PlayerBulletEffect::OnceBulletTrailEffect(const WorldTransform& transform)
 {
-	bulletTrailEmitter_->onceEmit();
+	bulletTrailEmitter_->SetIsCreate(true);
 
 	// パーティクルの座標を設定
 	Quaternion rotate = transform.rotation_;

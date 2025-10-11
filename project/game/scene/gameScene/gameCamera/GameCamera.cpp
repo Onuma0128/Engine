@@ -47,24 +47,24 @@ void GameCamera::SaveJson()
 
 void GameCamera::ValueImGui()
 {
-	ImGui::Begin("GameCamera");
-	data_.DrawImGui();
-	if (ImGui::Button("Save")) {
-		data_.Save();
+	ImGui::Begin("GameData");
+	if (ImGui::TreeNode("GameCamera")) {
+		ImGui::PushItemWidth(150);
+		ImGui::Separator();
+
+		data_.DrawImGui();
+		if (ImGui::Button("Save")) {
+			data_.Save();
+		}
+		ImGui::TreePop();
 	}
+	ImGui::Separator();
 	ImGui::End();
 }
 
 void GameCamera::Update()
 {
 	Input* input = Input::GetInstance();
-	//input->SetGamepadStickDeadzoneScale(0.4f);
-	/*if (input->TriggerKey(DIK_1)) {
-		CameraManager::GetInstance()->SetActiveCamera(1);
-	}
-	if (input->TriggerKey(DIK_2)) {
-		CameraManager::GetInstance()->SetActiveCamera(2);
-	}*/
 
 	ValueImGui();
 

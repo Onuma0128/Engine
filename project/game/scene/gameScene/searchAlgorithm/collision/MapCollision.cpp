@@ -55,15 +55,20 @@ void MapCollision::Update()
 {
 #ifdef _DEBUG
 
-	ImGui::Begin("map");
-	ImGui::DragFloat("size", &size_, 0.01f, 0.01f, 1000.0f);
-	ImGui::DragFloat("cell", &cell_, 0.01f, 0.1f, 10.0f);
-	if (ImGui::Button("Reload")) {
-		// マップを再ロードする
-		ReloadMap();
+	ImGui::Begin("GameData");
+	if (ImGui::TreeNode("MapCollision")) {
+		ImGui::PushItemWidth(150);
+		ImGui::DragFloat("size", &size_, 0.01f, 0.01f, 1000.0f);
+		ImGui::DragFloat("cell", &cell_, 0.01f, 0.1f, 10.0f);
+		if (ImGui::Button("Reload")) {
+			// マップを再ロードする
+			ReloadMap();
+		}
+		ImGui::SameLine();
+		ImGui::Checkbox("debugLine", &debugLine_);
+		ImGui::TreePop();
 	}
-	ImGui::SameLine();
-	ImGui::Checkbox("debugLine", &debugLine_);
+	ImGui::Separator();
 	ImGui::End();
 
 #endif // _DEBUG

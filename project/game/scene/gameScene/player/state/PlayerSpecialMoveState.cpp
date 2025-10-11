@@ -45,7 +45,7 @@ void PlayerSpecialMoveState::Update()
 		player_->GetReticle()->SetColliderActive(false);
 
 		// 必殺技が終わったらターゲットしている敵に弾を出す
-		if (!player_->GetReticle()->GetEnemyTransforms().empty()) {
+		if (!player_->GetReticle()->GetEnemyColliders().empty()) {
 			player_->GetShot()->SpecialAttackBullet();
 		}
 		if (t <= 0.0f) {
