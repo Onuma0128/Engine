@@ -7,7 +7,7 @@
 #include "Camera.h"
 #include "Animation.h"
 #include "scene/sceneFade/SceneFade.h"
-#include "scene/gameOver/gameOverUI/GameOverUI.h"
+#include "uis/gameOverUI/GameOverUI.h"
 
 class GameOverScene : public BaseScene
 {

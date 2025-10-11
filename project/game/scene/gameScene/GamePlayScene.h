@@ -9,11 +9,13 @@
 #include "ParticleEmitter.h"
 
 #include "scene/sceneFade/SceneFade.h"
-#include "gameScene/player/Player.h"
-#include "gameScene/enemy/spawner/EnemySpawnerFactory.h"
-#include "gameScene/gameCamera/GameCamera.h"
-#include "gameScene/fieldObject/Factory/FieldObjectFactory.h"
-#include "gameScene/searchAlgorithm/collision/MapCollision.h"
+
+#include "objects/player/Player.h"
+#include "objects/enemy/spawner/EnemySpawnerFactory.h"
+#include "objects/fieldObject/Factory/FieldObjectFactory.h"
+
+#include "gameCamera/GameCamera.h"
+#include "searchAlgorithm/collision/MapCollision.h"
 
 class GamePlayScene : public BaseScene
 {

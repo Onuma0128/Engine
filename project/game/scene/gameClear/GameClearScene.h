@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "Animation.h"
 #include "scene/sceneFade/SceneFade.h"
-#include "scene/gameClear/gameClearUI/GameClearUI.h"
+#include "uis/gameClearUI/GameClearUI.h"
 
 class GameClearScene : public BaseScene
 {

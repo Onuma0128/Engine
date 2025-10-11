@@ -7,7 +7,7 @@
 #include "Camera.h"
 
 #include "scene/sceneFade/SceneFade.h"
-#include "scene/titleScene/titleUI/TitleUI.h"
+#include "uis/titleUI/TitleUI.h"
 
 class TitleScene : public BaseScene
 {

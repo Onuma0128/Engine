@@ -5,10 +5,6 @@
 #include "ParticleManager.h"
 #include "SceneManager.h"
 #include "SceneJsonLoader.h"
-#include "PostEffectManager.h"
-
-#include "Collision3D.h"
-#include "Vector3.h"
 
 void GamePlayScene::Initialize()
 {
