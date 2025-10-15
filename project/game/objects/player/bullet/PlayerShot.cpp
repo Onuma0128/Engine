@@ -31,7 +31,7 @@ void PlayerShot::Init(Player* player)
 		bulletUIs_[i]->Init(Vector2{ (i * 32.0f) + 32.0f,32.0f });
 	}
 	// Kill数UIの初期化
-	killCountUI_ = std::make_unique<PlayerKillCountUI>();
+	killCountUI_ = std::make_unique<PlayerCountUI>();
 	killCountUI_->Init();
 
 	// 弾の予測オブジェクトの初期化
@@ -158,6 +158,7 @@ void PlayerShot::AttackBullet()
 			transform.translation_ = player_->GetTransform().translation_;
 			bullet->Attack(transform, player_->GetItem()->GetBulletData().speed);
 			Input::GetInstance()->Vibrate(0.5f, 0.9f, 90);
+			++kHitRate_;
 			break;
 		}
 	}
@@ -178,6 +179,7 @@ void PlayerShot::SpecialAttackBullet()
 	player_->GetTransform().rotation_ = transform.rotation_;
 	specialBullets_[count]->Attack(transform, player_->GetItem()->GetBulletData().speed_sp);
 	player_->GetReticle()->EnemyCollidersPopBack();
+	++kHitRate_;
 
 	if (player_->GetReticle()->GetEnemyColliders().empty()) {
 		for (auto& bullet : specialBullets_) {

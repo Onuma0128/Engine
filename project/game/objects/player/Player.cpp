@@ -112,7 +112,7 @@ void Player::OnCollisionEnter(Collider* other)
 		other->GetColliderName() == "EnemyRanged" ||
 		other->GetColliderName() == "EnemyShieldBearer" ||
 		other->GetColliderName() == "EnemyRangedElite") {
-		if (!isAvoid_ && !items_->GetPlayerData().isInvincible) {
+		if (!isAvoid_ && !items_->GetPlayerData().isInvincible && isAlive_) {
 			isAlive_ = false;
 			ChengeState(std::make_unique<PlayerDeadState>(this));
 		}

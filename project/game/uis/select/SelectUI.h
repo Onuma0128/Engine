@@ -2,7 +2,7 @@
 
 #include "BaseUI.h"
 
-class SelectBackGroundUI : public BaseUI
+class SelectUI : public BaseUI
 {
 public:
 

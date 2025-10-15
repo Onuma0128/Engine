@@ -54,6 +54,6 @@ private:
 
 	// シーンフェード
 	std::unique_ptr<SceneFade> sceneFade_ = nullptr;
-	bool isFade_ = false;
+	bool isSelect_ = false;
 };
 

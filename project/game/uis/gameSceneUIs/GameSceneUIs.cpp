@@ -14,6 +14,8 @@ void GameSceneUIs::Init()
 
 	selectSystem_ = std::make_unique<SelectSystem>();
 	selectSystem_->Init();
+
+	Update();
 }
 
 void GameSceneUIs::Update()
@@ -32,4 +34,9 @@ void GameSceneUIs::Draw()
 	}
 
 	selectSystem_->Draw();
+}
+
+void GameSceneUIs::SelectUIFadeIn()
+{
+	selectSystem_->SelectUIFadeIn();
 }

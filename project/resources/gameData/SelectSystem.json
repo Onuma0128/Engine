@@ -1,0 +1,21 @@
+{
+    "killNumberUiInterval": 48.0,
+    "killNumberUiSize": {
+        "x": 40.0,
+        "y": 64.0
+    },
+    "killNumberUiPos": {
+        "x": 820.0,
+        "y": 260.0
+    },
+    "hitRateNumberUiInterval": 48.0,
+    "hitRateNumberUiSize": {
+        "x": 40.0,
+        "y": 64.0
+    },
+    "hitRateNumberUiPos": {
+        "x": 820.0,
+        "y": 406.0
+    },
+    "clearCountUiTimer": 1.0
+}

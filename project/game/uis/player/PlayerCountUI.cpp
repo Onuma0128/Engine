@@ -1,19 +1,21 @@
-#include "PlayerKillCountUI.h"
+#include "PlayerCountUI.h"
 
 #include <algorithm> 
 
-void PlayerKillCountUI::Init()
+void PlayerCountUI::Init()
 {
 	numbers_.resize(3);
 
+	interval_ = 40.0f;
+
 	for (uint32_t i = 0; i < numbers_.size(); ++i) {
 		numbers_[i] = std::make_unique<NumbersUI>();
-		Vector2 position = { static_cast<float>(600 + (i * 40)),50.0f };
+		Vector2 position = { static_cast<float>(600 + (i * interval_)),50.0f };
 		numbers_[i]->Init(position);
 	}
 }
 
-void PlayerKillCountUI::Update(const uint32_t killCount)
+void PlayerCountUI::Update(const uint32_t killCount)
 {
 	uint32_t clamped = std::clamp(killCount, 0u, 999u);
 
@@ -30,20 +32,39 @@ void PlayerKillCountUI::Update(const uint32_t killCount)
 	}
 }
 
-void PlayerKillCountUI::Draw()
+void PlayerCountUI::Draw()
 {
 	for (auto& number : numbers_) {
 		number->Draw();
 	}
 }
 
-void PlayerKillCountUI::SetPosition(const Vector2& position)
+void PlayerCountUI::SetSize(const Vector2& size)
+{
+	for (auto& number : numbers_) {
+		number->SetSize(size);
+	}
+}
+
+void PlayerCountUI::SetPosition(const Vector2& position)
 {
 	int count = -1;
 	for (auto& number : numbers_) {
-		float posX = static_cast<float>(count) * 40.0f;
+		float posX = static_cast<float>(count) * interval_;
 		number->SetPosition(position + Vector2{ posX ,0.0f });
 		++count;
+	}
+}
+
+void PlayerCountUI::SetInterval(const float interval)
+{
+	interval_ = interval;
+}
+
+void PlayerCountUI::SetAlpha(const float alpha)
+{
+	for (auto& number : numbers_) {
+		number->SetColor(Vector4{ 1.0f,1.0f,1.0f,alpha });
 	}
 }
 

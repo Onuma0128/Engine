@@ -1,5 +1,7 @@
 #include "BaseUI.h"
 
+#include <numbers>
+
 #include "imgui.h"
 
 #include "TextureManager.h"
@@ -30,11 +32,12 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		parameters_.color = Vector4{ 1.0f,1.0f,1.0f,1.0f };
 		// Animation
 		json_.Set("IsAnimation", false);
-		json_.Set("AnimationTime", 0.0f);
+		json_.Set("AnimationTime", 1.0f);
 		json_.Set("Anima_Size", Vector2{ 1.0f,1.0f });
 		json_.Set("Anima_Rotate", 0.0f);
 		json_.Set("Anima_Position", Vector2{ 0.0f,0.0f });
 		parameters_.animaTransform.size = Vector2{ 1.0f,1.0f };
+		parameters_.animationTime = 1.0f;
 		// Color
 		json_.Set("Anima_Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
 		parameters_.animaColor = Vector4{ 1.0f,1.0f,1.0f,1.0f };
@@ -43,6 +46,9 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		json_.Set("OutEasingType", 0);
 		parameters_.inEasingType = 0;
 		parameters_.outEasingType = 0;
+		// Interval
+		json_.Set("FadeInInterval", 0.0f);
+		json_.Set("FadeOutInterval", 0.0f);
 
 	// ロードするファイルが有れば
 	} else {
@@ -60,7 +66,7 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		parameters_.animaColor = json_.Get<Vector4>("Anima_Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
 		// Animation
 		parameters_.isAnimation = json_.Get<bool>("IsAnimation", false);
-		parameters_.animationTime = json_.Get<float>("AnimationTime", 0.0f);
+		parameters_.animationTime = json_.Get<float>("AnimationTime", 1.0f);
 		parameters_.animaTransform.size = json_.Get<Vector2>("Anima_Size", Vector2{ 1.0f,1.0f });
 		parameters_.animaTransform.rotate = json_.Get<float>("Anima_Rotate", 0.0f);
 		parameters_.animaTransform.position = json_.Get<Vector2>("Anima_Position", Vector2{ 0.0f,0.0f });
@@ -74,6 +80,9 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		if (parameters_.outEasingType < 0 || parameters_.outEasingType >= (int)names.size()) {
 			parameters_.outEasingType = 0;
 		}
+		// Interval
+		parameters_.fadeInInterval = json_.Get<float>("FadeInInterval", 0.0f);
+		parameters_.fadeOutInterval = json_.Get<float>("FadeOutInterval", 0.0f);
 	}
 	// 選択できるテクスチャ
 	auto items = TextureManager::GetInstance()->GetTextures();
@@ -84,6 +93,8 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 	ui_->Initialize(parameters_.texture);
 	ui_->SetAnchorPoint(parameters_.anchorPoint);
 	ui_->GetTransform() = parameters_.transform;
+
+	playAnimationTimer_ = 0.0f;
 }
 
 void BaseUI::Update()
@@ -128,15 +139,15 @@ void BaseUI::DrawImGui()
 		ImGui::DragFloat2("Size", &parameters_.transform.size.x, 0.5f);
 		ImGui::DragFloat("Rotate", &parameters_.transform.rotate, 0.01f);
 		ImGui::DragFloat2("Position", &parameters_.transform.position.x, 0.5f);
-		if (!isPlayAnimation_ && playAnimationTimer_ == 0.0f) {
+		if (!isPlayAnimation_ && playAnimationTimer_ <= 0.0f) {
 			ui_->GetTransform() = parameters_.transform;
 		}
 		// Color
 		ImGui::ColorEdit4("Color", &parameters_.color.x);
 		// Animation
 		ImGui::Checkbox("IsAnimation", &parameters_.isAnimation);
-		ImGui::DragFloat("AnimationTime", &parameters_.animationTime, 0.01f);
 		if (parameters_.isAnimation) {
+			ImGui::DragFloat("AnimationTime", &parameters_.animationTime, 0.01f);
 			const auto& names = Easing::GetEaseTypeNames();
 			int idx = std::clamp(parameters_.inEasingType, 0, (int)names.size() - 1);
 			if (ImGui::BeginCombo("InEasingType", names[idx])) {
@@ -160,14 +171,19 @@ void BaseUI::DrawImGui()
 				}
 				ImGui::EndCombo();
 			}
+			ImGui::DragFloat("FadeInInterval", &parameters_.fadeInInterval, 0.01f);
+			ImGui::DragFloat("FadeOutInterval", &parameters_.fadeOutInterval, 0.01f);
 			if (ImGui::Button("FadeIn")) { FadeIn(); }
 			if (ImGui::Button("FadeOut")) { FadeOut(); }
+			ImGui::DragFloat2("Anima_Size", &parameters_.animaTransform.size.x, 0.5f);
+			ImGui::DragFloat("Anima_Rotate", &parameters_.animaTransform.rotate, 0.01f);
+			ImGui::DragFloat2("Anima_Position", &parameters_.animaTransform.position.x, 0.5f);
+			if (!isPlayAnimation_ && playAnimationTimer_ >= 1.0f) {
+				ui_->GetTransform() = parameters_.animaTransform;
+			}
+			// Color
+			ImGui::ColorEdit4("Anima_Color", &parameters_.animaColor.x);
 		}
-		ImGui::DragFloat2("Anima_Size", &parameters_.animaTransform.size.x, 0.5f);
-		ImGui::DragFloat("Anima_Rotate", &parameters_.animaTransform.rotate, 0.01f);
-		ImGui::DragFloat2("Anima_Position", &parameters_.animaTransform.position.x, 0.5f);
-		// Color
-		ImGui::ColorEdit4("Anima_Color", &parameters_.animaColor.x);
 
 		if (ImGui::Button("Save")) {
 			Save();
@@ -201,6 +217,8 @@ void BaseUI::Save()
 	json_.Set("Anima_Position", parameters_.animaTransform.position);
 	json_.Set("InEasingType", parameters_.inEasingType);
 	json_.Set("OutEasingType", parameters_.outEasingType);
+	json_.Set("FadeInInterval", parameters_.fadeInInterval);
+	json_.Set("FadeOutInterval", parameters_.fadeOutInterval);
 	json_.Save();
 }
 
@@ -208,12 +226,34 @@ void BaseUI::FadeIn()
 {
 	isPlayAnimation_ = true;
 	reversePlayBack_ = false;
+	playAnimationTimer_ -= parameters_.fadeInInterval;
 }
 
 void BaseUI::FadeOut()
 {
 	isPlayAnimation_ = true;
 	reversePlayBack_ = true;
+	playAnimationTimer_ += parameters_.fadeOutInterval;
+}
+
+void BaseUI::Blinking()
+{
+	// フレームを進める
+	blinkingTime_ += DeltaTimer::GetDeltaTime() * 5.0f;
+	if (blinkingTime_ > std::numbers::pi_v<float> * 2.0f) {
+		blinkingTime_ -= std::numbers::pi_v<float> * 2.0f;
+	}
+
+	// alphaを0.5～1.0でループさせる
+	float alpha = 0.75f + 0.25f * std::cos(blinkingTime_);
+	// カラーをセットする
+	ui_->SetColor(Vector4{ 1.0f, 1.0f, 1.0f, alpha });
+}
+
+void BaseUI::Reset()
+{
+	blinkingTime_ = 0.0f;
+	ui_->SetColor(Vector4{ 1.0f,1.0f,1.0f,1.0f });
 }
 
 void BaseUI::UI_Animation()
@@ -222,19 +262,21 @@ void BaseUI::UI_Animation()
 	if (isPlayAnimation_) {
 		// 逆再生なら
 		if (reversePlayBack_) {
-			playAnimationTimer_ -= DeltaTimer::GetDeltaTime() / parameters_.animationTime;
+			playAnimationTimer_ -= (DeltaTimer::GetDeltaTime() / parameters_.animationTime);
 		// 逆再生じゃ無いなら
 		} else {
-			playAnimationTimer_ += DeltaTimer::GetDeltaTime() / parameters_.animationTime;
+			playAnimationTimer_ += (DeltaTimer::GetDeltaTime() / parameters_.animationTime);
 		}
 		float t = std::clamp(playAnimationTimer_, 0.0f, 1.0f);
-		playAnimationTimer_ = t;
+		//playAnimationTimer_ = t;
 		// 逆再生なら
 		if (reversePlayBack_) {
 			t = Easing::Apply(Easing::FromInt(parameters_.outEasingType), t);
+			if (t == 0.0f) { isPlayAnimation_ = false; }
 		// 逆再生じゃ無いなら
 		} else {
 			t = Easing::Apply(Easing::FromInt(parameters_.inEasingType), t);
+			if (t == 1.0f) { isPlayAnimation_ = false; }
 		}
 
 		// TransformをAnimationさせていく
@@ -242,9 +284,5 @@ void BaseUI::UI_Animation()
 		ui_->GetTransform().rotate = (1.0f - t) * parameters_.transform.rotate + t * parameters_.animaTransform.rotate;
 		ui_->GetTransform().position = Vector2::EaseLerp(parameters_.transform.position, parameters_.animaTransform.position, t);
 		ui_->SetColor(Vector4::Lerp(parameters_.color,parameters_.animaColor,t));
-
-		if (t == 0.0f || t == 1.0f) {
-			isPlayAnimation_ = false;
-		}
 	}
 }

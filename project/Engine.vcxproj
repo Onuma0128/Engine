@@ -125,7 +125,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="game\objects\enemy\base\BaseEnemy.cpp" />
     <ClCompile Include="game\uis\gameClearUI\GameClearUI.cpp" />
     <ClCompile Include="game\uis\gameOverUI\GameOverUI.cpp" />
-    <ClCompile Include="game\uis\player\PlayerKillCountUI.cpp" />
+    <ClCompile Include="game\uis\player\PlayerCountUI.cpp" />
     <ClCompile Include="game\objects\shadow\CharacterShadow.cpp" />
     <ClCompile Include="game\objects\enemy\weapon\axe\EnemyAxe.cpp" />
     <ClCompile Include="game\objects\enemy\weapon\shield\EnemyShield.cpp" />
@@ -256,7 +256,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="game\uis\gameSceneUIs\PlayerControlUI.cpp" />
     <ClCompile Include="game\uis\gameSceneUIs\PlayerMenuUI.cpp" />
     <ClCompile Include="game\uis\select\SelectSystem.cpp" />
-    <ClCompile Include="game\uis\select\SelectBackGroundUI.cpp" />
+    <ClCompile Include="game\uis\select\SelectUI.cpp" />
+    <ClCompile Include="game\uis\select\adjustItem\SelectAdjustItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2d\BaseUI.h" />
@@ -272,7 +273,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="game\objects\enemy\base\BaseEnemy.h" />
     <ClInclude Include="game\uis\gameClearUI\GameClearUI.h" />
     <ClInclude Include="game\uis\gameOverUI\GameOverUI.h" />
-    <ClInclude Include="game\uis\player\PlayerKillCountUI.h" />
+    <ClInclude Include="game\uis\player\PlayerCountUI.h" />
     <ClInclude Include="game\objects\shadow\CharacterShadow.h" />
     <ClInclude Include="game\objects\enemy\weapon\axe\EnemyAxe.h" />
     <ClInclude Include="game\objects\enemy\weapon\shield\EnemyShield.h" />
@@ -419,7 +420,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="game\uis\gameSceneUIs\PlayerControlUI.h" />
     <ClInclude Include="game\uis\gameSceneUIs\PlayerMenuUI.h" />
     <ClInclude Include="game\uis\select\SelectSystem.h" />
-    <ClInclude Include="game\uis\select\SelectBackGroundUI.h" />
+    <ClInclude Include="game\uis\select\SelectUI.h" />
+    <ClInclude Include="game\uis\select\adjustItem\SelectAdjustItem.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\BasicGeometryShader.hlsl">

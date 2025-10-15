@@ -17,6 +17,15 @@ public:
 
 	void Draw();
 
+	void SelectUIFadeIn();
+
+	// セレクトが出ているか判定
+	bool GetIsSelectIn()const { return selectSystem_->GetIsSelectIn(); }
+
+	// キル数と命中率を受け取るセッター
+	void SetKillCount(int num) { selectSystem_->SetKillCount(num); }
+	void SetHitRate(int num) { selectSystem_->SetHitRate(num); }
+
 private:
 
 	// 操作系のUI

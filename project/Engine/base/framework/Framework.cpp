@@ -65,6 +65,11 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "playerControlUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "reloadUI.png");
 
+	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "killCountUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "hitRateUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "selectTitleUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "selectOnceAgainUI.png");
+
 	// ============================== Model ============================== //
 
 	ModelManager::GetInstance()->LoadModel("resources/model", "plane.obj");

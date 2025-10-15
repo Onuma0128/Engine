@@ -1095,10 +1095,10 @@
     <ClInclude Include="game\uis\gameSceneUIs\PlayerControlUI.h">
       <Filter>game\objects\player\ui</Filter>
     </ClInclude>
-    <ClCompile Include="game\uis\player\PlayerKillCountUI.cpp">
+    <ClCompile Include="game\uis\player\PlayerCountUI.cpp">
       <Filter>game\objects\player\ui</Filter>
     </ClCompile>
-    <ClInclude Include="game\uis\player\PlayerKillCountUI.h">
+    <ClInclude Include="game\uis\player\PlayerCountUI.h">
       <Filter>game\objects\player\ui</Filter>
     </ClInclude>
     <ClCompile Include="game\uis\gameSceneUIs\PlayerMenuUI.cpp">
@@ -1281,11 +1281,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="game\uis\gameSceneUIs\GameSceneUIs.cpp" />
     <ClCompile Include="game\uis\select\SelectSystem.cpp" />
-    <ClCompile Include="game\uis\select\SelectBackGroundUI.cpp" />
+    <ClCompile Include="game\uis\select\SelectUI.cpp" />
+    <ClCompile Include="game\uis\select\adjustItem\SelectAdjustItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\uis\gameSceneUIs\GameSceneUIs.h" />
     <ClInclude Include="game\uis\select\SelectSystem.h" />
-    <ClInclude Include="game\uis\select\SelectBackGroundUI.h" />
+    <ClInclude Include="game\uis\select\SelectUI.h" />
+    <ClInclude Include="game\uis\select\adjustItem\SelectAdjustItem.h" />
   </ItemGroup>
 </Project>

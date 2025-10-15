@@ -7,7 +7,7 @@
 #include "objects/player/bullet/PlayerBullet.h"
 
 #include "uis/player/PlayerBulletUI.h"
-#include "uis/player/PlayerKillCountUI.h"
+#include "uis/player/PlayerCountUI.h"
 
 class Player;
 
@@ -35,6 +35,12 @@ public:
 
 	// キル数
 	uint32_t GetNockdownCount()const { return kNockdownCount_; }
+	// 命中率
+	uint32_t GetHitRate()const { 
+		if (kHitRate_ == 0) { return 0; }
+		float result = static_cast<float>(kNockdownCount_) / static_cast<float>(kHitRate_);
+		return static_cast<uint32_t>(result * 100.0f);
+	}
 
 	// 弾を撃つ方向の回転
 	Quaternion GetRightStickQua()const { return rightStickQuaternion_; }
@@ -55,8 +61,10 @@ private:
 	// 必殺技用の弾を6つ生成
 	std::vector<std::unique_ptr<PlayerBullet>> specialBullets_;
 	// 敵のキル数UI
-	std::unique_ptr<PlayerKillCountUI> killCountUI_ = nullptr;
+	std::unique_ptr<PlayerCountUI> killCountUI_ = nullptr;
 	uint32_t kNockdownCount_ = 0;
+	// 撃った弾数を取得する
+	uint32_t kHitRate_ = 0;
 
 };
 

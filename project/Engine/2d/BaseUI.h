@@ -10,23 +10,26 @@ class BaseUI
 {
 private:
 
-	struct UI_Parameters
+	struct UiParameters
 	{
-		std::string filename;
-		std::string biginName;
-		std::string texture;
+		std::string filename;			// 保存ファイル名
+		std::string biginName;			// ImGuiの入れる名前
+		std::string texture;			// テクスチャ名
 
-		Vector2 anchorPoint;
-		Transform2D transform;
-		Vector4 color;
+		Vector2 anchorPoint;			// アンカーポイント
+		Transform2D transform;			// トランスフォーム
+		Vector4 color;					// カラー
 
-		bool isAnimation;
-		float animationTime;
-		Transform2D animaTransform;
-		Vector4 animaColor;
+		bool isAnimation;				// アニメーションを適応するか
+		float animationTime;			// アニメーション時間
+		Transform2D animaTransform;		// アニメーション後のトランスフォーム
+		Vector4 animaColor;				// アニメーション後のカラー
 
-		int inEasingType = 0;
-		int outEasingType = 0;
+		int inEasingType = 0;			// FadeInのEasingType
+		int outEasingType = 0;			// FadeOutのEasingType
+		float fadeInInterval;			// FadeInになる時の間隔
+		float fadeOutInterval;			// FadeOutになる時の間隔
+
 	};
 
 public:
@@ -39,8 +42,16 @@ public:
 
 	void DrawImGui();
 
+	// FadeIn,FadeOutを呼び出し
 	void FadeIn();
 	void FadeOut();
+
+	// 点滅させる
+	void Blinking();
+	// 点滅リセット
+	void Reset();
+
+	Sprite* GetSprite()const { return ui_.get(); }
 
 private:
 
@@ -48,11 +59,11 @@ private:
 
 	void Save();
 
-protected:
+private:
 
 	std::unique_ptr<Sprite> ui_ = nullptr;
 
-	UI_Parameters parameters_;
+	UiParameters parameters_;
 
 	JsonFunction json_;
 
@@ -64,6 +75,8 @@ protected:
 	bool isPlayAnimation_ = false;
 	// 逆再生
 	bool reversePlayBack_ = false;
+	// 点滅時間
+	float blinkingTime_ = 2.0f;
 
 };
 
