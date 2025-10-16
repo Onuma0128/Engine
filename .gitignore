@@ -371,3 +371,5 @@ FodyWeavers.xsd
 !project/externals/assimp/include/**
 !project/externals/assimp/lib/Debug/
 !project/externals/assimp/lib/Debug/assimp-vc143-mtd.lib
+!project/externals/assimp/lib/Release/
+!project/externals/assimp/lib/Release/assimp-vc143-mtd.lib
