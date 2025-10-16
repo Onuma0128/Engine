@@ -69,6 +69,8 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "hitRateUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "selectTitleUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "selectOnceAgainUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "countUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "ratioUI.png");
 
 	// ============================== Model ============================== //
 

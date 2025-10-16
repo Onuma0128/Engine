@@ -74,10 +74,10 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		parameters_.inEasingType = json_.Get<int>("InEasingType", 0);
 		parameters_.outEasingType = json_.Get<int>("OutEasingType", 0);
 		const auto& names = Easing::GetEaseTypeNames();
-		if (parameters_.inEasingType < 0 || parameters_.inEasingType >= (int)names.size()) {
+		if (parameters_.inEasingType < 0 || parameters_.inEasingType >= static_cast<int>(names.size())) {
 			parameters_.inEasingType = 0;
 		}
-		if (parameters_.outEasingType < 0 || parameters_.outEasingType >= (int)names.size()) {
+		if (parameters_.outEasingType < 0 || parameters_.outEasingType >= static_cast<int>(names.size())) {
 			parameters_.outEasingType = 0;
 		}
 		// Interval
@@ -149,9 +149,9 @@ void BaseUI::DrawImGui()
 		if (parameters_.isAnimation) {
 			ImGui::DragFloat("AnimationTime", &parameters_.animationTime, 0.01f);
 			const auto& names = Easing::GetEaseTypeNames();
-			int idx = std::clamp(parameters_.inEasingType, 0, (int)names.size() - 1);
+			int idx = std::clamp(parameters_.inEasingType, 0, static_cast<int>(names.size()) - 1);
 			if (ImGui::BeginCombo("InEasingType", names[idx])) {
-				for (int i = 0; i < (int)names.size(); ++i) {
+				for (int i = 0; i < static_cast<int>(names.size()); ++i) {
 					bool sel = (parameters_.inEasingType == i);
 					if (ImGui::Selectable(names[i], sel)) {
 						parameters_.inEasingType = i;
@@ -160,9 +160,9 @@ void BaseUI::DrawImGui()
 				}
 				ImGui::EndCombo();
 			}
-			idx = std::clamp(parameters_.outEasingType, 0, (int)names.size() - 1);
+			idx = std::clamp(parameters_.outEasingType, 0, static_cast<int>(names.size() - 1));
 			if (ImGui::BeginCombo("OutEasingType", names[idx])) {
-				for (int i = 0; i < (int)names.size(); ++i) {
+				for (int i = 0; i < static_cast<int>(names.size()); ++i) {
 					bool sel = (parameters_.outEasingType == i);
 					if (ImGui::Selectable(names[i], sel)) {
 						parameters_.outEasingType = i;

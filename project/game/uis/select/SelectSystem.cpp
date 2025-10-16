@@ -19,16 +19,25 @@ void SelectSystem::Init()
 	// セレクト表示後の選択ボタンUI(タイトルともう一度)
 	selectUIs_[4] = std::make_unique<SelectUI>();
 	selectUIs_[4]->Init("SelectTitleUI");
+	selectUIs_[4]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
 	selectUIs_[5] = std::make_unique<SelectUI>();
 	selectUIs_[5]->Init("SelectOnceAgainUI");
+	selectUIs_[5]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
+	// 背景の上のUISprite(キルと命中率のUI)
+	selectUIs_[6] = std::make_unique<SelectUI>();
+	selectUIs_[6]->Init("CountUI");
+	selectUIs_[7] = std::make_unique<SelectUI>();
+	selectUIs_[7]->Init("RatioUI");
 
 	// キル数の表示UI
 	killCountUI_ = std::make_unique<PlayerCountUI>();
 	killCountUI_->Init();
+	killCountUI_->SetAlpha(0.0f);
 	
 	// 命中率の表示UI
 	hitRateUI_ = std::make_unique<PlayerCountUI>();
 	hitRateUI_->Init();
+	hitRateUI_->SetAlpha(0.0f);
 
 	// 調整項目のロードと初期化
 	items_ = std::make_unique<SelectAdjustItem>();
@@ -43,15 +52,6 @@ void SelectSystem::Update()
 	items_->Editor();
 #endif // _DEBUG
 
-	Input* input = Input::GetInstance();
-
-	// ボタンを選択
-	if (input->GetGamepadLeftStickX() < 0) {
-		targetIndex_ = 0u;
-	} else if (input->GetGamepadLeftStickX() > 0) {
-		targetIndex_ = 1u;
-	}
-
 	// ターゲットされているボタンを更新する
 	uint32_t index = targetIndex_ + 4u;
 	selectUIs_[index]->Blinking();
@@ -60,15 +60,9 @@ void SelectSystem::Update()
 		back->Update();
 	}
 
-	CounterUiUpdate();
+	SelectInput();
 
-	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_A)) {
-		if (targetIndex_ == 0u) {
-			SceneManager::GetInstance()->ChangeScene("Title");
-		} else {
-			SceneManager::GetInstance()->ChangeScene("Game");
-		}
-	}
+	CounterUiUpdate();
 }
 
 void SelectSystem::Draw()
@@ -89,6 +83,36 @@ void SelectSystem::SelectUIFadeIn()
 		back->FadeIn();
 	}
 	isFadeIn_ = true;
+}
+
+void SelectSystem::SelectInput()
+{
+	if (!updateSelectUI_) { return; }
+
+	Input* input = Input::GetInstance();
+
+	// ボタンを選択
+	if (input->GetGamepadLeftStickX() < 0) {
+		targetIndex_ = 0u;
+	} else if (input->GetGamepadLeftStickX() > 0) {
+		targetIndex_ = 1u;
+	}
+
+	// ターゲットしていないUIはAlphaを下げる
+	if (targetIndex_ == 0u) {
+		selectUIs_[5]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
+	} else {
+		selectUIs_[4]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
+	}
+
+	// ボタンを押したらシーン遷移する
+	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_A)) {
+		if (targetIndex_ == 0u) {
+			SceneManager::GetInstance()->ChangeScene("Title");
+		} else {
+			SceneManager::GetInstance()->ChangeScene("Game");
+		}
+	}
 }
 
 void SelectSystem::CounterUiUpdate()

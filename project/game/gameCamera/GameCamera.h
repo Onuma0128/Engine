@@ -36,8 +36,20 @@ private:
 	std::unique_ptr<Camera> mainCamera_ = nullptr;
 	std::unique_ptr<Camera> sabCamera_ = nullptr;
 
+	Vector3 mainCameraAddPos_ = {};
+
 	float shakeStrength_ = 0.0f;
 	float shakeDecay_ = 0.9f;
+
+	struct SabCameraAnimation {
+		Vector3 sabCameraOffset = {};
+		bool isRotate = false;
+		float rotateTimer = 0.0f;
+		float rotateSpeed = 1.0f;
+		float radius = 10.0f;
+		float positionY;
+	};
+	SabCameraAnimation sabAnima_;
 
 	JsonFunction data_;
 

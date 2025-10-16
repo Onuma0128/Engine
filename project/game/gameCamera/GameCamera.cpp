@@ -5,6 +5,7 @@
 
 #include "Input.h"
 #include "CameraManager.h"
+#include "DeltaTimer.h"
 
 #include "objects/player/Player.h"
 
@@ -53,6 +54,18 @@ void GameCamera::ValueImGui()
 		ImGui::Separator();
 
 		data_.DrawImGui();
+
+		if (ImGui::Button("mainCamera")) {
+			CameraManager::GetInstance()->SetActiveCamera(0);
+		}
+		if (ImGui::Button("sabCamera")) {
+			CameraManager::GetInstance()->SetActiveCamera(1);
+		}
+		ImGui::Checkbox("IsSabRotate", &sabAnima_.isRotate);
+		ImGui::DragFloat("RotateSpeed", &sabAnima_.rotateSpeed, 0.01f);
+		ImGui::DragFloat("SabRadius", &sabAnima_.radius, 0.01f);
+		ImGui::DragFloat("SabPosY", &sabAnima_.positionY, 0.01f);
+
 		if (ImGui::Button("Save")) {
 			data_.Save();
 		}
@@ -88,7 +101,7 @@ void GameCamera::Update()
 	Vector2 R_StickDire = { input->GetGamepadRightStickX(),input->GetGamepadRightStickY() };
 	Vector3 translation = data_.Get<Vector3>("mainPosition") + Vector3{ R_StickDire.x,0.0f,R_StickDire.y };
 	Vector3 previous = mainCamera_->GetTranslation();
-	Vector3 current = player_->GetTransform().translation_ + translation;
+	Vector3 current = player_->GetTransform().translation_ + translation + mainCameraAddPos_;
 
 	previous = Vector3::Lerp(previous, current + shakeOffset, 0.1f);
 	mainCamera_->SetTranslation(previous);
@@ -103,12 +116,24 @@ void GameCamera::SabUpdate(const Vector3& shakeOffset)
 	Vector3 playerPos = player_->GetTransform().translation_;
 	Quaternion playerRot = Quaternion::IdentityQuaternion();
 
-	// オフセット（プレイヤーの後方、例：Z方向-10など）
-	Vector3 offset = data_.Get<Vector3>("sabPosition");
+	// オフセット（プレイヤーの後方）
+	if (!sabAnima_.isRotate) {
+		sabAnima_.sabCameraOffset = data_.Get<Vector3>("sabPosition");
+	} else {
+		sabAnima_.rotateTimer += DeltaTimer::GetDeltaTime() / sabAnima_.rotateSpeed;
+		sabAnima_.rotateTimer = std::clamp(sabAnima_.rotateTimer, 0.0f, 1.0f);
+		float t = sabAnima_.rotateTimer * std::numbers::pi_v<float> * 2.0f;
+		if (sabAnima_.rotateTimer >= 1.0f) { sabAnima_.rotateTimer = 0.0f; }
+		sabAnima_.sabCameraOffset = {
+			std::cos(t) * sabAnima_.radius,
+			sabAnima_.positionY,
+			std::sin(t) * sabAnima_.radius
+		};
+	}
 
 	// プレイヤーの回転を適用したオフセット
 	Matrix4x4 rotMat = Quaternion::MakeRotateMatrix(playerRot);
-	Vector3 rotatedOffset = Vector3::TransformNormal(offset, rotMat);
+	Vector3 rotatedOffset = Vector3::TransformNormal(sabAnima_.sabCameraOffset, rotMat);
 
 	// カメラの位置は、プレイヤー位置 + 回転されたオフセット
 	Vector3 cameraPos = playerPos + rotatedOffset;

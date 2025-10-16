@@ -6,7 +6,7 @@ void PlayerCountUI::Init()
 {
 	numbers_.resize(3);
 
-	interval_ = 40.0f;
+	interval_ = 52.0f;
 
 	for (uint32_t i = 0; i < numbers_.size(); ++i) {
 		numbers_[i] = std::make_unique<NumbersUI>();
@@ -74,13 +74,13 @@ void NumbersUI::Init(const Vector2& position)
 	Sprite::Initialize("numbers.png");
 	Sprite::transform_.position = position;
 	Sprite::anchorPoint_ = { 0.5f,0.5f };
-	Sprite::transform_.size = { 33.0f,60.0f };
+	Sprite::transform_.size = { 80.0f,80.0f };
 }
 
 void NumbersUI::Update(const uint32_t number)
 {
-	const float digitWidth = 176.0f;
-	const float digitHeight = 320.0f;
+	const float digitWidth = 128.0f;
+	const float digitHeight = 128.0f;
 
 	Sprite::textureLeftTop_ = { digitWidth * number, 0.0f };
 	Sprite::textureSize_ = { digitWidth, digitHeight };

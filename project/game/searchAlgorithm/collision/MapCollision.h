@@ -6,7 +6,7 @@
 #include "Collision2D.h"
 #include "SceneJsonLoader.h"
 
-#include "searchAlgorithm/debug/DrawGrid.h"
+#include "searchAlgorithm/debugGrid/DrawGrid.h"
 
 // マップ1つ1つ用
 struct Maptip {

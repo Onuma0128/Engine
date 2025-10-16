@@ -121,7 +121,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="game\objects\enemy\ray\EnemyRay.cpp" />
     <ClCompile Include="game\searchAlgorithm\sample\AlgorithmTest.cpp" />
     <ClCompile Include="Engine\base\collider\Collision2D.cpp" />
-    <ClCompile Include="game\searchAlgorithm\debug\DrawGrid.cpp" />
+    <ClCompile Include="game\searchAlgorithm\debugGrid\DrawGrid.cpp" />
     <ClCompile Include="game\objects\enemy\base\BaseEnemy.cpp" />
     <ClCompile Include="game\uis\gameClearUI\GameClearUI.cpp" />
     <ClCompile Include="game\uis\gameOverUI\GameOverUI.cpp" />
@@ -269,7 +269,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="game\objects\enemy\ray\EnemyRay.h" />
     <ClInclude Include="game\searchAlgorithm\sample\AlgorithmTest.h" />
     <ClInclude Include="Engine\base\collider\Collision2D.h" />
-    <ClInclude Include="game\searchAlgorithm\debug\DrawGrid.h" />
+    <ClInclude Include="game\searchAlgorithm\debugGrid\DrawGrid.h" />
     <ClInclude Include="game\objects\enemy\base\BaseEnemy.h" />
     <ClInclude Include="game\uis\gameClearUI\GameClearUI.h" />
     <ClInclude Include="game\uis\gameOverUI\GameOverUI.h" />

@@ -31,6 +31,10 @@ public:
 
 private:
 
+	// インプット系を更新する
+	void SelectInput();
+
+	// キル数や命中率のUIを更新する
 	void CounterUiUpdate();
 
 	// キル数や命中率を表示する時の順番
@@ -47,7 +51,7 @@ private:
 	// セレクトの背景画像
 	// キルと命中率のUI
 	// タイトルともう一度のUI
-	std::array<std::unique_ptr<SelectUI>, 6> selectUIs_;
+	std::array<std::unique_ptr<SelectUI>, 8> selectUIs_;
 
 	// タイトルかもう一度かどちらを選んでいるかのIndex
 	uint32_t targetIndex_ = 0u;

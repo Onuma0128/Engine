@@ -1149,10 +1149,10 @@
     <ClInclude Include="game\searchAlgorithm\collision\MapCollision.h">
       <Filter>game\searchAlgorithm\collision</Filter>
     </ClInclude>
-    <ClCompile Include="game\searchAlgorithm\debug\DrawGrid.cpp">
+    <ClCompile Include="game\searchAlgorithm\debugGrid\DrawGrid.cpp">
       <Filter>game\searchAlgorithm\debug</Filter>
     </ClCompile>
-    <ClInclude Include="game\searchAlgorithm\debug\DrawGrid.h">
+    <ClInclude Include="game\searchAlgorithm\debugGrid\DrawGrid.h">
       <Filter>game\searchAlgorithm\debug</Filter>
     </ClInclude>
     <ClCompile Include="game\searchAlgorithm\movement\SplineMover.cpp">
