@@ -365,6 +365,9 @@ FodyWeavers.xsd
 # ---- Project specific ignores ----
 **/imgui.ini
 
-# --- allow vendor libs under externals/assimp (exceptions at end) ---
+# --- allow vendor libs under externals/assimp ---
+!project/externals/assimp/
+!project/externals/assimp/lib/
 !project/externals/assimp/include/**
+!project/externals/assimp/lib/Debug/
 !project/externals/assimp/lib/Debug/assimp-vc143-mtd.lib
