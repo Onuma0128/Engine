@@ -116,7 +116,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="Engine\2d\BaseUI.cpp" />
     <ClCompile Include="Engine\3d\animation\play\PlayAnimation.cpp" />
-    <ClCompile Include="Engine\3d\animation\debug\DebugBone.cpp" />
+    <ClCompile Include="Engine\3d\animation\debugBone\DebugBone.cpp" />
     <ClCompile Include="game\uis\gameSceneUIs\GameSceneUIs.cpp" />
     <ClCompile Include="game\objects\enemy\ray\EnemyRay.cpp" />
     <ClCompile Include="game\searchAlgorithm\sample\AlgorithmTest.cpp" />
@@ -262,7 +262,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Engine\2d\BaseUI.h" />
     <ClInclude Include="Engine\3d\animation\play\PlayAnimation.h" />
-    <ClInclude Include="Engine\3d\animation\debug\DebugBone.h" />
+    <ClInclude Include="Engine\3d\animation\debugBone\DebugBone.h" />
     <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\AnimationOutLineMaskRootSignature.h" />
     <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\OutLineMaskRootSignature.h" />
     <ClInclude Include="game\uis\gameSceneUIs\GameSceneUIs.h" />

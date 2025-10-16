@@ -324,10 +324,10 @@
     <ClInclude Include="Engine\2d\Sprite.h">
       <Filter>Engine\2d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\animation\debug\DebugBone.cpp">
+    <ClCompile Include="Engine\3d\animation\debugBone\DebugBone.cpp">
       <Filter>Engine\3d\animation\debug</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\animation\debug\DebugBone.h">
+    <ClInclude Include="Engine\3d\animation\debugBone\DebugBone.h">
       <Filter>Engine\3d\animation\debug</Filter>
     </ClInclude>
     <ClCompile Include="Engine\3d\animation\joint\Joint.cpp">

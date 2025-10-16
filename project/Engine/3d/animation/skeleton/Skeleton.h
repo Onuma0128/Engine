@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "animation/joint/Joint.h"
-#include "animation/debug/DebugBone.h"
+#include "animation/debugBone/DebugBone.h"
 #include "animation/play/PlayAnimation.h"
 
 #include "WorldTransform.h"
