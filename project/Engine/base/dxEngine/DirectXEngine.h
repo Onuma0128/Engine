@@ -61,11 +61,17 @@ public:
 	// 描画前の処理
 	void PreDraw();
 	// Object描画後の処理
-	void SwapChainDrawSet();
+	void RenderPost();
+	// RenderTexturePreDraw
+	void RenderTexturePreDraw();
+	// RenderTextureDraw
+	void RenderTextureDraw();
 	// 描画後の処理
 	void PostDraw();
 
 	/*========================== ゲッター ===========================*/
+
+	void SetPostEffectDraw(PostEffectType type);
 
 	// バックバッファの数を取得
 	size_t GetBackBufferCount()const { return static_cast<size_t>(swapChainDesc_.BufferCount); }

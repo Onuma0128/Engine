@@ -39,11 +39,11 @@ void BaseEnemy::Initialize()
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
 		"Player","PlayerBullet","PlayerBulletSpecial",
-		"PlayerReticle","Enemy" 
+		"PlayerReticle","Enemy" ,"PredictionObject"
 	};
 	Collider::DrawCollider();
 
-	Animation::GetTransform().translation_.y = -2.0f;
+	Animation::GetTransform().translation_.y = -5.0f;
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
 	outlineColor_ = { 0.0f,0.0f,0.0f };
@@ -111,7 +111,7 @@ void BaseEnemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 void BaseEnemy::Dead()
 {
 	// 描画とColliderを切る
-	Animation::GetTransform().translation_.y = -2.0f;
+	Animation::GetTransform().translation_.y = -5.0f;
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetTimeStop() = true;
 	Collider::isActive_ = false;
@@ -197,6 +197,10 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
 		Animation::TransformUpdate();
+	}
+
+	if (other->GetColliderName() == "PredictionObject") {
+		outlineColor_ = { 0.0f,0.0f,1.0f };
 	}
 }
 

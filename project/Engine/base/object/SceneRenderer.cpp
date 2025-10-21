@@ -17,7 +17,7 @@ void SceneRenderer::AllDraw()
 {
 	/// ============================== Object3d ============================== ///
 	
-	DirectXEngine::GetModelRenderer()->AllDraw();
+	//DirectXEngine::GetModelRenderer()->AllDraw();
 
 	/// ============================== Sprite ============================== ///
 	for (auto& sprite : sprites_) {
@@ -30,8 +30,6 @@ void SceneRenderer::AllDraw()
 		if (primitive->GetPrimitiveType() == PrimitiveType::None) { primitive->Draw(); }
 		else { primitive->TypeDraw(); }
 	}
-
-	ParticleManager::GetInstance()->Draw();
 }
 
 void SceneRenderer::OutAllDraw()
@@ -47,7 +45,7 @@ void SceneRenderer::OutAllDraw()
 	}
 	/// ============================== Line3d ============================== ///
 	
-	DirectXEngine::GetLineRenderer()->Draws();
+	//DirectXEngine::GetLineRenderer()->Draws();
 
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
@@ -55,4 +53,6 @@ void SceneRenderer::OutAllDraw()
 		if (primitive->GetPrimitiveType() == PrimitiveType::None) { primitive->Draw(); }
 		else { primitive->TypeDraw(); }
 	}
+
+	//ParticleManager::GetInstance()->Draw();
 }

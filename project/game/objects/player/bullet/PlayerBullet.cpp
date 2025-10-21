@@ -11,6 +11,7 @@ void PlayerBullet::Init(const std::string& colliderName)
 	Object3d::SetSceneRenderer();
 	Object3d::GetMaterial().enableDraw = false;
 	transform_.scale_ = { 0.1f,0.1f ,0.3f };
+	transform_.translation_.y = -5.0f;
 
 	isActive_ = false;
 	activeFrame_ = 0.0f;

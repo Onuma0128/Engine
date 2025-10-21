@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Object3d.h"
+#include "Collider.h"
 
 class Player;
 
-class PredictionObject :public Object3d
+class PredictionObject :public Object3d,Collider
 {
 public:
 

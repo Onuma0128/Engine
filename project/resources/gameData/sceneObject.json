@@ -2185,30 +2185,6 @@
         },
         {
             "type": "MESH",
-            "name": "ground",
-            "transform": {
-                "translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    60.0,
-                    60.0,
-                    1.0
-                ]
-            },
-            "file_name": "ground.obj",
-            "tag_name": "ground",
-            "group_name": "FieldObject"
-        },
-        {
-            "type": "MESH",
             "name": "Cube.007",
             "transform": {
                 "translation": [
@@ -2347,6 +2323,30 @@
                 ],
                 "radius": 0.5
             }
+        },
+        {
+            "type": "MESH",
+            "name": "ground",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    60.0,
+                    60.0,
+                    1.0
+                ]
+            },
+            "file_name": "ground.obj",
+            "tag_name": "ground",
+            "group_name": "FieldObject"
         }
     ]
 }

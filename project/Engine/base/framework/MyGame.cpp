@@ -6,6 +6,7 @@
 #include "CameraManager.h"
 #include "LightManager.h"
 #include "DeltaTimer.h"
+#include "ParticleManager.h"
 
 void MyGame::Initialize()
 {
@@ -60,21 +61,31 @@ void MyGame::Draw()
 {
 	// 描画前の処理
 	directXEngine_->PreDraw();
-
+	// offscreen描画
+	directXEngine_->GetModelRenderer()->AllDraw();
 	directXEngine_->GetSceneRenderer()->AllDraw();
-
+	// パーティクルの描画
+	//directXEngine_->RenderTexturePreDraw();
+	ParticleManager::GetInstance()->Draw();
+	// outlineMask処理
 	directXEngine_->GetPostEffectMgr()->BeginOutlineMaskPass();
 	directXEngine_->GetModelRenderer()->AllDrawOutlineMask();
 	directXEngine_->GetPostEffectMgr()->EndOutlineMaskPass();
+	// offscreen描画終了
+	directXEngine_->RenderPost();
+	// postEffectの書き込み描画
+	directXEngine_->SetPostEffectDraw(PostEffectType::Grayscale);
+	directXEngine_->SetPostEffectDraw(PostEffectType::Vignette);
+	directXEngine_->SetPostEffectDraw(PostEffectType::OutLine);
+	// 書き込んだoffscreenを描画
+	directXEngine_->RenderTextureDraw();
 
-	directXEngine_->SwapChainDrawSet();
-
+	// offscreenを掛けたくない描画
 	directXEngine_->GetSceneRenderer()->OutAllDraw();
-
+	// Lineの描画
+	directXEngine_->GetLineRenderer()->Draws();
 	SceneManager::GetInstance()->Draw();
 
-	// Lineの描画
-	//directXEngine_->GetLineRenderer()->Draws();
 
 	// ImGuiの描画
 	imGuiManager_->Draw();
