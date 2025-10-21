@@ -6,6 +6,10 @@
 
 #include "DirectXEngine.h"
 
+#include "type/DirectionalLight.h"
+#include "type/PointLight.h"
+#include "type/SpotLight.h"
+
 LightManager* LightManager::instance_ = nullptr;
 
 LightManager* LightManager::GetInstance()
@@ -43,6 +47,7 @@ void LightManager::Debug_ImGui()
 {
 #ifdef _DEBUG
 	ImGuiTreeNodeFlags flag = ImGuiTreeNodeFlags_DefaultOpen;
+	ImGui::PushItemWidth(150);
 	if (ImGui::TreeNodeEx("Light", flag)) {
 		if (ImGui::TreeNodeEx("Directional Light", flag)) {
 			directionalLight_->Debug_ImGui();

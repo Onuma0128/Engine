@@ -27,8 +27,8 @@ PSOut main(VertexShaderOutput input)
     if (!gMaterial[instID].enableDraw || !gMaterial[instID].outlineMask)
     {   
         PSOut o;
-        o.mask = float4(0.0, 0.0, 0.0, 0.0);
-        o.id = 0u;
+        o.mask = float4(0.25, 0.0, 0.0, 0.0);
+        o.id = instID + 1u;
         return o;
     }
     if (!gMaterial[instID].outlineSceneColor)

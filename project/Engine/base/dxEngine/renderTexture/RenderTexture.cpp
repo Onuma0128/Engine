@@ -139,13 +139,15 @@ void RenderTexture::PreDraw()
 	commandList->ClearRenderTargetView(renderTextureHandle_, clearColor, 0, nullptr);
 }
 
-void RenderTexture::Draw(uint32_t finalSRVIndex)
+void RenderTexture::Draw()
 {
 	auto* commandList = DirectXEngine::GetCommandList();
 	// RenderTextureの描画
 	commandList->SetGraphicsRootSignature(rootSignature_.Get());
 	commandList->SetPipelineState(pipelineState_.Get());
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, finalSRVIndex);
+	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, finalSrvIndex_);
 	commandList->DrawInstanced(3, 1, 0, 0);
+
+	finalSrvIndex_ = renderTextureSRVIndex_;
 }

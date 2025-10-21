@@ -25,7 +25,7 @@ void TitleScene::Initialize()
 
 	test = std::make_unique<ParticleEmitter>("particleName");
 	particleManager->CreateParticleGroup(test);
-	test->SetIsCreate(false);
+	//test->SetIsCreate(false);
 }
 
 void TitleScene::Finalize()

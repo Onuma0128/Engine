@@ -380,14 +380,23 @@ void DirectXEngine::PreDraw()
 	commandList_->RSSetScissorRects(1, &scissorRect_);
 }
 
-void DirectXEngine::SwapChainDrawSet()
+void DirectXEngine::RenderPost()
 {
 	// RenderTextureのEndBarrier
 	renderTexture_->EndBarrier();
+}
 
-	// PostEffectの複数描画
-	postEffectManager_->RenderTextureDraws(renderTexture_->GetRenderTextureSRVIndex());
+void DirectXEngine::RenderTexturePreDraw()
+{
+	// RenderTextureの描画前準備
+	renderTexture_->PreDraw();
+	//コマンドを積む
+	commandList_->RSSetViewports(1, &viewport_);
+	commandList_->RSSetScissorRects(1, &scissorRect_);
+}
 
+void DirectXEngine::RenderTextureDraw()
+{
 	// これから書き込むバックバッファのインデックスを取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
 	//バリアを張る対象のリソース。現在のバックバッファに対して行う
@@ -408,7 +417,7 @@ void DirectXEngine::SwapChainDrawSet()
 	commandList_->RSSetScissorRects(1, &scissorRect_);
 
 	// RenderTextureの描画
-	renderTexture_->Draw(postEffectManager_->GetFinalSRVIndex());
+	renderTexture_->Draw();
 }
 
 void DirectXEngine::PostDraw()
@@ -447,4 +456,11 @@ void DirectXEngine::PostDraw()
 	assert(SUCCEEDED(hr));
 	hr = commandList_->Reset(commandAllocator_.Get(), nullptr);
 	assert(SUCCEEDED(hr));
+}
+
+void DirectXEngine::SetPostEffectDraw(PostEffectType type)
+{
+	// PostEffectの描画
+	auto index = postEffectManager_->DrawEffect(type, renderTexture_->GetFinalSrvIndex());
+	renderTexture_->SetFinalSrvIndex(index);
 }

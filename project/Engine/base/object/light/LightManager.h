@@ -4,9 +4,7 @@
 
 #include <memory>
 
-#include "type/DirectionalLight.h"
-#include "type/PointLight.h"
-#include "type/SpotLight.h"
+#include "type/BaseLight.h"
 
 class DirectXEngine;
 
@@ -49,14 +47,14 @@ private:
 
 	/*==================== 平行光源 ====================*/
 
-	std::unique_ptr<DirectionalLight> directionalLight_ = nullptr;
+	std::unique_ptr<BaseLight> directionalLight_ = nullptr;
 
 	/*==================== ポイントライト ====================*/
 
-	std::unique_ptr<PointLight> pointLight_ = nullptr;
+	std::unique_ptr<BaseLight> pointLight_ = nullptr;
 
 	/*==================== スポットライト ====================*/
 
-	std::unique_ptr<SpotLight> spotLight_ = nullptr;
+	std::unique_ptr<BaseLight> spotLight_ = nullptr;
 
 };

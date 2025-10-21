@@ -30,20 +30,36 @@ struct PSOut
 #define EPS_Z0        0.002f
 #define EPS_Z1        0.0015f
 
-// 0: outside, 1: Depth+Normal, 2: Depth+Normal+SceneColor
+static const float TH_COLOR_DEPTH = 0.75; // ≈ 1.0
+static const float TH_DEPTH_ONLY = 0.45; // ≈ 0.5
+static const float TH_NONE_EXPL = 0.20; // ≈ 0.25
+
 uint ClassifyMask(float m)
 {
-    // 量子化/色空間の差異を吸収（0.25/0.75 の緩い段階しきい値）
-    return (m > 0.75f) ? 2u : (m > 0.25f) ? 1u : 0u;
+    if (m >= TH_COLOR_DEPTH)
+        return 3u;
+    if (m >= TH_DEPTH_ONLY)
+        return 2u;
+    if (m >= TH_NONE_EXPL)
+        return 1u;
+    return 0u;
 }
 bool InMask(uint mode)
 {
-    return mode >= 1u;
-} // 0.5/1.0 を内側扱い
+    return mode >= 2u;
+}
 bool WantColor(uint mode)
 {
-    return mode >= 2u;
-} // 1.0 のときだけ色境界
+    return mode >= 3u;
+}
+bool IsNoneExplicit(uint mode)
+{
+    return mode == 1u;
+}
+bool IsUntouched(uint mode)
+{
+    return mode == 0u;
+}
 
 float3 ReconstructViewPos(float2 uv, float d01, float4x4 invP)
 {
@@ -106,6 +122,12 @@ PSOut main(VertexShaderOutput i)
     uint mC = ClassifyMask(mR);
     bool inC = InMask(mC);
     bool wantColorC = WantColor(mC);
+    if (IsNoneExplicit(mC))
+    {
+        PSOut o;
+        o.color = float4(baseCol, 1.0f);
+        return o;
+    }
 
     // Depth/Normal/ID（中心）
     float d01C = gDepthTexture.SampleLevel(gSamplerPoint, uvC, 0).r;
@@ -211,12 +233,12 @@ PSOut main(VertexShaderOutput i)
     float normalN = saturate((normalW - 0.08f) * 6.0f);
     float colorN = saturate((colorW - 0.04f) * 30.0f);
     float edge = K_SILHOUETTE * edgeSil
-               + K_NORMAL * normalN
-               + K_ID * idEdgeW
-               + K_COLOR * colorN; // 1.0 モード時のみ非0
+                + K_NORMAL * normalN
+                + K_ID * idEdgeW
+                + K_COLOR * colorN;
     edge = saturate(edge * EDGE_GAIN);
 
-    PSOut o;    
+    PSOut o;
     o.color = (edge <= 0.0f || !haveCol) ? float4(baseCol, 1.0f)
                                          : float4(lerp(baseCol, bestCol, edge), 1.0f);
     return o;

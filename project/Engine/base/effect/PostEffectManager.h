@@ -27,8 +27,11 @@ public:
     void BeginOutlineMaskPass();
     void EndOutlineMaskPass();
 
-	// ポストエフェクト全ての描画
+	// ポストエフェクトのコマンド処理
     void PostEffectCommand(PostEffectType type);
+    // ポストエフェクト単体の描画
+    uint32_t DrawEffect(PostEffectType type, uint32_t inputSRVIndex);
+    // ポストエフェクト全ての描画
     void RenderTextureDraws(uint32_t inputSRVIndex);
     // 最後のSRVIndexを保管
     uint32_t GetFinalSRVIndex()const { return finalSRVIndex_; }

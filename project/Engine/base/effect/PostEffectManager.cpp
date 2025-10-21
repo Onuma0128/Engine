@@ -227,6 +227,75 @@ void PostEffectManager::PostEffectCommand(PostEffectType type)
     }
 }
 
+uint32_t PostEffectManager::DrawEffect(PostEffectType type, uint32_t inputSRVIndex)
+{
+    // 未作成なら実行不可
+    if (!passes_.contains(type)) { return inputSRVIndex; }
+
+    auto* cmdList = dxEngine_->GetCommandList();
+    const auto& pass = passes_[type];
+
+    D3D12_RESOURCE_BARRIER barrier{};
+    barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+    barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+
+    // OutLineだけは深度をPS用にREADへ（実行前）
+    if (type == PostEffectType::OutLine) {
+        barrier.Transition.pResource = dxEngine_->GetRenderTexrure()->GetDSVResource();
+        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+        barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+        cmdList->ResourceBarrier(1, &barrier);
+    }
+
+    // このパスのRTVへ
+    barrier.Transition.pResource = pass.renderTexture.Get();
+    barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+    barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
+    cmdList->ResourceBarrier(1, &barrier);
+
+    // RTVバインド
+    auto rtv = RtvManager::GetInstance()->GetCPUDescriptorHandle(pass.rtvIndex);
+    cmdList->OMSetRenderTargets(1, &rtv, FALSE, nullptr);
+
+    // PSO / RS セット
+    cmdList->SetGraphicsRootSignature(rootSignatures_[type].Get());
+    cmdList->SetPipelineState(pipelineStates_[type].Get());
+    cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    // 入力テクスチャ
+    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, inputSRVIndex);
+
+    // OutLineだけ追加SRV（深度 / マスク2種）
+    if (type == PostEffectType::OutLine) {
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, pass.depthSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, maskPass_.srvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, maskPass_.srvIndexID);
+    }
+
+    // パラメータCBVなど
+    PostEffectCommand(type);
+
+    // 描画
+    cmdList->DrawInstanced(3, 1, 0, 0);
+
+    // 出力をSRVへ戻す
+    barrier.Transition.pResource = pass.renderTexture.Get();
+    barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+    barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+    cmdList->ResourceBarrier(1, &barrier);
+
+    // OutLineだけ深度をWRITEに戻す（実行後）
+    if (type == PostEffectType::OutLine) {
+        barrier.Transition.pResource = dxEngine_->GetRenderTexrure()->GetDSVResource();
+        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+        barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_DEPTH_WRITE;
+        cmdList->ResourceBarrier(1, &barrier);
+    }
+
+    // このパスの出力SRVを返す（次の入力になる）
+    return pass.srvIndex;
+}
+
 void PostEffectManager::ResourceInitialize()
 {
     grayscaleResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(GrayscaleData));
