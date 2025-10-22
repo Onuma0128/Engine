@@ -15,21 +15,35 @@ class GameCamera
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
+	/// <summary>
+	/// JSON保存による調整項目の初期化とロード、保存
+	/// </summary>
 	void JsonInit();
 	void SaveJson();
 	void ValueImGui();
 
+	/// <summary>
+	/// カメラの更新処理
+	/// </summary>
 	void Update();
 	void SabUpdate(const Vector3& shakeOffset);
 
+	/// <summary>
+	/// カメラシェイクさせるセッター
+	/// </summary>
+	/// <param name="shakeStrength"></シェイクする最大値>
 	void SetShake(float shakeStrength) { shakeStrength_ = shakeStrength; }
 
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
+	/// <param name="player"></param>
 	void SetPlayer(Player* player) { player_ = player; }
-
-	float LerpShortAngle(float a, float b, float t);
-
 	Camera* GetCamera() { return mainCamera_.get(); }
 
 private:

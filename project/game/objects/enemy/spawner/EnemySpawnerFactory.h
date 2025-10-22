@@ -10,33 +10,79 @@
 #include "objects/enemy/base/BaseEnemy.h"
 #include "objects/enemy/adjustItem/EnemyAdjustItem.h"
 
+/// <summary>
+/// スポナーを管理するクラス
+/// </summary>
 class EnemySpawnerFactory
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="loader"></Jsonの保存データを取得する>
 	void Init(SceneJsonLoader loader);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// プレイヤーを設定する
+	/// </summary>
+	/// <param name="player"></param>
 	void SetPlayer(Player* player) { player_ = player; }
 
+	/// <summary>
+	/// ゲームカメラを設定する
+	/// </summary>
+	/// <param name="camera"></param>
 	void SetGameCamera(GameCamera* camera) { gameCamera_ = camera; }
 
+	/// <summary>
+	/// マップデータを設定する
+	/// </summary>
+	/// <param name="mapData"></param>
 	void SetMapData(MapCollision* mapData) { mapData_ = mapData; }
 
 private:
 
-	// スポナーを作る
+	/// <summary>
+	/// スポナーを作成する
+	/// </summary>
+	/// <param name="object"></Jsonの保存データを取得する>
 	void CreateSpawner(SceneObject object);
 
-	// 敵のタイプごとの初期化
+	/// <summary>
+	/// 敵のタイプごとの初期化
+	/// </summary>
+	/// <param name="type"></敵のタイプ>
+	/// <param name="enemys"></敵のリスト>
+	/// <param name="size"></敵の作成する数>
 	void InitTypeEnemy(EnemyType type, std::list<std::unique_ptr<BaseEnemy>>& enemys, size_t size);
-	// 敵のタイプごとの更新
+
+	/// <summary>
+	/// 敵のタイプごとの更新
+	/// </summary>
+	/// <param name="enemys"></param>
 	void UpdateTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& enemys);
-	// 敵のランダムスポーン関数
+
+	/// <summary>
+	/// 敵のランダムスポーン関数
+	/// </summary>
 	void RandomSpawnEnemy();
+
+	/// <summary>
+	/// 敵のタイプごとのリセット(デバッグ用)
+	/// </summary>
+	/// <param name="enemys"></敵のリスト>
+	/// <param name="spawner"></スポナーを決める>
 	void ResetTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& enemys, std::unique_ptr<EnemySpawner>& spawner);
 
 private:

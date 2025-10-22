@@ -4,12 +4,6 @@
 
 #include "objects/enemy/adjustItem/EnemyAdjustItem.h"
 
-void EnemyBullet::Finalize()
-{
-	Object3d::RemoveRenderer();
-	Collider::RemoveCollider();
-}
-
 void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 {
 	Object3d::Initialize("Box.obj");

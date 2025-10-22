@@ -31,59 +31,78 @@ class Player;
 class GameCamera;
 class MapCollision;
 class EnemyAdjustItem;
-
 class EnemyWeaponBase;
 
+/// <summary>
+/// 敵の基底クラス
+/// </summary>
 class BaseEnemy : public Animation, public Collider
 {
 public:
 
-	/// ==================== 共通メンバ関数 ==================== ///
-
-	// 初期化
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	virtual void Initialize();
-	// 更新
+
+	/// <summary>
+	/// 更新
+	/// </summary>
 	virtual void Update();
-	// 描画をしていない時の更新
+
+	/// <summary>
+	/// 描画をしていない時の更新
+	/// </summary>
 	virtual void TransformUpdate();
-	// 描画
+
+	/// <summary>
+	/// 描画
+	/// </summary>
 	virtual void Draw() = 0;
 
 private:
 
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	/// <param name="other"></当たったColliderのポインタが入る>
 	void OnCollisionEnter(Collider* other) override;
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
 
 public:
 
-	// ステートを変える
+	/// <summary>
+	/// ステートを変える
+	/// </summary>
+	/// <param name="newState"></新しいステートを入れる>
 	void ChengeState(std::unique_ptr<EnemyBaseState> newState);
-	// 死亡時呼び出し
+
+	/// <summary>
+	/// 死亡時呼び出し
+	/// </summary>
 	virtual void Dead();
-	// リセット時呼び出し
+
+	/// <summary>
+	/// リセット時呼び出し
+	/// </summary>
+	/// <param name="position"></スポーンする座標を入れる>
 	virtual void Reset(const Vector3& position);
+
+	/// <summary>
+	/// 経路探索をリセットする
+	/// </summary>
+	void ResetSearch();
 
 	/// ==================== アクセッサ ==================== ///
 
 	// 敵のタイプ
 	EnemyType GetType()const { return type_; }
-	// エフェクト
-	EnemyEffect* GetEffect() { return effect_.get(); }
-	// 弾
-	virtual const std::vector<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
-	// ウエポン
-	virtual EnemyWeaponBase* GetWeapon() { return nullptr; }
-	virtual EnemyWeaponBase* GetShieldWeapon() { return nullptr; }
-	// 敵の目線
-	EnemyRay* GetEnemyRay() { return ray_.get(); }
 	// 当たったプレイヤーの弾座標
 	const Vector3& GetPlayerBullet() { return playerBulletPosition_; }
 	// 速度
 	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
 	const Vector3& GetVelocity() { return velocity_; }
-	// 探索をリセットする
-	void ResetSearch();
 
 	// 動けるのが有効か
 	bool GetEnableMove()const { return stateParam_.enableMove_; }
@@ -95,6 +114,15 @@ public:
 
 	/// ==================== その他ポインタアクセッサ ==================== ///
 
+	// エフェクト
+	EnemyEffect* GetEffect() { return effect_.get(); }
+	// 弾
+	virtual const std::vector<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
+	// ウエポン
+	virtual EnemyWeaponBase* GetWeapon() { return nullptr; }
+	virtual EnemyWeaponBase* GetShieldWeapon() { return nullptr; }
+	// 敵の目線
+	EnemyRay* GetEnemyRay() { return ray_.get(); }
 	// プレイヤー
 	Player* GetPlayer() { return player_; }
 	void SetPlayer(Player* player) { player_ = player; }

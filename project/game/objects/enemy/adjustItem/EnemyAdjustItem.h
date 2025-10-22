@@ -80,16 +80,28 @@ struct RangedEliteData {
 	std::array<Vector3, 3> planeOffset;	// プレーンエフェクトの座標
 };
 
+/// <summary>
+/// 敵の調整項目を調整、ロード、保存管理するクラス
+/// </summary>
 class EnemyAdjustItem
 {
 public:
 
+	/// <summary>
+	/// 調整項目をロードする
+	/// </summary>
 	void LoadItems();
 
+	/// <summary>
+	/// 調整項目を触れるようにして更新する
+	/// </summary>
 	void Editor();
 
-	/* ============================== ゲッター ============================== */
-
+	
+	/// <summary>
+	/// 調整項目のゲッター
+	/// </summary>
+	
 	// 敵全体の項目
 	EnemyMainData GetMainData()const { return mainData_; }
 	// 近接敵の項目
@@ -103,12 +115,25 @@ public:
 
 private:
 
-	// 初期化時のパラメータをセットする
+	/// <summary>
+	/// 初期化時のパラメータをセットする
+	/// </summary>
+	/// <param name="json"></各敵のJsonデータを入れる>
 	void SetJsonParameter(JsonFunction json);
-	// 敵のテンプレートデータを取ってくる
+
+	/// <summary>
+	/// 敵のテンプレートデータをゲットやセットする
+	/// </summary>
+	/// <param name="json"></各敵のJsonデータを入れる>
+	/// <returns></各敵のテンプレートデータが入ったjsonを返す>
 	EnemyTemplate GetTemplateData(JsonFunction json);
 	void SetTemplateData(JsonFunction& json, EnemyTemplate& tempData);
-	// 敵のテンプレートデータをImGuiにする
+
+	/// <summary>
+	/// 敵のテンプレートデータをImGuiにする
+	/// </summary>
+	/// <param name="json"></各敵のJsonデータを入れる>
+	/// <param name="tempData"></各敵の調整項目内のテンプレートデータを入れる>
 	void SetImGuiData(JsonFunction& json, EnemyTemplate& tempData);
 
 private:

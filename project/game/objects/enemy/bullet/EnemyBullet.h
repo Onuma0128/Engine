@@ -8,32 +8,60 @@
 
 class EnemyAdjustItem;
 
+/// <summary>
+/// 敵の弾クラス
+/// </summary>
 class EnemyBullet : public Object3d,Collider
 {
 public:
 
-	void Finalize();
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="colliderName"></弾のColliderNameを入れる>
+	/// <param name="type"></敵のタイプを入れる>
 	void Init(const std::string& colliderName, EnemyType type);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 当たったタイミングで返す
+	/// </summary>
+	/// <param name="other"></当たったColliderのポインタが入る>
 	void OnCollisionEnter(Collider* other)override;
 
-	// 攻撃をする関数
+	/// <summary>
+	/// 弾を撃つ関数
+	/// </summary>
+	/// <param name="transform"></撃つ敵のTransformを入れる>
 	void Attack(const WorldTransform& transform);
 
-	bool GetIsActive()const { return isActive_; }
 
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
+	/// <returns></returns>
+	// 弾が動いているか
+	bool GetIsActive()const { return isActive_; }
 	// isActiveがfalseになった瞬間のコールバック関数
 	void SetOnDeactivateCallback(const std::function<void()>& callback);
-
+	// 調整項目を取得する
 	void SetItem(EnemyAdjustItem* item) { item_ = item; }
 
 private:
 
+	/// <summary>
+	/// 弾が何かしらに当たっているなら呼び出す
+	/// </summary>
 	void IsCollision();
-	
+
+	/// <summary>
+	/// 敵のタイプによって弾の速度を変化させ取得する
+	/// </summary>
+	/// <returns></弾の速度>
 	const float GetTypeBulletSpeed();
 
 private:

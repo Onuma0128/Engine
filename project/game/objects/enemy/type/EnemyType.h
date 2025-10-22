@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// 敵の種類を表す列挙体
+/// </summary>
 enum class EnemyType 
 {
     Melee,          // 近接

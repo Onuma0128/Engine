@@ -7,24 +7,49 @@
 #include "Vector3.h"
 #include "Quaternion.h"
 
+/// <summary>
+/// 敵の死亡ステートクラス
+/// </summary>
 class EnemyDeadState : public EnemyBaseState
 {
 public:
 
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="enemy"></param>
 	EnemyDeadState(BaseEnemy* enemy);
 
+	/// <summary>
+	/// グローバル初期化
+	/// </summary>
 	void GlobalInit();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init()override;
 
+	/// <summary>
+	/// 終了処理
+	/// </summary>
 	void Finalize()override;
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update()override;
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw()override;
 
 private:
 
+	/// <summary>
+	/// 結果のターゲットオフセットを計算する
+	/// </summary>
 	void ResultTargetOffset();
 
 private:

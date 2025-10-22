@@ -9,38 +9,95 @@
 
 class BaseEnemy;
 
+/// <summary>
+/// 敵のエフェクトの管理
+/// </summary>
 class EnemyEffect
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
-
+	
+	/// <summary>
+	/// 敵のポインタを取得する
+	/// </summary>
+	/// <param name="enemy"></param>
 	void SetEnemy(BaseEnemy* enemy) { enemy_ = enemy; }
 
-	// 弾を撃つ時のエフェクトを呼び出す
+	/// <summary>
+	/// 弾を撃つ時のエフェクトを呼び出す
+	/// </summary>
+	/// <param name="transform"></敵のTransformを入れる>
 	void OnceBulletEffect(const WorldTransform& transform);
-	// 弾がヒットした時のエフェクトを呼び出す
+	
+	/// <summary>
+	/// 弾がヒットした時のエフェクトを呼び出す
+	/// </summary>
+	/// <param name="transform"></敵のTransformを入れる>
 	void OnceBulletHitEffect(const WorldTransform& transform);
+
+	/// <summary>
+	/// 弾がヒットした時の爆発エフェクトを呼び出す
+	/// </summary>
+	/// <param name="transform"></敵のTransformを入れる>
 	void OnceBulletHitExplosionEffect(const WorldTransform& transform);
+
+	/// <summary>
+	/// 近接敵攻撃時のエフェクトをセットする
+	/// </summary>
+	/// <param name="transform"></敵のTransformを入れる>
 	void SetMeleeAttackEffect(const WorldTransform& transform);
+
+	/// <summary>
+	/// 近接敵攻撃時のエフェクトを出すか
+	/// </summary>
+	/// <param name="flag"><trueなら出す、falseなら出さない>
 	void CreateMeleeAttackEffect(bool flag) { enemyMeleeAttack_->SetIsCreate(flag); }
-	// 死んだ時に出るエフェクトを出すか
+	
+	/// <summary>
+	/// 死んだ時に出るエフェクトを出すか
+	/// </summary>
+	/// <param name="flag"></param>
 	void SetDeadEffect(bool flag) { deadEmitter_->SetIsCreate(flag); }
-	// 敵の弾発射時のエフェクトを出すか
+
+	/// <summary>
+	/// 敵の弾発射時のエフェクトを出すか
+	/// </summary>
+	/// <param name="flag"></param>
 	void SetBulletPredictionEffect(bool flag);
+
 
 private:
 
-	// レティクルがヒットした時のエフェクト
+	/// <summary>
+	/// レティクルがヒットした時のエフェクトの初期化
+	/// </summary>
 	void HitReticleInit();
+	/// <summary>
+	/// レティクルがヒットした時のエフェクトの更新
+	/// </summary>
 	void HitReticleUpdate();
 
-	// 敵の弾発射時のエフェクト(予測線)
+	/// <summary>
+	/// 敵の弾発射時のエフェクトの初期化
+	/// </summary>
 	void BulletPredictionInit();
+	/// <summary>
+	/// 敵の弾発射時のエフェクトの更新
+	/// </summary>
 	void BulletPredictionUpdate();
 
 private:

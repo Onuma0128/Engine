@@ -32,11 +32,6 @@ void EnemyRay::Update(const Vector3& start, const Vector3& end)
 	Collider::LineUpdate();
 }
 
-void EnemyRay::Finalize()
-{
-	Collider::RemoveCollider();
-}
-
 void EnemyRay::SetActive(const bool flag)
 {
 	Collider::isActive_ = flag;
