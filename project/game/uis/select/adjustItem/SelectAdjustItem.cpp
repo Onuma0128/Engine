@@ -15,6 +15,7 @@ void SelectAdjustItem::Init()
 		json_.Set("hitRateNumberUiSize", Vector2{});
 		json_.Set("hitRateNumberUiPos", Vector2{});
 
+		json_.Set("selectUiInterval", 0.0f);
 		json_.Set("clearCountUiTimer", 0.0f);
 
 	} else {
@@ -27,6 +28,7 @@ void SelectAdjustItem::Init()
 		data_.hitRateNumberUiSize = json_.Get("hitRateNumberUiSize", data_.hitRateNumberUiSize);
 		data_.hitRateNumberUiPos = json_.Get("hitRateNumberUiPos", data_.hitRateNumberUiPos);
 
+		data_.selectUiInterval = json_.Get("selectUiInterval", data_.selectUiInterval);
 		data_.clearCountUiTimer_ = json_.Get("clearCountUiTimer", data_.clearCountUiTimer_);
 	}
 }
@@ -47,6 +49,7 @@ void SelectAdjustItem::Editor()
 		ImGui::DragFloat2("hitRateNumberUiSize", &data_.hitRateNumberUiSize.x);
 		ImGui::DragFloat2("hitRateNumberUiPos", &data_.hitRateNumberUiPos.x);
 
+		ImGui::DragFloat("selectUiInterval", &data_.selectUiInterval, 0.01f);
 		ImGui::DragFloat("clearCountUiTimer", &data_.clearCountUiTimer_, 0.01f);
 
 		if (ImGui::Button("Save")) {
@@ -69,6 +72,7 @@ void SelectAdjustItem::Save()
 	json_.Set("hitRateNumberUiSize", data_.hitRateNumberUiSize);
 	json_.Set("hitRateNumberUiPos", data_.hitRateNumberUiPos);
 
+	json_.Set("selectUiInterval", data_.selectUiInterval);
 	json_.Set("clearCountUiTimer", data_.clearCountUiTimer_);
 	json_.Save();
 }

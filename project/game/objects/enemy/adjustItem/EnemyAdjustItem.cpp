@@ -15,14 +15,28 @@ void EnemyAdjustItem::LoadItems()
 		mainJson_.Set("colliderOffset", Vector3{});
 		mainJson_.Set("margin", 1.0f);
 		mainJson_.Set("searchUpdateTime", 1.0f);
+		mainJson_.Set("maxDeadTimer", 1.0f);
+		mainJson_.Set("kNockbackTimer", 1.0f);
+		mainJson_.Set("particleTimer", 1.0f);
+		mainJson_.Set("kNockbackScaleTimer", 1.0f);
+		mainJson_.Set("kNockbackScale", 1.0f);
+		mainJson_.Set("kNockbackVelocityY", 1.0f);
+		mainJson_.Set("kNockbackAccelerY", 1.0f);
 	} else {
 		mainData_.spawnIndex = 0;
-		mainData_.maxSpawn = mainJson_.Get("maxSpawn", mainData_.maxSpawn);
-		mainData_.nextWaveKillCount = mainJson_.Get("nextWaveKillCount", mainData_.nextWaveKillCount);
-		mainData_.colliderSize = mainJson_.Get("colliderSize", mainData_.colliderSize);
-		mainData_.colliderOffset = mainJson_.Get("colliderOffset", mainData_.colliderOffset);
-		mainData_.margin = mainJson_.Get("margin", mainData_.margin);
-		mainData_.searchUpdateTime = mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
+		mainData_.maxSpawn =			mainJson_.Get("maxSpawn", mainData_.maxSpawn);
+		mainData_.nextWaveKillCount =	mainJson_.Get("nextWaveKillCount", mainData_.nextWaveKillCount);
+		mainData_.colliderSize =		mainJson_.Get("colliderSize", mainData_.colliderSize);
+		mainData_.colliderOffset =		mainJson_.Get("colliderOffset", mainData_.colliderOffset);
+		mainData_.margin =				mainJson_.Get("margin", mainData_.margin);
+		mainData_.searchUpdateTime =	mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
+		mainData_.maxDeadTimer =		mainJson_.Get("maxDeadTimer", mainData_.maxDeadTimer);
+		mainData_.kNockbackTimer =		mainJson_.Get("kNockbackTimer", mainData_.kNockbackTimer);
+		mainData_.particleTimer =		mainJson_.Get("particleTimer", mainData_.particleTimer);
+		mainData_.kNockbackScaleTimer = mainJson_.Get("kNockbackScaleTimer", mainData_.kNockbackScaleTimer);
+		mainData_.kNockbackScale =		mainJson_.Get("kNockbackScale", mainData_.kNockbackScale);
+		mainData_.kNockbackVelocityY =	mainJson_.Get("kNockbackVelocityY", mainData_.kNockbackVelocityY);
+		mainData_.kNockbackAccelerY =	mainJson_.Get("kNockbackAccelerY", mainData_.kNockbackAccelerY);
 	}
 	mainData_.debugIsSpawn = false;
 	mainData_.debugSpline = false;
@@ -140,6 +154,14 @@ void EnemyAdjustItem::Editor()
 			ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f);
 			ImGui::DragFloat("margin", &mainData_.margin, 0.01f);
 			ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f);
+
+			ImGui::DragFloat("maxDeadTimer", &mainData_.maxDeadTimer, 0.01f);
+			ImGui::DragFloat("particleTimer", &mainData_.particleTimer, 0.01f);
+			ImGui::DragFloat("kNockbackTimer", &mainData_.kNockbackTimer, 0.01f);
+			ImGui::DragFloat("kNockbackScaleTimer", &mainData_.kNockbackScaleTimer, 0.01f);
+			ImGui::DragFloat("kNockbackScale", &mainData_.kNockbackScale, 0.01f);
+			ImGui::DragFloat("kNockbackVelocityY", &mainData_.kNockbackVelocityY, 0.01f);
+			ImGui::DragFloat("kNockbackAccelerY", &mainData_.kNockbackAccelerY, 0.01f);
 			if (ImGui::Button("Save")) {
 				mainJson_.Set("maxSpawn", mainData_.maxSpawn);
 				mainJson_.Set("nextWaveKillCount", mainData_.nextWaveKillCount);
@@ -147,6 +169,14 @@ void EnemyAdjustItem::Editor()
 				mainJson_.Set("colliderOffset", mainData_.colliderOffset);
 				mainJson_.Set("margin", mainData_.margin);
 				mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
+
+				mainJson_.Set("maxDeadTimer", mainData_.maxDeadTimer);
+				mainJson_.Set("kNockbackTimer", mainData_.kNockbackTimer);
+				mainJson_.Set("particleTimer", mainData_.particleTimer);
+				mainJson_.Set("kNockbackScaleTimer", mainData_.kNockbackScaleTimer);
+				mainJson_.Set("kNockbackScale", mainData_.kNockbackScale);
+				mainJson_.Set("kNockbackVelocityY", mainData_.kNockbackVelocityY);
+				mainJson_.Set("kNockbackAccelerY", mainData_.kNockbackAccelerY);
 				mainJson_.Save();
 			}
 			ImGui::TreePop();
@@ -271,6 +301,7 @@ EnemyTemplate EnemyAdjustItem::GetTemplateData(JsonFunction json)
 	data.attackActiveTime = json.Get("attackActiveTime", data.attackActiveTime);
 	data.attackRecoveryTime = json.Get("attackRecoveryTime", data.attackRecoveryTime);
 	data.attackCoolTime = json.Get("attackCoolTime", data.attackCoolTime);
+
 	return data;
 }
 

@@ -10,8 +10,14 @@ public:
 
     static void Update();
 
-    static float GetDeltaTime() { return deltaTime_ * timeScale_; }
-    static float GetRawDeltaTime() { return deltaTime_; }
+    static float GetDeltaTime() { 
+        if (deltaTime_ >= 1.0f) { return 0.0f; }
+        return deltaTime_ * timeScale_;
+    }
+    static float GetRawDeltaTime() { 
+        if (deltaTime_ >= 1.0f) { return 0.0f; }
+        return deltaTime_; 
+    }
 
     static void  SetTimeScaleForSeconds(float scale, float duration);
 

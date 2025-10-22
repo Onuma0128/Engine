@@ -17,6 +17,7 @@ private:
 		Vector2 hitRateNumberUiSize;		// 命中率のサイズ
 		Vector2 hitRateNumberUiPos;			// 命中率の座標
 
+		float selectUiInterval;				// セレクトのUIが出てくるまでの時間
 		float clearCountUiTimer_;			// 数字の出てくる時間
 	};
 	SelectData data_;

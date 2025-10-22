@@ -23,9 +23,9 @@ void TitleScene::Initialize()
 	titleUI_ = std::make_unique<TitleUI>();
 	titleUI_->Init();
 
-	test = std::make_unique<ParticleEmitter>("particleName");
+	test = std::make_unique<ParticleEmitter>("playerHit");
 	particleManager->CreateParticleGroup(test);
-	//test->SetIsCreate(false);
+	test->SetIsCreate(false);
 }
 
 void TitleScene::Finalize()

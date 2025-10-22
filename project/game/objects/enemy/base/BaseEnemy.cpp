@@ -186,7 +186,6 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 	if (other->GetColliderName() == "Player") {
 		const float speed = 2.0f;
 		transform_.translation_ -= velocity_ * speed * DeltaTimer::GetDeltaTime();
-		Animation::TransformUpdate();
 	}
 
 	// 敵と当たっているなら
@@ -196,11 +195,10 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 		velocity.y = 0.0f;
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
-		Animation::TransformUpdate();
 	}
 
 	if (other->GetColliderName() == "PredictionObject") {
-		outlineColor_ = { 0.0f,0.0f,1.0f };
+		outlineColor_ = { 1.0f,0.0f,0.0f };
 	}
 }
 

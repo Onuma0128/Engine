@@ -6,6 +6,7 @@
 // コンストラクタ
 Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 
+const Vector3 Vector3::ExprUnitXYZ = { 1.0f,1.0f,1.0f };
 const Vector3 Vector3::ExprUnitX = { 1.0f,0.0f,0.0f };
 const Vector3 Vector3::ExprUnitY = { 0.0f,1.0f,0.0f };
 const Vector3 Vector3::ExprUnitZ = { 0.0f,0.0f,1.0f };

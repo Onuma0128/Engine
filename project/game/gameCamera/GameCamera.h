@@ -8,6 +8,9 @@
 
 class Player;
 
+/// <summary>
+/// ゲーム上のカメラを持つ
+/// </summary>
 class GameCamera
 {
 public:
@@ -32,6 +35,7 @@ public:
 private:
 
 	Player* player_ = nullptr;
+	bool playerIsAlive_ = true;
 
 	std::unique_ptr<Camera> mainCamera_ = nullptr;
 	std::unique_ptr<Camera> sabCamera_ = nullptr;

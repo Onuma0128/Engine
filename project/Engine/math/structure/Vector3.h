@@ -16,6 +16,7 @@ public:
     Vector3(float x = 0, float y = 0, float z = 0);
 
     // 定数
+    static const Vector3 ExprUnitXYZ;
     static const Vector3 ExprUnitX;
     static const Vector3 ExprUnitY;
     static const Vector3 ExprUnitZ;

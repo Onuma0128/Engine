@@ -45,7 +45,7 @@ void GamePlayScene::Initialize()
 	// シーンフェードを初期化
 	sceneFade_ = std::make_unique<SceneFade>();
 	sceneFade_->Init();
-	sceneFade_->FadeIn(3.0f);
+	sceneFade_->FadeIn(2.0f);
 
 	// ゲームシーン全体のUIを初期化
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();

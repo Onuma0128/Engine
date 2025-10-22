@@ -31,6 +31,14 @@ struct EnemyMainData {
 
 	float searchUpdateTime;		// 敵の探索を更新する時間
 	bool debugSpline;			// 敵の探索経路デバッグ用
+
+	float maxDeadTimer;			// 死亡時消えるまでの時間
+	float kNockbackTimer;		// 死亡時ノックバックの時間
+	float particleTimer;		// 死亡時のパーティクルが出ている時間
+	float kNockbackScaleTimer;	// 死亡時ノックバックの変化スケールの時間
+	float kNockbackScale;		// 死亡時ノックバックの変化スケール
+	float kNockbackVelocityY;	// 死亡時ノックバックのジャンプの速度
+	float kNockbackAccelerY;	// 死亡時ノックバックのジャンプ加速度
 };
 
 // 近接敵の項目

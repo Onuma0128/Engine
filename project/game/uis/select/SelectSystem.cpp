@@ -122,7 +122,7 @@ void SelectSystem::CounterUiUpdate()
 		clearCountUiTimer_ += DeltaTimer::GetDeltaTime();
 		killCountUI_->SetAlpha(clearCountUiTimer_ - 1.0f);
 		hitRateUI_->SetAlpha(clearCountUiTimer_ - 1.0f);
-		if (clearCountUiTimer_ > 2.0f) {
+		if (clearCountUiTimer_ > items_->GetSelectData().selectUiInterval) {
 			updateSelectUI_ = true;
 			clearCountUiTimer_ = 0.0f;
 		}

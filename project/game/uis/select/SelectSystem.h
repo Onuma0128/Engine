@@ -62,6 +62,7 @@ private:
 
 	// 位ごとに描画する
 	CountUiOrder countUiOrder_ = CountUiOrder::First;
+	float selectUiInterval_ = 0.0f;
 	float clearCountUiTimer_ = 0.0f;
 
 	// 描画するか決める

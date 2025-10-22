@@ -39,6 +39,11 @@ void GameCamera::JsonInit()
 		data_.Set("mainRotate", Vector3{});
 		data_.Set("mainPosition", Vector3{});
 		data_.Set("sabPosition", Vector3{});
+		data_.Set("isSabRotate", false);
+		data_.Set("sabRotateSpeed", 0.0f);
+		data_.Set("sabRadius", 0.0f);
+		data_.Set("sabPosY", 0.0f);
+	} else {
 	}
 }
 
@@ -61,10 +66,6 @@ void GameCamera::ValueImGui()
 		if (ImGui::Button("sabCamera")) {
 			CameraManager::GetInstance()->SetActiveCamera(1);
 		}
-		ImGui::Checkbox("IsSabRotate", &sabAnima_.isRotate);
-		ImGui::DragFloat("RotateSpeed", &sabAnima_.rotateSpeed, 0.01f);
-		ImGui::DragFloat("SabRadius", &sabAnima_.radius, 0.01f);
-		ImGui::DragFloat("SabPosY", &sabAnima_.positionY, 0.01f);
 
 		if (ImGui::Button("Save")) {
 			data_.Save();
@@ -80,6 +81,11 @@ void GameCamera::Update()
 	Input* input = Input::GetInstance();
 
 	ValueImGui();
+
+	// プレイヤーが死んだらカメラを切り替え
+	if (playerIsAlive_ && !player_->GetIsAlive()) {
+		CameraManager::GetInstance()->SetActiveCamera(1);
+	}
 
 	// オフセットの回転角
 	const Vector3 offsetRotation = data_.Get<Vector3>("mainRotate");
@@ -108,6 +114,8 @@ void GameCamera::Update()
 
 	// サブカメラの更新
 	SabUpdate(shakeOffset);
+
+	playerIsAlive_ = player_->GetIsAlive();
 }
 
 void GameCamera::SabUpdate(const Vector3& shakeOffset)
@@ -115,6 +123,10 @@ void GameCamera::SabUpdate(const Vector3& shakeOffset)
 	// プレイヤーの位置と回転
 	Vector3 playerPos = player_->GetTransform().translation_;
 	Quaternion playerRot = Quaternion::IdentityQuaternion();
+	sabAnima_.isRotate = data_.Get<bool>("isSabRotate");
+	sabAnima_.rotateSpeed = data_.Get<float>("sabRotateSpeed");
+	sabAnima_.radius = data_.Get<float>("sabRadius");
+	sabAnima_.positionY = data_.Get<float>("sabPosY");
 
 	// オフセット（プレイヤーの後方）
 	if (!sabAnima_.isRotate) {

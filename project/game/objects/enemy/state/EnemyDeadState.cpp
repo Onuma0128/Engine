@@ -8,20 +8,27 @@
 #include "objects/enemy/base/BaseEnemy.h"
 #include "objects/enemy/weapon/EnemyWeaponBase.h"
 
+#include "objects/enemy/adjustItem/EnemyAdjustItem.h"
+
 EnemyDeadState::EnemyDeadState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 
 void EnemyDeadState::GlobalInit()
 {
-	// 死亡までの時間
-	maxDeadFrame_ = 5.0f;
-	// ノックバックしている時間
-	knockbackFrame_ = 1.0f;
-	// パーティクルが出ている時間
-	particleFrame_ = 3.0f;
+	const auto data = enemy_->GetItem()->GetMainData();
 
-	// 敵が死ぬ時のvelocityとacceleration
-	velocityY_ = 10.0f;
-	accelerationY_ = 100.0f;
+	// 死亡までの時間(5.0f)
+	maxDeadTimer_ = data.maxDeadTimer;
+	// ノックバックしている時間(1.0f)
+	knockbackTimer_ = data.kNockbackTimer;
+	// ノックバック時スケールが変化している時間
+	kNockbackScaleTimer_ = data.kNockbackScaleTimer;
+	// パーティクルが出ている時間(3.0f)
+	particleTimer_ = data.particleTimer;
+
+	// 敵が死ぬ時のvelocityとacceleration(10.0f,100.0f)
+	velocityY_ = data.kNockbackVelocityY;
+	accelerationY_ = data.kNockbackAccelerY;
+	kNockbackScale_ = data.kNockbackScale;
 }
 
 void EnemyDeadState::Init()
@@ -29,7 +36,7 @@ void EnemyDeadState::Init()
 	GlobalInit();
 
 	// 死亡するフレーム
-	deadFrame_ = maxDeadFrame_;
+	deadTimer_ = maxDeadTimer_;
 	// 敵がノックバックする方向
 	velocity_ = enemy_->GetVelocity();
 	// ノックバックの際に敵が起こすアクションの計算
@@ -44,13 +51,23 @@ void EnemyDeadState::Finalize()
 
 void EnemyDeadState::Update()
 {
-	deadFrame_ -= DeltaTimer::GetDeltaTime();
-	deadFrame_ = std::clamp(deadFrame_, 0.0f, maxDeadFrame_);
-	enemy_->GetTransform().scale_ = defaultScale_ * (deadFrame_ / maxDeadFrame_);
+	const auto data = enemy_->GetItem()->GetMainData();
+
+	deadTimer_ -= DeltaTimer::GetDeltaTime();
+	deadTimer_ = std::clamp(deadTimer_, 0.0f, maxDeadTimer_);
+	// スケール変化を更新
+	if (deadTimer_ > (maxDeadTimer_ - data.kNockbackScaleTimer)) {
+		float t = std::clamp(((maxDeadTimer_ - deadTimer_) / data.kNockbackScaleTimer), 0.0f, 1.0f);
+		float changeScale = std::sin(t * std::numbers::pi_v<float>) * kNockbackScale_;
+		enemy_->GetTransform().scale_ = Vector3::ExprUnitXYZ + (Vector3::ExprUnitXYZ * changeScale);
+	} else {
+		float t = ((deadTimer_ - data.kNockbackScaleTimer) / (maxDeadTimer_ - data.kNockbackScaleTimer));
+		enemy_->GetTransform().scale_ = defaultScale_ * t; 
+	}
 
 	// 最初の1秒はヒットバック
-	if (deadFrame_ > (maxDeadFrame_ - knockbackFrame_)) {
-		float t = std::clamp(1.0f - (deadFrame_ - 4.0f), 0.0f, 1.0f);
+	if (deadTimer_ > (maxDeadTimer_ - knockbackTimer_)) {
+		float t = std::clamp(1.0f - (deadTimer_ - 4.0f), 0.0f, 1.0f);
 		Vector3 enemyPosition = enemy_->GetTransform().translation_;
 		if (enemy_->GetTransform().translation_.y > 0.5f) {
 			enemyPosition.y += velocity_.y * DeltaTimer::GetDeltaTime();
@@ -64,14 +81,14 @@ void EnemyDeadState::Update()
 		enemy_->GetTransform().rotation_ = defaultRotate_;
 
 	// それ以降に死亡時パーティクルを出す
-	} else if (deadFrame_ > (maxDeadFrame_ - knockbackFrame_ - particleFrame_)) {
+	} else if (deadTimer_ > (maxDeadTimer_ - knockbackTimer_ - particleTimer_)) {
 		enemy_->GetEffect()->SetDeadEffect(true);
 	} else {
 		enemy_->GetEffect()->SetDeadEffect(false);
 	}
 
 	// 5秒経ったら消す
-	if (deadFrame_ <= 0.0f) {
+	if (deadTimer_ <= 0.0f) {
 		enemy_->SetIsDead(true);
 	} else {
 		if (!chengeAnimation_) {
