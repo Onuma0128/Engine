@@ -7,6 +7,9 @@
 
 #include "WorldTransform.h"
 
+/// <summary>
+/// 必殺技の状態
+/// </summary>
 enum class SpecialMoveState {
 	None,
 	Expanding,   // 拡大中（0→1）
@@ -16,33 +19,89 @@ enum class SpecialMoveState {
 
 class Player;
 
+/// <summary>
+/// プレイヤーのエフェクトを管理するクラス
+/// </summary>
 class PlayerEffect
 {
 public:
 
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~PlayerEffect();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// プレイヤーを設定する
+	/// </summary>
+	/// <param name="player"></param>
 	void SetPlayer(Player* player) { player_ = player; }
 
-	// 移動時のエフェクトを呼び出す
+	/// <summary>
+	/// 移動時のエフェクトを呼び出す
+	/// </summary>
 	void OnceMoveEffect();
-	// 避けた時のエフェクトを呼び出す
+
+	/// <summary>
+	/// 避けた時のエフェクトを呼び出す
+	/// </summary>
 	void OnceAvoidEffect();
-	// 攻撃を受けた時のエフェクトを呼び出す
+
+	/// <summary>
+	/// 攻撃を受けた時のエフェクトを呼び出す
+	/// </summary>
 	void OnceHitEffect();
-	// 必殺技を撃った時のエフェクト
+
+	/// <summary>
+	/// 必殺技を撃った時のエフェクト更新
+	/// </summary>
 	void UpdatePostEffect();
+
+	/// <summary>
+	/// 必殺技の状態を取得する
+	/// </summary>
+	/// <returns></returns>
 	SpecialMoveState GetSpecialState()const { return specialMoveState_; }
+
+	/// <summary>
+	/// 必殺技のフレームを取得する
+	/// </summary>
+	/// <returns></returns>
 	float GetSpecialMoveFrame()const { return specialMoveFrame_; }
+
+	/// <summary>
+	/// 必殺技の発動中かどうかを取得する
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsSpecialMove()const { return isSpecialMove_; }
+
+	/// <summary>
+	/// 必殺技の発動中かどうかを設定する
+	/// </summary>
+	/// <param name="flag"></param>
 	void SetIsSpecialMove(bool flag) { isSpecialMove_ = flag; }
+
+	/// <summary>
+	/// リロードUIの描画を有効/無効にする
+	/// </summary>
+	/// <param name="flag"></param>
 	void SetIsDrawReloadUI(bool flag) { playerReload_->GetRenderOptions().enabled = flag; }
+
 private:
 
 	Player* player_ = nullptr;

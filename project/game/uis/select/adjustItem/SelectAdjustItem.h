@@ -2,6 +2,9 @@
 
 #include "JsonFunction.h"
 
+/// <summary>
+/// セレクトの調整項目を調整、ロード、保存管理するクラス
+/// </summary>
 class SelectAdjustItem
 {
 private:
@@ -24,15 +27,27 @@ private:
 
 public:
 
-	// Json保存
-	void Init();
+	/// <summary>
+	/// 調整項目をロードする
+	/// </summary>
+	void LoadItems();
 
+	/// <summary>
+	/// 調整項目を触れるようにして更新する
+	/// </summary>
 	void Editor();
 
+	/// <summary>
+	/// 調整項目のゲッター
+	/// </summary>
+	/// <returns></returns>
 	const SelectData& GetSelectData()const { return data_; }
 
 private:
 
+	/// <summary>
+	///	調整項目を保存する
+	/// </summary>
 	void Save();
 
 private:

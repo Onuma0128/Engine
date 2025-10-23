@@ -10,23 +10,49 @@
 #include "SelectUI.h"
 #include "adjustItem/SelectAdjustItem.h"
 
+/// <summary>
+/// セレクトUIの表時や更新を管理するクラス
+/// </summary>
 class SelectSystem
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// セレクトUIのフェードイン
+	/// </summary>
 	void SelectUIFadeIn();
 
-	// セレクトが出ているか判定
+	/// <summary>
+	/// セレクトUIが表示されているか判定
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsSelectIn()const { return updateSelectUI_; }
 
-	// キル数と命中率を受け取るセッター
+	/// <summary>
+	/// キル数を設定する
+	/// </summary>
+	/// <param name="num"></param>
 	void SetKillCount(int num) { killCount_ = num; }
+
+	/// <summary>
+	/// 命中率を設定する
+	/// </summary>
+	/// <param name="num"></param>
 	void SetHitRate(int num) { hitRate_ = num; }
 
 private:

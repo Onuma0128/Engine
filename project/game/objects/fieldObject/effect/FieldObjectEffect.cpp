@@ -20,7 +20,7 @@ void FieldObjectEffect::Update()
 
 }
 
-void FieldObjectEffect::OnceWoodChipEffect(const WorldTransform& transform)
+void FieldObjectEffect::OnceHitEffect(const WorldTransform& transform)
 {
 	hitEmitter_->onceEmit();
 

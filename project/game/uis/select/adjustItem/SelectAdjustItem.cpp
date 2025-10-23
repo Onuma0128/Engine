@@ -2,7 +2,7 @@
 
 #include "imgui.h"
 
-void SelectAdjustItem::Init()
+void SelectAdjustItem::LoadItems()
 {
 	json_.Init("SelectSystem");
 	if (!json_.Load()) {

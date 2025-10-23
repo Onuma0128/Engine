@@ -7,21 +7,41 @@
 
 #include "WorldTransform.h"
 
+/// <summary>
+/// プレイヤーの弾のエフェクトを管理するクラス
+/// </summary>
 class PlayerBulletEffect
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
-	// 弾のトレイルエフェクトを呼び出す
+	/// <summary>
+	/// 弾のトレイルエフェクトを呼び出す
+	/// </summary>
 	void OnceBulletTrailEffect(const WorldTransform& transform);
-	// 弾が消える時のエフェクトを呼び出す
+
+	/// <summary>
+	/// 弾が消える時のエフェクトを呼び出す
+	/// </summary>
 	void OnceBulletDeleteEffect(const WorldTransform& transform);
-	// 弾のエフェクトを呼び出す
+
+	/// <summary>
+	/// 弾のエフェクトを呼び出す
+	/// </summary>
 	void OnceBulletEffect(const WorldTransform& transform);
-	// 弾リロード時のエフェクトを呼び出す
+
+	/// <summary>
+	/// 弾リロード時のエフェクトを呼び出す
+	/// </summary>
 	void OnceBulletReloadEffect(const WorldTransform& transform);
 
 private:

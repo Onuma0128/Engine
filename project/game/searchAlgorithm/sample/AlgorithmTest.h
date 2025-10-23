@@ -10,18 +10,36 @@
 
 class MapCollision;
 
+/// <summary>
+/// アルゴリズムのテストクラス
+/// </summary>
 class AlgorithmTest : public Object3d
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="goal"></param>
 	void Update(const Vector3& goal);
 
+	/// <summary>
+	/// マップコリジョンを設定する
+	/// </summary>
+	/// <param name="mapCollision"></param>
 	void SetMapCollision(MapCollision* mapCollision) { pathFinder_.SetMapData(mapCollision); }
 
 private:
 
+	/// <summary>
+	/// リセット
+	/// </summary>
+	/// <param name="goal"></param>
 	void Reset(const Vector3& goal);
 
 private:

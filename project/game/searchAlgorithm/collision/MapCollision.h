@@ -8,34 +8,66 @@
 
 #include "searchAlgorithm/debugGrid/DrawGrid.h"
 
-// マップ1つ1つ用
+/// <summary>
+/// マップの情報
+/// </summary>
 struct Maptip {
 	AABB_2D aabb;		// 座標格納
 	Vector3 center;		// 中心座標
 	bool isEnable;		// 有効かどうか
 };
 
+/// <summary>
+/// マップの衝突判定を管理するクラス
+/// </summary>
 class MapCollision
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="object"></Jsonの保存データを取得する>
 	void Init(SceneJsonLoader loader);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
-	// アクセッサ
+	/// <summary>
+	/// マップデータを取得する
+	/// </summary>
+	/// <returns></returns>
 	const std::vector<std::vector<Maptip>>& GetMapData()const { return mapDatas_; }
+
+	/// <summary>
+	/// グリッドの半径を取得する
+	/// </summary>
+	/// <returns></returns>
 	const float GetHalf() const { return half_; }
+
+	/// <summary>
+	/// グリッドの1マスの幅を取得する
+	/// </summary>
+	/// <returns></returns>
 	const float GetCell() const { return cell_; }
 
 private:
 
-	// マップを作成する
+	/// <summary>
+	/// マップを作成する
+	/// </summary>
 	void CreateMap();
-	// マップの判定を取る
+	
+	/// <summary>
+	/// マップの衝突判定を作成する
+	/// </summary>
 	void CreateMapCollision();
 
-	// マップを再ロードする
+	/// <summary>
+	/// マップを再ロードする
+	/// </summary>
 	void ReloadMap();
 
 private:

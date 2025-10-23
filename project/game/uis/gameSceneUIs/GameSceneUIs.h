@@ -7,23 +7,49 @@
 
 #include "uis/select/SelectSystem.h"
 
+/// <summary>
+/// ゲームシーンのUIを管理するクラス
+/// </summary>
 class GameSceneUIs
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// セレクトUIのフェードイン
+	/// </summary>
 	void SelectUIFadeIn();
 
-	// セレクトが出ているか判定
+	/// <summary>
+	/// セレクトが出ているか判定
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsSelectIn()const { return selectSystem_->GetIsSelectIn(); }
-
-	// キル数と命中率を受け取るセッター
+	
+	/// <summary>
+	/// キル数を設定する
+	/// </summary>
+	/// <param name="num"></param>
 	void SetKillCount(int num) { selectSystem_->SetKillCount(num); }
+
+	/// <summary>
+	/// 命中率を設定する
+	/// </summary>
+	/// <param name="num"></param>
 	void SetHitRate(int num) { selectSystem_->SetHitRate(num); }
 
 private:

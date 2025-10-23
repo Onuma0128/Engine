@@ -8,29 +8,76 @@
 
 class PlayerAdjustItem;
 
+/// <summary>
+/// プレイヤーの弾を表すクラス
+/// </summary>
 class PlayerBullet : public Object3d,Collider
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="colliderName"></param>
 	void Init(const std::string& colliderName);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	/// <param name="other"></当たったColliderのポインタが入る>
 	void OnCollisionEnter(Collider* other)override;
 
-	// リロードをする関数
+	/// <summary>
+	/// リロードをする関数
+	/// </summary>
+	/// <param name="transform"></プレイヤーのTransformを設定する>
+	/// <param name="isEmit"></エフェクトを出すか>
 	void Reload(const WorldTransform& transform, bool isEmit = false);
-	// 攻撃をする関数
+
+	/// <summary>
+	/// 攻撃をする関数
+	/// </summary>
+	/// <param name="transform"></プレイヤーのTransformを設定する>
+	/// <param name="speed"></弾の速度を設定する>
 	void Attack(const WorldTransform& transform, float speed = 20.0f);
 
+	/// <summary>
+	/// 動いているかを取得する
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsActive()const { return isActive_; }
+
+	/// <summary>
+	/// リロード中かを取得する
+	/// </summary>
+	/// <returns></returns>
 	bool GetIsReload()const { return isReload_; }
+
+	/// <summary>
+	/// ノックダウン数を取得する
+	/// </summary>
+	/// <returns></returns>
 	uint32_t GetNockdownCount()const { return kNockdownCount_; }
+
+	/// <summary>
+	/// 弾が当たっていれば呼び出す
+	/// </summary>
 	void IsCollision();
 
-	// isActiveがfalseになった瞬間のコールバック関数
+	/// <summary>
+	/// isActiveがfalseになった瞬間のコールバック関数
+	/// </summary>
 	void SetOnDeactivateCallback(const std::function<void()>& callback);
 
+	/// <summary>
+	/// 調整項目を設定する
+	/// </summary>
+	/// <param name="item"></param>
 	void SetItem(PlayerAdjustItem* item) { item_ = item; }
 
 private:

@@ -46,16 +46,27 @@ struct BulletUIData {
 	float startPosition;		// 最初の座標
 };
 
+/// <summary>
+/// プレイヤーの調整項目を調整、ロード、保存管理するクラス
+/// </summary>
 class PlayerAdjustItem
 {
 public:
 
+	/// <summary>
+	/// 調整項目をロードする
+	/// </summary>
 	void LoadItems();
 
+	/// <summary>
+	/// 調整項目を触れるようにして更新する
+	/// </summary>
 	void Editor();
 
-	/* ============================== ゲッター ============================== */
-
+	/// <summary>
+	/// 調整項目のゲッター
+	/// </summary>
+	
 	// プレイヤーの項目
 	PlayerData GetPlayerData()const { return playerData_; }
 	// 弾の項目

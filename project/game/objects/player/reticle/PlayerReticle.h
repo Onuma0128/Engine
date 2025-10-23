@@ -7,27 +7,67 @@
 #include "Collider.h"
 #include "Sprite.h"
 
+/// <summary>
+/// プレイヤーのレティクルを管理するクラス
+/// </summary>
 class PlayerReticle :public Sprite,Collider
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
 	void Init();
 
+	/// <summary>
+	/// グローバル初期化
+	/// </summary>
 	void GlobalInit();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="isPlayingMouse"></param>
 	void Update(bool isPlayingMouse);
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	/// <param name="other"></当たったColliderのポインタが入る>
 	void OnCollisionEnter(Collider* other) override;
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
 
+	/// <summary>
+	/// コライダーのアクティブ状態を設定する
+	/// </summary>
+	/// <param name="flag"></param>
 	void SetColliderActive(bool flag) { Collider::isActive_ = flag; }
 
+	/// <summary>
+	/// 敵のコライダーリストを取得する
+	/// </summary>
+	/// <returns></returns>
 	const std::list<Collider*>& GetEnemyColliders()const { return enemyColliders_; }
+
+	/// <summary>
+	/// 敵のコライダーを消していく
+	/// </summary>
 	void EnemyCollidersPopBack() { enemyColliders_.pop_back(); }
+
+	/// <summary>
+	/// 敵のコライダーを全て消す
+	/// </summary>
 	void EnemyCollidersClear() { enemyColliders_.clear(); }
+
+	/// <summary>
+	/// ヒットカウントをリセットする
+	/// </summary>
 	void ResetHitCount() { 
 		hitCount_ = 0;
 		Collider::isActive_ = false;
@@ -35,6 +75,9 @@ public:
 
 private:
 
+	/// <summary>
+	/// 当たり判定用セグメントの更新
+	/// </summary>
 	void SegmentUpdate();
 
 private:

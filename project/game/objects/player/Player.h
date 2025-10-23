@@ -13,27 +13,53 @@
 #include "objects/player/effect/PlayerEffect.h"
 #include "objects/player/reticle/PlayerReticle.h"
 #include "objects/player/adjustItem/PlayerAdjustItem.h"
-
 #include "objects/player/bullet/PlayerShot.h"
 
 #include "objects/shadow/CharacterShadow.h"
 
+/// <summary>
+/// プレイヤー
+/// </summary>
 class Player : public Animation,Collider
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="object"></Jsonの保存データを取得する>
 	void Init(SceneJsonLoader loader);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// エフェクト描画
+	/// </summary>
 	void EffectDraw();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// ステートを変える
+	/// </summary>
+	/// <param name="newState"></新しいステートを入れる>
 	void ChengeState(std::unique_ptr<PlayerBaseState> newState);
 
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	/// <param name="other"></当たったColliderのポインタが入る>
 	void OnCollisionEnter(Collider* other) override;
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
+
+	/// ==================== アクセッサ ==================== ///
 
 	PlayerShot* GetShot() const { return shot_.get(); }
 	PlayerEffect* GetEffect()const { return effect_.get(); }

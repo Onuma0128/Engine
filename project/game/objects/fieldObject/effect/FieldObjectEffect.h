@@ -6,16 +6,29 @@
 
 #include "WorldTransform.h"
 
+/// <summary>
+/// フィールドオブジェクトのエフェクトクラス
+/// </summary>
 class FieldObjectEffect
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="name"></フィールドオブジェクトの名前を取得する>
 	void Init(const std::string& name);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
-	// 弾がヒット時のエフェクトを呼び出す
-	void OnceWoodChipEffect(const WorldTransform& transform);
+	/// <summary>
+	/// 弾がヒット時のエフェクトを呼び出す
+	/// </summary>
+	/// <param name="transform"></フィールドオブジェクトのTransform>
+	void OnceHitEffect(const WorldTransform& transform);
 
 private:
 

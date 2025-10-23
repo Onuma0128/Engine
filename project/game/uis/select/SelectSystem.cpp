@@ -41,7 +41,7 @@ void SelectSystem::Init()
 
 	// 調整項目のロードと初期化
 	items_ = std::make_unique<SelectAdjustItem>();
-	items_->Init();
+	items_->LoadItems();
 
 	targetIndex_ = 0u;
 }

@@ -11,23 +11,62 @@
 
 class MapCollision;
 
+/// <summary>
+/// 探索アルゴリズムの経路探索を管理するクラス
+/// </summary>
 class PathFinder
 {
 public:
 
+	/// <summary>
+	/// スプラインをリセットする
+	/// </summary>
 	void Reset();
-	// 探索をしてSplineを再初期化
+
+	/// <summary>
+	/// 探索をしてSplineを再初期化
+	/// </summary>
+	/// <param name="startW"></スタートの座標>
+	/// <param name="goalW"></ゴールの座標>
 	void Search(const Vector3& startW, const Vector3& goalW);
-	// 時間を進めて座標を更新する
+
+	/// <summary>
+	/// 時間を進めて座標を更新
+	/// </summary>
+	/// <param name="speed"></スプラインを進むスピードを設定する>
+	/// <param name="lookAt_t"></0 ～ 1のtimeを入れる>
 	void Update(const float speed, float lookAt_t = 0.01f);
 
 	// 今の座標と次の座標を取得
+
+	/// <summary>
+	/// 現在のスプライン上の速度を取得する
+	/// </summary>
+	/// <returns></returns>
 	const Vector3& GetVelocity() { return splineMover_.GetVelocity(); }
+
+	/// <summary>
+	/// 現在のスプライン上の座標を取得する
+	/// </summary>
+	/// <returns></returns>
 	const Vector3& GetPosition() { return splineMover_.GetPosition(); }
+
+	/// <summary>
+	/// 現在のスプライン上のy回転のクォータニオンを取得する
+	/// </summary>
+	/// <returns></returns>
 	const Quaternion& GetRotation() { return splineMover_.GetRotation(); }
+
+	/// <summary>
+	/// スプラインのデバッグ描画を有効/無効にする
+	/// </summary>
+	/// <param name="flag"></param>
 	void DebugSpline(bool flag) { splineMover_.DebugSpline(flag); }
 
-	// マップデータを取得する
+	/// <summary>
+	/// マップデータを設定する
+	/// </summary>
+	/// <param name="mapColl"></param>
 	void SetMapData(MapCollision* mapColl) { mapColl_ = mapColl; }
 
 private:

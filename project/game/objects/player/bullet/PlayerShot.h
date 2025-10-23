@@ -11,39 +11,81 @@
 
 class Player;
 
+/// <summary>
+/// プレイヤーの弾を管理するクラス
+/// </summary>
 class PlayerShot
 {
 public:
 
-	// 弾の初期化処理
+	/// <summary>
+	/// プレイヤーの弾を初期化する
+	/// </summary>
+	/// <param name="player"></param>
 	void Init(Player* player);
-	// 弾の更新処理
+
+	/// <summary>
+	/// 弾の更新
+	/// </summary>
 	void Update();
+
+	/// <summary>
+	/// 弾のUIを更新
+	/// </summary>
 	void UpdateUI();
-	// 弾UIの描画処理
+
+	/// <summary>
+	/// 弾UIの描画
+	/// </summary>
 	void DrawUI();
 
-	// 弾のリロードを管理する関数
+	/// <summary>
+	/// 弾のリロードを行う
+	/// </summary>
 	void ReloadBullet();
+
+	/// <summary>
+	/// 全ての弾のリロードを行う
+	/// </summary>
 	void AllReloadBullet();
-	// リロードできる弾があるか判定
+
+	/// <summary>
+	/// リロードできる弾があるか判定
+	/// </summary>
 	bool IsReloadBullet();
 
-	// 弾を発射する関数
+	/// <summary>
+	/// 弾を発射する関数
+	/// </summary>
 	void AttackBullet();			// 通常弾
 	void SpecialAttackBullet();		// 必殺技の弾
 
-	// キル数
+	/// <summary>
+	/// キル数を取得する
+	/// </summary>
+	/// <returns></returns>
 	uint32_t GetNockdownCount()const { return kNockdownCount_; }
-	// 命中率
+	
+	/// <summary>
+	/// 命中率を取得する
+	/// </summary>
+	/// <returns></returns>
 	uint32_t GetHitRate()const { 
 		if (kHitRate_ == 0) { return 0; }
 		float result = static_cast<float>(kNockdownCount_) / static_cast<float>(kHitRate_);
 		return static_cast<uint32_t>(result * 100.0f);
 	}
 
-	// 弾を撃つ方向の回転
+	/// <summary>
+	/// 弾を撃つ方向の回転を取得する
+	/// </summary>
+	/// <returns></returns>
 	Quaternion GetRightStickQua()const { return rightStickQuaternion_; }
+
+	/// <summary>
+	/// 弾を撃つ方向の回転を設定する
+	/// </summary>
+	/// <param name="q"></param>
 	void SetRightStickQua(const Quaternion& q) { rightStickQuaternion_ = q; }
 
 private:

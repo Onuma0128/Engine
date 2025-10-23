@@ -61,7 +61,7 @@ void FieldObject::OnCollisionEnter(Collider* other)
 			WorldTransform transform;
 			transform.rotation_ = transform_.rotation_;
 			transform.translation_ = transform_.translation_ - (velocity * 0.2f);
-			effect_->OnceWoodChipEffect(transform);
+			effect_->OnceHitEffect(transform);
 		} else if (Collider::colliderName_ == "Building") {
 			// シェイクさせる
 			shake_ = { 1.0f,0.0f,1.0f };
