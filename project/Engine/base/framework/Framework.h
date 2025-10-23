@@ -7,24 +7,35 @@
 
 #include "AbstractSceneFactory.h"
 
+/// <summary>
+/// フレームワーククラス
+/// </summary>
 class Framework
 {
 public:
 
+	// デストラクタ
 	virtual ~Framework() = default;
 
+	// 初期化
 	virtual void Initialize();
 
+	// 終了
 	virtual void Finalize();
 
+	// 更新
 	virtual void Update();
 
+	// 描画
 	virtual void Draw() = 0;
 
+	// 終了要求の取得
 	virtual bool IsEndRequst() { return endRequst_; }
 
+	// ファイル読み込み
 	void LoadFiles();
 
+	// 実行
 	void Run();
 
 protected:

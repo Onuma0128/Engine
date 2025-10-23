@@ -18,15 +18,20 @@ class ParticleEditor;
 class DirectXEngine;
 class SrvManager;
 
+/// <summary>
+/// パーティクルを管理するクラス
+/// </summary>
 class ParticleManager
 {
 public:
-
+	// 頂点データ
 	struct VertexData {
 		Vector4 position;
 		Vector2 texcoord;
 		Vector3 normal;
 	};
+
+	// マテリアルデータ 
 	struct Material {
 		Vector4 color;
 		int32_t enableLighting;
@@ -38,6 +43,7 @@ public:
 		int32_t _pad1;
 	};
 
+	// パーティクルデータ
 	struct Particle {
 		EulerTransform transform;
 		Vector3 offsetScale;
@@ -49,12 +55,15 @@ public:
 		float currentTime;
 		uint16_t emitterID;
 	};
+
+	// GPU用パーティクルデータ
 	struct ParticleForGPU {
 		Matrix4x4 WVP;
 		Matrix4x4 World;
 		Vector4 color;
 	};
 
+	// パーティクルグループデータ
 	struct ParticleGroup {
 		std::string textureFilePath;
 		uint32_t srvIndex;
@@ -75,43 +84,58 @@ public:
 	};
 
 private:
+
+	// シングルトンインスタンス
 	static ParticleManager* instance_;
 
 	ParticleManager() = default;
 	~ParticleManager() = default;
 	ParticleManager(ParticleManager&) = delete;
 	ParticleManager& operator=(ParticleManager&) = delete;
+
 public:
+
 	// シングルトンインスタンスの取得
 	static ParticleManager* GetInstance();
 
+	// 初期化
 	void Initialize(DirectXEngine* dxEngine);
 
+	// 更新
 	void Update();
 
+	// 描画
 	void Draw();
 
 	// グループのクリア処理
 	void Clear();
 
+	// 終了処理
 	void Finalize();
 
+	// パーティクルグループの作成
 	void CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitter);
 
+	// パーティクルの発生
 	void Emit(const std::string name);
 
 private:
 
+	// エディタ用更新
 	void ParticleEditorUpdate();
 
+	// 頂点関連の生成
 	void CreateVertexData();
 	void CreateVertexResource();
 
+	// インデックス関連の生成
 	void CreateIndexData();
 	void CreateIndexResource();
 
+	// マテリアルリソースの生成
 	void CreateMatrialResource(ParticleGroup& group);
 
+	// インスタンスリソースの生成
 	void EnsureInstanceCapacity(ParticleGroup& group, uint32_t required);
 
 private:

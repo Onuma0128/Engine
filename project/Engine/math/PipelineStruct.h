@@ -1,6 +1,8 @@
 #pragma once
 
-/* PipelineのTypeを決める */ 
+/// <summary>
+/// パイプラインの種類を表す列挙体
+/// </summary>
 enum class PipelineType {
 	Object3d,
 	Sprite,
@@ -14,6 +16,9 @@ enum class PipelineType {
 	AnimationOutLineMask
 };
 
+/// <summary>
+/// ブレンドモードを表す列挙体
+/// </summary>
 enum class BlendMode {
 	kBlendModeNone,			// ブレンド無し
 	kBlendModeNormal,		// 通常αブレンド

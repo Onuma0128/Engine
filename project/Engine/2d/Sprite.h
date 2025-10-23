@@ -17,37 +17,63 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// スプライトクラス
+/// </summary>
 class Sprite
 {
 public:
 
+	/// <summary>
+	/// 頂点データ構造体
+	/// </summary>
 	struct VertexData {
 		Vector4 position;
 		Vector2 texcoord;
 		Vector3 normal;
 	};
 
+	/// <summary>
+	/// マテリアルデータ構造体
+	/// </summary>
 	struct Material {
 		Vector4 color;
 		Matrix4x4 uvTransform;
 	};
 
+	/// <summary>
+	///	変換行列
+	/// </summary>
 	struct TransformationMatrix {
 		Matrix4x4 WVP;
 		Matrix4x4 World;
 		Matrix4x4 WorldInverseTranspose;
 	};
 
-	/*==================== メンバ関数 ====================*/
-
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="textureFilePath"></param>
 	void Initialize(std::string textureFilePath);
+
+	/// <summary>
+	/// シーンレンダラーに設定する
+	/// </summary>
 	void SetSceneRenderer();
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
-
+	
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
-	/*==================== アクセッサ ====================*/
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
 
 	// トランスフォーム
 	Transform2D& GetTransform() { return transform_; }
@@ -76,21 +102,22 @@ public:
 	// テクスチャ切り出しサイズ
 	const Vector2& GetTextureSize()const { return textureSize_; }
 	void SetTextureSize(const Vector2& size) { textureSize_ = size; }
-
+	// 描画するか
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
 private:
 
+	// 頂点データ初期化
 	void VertexDataInitialize();
-
+	// インデックスデータ初期化
 	void MaterialDataInitialize();
-
+	// マテリアルデータ初期化
 	void TransformationMatrixDataInitialize();
-
+	// アクセッサー更新
 	void AccessorUpdate();
-
+	// 行列更新
 	void UpdateMatrix();
-
+	// テクスチャサイズ調整
 	void AdjustTextureSize();
 
 private:

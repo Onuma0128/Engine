@@ -36,18 +36,28 @@ template <typename tValue>
 struct AnimationCurve {
 	std::vector<KeyFrame<tValue>> keyframes;
 };
+
+/// <summary>
+/// ノードのアニメーションを表す構造体
+/// </summary>
 struct NodeAnimation {
 	AnimationCurve<Vector3> scale;
 	AnimationCurve<Quaternion> rotate;
 	AnimationCurve<Vector3> translate;
 };
 
+/// <summary>
+/// アニメーションデータを表す構造体
+/// </summary>
 struct AnimationData {
 	std::string name;			// アニメーションの名前
 	float duration;				// アニメーション全体の尺
 	std::map<std::string, NodeAnimation> nodeAnimations;
 };
 
+/// <summary>
+/// GPU用のウェル構造体
+/// </summary>
 struct WellForGPU {
 	Matrix4x4 skeletonSpaceMatrix;
 	Matrix4x4 skeletonSpaceInverseTransposeMatrix;

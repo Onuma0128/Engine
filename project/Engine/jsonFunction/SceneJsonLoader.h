@@ -33,12 +33,17 @@ struct SceneObject {
     std::vector<SceneObject> children;      // ペアレントされているObject再帰構造
 };
 
+/// <summary>
+/// シーンのJSONデータを読み込むクラス
+/// </summary>
 class SceneJsonLoader
 {
 public:
 
+	// 初期化
     void Init(const std::string filePath) { filePath_ = filePath + ".json"; }
 
+	// JSONデータをロードする
     void Load(const std::string filePath);
 
     // nameを入れてデータを取得する
@@ -46,6 +51,7 @@ public:
 
 private:
 
+	// オブジェクトのデータをパースする
     void ParseObject(const Json& json, SceneObject& object);
 
 private:

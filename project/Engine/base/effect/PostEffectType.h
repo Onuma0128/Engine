@@ -3,6 +3,9 @@
 #include "Vector3.h"
 #include "Matrix4x4.h"
 
+/// <summary>
+/// ポストエフェクトの種類
+/// </summary>
 enum class PostEffectType {
     None,
     RenderTexture,
@@ -14,12 +17,18 @@ enum class PostEffectType {
     Count
 };
 
+/// <summary>
+/// グレースケールエフェクトのデータ
+/// </summary>
 struct GrayscaleData
 {
     Vector3 color;
     float t;
 };
 
+/// <summary>
+/// ビネットエフェクトのデータ
+/// </summary>
 struct VignetteData
 {
     float scale;
@@ -27,6 +36,9 @@ struct VignetteData
     float padding[2];
 };
 
+/// <summary>
+/// アウトラインエフェクトのデータ
+/// </summary>
 struct OutlineData
 {
     Matrix4x4 projection;

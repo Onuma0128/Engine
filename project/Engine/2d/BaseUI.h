@@ -6,10 +6,16 @@
 #include "Sprite.h"
 #include "JsonFunction.h"
 
+/// <summary>
+/// ベースUIクラス
+/// </summary>
 class BaseUI
 {
 private:
 
+	/// <summary>
+	/// UIの調整項目パラメータ
+	/// </summary>
 	struct UiParameters
 	{
 		std::string filename;			// 保存ファイル名
@@ -34,29 +40,62 @@ private:
 
 public:
 
+	/// <summary>
+	///	初期化
+	/// </summary>
+	/// <param name="uiName"></このUIの名前を設定する>
+	/// <param name="biginName"></ImGuiで描画するBiginNameを設定する>
 	void Init(const std::string uiName, const std::string biginName);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	virtual void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	virtual void Draw();
 
+	/// <summary>
+	/// ImGuiを描画
+	/// </summary>
 	void DrawImGui();
 
-	// FadeIn,FadeOutを呼び出し
+	/// <summary>
+	/// フェードイン
+	/// </summary>
 	void FadeIn();
+	/// <summary>
+	/// フェードアウト
+	/// </summary>
 	void FadeOut();
 
-	// 点滅させる
+	/// <summary>
+	/// 点滅させる
+	/// </summary>
 	void Blinking();
-	// 点滅リセット
+	/// <summary>
+	/// 点滅リセット
+	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// スプライトを取得
+	/// </summary>
+	/// <returns></returns>
 	Sprite* GetSprite()const { return ui_.get(); }
 
 private:
 
+	/// <summary>
+	/// UIアニメーション
+	/// </summary>
 	void UI_Animation();
 
+	/// <summary>
+	/// 調整項目を保存
+	/// </summary>
 	void Save();
 
 private:

@@ -11,9 +11,14 @@ using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
 
+/// <summary>
+/// テクスチャ管理クラス
+/// </summary>
 class TextureManager
 {
 private:
+
+	// シングルトンインスタンス
 	static TextureManager* instance_;
 
 	TextureManager() = default;
@@ -22,6 +27,7 @@ private:
 	TextureManager& operator=(TextureManager&) = delete;
 
 private:
+
 	// テクスチャ一枚分のデータ
 	struct TextureData {
 		DirectX::TexMetadata metadata;
@@ -32,6 +38,7 @@ private:
 	};
 
 public:
+
 	// シングルトンインスタンスの取得
 	static TextureManager* GetInstance();
 	// SRVインデックスの開始番号
@@ -45,21 +52,25 @@ public:
     // テクスチャの読み込み
 	void LoadTexture(const std::string& directoryPath, const std::string& filePath);
 	void UploadTextureData(ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);
+
 	// テクスチャリソースを作成
 	ComPtr<ID3D12Resource> CreateTextureResource(const DirectX::TexMetadata& metadata);
+
 	// CPU,GPUハンドルの作成
 	D3D12_CPU_DESCRIPTOR_HANDLE CreateCPUDescriptorHandle(uint32_t index);
 	D3D12_GPU_DESCRIPTOR_HANDLE CreateGPUDescriptorHandle(uint32_t index);
 
 	/*========================== ゲッター ===========================*/
 
+	// テクスチャデータの取得
 	std::vector<std::string> GetTextures()const { return textureNames_; }
 
+	// メタデータの取得
 	const DirectX::TexMetadata& GetMetaData(const std::string& filePath);
+
+	// SRVIndexの取得
 	uint32_t GetSrvIndex(const std::string& filePath);
 	D3D12_GPU_DESCRIPTOR_HANDLE GetSrvHandleGPU(const std::string& filePath);
-
-
 
 private:
 	// テクスチャデータ

@@ -14,34 +14,42 @@ class Object3d;
 class Animation;
 class Model;
 
+/// <summary>
+/// モデルのインスタンスを管理するクラス
+/// </summary>
 class ModelInstanceRenderer
 {
 public:
 
-    struct InstanceData   // VS側で読む | インスタンス分の情報
+	// インスタンスデータ構造体
+    struct InstanceData
     {
         Matrix4x4 WVP;
         Matrix4x4 World;
         Matrix4x4 WorldInvT;
     };
+	// ジョイント数構造体
     struct JointCount 
     {
         uint32_t jointCount;
     };
 
+    //初期化
     void Initialize();
 
     /* ========================= Object3d ========================= */
 
+	// インスタンス登録・削除
     void Push(Object3d* obj);
     void Remove(Object3d* obj);
 
     /* ========================= Animation ========================= */
 
+    // インスタンス登録・削除
     void Push(Animation* animation);
     void Remove(Animation* animation);
 
-
+	// 終了処理
     void Finalize() { 
         for (auto& obj : objBatches_) {
             obj.second.objects.clear();
@@ -53,20 +61,22 @@ public:
         }
     }
 
+	// 全てのアウトラインマスク描画
+    void AllDrawOutlineMask();
     // 全ての描画
     void AllDraw();
-
-    void AllDrawOutlineMask();
 
 private:
 
     /* ========================= Object3d ========================= */
 
+	// インスタンスバッチ確保・更新
     void ObjReserveBatch(Object3d* object, uint32_t maxInstance = 128);
     void ObjUpdate();
 
     /* ========================= Animation ========================= */
 
+	// インスタンスバッチ確保・更新
     void AnimationReserveBatch(Animation* animation, uint32_t maxInstance = 128);
     void AnimationUpdate();
 
@@ -74,6 +84,7 @@ private:
 
     /* ========================= Object3d ========================= */
 
+	// インスタンスバッチ構造体
     struct ObjectBatch
     {
         Model* model;                               // キー
@@ -96,6 +107,7 @@ private:
 
     /* ========================= Animation ========================= */
 
+	// インスタンスバッチ構造体
     struct AnimationBatch
     {
         Model* model;                               // キー

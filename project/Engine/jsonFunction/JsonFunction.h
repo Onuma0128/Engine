@@ -12,6 +12,7 @@
 
 using Json = nlohmann::ordered_json;
 
+// 自作構造体のシリアライズ設定
 namespace nlohmann {
 
     // Vector2
@@ -65,6 +66,9 @@ namespace nlohmann {
     };
 }
 
+/// <summary>
+/// JSON操作を行うクラス
+/// </summary>
 class JsonFunction
 {
 public:

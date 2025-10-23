@@ -9,21 +9,30 @@ using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
 
+/// <summary>
+/// RTV管理クラス
+/// </summary>
 class RtvManager
 {
 private:
+
+	// シングルトンインスタンス
 	static RtvManager* instance_;
+
 	RtvManager() = default;
 	~RtvManager() = default;
 	RtvManager(const RtvManager&) = delete;
 	RtvManager& operator=(const RtvManager&) = delete;
 
 public:
+
+	// 最大RTV数
 	static const uint32_t kMaxRTVCount = 256;
-
+	// シングルトンインスタンスの取得
 	static RtvManager* GetInstance();
-
+	// 初期化
 	void Initialize(DirectXEngine* dxEngine);
+	// 終了処理
 	void Finalize();
 
 	// ハンドル取得

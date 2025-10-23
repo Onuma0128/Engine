@@ -10,25 +10,36 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// カメラクラス
+/// </summary>
 class Camera
 {
 public:
+
+	// 初期化
 	void Initialize();
 
+	// 更新
 	void Update();
 
+	// 行列の更新
 	void UpdateMatrix(EulerTransform transform);
 
+	// CameraのImGui
 	void CameraImGui();
 
 private:
 
+	// デバッグカメラと通常カメラの切り替え
 	void DebugCamera();
 	void NormalCamera();
 
-	/*==================== アクセッサ ====================*/
 
 public:
+
+	/*==================== アクセッサ ====================*/
+	
 	// setter
 	// RT部分
 	void SetRotation(const Vector3& rotate) { transform_.rotation = rotate; }

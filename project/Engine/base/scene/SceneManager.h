@@ -3,9 +3,14 @@
 #include "BaseScene.h"
 #include "AbstractSceneFactory.h"
 
+/// <summary>
+/// シーン管理クラス
+/// </summary>
 class SceneManager
 {
 private:
+
+	// シングルトンインスタンス
 	static SceneManager* instance_;
 
 	SceneManager() = default;
@@ -14,15 +19,19 @@ private:
 	SceneManager& operator=(SceneManager&) = delete;
 
 public:
+
 	// シングルトンインスタンスの取得
 	static SceneManager* GetInstance();
 
 public:
 
+	// 初期化
 	void Update();
 
+	// 描画
 	void Draw();
 
+	// 終了
 	void Finalize();
 
 	// 次のシーン予約

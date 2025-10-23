@@ -16,6 +16,7 @@ class PipelineState
 {
 public:
 
+	// 初期化
 	void Initialize(
 		ComPtr<ID3D12Device>& device, ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler, ComPtr<IDxcIncludeHandler> includeHandler);
@@ -24,11 +25,13 @@ private:
 
 	// ルートシグネチャ
 	ComPtr<ID3D12RootSignature> CreateRootSignature(PipelineType type, PostEffectType effectType = PostEffectType::None);
+	
 	// パイプライン
 	ComPtr<ID3D12PipelineState> CreatePipelineState(PipelineType type, PostEffectType effectType = PostEffectType::None, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	///==============================================================================================================
 
+	// パイプラインのキー
 	struct PipelineKey {
 		PipelineType type;
 		PostEffectType effect;
@@ -38,7 +41,7 @@ private:
 			return type == other.type && effect == other.effect && blend == other.blend;
 		}
 	};
-
+	// ハッシュ関数
 	struct PipelineKeyHash {
 		size_t operator()(const PipelineKey& key) const {
 			return std::hash<int>()(static_cast<int>(key.type)) ^
@@ -51,8 +54,10 @@ private:
 
 public:
 
+	// ルートシグネチャの取得
 	ComPtr<ID3D12RootSignature> GetRootSignature(PipelineType type, PostEffectType effectType = PostEffectType::None, BlendMode blend = BlendMode::kBlendModeNormal);
-
+	
+	// パイプラインステートの取得
 	ComPtr<ID3D12PipelineState> GetPipelineState(PipelineType type, PostEffectType effectType = PostEffectType::None, BlendMode blend = BlendMode::kBlendModeNormal);
 
 private:

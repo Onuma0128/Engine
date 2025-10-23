@@ -18,6 +18,9 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// プリミティブの種類
+/// </summary>
 enum class PrimitiveType {
 	None,
 	Plane,
@@ -27,19 +30,33 @@ enum class PrimitiveType {
 	Skybox
 };
 
+/// <summary>
+/// プリミティブ描画クラス
+/// </summary>
 class PrimitiveDrawr
 {
 public:
 
+	/// <summary>
+	/// 頂点データ
+	/// </summary>
 	struct VertexData {
 		Vector4 position;
 		Vector2 texcoord;
 	};
+
+	/// <summary>
+	/// テクスチャデータ
+	/// </summary>
 	struct TextureData {
 		std::string directoryPath;
 		std::string filePath;
 		uint32_t textureIndex = 0;
 	};
+
+	/// <summary>
+	/// マテリアルデータ
+	/// </summary>
 	struct MaterialData {
 		Vector4 color;
 		Matrix4x4 uvTransform;
@@ -48,26 +65,59 @@ public:
 		float padding[2];
 	};
 
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~PrimitiveDrawr();
 
 	/* =============== トレイルエフェクト =============== */
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="pos"></4頂点の座標を入れる>
 	void Init(std::vector<Vector3> pos);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
 	/* =============== Typeを選べるように =============== */
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="type"></PrimitiveTypeを決める>
+	/// <param name="kIndex"></param>
 	void TypeInit(PrimitiveType type, uint32_t kIndex = 0);
+
+	/// <summary>
+	/// シーンレンダラーを設定
+	/// </summary>
 	void SetSceneRenderer();
+
+	/// <summary>
+	/// シーンレンダラーを削除
+	/// </summary>
 	void RemoveRenderer();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void TypeDraw();
 
 	/* =============== アクセッサ(トレイル用) =============== */
 
+	/// <summary>
+	/// 頂点の座標を設定
+	/// </summary>
+	/// <param name="pos"></param>
 	void SetPosition(std::vector<Vector3> pos);
 
 	/* =============== アクセッサ(全体) =============== */

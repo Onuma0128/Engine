@@ -18,12 +18,23 @@ class PostEffectManager
 {
 public:
 
+    /// <summary>
+    /// 終了処理
+    /// </summary>
     void Finalize();
 
+    /// <summary>
+    /// 初期化
+    /// </summary>
 	void Initialize(DirectXEngine* dxEngine);
 
+    /// <summary>
+    /// ポストエフェクトを作成する
+    /// </summary>
+    /// <param name="type"></作成したいTypeを入れる>
     void CreatePostEffect(PostEffectType type);
 
+	// アウトラインマスクパスの開始と終了
     void BeginOutlineMaskPass();
     void EndOutlineMaskPass();
 
@@ -44,10 +55,19 @@ public:
 
 private:
 
+    /// <summary>
+    /// リソースの初期化
+    /// </summary>
     void ResourceInitialize();
 
+    /// <summary>
+    /// アウトラインマスクリソースの作成
+    /// </summary>
     void CreateOutLineMaskResource();
 
+    /// <summary>
+    /// 更新処理
+    /// </summary>
     void Update();
 
 private:

@@ -6,6 +6,7 @@
 #include <string>
 #include <array>
 
+// Easing関数の種類
 enum class EasingType : int32_t {
     Linear = 0,
     EaseInSine, EaseOutSine, EaseInOutSine,
@@ -18,6 +19,9 @@ enum class EasingType : int32_t {
     EaseInBack, EaseOutBack, EaseInOutBack,
 };
 
+/// <summary>
+/// Easing関数を提供するクラス
+/// </summary>
 class Easing {
 public:
     static float EaseInSine(float t) {

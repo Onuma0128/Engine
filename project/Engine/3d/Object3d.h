@@ -16,32 +16,58 @@ using Microsoft::WRL::ComPtr;
 
 class Model;
 
+/// <summary>
+/// 3Dオブジェクトクラス
+/// </summary>
 class Object3d
 {
 public:
-	/*==================== メンバ関数 ====================*/
-
-	// 初期化
+	
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="filePath"></描画したい3Dオブジェクトのファイルパス>
 	void Initialize(const std::string& filePath);
+	
+	/// <summary>
+	/// シーンレンダラーを設定
+	/// </summary>
 	void SetSceneRenderer();
+
+	/// <summary>
+	/// レンダラーを削除
+	/// </summary>
 	void RemoveRenderer();
 
-	// 更新
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Update();
 
-	// 描画
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
-	/*==================== アクセッサ ====================*/
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
 
+	// モデルの設定
 	void SetModel(const std::string& filePath);
+	// テクスチャの設定
 	void SetTexture(const std::string& directoryPath, const std::string& filePath);
+	// 環境マップテクスチャの設定
 	void SetTexture_ENV(const std::string& directoryPath, const std::string& filePath);
+	// カラーの設定
 	void SetColor(const Vector4& color);
-
+	// ワールド変換行列の取得
 	WorldTransform& GetTransform() { return transform_; }
+	// モデルの取得
 	Model* GetModel() { return model_; }
+	// マテリアルの取得
 	Material& GetMaterial() { return materialData_; }
+	// カラーの取得
 	Vector4& GetColor() { return materialData_.color; }
 
 private:

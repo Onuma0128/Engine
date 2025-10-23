@@ -10,10 +10,16 @@
 
 class Skeleton;
 
+/// <summary>
+/// アニメーションの再生を管理するクラス
+/// </summary>
 class PlayAnimation
 {
 private:
 
+	/// <summary>
+	/// アニメーションのブレンド状態を表す構造体
+	/// </summary>
 	struct AnimationBlendState {
 		bool   active = false;		// フェード中？
 		size_t fromIndex = 0;       // 直前のクリップ
@@ -24,7 +30,10 @@ private:
 		float  toTime = 0.0f;		// toClip   の再生秒
 	};
 
-	struct PlyaAnimationFlags {
+	/// <summary>
+	/// アニメーションのフラグを表す構造体
+	/// </summary>
+	struct PlayAnimationFlags {
 		size_t currentAnim = 0;		// 今再生しているアニメーション
 		float animationTime = 0.0f;	// 今再生位置を保存する
 		bool timeStop = false;		// アニメーションを止める
@@ -34,22 +43,53 @@ private:
 
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="modelData"></param>
 	void Init(const ModelData& modelData);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="skeleton"></param>
 	void AnimationPlayUpdate(Skeleton& skeleton);
 
+	/// <summary>
+	/// リセット
+	/// </summary>
 	void Reset();
 
 	// 再生するアニメーションを選択
+
+	/// <summary>
+	/// アニメーションを再生する
+	/// </summary>
+	/// <param name="idx"></アニメーションさせるIndex>
+	/// <param name="fadeTime"></今アニメから変えるアニメのチェンジフレーム>
 	void Play(size_t idx, float fadeTime);
 	bool PlayByName(const std::string& clipName, float fadeTime);
-	// 再生するアニメーションを強制変更
+
+	/// <summary>
+	/// アニメーションを強制的に再生する
+	/// </summary>
+	/// <param name="idx"></アニメーションさせるIndex>
+	/// <param name="startTime"></param>
+	/// <param name="keepPhase"></param>
 	void ForcePlay(size_t idx, float startTime = 0.0f, bool keepPhase = false);
 	bool ForcePlayByName(const std::string& clipName, float startTime = 0.0f, bool keepPhase = false);
-	void SetAnimationTime(float animationTime) { flags_.animationTime = animationTime; }
 
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
+	
+	// 再生中のアニメーションデータを取得
+	void SetAnimationTime(float animationTime) { flags_.animationTime = animationTime; }
+	// 再生中のアニメーションデータを取得
 	bool& GetTimeStop() { return flags_.timeStop; }
+	// アニメーションが止まっているか取得
 	bool& GetStopped() { return flags_.stopped; }
+	// 逆再生フラグ取得
 	bool& GetReversePlay() { return flags_.reversePlay; }
 
 private:
@@ -59,7 +99,7 @@ private:
 
 	AnimationBlendState blend_;
 
-	PlyaAnimationFlags flags_;
+	PlayAnimationFlags flags_;
 
 };
 

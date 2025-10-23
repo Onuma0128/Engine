@@ -18,20 +18,21 @@ using Microsoft::WRL::ComPtr;
 
 class Line3d;
 
+/// <summary>
+/// ラインのインスタンス、描画を管理するクラス
+/// </summary>
 class LineInstanceRenderer
 {
 public:
     // capacity は初期の線分(インスタンス)予約数
     void Initialize(uint32_t capacity = 2048);
 
-    // ラインの登録/解除（owner=Line3d の識別に使う）
-    // Register は既に登録済みなら何もしない
+	// ラインの登録/解除/ID取得
     void RegisterLine(Line3d* owner);
     void UnregisterLine(Line3d* owner);
     uint32_t GetLineID(Line3d* owner);
 
-    // owner の線分を更新（positions.size() は偶数: [a0,b0,a1,b1,...]）
-    // 各 (ai,bi) が 1 本の線分 => インスタンス 1 件
+	// ラインのインスタンスデータ/マテリアル設定
     void SetLineInstances(Line3d* owner, const std::vector<Vector3>& positions);
     void SetMaterial(Line3d* owner, const Material& material);
 
@@ -41,7 +42,7 @@ public:
     // 毎フレーム（VP更新と必要ならGPUアップロード）
     void Update();
 
-    // 描画（★ 1回）
+    // 描画
     void Draws();
 
 private:
@@ -60,6 +61,7 @@ private:
         bool dirty = false;          // この owner が更新された
     };
 
+	// 各種作成
     void CreateLocalVB();
     void CreateInstanceVB(uint32_t capacity);
     void GrowIfNeeded(uint32_t needInstances);

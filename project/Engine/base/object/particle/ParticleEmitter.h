@@ -14,15 +14,20 @@
 
 #include "ParticleManager.h"
 
+/// <summary>
+/// パーティクルエミッタクラス
+/// </summary>
 class ParticleEmitter
 {
 public:
 
+	// フィールドのAABB
 	struct AABB {
 		Vector3 min;
 		Vector3 max;
 	};
 
+	// エミッタの項目
 	struct Emitter {
 
 		/* ==================== Emitter ==================== */
@@ -75,6 +80,7 @@ public:
 		bool isUvFlipY;				// UvFlipY
 	};
 
+	// 加速度フィールド
 	struct AccelerationField {
 		Vector3 acceleration;
 		AABB area;
@@ -82,15 +88,19 @@ public:
 
 public:
 
+	// コンストラクタ・デストラクタ
 	~ParticleEmitter();
 	ParticleEmitter(const std::string name);
 
+	// 更新
 	void Update();
 
 	/*==================== パーティクルの生成 ====================*/
 
+	// パーティクルの生成
 	void CreateParticles(ParticleManager::ParticleGroup& group);
 
+	// パーティクルの更新
 	void UpdateParticle(std::list<ParticleManager::Particle>::iterator& particle);
 
 	// 呼び出す事で一回だけEmitする
@@ -123,12 +133,16 @@ public:
 
 private:
 
+	// パーティクルの発生
 	static std::list<ParticleManager::Particle> Emit(const Emitter& emitter, std::mt19937& randomEngine);
-
+	
+	// 新しいパーティクルを作成
 	static ParticleManager::Particle MakeNewParticle(std::mt19937& randomEngine, const Emitter& emitter);
 
+	// AABBのラインボックスを作成
 	std::vector<Vector3> CreateLineBox(AABB aabb);
 
+	// AABBと点の衝突判定
 	bool IsCollision(const AABB& aabb, const Vector3& point);
 
 private:

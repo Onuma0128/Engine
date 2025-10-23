@@ -5,12 +5,16 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// アニメーションのPSOを管理するクラス
+/// </summary>
 class AnimationBase
 {
 public:
 
+	// 初期化
 	void Initialize();
-
+	// 描画
 	void DrawBase();
 
 private:

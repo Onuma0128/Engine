@@ -5,12 +5,16 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// ラインのPSOを管理するクラス
+/// </summary>
 class Line3dBase
 {
 public:
 
+	// 初期化
 	void Initialize();
-
+	// 描画
 	void DrawBase();
 
 private:

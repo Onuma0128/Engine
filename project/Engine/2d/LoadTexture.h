@@ -8,10 +8,31 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// 文字列をワイド文字列に変換する
+/// </summary>
+/// <param name="str"></param>
+/// <returns></returns>
 std::wstring ConvertString(const std::string& str);
-//Textureデータを読む
+
+/// <summary>
+/// テクスチャを読み込む
+/// </summary>
+/// <param name="filePath"></param>
+/// <returns></returns>
 DirectX::ScratchImage LoadTexture(const std::string& filePath);
-//DirectX12のTextureResourceを作る
+
+/// <summary>
+/// DirectX12のTextureResourceを作る
+/// </summary>
+/// <param name="device"></param>
+/// <param name="metadata"></param>
+/// <returns></returns>
 ComPtr<ID3D12Resource> CreateTextureResource(ComPtr<ID3D12Device> device, const DirectX::TexMetadata& metadata);
-//TextureResourceにデータを転送する
+
+/// <summary>
+/// TextureResourceにデータを転送する
+/// </summary>
+/// <param name="texture"></param>
+/// <param name="mipImages"></param>
 void UploadTextureData(ComPtr<ID3D12Resource> texture, const DirectX::ScratchImage& mipImages);

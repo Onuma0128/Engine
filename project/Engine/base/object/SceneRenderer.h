@@ -8,10 +8,14 @@
 #include "PrimitiveDrawr.h"
 #include "Animation.h"
 
+/// <summary>
+/// シーンの描画を管理するクラス
+/// </summary>
 class SceneRenderer
 {
 public:
 
+	// 終了処理
 	void Finalize();
 
 	// 全ての描画

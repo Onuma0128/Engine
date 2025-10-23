@@ -9,21 +9,30 @@ using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
 
+/// <summary>
+/// DSV管理クラス
+/// </summary>
 class DsvManager
 {
 private:
+
+	// シングルトンインスタンス
 	static DsvManager* instance_;
+
 	DsvManager() = default;
 	~DsvManager() = default;
 	DsvManager(const DsvManager&) = delete;
 	DsvManager& operator=(const DsvManager&) = delete;
 
 public:
+
+	// 最大DSV数
 	static const uint32_t kMaxDSVCount = 256;
-
+	// シングルトンインスタンスの取得
 	static DsvManager* GetInstance();
-
+	// 初期化
 	void Initialize(DirectXEngine* dxEngine);
+	// 終了処理
 	void Finalize();
 
 	// ハンドル取得

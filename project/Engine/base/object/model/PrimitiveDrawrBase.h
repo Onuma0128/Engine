@@ -7,14 +7,18 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// プリミティブ描画のPSOを管理するクラス
+/// </summary>
 class PrimitiveDrawrBase
 {
 public:
 
+	// 初期化
 	void Initialize();
-
+	// 描画
 	void DrawBase(int blendMode);
-
+	// スカイボックス描画
 	void DrawSkyboxBase();
 
 private:

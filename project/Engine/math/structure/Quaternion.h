@@ -5,6 +5,9 @@
 class Vector3;
 class Matrix4x4;
 
+/// <summary>
+/// クォータニオンを表す構造体
+/// </summary>
 class Quaternion
 {
 public:

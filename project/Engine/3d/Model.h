@@ -9,40 +9,76 @@
 
 class ModelBase;
 
+/// <summary>
+/// モデルクラス
+/// </summary>
 class Model
 {
 public:
-	/*==================== メンバ関数 ====================*/
-
-	// 初期化
+	
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="directoryPath"></param>
+	/// <param name="filename"></param>
 	void Initialize(const std::string& directoryPath, const std::string& filename);
 
-	// 描画
+	/// <summary>
+	/// バッファをバインド
+	/// </summary>
+	/// <param name="isAnimation"></param>
 	void BindBuffers(bool isAnimation) const;
+
+	/// <summary>
+	/// マテリアルをバインド
+	/// </summary>
+	/// <param name="meshIdx"></param>
 	void BindMaterial(uint32_t meshIdx) const;
 
+
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
+	/// <returns></returns>
+	
+	// モデルベース取得
 	const ModelData& GetModelData()const { return modelData_; }
+	// ルートノードのローカル行列取得
 	const Matrix4x4& GetLocalMatrix()const { return modelData_.rootNode.localMatrix; }
+	// メッシュデータ取得
 	const std::vector<MeshData>& GetMeshData()const { return modelData_.meshs; }
+	// 頂点バッファビュー取得
 	const D3D12_VERTEX_BUFFER_VIEW& GetVertexBuffer() { return vertexBufferView_; }
-
+	// インデックスバッファビュー取得
 	static ModelData LoadObjFile(const std::string& directoryPath, const std::string& filename);
-
+	// テクスチャ設定
 	void SetTexture(const std::string& directoryPath, const std::string& filename);
+	// 環境マップテクスチャ設定
 	void SetTexture_ENV(const std::string& directoryPath, const std::string& filename);
 
 private:
 
-	// 頂点データの作成
+	/// <summary>
+	/// 頂点データを作成
+	/// </summary>
 	void MakeVertexData();
+
+	/// <summary>
+	/// インデックスデータを作成
+	/// </summary>
 	void MakeIndexData();
-	// メッシュごとのカラーを作成
+
+	/// <summary>
+	/// メッシュごとのカラーを作成
+	/// </summary>
+	/// <param name="material"></param>
 	void MakeMeshColor(MaterialData& material);
 
+	// 文字列をワイド文字列に変換
 	static std::wstring s2ws(const std::string& str);
-
+	// マテリアルテンプレートファイルを読み込む
 	static MaterialData LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename);
-
+	// ノードを再帰的に読み込む
 	static Node ReadNode(aiNode* node);
 
 

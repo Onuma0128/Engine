@@ -2,23 +2,28 @@
 
 #include <Windows.h>
 
+/// <summary>
+/// 時間管理クラス
+/// </summary>
 class DeltaTimer
 {
 public:
 
+	// 初期化
     static void Initialize();
-
+	// 更新
     static void Update();
-
+	// デルタタイムの取得
     static float GetDeltaTime() { 
         if (deltaTime_ >= 1.0f) { return 0.0f; }
         return deltaTime_ * timeScale_;
     }
+	// 生のデルタタイムの取得
     static float GetRawDeltaTime() { 
         if (deltaTime_ >= 1.0f) { return 0.0f; }
         return deltaTime_; 
     }
-
+	// 経過時間の取得
     static void  SetTimeScaleForSeconds(float scale, float duration);
 
 private:

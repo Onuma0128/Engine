@@ -5,12 +5,16 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// オブジェクトのPSOを管理するクラス
+/// </summary>
 class Object3dBase
 {
 public:
 
+	// 初期化
 	void Initialize();
-
+	// 描画
 	void DrawBase();
 
 private:

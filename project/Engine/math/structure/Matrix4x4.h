@@ -5,6 +5,9 @@
 class Vector3;
 class Quaternion;
 
+/// <summary>
+/// 4x4行列を表す構造体
+/// </summary>
 class Matrix4x4 {
 public:
     // 行列データ (4x4の2次元配列)

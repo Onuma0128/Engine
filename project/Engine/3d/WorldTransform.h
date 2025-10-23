@@ -12,24 +12,38 @@ using Microsoft::WRL::ComPtr;
 
 class Model;
 
+/// <summary>
+/// ワールド変換を扱うクラス
+/// </summary>
 class WorldTransform
 {
 public:
 
+	/// <summary>
+	/// ワールド変換行列
+	/// </summary>
 	struct TransformationMatrix {
 		Matrix4x4 WVP;
 		Matrix4x4 World;
 		Matrix4x4 WorldInverseTranspose;
 	};
 	
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
 	WorldTransform();
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
 	~WorldTransform() = default;
 
-	// 行列更新
+	/// <summary>
+	/// モデルからワールド変換行列を転送
+	/// </summary>
+	/// <param name="model"></param>
 	void TransferMatrix(const Model* model);
 	void TransferMatrix(const Matrix4x4& localMatrix);
-
-	/*==================== アクセッサ ====================*/
 
 public:
 

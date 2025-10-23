@@ -11,9 +11,14 @@ using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
 
+/// <summary>
+/// SRV管理クラス
+/// </summary>
 class SrvManager
 {
 private:
+
+	// シングルトンインスタンス
 	static SrvManager* instance_;
 
 	SrvManager() = default;
@@ -26,16 +31,16 @@ public:
 	static const uint32_t kMaxSRVCount_;
 	// シングルトンインスタンスの取得
 	static SrvManager* GetInstance();
-
+	// 初期化
 	void Initialize(DirectXEngine* dxEngine);
-
+	// グラフィックスルートデスクリプタテーブル設定
 	void SetGraphicsRootDescriptorTable(UINT RootParameterIndex, uint32_t srvIndex);
-
+	// 描画前の処理
 	void PreDraw();
-
+	// 終了処理
 	void Finalize();
 
-
+	// デスクリプタヒープ取得
 	ID3D12DescriptorHeap* GetDescriptorHeap() { return descriptorHeap_.Get(); }
 
 	// デスクリプタハンドル計算
@@ -50,9 +55,9 @@ public:
 	void CreateSRVforRenderTexture(uint32_t srvIndex, ID3D12Resource* pResource, PostEffectType type = PostEffectType::None);
 	// SRV生成(DDSテクスチャ用)
 	void CreateSRVforTextureCube(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format, UINT MipLevels);
-
+	// 自動割当
 	uint32_t Allocate();
-
+	// SRV割り当てチェック
 	bool CheckAllocate();
 
 private:

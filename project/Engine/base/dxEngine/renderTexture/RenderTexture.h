@@ -21,11 +21,13 @@ public:
 		DXGI_FORMAT format,
 		const Vector4& clearColor
 	);
-
+	// RenderTextureのSRVを作成
 	uint32_t GetRenderTextureSRVIndex() const { return renderTextureSRVIndex_; }
+	//  FinalSrvIndexの取得と設定
 	uint32_t GetFinalSrvIndex() const { return finalSrvIndex_; }
 	void SetFinalSrvIndex(uint32_t index) { finalSrvIndex_ = index; }
 
+	// 深度ステンシルバッファのResourceとDSVハンドルを取得
 	ID3D12Resource* GetDSVResource()const;
 	D3D12_CPU_DESCRIPTOR_HANDLE GetDSVHandle() const;
 	const uint32_t GetDSVHandleIndex()const { return depthIndex_; }

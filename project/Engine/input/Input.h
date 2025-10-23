@@ -9,9 +9,14 @@
 
 class WinApp;
 
+/// <summary>
+/// 入力管理クラス
+/// </summary>
 class Input
 {
 private:
+
+	// シングルトンインスタンス
 	static Input* instance_;
 
 	Input() = default;
@@ -20,8 +25,10 @@ private:
 	Input& operator=(Input&) = delete;
 
 public:
+
 	// シングルトンインスタンスの取得
 	static Input* GetInstance();
+
 public:
 
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -69,9 +76,10 @@ public:
 	void StopVibration();
 
 private:
+
 	// スティックの正規化
 	static float NormalizeStickValue(SHORT value, SHORT deadzone);
-	//
+	// 振動の適用
 	void ApplyVibration(float left, float right);
 
 private:
