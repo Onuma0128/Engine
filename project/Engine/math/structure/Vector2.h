@@ -31,6 +31,9 @@ public:
 	// 内積
     static float Dot(const Vector2& v1, const Vector2& v2);
 
+    // 距離
+    static float Distance(const Vector2& v1, const Vector2& v2);
+
 	// 線形補間
     static Vector2 Lerp(const Vector2& v1, const Vector2& v2, float t);
 

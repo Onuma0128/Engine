@@ -78,6 +78,7 @@ public:
     Vector3& operator+=(const Vector3& v);
     Vector3& operator-=(const Vector3& v);
     Vector3& operator*=(float scalar);
+	bool operator==(const Vector3& v);
 
     // フレンド関数：スカラー倍の演算子オーバーロード
     friend Vector3 operator*(float scalar, const Vector3& v);

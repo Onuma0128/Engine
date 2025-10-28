@@ -27,6 +27,12 @@ float Vector2::Dot(const Vector2& v1, const Vector2& v2) {
     return v1.x * v2.x + v1.y * v2.y;
 }
 
+float Vector2::Distance(const Vector2& v1, const Vector2& v2)
+{
+    Vector2 result = v1 - v2;
+    return std::sqrt(result.x * result.x + result.y * result.y);
+}
+
 Vector2 Vector2::Lerp(const Vector2& v1, const Vector2& v2, float t) {
     t = std::clamp(t, 0.0f, 1.0f);
     return {

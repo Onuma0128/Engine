@@ -37,6 +37,9 @@ struct BulletData {
 struct PreObjectData {
 	float interval;				// オブジェクトごとの間隔
 	Vector3 startPosition;		// 最初のZ座標
+
+	Vector3 rayColliderSize;		// レイコライダーのサイズ
+	Vector3 rayColliderPosition;// レイコライダーの座標
 };
 
 // 弾UIの項目

@@ -50,6 +50,10 @@ void PlayerMoveState::Init()
 		player_->GetReversePlay() = false;
 		chengeAniamtion_ = true;
 	}
+	
+	if (player_->GetShot()) {
+		player_->GetShot()->ResetRayHit();
+	}
 }
 
 void PlayerMoveState::Finalize()
@@ -94,6 +98,9 @@ void PlayerMoveState::Update()
 
 	// StickのVelocityから回転を計算
 	if (rotateVelocity.Length() != 0.0f) {
+		if(player_->GetShot()->GetIsRayHit()) {
+			rotateVelocity = (player_->GetShot()->GetRayHitPosition() - player_->GetTransform().translation_).Normalize();
+		}
 		rightStickVelocity_ = rotateVelocity;
 		rightStickQuaternion_ = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rightStickVelocity_, 1.0f);
 		Quaternion target = Quaternion::Slerp(player_->GetShot()->GetRightStickQua(), rightStickQuaternion_, 0.3f);

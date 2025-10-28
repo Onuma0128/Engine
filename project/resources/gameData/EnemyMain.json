@@ -1,6 +1,6 @@
 {
     "colliderSize": {
-        "x": 0.4099999964237213,
+        "x": 0.5,
         "y": 0.6700000166893005,
         "z": 0.4000000059604645
     },
@@ -10,7 +10,7 @@
         "z": 0.0
     },
     "margin": 2.0,
-    "maxSpawn": 10,
+    "maxSpawn": 50,
     "nextWaveKillCount": 10,
     "searchUpdateTime": 0.699999988079071,
     "maxDeadTimer": 5.0,

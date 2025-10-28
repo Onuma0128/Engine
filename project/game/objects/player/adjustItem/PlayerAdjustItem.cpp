@@ -61,9 +61,13 @@ void PlayerAdjustItem::LoadItems()
 	if (!preObjectJson_.Load()) {
 		preObjectJson_.Set("interval", 1.0f);
 		preObjectJson_.Set("startPosition", Vector3{});
+		preObjectJson_.Set("rayColliderSize", Vector3{});
+		preObjectJson_.Set("rayColliderPosition", Vector3{});
 	} else {
 		preObjectData_.interval = preObjectJson_.Get("interval", preObjectData_.interval);
 		preObjectData_.startPosition = preObjectJson_.Get("startPosition", preObjectData_.startPosition);
+		preObjectData_.rayColliderSize = preObjectJson_.Get("rayColliderSize", preObjectData_.rayColliderSize);
+		preObjectData_.rayColliderPosition = preObjectJson_.Get("rayColliderPosition", preObjectData_.rayColliderPosition);
 	}
 
 	/* ============================== BulletUI ============================== */
@@ -157,9 +161,13 @@ void PlayerAdjustItem::Editor()
 
 			ImGui::DragFloat("interval", &preObjectData_.interval, 0.01f);
 			ImGui::DragFloat3("startPosition", &preObjectData_.startPosition.x, 0.01f);
+			ImGui::DragFloat3("rayColliderSize", &preObjectData_.rayColliderSize.x, 0.01f);
+			ImGui::DragFloat3("rayColliderPosition", &preObjectData_.rayColliderPosition.x, 0.01f);
 			if (ImGui::Button("Save")) {
 				preObjectJson_.Set("interval", preObjectData_.interval);
 				preObjectJson_.Set("startPosition", preObjectData_.startPosition);
+				preObjectJson_.Set("rayColliderSize", preObjectData_.rayColliderSize);
+				preObjectJson_.Set("rayColliderPosition", preObjectData_.rayColliderPosition);
 				preObjectJson_.Save();
 			}
 			ImGui::TreePop();

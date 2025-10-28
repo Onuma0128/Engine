@@ -33,13 +33,14 @@ void BaseEnemy::Initialize()
 
 	// コライダーを設定
 	Collider::AddCollider();
-	Collider::myType_ = ColliderType::OBB;
+	Collider::myType_ = ColliderType::Sphere;
 	Collider::colliderName_ = "Enemy";
 	Collider::size_ = transform_.scale_;
+	Collider::radius_ = transform_.scale_.x;
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
 		"Player","PlayerBullet","PlayerBulletSpecial",
-		"PlayerReticle","Enemy" ,"PredictionObject"
+		"PlayerReticle","Enemy" ,"PlayerShotRay"
 	};
 	Collider::DrawCollider();
 
@@ -79,7 +80,7 @@ void BaseEnemy::Update()
 
 	// 敵コライダーの更新
 	Collider::size_ = items_->GetMainData().colliderSize;
-	Collider::rotate_ = transform_.rotation_;
+	Collider::radius_ = items_->GetMainData().colliderSize.x;
 	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
 	Collider::Update();
 
@@ -197,7 +198,7 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
 	}
 
-	if (other->GetColliderName() == "PredictionObject") {
+	if (other->GetColliderName() == "PlayerShotRay") {
 		outlineColor_ = { 1.0f,0.0f,0.0f };
 	}
 }

@@ -85,11 +85,9 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	if (name == "Enemy" || name == "EnemyShield" || name == "DeadTree" ||
 		name == "Building" || name == "fence" || name == "Bush" ||
 		name == "StoneWall" || name == "ShortStoneWall") {
-		if (Collider::colliderName_ == "PlayerBullet") {
-			IsCollision();
-			effect_->OnceBulletDeleteEffect(transform_);
-			Object3d::GetTransform().translation_.y = -2.0f;
-		}
+		IsCollision();
+		effect_->OnceBulletDeleteEffect(transform_);
+		Object3d::GetTransform().translation_.y = -2.0f;
 	}
 	if (other->GetColliderName() == "Enemy") {
 		++kNockdownCount_;

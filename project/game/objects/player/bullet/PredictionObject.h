@@ -1,14 +1,13 @@
 #pragma once
 
 #include "Object3d.h"
-#include "Collider.h"
 
 class Player;
 
 /// <summary>
 /// 弾の予測オブジェクトクラス
 /// </summary>
-class PredictionObject :public Object3d,Collider
+class PredictionObject :public Object3d
 {
 public:
 

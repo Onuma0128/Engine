@@ -307,7 +307,7 @@ EnemyTemplate EnemyAdjustItem::GetTemplateData(JsonFunction json)
 
 void EnemyAdjustItem::SetImGuiData(JsonFunction& json, EnemyTemplate& tempData)
 {
-	ImGui::DragFloat("speed", &tempData.speed, 0.01f);
+	ImGui::DragFloat("speed", &tempData.speed, 0.01f, 0.0f, 100.0f);
 	ImGui::DragFloat("attackDistance", &tempData.attackDistance, 0.01f);
 	ImGui::DragFloat("attackStartupTime", &tempData.attackStartupTime, 0.01f);
 	ImGui::DragFloat("attackActiveTime", &tempData.attackActiveTime, 0.01f);

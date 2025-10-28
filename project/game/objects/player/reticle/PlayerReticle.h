@@ -20,11 +20,6 @@ public:
 	void Init();
 
 	/// <summary>
-	/// グローバル初期化
-	/// </summary>
-	void GlobalInit();
-
-	/// <summary>
 	/// 更新
 	/// </summary>
 	/// <param name="isPlayingMouse"></param>
@@ -88,6 +83,47 @@ private:
 	uint32_t hitCount_ = 0;
 	// ヒット時のcolor値
 	float reticleColorTimer_ = 0.0f;
+
+};
+
+/// <summary>
+/// プレイヤーのレイ用レティクルクラス
+/// </summary>
+class PlayerRayReticle : public Sprite 
+{
+	public:
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Init();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw();
+
+	/// <summary>
+	/// レイヒット状態を設定
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetRaticleAlpha(bool flag);
+
+	/// <summary>
+	/// ワールド座標をスクリーン座標に変換して設定
+	/// </summary>
+	/// <param name="position"></param>
+	void SetPosition(const Vector3& position);
+
+private:
+
+	// レイのalpha時間
+	float alphaTimer_ = 0.0f;
 
 };
 

@@ -3,8 +3,11 @@
 #include <vector>
 #include <array>
 
+#include "Collider.h"
+
 #include "objects/player/bullet/PredictionObject.h"
 #include "objects/player/bullet/PlayerBullet.h"
+#include "objects/player/reticle/PlayerReticle.h"
 
 #include "uis/player/PlayerBulletUI.h"
 #include "uis/player/PlayerCountUI.h"
@@ -14,7 +17,7 @@ class Player;
 /// <summary>
 /// プレイヤーの弾を管理するクラス
 /// </summary>
-class PlayerShot
+class PlayerShot : public Collider
 {
 public:
 
@@ -80,7 +83,7 @@ public:
 	/// 弾を撃つ方向の回転を取得する
 	/// </summary>
 	/// <returns></returns>
-	Quaternion GetRightStickQua()const { return rightStickQuaternion_; }
+	const Quaternion& GetRightStickQua()const { return rightStickQuaternion_; }
 
 	/// <summary>
 	/// 弾を撃つ方向の回転を設定する
@@ -88,23 +91,65 @@ public:
 	/// <param name="q"></param>
 	void SetRightStickQua(const Quaternion& q) { rightStickQuaternion_ = q; }
 
+	/// <summary>
+	/// Rayが当たったかどうかを取得する
+	/// </summary>
+	/// <returns></returns>
+	const bool GetIsRayHit()const { return isRayHit_; }
+
+	/// <summary>
+	/// Rayが当たった座標を取得する
+	/// </summary>
+	/// <returns></returns>
+	const Vector3& GetRayHitPosition()const { return rayHitPosition_; }
+
+	/// <summary>
+	/// Rayが当たったかどうかをリセットする
+	/// </summary>
+	void ResetRayHit() { isRayHit_ = false; rayHitPosition_ = Vector3::ExprZero; }
+
+private:
+
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	/// <param name="other"></当たったColliderのポインタが入る>
+	void OnCollisionStay(Collider* other) override;
+
+	/// <summary>
+	/// Rayの更新
+	/// </summary>
+	void RayUpdate();
+
 private:
 
 	Player* player_ = nullptr;
 
+	// Rayのスプライト
+	std::unique_ptr<PlayerRayReticle> rayReticle_ = nullptr;
+	// Rayが当たったかどうか
+	bool isRayHit_ = false;
+	// Rayが当たった座標
+	Vector3 rayHitPosition_{};
+
 	// 弾を撃つ方向の回転
 	Quaternion rightStickQuaternion_{};
+
 	// 予測の点のオブジェクト
 	std::array<std::unique_ptr<PredictionObject>, 3> predictionObjects_;
+
 	// 弾を6つ生成する
 	std::vector<std::unique_ptr<PlayerBullet>> bullets_;
 	std::vector<std::unique_ptr<PlayerBulletUI>> bulletUIs_;
 	uint32_t kBulletCount_ = 0;
+
 	// 必殺技用の弾を6つ生成
 	std::vector<std::unique_ptr<PlayerBullet>> specialBullets_;
+
 	// 敵のキル数UI
 	std::unique_ptr<PlayerCountUI> killCountUI_ = nullptr;
 	uint32_t kNockdownCount_ = 0;
+
 	// 撃った弾数を取得する
 	uint32_t kHitRate_ = 0;
 

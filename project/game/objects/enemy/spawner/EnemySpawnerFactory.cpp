@@ -23,11 +23,11 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 	}
 
 	// Release用
-	size_t normal = 20;
+	size_t normal = 50;
 	size_t strong = 10;
 	// Debug用
 #ifdef _DEBUG
-	normal = 15;
+	normal = 30;
 	strong = 5;
 #endif // _DEBUG
 

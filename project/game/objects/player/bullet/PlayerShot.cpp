@@ -42,6 +42,17 @@ void PlayerShot::Init(Player* player)
 	}
 
 	rightStickQuaternion_ = Quaternion::IdentityQuaternion();
+
+	// プレイヤーの目線のコライダーを初期化
+	Collider::AddCollider();
+	Collider::myType_ = ColliderType::OBB;
+	Collider::colliderName_ = "PlayerShotRay";
+	Collider::isActive_ = true;
+	Collider::targetColliderName_ = { "Enemy" };
+	Collider::DrawCollider();
+
+	rayReticle_ = std::make_unique<PlayerRayReticle>();
+	rayReticle_->Init();
 }
 
 void PlayerShot::Update()
@@ -74,6 +85,8 @@ void PlayerShot::Update()
 			(Vector3::ExprUnitZ * (static_cast<float>(i) * interval) + startPosition)
 		);
 	}
+
+	RayUpdate();
 }
 
 void PlayerShot::UpdateUI()
@@ -95,12 +108,13 @@ void PlayerShot::UpdateUI()
 			bulletUI->GetRenderOptions().enabled = false;
 		}
 	}
-
 }
 
 void PlayerShot::DrawUI()
 {
 	killCountUI_->Draw();
+
+	rayReticle_->Draw();
 
 	for (auto& bulletUI : bulletUIs_) {
 		if (bulletUI->GetRenderOptions().enabled) {
@@ -189,4 +203,53 @@ void PlayerShot::SpecialAttackBullet()
 		player_->GetReticle()->ResetHitCount();
 		AllReloadBullet();
 	}
+}
+
+void PlayerShot::OnCollisionStay(Collider* other)
+{
+	isRayHit_ = true;
+
+	if (rayHitPosition_ == Vector3::ExprZero) {
+		rayHitPosition_ = other->GetCenterPosition();
+	} else {
+		float distanceNow = Vector3::Distance(player_->GetTransform().translation_, rayHitPosition_);
+		float distanceOther = Vector3::Distance(player_->GetTransform().translation_, other->GetCenterPosition());
+		if (distanceOther < distanceNow) {
+			rayHitPosition_ = other->GetCenterPosition();
+		}
+	}
+}
+
+void PlayerShot::RayUpdate()
+{
+	Vector3 rotateVelocity{};
+	Input::GetInstance()->SetGamepadStickDeadzoneScale(0.2f);
+	rotateVelocity.x = Input::GetInstance()->GetGamepadRightStickX();
+	rotateVelocity.z = Input::GetInstance()->GetGamepadRightStickY();
+	Input::GetInstance()->SetGamepadStickDeadzoneScale(1.0f);
+	Quaternion rightQuaternion = Quaternion::IdentityQuaternion();
+	if (rotateVelocity.Length() < 0.01f) {
+		rightQuaternion = player_->GetTransform().rotation_;
+		Collider::isActive_ = false;
+	} else {
+		rightQuaternion = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rotateVelocity, 1.0f);
+		Collider::isActive_ = true;
+	}
+	const auto& itemData = player_->GetItem()->GetPreObjectData();
+	const auto rotateMatrix = Quaternion::MakeRotateMatrix(rightQuaternion);
+	auto centerPosition = player_->GetTransform().translation_ + itemData.rayColliderPosition.Transform(rotateMatrix);
+	
+	Collider::origin_ = centerPosition;
+	Collider::diff_ = (Vector3::ExprUnitZ * itemData.rayColliderSize.z).Transform(rotateMatrix);
+
+	Collider::size_ = itemData.rayColliderSize;
+	Collider::rotate_ = rightQuaternion;
+	Collider::centerPosition_ = centerPosition;
+	Collider::Update();
+
+	rayReticle_->SetRaticleAlpha(isRayHit_);
+	rayReticle_->SetPosition(rayHitPosition_);
+	rayReticle_->Update();
+
+	ResetRayHit();
 }

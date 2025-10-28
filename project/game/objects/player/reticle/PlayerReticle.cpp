@@ -29,10 +29,6 @@ void PlayerReticle::Init()
 	reticleColorTimer_ = 2.0f;
 }
 
-void PlayerReticle::GlobalInit()
-{
-}
-
 void PlayerReticle::Update(bool isPlayingMouse)
 {
 	Input* input = Input::GetInstance();
@@ -117,4 +113,55 @@ void PlayerReticle::SegmentUpdate()
 
 	Collider::origin_ = nearPos;
 	Collider::diff_ = (farPos - nearPos);
+}
+
+void PlayerRayReticle::Init()
+{
+	Sprite::Initialize("2dReticle.png");
+	transform_.size = { 64.0f,64.0f };
+	anchorPoint_ = { 0.5f,0.5f };
+	Sprite::GetRenderOptions().enabled = true;
+	Sprite::GetRenderOptions().offscreen = false;
+	Sprite::SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	Sprite::Update();
+}
+
+void PlayerRayReticle::Update()
+{
+	Sprite::Update();
+}
+
+void PlayerRayReticle::Draw()
+{
+	Sprite::Draw();
+}
+
+void PlayerRayReticle::SetRaticleAlpha(bool flag)
+{
+	if (flag) { alphaTimer_ += DeltaTimer::GetDeltaTime() * 5.0f; }
+	else { alphaTimer_ -= DeltaTimer::GetDeltaTime() * 5.0f; }
+	alphaTimer_ = std::clamp(alphaTimer_, 0.0f, 1.0f);
+
+	Vector4 color = { alphaTimer_,0.0f,0.0f,alphaTimer_ };
+	Sprite::SetColor(color);
+}
+
+void PlayerRayReticle::SetPosition(const Vector3& position)
+{
+	// ワールドからスクリーン座標に変換
+	if (position.Length() < 0.01f) { return; }
+	Vector3 screenPos = Vector3::Transform(
+		position,
+		CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix()
+	);
+	Vector2 pos = {
+		((screenPos.x + 1.0f) / 2.0f) * static_cast<float>(WinApp::kClientWidth),
+		((1.0f - screenPos.y) / 2.0f) * static_cast<float>(WinApp::kClientHeight)
+	};
+
+	if(Vector2::Distance(transform_.position, pos) > 320.0f){
+		transform_.position = pos;
+	} else {
+		transform_.position = Vector2::Lerp(transform_.position, pos, 0.5f);
+	}
 }
