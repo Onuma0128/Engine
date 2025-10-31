@@ -113,7 +113,12 @@ public:
 	/// <returns></returns>
 	static bool OBBOBB(const Collider* a, const Collider* b);
 
-private:
+	/// <summary>
+	/// ブロードフェーズAABBを計算する
+	/// </summary>
+	/// <param name="collider"></param>
+	/// <returns></returns>
+	static AABB ComputeBroadphaseAABB(const Collider* collider);
 
 	// コライダーから各形状に変換する
 	static Sphere ChangeSphere(const Collider* collider);

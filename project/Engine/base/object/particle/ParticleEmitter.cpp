@@ -34,14 +34,14 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     isCreate_ = true;
     needResetPrev_ = true;
     
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
     // Emitterの範囲を線で描画
     AABB aabb = emitter_.emitterSize;
     linePosition_ = CreateLineBox(emitter_.emitterSize);
 
     line_ = std::make_unique<Line3d>();
     line_->Initialize(linePosition_);
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void ParticleEmitter::Update()
@@ -128,7 +128,7 @@ void ParticleEmitter::Update()
         std::clamp(max.x, min.x, 256.0f),std::clamp(max.y, min.y, 256.0f),std::clamp(max.z, min.z, 256.0f)
     };
 
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 
     linePosition_ = CreateLineBox(emitter_.emitterSize);
     for (auto& linePos : linePosition_) {
@@ -139,7 +139,7 @@ void ParticleEmitter::Update()
     line_->SetPositions(linePosition_);
     line_->Update();
 
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)

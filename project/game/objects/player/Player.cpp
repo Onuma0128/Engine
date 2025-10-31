@@ -62,9 +62,9 @@ void Player::Init(SceneJsonLoader loader)
 
 void Player::Update()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	items_->Editor();
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 
 	state_->Update();
 

@@ -10,7 +10,7 @@
         "z": 0.0
     },
     "margin": 2.0,
-    "maxSpawn": 50,
+    "maxSpawn": 10,
     "nextWaveKillCount": 10,
     "searchUpdateTime": 0.699999988079071,
     "maxDeadTimer": 5.0,

@@ -444,6 +444,46 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 	return true;
 }
 
+AABB Collision3D::ComputeBroadphaseAABB(const Collider* c) {
+	switch (c->GetMyColliderType()) {
+	case ColliderType::Sphere: {
+		Sphere s = ChangeSphere(c);
+		Vector3 r{ s.radius, s.radius, s.radius };
+		return { s.center - r, s.center + r };
+	}
+	case ColliderType::Segment: {
+		Segment seg = ChangeSegment(c);
+		Vector3 p0 = seg.origin;
+		Vector3 p1 = seg.origin + seg.diff;
+		Vector3 mn{ std::min(p0.x, p1.x), std::min(p0.y, p1.y), std::min(p0.z, p1.z) };
+		Vector3 mx{ std::max(p0.x, p1.x), std::max(p0.y, p1.y), std::max(p0.z, p1.z) };
+		return { mn, mx };
+	}
+	case ColliderType::OBB: {
+		OBB obb = ChangeOBB(c);
+		Vector3 ex = obb.size;
+		Vector3 ax{
+			obb.rotateMatrix.m[0][0], obb.rotateMatrix.m[1][0], obb.rotateMatrix.m[2][0]
+		};
+		Vector3 ay{
+			obb.rotateMatrix.m[0][1], obb.rotateMatrix.m[1][1], obb.rotateMatrix.m[2][1]
+		};
+		Vector3 az{
+			obb.rotateMatrix.m[0][2], obb.rotateMatrix.m[1][2], obb.rotateMatrix.m[2][2]
+		};
+		Vector3 absAx{ std::abs(ax.x), std::abs(ax.y), std::abs(ax.z) };
+		Vector3 absAy{ std::abs(ay.x), std::abs(ay.y), std::abs(ay.z) };
+		Vector3 absAz{ std::abs(az.x), std::abs(az.y), std::abs(az.z) };
+		Vector3 radius = absAx * ex.x + absAy * ex.y + absAz * ex.z;
+		return { obb.center - radius, obb.center + radius };
+	}
+	default:
+
+		Vector3 p = c->GetCenterPosition() + c->GetOffsetPosition();
+		return { p, p };
+	}
+}
+
 Sphere Collision3D::ChangeSphere(const Collider* collider)
 {
 	return {

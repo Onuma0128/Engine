@@ -6,9 +6,9 @@ void EnemySpawner::Init(SceneObject object)
 {
 	Object3d::Initialize(object.fileName);
 	transform_ = object.transform;
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	Object3d::SetSceneRenderer();
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 
 
 	if (object.collider.active) {

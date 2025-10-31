@@ -1,7 +1,10 @@
 #pragma once
 #include <list>
+#include <cmath>
+#include <unordered_map>
 #include <unordered_set>
 #include <tuple>
+
 #include "Collider.h"
 
 class CollisionManager
@@ -79,6 +82,40 @@ private:
     /// <param name="b"></param>
     /// <param name="thisFrame"></param>
     void CheckCollisionPair(Collider* a, Collider* b, PairSet& thisFrame);
+
+    /// <summary>
+    /// セルのキー
+    /// </summary>
+    struct CellKey { 
+        int x, y, z;
+
+        bool operator==(const CellKey& other) const noexcept {
+            return x == other.x && y == other.y && z == other.z;
+		}
+    };
+
+    /// <summary>
+    /// セルのキーをハッシュ化する
+    /// </summary>
+    struct CellKeyHash {
+        size_t operator()(const CellKey& key) const noexcept {
+            size_t h = 1469598103934665603ull;
+            auto minKey = [&](int v) {h ^= std::hash<int>()(v); h *= 1099511628211ull; };
+            minKey(key.x); minKey(key.y); minKey(key.z);
+            return h;
+        }
+    };
+
+    /// <summary>
+    /// ワールド座標をセルのキーに変換する
+    /// </summary>
+    CellKey ToCell(const Vector3& position, float cellSize) const noexcept {
+        return CellKey{
+            static_cast<int>(std::floor(position.x / cellSize)),
+            static_cast<int>(std::floor(position.y / cellSize)),
+            static_cast<int>(std::floor(position.z / cellSize))
+        };
+	}
 
 private:
 

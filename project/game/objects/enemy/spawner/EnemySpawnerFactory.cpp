@@ -22,14 +22,8 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 		++it;
 	}
 
-	// Release用
 	size_t normal = 50;
 	size_t strong = 10;
-	// Debug用
-#ifdef _DEBUG
-	normal = 30;
-	strong = 5;
-#endif // _DEBUG
 
 	// 敵をタイプごとに初期化
 	InitTypeEnemy(EnemyType::Melee, enemyMelees_, normal);
@@ -105,7 +99,7 @@ void EnemySpawnerFactory::UpdateTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>&
 
 void EnemySpawnerFactory::RandomSpawnEnemy()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	if (items_->GetMainData().nowSpawn) {
 		// タイプごとに敵を生成
 		EnemyType type = static_cast<EnemyType>(items_->GetMainData().spawnIndex);
@@ -118,7 +112,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		}
 	}
 	if (!items_->GetMainData().debugIsSpawn) { return; }
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 
 	// 湧き上限を超えていないかチェックする
 	size_t enemySpawnCount = 0;

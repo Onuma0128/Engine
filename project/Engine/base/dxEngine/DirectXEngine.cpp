@@ -131,7 +131,7 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 void DirectXEngine::DeviceInitialize()
 {
 	//デバックレイヤー
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	ComPtr<ID3D12Debug1> debugController = nullptr;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
 		//デバックレイヤーを有効化にする
@@ -139,7 +139,7 @@ void DirectXEngine::DeviceInitialize()
 		//さらにGPU側でもチェックを行うようにする
 		debugController->SetEnableGPUBasedValidation(TRUE);
 	}
-#endif // DEBUG
+#endif // ENABLE_EDITOR
 
 	HRESULT hr = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory_));
 	assert(SUCCEEDED(hr));
@@ -185,7 +185,7 @@ void DirectXEngine::DeviceInitialize()
 	//デバイスの生成がうまくいかなかったので起動できない
 	assert(device_ != nullptr);
 	Logger::Log("Complete create D3D12Device!!!\n");
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	ID3D12InfoQueue* infoQueue = nullptr;
 	if (SUCCEEDED(device_->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {
 		//やばいエラー時に止まる
@@ -211,7 +211,7 @@ void DirectXEngine::DeviceInitialize()
 		//指定したメッセージの表示を抑制する
 		infoQueue->PushStorageFilter(&filter);
 	}
-#endif // DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void DirectXEngine::CommandInitialize()

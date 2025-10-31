@@ -1,8 +1,8 @@
 #include "Camera.h"
 
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 #include "imgui.h"
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 #include "Input.h"
 
 #include "DeltaTimer.h"
@@ -22,12 +22,12 @@ void Camera::Initialize()
 
 void Camera::Update()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	if (isDebug_) {
 		DebugCamera();
 		return;
 	}
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 	NormalCamera();
 }
 
@@ -146,7 +146,7 @@ void Camera::UpdateMatrix(EulerTransform transform)
 
 void Camera::CameraImGui()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	ImGui::Begin("Camera");
 	ImGui::Checkbox("debug", &isDebug_);
 
@@ -160,5 +160,5 @@ void Camera::CameraImGui()
 	transform_.translation = translation;
 
 	ImGui::End();
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }

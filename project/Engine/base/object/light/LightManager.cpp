@@ -1,8 +1,8 @@
 #include "LightManager.h"
 
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 #include "imgui.h"
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 
 #include "DirectXEngine.h"
 
@@ -45,7 +45,7 @@ void LightManager::Update()
 
 void LightManager::Debug_ImGui()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	ImGuiTreeNodeFlags flag = ImGuiTreeNodeFlags_DefaultOpen;
 	ImGui::PushItemWidth(150);
 	if (ImGui::TreeNodeEx("Light", flag)) {
@@ -63,7 +63,7 @@ void LightManager::Debug_ImGui()
 		}
 		ImGui::TreePop();
 	}
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void LightManager::Finalize()

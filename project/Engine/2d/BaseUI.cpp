@@ -111,7 +111,7 @@ void BaseUI::Draw()
 
 void BaseUI::DrawImGui()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 
 	ImGui::Begin(parameters_.biginName.c_str());
 	if (ImGui::TreeNode(parameters_.filename.c_str())) {
@@ -193,7 +193,7 @@ void BaseUI::DrawImGui()
 	ImGui::Separator();
 	ImGui::End();
 
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void BaseUI::Save()

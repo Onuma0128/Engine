@@ -11,12 +11,12 @@ void SplineMover::Reset()
 void SplineMover::Update(const float speed, float lookAt_t)
 {
 
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	if (splines_ != nullptr) {
 		splines_->GetMaterial().enableDraw = false;
 		splines_->Update();
 	}
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 
 	// 速度に応じて距離を進める
 	currentDistance_ += speed * DeltaTimer::GetDeltaTime();
@@ -59,13 +59,13 @@ void SplineMover::ComputeArcLengths()
 		Vector3 currentPos = Vector3::CatmullRomPosition(splinePositions_, t);
 		totalLength += (currentPos - prevPos).Length(); // 距離を積算
 		arcLengths_.push_back(totalLength);
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 		SetLinePosition(linePositions, prevPos, currentPos);
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 		prevPos = currentPos;
 	}
 
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	// ラインの初期化
 	if (splines_ == nullptr) {
 		splines_ = std::make_unique<Line3d>();
@@ -75,7 +75,7 @@ void SplineMover::ComputeArcLengths()
 		splines_->SetPositions(linePositions);
 		splines_->Update();
 	}
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 float SplineMover::GetArcLengthParam(float targetDistance)

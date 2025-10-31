@@ -25,12 +25,12 @@ void Collider::RemoveCollider()
 
 void Collider::DrawCollider()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	// Lineの初期化
 	line_ = std::make_unique<Line3d>();
 	linePositions_ = CreateLinePositions();
 	line_->Initialize(linePositions_);
-#endif // _DEBUG	
+#endif // ENABLE_EDITOR	
 }
 
 void Collider::Update()

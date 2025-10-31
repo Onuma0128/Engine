@@ -47,10 +47,10 @@ void ParticleManager::Initialize(DirectXEngine* dxEngine)
 
 void ParticleManager::Update()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
     // editorのUpdate
     ParticleEditorUpdate();
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 
     // 各パーティクルグループに対して処理
     for (auto it = particleGroups_.begin(); it != particleGroups_.end();) {
@@ -63,9 +63,9 @@ void ParticleManager::Update()
             for (auto& g_emitter : group.emitters) {
                 if (auto emitter = g_emitter.lock()) {
                     emitter->SetEmitter(group.editor->GetBaseEmitter());
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
                     emitter->SetDrawLine(drawEmitter_);
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
                     emitter->Update();
                 }
             }

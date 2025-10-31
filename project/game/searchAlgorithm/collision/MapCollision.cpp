@@ -53,7 +53,7 @@ void MapCollision::Init(SceneJsonLoader loader)
 
 void MapCollision::Update()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 
 	ImGui::Begin("GameData");
 	if (ImGui::TreeNode("MapCollision")) {
@@ -71,7 +71,7 @@ void MapCollision::Update()
 	ImGui::Separator();
 	ImGui::End();
 
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 
 	grid_->SetDrawGrid(debugLine_);
 	grid_->Update();

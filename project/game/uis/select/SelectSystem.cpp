@@ -48,9 +48,9 @@ void SelectSystem::Init()
 
 void SelectSystem::Update()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	items_->Editor();
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 
 	// ターゲットされているボタンを更新する
 	uint32_t index = targetIndex_ + 4u;

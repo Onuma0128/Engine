@@ -222,26 +222,27 @@ void PlayerShot::OnCollisionStay(Collider* other)
 
 void PlayerShot::RayUpdate()
 {
+	// 右スティックの入力を取得
 	Vector3 rotateVelocity{};
-	Input::GetInstance()->SetGamepadStickDeadzoneScale(0.2f);
+	Input::GetInstance()->SetGamepadStickDeadzoneScale(0.5f);
 	rotateVelocity.x = Input::GetInstance()->GetGamepadRightStickX();
 	rotateVelocity.z = Input::GetInstance()->GetGamepadRightStickY();
 	Input::GetInstance()->SetGamepadStickDeadzoneScale(1.0f);
+
+	// 右スティックの入力があるならその方向にRayを向ける
 	Quaternion rightQuaternion = Quaternion::IdentityQuaternion();
-	if (rotateVelocity.Length() < 0.01f) {
-		rightQuaternion = player_->GetTransform().rotation_;
-		Collider::isActive_ = false;
-	} else {
-		rightQuaternion = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rotateVelocity, 1.0f);
+	if (rotateVelocity.Length() > 0.01f) {
+		rayDirection_ = rotateVelocity;
 		Collider::isActive_ = true;
+	} else {
+		Collider::isActive_ = false;
 	}
+	rightQuaternion = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rayDirection_, 0.3f);
 	const auto& itemData = player_->GetItem()->GetPreObjectData();
 	const auto rotateMatrix = Quaternion::MakeRotateMatrix(rightQuaternion);
 	auto centerPosition = player_->GetTransform().translation_ + itemData.rayColliderPosition.Transform(rotateMatrix);
-	
-	Collider::origin_ = centerPosition;
-	Collider::diff_ = (Vector3::ExprUnitZ * itemData.rayColliderSize.z).Transform(rotateMatrix);
 
+	// コライダーの更新
 	Collider::size_ = itemData.rayColliderSize;
 	Collider::rotate_ = rightQuaternion;
 	Collider::centerPosition_ = centerPosition;

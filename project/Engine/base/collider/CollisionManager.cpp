@@ -46,7 +46,7 @@ void CollisionManager::CheckAllCollisions()
 
 void CollisionManager::DebugImGui()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 
     bool change = debugColliderEnable_;
     ImGui::Begin("ColliderManager");
@@ -59,7 +59,7 @@ void CollisionManager::DebugImGui()
         }
     }
 
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 bool CollisionManager::Dispatch(Collider* a, Collider* b)

@@ -94,11 +94,15 @@ public:
 	// デバッグ用ボーンの描画有効/無効設定
 	void SetBoneEnableDraw(bool flag) { debugBone_->SetEnableDraw(flag); }
 
+	const std::vector<const NodeAnimation*>& GetOrBuildTrackCacke(const AnimationData& animationData);
+
 private:
 
 	SkeletonItem item_;
 
 	std::unique_ptr<DebugBone> debugBone_ = nullptr;
+
+	std::unordered_map<size_t, std::vector<const NodeAnimation*>> animTracksCache_;
 
 };
 

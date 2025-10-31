@@ -4,48 +4,48 @@
 
 void DrawGrid::Init(const float cell, const float size)
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	// グリッドの初期化
 	grid_ = std::make_unique<Line3d>();
 	auto gridPos = grid_->CreateGrid(cell, size, 0.1f);
 	grid_->Initialize(gridPos);
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void DrawGrid::Update()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	// グリッドの更新
 	grid_->Update();
 	hitGrid_->Update();
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void DrawGrid::SetDrawGrid(bool flag)
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	// グリッドの描画
 	grid_->GetMaterial().enableDraw = flag;
 	hitGrid_->GetMaterial().enableDraw = flag;
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void DrawGrid::SetGridPositions(const float cell, const float size)
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	auto gridPos = grid_->CreateGrid(cell, size, 0.1f);
 	grid_->SetPositions(gridPos);
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void DrawGrid::HitGridInit()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	// 当たっているグリッドの初期化
 	hitGrid_ = std::make_unique<Line3d>();
 	hitGrid_->Initialize(hitGridPositions_);
 	hitGrid_->SetColor(Vector3{ 1.0f,0.0f,0.0f });
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }
 
 void DrawGrid::HitAABB(const AABB_2D& aabb)

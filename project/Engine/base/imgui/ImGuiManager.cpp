@@ -52,8 +52,8 @@ void ImGuiManager::End()
 
 void ImGuiManager::Draw()
 {
-#ifdef _DEBUG
+#ifdef ENABLE_EDITOR
 	// 実際のnommandListのImGuiの描画コマンドを積む
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxEngine_->GetCommandList());
-#endif // _DEBUG
+#endif // ENABLE_EDITOR
 }

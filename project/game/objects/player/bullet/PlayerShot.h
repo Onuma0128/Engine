@@ -127,6 +127,7 @@ private:
 
 	// Rayのスプライト
 	std::unique_ptr<PlayerRayReticle> rayReticle_ = nullptr;
+	Vector3 rayDirection_ = Vector3::ExprUnitZ;
 	// Rayが当たったかどうか
 	bool isRayHit_ = false;
 	// Rayが当たった座標
