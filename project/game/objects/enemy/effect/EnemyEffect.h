@@ -38,6 +38,11 @@ public:
 	void SetEnemy(BaseEnemy* enemy) { enemy_ = enemy; }
 
 	/// <summary>
+	/// 移動時のエフェクトを呼び出す
+	/// </summary>
+	void OnceMoveEffect(const WorldTransform& transform);
+
+	/// <summary>
 	/// 弾を撃つ時のエフェクトを呼び出す
 	/// </summary>
 	/// <param name="transform"></敵のTransformを入れる>
@@ -106,6 +111,11 @@ private:
 
 	// パーティクルを管理する
 	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+
+	/* ==================== 敵が移動時のエフェクト ==================== */
+
+	// 移動時の土埃
+	std::shared_ptr<ParticleEmitter> moveDustEmitter_ = nullptr;
 
 	/* ==================== 弾がヒットした時のエフェクト ==================== */
 

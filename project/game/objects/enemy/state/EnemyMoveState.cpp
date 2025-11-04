@@ -89,22 +89,16 @@ void EnemyMoveState::Update()
 			// 待機時アニメーションにする
 			AttackCoolTimeAnimation();
 		} else {
-			// 移動時アニメーションにする
-			MoveAnimation();
-			// 距離があれば移動処理をする
-			enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
-			enemy_->GetEnemyRay()->Reset();
+			// 移動時のアクションを行う
+			MoveAction(velocity, speed);
 		}
 		if (attackCoolTime_ <= 0.0f && enemy_->GetEnemyRay()->GetLooking()) {
 			TypeChengeAttackState();
 			return;
 		}
 	} else {
-		// 移動時アニメーションにする
-		MoveAnimation();
-		// 距離があれば移動処理をする
-		enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
-		enemy_->GetEnemyRay()->Reset();
+		// 移動時のアクションを行う
+		MoveAction(velocity, speed);
 	}
 }
 
@@ -157,6 +151,16 @@ void EnemyMoveState::TypeChengeAttackState()
 	case EnemyType::RangedElite:	enemy_->ChengeState(std::make_unique<EnemyRangedElite_AttackState>(enemy_)); break;
 	default:break;
 	}
+}
+
+void EnemyMoveState::MoveAction(const Vector3& velocity, const float speed)
+{
+	// 移動時アニメーションにする
+	MoveAnimation();
+	enemy_->GetEffect()->OnceMoveEffect(enemy_->GetTransform());
+	// 距離があれば移動処理をする
+	enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+	enemy_->GetEnemyRay()->Reset();
 }
 
 void EnemyMoveState::MoveAnimation()

@@ -4,6 +4,8 @@
 
 #include "EnemyBaseState.h"
 
+#include "Vector3.h"
+
 /// <summary>
 /// 敵の移動ステートクラス
 /// </summary>
@@ -61,6 +63,11 @@ private:
 	/// 敵のタイプごとの攻撃ステートに遷移する
 	/// </summary>
 	void TypeChengeAttackState();
+
+	/// <summary>
+	/// 移動処理を行う
+	/// </summary>
+	void MoveAction(const Vector3& velocity, const float speed);
 
 	/// <summary>
 	/// 移動アニメーションを再生する

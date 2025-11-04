@@ -24,9 +24,9 @@
     "Reflect": true,
     "ReflectY": 0.0,
     "Color": {
-        "x": 0.16176468133926392,
-        "y": 0.07809227705001831,
-        "z": 0.039648208767175674
+        "x": 0.13725489377975464,
+        "y": 0.09899147599935532,
+        "z": 0.08141098916530609
     },
     "uvTranslation": {
         "x": 0.0,
@@ -96,5 +96,9 @@
         "z": -0.20000000298023224
     },
     "Look": true,
-    "Model": 1
+    "Model": 1,
+    "UvFlipX": false,
+    "UvFlipY": false,
+    "LockDirection": false,
+    "DirectionSpeed": 0.0
 }

@@ -99,6 +99,7 @@ void EnemyBullet::IsCollision()
 	wasActive_ = false;
 	isActive_ = false;
 	Collider::isActive_ = false;
+	Object3d::transform_.translation_.y = -5.0f;
 	Object3d::GetMaterial().enableDraw = false;
 }
 

@@ -14,6 +14,11 @@ void EnemyEffect::Init()
 
 	BulletPredictionInit();
 
+	// 移動時のエフェクト
+	moveDustEmitter_ = std::make_unique<ParticleEmitter>("moveDust");
+	particleManager_->CreateParticleGroup(moveDustEmitter_);
+	moveDustEmitter_->SetIsCreate(false);
+
 	// ヒット時のエフェクト
 	hitEmitter_ = std::make_unique<ParticleEmitter>("enemyHit");
 	particleManager_->CreateParticleGroup(hitEmitter_);
@@ -52,6 +57,18 @@ void EnemyEffect::Draw()
 	if (hitReticleEffect_.cylinder_->GetRenderOptions().enabled) {
 		hitReticleEffect_.cylinder_->TypeDraw();
 	}
+}
+
+void EnemyEffect::OnceMoveEffect(const WorldTransform& transform)
+{
+	moveDustEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	moveDustEmitter_->SetRotation(rotate);
+	moveDustEmitter_->SetPosition(position);
 }
 
 void EnemyEffect::OnceBulletEffect(const WorldTransform& transform)

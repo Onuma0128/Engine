@@ -82,14 +82,19 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	const auto& name = other->GetColliderName();
 
 	// 敵と当たったらなエフェクトを出す
-	if (name == "Enemy" || name == "EnemyShield" || name == "DeadTree" ||
+	if (name == "EnemyShield" || name == "DeadTree" ||
 		name == "Building" || name == "fence" || name == "Bush" ||
 		name == "StoneWall" || name == "ShortStoneWall") {
 		IsCollision();
 		effect_->OnceBulletDeleteEffect(transform_);
 		Object3d::GetTransform().translation_.y = -2.0f;
 	}
-	if (other->GetColliderName() == "Enemy") {
+	if (name == "Enemy") {
+		if(Collider::GetColliderName() == "PlayerBullet"){
+			IsCollision();
+			effect_->OnceBulletDeleteEffect(transform_);
+			Object3d::GetTransform().translation_.y = -2.0f;
+		}
 		++kNockdownCount_;
 		Input::GetInstance()->Vibrate(0.4f, 0.75f, 100);
 	}
