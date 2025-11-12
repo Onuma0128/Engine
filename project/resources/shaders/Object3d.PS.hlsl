@@ -11,12 +11,14 @@ struct Material
     float3 outlineColor;
     float shininess;
     float environmentCoefficient;
+    int shadowMap;
 };
 struct DirectionalLightData
 {
     float4 color;
     float3 direction;
     float intensity;
+    float4x4 lightVP;
 };
 struct PointLightData
 {
@@ -56,8 +58,67 @@ ConstantBuffer<KdColor> gKdColor : register(b5);
 Texture2D<float4> gTexture : register(t0);
 TextureCube<float4> gEnvironmentTexture : register(t1);
 StructuredBuffer<Material> gMaterial : register(t2);
+Texture2D<float> gShadowMap : register(t3);
 
 SamplerState gSampler : register(s0);
+SamplerComparisonState gShadowSampler : register(s1);
+SamplerState gShadowSamplerNoCmp : register(s2);
+
+/// =============================================================
+
+#ifndef SHADOW_DEBUG_MODE
+#define SHADOW_DEBUG_MODE 4   // 0=通常, 1=可視度, 2=UV, 3=z, 4=生Depth, 5=z vs Depth
+#endif
+
+static bool In01(float2 uv){ return uv.x>=0 && uv.x<=1 && uv.y>=0 && uv.y<=1; }
+static float2 ShadowUV(float4 shadowPos){
+    float2 ndc = shadowPos.xy / shadowPos.w;
+    return float2(ndc.x * 0.5f + 0.5f,-ndc.y * 0.5f + 0.5f);
+}
+static float   ShadowZ (float4 shadowPos){ return saturate(shadowPos.z/shadowPos.w); } // LH 通常Z想定
+
+/// =============================================================
+
+float SampleShadow(float4 shadowPos, float3 normalWS, float3 lightDirWS)
+{
+    float3 N = normalize(normalWS);
+    float3 L = normalize(lightDirWS);
+    float ndotl = dot(N, L);
+    if (ndotl <= 0.0f) { return 1.0f; }
+    
+    float2 uv = ShadowUV(shadowPos);
+    float z = ShadowZ(shadowPos);
+
+#if SHADOW_DEBUG_MODE == 2   // UV範囲（内=白/外=黒）
+    return In01(uv) ? 1.0 : 0.0;
+#endif
+
+#if SHADOW_DEBUG_MODE == 3   // z 可視化（近=黒/遠=白）
+    return z;
+#endif
+
+#if SHADOW_DEBUG_MODE == 4   // 生Depth（非比較サンプラで!）
+    float d = gShadowMap.Sample(gShadowSamplerNoCmp, uv).r;
+    return d;
+#endif
+
+#if SHADOW_DEBUG_MODE == 5   // 手動比較（Non-Compare）
+    float d = gShadowMap.Sample(gShadowSamplerNoCmp, uv).r;
+    return (z <= d) ? 1.0f : 0.0f; // 1=光, 0=影
+#endif
+
+    // ===== 通常の比較（ここがデフォルト）=====
+    if (!In01(uv))
+        return 1.0f; // UV外は影なし扱い
+
+    // バイアス（まずは控えめ）
+    ndotl = saturate(dot(normalize(normalWS), L));
+    const float kMinBias = 0.0002f, kSlopeBias = 0.0008f;
+    float bias = kMinBias + kSlopeBias * (1.0f - ndotl);
+
+    // まずは1tapで確認（出たらPCFへ広げる）
+    return gShadowMap.SampleCmpLevelZero(gShadowSampler, uv, z - bias);
+}
 
 struct PixelShaderOutput
 {
@@ -120,12 +181,13 @@ PixelShaderOutput main(VertexShaderOutput input)
         float4 environmentColor = gEnvironmentTexture.Sample(gSampler, reflectedVector);
         environmentColor.rgb *= gMaterial[instID].environmentCoefficient;
         // ライトの処理を合算
-        output.color.rgb =
-        diffuseDirectionalLight + specularDirectionalLight +
-        diffusePointLight + specularPointLight +
-        diffuseSpotLight + specularSpotLight +
-        environmentColor.rgb;
-        output.color.a = gMaterial[instID].color.a * textureColor.a;
+        float visibility = SampleShadow(input.shadowPosLS, normal, lightDirectionalLight);
+        float3 directionalLit = (diffuseDirectionalLight + specularDirectionalLight) * visibility;
+        float3 otherLit = (diffusePointLight + specularPointLight) +
+                  (diffuseSpotLight + specularSpotLight);
+
+        output.color.rgb = directionalLit + otherLit + environmentColor.rgb;
+        output.color.a = gMaterial[instID].color.a * textureColor.a; 
     }
     else
     {

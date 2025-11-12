@@ -161,7 +161,7 @@ void Sprite::UpdateMatrix()
 		Vector3{ transform_.position.x,transform_.position.y,0.0f }
 	);
 	Matrix4x4 viewMatrix = Matrix4x4::Identity();
-	Matrix4x4 projectionMatrix = Matrix4x4::Orthographic(0.0f, 0.0f, float(WinApp::kClientWidth), float(WinApp::kClientHeight), 0.0f, 100.0f);
+	Matrix4x4 projectionMatrix = Matrix4x4::Orthographic(0.0f, float(WinApp::kClientWidth), float(WinApp::kClientHeight), 0.0f, 0.0f, 100.0f);
 	Matrix4x4 worldViewProjectionMatrix = worldMatrix * (viewMatrix * projectionMatrix);
 	transformationMatrixData_->WVP = worldViewProjectionMatrix;
 	transformationMatrixData_->World = worldViewProjectionMatrix;

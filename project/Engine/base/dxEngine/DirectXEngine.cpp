@@ -29,6 +29,7 @@ std::unique_ptr<SceneRenderer> DirectXEngine::sceneRendrer_ = nullptr;
 std::unique_ptr<ModelInstanceRenderer> DirectXEngine::modelInstanceRenderer_ = nullptr;
 std::unique_ptr<LineInstanceRenderer> DirectXEngine::lineInstanceRenderer_ = nullptr;
 std::unique_ptr<CollisionManager> DirectXEngine::collisionManager_ = nullptr;
+std::unique_ptr<ShadowMap> DirectXEngine::shadowMap_ = nullptr;
 
 DirectXEngine::~DirectXEngine()
 {
@@ -53,6 +54,7 @@ DirectXEngine::~DirectXEngine()
 	lineInstanceRenderer_->Finalize();
 	lineInstanceRenderer_.reset();
 	collisionManager_.reset();
+	shadowMap_.reset();
 
 	//解放の処理
 	CloseHandle(fenceEvent_);
@@ -126,6 +128,9 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	lineInstanceRenderer_->Initialize(65536);
 
 	collisionManager_ = std::make_unique<CollisionManager>();
+
+	shadowMap_ = std::make_unique<ShadowMap>();
+	shadowMap_->CreateShadowMap();
 }
 
 void DirectXEngine::DeviceInitialize()
@@ -373,8 +378,6 @@ void DirectXEngine::PreDraw()
 	renderTexture_->StartBarrier();
 	// RenderTextureの描画前準備
 	renderTexture_->PreDraw();
-	//描画用のDescriptorHeapの設定
-	SrvManager::GetInstance()->PreDraw();
 	//コマンドを積む
 	commandList_->RSSetViewports(1, &viewport_);
 	commandList_->RSSetScissorRects(1, &scissorRect_);

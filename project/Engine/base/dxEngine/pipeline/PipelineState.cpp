@@ -24,7 +24,8 @@ void PipelineState::Initialize(
 		PipelineType::Particle,		PipelineType::PrimitiveDrawr,
 		PipelineType::Animation,	PipelineType::RenderTexture,
 		PipelineType::Skybox,		PipelineType::ObjectOutLineMask,
-		PipelineType::AnimationOutLineMask
+		PipelineType::AnimationOutLineMask,
+		PipelineType::ObjectShadowMapDepth
 	};
 
 	std::vector<PostEffectType> postEffectTypes = {
@@ -79,22 +80,31 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 {
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 	psoDesc.pRootSignature = GetRootSignature(type, effectType, blendMode).Get();
-	psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
-	psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(type, dxcUtils_, dxcCompiler_, includeHandler_, effectType);
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(type);
 	psoDesc.PrimitiveTopologyType = (type == PipelineType::Line3d) ? D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE : D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	if(type == PipelineType::ObjectOutLineMask || type == PipelineType::AnimationOutLineMask){ 
-		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-		psoDesc.RTVFormats[1] = DXGI_FORMAT_R32_UINT;
-		psoDesc.NumRenderTargets = 2;
+	// シェーダー設定
+	if (type == PipelineType::ObjectShadowMapDepth) {
+		psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
+		psoDesc.PS = { nullptr, 0 };
+		psoDesc.NumRenderTargets = 0;
+		psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNone);
 	} else {
-		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		psoDesc.NumRenderTargets = 1;
+		psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
+		psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(type, dxcUtils_, dxcCompiler_, includeHandler_, effectType);
+		if (type == PipelineType::ObjectOutLineMask || type == PipelineType::AnimationOutLineMask) {
+			psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+			psoDesc.RTVFormats[1] = DXGI_FORMAT_R32_UINT;
+			psoDesc.NumRenderTargets = 2;
+		} else {
+			psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+			psoDesc.NumRenderTargets = 1;
+		}
+		psoDesc.BlendState = BlendStateFactory::GetBlendState(blendMode);
 	}
+	// 既存の同じ設定
 	psoDesc.SampleDesc.Count = 1;
 	psoDesc.SampleMask = UINT_MAX;
 	psoDesc.RasterizerState = RasterizerStateFactory::GetRasterizerDesc(type);
-	psoDesc.BlendState = BlendStateFactory::GetBlendState(blendMode);
 	psoDesc.DepthStencilState = DepthStencilStateFactory::GetDepthStencilState(type);
 	psoDesc.DSVFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 

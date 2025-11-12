@@ -11,6 +11,7 @@ struct Material
     float3 outlineColor;
     float shininess;
     float environmentCoefficient;
+    int shadowMap;
 };
 
 StructuredBuffer<Material> gMaterial : register(t0);

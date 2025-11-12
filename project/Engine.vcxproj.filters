@@ -1217,6 +1217,7 @@
     <ClCompile Include="game\uis\select\SelectSystem.cpp" />
     <ClCompile Include="game\uis\select\SelectUI.cpp" />
     <ClCompile Include="game\uis\select\adjustItem\SelectAdjustItem.cpp" />
+    <ClCompile Include="Engine\base\object\shadowMap\ShadowMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\uis\gameSceneUIs\GameSceneUIs.h" />
@@ -1224,5 +1225,7 @@
     <ClInclude Include="game\uis\select\SelectUI.h" />
     <ClInclude Include="game\uis\select\adjustItem\SelectAdjustItem.h" />
     <ClInclude Include="Engine\base\collider\ColliderStruct.h" />
+    <ClInclude Include="Engine\base\object\shadowMap\ShadowMap.h" />
+    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\ObjectShadowMapDepthRootSignature.h" />
   </ItemGroup>
 </Project>

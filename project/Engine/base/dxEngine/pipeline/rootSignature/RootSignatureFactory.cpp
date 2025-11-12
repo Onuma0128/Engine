@@ -14,6 +14,7 @@
 #include "SkyboxRootSignature.h"
 #include "OutLineMaskRootSignature.h"
 #include "AnimationOutLineMaskRootSignature.h"
+#include "ObjectShadowMapDepthRootSignature.h"
 
 ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType type, ComPtr<ID3D12Device> device, PostEffectType effectType)
 {
@@ -49,6 +50,9 @@ ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType 
 		break;
 	case PipelineType::AnimationOutLineMask:
 		rootSignature[type] = std::make_unique<AnimationOutLineMaskRootSignature>();
+		break;
+	case PipelineType::ObjectShadowMapDepth:
+		rootSignature[type] = std::make_unique<ObjectShadowMapDepthRootSignature>();
 		break;
 	default:
 		assert(false && "Invalid RootSignatureType");

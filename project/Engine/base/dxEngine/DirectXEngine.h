@@ -15,6 +15,7 @@
 #include "ModelInstanceRenderer.h"
 #include "LineInstanceRenderer.h"
 #include "CollisionManager.h"
+#include "ShadowMap.h"
 
 class WinApp;
 class ImGuiManager;
@@ -92,6 +93,8 @@ public:
 	static LineInstanceRenderer* GetLineRenderer() { return lineInstanceRenderer_.get(); }
 	// 当たり判定
 	static CollisionManager* GetCollisionMgr() { return collisionManager_.get(); }
+	// シャドウマップ
+	static ShadowMap* GetShadowMap() { return shadowMap_.get(); }
 	// RenderTexture
 	RenderTexture* GetRenderTexrure() { return renderTexture_.get(); }
 
@@ -118,6 +121,8 @@ private:
 	static std::unique_ptr<LineInstanceRenderer> lineInstanceRenderer_;
 	// CollisionManager
 	static std::unique_ptr<CollisionManager> collisionManager_;
+	// ShadowMap
+	static std::unique_ptr<ShadowMap> shadowMap_;
 
 	///==============================================================
 

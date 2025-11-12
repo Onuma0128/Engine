@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "Matrix4x4.h"
+
 Vector4::Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
 const Vector4 Vector4::ExprUnitX = { 1.0f,0.0f,0.0f,0.0f };
@@ -66,4 +68,13 @@ Vector4& Vector4::operator*=(float scalar)
 	z *= scalar;
 	w *= scalar;
 	return *this;
+}
+
+Vector4 operator*(const Vector4& v, const Matrix4x4& m) {
+	Vector4 r;
+	r.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + v.w * m.m[3][0];
+	r.y = v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + v.w * m.m[3][1];
+	r.z = v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] + v.w * m.m[3][2];
+	r.w = v.x * m.m[0][3] + v.y * m.m[1][3] + v.z * m.m[2][3] + v.w * m.m[3][3];
+	return r;
 }

@@ -64,6 +64,7 @@ VertexShaderOutput main(VertexShaderInput input, uint InstID : SV_InstanceID)
     output.worldPosition = mul(skinned.position, gInstanceData[InstID].World).xyz;
     output.texcoord = input.texcoord;
     output.normal = normalize(mul(skinned.normal, (float3x3) gInstanceData[InstID].WorldInverseTranspose));
+    output.shadowPosLS = (0.0f, 0.0f, 0.0f, 1.0f);
     output.instID = InstID;
     return output;
 }

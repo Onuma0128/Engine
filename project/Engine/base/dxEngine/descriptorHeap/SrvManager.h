@@ -55,6 +55,8 @@ public:
 	void CreateSRVforRenderTexture(uint32_t srvIndex, ID3D12Resource* pResource, PostEffectType type = PostEffectType::None);
 	// SRV生成(DDSテクスチャ用)
 	void CreateSRVforTextureCube(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format, UINT MipLevels);
+	// SRV生成(深度テクスチャ用)
+	void CreateSRVforDepth(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format);
 	// 自動割当
 	uint32_t Allocate();
 	// SRV割り当てチェック

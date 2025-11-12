@@ -7,6 +7,8 @@
 
 #include "DeltaTimer.h"
 
+#include "LightManager.h"
+
 void Camera::Initialize()
 {
 	debugTransform_ = { {1.0f,1.0f,1.0f},{0.26f,0.0f,0.0f},{0.0f,4.0f,-15.0f} };

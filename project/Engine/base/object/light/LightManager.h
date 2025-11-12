@@ -45,6 +45,7 @@ public:
 	/*==================== アクセッサー ====================*/
 
 	// 平行光源のリソース取得
+	BaseLight* GetDirectionalLight() const { return directionalLight_.get(); }
 	ID3D12Resource* GetDirectionalLightResource()const { return directionalLight_->GetResource(); }
 	// ポイントライトのリソース取得
 	ID3D12Resource* GetPointLightResource()const { return pointLight_->GetResource(); }

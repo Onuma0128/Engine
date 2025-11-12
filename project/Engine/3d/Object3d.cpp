@@ -78,4 +78,5 @@ void Object3d::MakeMaterialData()
     materialData_.uvTransform = Matrix4x4::Identity();
     materialData_.shininess = 20.0f;
     materialData_.environmentCoefficient = 0;
+    materialData_.shadowMap = true;
 }

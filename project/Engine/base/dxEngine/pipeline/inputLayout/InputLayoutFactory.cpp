@@ -39,6 +39,9 @@ D3D12_INPUT_LAYOUT_DESC& InputLayoutFactory::GetInputLayout(PipelineType type)
 	case PipelineType::AnimationOutLineMask:
 		inputLayout[type] = std::make_unique<AnimationOutLineMaskInputLayout>();
 		break;
+	case PipelineType::ObjectShadowMapDepth:
+		inputLayout[type] = std::make_unique<Object3dInputLayout>();
+		break;
 	default:
 		assert(false && "Invalid InputLayoutType");
 		break;

@@ -37,6 +37,12 @@ public:
 	// ライト用のデータ作成
 	void MakeLightData() override;
 
+	// ライト用の行列作成
+	void BuildMatricesCoverAll(
+		const Vector3& sceneMin,
+		const Vector3& sceneMax,
+		uint32_t shadowW, uint32_t shadowH) override {};
+
 private:
 
 	SpotLightData* lightData_ = nullptr;

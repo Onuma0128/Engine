@@ -2,6 +2,7 @@
 
 #include "SceneFactory.h"
 
+#include "SrvManager.h"
 #include "SceneManager.h"
 #include "CameraManager.h"
 #include "LightManager.h"
@@ -59,6 +60,12 @@ void MyGame::Update()
 
 void MyGame::Draw()
 {
+	//描画用のDescriptorHeapの設定
+	SrvManager::GetInstance()->PreDraw();
+	// シャドウマップ深度処理
+	directXEngine_->GetShadowMap()->BeginShadowMapPass();
+	directXEngine_->GetModelRenderer()->AllDrawShadowDepth();
+	directXEngine_->GetShadowMap()->EndShadowMapPass();
 	// 描画前の処理
 	directXEngine_->PreDraw();
 	// offscreen描画

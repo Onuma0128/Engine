@@ -8,6 +8,12 @@ struct InstanceData
 };
 StructuredBuffer<InstanceData> gInstanceData : register(t0);
 
+struct LightData
+{
+    float4x4 LightVP;
+};
+ConstantBuffer<LightData> gLightData : register(b0);
+
 struct VertexShaderInput
 {
     float4 position : POSITION0;
@@ -22,6 +28,8 @@ VertexShaderOutput main(VertexShaderInput input, uint InstID : SV_InstanceID)
     output.texcoord = input.texcoord;
     output.normal = normalize(mul(input.normal, (float3x3) gInstanceData[InstID].WorldInverseTranspose));
     output.worldPosition = mul(input.position, gInstanceData[InstID].World).xyz;
+    float4 world = mul(input.position, gInstanceData[InstID].World);
+    output.shadowPosLS = mul(world, gLightData.LightVP);
     output.instID = InstID;
     return output;
 }

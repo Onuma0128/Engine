@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+class Matrix4x4;
+
 /// <summary>
 /// 4Dベクトルを表す構造体
 /// </summary>
@@ -35,4 +37,6 @@ public:
     Vector4& operator+=(const Vector4& v);
     Vector4& operator-=(const Vector4& v);
     Vector4& operator*=(float scalar);
+
+    friend Vector4 operator*(const Vector4& v, const Matrix4x4& m);
 };

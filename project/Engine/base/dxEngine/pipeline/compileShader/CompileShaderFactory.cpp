@@ -148,6 +148,9 @@ std::unique_ptr<CompileShaderBase> CompileShaderFactory::GetCompileShaderPtr(Pip
 	case PipelineType::AnimationOutLineMask:
 		compileShader[type] = std::make_unique<AnimationOutLineMaskCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
+	case PipelineType::ObjectShadowMapDepth:
+		compileShader[type] = std::make_unique<ObjectShadowMapDepthCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		break;
 	default:
 		assert(false && "Invalid CompileShaderType");
 		break;

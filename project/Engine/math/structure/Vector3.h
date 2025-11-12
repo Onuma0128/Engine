@@ -65,6 +65,12 @@ public:
 
     static Vector3 CatmullRomPosition(const std::vector<Vector3>& points, float t);
 
+    static Vector3 DirectionToEuler(const Vector3& direction);
+
+    static Vector3 TransformPoint(const Vector3& p, const Matrix4x4& m);
+
+    static Vector3 TransformPointProjective(const Vector3& p, const Matrix4x4& m);
+
     // 単項演算子オーバーロード
     Vector3 operator+() const;
     Vector3 operator-() const;

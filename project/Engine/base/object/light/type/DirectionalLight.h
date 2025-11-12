@@ -1,9 +1,13 @@
 #pragma once
 
+#include <array>
+#define NOMINMAX
+
 #include "BaseLight.h"
 
 #include "Vector3.h"
 #include "Vector4.h"
+#include "Matrix4x4.h"
 
 /// <summary>
 /// 平行光源クラス
@@ -17,6 +21,7 @@ public:
 		Vector4 color;
 		Vector3 direction;
 		float intensity;
+		Matrix4x4 lightVP;
 	};
 
 	// 初期化
@@ -31,8 +36,24 @@ public:
 	// ライト用のデータ作成
 	void MakeLightData() override;
 
+	// ライト用の行列作成
+	void BuildMatricesCoverAll(
+		const Vector3& sceneMin,
+		const Vector3& sceneMax,
+		uint32_t shadowW, uint32_t shadowH) override;
+
+private:
+
+	void BuildViewByTargetEye(const Vector3& Ptarget, const Vector3& Peye, float lengthScale = 1.0f);
+
+	void BuildViewByTargetLength(const Vector3& Ptarget, float L);
+
 private:
 
 	DirectionalLightData* lightData_ = nullptr;
+
+	float radius_ = 1.0f;
+	float radiusScale_ = 4.0f;
+	Vector3 center_ = Vector3::ExprZero;
 
 };

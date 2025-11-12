@@ -203,6 +203,43 @@ Vector3 Vector3::CatmullRomPosition(const std::vector<Vector3>& points, float t)
     return CatmullRomInterpolation(p0, p1, p2, p3, t_2);
 }
 
+Vector3 Vector3::DirectionToEuler(const Vector3& direction)
+{
+    Vector3 d = direction;
+    float len2 = d.x*d.x + d.y*d.y + d.z*d.z;
+    if (len2 < 1e-12f) return Vector3(0, 0, 0);
+    float invLen = 1.0f / std::sqrt(len2);
+    d.x *= invLen; d.y *= invLen; d.z *= invLen;
+
+    float yaw = std::atan2(d.x, d.z);
+
+    float xz = std::sqrt(d.x*d.x + d.z*d.z);
+    float pitch = std::atan2(-d.y, std::max(xz, 1e-12f));
+
+    float roll = 0.0f;
+
+    return Vector3(pitch, yaw, roll);
+}
+
+Vector3 Vector3::TransformPoint(const Vector3& p, const Matrix4x4& m)
+{
+    float x = p.x * m.m[0][0] + p.y * m.m[1][0] + p.z * m.m[2][0] + 1.0f * m.m[3][0];
+    float y = p.x * m.m[0][1] + p.y * m.m[1][1] + p.z * m.m[2][1] + 1.0f * m.m[3][1];
+    float z = p.x * m.m[0][2] + p.y * m.m[1][2] + p.z * m.m[2][2] + 1.0f * m.m[3][2];
+    // View/World はアフィンなので w=1 のまま返してOK
+    return Vector3{ x, y, z };
+}
+
+Vector3 Vector3::TransformPointProjective(const Vector3& p, const Matrix4x4& m)
+{
+    float x = p.x * m.m[0][0] + p.y * m.m[1][0] + p.z * m.m[2][0] + 1.0f * m.m[3][0];
+    float y = p.x * m.m[0][1] + p.y * m.m[1][1] + p.z * m.m[2][1] + 1.0f * m.m[3][1];
+    float z = p.x * m.m[0][2] + p.y * m.m[1][2] + p.z * m.m[2][2] + 1.0f * m.m[3][2];
+    float w = p.x * m.m[0][3] + p.y * m.m[1][3] + p.z * m.m[2][3] + 1.0f * m.m[3][3];
+    if (w != 0.0f) { float invW = 1.0f / w; x *= invW; y *= invW; z *= invW; }
+    return Vector3{ x, y, z };
+}
+
 // 単項演算子オーバーロード
 Vector3 Vector3::operator+() const {
     return *this;

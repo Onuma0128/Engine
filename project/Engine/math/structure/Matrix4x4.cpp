@@ -279,7 +279,7 @@ Matrix4x4 Matrix4x4::PerspectiveFov(float fovY, float aspectRatio, float nearCli
 }
 
 // 正射影行列の生成
-Matrix4x4 Matrix4x4::Orthographic(float left, float top, float right, float bottom, float nearClip, float farClip) {
+Matrix4x4 Matrix4x4::Orthographic(float left, float right, float bottom, float top, float nearClip, float farClip) {
     Matrix4x4 result = Identity();
     result.m[0][0] = 2.0f / (right - left);
     result.m[1][1] = 2.0f / (top - bottom);

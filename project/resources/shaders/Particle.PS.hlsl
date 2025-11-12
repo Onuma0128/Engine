@@ -14,6 +14,7 @@ struct DirectionalLight
     float4 color;
     float3 direction;
     float intensity;
+    float4x4 lightVP;
 };
 
 ConstantBuffer<Material> gMaterial : register(b0);

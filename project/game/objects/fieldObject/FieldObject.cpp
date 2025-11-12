@@ -10,6 +10,8 @@ void FieldObject::Init(SceneObject object)
 			Object3d::GetMaterial().outlineSceneColor = true;
 		}
 		Object3d::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
+	}else {
+		Object3d::GetMaterial().shadowMap = false;
 	}
 	transform_ = object.transform;
 	centerPosition_ = transform_.translation_;

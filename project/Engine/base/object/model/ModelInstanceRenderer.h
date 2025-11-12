@@ -61,6 +61,8 @@ public:
         }
     }
 
+	// 全てのシャドウマップ深度パス描画
+	void AllDrawShadowDepth();
 	// 全てのアウトラインマスク描画
     void AllDrawOutlineMask();
     // 全ての描画
@@ -81,6 +83,15 @@ private:
     void AnimationUpdate();
 
 private:
+
+    ComPtr<ID3D12RootSignature> objShadowMapRootSignature_; // ルートシグネチャ
+    ComPtr<ID3D12PipelineState> objShadowMapPipelineState_; // パイプラインステート
+
+    struct LightData {
+        Matrix4x4 lightVP;
+    };
+    ComPtr<ID3D12Resource> lightVpBuffer_;
+	LightData* lightData_ = nullptr;
 
     /* ========================= Object3d ========================= */
 

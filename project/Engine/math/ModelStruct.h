@@ -49,6 +49,7 @@ struct Material {
 	Vector3 outlineColor;
 	float shininess;
 	float environmentCoefficient;
+	int32_t shadowMap;
 };
 
 /// <summary>

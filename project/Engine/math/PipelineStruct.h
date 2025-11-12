@@ -13,7 +13,8 @@ enum class PipelineType {
 	RenderTexture,
 	Skybox,
 	ObjectOutLineMask,
-	AnimationOutLineMask
+	AnimationOutLineMask,
+	ObjectShadowMapDepth,
 };
 
 /// <summary>
