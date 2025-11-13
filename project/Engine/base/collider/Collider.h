@@ -60,11 +60,11 @@ public:
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
 	// 当たり判定が発生したときに呼ばれる
-	virtual void OnCollisionEnter(Collider* other) {};
+	virtual void OnCollisionEnter(Collider* other) { other; };
 	// 当たり判定が継続しているときに呼ばれる
-	virtual void OnCollisionStay(Collider* other) {};
+	virtual void OnCollisionStay(Collider* other) { other; };
 	// 当たり判定が終了したときに呼ばれる
-	virtual void OnCollisionExit(Collider* other) {};
+	virtual void OnCollisionExit(Collider* other) { other; };
 
 	/// <summary>
 	/// アクセッサ

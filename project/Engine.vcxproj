@@ -77,6 +77,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\animation;$(ProjectDir)Engine\audio;$(ProjectDir)Engine\base\audio;$(ProjectDir)Engine\base\collider;$(ProjectDir)Engine\base\dxEngine;$(ProjectDir)Engine\base\dxEngine\descriptorHeap;$(ProjectDir)Engine\base\dxEngine\pipeline;$(ProjectDir)Engine\base\dxEngine\pipeline\rootSignature;$(ProjectDir)Engine\base\dxEngine\pipeline\inputLayout;$(ProjectDir)Engine\base\dxEngine\pipeline\blendState;$(ProjectDir)Engine\base\dxEngine\pipeline\rasterizerState;$(ProjectDir)Engine\base\dxEngine\pipeline\compileShader;$(ProjectDir)Engine\base\dxEngine\pipeline\depthStencilState;$(ProjectDir)Engine\base\dxEngine\renderTexture;$(ProjectDir)Engine\base\effect;$(ProjectDir)Engine\base\framework;$(ProjectDir)Engine\base\imgui;$(ProjectDir)Engine\base\scene;$(ProjectDir)Engine\base\scene\sceneFactory;$(ProjectDir)Engine\base\object;$(ProjectDir)Engine\base\object\camera;$(ProjectDir)Engine\base\object\light;$(ProjectDir)Engine\base\object\model;$(ProjectDir)Engine\base\object\particle;$(ProjectDir)Engine\base\object\sprite;$(ProjectDir)Engine\base\object\texture;$(ProjectDir)Engine\input;$(ProjectDir)Engine\math;$(ProjectDir)Engine\math\structure;$(ProjectDir)Engine\jsonFunction;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\assimp\include;$(ProjectDir)game;$(ProjectDir)game\scene;$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,6 +104,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\animation;$(ProjectDir)Engine\audio;$(ProjectDir)Engine\base\audio;$(ProjectDir)Engine\base\collider;$(ProjectDir)Engine\base\dxEngine;$(ProjectDir)Engine\base\dxEngine\descriptorHeap;$(ProjectDir)Engine\base\dxEngine\pipeline;$(ProjectDir)Engine\base\dxEngine\pipeline\rootSignature;$(ProjectDir)Engine\base\dxEngine\pipeline\inputLayout;$(ProjectDir)Engine\base\dxEngine\pipeline\blendState;$(ProjectDir)Engine\base\dxEngine\pipeline\rasterizerState;$(ProjectDir)Engine\base\dxEngine\pipeline\compileShader;$(ProjectDir)Engine\base\dxEngine\pipeline\depthStencilState;$(ProjectDir)Engine\base\dxEngine\renderTexture;$(ProjectDir)Engine\base\effect;$(ProjectDir)Engine\base\framework;$(ProjectDir)Engine\base\imgui;$(ProjectDir)Engine\base\scene;$(ProjectDir)Engine\base\scene\sceneFactory;$(ProjectDir)Engine\base\object;$(ProjectDir)Engine\base\object\camera;$(ProjectDir)Engine\base\object\light;$(ProjectDir)Engine\base\object\model;$(ProjectDir)Engine\base\object\particle;$(ProjectDir)Engine\base\object\sprite;$(ProjectDir)Engine\base\object\texture;$(ProjectDir)Engine\input;$(ProjectDir)Engine\math;$(ProjectDir)Engine\math\structure;$(ProjectDir)Engine\jsonFunction;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\assimp\include;$(ProjectDir)game;$(ProjectDir)game\scene;$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -127,7 +129,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <WarningLevel>Level3</WarningLevel>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
