@@ -161,26 +161,17 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
 
 // LookAt行列の生成
 Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vector3& up) {
-    Vector3 z = target - eye;
-    if (z.Length() < 1e-6f) {
-        z = Vector3::ExprUnitZ;
-    }
-    Vector3 x = Vector3::Cross(up, z.Normalize());
-    if (x.Length() < 1e-6f) {
-        x = Vector3::ExprUnitX;
-    }
+    Vector3 z = (target - eye).Normalize();          // 視線（左手系: eye→target）
+    Vector3 x = Vector3::Cross(up, z).Normalize();   // 右
+    Vector3 y = Vector3::Cross(z, x);                // 上
 
-    Vector3 y = Vector3::Cross(z.Normalize(), x.Normalize());
-
-    Matrix4x4 result = Identity();
-    result.m[0][0] = x.x; result.m[0][1] = y.x; result.m[0][2] = z.x; result.m[0][3] = 0.0f;
-    result.m[1][0] = x.y; result.m[1][1] = y.y; result.m[1][2] = z.y; result.m[1][3] = 0.0f;
-    result.m[2][0] = x.z; result.m[2][1] = y.z; result.m[2][2] = z.z; result.m[2][3] = 0.0f;
-    result.m[3][0] = -Vector3::Dot(x, eye); 
-    result.m[3][1] = -Vector3::Dot(y, eye);
-    result.m[3][2] = -Vector3::Dot(z, eye);
-    result.m[3][3] = 1.0f;
-    return result;
+    Matrix4x4 m = Matrix4x4::Identity();
+    // 行ベクトル × 行列 前提
+    m.m[0][0] = x.x;  m.m[0][1] = x.y;  m.m[0][2] = x.z;  m.m[0][3] = -Vector3::Dot(x, eye);
+    m.m[1][0] = y.x;  m.m[1][1] = y.y;  m.m[1][2] = y.z;  m.m[1][3] = -Vector3::Dot(y, eye);
+    m.m[2][0] = z.x;  m.m[2][1] = z.y;  m.m[2][2] = z.z;  m.m[2][3] = -Vector3::Dot(z, eye);
+    m.m[3][0] = 0.0f; m.m[3][1] = 0.0f; m.m[3][2] = 0.0f; m.m[3][3] = 1.0f;
+    return m;
 }
 
 Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)

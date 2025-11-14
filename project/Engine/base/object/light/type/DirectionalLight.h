@@ -21,7 +21,6 @@ public:
 		Vector4 color;
 		Vector3 direction;
 		float intensity;
-		Matrix4x4 lightVP;
 	};
 
 	// 初期化

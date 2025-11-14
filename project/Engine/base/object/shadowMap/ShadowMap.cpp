@@ -1,6 +1,7 @@
 #include "ShadowMap.h"
 
 #include "DirectXEngine.h"
+#include "RenderTexture.h"
 #include "SrvManager.h"
 #include "DsvManager.h"
 #include "TextureManager.h"

@@ -18,7 +18,6 @@ struct DirectionalLightData
     float4 color;
     float3 direction;
     float intensity;
-    float4x4 lightVP;
 };
 struct PointLightData
 {
@@ -66,10 +65,6 @@ SamplerState gShadowSamplerNoCmp : register(s2);
 
 /// =============================================================
 
-#ifndef SHADOW_DEBUG_MODE
-#define SHADOW_DEBUG_MODE 4   // 0=通常, 1=可視度, 2=UV, 3=z, 4=生Depth, 5=z vs Depth
-#endif
-
 static bool In01(float2 uv){ return uv.x>=0 && uv.x<=1 && uv.y>=0 && uv.y<=1; }
 static float2 ShadowUV(float4 shadowPos){
     float2 ndc = shadowPos.xy / shadowPos.w;
@@ -84,39 +79,24 @@ float SampleShadow(float4 shadowPos, float3 normalWS, float3 lightDirWS)
     float3 N = normalize(normalWS);
     float3 L = normalize(lightDirWS);
     float ndotl = dot(N, L);
-    if (ndotl <= 0.0f) { return 1.0f; }
+
+    // ライトの裏側はシャドウ計算しない
+    if (ndotl <= 0.0f)
+    {
+        return 1.0f;
+    }
     
     float2 uv = ShadowUV(shadowPos);
     float z = ShadowZ(shadowPos);
-
-#if SHADOW_DEBUG_MODE == 2   // UV範囲（内=白/外=黒）
-    return In01(uv) ? 1.0 : 0.0;
-#endif
-
-#if SHADOW_DEBUG_MODE == 3   // z 可視化（近=黒/遠=白）
-    return z;
-#endif
-
-#if SHADOW_DEBUG_MODE == 4   // 生Depth（非比較サンプラで!）
-    float d = gShadowMap.Sample(gShadowSamplerNoCmp, uv).r;
-    return d;
-#endif
-
-#if SHADOW_DEBUG_MODE == 5   // 手動比較（Non-Compare）
-    float d = gShadowMap.Sample(gShadowSamplerNoCmp, uv).r;
-    return (z <= d) ? 1.0f : 0.0f; // 1=光, 0=影
-#endif
-
-    // ===== 通常の比較（ここがデフォルト）=====
     if (!In01(uv))
-        return 1.0f; // UV外は影なし扱い
+        return 1.0f;
 
-    // バイアス（まずは控えめ）
-    ndotl = saturate(dot(normalize(normalWS), L));
-    const float kMinBias = 0.0002f, kSlopeBias = 0.0008f;
-    float bias = kMinBias + kSlopeBias * (1.0f - ndotl);
+    ndotl = saturate(ndotl);
 
-    // まずは1tapで確認（出たらPCFへ広げる）
+    // ★バイアス強め＆上向き面ほどバイアス大きめに
+    float bias = 0.0001f;
+
+    // これでもまだアクネが出るようなら bias をさらに上げる
     return gShadowMap.SampleCmpLevelZero(gShadowSampler, uv, z - bias);
 }
 
@@ -182,12 +162,21 @@ PixelShaderOutput main(VertexShaderOutput input)
         environmentColor.rgb *= gMaterial[instID].environmentCoefficient;
         // ライトの処理を合算
         float visibility = SampleShadow(input.shadowPosLS, normal, lightDirectionalLight);
-        float3 directionalLit = (diffuseDirectionalLight + specularDirectionalLight) * visibility;
-        float3 otherLit = (diffusePointLight + specularPointLight) +
-                  (diffuseSpotLight + specularSpotLight);
 
-        output.color.rgb = directionalLit + otherLit + environmentColor.rgb;
-        output.color.a = gMaterial[instID].color.a * textureColor.a; 
+        // 各ライト成分はそのまま
+        float3 dirLight = (diffuseDirectionalLight + specularDirectionalLight);
+        float3 otherLights =
+            (diffusePointLight + specularPointLight) +
+            (diffuseSpotLight + specularSpotLight);
+
+        // 太陽光だけ visibility を掛ける
+        float3 litColor =
+            environmentColor.rgb + // 環境光は常に有効
+            otherLights + // 他のライトも今回はシャドウ無し
+            dirLight * visibility; // 平行光だけ影の影響を受ける
+
+        output.color.rgb = litColor;
+        output.color.a = gMaterial[instID].color.a * textureColor.a;
     }
     else
     {

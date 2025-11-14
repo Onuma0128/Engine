@@ -1,5 +1,7 @@
 #include "DirectionalLight.h"
 
+#include <DirectXMath.h>
+
 #include "DirectXEngine.h"
 #include "imgui.h"
 
@@ -9,6 +11,8 @@ void DirectionalLight::Initialize(DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 	MakeLightData();
+
+	center_.y = 1.0f;
 }
 
 void DirectionalLight::Update()
@@ -20,8 +24,6 @@ void DirectionalLight::Update()
     const uint32_t shadowW = 2048;
     const uint32_t shadowH = 2048;
     BuildMatricesCoverAll(sceneMin, sceneMax, shadowW, shadowH);
-
-	lightData_->lightVP = lightMatrixs_.lightVP;
 }
 
 void DirectionalLight::Debug_ImGui()
@@ -33,6 +35,9 @@ void DirectionalLight::Debug_ImGui()
 	ImGui::DragFloat("Radius", &radius_, 0.01f, 0.1f, 1000000.0f);
 	ImGui::DragFloat("RadiusScale", &radiusScale_, 0.01f, 1.0f, 1000000.0f);
 	ImGui::DragFloat3("Center", &center_.x, 0.01f);
+
+	auto& M = lightMatrixs_.lightVP;
+    ImGui::Text("Row2: %f %f %f %f", M.m[2][0], M.m[2][1], M.m[2][2], M.m[2][3]);
 }
 
 void DirectionalLight::MakeLightData()
@@ -46,7 +51,6 @@ void DirectionalLight::MakeLightData()
 	lightData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	lightData_->direction = { 0.0f,0.85f,-0.5f };
 	lightData_->intensity = 1.0f;
-	lightData_->lightVP = Matrix4x4::Identity();
 }
 
 // マップ全体を覆う AABB を与える前提（sceneMin/sceneMax）
@@ -55,34 +59,27 @@ void DirectionalLight::BuildMatricesCoverAll(
     const Vector3& sceneMax,
     uint32_t shadowW, uint32_t shadowH)
 {
-    const Vector3 mapCenter = (sceneMin + sceneMax) * 0.5f; // XZ の中心
-    const float   mapHalfX = 0.5f * (sceneMax.x - sceneMin.x);
-    const float   mapHalfZ = 0.5f * (sceneMax.z - sceneMin.z);
+	DirectX::XMMATRIX dxProjectionMatrix = DirectX::XMMatrixOrthographicLH(
+		80.0f,
+		80.0f,
+		1.0f,
+		640.0f
+	);
 
-    const float   maxHeight = 30.0f;   // 余裕を持って（10～20H と聞いているので 30）
-    const float   eyeHeight = 200.0f;  // とりあえず十分高く
-    const Vector3 eye = mapCenter + Vector3{ 0, eyeHeight, 0 };
-    const Vector3 target = mapCenter + Vector3{ 0, 0, 0 };
-    const Vector3 up = Vector3{ 0, 0, +1 }; // 真上からなので up は +Z
+	DirectX::XMFLOAT3 eye(center_.x, center_.y, center_.z);
+	DirectX::XMFLOAT3 target(-lightData_->direction.x, -lightData_->direction.y, -lightData_->direction.z);
+	DirectX::XMFLOAT3 up(0.0f, 0.0f, -1.0f);
 
-    lightMatrixs_.lightView = Matrix4x4::LookAt(eye, target, up);
-    Matrix4x4 flipZ = Matrix4x4::Identity();
-    flipZ.m[2][2] = -1.0f;               // Z を反転
-    lightMatrixs_.lightView = lightMatrixs_.lightView * flipZ;
+	DirectX::XMMATRIX dxViewMatrix = DirectX::XMMatrixLookAtLH(
+		DirectX::XMLoadFloat3(&eye),
+		DirectX::XMLoadFloat3(&target),
+		DirectX::XMLoadFloat3(&up));
 
-    // 2) 正射影範囲… XZ はマップ全体 + パディング、Y(高さ) を Zレンジに入れる
-    const float padXY = 20.0f;
-    const float halfW = mapHalfX + padXY;
-    const float halfH = mapHalfZ + padXY;
+	// 元のMatrix4x4に戻す
+	DirectX::XMStoreFloat4x4(reinterpret_cast<DirectX::XMFLOAT4X4*>(&lightMatrixs_.lightProj), dxProjectionMatrix);
+	DirectX::XMStoreFloat4x4(reinterpret_cast<DirectX::XMFLOAT4X4*>(&lightMatrixs_.lightView), dxViewMatrix);
 
-    const float nearZ = 0.1f;                         // LH で z∈[0,1]、near は正
-    const float farZ = eyeHeight + maxHeight + 200;  // 目から地面+高さ+余裕 くらい
-
-    lightMatrixs_.lightProj = Matrix4x4::Orthographic(-halfW, +halfW, -halfH, +halfH, nearZ, farZ);
-
-    // 3) VP（HLSL が列ベース mul(pos, M) 想定なら Transpose）
-    lightMatrixs_.lightVP = (lightMatrixs_.lightView * lightMatrixs_.lightProj);
-    if (lightData_) lightData_->lightVP = lightMatrixs_.lightVP;
+	lightMatrixs_.lightVP = lightMatrixs_.lightView * lightMatrixs_.lightProj;
 }
 
 void DirectionalLight::BuildViewByTargetEye(const Vector3& Ptarget, const Vector3& Peye, float lengthScale)
