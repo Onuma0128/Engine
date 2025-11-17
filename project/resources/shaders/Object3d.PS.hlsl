@@ -97,7 +97,10 @@ float SampleShadow(float4 shadowPos, float3 normalWS, float3 lightDirWS)
     float bias = 0.0001f;
 
     // これでもまだアクネが出るようなら bias をさらに上げる
-    return gShadowMap.SampleCmpLevelZero(gShadowSampler, uv, z - bias);
+    float shadow = gShadowMap.SampleCmpLevelZero(gShadowSampler, uv, z - bias);
+    
+    return clamp((shadow + 0.25f), 0.0f, 1.0f);
+    
 }
 
 struct PixelShaderOutput

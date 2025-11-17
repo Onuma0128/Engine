@@ -39,9 +39,14 @@ struct Skinned
     float3 normal;
 };
 
+struct VSOut
+{
+    float4 position : SV_POSITION;
+};
+
 Skinned Skinning(VertexShaderInput input, uint id)
 {
-    Skinned skinned; 
+    Skinned skinned;
     
     int index = (gJointCount.jointCount * id);
     
@@ -60,17 +65,13 @@ Skinned Skinning(VertexShaderInput input, uint id)
     return skinned;
 }
 
-VertexShaderOutput main(VertexShaderInput input, uint InstID : SV_InstanceID)
+VSOut main(VertexShaderInput input, uint InstID : SV_InstanceID)
 {
-    VertexShaderOutput output;
-    Skinned skinned = Skinning(input,InstID);
+    VSOut output;
+    Skinned skinned = Skinning(input, InstID);
     
-    output.position = mul(skinned.position, gInstanceData[InstID].WVP);
-    output.worldPosition = mul(skinned.position, gInstanceData[InstID].World).xyz;
-    output.texcoord = input.texcoord;
-    output.normal = normalize(mul(skinned.normal, (float3x3) gInstanceData[InstID].WorldInverseTranspose));
     float4 worldPos = mul(skinned.position, gInstanceData[InstID].World);
-    output.shadowPosLS = mul(worldPos, gLightData.LightVP);
-    output.instID = InstID;
+    output.position = mul(worldPos, gLightData.LightVP);
+    
     return output;
 }

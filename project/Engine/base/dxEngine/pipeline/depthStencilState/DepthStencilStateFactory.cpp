@@ -42,6 +42,9 @@ D3D12_DEPTH_STENCIL_DESC& DepthStencilStateFactory::GetDepthStencilState(Pipelin
 	case PipelineType::ObjectShadowMapDepth:
 		depthStencilState[type] = std::make_unique<Object3dDepthStencilState>();
 		break;
+	case PipelineType::AnimationShadowMapDepth:
+		depthStencilState[type] = std::make_unique<Object3dDepthStencilState>();
+		break;
 	default:
 		assert(false && "Invalid DepthStencilStateType");
 		break;

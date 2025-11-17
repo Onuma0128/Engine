@@ -304,6 +304,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\3d\animation\debugBone\DebugBone.h" />
     <ClInclude Include="Engine\base\collider\ColliderStruct.h" />
     <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\AnimationOutLineMaskRootSignature.h" />
+    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\AnimationShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\ObjectShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\OutLineMaskRootSignature.h" />
     <ClInclude Include="game\uis\gameSceneUIs\GameSceneUIs.h" />

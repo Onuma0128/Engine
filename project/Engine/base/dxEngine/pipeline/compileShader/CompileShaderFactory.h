@@ -452,3 +452,37 @@ public:
 		return psBytecode;
 	}
 };
+
+// ============================================================
+// AnimationShadowMapDepth
+// ============================================================
+
+class AnimationShadowMapDepthCompileShader : public CompileShaderBase
+{
+public:
+
+	AnimationShadowMapDepthCompileShader(
+		ComPtr<IDxcUtils> dxcUtils,
+		ComPtr<IDxcCompiler3>& dxcCompiler,
+		ComPtr<IDxcIncludeHandler> includeHandler
+	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+	}
+
+	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
+	{
+		vsBytecode = CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/AnimationShadowMap.VS.hlsl", L"vs_6_0",
+			dxcUtils_, dxcCompiler_, includeHandler_
+		);
+		return vsBytecode;
+	}
+
+	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) override
+	{
+		psBytecode = CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/OutlineMask.PS.hlsl", L"ps_6_0",
+			dxcUtils_, dxcCompiler_, includeHandler_
+		);
+		return psBytecode;
+	}
+};

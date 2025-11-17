@@ -15,6 +15,7 @@
 #include "OutLineMaskRootSignature.h"
 #include "AnimationOutLineMaskRootSignature.h"
 #include "ObjectShadowMapDepthRootSignature.h"
+#include "AnimationShadowMapDepthRootSignature.h"
 
 ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType type, ComPtr<ID3D12Device> device, PostEffectType effectType)
 {
@@ -53,6 +54,9 @@ ComPtr<ID3D12RootSignature> RootSignatureFactory::GetRootSignature(PipelineType 
 		break;
 	case PipelineType::ObjectShadowMapDepth:
 		rootSignature[type] = std::make_unique<ObjectShadowMapDepthRootSignature>();
+		break;
+	case PipelineType::AnimationShadowMapDepth:
+		rootSignature[type] = std::make_unique<AnimationShadowMapDepthRootSignature>();
 		break;
 	default:
 		assert(false && "Invalid RootSignatureType");

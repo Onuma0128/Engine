@@ -42,6 +42,9 @@ D3D12_INPUT_LAYOUT_DESC& InputLayoutFactory::GetInputLayout(PipelineType type)
 	case PipelineType::ObjectShadowMapDepth:
 		inputLayout[type] = std::make_unique<Object3dInputLayout>();
 		break;
+	case PipelineType::AnimationShadowMapDepth:
+		inputLayout[type] = std::make_unique<AnimationInputLayout>();
+		break;
 	default:
 		assert(false && "Invalid InputLayoutType");
 		break;

@@ -45,6 +45,15 @@ void ModelInstanceRenderer::Initialize()
         PostEffectType::None,
         BlendMode::kBlendModeNormal);
 
+    animationShadowMapPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+        PipelineType::AnimationShadowMapDepth,
+        PostEffectType::None,
+        BlendMode::kBlendModeNormal);
+    animationShadowMapRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+        PipelineType::AnimationShadowMapDepth,
+        PostEffectType::None,
+        BlendMode::kBlendModeNormal);
+
     lightVpBuffer_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4));
 	lightVpBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&lightData_));
     lightData_->lightVP = Matrix4x4::Identity();
@@ -286,8 +295,6 @@ void ModelInstanceRenderer::ObjUpdate()
             matrix.World = batch.objects[i]->GetTransform().instanceMatrix_.World;
             matrix.WorldInvT = batch.objects[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
             matrix.WVP = batch.objects[i]->GetTransform().instanceMatrix_.WVP;
-            /*matrix.WVP = batch.objects[i]->GetTransform().instanceMatrix_.World *
-                LightManager::GetInstance()->GetDirectionalLight()->GetLightVP();*/
             // Materialを代入
             Material& material = batch.materialData[i];
             material = batch.objects[i]->GetMaterial();
@@ -360,6 +367,31 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
                 mesh[i].indexStart, 0, 0);
         }
     }
+
+    if (!animationBatches_.empty()) {
+        commandList->SetPipelineState(animationShadowMapPipelineState_.Get());
+        commandList->SetGraphicsRootSignature(animationShadowMapRootSignature_.Get());
+        commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    }
+
+    for (auto& [model, batch] : animationBatches_) {
+        if (batch.count == 0) continue;
+        if (batch.animations.back()->GetMaterial().shadowMap == false) continue;
+
+        model->BindBuffers(true);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
+        commandList->SetGraphicsRootConstantBufferView(2, batch.jointBuffer->GetGPUVirtualAddress());
+        commandList->SetGraphicsRootConstantBufferView(3, lightVpBuffer_->GetGPUVirtualAddress());
+
+        /* ---------- Mesh ループ ---------- */
+        const auto& mesh = model->GetMeshData();
+        for (uint32_t i = 0; i < mesh.size(); ++i) {
+            commandList->DrawIndexedInstanced(
+                mesh[i].indexCount, batch.count,
+                mesh[i].indexStart, 0, 0);
+        }
+    }
 }
 
 void ModelInstanceRenderer::AllDrawOutlineMask() {
@@ -402,6 +434,7 @@ void ModelInstanceRenderer::AllDrawOutlineMask() {
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, batch.materialSrvIndex);
         commandList->SetGraphicsRootConstantBufferView(3, batch.jointBuffer->GetGPUVirtualAddress());
+        commandList->SetGraphicsRootConstantBufferView(4, lightVpBuffer_->GetGPUVirtualAddress());
 
         const auto& mesh = model->GetMeshData();
         for (uint32_t i = 0; i < mesh.size(); ++i) {
@@ -455,6 +488,7 @@ void ModelInstanceRenderer::AllDraw()
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.paletteSrvIndex);
         commandList->SetGraphicsRootConstantBufferView(10, batch.jointBuffer->GetGPUVirtualAddress());
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(11, DirectXEngine::GetShadowMap()->GetShadowMapSrvIndex());
+        commandList->SetGraphicsRootConstantBufferView(12, lightVpBuffer_->GetGPUVirtualAddress());
 
         /* ---------- Mesh ループ ---------- */
         const auto& mesh = model->GetMeshData();

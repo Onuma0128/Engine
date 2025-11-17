@@ -12,7 +12,7 @@ void DirectionalLight::Initialize(DirectXEngine* dxEngine)
 	dxEngine_ = dxEngine;
 	MakeLightData();
 
-	center_.y = 1.0f;
+	center_ = { -10.0f,35.0f,15.0f };
 }
 
 void DirectionalLight::Update()
@@ -48,9 +48,9 @@ void DirectionalLight::MakeLightData()
 	bufferView_.StrideInBytes = sizeof(DirectionalLightData);
 	resource_->Map(0, nullptr, reinterpret_cast<void**>(&lightData_));
 	// デフォルト値
-	lightData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	lightData_->direction = { 0.0f,0.85f,-0.5f };
-	lightData_->intensity = 1.0f;
+	lightData_->color = { 1.0f,0.84f,0.67f,1.0f };
+	lightData_->direction = { 0.0f,1.0f,0.0f };
+	lightData_->intensity = 2.0f;
 }
 
 // マップ全体を覆う AABB を与える前提（sceneMin/sceneMax）
@@ -81,56 +81,3 @@ void DirectionalLight::BuildMatricesCoverAll(
 
 	lightMatrixs_.lightVP = lightMatrixs_.lightView * lightMatrixs_.lightProj;
 }
-
-void DirectionalLight::BuildViewByTargetEye(const Vector3& Ptarget, const Vector3& Peye, float lengthScale)
-{
-    // lightDir は「ライト→シーン」の向きで正規化して使う
-    Vector3 dir = lightData_->direction.Normalize();
-
-    // 距離 L をカメラ距離から決める（スケール可）
-    float L = (Ptarget - Peye).Length() * std::max(0.0f, lengthScale);
-    if (L < 1e-3f) L = 1.0f; // ゼロ除けの保険
-
-    // up はライト方向と近い軸を避けて選ぶ
-    Vector3 up = (std::fabs(dir.y) > 0.99f) ? Vector3::ExprUnitZ : Vector3::ExprUnitY;
-
-    // 「Plight = Ptarget - dir * L」 で便宜的なライト位置
-    Vector3 eye = Ptarget - dir * L;
-
-    // View を作成（あなたの行列規約に合わせた LookAt）
-    lightMatrixs_.lightView = Matrix4x4::LookAt(eye, Ptarget, up);
-}
-
-void DirectionalLight::BuildViewByTargetLength(const Vector3& Ptarget, float L)
-{
-    Vector3 dir = lightData_->direction.Normalize();
-    if (L < 1e-3f) L = 1.0f;
-
-    Vector3 up = (std::fabs(dir.y) > 0.99f) ? Vector3::ExprUnitZ : Vector3::ExprUnitY;
-    Vector3 eye = Ptarget - dir * L;
-
-    lightMatrixs_.lightView = Matrix4x4::LookAt(eye, Ptarget, up);
-}
-
-
-
-//void DirectionalLight::BuildMatrices(const Vector3& center, float radius)
-//{
-//    // ライト用の行列作成
-//    Vector3 direction = lightData_->direction.Normalize();
-//
-//    // ライトの位置
-//    Vector3 eye = center - direction * radius;
-//    Vector3 up = std::abs(direction.y) > 0.99f ? Vector3::ExprUnitZ : Vector3::ExprUnitY;
-//
-//    // ビュー行列
-//    lightMatrixs_.lightView = Matrix4x4::LookAt(eye, center, up);
-//    lightMatrixs_.lightProj = Matrix4x4::Orthographic(
-//        -radius, radius,
-//        radius, -radius,
-//        0.1f, radius * radiusScale_
-//    );
-//
-//    // ビュー×プロジェクション行列
-//    lightMatrixs_.lightVP = (lightMatrixs_.lightView * lightMatrixs_.lightProj).Transpose();
-//}

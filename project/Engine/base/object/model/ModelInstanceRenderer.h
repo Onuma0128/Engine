@@ -86,6 +86,8 @@ private:
 
     ComPtr<ID3D12RootSignature> objShadowMapRootSignature_; // ルートシグネチャ
     ComPtr<ID3D12PipelineState> objShadowMapPipelineState_; // パイプラインステート
+    ComPtr<ID3D12RootSignature> animationShadowMapRootSignature_; // ルートシグネチャ
+    ComPtr<ID3D12PipelineState> animationShadowMapPipelineState_; // パイプラインステート
 
     struct LightData {
         Matrix4x4 lightVP;

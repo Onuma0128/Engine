@@ -1227,5 +1227,6 @@
     <ClInclude Include="Engine\base\collider\ColliderStruct.h" />
     <ClInclude Include="Engine\base\object\shadowMap\ShadowMap.h" />
     <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\ObjectShadowMapDepthRootSignature.h" />
+    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\AnimationShadowMapDepthRootSignature.h" />
   </ItemGroup>
 </Project>

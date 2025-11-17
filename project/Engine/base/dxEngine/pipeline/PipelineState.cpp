@@ -25,7 +25,8 @@ void PipelineState::Initialize(
 		PipelineType::Animation,	PipelineType::RenderTexture,
 		PipelineType::Skybox,		PipelineType::ObjectOutLineMask,
 		PipelineType::AnimationOutLineMask,
-		PipelineType::ObjectShadowMapDepth
+		PipelineType::ObjectShadowMapDepth,
+		PipelineType::AnimationShadowMapDepth
 	};
 
 	std::vector<PostEffectType> postEffectTypes = {
@@ -83,7 +84,8 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(type);
 	psoDesc.PrimitiveTopologyType = (type == PipelineType::Line3d) ? D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE : D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	// シェーダー設定
-	if (type == PipelineType::ObjectShadowMapDepth) {
+	if (type == PipelineType::ObjectShadowMapDepth ||
+		type == PipelineType::AnimationShadowMapDepth) {
 		psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
 		psoDesc.PS = { nullptr, 0 };
 		psoDesc.NumRenderTargets = 0;
