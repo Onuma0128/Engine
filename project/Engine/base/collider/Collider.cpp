@@ -83,13 +83,13 @@ std::vector<Vector3> Collider::CreateLinePositions()
 	std::vector<Vector3> linePositions;
 	switch (myType_)
 	{
-	case ColliderType::Sphere:
+	case ColliderType::kSphere:
 		linePositions = line_->CreateSphere(radius_);
 		break;
-	case ColliderType::Segment:
+	case ColliderType::kSegment:
 		linePositions = line_->CreateSegment(origin_, diff_);
 		break;
-	case ColliderType::OBB:
+	case ColliderType::kOBB:
 		linePositions = line_->CreateBox(-size_, size_);
 		break;
 	default:

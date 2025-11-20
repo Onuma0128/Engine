@@ -27,7 +27,7 @@ void PlayerSpecialMoveState::Update()
 {
 	switch (player_->GetEffect()->GetSpecialState())
 	{
-	case SpecialMoveState::Expanding:
+	case SpecialMoveState::kExpanding:
 	{
 		// 必殺技のGrayScaleが広がる時
 		float t = std::clamp((player_->GetEffect()->GetSpecialMoveFrame() - 0.5f) * 2.0f, 0.0f, 1.0f);
@@ -36,7 +36,7 @@ void PlayerSpecialMoveState::Update()
 		player_->GetReticle()->GetRenderOptions().enabled = true;
 	}
 		break;
-	case SpecialMoveState::Shrinking:
+	case SpecialMoveState::kShrinking:
 	{
 		// 必殺技のGrayScaleが縮まる時
 		float t = std::clamp(1.0f - (player_->GetEffect()->GetSpecialMoveFrame() / 0.25f), 0.0f, 1.0f);
@@ -56,7 +56,7 @@ void PlayerSpecialMoveState::Update()
 		}
 	}
 		break;
-	case SpecialMoveState::None:
+	case SpecialMoveState::kNone:
 
 		break;
 	default:

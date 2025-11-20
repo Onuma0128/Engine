@@ -81,9 +81,9 @@ void MyGame::Draw()
 	// offscreen描画終了
 	directXEngine_->RenderPost();
 	// postEffectの書き込み描画
-	directXEngine_->SetPostEffectDraw(PostEffectType::Grayscale);
-	directXEngine_->SetPostEffectDraw(PostEffectType::Vignette);
-	directXEngine_->SetPostEffectDraw(PostEffectType::OutLine);
+	directXEngine_->SetPostEffectDraw(PostEffectType::kGrayscale);
+	directXEngine_->SetPostEffectDraw(PostEffectType::kVignette);
+	directXEngine_->SetPostEffectDraw(PostEffectType::kOutLine);
 	// 書き込んだoffscreenを描画
 	directXEngine_->RenderTextureDraw();
 

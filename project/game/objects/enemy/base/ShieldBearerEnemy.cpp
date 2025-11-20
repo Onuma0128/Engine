@@ -9,7 +9,7 @@
 void ShieldBearerEnemy::Initialize()
 {
 	// タイプを設定
-	type_ = EnemyType::ShieldBearer;
+	type_ = EnemyType::kShieldBearer;
 
 	// 敵Animationの初期化
 	Animation::Initialize("Zombie_Basic.gltf");
@@ -20,11 +20,11 @@ void ShieldBearerEnemy::Initialize()
 
 	// シールド用のコライダーを作成
 	shieldWeapon_ = std::make_unique<EnemyShield>(this);
-	shieldWeapon_->Init(ColliderType::OBB, "EnemyShield");
+	shieldWeapon_->Init(ColliderType::kOBB, "EnemyShield");
 	shieldWeapon_->SetIsActive(false);
 	// 攻撃コライダーを作成
 	weapon_ = std::make_unique<EnemyAxe>(this);
-	weapon_->Init(ColliderType::Sphere, "EnemyShieldBearer");
+	weapon_->Init(ColliderType::kSphere, "EnemyShieldBearer");
 
 	// 基底クラスの初期化
 	BaseEnemy::Initialize();

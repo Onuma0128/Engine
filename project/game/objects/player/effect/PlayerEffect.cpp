@@ -32,7 +32,7 @@ void PlayerEffect::Init()
 	playerHit_->SetIsCreate(false);
 
 	playerReload_ = std::make_unique<PrimitiveDrawr>();
-	playerReload_->TypeInit(PrimitiveType::Plane);
+	playerReload_->TypeInit(PrimitiveType::kPlane);
 	playerReload_->SetTexture("reloadUI.png");
 	playerReload_->SetBlendMode(BlendMode::kBlendModeNone);
 	playerReload_->GetRenderOptions().enabled = true;
@@ -41,12 +41,12 @@ void PlayerEffect::Init()
 	playerReload_->GetTransform().scale = { 0.35f,0.35f,1.0f };
 
 	// PostEffectを初期化
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Grayscale);
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::Vignette);
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::OutLine);
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kGrayscale);
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kVignette);
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kOutLine);
 
 	cylinder_ = std::make_unique<PrimitiveDrawr>();
-	cylinder_->TypeInit(PrimitiveType::Cylinder, 32);
+	cylinder_->TypeInit(PrimitiveType::kCylinder, 32);
 	cylinder_->GetTransform().scale = {};
 	cylinder_->SetColor({ 1.0f,1.0f,0.0f });
 	cylinder_->GetRenderOptions().enabled = false;
@@ -123,7 +123,7 @@ void PlayerEffect::UpdatePostEffect()
 	float delta = 1.0f / 60.0f;
 
 	switch (specialMoveState_) {
-	case SpecialMoveState::Expanding:
+	case SpecialMoveState::kExpanding:
 		specialMoveFrame_ += delta;
 		{
 			// 必殺技のフレーム管理
@@ -140,13 +140,13 @@ void PlayerEffect::UpdatePostEffect()
 
 			if (specialMoveFrame_ >= expandDuration) {
 				specialMoveFrame_ = 0.0f;
-				specialMoveState_ = SpecialMoveState::Holding;
+				specialMoveState_ = SpecialMoveState::kHolding;
 				cylinder_->GetRenderOptions().enabled = false;
 			}
 		}
 		break;
 
-	case SpecialMoveState::Holding:
+	case SpecialMoveState::kHolding:
 		specialMoveFrame_ += delta;
 		{
 			// PostEffectへの値を適応
@@ -156,13 +156,13 @@ void PlayerEffect::UpdatePostEffect()
 			if (Input::GetInstance()->GetGamepadLeftTrigger() == 0.0f &&
 				specialMoveFrame_ >= holdDuration) {
 				specialMoveFrame_ = 0.0f;
-				specialMoveState_ = SpecialMoveState::Shrinking;
+				specialMoveState_ = SpecialMoveState::kShrinking;
 				cylinder_->GetRenderOptions().enabled = true;
 			}
 		}
 		break;
 
-	case SpecialMoveState::Shrinking:
+	case SpecialMoveState::kShrinking:
 		specialMoveFrame_ += delta;
 		{
 			// 必殺技のフレーム管理
@@ -179,7 +179,7 @@ void PlayerEffect::UpdatePostEffect()
 
 			if (specialMoveFrame_ >= shrinkDuration) {
 				specialMoveFrame_ = 0.0f;
-				specialMoveState_ = SpecialMoveState::None;
+				specialMoveState_ = SpecialMoveState::kNone;
 				isSpecialMove_ = false;
 				DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 0.0f;
 				DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = 0.0f;
@@ -190,9 +190,9 @@ void PlayerEffect::UpdatePostEffect()
 		}
 		break;
 
-	case SpecialMoveState::None:
+	case SpecialMoveState::kNone:
 		if (isSpecialMove_) {
-			specialMoveState_ = SpecialMoveState::Expanding;
+			specialMoveState_ = SpecialMoveState::kExpanding;
 			cylinder_->GetRenderOptions().enabled = true;
 			DeltaTimer::SetTimeScaleForSeconds(0.1f, 5.0f);
 		}

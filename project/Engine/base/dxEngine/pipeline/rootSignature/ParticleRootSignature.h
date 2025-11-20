@@ -7,7 +7,7 @@ class ParticleRootSignature : public RootSignatureBase
 {
 public:
 
-	ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::None) override
+	ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::kNone) override
 	{
 		// 新しいルートシグネチャの作成
 		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};

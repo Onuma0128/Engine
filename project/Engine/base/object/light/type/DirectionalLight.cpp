@@ -12,7 +12,7 @@ void DirectionalLight::Initialize(DirectXEngine* dxEngine)
 	dxEngine_ = dxEngine;
 	MakeLightData();
 
-	center_ = { -10.0f,35.0f,15.0f };
+	center_ = { 10.0f,35.0f,-20.0f };
 }
 
 void DirectionalLight::Update()
@@ -49,8 +49,8 @@ void DirectionalLight::MakeLightData()
 	resource_->Map(0, nullptr, reinterpret_cast<void**>(&lightData_));
 	// デフォルト値
 	lightData_->color = { 1.0f,0.84f,0.67f,1.0f };
-	lightData_->direction = { 0.0f,1.0f,0.0f };
-	lightData_->intensity = 2.0f;
+	lightData_->direction = { 0.528f,0.608f,-0.594f };
+	lightData_->intensity = 1.5f;
 }
 
 // マップ全体を覆う AABB を与える前提（sceneMin/sceneMax）

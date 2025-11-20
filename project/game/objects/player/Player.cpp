@@ -130,9 +130,9 @@ void Player::OnCollisionStay(Collider* other)
 		other->GetColliderName() == "StoneWall") {
 		isPushMove_ = true;
 		Vector3 push{};
-		if (other->GetMyColliderType() == ColliderType::OBB) {
+		if (other->GetMyColliderType() == ColliderType::kOBB) {
 			push = Collision3D::GetOBBSpherePushVector(other, this);
-		} else if (other->GetMyColliderType() == ColliderType::Sphere) {
+		} else if (other->GetMyColliderType() == ColliderType::kSphere) {
 			push = Collision3D::GetSphereSpherePushVector(other, this);
 		}
 		push.y = 0.0f;

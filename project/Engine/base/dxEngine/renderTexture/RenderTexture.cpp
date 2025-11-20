@@ -90,10 +90,10 @@ void RenderTexture::Initialize()
 
 	// ルートシグネチャ,パイプラインステート
 	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
-		PipelineType::RenderTexture, PostEffectType::RenderTexture, BlendMode::kBlendModeNone
+		PipelineType::kRenderTexture, PostEffectType::kRenderTexture, BlendMode::kBlendModeNone
 	).Get();
 	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
-		PipelineType::RenderTexture, PostEffectType::RenderTexture, BlendMode::kBlendModeNone
+		PipelineType::kRenderTexture, PostEffectType::kRenderTexture, BlendMode::kBlendModeNone
 	).Get();
 }
 

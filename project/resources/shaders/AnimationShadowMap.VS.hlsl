@@ -69,9 +69,9 @@ VSOut main(VertexShaderInput input, uint InstID : SV_InstanceID)
 {
     VSOut output;
     Skinned skinned = Skinning(input, InstID);
-    
-    float4 worldPos = mul(skinned.position, gInstanceData[InstID].World);
-    output.position = mul(worldPos, gLightData.LightVP);
+
+    float3 worldPos = mul(skinned.position, gInstanceData[InstID].World).xyz;
+    output.position = mul(float4(worldPos, 1.0f), gLightData.LightVP);
     
     return output;
 }

@@ -5,8 +5,8 @@
 /// </summary>
 enum class EnemyType 
 {
-    Melee,          // 近接
-    Ranged,         // 遠距離
-    ShieldBearer,   // 盾持ち
-    RangedElite,    // 遠距離（強化版）
+    kMelee,          // 近接
+    kRanged,         // 遠距離
+    kShieldBearer,   // 盾持ち
+    kRangedElite,    // 遠距離（強化版）
 };

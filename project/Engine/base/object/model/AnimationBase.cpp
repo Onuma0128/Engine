@@ -5,8 +5,8 @@
 
 void AnimationBase::Initialize()
 {
-	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::Animation).Get();
-	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::Animation).Get();
+	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::kAnimation).Get();
+	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::kAnimation).Get();
 }
 
 void AnimationBase::DrawBase()

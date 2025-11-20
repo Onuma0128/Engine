@@ -96,25 +96,25 @@ bool CollisionManager::Dispatch(Collider* a, Collider* b)
     // お互いのTypeで判定を取る
     switch (typeA)
     {
-    case ColliderType::Sphere:
+    case ColliderType::kSphere:
         switch (typeB) {
-        case ColliderType::Sphere:   return Collision3D::SphereSphere(a, b);
-        case ColliderType::OBB:      return Collision3D::OBBSphere(b, a);
-        case ColliderType::Segment:  return Collision3D::SphereSegment(a, b);
+        case ColliderType::kSphere:   return Collision3D::SphereSphere(a, b);
+        case ColliderType::kOBB:      return Collision3D::OBBSphere(b, a);
+        case ColliderType::kSegment:  return Collision3D::SphereSegment(a, b);
         }
         break;
-    case ColliderType::Segment:
+    case ColliderType::kSegment:
         switch (typeB) {
-        case ColliderType::Sphere:   return Collision3D::SphereSegment(b,a);
-        case ColliderType::OBB:      return Collision3D::OBBSegment(b, a);
-        case ColliderType::Segment:  return false;
+        case ColliderType::kSphere:   return Collision3D::SphereSegment(b,a);
+        case ColliderType::kOBB:      return Collision3D::OBBSegment(b, a);
+        case ColliderType::kSegment:  return false;
         }
         break;
-    case ColliderType::OBB:
+    case ColliderType::kOBB:
         switch (typeB) {
-        case ColliderType::Sphere:   return Collision3D::OBBSphere(a, b);
-        case ColliderType::OBB:      return Collision3D::OBBOBB(a, b);
-        case ColliderType::Segment:  return Collision3D::OBBSegment(a, b);
+        case ColliderType::kSphere:   return Collision3D::OBBSphere(a, b);
+        case ColliderType::kOBB:      return Collision3D::OBBOBB(a, b);
+        case ColliderType::kSegment:  return Collision3D::OBBSegment(a, b);
         }
         break;
     default:

@@ -32,6 +32,7 @@ public:
     struct JointCount 
     {
         uint32_t jointCount;
+		int padding[3];
     };
 
     //初期化

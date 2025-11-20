@@ -8,7 +8,7 @@ class RenderTextureRootSignature : public RootSignatureBase
 {
 public:
 
-	ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::None) override
+	ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::kNone) override
 	{
 		//RootSignature 
 		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
@@ -22,7 +22,7 @@ public:
 		descriptorRange[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND; //offsetを自動計算
 
 		D3D12_DESCRIPTOR_RANGE depthDescriptorRange[3][1] = {};
-		if (effectType == PostEffectType::OutLine) {
+		if (effectType == PostEffectType::kOutLine) {
 			depthDescriptorRange[0][0].BaseShaderRegister = 1; //3から始まる
 			depthDescriptorRange[0][0].NumDescriptors = 1; //数は2つ
 			depthDescriptorRange[0][0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV; //SRVを使う
@@ -46,7 +46,7 @@ public:
 		param.DescriptorTable.pDescriptorRanges = descriptorRange;
 		param.DescriptorTable.NumDescriptorRanges = _countof(descriptorRange);
 		rootParameters.push_back(param);
-		if (effectType == PostEffectType::OutLine) {
+		if (effectType == PostEffectType::kOutLine) {
 			D3D12_ROOT_PARAMETER param1 = {};
 			param1.ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
 			param1.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
@@ -108,27 +108,27 @@ private:
 
 		switch (type)
 		{
-		case PostEffectType::None:
+		case PostEffectType::kNone:
 			break;
-		case PostEffectType::RenderTexture:
+		case PostEffectType::kRenderTexture:
 			break;
-		case PostEffectType::Grayscale:
+		case PostEffectType::kGrayscale:
 
 			param.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			param.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			param.Descriptor.ShaderRegister = 0;
 			rootParameters.push_back(param);
 			break;
-		case PostEffectType::Vignette:
+		case PostEffectType::kVignette:
 
 			param.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			param.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
 			param.Descriptor.ShaderRegister = 0;
 			rootParameters.push_back(param);
 			break;
-		case PostEffectType::Smoothing:
+		case PostEffectType::kSmoothing:
 			break;
-		case PostEffectType::OutLine:
+		case PostEffectType::kOutLine:
 
 			param.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 			param.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;
@@ -146,17 +146,17 @@ private:
 
 		switch (type)
 		{
-		case PostEffectType::None:
+		case PostEffectType::kNone:
 			break;
-		case PostEffectType::RenderTexture:
+		case PostEffectType::kRenderTexture:
 			break;
-		case PostEffectType::Grayscale:
+		case PostEffectType::kGrayscale:
 			break;
-		case PostEffectType::Vignette:
+		case PostEffectType::kVignette:
 			break;
-		case PostEffectType::Smoothing:
+		case PostEffectType::kSmoothing:
 			break;
-		case PostEffectType::OutLine:
+		case PostEffectType::kOutLine:
 
 			sampl.Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
 			sampl.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP; //0~1の範囲をリピート

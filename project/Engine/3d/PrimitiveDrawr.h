@@ -22,12 +22,12 @@ using Microsoft::WRL::ComPtr;
 /// プリミティブの種類
 /// </summary>
 enum class PrimitiveType {
-	None,
-	Plane,
-	Sphere,
-	Ring,
-	Cylinder,
-	Skybox
+	kNone,
+	kPlane,
+	kSphere,
+	kRing,
+	kCylinder,
+	kSkybox
 };
 
 /// <summary>
@@ -233,7 +233,7 @@ private:
 
 	/* =============== TypeとTransform =============== */
 
-	PrimitiveType type_ = PrimitiveType::None;
+	PrimitiveType type_ = PrimitiveType::kNone;
 
 	Transform3D transform_ = { {1.0f,1.0f,1.0f},{0.0f,0.0f,0.0f},{0.0f,0.0f,0.0f} };
 	Transform2D uvTransform_ = { {1.0f,1.0f},{0.0f},{0.0f,0.0f} };

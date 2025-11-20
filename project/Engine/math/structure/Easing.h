@@ -8,15 +8,15 @@
 
 // Easing関数の種類
 enum class EasingType : int32_t {
-    Linear = 0,
-    EaseInSine, EaseOutSine, EaseInOutSine,
-    EaseInQuad, EaseOutQuad, EaseInOutQuad,
-    EaseInCubic, EaseOutCubic, EaseInOutCubic,
-    EaseInQuart, EaseOutQuart, EaseInOutQuart,
-    EaseInQuint, EaseOutQuint, EaseInOutQuint,
-    EaseInExpo, EaseOutExpo, EaseInOutExpo,
-    EaseInCirc, EaseOutCirc, EaseInOutCirc,
-    EaseInBack, EaseOutBack, EaseInOutBack,
+    kLinear = 0,
+    kEaseInSine, kEaseOutSine, kEaseInOutSine,
+    kEaseInQuad, kEaseOutQuad, kEaseInOutQuad,
+    kEaseInCubic, kEaseOutCubic, kEaseInOutCubic,
+    kEaseInQuart, kEaseOutQuart, kEaseInOutQuart,
+    kEaseInQuint, kEaseOutQuint, kEaseInOutQuint,
+    kEaseInExpo, kEaseOutExpo, kEaseInOutExpo,
+    kEaseInCirc, kEaseOutCirc, kEaseInOutCirc,
+    kEaseInBack, kEaseOutBack, kEaseInOutBack,
 };
 
 /// <summary>
@@ -149,39 +149,39 @@ public:
         t = std::clamp(t, 0.0f, 1.0f);
         switch (type) {
         default:
-        case EasingType::Linear:         return t;
+        case EasingType::kLinear:         return t;
 
-        case EasingType::EaseInSine:     return Easing::EaseInSine(t);
-        case EasingType::EaseOutSine:    return Easing::EaseOutSine(t);
-        case EasingType::EaseInOutSine:  return Easing::EaseInOutSine(t);
+        case EasingType::kEaseInSine:     return Easing::EaseInSine(t);
+        case EasingType::kEaseOutSine:    return Easing::EaseOutSine(t);
+        case EasingType::kEaseInOutSine:  return Easing::EaseInOutSine(t);
 
-        case EasingType::EaseInQuad:     return Easing::EaseInQuad(t);
-        case EasingType::EaseOutQuad:    return Easing::EaseOutQuad(t);
-        case EasingType::EaseInOutQuad:  return Easing::EaseInOutQuad(t);
+        case EasingType::kEaseInQuad:     return Easing::EaseInQuad(t);
+        case EasingType::kEaseOutQuad:    return Easing::EaseOutQuad(t);
+        case EasingType::kEaseInOutQuad:  return Easing::EaseInOutQuad(t);
 
-        case EasingType::EaseInCubic:    return Easing::EaseInCubic(t);
-        case EasingType::EaseOutCubic:   return Easing::EaseOutCubic(t);
-        case EasingType::EaseInOutCubic: return Easing::EaseInOutCubic(t);
+        case EasingType::kEaseInCubic:    return Easing::EaseInCubic(t);
+        case EasingType::kEaseOutCubic:   return Easing::EaseOutCubic(t);
+        case EasingType::kEaseInOutCubic: return Easing::EaseInOutCubic(t);
 
-        case EasingType::EaseInQuart:    return Easing::EaseInQuart(t);
-        case EasingType::EaseOutQuart:   return Easing::EaseOutQuart(t);
-        case EasingType::EaseInOutQuart: return Easing::EaseInOutQuart(t);
+        case EasingType::kEaseInQuart:    return Easing::EaseInQuart(t);
+        case EasingType::kEaseOutQuart:   return Easing::EaseOutQuart(t);
+        case EasingType::kEaseInOutQuart: return Easing::EaseInOutQuart(t);
 
-        case EasingType::EaseInQuint:    return Easing::EaseInQuint(t);
-        case EasingType::EaseOutQuint:   return Easing::EaseOutQuint(t);
-        case EasingType::EaseInOutQuint: return Easing::EaseInOutQuint(t);
+        case EasingType::kEaseInQuint:    return Easing::EaseInQuint(t);
+        case EasingType::kEaseOutQuint:   return Easing::EaseOutQuint(t);
+        case EasingType::kEaseInOutQuint: return Easing::EaseInOutQuint(t);
 
-        case EasingType::EaseInExpo:     return Easing::EaseInExpo(t);
-        case EasingType::EaseOutExpo:    return Easing::EaseOutExpo(t);
-        case EasingType::EaseInOutExpo:  return Easing::EaseInOutExpo(t);
+        case EasingType::kEaseInExpo:     return Easing::EaseInExpo(t);
+        case EasingType::kEaseOutExpo:    return Easing::EaseOutExpo(t);
+        case EasingType::kEaseInOutExpo:  return Easing::EaseInOutExpo(t);
 
-        case EasingType::EaseInCirc:     return Easing::EaseInCirc(t);
-        case EasingType::EaseOutCirc:    return Easing::EaseOutCirc(t);
-        case EasingType::EaseInOutCirc:  return Easing::EaseInOutCirc(t);
+        case EasingType::kEaseInCirc:     return Easing::EaseInCirc(t);
+        case EasingType::kEaseOutCirc:    return Easing::EaseOutCirc(t);
+        case EasingType::kEaseInOutCirc:  return Easing::EaseInOutCirc(t);
 
-        case EasingType::EaseInBack:     return Easing::EaseInBack(t);
-        case EasingType::EaseOutBack:    return Easing::EaseOutBack(t);
-        case EasingType::EaseInOutBack:  return Easing::EaseInOutBack(t);
+        case EasingType::kEaseInBack:     return Easing::EaseInBack(t);
+        case EasingType::kEaseOutBack:    return Easing::EaseOutBack(t);
+        case EasingType::kEaseInOutBack:  return Easing::EaseInOutBack(t);
         }
     }
 

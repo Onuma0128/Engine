@@ -7,14 +7,14 @@
 /// ポストエフェクトの種類
 /// </summary>
 enum class PostEffectType {
-    None,
-    RenderTexture,
-    Grayscale,
-    Vignette,
-    Smoothing,
-    OutLine,
-    OutLineMask,
-    Count
+    kNone,
+    kRenderTexture,
+    kGrayscale,
+    kVignette,
+    kSmoothing,
+    kOutLine,
+    kOutLineMask,
+    kCount
 };
 
 /// <summary>

@@ -12,7 +12,7 @@ class RootSignatureBase
 public:
 
 	virtual ~RootSignatureBase() = default;
-	virtual ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::None) = 0;
+	virtual ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::kNone) = 0;
 
 protected:
 

@@ -11,10 +11,10 @@
 /// 必殺技の状態
 /// </summary>
 enum class SpecialMoveState {
-	None,
-	Expanding,   // 拡大中（0→1）
-	Holding,     // 維持（1）
-	Shrinking    // 縮小中（1→0）
+	kNone,
+	kExpanding,   // 拡大中（0→1）
+	kHolding,     // 維持（1）
+	kShrinking    // 縮小中（1→0）
 };
 
 class Player;
@@ -128,7 +128,7 @@ private:
 	// シリンダーで必殺の範囲を視覚的に
 	std::unique_ptr<PrimitiveDrawr> cylinder_ = nullptr;
 	// 必殺技の遷移状態
-	SpecialMoveState specialMoveState_ = SpecialMoveState::None;
+	SpecialMoveState specialMoveState_ = SpecialMoveState::kNone;
 	// 今必殺技を撃っているか
 	bool isSpecialMove_ = false;
 	// 必殺技のフレーム

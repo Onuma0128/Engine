@@ -118,40 +118,40 @@ std::unique_ptr<CompileShaderBase> CompileShaderFactory::GetCompileShaderPtr(Pip
 	static std::unordered_map<PipelineType, std::unique_ptr<CompileShaderBase>> compileShader;
 
 	switch (type) {
-	case PipelineType::Object3d:
+	case PipelineType::kObject3d:
 		compileShader[type] = std::make_unique<Object3dCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::Sprite:
+	case PipelineType::kSprite:
 		compileShader[type] = std::make_unique<SpriteCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::Line3d:
+	case PipelineType::kLine3d:
 		compileShader[type] = std::make_unique<Line3dCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::Particle:
+	case PipelineType::kParticle:
 		compileShader[type] = std::make_unique<ParticleCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::PrimitiveDrawr:
+	case PipelineType::kPrimitiveDrawr:
 		compileShader[type] = std::make_unique<PrimitiveDrawrCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::Animation:
+	case PipelineType::kAnimation:
 		compileShader[type] = std::make_unique<AnimationCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::RenderTexture:
+	case PipelineType::kRenderTexture:
 		compileShader[type] = std::make_unique<RenderTextureCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::Skybox:
+	case PipelineType::kSkybox:
 		compileShader[type] = std::make_unique<SkyboxCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::ObjectOutLineMask:
+	case PipelineType::kObjectOutLineMask:
 		compileShader[type] = std::make_unique<ObjectOutLineMaskCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::AnimationOutLineMask:
+	case PipelineType::kAnimationOutLineMask:
 		compileShader[type] = std::make_unique<AnimationOutLineMaskCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::ObjectShadowMapDepth:
+	case PipelineType::kObjectShadowMapDepth:
 		compileShader[type] = std::make_unique<ObjectShadowMapDepthCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
-	case PipelineType::AnimationShadowMapDepth:
+	case PipelineType::kAnimationShadowMapDepth:
 		compileShader[type] = std::make_unique<AnimationShadowMapDepthCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
 	default:

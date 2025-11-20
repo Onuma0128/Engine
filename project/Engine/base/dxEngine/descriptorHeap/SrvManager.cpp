@@ -87,7 +87,7 @@ void SrvManager::CreateSRVforRenderTexture(uint32_t srvIndex, ID3D12Resource* pR
 {
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	// typeがOutlineならFormatを変える
-	if (type == PostEffectType::OutLine) {
+	if (type == PostEffectType::kOutLine) {
 		srvDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
 	} else {
 		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;

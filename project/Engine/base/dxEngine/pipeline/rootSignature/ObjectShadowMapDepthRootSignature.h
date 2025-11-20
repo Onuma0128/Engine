@@ -7,7 +7,7 @@ class ObjectShadowMapDepthRootSignature : public RootSignatureBase
 {
 public:
 
-	ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::None) override
+	ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::kNone) override
 	{
 		//RootSignature 
 		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
@@ -25,6 +25,7 @@ public:
 		rootParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
 		rootParameters[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX; //VertexShaderで使う
 		rootParameters[0].Descriptor.ShaderRegister = 0;
+
 		rootParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;		//DescriptorTableを使う
 		rootParameters[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_VERTEX;				//VertexShaderで使う
 		rootParameters[1].DescriptorTable.pDescriptorRanges = descriptorRange;				//Tableの中身の配列を指定

@@ -24,10 +24,10 @@ public:
 private:
 
 	// ルートシグネチャ
-	ComPtr<ID3D12RootSignature> CreateRootSignature(PipelineType type, PostEffectType effectType = PostEffectType::None);
+	ComPtr<ID3D12RootSignature> CreateRootSignature(PipelineType type, PostEffectType effectType = PostEffectType::kNone);
 	
 	// パイプライン
-	ComPtr<ID3D12PipelineState> CreatePipelineState(PipelineType type, PostEffectType effectType = PostEffectType::None, BlendMode blendMode = BlendMode::kBlendModeNormal);
+	ComPtr<ID3D12PipelineState> CreatePipelineState(PipelineType type, PostEffectType effectType = PostEffectType::kNone, BlendMode blendMode = BlendMode::kBlendModeNormal);
 
 	///==============================================================================================================
 
@@ -55,10 +55,10 @@ private:
 public:
 
 	// ルートシグネチャの取得
-	ComPtr<ID3D12RootSignature> GetRootSignature(PipelineType type, PostEffectType effectType = PostEffectType::None, BlendMode blend = BlendMode::kBlendModeNormal);
+	ComPtr<ID3D12RootSignature> GetRootSignature(PipelineType type, PostEffectType effectType = PostEffectType::kNone, BlendMode blend = BlendMode::kBlendModeNormal);
 	
 	// パイプラインステートの取得
-	ComPtr<ID3D12PipelineState> GetPipelineState(PipelineType type, PostEffectType effectType = PostEffectType::None, BlendMode blend = BlendMode::kBlendModeNormal);
+	ComPtr<ID3D12PipelineState> GetPipelineState(PipelineType type, PostEffectType effectType = PostEffectType::kNone, BlendMode blend = BlendMode::kBlendModeNormal);
 
 private:
 	ComPtr<ID3D12Device> device_;

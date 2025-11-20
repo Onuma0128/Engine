@@ -27,7 +27,7 @@ void SceneRenderer::AllDraw()
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
 		if (!primitive->GetRenderOptions().enabled || !primitive->GetRenderOptions().offscreen) { continue; }
-		if (primitive->GetPrimitiveType() == PrimitiveType::None) { primitive->Draw(); }
+		if (primitive->GetPrimitiveType() == PrimitiveType::kNone) { primitive->Draw(); }
 		else { primitive->TypeDraw(); }
 	}
 }
@@ -50,7 +50,7 @@ void SceneRenderer::OutAllDraw()
 	/// ============================== PrimitiveDrawr ============================== ///
 	for (auto& primitive : primitiveDrawrs_) {
 		if (!primitive->GetRenderOptions().enabled || primitive->GetRenderOptions().offscreen) { continue; }
-		if (primitive->GetPrimitiveType() == PrimitiveType::None) { primitive->Draw(); }
+		if (primitive->GetPrimitiveType() == PrimitiveType::kNone) { primitive->Draw(); }
 		else { primitive->TypeDraw(); }
 	}
 

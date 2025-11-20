@@ -446,12 +446,12 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 
 AABB Collision3D::ComputeBroadphaseAABB(const Collider* c) {
 	switch (c->GetMyColliderType()) {
-	case ColliderType::Sphere: {
+	case ColliderType::kSphere: {
 		Sphere s = ChangeSphere(c);
 		Vector3 r{ s.radius, s.radius, s.radius };
 		return { s.center - r, s.center + r };
 	}
-	case ColliderType::Segment: {
+	case ColliderType::kSegment: {
 		Segment seg = ChangeSegment(c);
 		Vector3 p0 = seg.origin;
 		Vector3 p1 = seg.origin + seg.diff;
@@ -459,7 +459,7 @@ AABB Collision3D::ComputeBroadphaseAABB(const Collider* c) {
 		Vector3 mx{ std::max(p0.x, p1.x), std::max(p0.y, p1.y), std::max(p0.z, p1.z) };
 		return { mn, mx };
 	}
-	case ColliderType::OBB: {
+	case ColliderType::kOBB: {
 		OBB obb = ChangeOBB(c);
 		Vector3 ex = obb.size;
 		Vector3 ax{

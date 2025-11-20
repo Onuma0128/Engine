@@ -140,7 +140,7 @@ void EnemyEffect::SetBulletPredictionEffect(bool flag)
 void EnemyEffect::HitReticleInit()
 {
 	hitReticleEffect_.cylinder_ = std::make_unique<PrimitiveDrawr>();
-	hitReticleEffect_.cylinder_->TypeInit(PrimitiveType::Cylinder, 32);
+	hitReticleEffect_.cylinder_->TypeInit(PrimitiveType::kCylinder, 32);
 	hitReticleEffect_.cylinder_->GetTransform().scale = {};
 	hitReticleEffect_.cylinder_->SetColor({ 1.0f,1.0f,0.0f });
 	hitReticleEffect_.cylinder_->SetBlendMode(BlendMode::kBlendModeAdd);
@@ -154,15 +154,15 @@ void EnemyEffect::BulletPredictionInit()
 {
 	switch (enemy_->GetType())
 	{
-	case EnemyType::Ranged: { bulletPredictionEffect_.resize(1); }break;
-	case EnemyType::RangedElite: { bulletPredictionEffect_.resize(3); }break;
+	case EnemyType::kRanged: { bulletPredictionEffect_.resize(1); }break;
+	case EnemyType::kRangedElite: { bulletPredictionEffect_.resize(3); }break;
 	default:break;
 	}
 
 	// Planeの初期化
 	for (auto& effect : bulletPredictionEffect_) {
 		effect.plane_ = std::make_unique<PrimitiveDrawr>();
-		effect.plane_->TypeInit(PrimitiveType::Plane);
+		effect.plane_->TypeInit(PrimitiveType::kPlane);
 		//effect.plane_->SetTexture("white1x1.png");
 		effect.plane_->SetBlendMode(BlendMode::kBlendModeAdd);
 		effect.plane_->SetColor(Vector3{ 1.0f,0.0f,0.0f });
@@ -228,7 +228,7 @@ void EnemyEffect::BulletPredictionUpdate()
 {
 	switch (enemy_->GetType())
 	{
-	case EnemyType::Ranged:
+	case EnemyType::kRanged:
 	{
 		RangedData data = enemy_->GetItem()->GetRangedData();
 		auto& effect = bulletPredictionEffect_[0];
@@ -257,7 +257,7 @@ void EnemyEffect::BulletPredictionUpdate()
 	}
 		break;
 
-	case EnemyType::RangedElite:
+	case EnemyType::kRangedElite:
 	{
 		RangedEliteData data = enemy_->GetItem()->GetRangedEliteData();
 		float rad = -data.bulletRadSpace;

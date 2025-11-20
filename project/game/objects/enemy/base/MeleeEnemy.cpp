@@ -8,7 +8,7 @@
 void MeleeEnemy::Initialize()
 {
 	// タイプを設定
-	type_ = EnemyType::Melee;
+	type_ = EnemyType::kMelee;
 
 	// 敵Animationの初期化
 	Animation::Initialize("Zombie_Basic.gltf");
@@ -19,7 +19,7 @@ void MeleeEnemy::Initialize()
 
 	// 近接攻撃用のコライダーを作成
 	weapon_ = std::make_unique<EnemyAxe>(this);
-	weapon_->Init(ColliderType::Sphere, "EnemyMelee");
+	weapon_->Init(ColliderType::kSphere, "EnemyMelee");
 
 	// 基底クラスの初期化
 	BaseEnemy::Initialize();

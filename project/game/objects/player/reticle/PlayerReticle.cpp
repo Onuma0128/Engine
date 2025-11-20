@@ -21,7 +21,7 @@ void PlayerReticle::Init()
 	Sprite::Update();
 
 	Collider::AddCollider();
-	Collider::myType_ = ColliderType::Segment;
+	Collider::myType_ = ColliderType::kSegment;
 	Collider::colliderName_ = "PlayerReticle";
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = { "Enemy" };

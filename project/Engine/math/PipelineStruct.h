@@ -4,18 +4,18 @@
 /// パイプラインの種類を表す列挙体
 /// </summary>
 enum class PipelineType {
-	Object3d,
-	Sprite,
-	Line3d,
-	Particle,
-	PrimitiveDrawr,
-	Animation,
-	RenderTexture,
-	Skybox,
-	ObjectOutLineMask,
-	AnimationOutLineMask,
-	ObjectShadowMapDepth,
-	AnimationShadowMapDepth,
+	kObject3d,
+	kSprite,
+	kLine3d,
+	kParticle,
+	kPrimitiveDrawr,
+	kAnimation,
+	kRenderTexture,
+	kSkybox,
+	kObjectOutLineMask,
+	kAnimationOutLineMask,
+	kObjectShadowMapDepth,
+	kAnimationShadowMapDepth,
 };
 
 /// <summary>

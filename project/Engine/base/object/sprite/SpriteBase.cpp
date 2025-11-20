@@ -5,8 +5,8 @@
 
 void SpriteBase::Initialize()
 {
-	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::Sprite).Get();
-	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::Sprite).Get();
+	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::kSprite).Get();
+	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::kSprite).Get();
 }
 
 void SpriteBase::DrawBase()

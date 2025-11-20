@@ -109,10 +109,10 @@ void EnemyMoveState::Draw()
 const float EnemyMoveState::GetTypeSpeed()
 {
 	switch (enemy_->GetType()) {
-	case EnemyType::Melee:			return enemy_->GetItem()->GetMeleeData().tempData.speed;
-	case EnemyType::Ranged:			return enemy_->GetItem()->GetRangedData().tempData.speed;
-	case EnemyType::ShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.speed;
-	case EnemyType::RangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.speed;
+	case EnemyType::kMelee:			return enemy_->GetItem()->GetMeleeData().tempData.speed;
+	case EnemyType::kRanged:			return enemy_->GetItem()->GetRangedData().tempData.speed;
+	case EnemyType::kShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.speed;
+	case EnemyType::kRangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.speed;
 	default:break;
 	}
 	return 0.0f;
@@ -121,10 +121,10 @@ const float EnemyMoveState::GetTypeSpeed()
 const float EnemyMoveState::GetTypeAttackDistance()
 {
 	switch (enemy_->GetType()) {
-	case EnemyType::Melee:			return enemy_->GetItem()->GetMeleeData().tempData.attackDistance;
-	case EnemyType::Ranged:			return enemy_->GetItem()->GetRangedData().tempData.attackDistance;
-	case EnemyType::ShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackDistance;
-	case EnemyType::RangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackDistance;
+	case EnemyType::kMelee:			return enemy_->GetItem()->GetMeleeData().tempData.attackDistance;
+	case EnemyType::kRanged:			return enemy_->GetItem()->GetRangedData().tempData.attackDistance;
+	case EnemyType::kShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackDistance;
+	case EnemyType::kRangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackDistance;
 	default:break;
 	}
 	return 0.0f;
@@ -133,10 +133,10 @@ const float EnemyMoveState::GetTypeAttackDistance()
 const float EnemyMoveState::GetTypeAttackCoolTime()
 {
 	switch (enemy_->GetType()) {
-	case EnemyType::Melee:			return enemy_->GetItem()->GetMeleeData().tempData.attackCoolTime;
-	case EnemyType::Ranged:			return enemy_->GetItem()->GetRangedData().tempData.attackCoolTime;
-	case EnemyType::ShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackCoolTime;
-	case EnemyType::RangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackCoolTime;
+	case EnemyType::kMelee:			return enemy_->GetItem()->GetMeleeData().tempData.attackCoolTime;
+	case EnemyType::kRanged:			return enemy_->GetItem()->GetRangedData().tempData.attackCoolTime;
+	case EnemyType::kShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackCoolTime;
+	case EnemyType::kRangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackCoolTime;
 	default:break;
 	}
 	return 0.0f;
@@ -145,10 +145,10 @@ const float EnemyMoveState::GetTypeAttackCoolTime()
 void EnemyMoveState::TypeChengeAttackState()
 {
 	switch (enemy_->GetType()) {
-	case EnemyType::Melee:			enemy_->ChengeState(std::make_unique<EnemyMelee_AttackState>(enemy_)); break;
-	case EnemyType::Ranged:			enemy_->ChengeState(std::make_unique<EnemyRanged_AttackState>(enemy_)); break;
-	case EnemyType::ShieldBearer:	enemy_->ChengeState(std::make_unique<EnemyShieldBearer_AttackState>(enemy_)); break;
-	case EnemyType::RangedElite:	enemy_->ChengeState(std::make_unique<EnemyRangedElite_AttackState>(enemy_)); break;
+	case EnemyType::kMelee:			enemy_->ChengeState(std::make_unique<EnemyMelee_AttackState>(enemy_)); break;
+	case EnemyType::kRanged:			enemy_->ChengeState(std::make_unique<EnemyRanged_AttackState>(enemy_)); break;
+	case EnemyType::kShieldBearer:	enemy_->ChengeState(std::make_unique<EnemyShieldBearer_AttackState>(enemy_)); break;
+	case EnemyType::kRangedElite:	enemy_->ChengeState(std::make_unique<EnemyRangedElite_AttackState>(enemy_)); break;
 	default:break;
 	}
 }
@@ -169,10 +169,10 @@ void EnemyMoveState::MoveAnimation()
 
 	bool played = false;
 	switch (enemy_->GetType()) {
-	case EnemyType::Melee:          played = enemy_->PlayByName("Run_Arms"); break;
-	case EnemyType::Ranged:         played = enemy_->PlayByName("Run");      break;
-	case EnemyType::ShieldBearer:   played = enemy_->PlayByName("Run_Arms"); break;
-	case EnemyType::RangedElite:    played = enemy_->PlayByName("Run");      break;
+	case EnemyType::kMelee:          played = enemy_->PlayByName("Run_Arms"); break;
+	case EnemyType::kRanged:         played = enemy_->PlayByName("Run");      break;
+	case EnemyType::kShieldBearer:   played = enemy_->PlayByName("Run_Arms"); break;
+	case EnemyType::kRangedElite:    played = enemy_->PlayByName("Run");      break;
 	}
 
 	if (played) {
@@ -187,10 +187,10 @@ void EnemyMoveState::AttackCoolTimeAnimation()
 
 	bool played = false;
 	switch (enemy_->GetType()) {
-	case EnemyType::Melee:          played = enemy_->PlayByName("Idle"); break;
-	case EnemyType::Ranged:         played = enemy_->PlayByName("Idle"); break;
-	case EnemyType::ShieldBearer:   played = enemy_->PlayByName("Idle"); break;
-	case EnemyType::RangedElite:    played = enemy_->PlayByName("Idle"); break;
+	case EnemyType::kMelee:          played = enemy_->PlayByName("Idle"); break;
+	case EnemyType::kRanged:         played = enemy_->PlayByName("Idle"); break;
+	case EnemyType::kShieldBearer:   played = enemy_->PlayByName("Idle"); break;
+	case EnemyType::kRangedElite:    played = enemy_->PlayByName("Idle"); break;
 	}
 
 	if (played) {

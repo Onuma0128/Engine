@@ -20,7 +20,7 @@ void PlayerBullet::Init(const std::string& colliderName)
 	effect_->Init();
 
 	Collider::AddCollider();
-	Collider::myType_ = ColliderType::OBB;
+	Collider::myType_ = ColliderType::kOBB;
 	Collider::colliderName_ = colliderName;
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;

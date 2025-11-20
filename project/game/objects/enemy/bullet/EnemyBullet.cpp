@@ -17,7 +17,7 @@ void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 	type_ = type;
 
 	Collider::AddCollider();
-	Collider::myType_ = ColliderType::OBB;
+	Collider::myType_ = ColliderType::kOBB;
 	Collider::colliderName_ = colliderName;
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
@@ -112,8 +112,8 @@ const float EnemyBullet::GetTypeBulletSpeed()
 {
 	switch (type_)
 	{
-	case EnemyType::Ranged:			return item_->GetRangedData().bulletSpeed;
-	case EnemyType::RangedElite:	return item_->GetRangedEliteData().bulletSpeed;
+	case EnemyType::kRanged:			return item_->GetRangedData().bulletSpeed;
+	case EnemyType::kRangedElite:	return item_->GetRangedEliteData().bulletSpeed;
 	default:
 		break;
 	}

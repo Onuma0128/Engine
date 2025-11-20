@@ -96,19 +96,19 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 
 	switch (type_)
 	{
-	case PrimitiveType::Plane:
+	case PrimitiveType::kPlane:
 		InitPlane();
 		break;
-	case PrimitiveType::Sphere:
+	case PrimitiveType::kSphere:
 		InitSphere(kIndex);
 		break;
-	case PrimitiveType::Ring:
+	case PrimitiveType::kRing:
 		InitRing(kIndex);
 		break;
-	case PrimitiveType::Cylinder:
+	case PrimitiveType::kCylinder:
 		InitCylinder(kIndex);
 		break;
-	case PrimitiveType::Skybox:
+	case PrimitiveType::kSkybox:
 		InitSkybox();
 		break;
 	default:
@@ -132,7 +132,7 @@ void PrimitiveDrawr::RemoveRenderer()
 
 void PrimitiveDrawr::TypeDraw()
 {
-	if (type_ == PrimitiveType::Skybox) {
+	if (type_ == PrimitiveType::kSkybox) {
 		primitiveDrawrBase_->DrawSkyboxBase();
 	} else {
 		primitiveDrawrBase_->DrawBase(static_cast<int>(blendMode_));
@@ -140,19 +140,19 @@ void PrimitiveDrawr::TypeDraw()
 
 	switch (type_)
 	{
-	case PrimitiveType::Plane:
+	case PrimitiveType::kPlane:
 		DrawPlane();
 		break;
-	case PrimitiveType::Sphere:
+	case PrimitiveType::kSphere:
 		DrawSphere();
 		break;
-	case PrimitiveType::Ring:
+	case PrimitiveType::kRing:
 		DrawRing();
 		break;
-	case PrimitiveType::Cylinder:
+	case PrimitiveType::kCylinder:
 		DrawCylinder();
 		break;
-	case PrimitiveType::Skybox:
+	case PrimitiveType::kSkybox:
 		DrawSkybox();
 		break;
 	default:

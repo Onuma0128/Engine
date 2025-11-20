@@ -7,7 +7,7 @@ void FieldObject::Init(SceneObject object)
 	if (object.tag != "ground") {
 		Object3d::GetMaterial().outlineMask = true;
 		if (object.tag != "Bush") {
-			Object3d::GetMaterial().outlineSceneColor = true;
+			//Object3d::GetMaterial().outlineSceneColor = true;
 		}
 		Object3d::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
 	}else {

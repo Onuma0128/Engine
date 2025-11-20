@@ -33,7 +33,7 @@ void BaseEnemy::Initialize()
 
 	// コライダーを設定
 	Collider::AddCollider();
-	Collider::myType_ = ColliderType::Sphere;
+	Collider::myType_ = ColliderType::kSphere;
 	Collider::colliderName_ = "Enemy";
 	Collider::size_ = transform_.scale_;
 	Collider::radius_ = transform_.scale_.x;
@@ -59,13 +59,13 @@ void BaseEnemy::Update()
 	effect_->Update();
 
 	// 必殺技が打たれている時の敵の描画を変更
-	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Shrinking) {
+	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::kShrinking) {
 		if (stateParam_.isAlive_) {
 			Collider::isActive_ = true;
 			stateParam_.hitReticle_ = false;
 		}
 	}
-	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::Holding && stateParam_.isAlive_) {
+	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::kHolding && stateParam_.isAlive_) {
 		if (!stateParam_.hitReticle_) {
 			outlineColor_ = Vector3::Lerp(outlineColor_, Vector3::ExprUnitX, 0.1f);
 		} else {

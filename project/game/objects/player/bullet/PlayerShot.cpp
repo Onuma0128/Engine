@@ -45,7 +45,7 @@ void PlayerShot::Init(Player* player)
 
 	// プレイヤーの目線のコライダーを初期化
 	Collider::AddCollider();
-	Collider::myType_ = ColliderType::OBB;
+	Collider::myType_ = ColliderType::kOBB;
 	Collider::colliderName_ = "PlayerShotRay";
 	Collider::isActive_ = true;
 	Collider::targetColliderName_ = { "Enemy" };

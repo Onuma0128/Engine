@@ -20,7 +20,7 @@ public:
 	);
 	virtual ~CompileShaderBase() = default;
 	virtual D3D12_SHADER_BYTECODE& BuildVS_Shader() = 0;
-	virtual D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::None) = 0;
+	virtual D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) = 0;
 
 protected:
 

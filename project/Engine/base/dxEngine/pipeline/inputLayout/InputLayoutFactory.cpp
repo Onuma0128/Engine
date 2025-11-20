@@ -9,40 +9,40 @@ D3D12_INPUT_LAYOUT_DESC& InputLayoutFactory::GetInputLayout(PipelineType type)
 	static std::unordered_map<PipelineType, std::unique_ptr<InputLayoutBase>> inputLayout;
 
 	switch (type) {
-	case PipelineType::Object3d:
+	case PipelineType::kObject3d:
 		inputLayout[type] = std::make_unique<Object3dInputLayout>();
 		break;
-	case PipelineType::Sprite:
+	case PipelineType::kSprite:
 		inputLayout[type] = std::make_unique<SpriteInputLayout>();
 		break;
-	case PipelineType::Line3d:
+	case PipelineType::kLine3d:
 		inputLayout[type] = std::make_unique<Line3dInputLayout>();
 		break;
-	case PipelineType::Particle:
+	case PipelineType::kParticle:
 		inputLayout[type] = std::make_unique<ParticleInputLayout>();
 		break;
-	case PipelineType::PrimitiveDrawr:
+	case PipelineType::kPrimitiveDrawr:
 		inputLayout[type] = std::make_unique<PrimitiveDrawrInputLayout>();
 		break;
-	case PipelineType::Animation:
+	case PipelineType::kAnimation:
 		inputLayout[type] = std::make_unique<AnimationInputLayout>();
 		break;
-	case PipelineType::RenderTexture:
+	case PipelineType::kRenderTexture:
 		inputLayout[type] = std::make_unique<RenderTextureInputLayout>();
 		break;
-	case PipelineType::Skybox:
+	case PipelineType::kSkybox:
 		inputLayout[type] = std::make_unique<SkyboxInputLayout>();
 		break;
-	case PipelineType::ObjectOutLineMask:
+	case PipelineType::kObjectOutLineMask:
 		inputLayout[type] = std::make_unique<ObjectOutLineMaskInputLayout>();
 		break;
-	case PipelineType::AnimationOutLineMask:
+	case PipelineType::kAnimationOutLineMask:
 		inputLayout[type] = std::make_unique<AnimationOutLineMaskInputLayout>();
 		break;
-	case PipelineType::ObjectShadowMapDepth:
+	case PipelineType::kObjectShadowMapDepth:
 		inputLayout[type] = std::make_unique<Object3dInputLayout>();
 		break;
-	case PipelineType::AnimationShadowMapDepth:
+	case PipelineType::kAnimationShadowMapDepth:
 		inputLayout[type] = std::make_unique<AnimationInputLayout>();
 		break;
 	default:

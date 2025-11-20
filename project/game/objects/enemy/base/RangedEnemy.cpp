@@ -5,7 +5,7 @@
 void RangedEnemy::Initialize()
 {
 	// タイプを設定
-	type_ = EnemyType::Ranged;
+	type_ = EnemyType::kRanged;
 
 	// 敵Animationの初期化
 	Animation::Initialize("Characters_Shaun.gltf");

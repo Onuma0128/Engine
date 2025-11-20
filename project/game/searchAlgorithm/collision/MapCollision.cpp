@@ -11,7 +11,7 @@ void MapCollision::Init(SceneJsonLoader loader)
 		if (it->second.groupName == "FieldObject") {
 			auto& object = it->second;
 			if (object.collider.active) {
-				if (object.collider.type == ColliderType::OBB) {
+				if (object.collider.type == ColliderType::kOBB) {
 					Vector2 center = Vector2::Rotate(
 						{ object.collider.center.x,object.collider.center.z },
 						-object.collider.rotate

@@ -18,7 +18,7 @@ void GamePlayScene::Initialize()
 
 	// スカイボックスの初期化
 	skyBox_ = std::make_unique<PrimitiveDrawr>();
-	skyBox_->TypeInit(PrimitiveType::Skybox);
+	skyBox_->TypeInit(PrimitiveType::kSkybox);
 	skyBox_->GetTransform().scale = { 1024.0f,1024.0f ,1024.0f };
 	skyBox_->SetSceneRenderer();
 

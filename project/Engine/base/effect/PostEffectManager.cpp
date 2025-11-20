@@ -54,14 +54,14 @@ void PostEffectManager::CreatePostEffect(PostEffectType type)
     pass.srvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforRenderTexture(pass.srvIndex, pass.renderTexture.Get());
 
-    if (type == PostEffectType::OutLine) {
+    if (type == PostEffectType::kOutLine) {
         pass.depthSrvIndex = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
         SrvManager::GetInstance()->CreateSRVforRenderTexture(pass.depthSrvIndex, dxEngine_->GetRenderTexrure()->GetDSVResource(), type);
     }
 
     // PSOとRootSignatureの登録
-    rootSignatures_[type] = pipeline_->GetRootSignature(PipelineType::RenderTexture, type, BlendMode::kBlendModeNone).Get();
-    pipelineStates_[type] = pipeline_->GetPipelineState(PipelineType::RenderTexture, type, BlendMode::kBlendModeNone).Get();
+    rootSignatures_[type] = pipeline_->GetRootSignature(PipelineType::kRenderTexture, type, BlendMode::kBlendModeNone).Get();
+    pipelineStates_[type] = pipeline_->GetPipelineState(PipelineType::kRenderTexture, type, BlendMode::kBlendModeNone).Get();
 
     // 保存
     enabledEffects_.push_back(type);
@@ -143,7 +143,7 @@ void PostEffectManager::RenderTextureDraws(uint32_t inputSRVIndex)
         const auto& pass = passes_[type];
 
         D3D12_RESOURCE_BARRIER barrier{};
-        if (type == PostEffectType::OutLine) {
+        if (type == PostEffectType::kOutLine) {
             barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
             barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
             barrier.Transition.pResource = dxEngine_->GetRenderTexrure()->GetDSVResource();
@@ -165,7 +165,7 @@ void PostEffectManager::RenderTextureDraws(uint32_t inputSRVIndex)
         cmdList->SetPipelineState(pipelineStates_[type].Get());
         cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, finalSRVIndex);
-        if (type == PostEffectType::OutLine) { 
+        if (type == PostEffectType::kOutLine) { 
             SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, pass.depthSrvIndex);
             SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, maskPass_.srvIndex);
             SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, maskPass_.srvIndexID);
@@ -179,7 +179,7 @@ void PostEffectManager::RenderTextureDraws(uint32_t inputSRVIndex)
         barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
         cmdList->ResourceBarrier(1, &barrier);
 
-        if (type == PostEffectType::OutLine)
+        if (type == PostEffectType::kOutLine)
         {
             barrier.Transition.pResource = dxEngine_->GetRenderTexrure()->GetDSVResource();
             barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
@@ -201,23 +201,23 @@ void PostEffectManager::PostEffectCommand(PostEffectType type)
 
     switch (type)
     {
-    case PostEffectType::None:
+    case PostEffectType::kNone:
         break;
-    case PostEffectType::Grayscale:
+    case PostEffectType::kGrayscale:
 
         cmdList->SetGraphicsRootConstantBufferView(1, grayscaleResource_->GetGPUVirtualAddress());
 
         break;
-    case PostEffectType::Vignette:
+    case PostEffectType::kVignette:
 
         cmdList->SetGraphicsRootConstantBufferView(1, vignetteResource_->GetGPUVirtualAddress());
 
         break;
-    case PostEffectType::Smoothing:
+    case PostEffectType::kSmoothing:
 
         break;
 
-    case PostEffectType::OutLine:
+    case PostEffectType::kOutLine:
 
         cmdList->SetGraphicsRootConstantBufferView(4, outlineResource_->GetGPUVirtualAddress());
 
@@ -240,7 +240,7 @@ uint32_t PostEffectManager::DrawEffect(PostEffectType type, uint32_t inputSRVInd
     barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
 
     // OutLineだけは深度をPS用にREADへ（実行前）
-    if (type == PostEffectType::OutLine) {
+    if (type == PostEffectType::kOutLine) {
         barrier.Transition.pResource = dxEngine_->GetRenderTexrure()->GetDSVResource();
         barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_DEPTH_WRITE;
         barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
@@ -266,7 +266,7 @@ uint32_t PostEffectManager::DrawEffect(PostEffectType type, uint32_t inputSRVInd
     SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, inputSRVIndex);
 
     // OutLineだけ追加SRV（深度 / マスク2種）
-    if (type == PostEffectType::OutLine) {
+    if (type == PostEffectType::kOutLine) {
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, pass.depthSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, maskPass_.srvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, maskPass_.srvIndexID);
@@ -285,7 +285,7 @@ uint32_t PostEffectManager::DrawEffect(PostEffectType type, uint32_t inputSRVInd
     cmdList->ResourceBarrier(1, &barrier);
 
     // OutLineだけ深度をWRITEに戻す（実行後）
-    if (type == PostEffectType::OutLine) {
+    if (type == PostEffectType::kOutLine) {
         barrier.Transition.pResource = dxEngine_->GetRenderTexrure()->GetDSVResource();
         barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
         barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_DEPTH_WRITE;

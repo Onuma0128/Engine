@@ -148,7 +148,7 @@ private:
 	TransformationMatrix* transformationMatrixData_ = nullptr;
 
 	// 描画するか
-	RenderOptions renderOptions_;
+	RenderOptions renderOptions_ = {};
 
 protected:
 

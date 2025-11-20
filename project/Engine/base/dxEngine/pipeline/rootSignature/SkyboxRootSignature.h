@@ -7,7 +7,7 @@ class SkyboxRootSignature : public RootSignatureBase
 {
 public:
 
-	ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::None) override
+	ComPtr<ID3D12RootSignature> BuildRootSignature(ID3D12Device* device, PostEffectType effectType = PostEffectType::kNone) override
 	{
 		//RootSignature 
 		D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};

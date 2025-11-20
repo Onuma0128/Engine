@@ -20,32 +20,32 @@ void PipelineState::Initialize(
 
 	// 必要な全ての組み合わせで初期化（例：ポストエフェクト含む）
 	std::vector<PipelineType> pipelineTypes = {
-		PipelineType::Object3d,		PipelineType::Sprite,		PipelineType::Line3d,
-		PipelineType::Particle,		PipelineType::PrimitiveDrawr,
-		PipelineType::Animation,	PipelineType::RenderTexture,
-		PipelineType::Skybox,		PipelineType::ObjectOutLineMask,
-		PipelineType::AnimationOutLineMask,
-		PipelineType::ObjectShadowMapDepth,
-		PipelineType::AnimationShadowMapDepth
+		PipelineType::kObject3d,		PipelineType::kSprite,		PipelineType::kLine3d,
+		PipelineType::kParticle,		PipelineType::kPrimitiveDrawr,
+		PipelineType::kAnimation,	PipelineType::kRenderTexture,
+		PipelineType::kSkybox,		PipelineType::kObjectOutLineMask,
+		PipelineType::kAnimationOutLineMask,
+		PipelineType::kObjectShadowMapDepth,
+		PipelineType::kAnimationShadowMapDepth
 	};
 
 	std::vector<PostEffectType> postEffectTypes = {
-		PostEffectType::None, PostEffectType::RenderTexture,
-		PostEffectType::Grayscale, PostEffectType::Vignette,
-		PostEffectType::Smoothing, PostEffectType::OutLine,
-		PostEffectType::OutLineMask
+		PostEffectType::kNone, PostEffectType::kRenderTexture,
+		PostEffectType::kGrayscale, PostEffectType::kVignette,
+		PostEffectType::kSmoothing, PostEffectType::kOutLine,
+		PostEffectType::kOutLineMask
 	};
 
 	// RootSignature,Pipelineの作成
 	for (auto type : pipelineTypes) {
 		for (auto effect : postEffectTypes) {
 			// Effectありで必要なものだけ処理（RenderTexture等）
-			if ((effect != PostEffectType::None && type != PipelineType::RenderTexture) ||
-				(effect == PostEffectType::None && type == PipelineType::RenderTexture)) {
+			if ((effect != PostEffectType::kNone && type != PipelineType::kRenderTexture) ||
+				(effect == PostEffectType::kNone && type == PipelineType::kRenderTexture)) {
 				continue; 
 			}
 			// BlendMode複数持ちの設定
-			if (type == PipelineType::PrimitiveDrawr || type == PipelineType::Particle) {
+			if (type == PipelineType::kPrimitiveDrawr || type == PipelineType::kParticle) {
 				for (int blend = 0; blend < static_cast<int>(BlendMode::kCount); ++blend) {
 					PipelineKey key{ type, effect, static_cast<BlendMode>(blend) };
 					rootSignatures_[key] = CreateRootSignature(type, effect);
@@ -53,8 +53,8 @@ void PipelineState::Initialize(
 				}
 			// その他設定
 			} else {
-				if (type == PipelineType::RenderTexture || type == PipelineType::ObjectOutLineMask|| 
-					type == PipelineType::AnimationOutLineMask) {
+				if (type == PipelineType::kRenderTexture || type == PipelineType::kObjectOutLineMask|| 
+					type == PipelineType::kAnimationOutLineMask) {
 					PipelineKey key{ type, effect, BlendMode::kBlendModeNone };
 					rootSignatures_[key] = CreateRootSignature(type, effect);
 					pipelineStates_[key] = CreatePipelineState(type, effect, BlendMode::kBlendModeNone);
@@ -70,7 +70,7 @@ void PipelineState::Initialize(
 
 ComPtr<ID3D12RootSignature> PipelineState::CreateRootSignature(PipelineType type,PostEffectType effectType)
 {
-	if (effectType != PostEffectType::None) {
+	if (effectType != PostEffectType::kNone) {
 		return RootSignatureFactory::GetRootSignature(type, device_, effectType);
 	} else {
 		return RootSignatureFactory::GetRootSignature(type, device_);
@@ -82,10 +82,10 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc{};
 	psoDesc.pRootSignature = GetRootSignature(type, effectType, blendMode).Get();
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(type);
-	psoDesc.PrimitiveTopologyType = (type == PipelineType::Line3d) ? D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE : D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	psoDesc.PrimitiveTopologyType = (type == PipelineType::kLine3d) ? D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE : D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	// シェーダー設定
-	if (type == PipelineType::ObjectShadowMapDepth ||
-		type == PipelineType::AnimationShadowMapDepth) {
+	if (type == PipelineType::kObjectShadowMapDepth ||
+		type == PipelineType::kAnimationShadowMapDepth) {
 		psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
 		psoDesc.PS = { nullptr, 0 };
 		psoDesc.NumRenderTargets = 0;
@@ -93,7 +93,8 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 	} else {
 		psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
 		psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(type, dxcUtils_, dxcCompiler_, includeHandler_, effectType);
-		if (type == PipelineType::ObjectOutLineMask || type == PipelineType::AnimationOutLineMask) {
+		if (type == PipelineType::kObjectOutLineMask || 
+			type == PipelineType::kAnimationOutLineMask) {
 			psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
 			psoDesc.RTVFormats[1] = DXGI_FORMAT_R32_UINT;
 			psoDesc.NumRenderTargets = 2;

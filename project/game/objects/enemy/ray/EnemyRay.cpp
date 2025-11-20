@@ -6,7 +6,7 @@ void EnemyRay::Init()
 {
 	// コライダーを設定
 	Collider::AddCollider();
-	Collider::myType_ = ColliderType::Segment;
+	Collider::myType_ = ColliderType::kSegment;
 	Collider::colliderName_ = "EnemyRay";
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
@@ -56,7 +56,7 @@ void EnemyRay::OnCollisionStay(Collider* other)
 	RaycastHit hit{};
 	if (name == "Building" || name == "DeadTree" || name == "fence" ||
 		name == "Bush" || name == "StoneWall" || name == "ShortStoneWall") {
-		if (type == ColliderType::OBB) {
+		if (type == ColliderType::kOBB) {
 			if (Collision3D::OBBSegment(other, this, &hit)) {
 				float length = (hit.point - start_).Length();
 				if (hitPointLength_ < length) { return; }

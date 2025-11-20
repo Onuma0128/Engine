@@ -19,39 +19,39 @@
 void ModelInstanceRenderer::Initialize()
 {
     objMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
-        PipelineType::ObjectOutLineMask,
-        PostEffectType::None,
+        PipelineType::kObjectOutLineMask,
+        PostEffectType::kNone,
         BlendMode::kBlendModeNone);
     objMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
-        PipelineType::ObjectOutLineMask,
-        PostEffectType::None,
+        PipelineType::kObjectOutLineMask,
+        PostEffectType::kNone,
         BlendMode::kBlendModeNone);
 
     animaMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
-        PipelineType::AnimationOutLineMask ,
-        PostEffectType::None,
+        PipelineType::kAnimationOutLineMask ,
+        PostEffectType::kNone,
         BlendMode::kBlendModeNone);
     animaMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
-        PipelineType::AnimationOutLineMask,
-        PostEffectType::None,
+        PipelineType::kAnimationOutLineMask,
+        PostEffectType::kNone,
         BlendMode::kBlendModeNone);
 
     objShadowMapPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
-        PipelineType::ObjectShadowMapDepth,
-        PostEffectType::None,
+        PipelineType::kObjectShadowMapDepth,
+        PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
     objShadowMapRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
-        PipelineType::ObjectShadowMapDepth,
-        PostEffectType::None,
+        PipelineType::kObjectShadowMapDepth,
+        PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
 
     animationShadowMapPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
-        PipelineType::AnimationShadowMapDepth,
-        PostEffectType::None,
+        PipelineType::kAnimationShadowMapDepth,
+        PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
     animationShadowMapRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
-        PipelineType::AnimationShadowMapDepth,
-        PostEffectType::None,
+        PipelineType::kAnimationShadowMapDepth,
+        PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
 
     lightVpBuffer_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4));
@@ -343,6 +343,8 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
 {
     auto* commandList = DirectXEngine::GetCommandList();
 
+    ObjUpdate();
+
     if (!objBatches_.empty()) {
         commandList->SetPipelineState(objShadowMapPipelineState_.Get());
         commandList->SetGraphicsRootSignature(objShadowMapRootSignature_.Get());
@@ -368,6 +370,8 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
         }
     }
 
+    AnimationUpdate();
+
     if (!animationBatches_.empty()) {
         commandList->SetPipelineState(animationShadowMapPipelineState_.Get());
         commandList->SetGraphicsRootSignature(animationShadowMapRootSignature_.Get());
@@ -378,6 +382,7 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
         if (batch.count == 0) continue;
         if (batch.animations.back()->GetMaterial().shadowMap == false) continue;
 
+        batch.animations.back()->SetVertexBuffer();
         model->BindBuffers(true);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
@@ -448,8 +453,6 @@ void ModelInstanceRenderer::AllDraw()
 {
     auto* commandList = DirectXEngine::GetCommandList();
 
-    ObjUpdate();
-
     for (auto& [model, batch] : objBatches_) {
         if (batch.count == 0) continue;
 
@@ -472,8 +475,6 @@ void ModelInstanceRenderer::AllDraw()
                 mesh[i].indexStart, 0, 0);
         }
     }
-
-    AnimationUpdate();
 
     for (auto& [model, batch] : animationBatches_) {
         if (batch.count == 0) continue;

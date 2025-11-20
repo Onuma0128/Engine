@@ -130,7 +130,7 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	collisionManager_ = std::make_unique<CollisionManager>();
 
 	shadowMap_ = std::make_unique<ShadowMap>();
-	shadowMap_->CreateShadowMap();
+	shadowMap_->CreateShadowMap(8192);
 }
 
 void DirectXEngine::DeviceInitialize()

@@ -26,10 +26,10 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 	size_t strong = 10;
 
 	// 敵をタイプごとに初期化
-	InitTypeEnemy(EnemyType::Melee, enemyMelees_, normal);
-	InitTypeEnemy(EnemyType::Ranged, enemyRnageds_, normal);
-	InitTypeEnemy(EnemyType::ShieldBearer, enemyShieldBearers_, strong);
-	InitTypeEnemy(EnemyType::RangedElite, enemyRnagedElites_, strong);
+	InitTypeEnemy(EnemyType::kMelee, enemyMelees_, normal);
+	InitTypeEnemy(EnemyType::kRanged, enemyRnageds_, normal);
+	InitTypeEnemy(EnemyType::kShieldBearer, enemyShieldBearers_, strong);
+	InitTypeEnemy(EnemyType::kRangedElite, enemyRnagedElites_, strong);
 
 	spawnInterval_ = 1.0f;
 }
@@ -76,10 +76,10 @@ void EnemySpawnerFactory::InitTypeEnemy(EnemyType type, std::list<std::unique_pt
 
 	for (auto& enemy : enemys) {
 		switch (type) {
-		case EnemyType::Melee:			enemy = std::make_unique<MeleeEnemy>(); break;
-		case EnemyType::Ranged:			enemy = std::make_unique<RangedEnemy>(); break;
-		case EnemyType::ShieldBearer:	enemy = std::make_unique<ShieldBearerEnemy>(); break;
-		case EnemyType::RangedElite:	enemy = std::make_unique<RangedEliteEnemy>(); break;
+		case EnemyType::kMelee:			enemy = std::make_unique<MeleeEnemy>(); break;
+		case EnemyType::kRanged:			enemy = std::make_unique<RangedEnemy>(); break;
+		case EnemyType::kShieldBearer:	enemy = std::make_unique<ShieldBearerEnemy>(); break;
+		case EnemyType::kRangedElite:	enemy = std::make_unique<RangedEliteEnemy>(); break;
 		default:break;
 		}
 		enemy->SetPlayer(player_);
@@ -104,10 +104,10 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		// タイプごとに敵を生成
 		EnemyType type = static_cast<EnemyType>(items_->GetMainData().spawnIndex);
 		switch (type) {
-		case EnemyType::Melee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[0]); break;
-		case EnemyType::Ranged:			ResetTypeEnemy(enemyRnageds_, enemySpawners_[0]); break;
-		case EnemyType::ShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[0]); break;
-		case EnemyType::RangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[0]); break;
+		case EnemyType::kMelee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[0]); break;
+		case EnemyType::kRanged:			ResetTypeEnemy(enemyRnageds_, enemySpawners_[0]); break;
+		case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[0]); break;
+		case EnemyType::kRangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[0]); break;
 		default: break;
 		}
 	}
@@ -133,7 +133,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		std::uniform_int_distribution<int> spawner(0, static_cast<int>(enemySpawners_.size() - 1));
 		int spownNumber = (spawner(randomEngine_));
 		// 何の敵が湧くか
-		EnemyType type = EnemyType::Melee;
+		EnemyType type = EnemyType::kMelee;
 		// 倒した数が25を超えていないなら
 		if (kNockdownCount <= 25) {
 			std::uniform_int_distribution<int> enemyType(0, 1);
@@ -145,10 +145,10 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		}
 		// タイプごとに敵を生成
 		switch (type) {
-		case EnemyType::Melee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[spownNumber]); break;
-		case EnemyType::Ranged:			ResetTypeEnemy(enemyRnageds_, enemySpawners_[spownNumber]); break;
-		case EnemyType::ShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[spownNumber]); break;
-		case EnemyType::RangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[spownNumber]); break;
+		case EnemyType::kMelee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[spownNumber]); break;
+		case EnemyType::kRanged:			ResetTypeEnemy(enemyRnageds_, enemySpawners_[spownNumber]); break;
+		case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[spownNumber]); break;
+		case EnemyType::kRangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[spownNumber]); break;
 		default: break;
 		}
 

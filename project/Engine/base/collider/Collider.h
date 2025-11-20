@@ -13,9 +13,9 @@ class Line3d;
 /// </summary>
 enum class ColliderType 
 {
-	Sphere,		// 球体
-	Segment,	// 線
-	OBB			// 回転直方体
+	kSphere,	// 球体
+	kSegment,	// 線
+	kOBB		// 回転直方体
 };
 
 /// <summary>
@@ -104,8 +104,8 @@ protected:
 	std::vector<std::string> targetColliderName_;
 
 	// コライダーのType
-	ColliderType myType_ = ColliderType::Sphere;
-	ColliderType targetType_ = ColliderType::Sphere;
+	ColliderType myType_ = ColliderType::kSphere;
+	ColliderType targetType_ = ColliderType::kSphere;
 
 	// コライダーをON/OFF
 	bool isActive_ = true;
