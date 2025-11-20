@@ -300,556 +300,556 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\2d\BaseUI.cpp">
+    <ClCompile Include="Engine\2dp\BaseUI.cpp">
       <Filter>Engine\2d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\2d\BaseUI.h">
+    <ClInclude Include="Engine\2dp\BaseUI.h">
       <Filter>Engine\2d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\2d\LoadTexture.cpp">
+    <ClCompile Include="Engine\2dp\LoadTexture.cpp">
       <Filter>Engine\2d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\2d\LoadTexture.h">
+    <ClInclude Include="Engine\2dp\LoadTexture.h">
       <Filter>Engine\2d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\2d\Logger.cpp">
+    <ClCompile Include="Engine\2dp\Logger.cpp">
       <Filter>Engine\2d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\2d\Logger.h">
+    <ClInclude Include="Engine\2dp\Logger.h">
       <Filter>Engine\2d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\2d\Sprite.cpp">
+    <ClCompile Include="Engine\2dp\Sprite.cpp">
       <Filter>Engine\2d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\2d\Sprite.h">
+    <ClInclude Include="Engine\2dp\Sprite.h">
       <Filter>Engine\2d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\animation\debugBone\DebugBone.cpp">
+    <ClCompile Include="Engine\3dp\animationp\debugBonep\DebugBone.cpp">
       <Filter>Engine\3d\animation\debug</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\animation\debugBone\DebugBone.h">
+    <ClInclude Include="Engine\3dp\animationp\debugBonep\DebugBone.h">
       <Filter>Engine\3d\animation\debug</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\animation\joint\Joint.cpp">
+    <ClCompile Include="Engine\3dp\animationp\jointp\Joint.cpp">
       <Filter>Engine\3d\animation\joint</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\animation\joint\Joint.h">
+    <ClInclude Include="Engine\3dp\animationp\jointp\Joint.h">
       <Filter>Engine\3d\animation\joint</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\animation\play\PlayAnimation.cpp">
+    <ClCompile Include="Engine\3dp\animationp\playp\PlayAnimation.cpp">
       <Filter>Engine\3d\animation\play</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\animation\play\PlayAnimation.h">
+    <ClInclude Include="Engine\3dp\animationp\playp\PlayAnimation.h">
       <Filter>Engine\3d\animation\play</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\animation\skeleton\Skeleton.cpp">
+    <ClCompile Include="Engine\3dp\animationp\skeletonp\Skeleton.cpp">
       <Filter>Engine\3d\animation\skeleton</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\animation\skeleton\Skeleton.h">
+    <ClInclude Include="Engine\3dp\animationp\skeletonp\Skeleton.h">
       <Filter>Engine\3d\animation\skeleton</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\animation\skinCluster\SkinCluster.cpp">
+    <ClCompile Include="Engine\3dp\animationp\skinClusterp\SkinCluster.cpp">
       <Filter>Engine\3d\animation\skinCluster</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\animation\skinCluster\SkinCluster.h">
+    <ClInclude Include="Engine\3dp\animationp\skinClusterp\SkinCluster.h">
       <Filter>Engine\3d\animation\skinCluster</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\animation\Animation.cpp">
+    <ClCompile Include="Engine\3dp\animationp\Animation.cpp">
       <Filter>Engine\3d\animation</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\animation\Animation.h">
+    <ClInclude Include="Engine\3dp\animationp\Animation.h">
       <Filter>Engine\3d\animation</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\Line3d.cpp">
+    <ClCompile Include="Engine\3dp\Line3d.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\Line3d.h">
+    <ClInclude Include="Engine\3dp\Line3d.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\Model.cpp">
+    <ClCompile Include="Engine\3dp\Model.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\Model.h">
+    <ClInclude Include="Engine\3dp\Model.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\Object3d.cpp">
+    <ClCompile Include="Engine\3dp\Object3d.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\Object3d.h">
+    <ClInclude Include="Engine\3dp\Object3d.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\PrimitiveDrawr.cpp">
+    <ClCompile Include="Engine\3dp\PrimitiveDrawr.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\PrimitiveDrawr.h">
+    <ClInclude Include="Engine\3dp\PrimitiveDrawr.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\3d\WorldTransform.cpp">
+    <ClCompile Include="Engine\3dp\WorldTransform.cpp">
       <Filter>Engine\3d</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\3d\WorldTransform.h">
+    <ClInclude Include="Engine\3dp\WorldTransform.h">
       <Filter>Engine\3d</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\audio\Audio.cpp">
+    <ClCompile Include="Engine\audiop\Audio.cpp">
       <Filter>Engine\audio</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\audio\Audio.h">
+    <ClInclude Include="Engine\audiop\Audio.h">
       <Filter>Engine\audio</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\audio\AudioManager.cpp">
+    <ClCompile Include="Engine\basep\audiop\AudioManager.cpp">
       <Filter>Engine\base\audio</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\audio\AudioManager.h">
+    <ClInclude Include="Engine\basep\audiop\AudioManager.h">
       <Filter>Engine\base\audio</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\collider\Collider.cpp">
+    <ClCompile Include="Engine\basep\colliderp\Collider.cpp">
       <Filter>Engine\base\collider</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\collider\Collider.h">
+    <ClInclude Include="Engine\basep\colliderp\Collider.h">
       <Filter>Engine\base\collider</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\collider\Collision2D.cpp">
+    <ClCompile Include="Engine\basep\colliderp\Collision2D.cpp">
       <Filter>Engine\base\collider</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\collider\Collision2D.h">
+    <ClInclude Include="Engine\basep\colliderp\Collision2D.h">
       <Filter>Engine\base\collider</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\collider\Collision3D.cpp">
+    <ClCompile Include="Engine\basep\colliderp\Collision3D.cpp">
       <Filter>Engine\base\collider</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\collider\Collision3D.h">
+    <ClInclude Include="Engine\basep\colliderp\Collision3D.h">
       <Filter>Engine\base\collider</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\collider\CollisionManager.cpp">
+    <ClCompile Include="Engine\basep\colliderp\CollisionManager.cpp">
       <Filter>Engine\base\collider</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\collider\CollisionManager.h">
+    <ClInclude Include="Engine\basep\colliderp\CollisionManager.h">
       <Filter>Engine\base\collider</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\descriptorHeap\DescriptorHeap.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\descriptorHeapp\DescriptorHeap.cpp">
       <Filter>Engine\base\dxEngine\descriptorHeap</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\descriptorHeap\DescriptorHeap.h">
+    <ClInclude Include="Engine\basep\dxEnginep\descriptorHeapp\DescriptorHeap.h">
       <Filter>Engine\base\dxEngine\descriptorHeap</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\descriptorHeap\DsvManager.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\descriptorHeapp\DsvManager.cpp">
       <Filter>Engine\base\dxEngine\descriptorHeap</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\descriptorHeap\DsvManager.h">
+    <ClInclude Include="Engine\basep\dxEnginep\descriptorHeapp\DsvManager.h">
       <Filter>Engine\base\dxEngine\descriptorHeap</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\descriptorHeap\RtvManager.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\descriptorHeapp\RtvManager.cpp">
       <Filter>Engine\base\dxEngine\descriptorHeap</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\descriptorHeap\RtvManager.h">
+    <ClInclude Include="Engine\basep\dxEnginep\descriptorHeapp\RtvManager.h">
       <Filter>Engine\base\dxEngine\descriptorHeap</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\descriptorHeap\SrvManager.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\descriptorHeapp\SrvManager.cpp">
       <Filter>Engine\base\dxEngine\descriptorHeap</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\descriptorHeap\SrvManager.h">
+    <ClInclude Include="Engine\basep\dxEnginep\descriptorHeapp\SrvManager.h">
       <Filter>Engine\base\dxEngine\descriptorHeap</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\blendState\BlendStateBase.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\blendStatep\BlendStateBase.cpp">
       <Filter>Engine\base\dxEngine\pipeline\blendState</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\blendState\BlendStateBase.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\blendStatep\BlendStateBase.h">
       <Filter>Engine\base\dxEngine\pipeline\blendState</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\blendState\BlendStateFactory.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\blendStatep\BlendStateFactory.cpp">
       <Filter>Engine\base\dxEngine\pipeline\blendState</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\blendState\BlendStateFactory.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\blendStatep\BlendStateFactory.h">
       <Filter>Engine\base\dxEngine\pipeline\blendState</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\compileShader\CompileShaderBase.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\compileShaderp\CompileShaderBase.cpp">
       <Filter>Engine\base\dxEngine\pipeline\compileShader</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\compileShader\CompileShaderBase.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\compileShaderp\CompileShaderBase.h">
       <Filter>Engine\base\dxEngine\pipeline\compileShader</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\compileShader\CompileShaderFactory.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\compileShaderp\CompileShaderFactory.cpp">
       <Filter>Engine\base\dxEngine\pipeline\compileShader</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\compileShader\CompileShaderFactory.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\compileShaderp\CompileShaderFactory.h">
       <Filter>Engine\base\dxEngine\pipeline\compileShader</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\depthStencilState\DepthStencilStateBase.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\depthStencilStatep\DepthStencilStateBase.cpp">
       <Filter>Engine\base\dxEngine\pipeline\depthStencilState</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\depthStencilState\DepthStencilStateBase.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\depthStencilStatep\DepthStencilStateBase.h">
       <Filter>Engine\base\dxEngine\pipeline\depthStencilState</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\depthStencilState\DepthStencilStateFactory.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\depthStencilStatep\DepthStencilStateFactory.cpp">
       <Filter>Engine\base\dxEngine\pipeline\depthStencilState</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\depthStencilState\DepthStencilStateFactory.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\depthStencilStatep\DepthStencilStateFactory.h">
       <Filter>Engine\base\dxEngine\pipeline\depthStencilState</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\inputLayout\InputLayoutBase.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\inputLayoutp\InputLayoutBase.cpp">
       <Filter>Engine\base\dxEngine\pipeline\inputLayout</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\inputLayout\InputLayoutBase.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\inputLayoutp\InputLayoutBase.h">
       <Filter>Engine\base\dxEngine\pipeline\inputLayout</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\inputLayout\InputLayoutFactory.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\inputLayoutp\InputLayoutFactory.cpp">
       <Filter>Engine\base\dxEngine\pipeline\inputLayout</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\inputLayout\InputLayoutFactory.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\inputLayoutp\InputLayoutFactory.h">
       <Filter>Engine\base\dxEngine\pipeline\inputLayout</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\rasterizerState\RasterizerStateBase.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\rasterizerStatep\RasterizerStateBase.cpp">
       <Filter>Engine\base\dxEngine\pipeline\rasterizerState</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rasterizerState\RasterizerStateBase.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rasterizerStatep\RasterizerStateBase.h">
       <Filter>Engine\base\dxEngine\pipeline\rasterizerState</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\rasterizerState\RasterizerStateFactory.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\rasterizerStatep\RasterizerStateFactory.cpp">
       <Filter>Engine\base\dxEngine\pipeline\rasterizerState</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rasterizerState\RasterizerStateFactory.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rasterizerStatep\RasterizerStateFactory.h">
       <Filter>Engine\base\dxEngine\pipeline\rasterizerState</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\AnimationOutLineMaskRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\AnimationOutLineMaskRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\AnimationRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\AnimationRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\Line3dRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\Line3dRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\Object3dRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\Object3dRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\OutLineMaskRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\OutLineMaskRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\ParticleRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\ParticleRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\PrimitiveDrawrRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\PrimitiveDrawrRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\RenderTextureRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\RenderTextureRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\rootSignature\RootSignatureBase.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\RootSignatureBase.cpp">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\RootSignatureBase.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\RootSignatureBase.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\rootSignature\RootSignatureFactory.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\RootSignatureFactory.cpp">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\RootSignatureFactory.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\RootSignatureFactory.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\SkyboxRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\SkyboxRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\SpriteRootSignature.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\SpriteRootSignature.h">
       <Filter>Engine\base\dxEngine\pipeline\rootSignature</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\pipeline\PipelineState.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\pipelinep\PipelineState.cpp">
       <Filter>Engine\base\dxEngine\pipeline</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\pipeline\PipelineState.h">
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\PipelineState.h">
       <Filter>Engine\base\dxEngine\pipeline</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\renderTexture\DepthStencilTexture.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\renderTexturep\DepthStencilTexture.cpp">
       <Filter>Engine\base\dxEngine\renderTexture</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\renderTexture\DepthStencilTexture.h">
+    <ClInclude Include="Engine\basep\dxEnginep\renderTexturep\DepthStencilTexture.h">
       <Filter>Engine\base\dxEngine\renderTexture</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\renderTexture\RenderTexture.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\renderTexturep\RenderTexture.cpp">
       <Filter>Engine\base\dxEngine\renderTexture</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\renderTexture\RenderTexture.h">
+    <ClInclude Include="Engine\basep\dxEnginep\renderTexturep\RenderTexture.h">
       <Filter>Engine\base\dxEngine\renderTexture</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\CreateBufferResource.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\CreateBufferResource.cpp">
       <Filter>Engine\base\dxEngine</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\CreateBufferResource.h">
+    <ClInclude Include="Engine\basep\dxEnginep\CreateBufferResource.h">
       <Filter>Engine\base\dxEngine</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\D3DResourceLeakChecker.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\D3DResourceLeakChecker.cpp">
       <Filter>Engine\base\dxEngine</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\D3DResourceLeakChecker.h">
+    <ClInclude Include="Engine\basep\dxEnginep\D3DResourceLeakChecker.h">
       <Filter>Engine\base\dxEngine</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\DirectXEngine.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\DirectXEngine.cpp">
       <Filter>Engine\base\dxEngine</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\DirectXEngine.h">
+    <ClInclude Include="Engine\basep\dxEnginep\DirectXEngine.h">
       <Filter>Engine\base\dxEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\dxEngine\ResourceObject.h">
+    <ClInclude Include="Engine\basep\dxEnginep\ResourceObject.h">
       <Filter>Engine\base\dxEngine</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\StringUtility.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\StringUtility.cpp">
       <Filter>Engine\base\dxEngine</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\StringUtility.h">
+    <ClInclude Include="Engine\basep\dxEnginep\StringUtility.h">
       <Filter>Engine\base\dxEngine</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\dxEngine\WinApp.cpp">
+    <ClCompile Include="Engine\basep\dxEnginep\WinApp.cpp">
       <Filter>Engine\base\dxEngine</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\dxEngine\WinApp.h">
+    <ClInclude Include="Engine\basep\dxEnginep\WinApp.h">
       <Filter>Engine\base\dxEngine</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\effect\PostEffectManager.cpp">
+    <ClCompile Include="Engine\basep\effectp\PostEffectManager.cpp">
       <Filter>Engine\base\effect</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\effect\PostEffectManager.h">
+    <ClInclude Include="Engine\basep\effectp\PostEffectManager.h">
       <Filter>Engine\base\effect</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\base\effect\PostEffectType.h">
+    <ClInclude Include="Engine\basep\effectp\PostEffectType.h">
       <Filter>Engine\base\effect</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\framework\DeltaTimer.cpp">
+    <ClCompile Include="Engine\basep\frameworkp\DeltaTimer.cpp">
       <Filter>Engine\base\framework</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\framework\DeltaTimer.h">
+    <ClInclude Include="Engine\basep\frameworkp\DeltaTimer.h">
       <Filter>Engine\base\framework</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\framework\Framework.cpp">
+    <ClCompile Include="Engine\basep\frameworkp\Framework.cpp">
       <Filter>Engine\base\framework</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\framework\Framework.h">
+    <ClInclude Include="Engine\basep\frameworkp\Framework.h">
       <Filter>Engine\base\framework</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\framework\MyGame.cpp">
+    <ClCompile Include="Engine\basep\frameworkp\MyGame.cpp">
       <Filter>Engine\base\framework</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\framework\MyGame.h">
+    <ClInclude Include="Engine\basep\frameworkp\MyGame.h">
       <Filter>Engine\base\framework</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\imgui\ImGuiManager.cpp">
+    <ClCompile Include="Engine\basep\imguip\ImGuiManager.cpp">
       <Filter>Engine\base\imgui</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\imgui\ImGuiManager.h">
+    <ClInclude Include="Engine\basep\imguip\ImGuiManager.h">
       <Filter>Engine\base\imgui</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\camera\Camera.cpp">
+    <ClCompile Include="Engine\basep\objectp\camerap\Camera.cpp">
       <Filter>Engine\base\object\camera</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\camera\Camera.h">
+    <ClInclude Include="Engine\basep\objectp\camerap\Camera.h">
       <Filter>Engine\base\object\camera</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\camera\CameraManager.cpp">
+    <ClCompile Include="Engine\basep\objectp\camerap\CameraManager.cpp">
       <Filter>Engine\base\object\camera</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\camera\CameraManager.h">
+    <ClInclude Include="Engine\basep\objectp\camerap\CameraManager.h">
       <Filter>Engine\base\object\camera</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\light\type\BaseLight.cpp">
+    <ClCompile Include="Engine\basep\objectp\lightp\typep\BaseLight.cpp">
       <Filter>Engine\base\object\light\type</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\light\type\BaseLight.h">
+    <ClInclude Include="Engine\basep\objectp\lightp\typep\BaseLight.h">
       <Filter>Engine\base\object\light\type</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\light\type\DirectionalLight.cpp">
+    <ClCompile Include="Engine\basep\objectp\lightp\typep\DirectionalLight.cpp">
       <Filter>Engine\base\object\light\type</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\light\type\DirectionalLight.h">
+    <ClInclude Include="Engine\basep\objectp\lightp\typep\DirectionalLight.h">
       <Filter>Engine\base\object\light\type</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\light\type\PointLight.cpp">
+    <ClCompile Include="Engine\basep\objectp\lightp\typep\PointLight.cpp">
       <Filter>Engine\base\object\light\type</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\light\type\PointLight.h">
+    <ClInclude Include="Engine\basep\objectp\lightp\typep\PointLight.h">
       <Filter>Engine\base\object\light\type</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\light\type\SpotLight.cpp">
+    <ClCompile Include="Engine\basep\objectp\lightp\typep\SpotLight.cpp">
       <Filter>Engine\base\object\light\type</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\light\type\SpotLight.h">
+    <ClInclude Include="Engine\basep\objectp\lightp\typep\SpotLight.h">
       <Filter>Engine\base\object\light\type</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\light\LightManager.cpp">
+    <ClCompile Include="Engine\basep\objectp\lightp\LightManager.cpp">
       <Filter>Engine\base\object\light</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\light\LightManager.h">
+    <ClInclude Include="Engine\basep\objectp\lightp\LightManager.h">
       <Filter>Engine\base\object\light</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\model\AnimationBase.cpp">
+    <ClCompile Include="Engine\basep\objectp\modelp\AnimationBase.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\model\AnimationBase.h">
+    <ClInclude Include="Engine\basep\objectp\modelp\AnimationBase.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\model\Line3dBase.cpp">
+    <ClCompile Include="Engine\basep\objectp\modelp\Line3dBase.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\model\Line3dBase.h">
+    <ClInclude Include="Engine\basep\objectp\modelp\Line3dBase.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\model\LineInstanceRenderer.cpp">
+    <ClCompile Include="Engine\basep\objectp\modelp\LineInstanceRenderer.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\model\LineInstanceRenderer.h">
+    <ClInclude Include="Engine\basep\objectp\modelp\LineInstanceRenderer.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\model\ModelBase.cpp">
+    <ClCompile Include="Engine\basep\objectp\modelp\ModelBase.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\model\ModelBase.h">
+    <ClInclude Include="Engine\basep\objectp\modelp\ModelBase.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\model\ModelInstanceRenderer.cpp">
+    <ClCompile Include="Engine\basep\objectp\modelp\ModelInstanceRenderer.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\model\ModelInstanceRenderer.h">
+    <ClInclude Include="Engine\basep\objectp\modelp\ModelInstanceRenderer.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\model\ModelManager.cpp">
+    <ClCompile Include="Engine\basep\objectp\modelp\ModelManager.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\model\ModelManager.h">
+    <ClInclude Include="Engine\basep\objectp\modelp\ModelManager.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\model\Object3dBase.cpp">
+    <ClCompile Include="Engine\basep\objectp\modelp\Object3dBase.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\model\Object3dBase.h">
+    <ClInclude Include="Engine\basep\objectp\modelp\Object3dBase.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\model\PrimitiveDrawrBase.cpp">
+    <ClCompile Include="Engine\basep\objectp\modelp\PrimitiveDrawrBase.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\model\PrimitiveDrawrBase.h">
+    <ClInclude Include="Engine\basep\objectp\modelp\PrimitiveDrawrBase.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\particle\ParticleEditor.cpp">
+    <ClCompile Include="Engine\basep\objectp\particlep\ParticleEditor.cpp">
       <Filter>Engine\base\object\particle</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\particle\ParticleEditor.h">
+    <ClInclude Include="Engine\basep\objectp\particlep\ParticleEditor.h">
       <Filter>Engine\base\object\particle</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\particle\ParticleEmitter.cpp">
+    <ClCompile Include="Engine\basep\objectp\particlep\ParticleEmitter.cpp">
       <Filter>Engine\base\object\particle</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\particle\ParticleEmitter.h">
+    <ClInclude Include="Engine\basep\objectp\particlep\ParticleEmitter.h">
       <Filter>Engine\base\object\particle</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\particle\ParticleManager.cpp">
+    <ClCompile Include="Engine\basep\objectp\particlep\ParticleManager.cpp">
       <Filter>Engine\base\object\particle</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\particle\ParticleManager.h">
+    <ClInclude Include="Engine\basep\objectp\particlep\ParticleManager.h">
       <Filter>Engine\base\object\particle</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\sprite\SpriteBase.cpp">
+    <ClCompile Include="Engine\basep\objectp\spritep\SpriteBase.cpp">
       <Filter>Engine\base\object\sprite</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\sprite\SpriteBase.h">
+    <ClInclude Include="Engine\basep\objectp\spritep\SpriteBase.h">
       <Filter>Engine\base\object\sprite</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\texture\TextureManager.cpp">
+    <ClCompile Include="Engine\basep\objectp\texturep\TextureManager.cpp">
       <Filter>Engine\base\object\texture</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\texture\TextureManager.h">
+    <ClInclude Include="Engine\basep\objectp\texturep\TextureManager.h">
       <Filter>Engine\base\object\texture</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\object\SceneRenderer.cpp">
+    <ClCompile Include="Engine\basep\objectp\SceneRenderer.cpp">
       <Filter>Engine\base\object</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\object\SceneRenderer.h">
+    <ClInclude Include="Engine\basep\objectp\SceneRenderer.h">
       <Filter>Engine\base\object</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\scene\sceneFactory\AbstractSceneFactory.cpp">
+    <ClCompile Include="Engine\basep\scenep\sceneFactoryp\AbstractSceneFactory.cpp">
       <Filter>Engine\base\scene\sceneFactory</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\scene\sceneFactory\AbstractSceneFactory.h">
+    <ClInclude Include="Engine\basep\scenep\sceneFactoryp\AbstractSceneFactory.h">
       <Filter>Engine\base\scene\sceneFactory</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\scene\sceneFactory\SceneFactory.cpp">
+    <ClCompile Include="Engine\basep\scenep\sceneFactoryp\SceneFactory.cpp">
       <Filter>Engine\base\scene\sceneFactory</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\scene\sceneFactory\SceneFactory.h">
+    <ClInclude Include="Engine\basep\scenep\sceneFactoryp\SceneFactory.h">
       <Filter>Engine\base\scene\sceneFactory</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\scene\BaseScene.cpp">
+    <ClCompile Include="Engine\basep\scenep\BaseScene.cpp">
       <Filter>Engine\base\scene</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\scene\BaseScene.h">
+    <ClInclude Include="Engine\basep\scenep\BaseScene.h">
       <Filter>Engine\base\scene</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\base\scene\SceneManager.cpp">
+    <ClCompile Include="Engine\basep\scenep\SceneManager.cpp">
       <Filter>Engine\base\scene</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\base\scene\SceneManager.h">
+    <ClInclude Include="Engine\basep\scenep\SceneManager.h">
       <Filter>Engine\base\scene</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\input\Input.cpp">
+    <ClCompile Include="Engine\inputp\Input.cpp">
       <Filter>Engine\input</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\input\Input.h">
+    <ClInclude Include="Engine\inputp\Input.h">
       <Filter>Engine\input</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\jsonFunction\JsonFunction.cpp">
+    <ClCompile Include="Engine\jsonFunctionp\JsonFunction.cpp">
       <Filter>Engine\jsonFunction</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\jsonFunction\JsonFunction.h">
+    <ClInclude Include="Engine\jsonFunctionp\JsonFunction.h">
       <Filter>Engine\jsonFunction</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\jsonFunction\SceneJsonLoader.cpp">
+    <ClCompile Include="Engine\jsonFunctionp\SceneJsonLoader.cpp">
       <Filter>Engine\jsonFunction</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\jsonFunction\SceneJsonLoader.h">
+    <ClInclude Include="Engine\jsonFunctionp\SceneJsonLoader.h">
       <Filter>Engine\jsonFunction</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\math\structure\Easing.h">
+    <ClInclude Include="Engine\mathp\structurep\Easing.h">
       <Filter>Engine\math\structure</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\math\structure\Matrix3x3.h">
+    <ClInclude Include="Engine\mathp\structurep\Matrix3x3.h">
       <Filter>Engine\math\structure</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\math\structure\Matrix4x4.cpp">
+    <ClCompile Include="Engine\mathp\structurep\Matrix4x4.cpp">
       <Filter>Engine\math\structure</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\math\structure\Matrix4x4.h">
+    <ClInclude Include="Engine\mathp\structurep\Matrix4x4.h">
       <Filter>Engine\math\structure</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\math\structure\Quaternion.cpp">
+    <ClCompile Include="Engine\mathp\structurep\Quaternion.cpp">
       <Filter>Engine\math\structure</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\math\structure\Quaternion.h">
+    <ClInclude Include="Engine\mathp\structurep\Quaternion.h">
       <Filter>Engine\math\structure</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\math\structure\Transform.h">
+    <ClInclude Include="Engine\mathp\structurep\Transform.h">
       <Filter>Engine\math\structure</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\math\structure\Vector2.cpp">
+    <ClCompile Include="Engine\mathp\structurep\Vector2.cpp">
       <Filter>Engine\math\structure</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\math\structure\Vector2.h">
+    <ClInclude Include="Engine\mathp\structurep\Vector2.h">
       <Filter>Engine\math\structure</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\math\structure\Vector3.cpp">
+    <ClCompile Include="Engine\mathp\structurep\Vector3.cpp">
       <Filter>Engine\math\structure</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\math\structure\Vector3.h">
+    <ClInclude Include="Engine\mathp\structurep\Vector3.h">
       <Filter>Engine\math\structure</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\math\structure\Vector4.cpp">
+    <ClCompile Include="Engine\mathp\structurep\Vector4.cpp">
       <Filter>Engine\math\structure</Filter>
     </ClCompile>
-    <ClInclude Include="Engine\math\structure\Vector4.h">
+    <ClInclude Include="Engine\mathp\structurep\Vector4.h">
       <Filter>Engine\math\structure</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\math\AnimationStruct.h">
+    <ClInclude Include="Engine\mathp\AnimationStruct.h">
       <Filter>Engine\math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\math\ModelStruct.h">
+    <ClInclude Include="Engine\mathp\ModelStruct.h">
       <Filter>Engine\math</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\math\PipelineStruct.h">
+    <ClInclude Include="Engine\mathp\PipelineStruct.h">
       <Filter>Engine\math</Filter>
     </ClInclude>
     <ClCompile Include="game\gameCamera\GameCamera.cpp">
@@ -1217,16 +1217,16 @@
     <ClCompile Include="game\uis\select\SelectSystem.cpp" />
     <ClCompile Include="game\uis\select\SelectUI.cpp" />
     <ClCompile Include="game\uis\select\adjustItem\SelectAdjustItem.cpp" />
-    <ClCompile Include="Engine\base\object\shadowMap\ShadowMap.cpp" />
+    <ClCompile Include="Engine\basep\objectp\shadowMapp\ShadowMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\uis\gameSceneUIs\GameSceneUIs.h" />
     <ClInclude Include="game\uis\select\SelectSystem.h" />
     <ClInclude Include="game\uis\select\SelectUI.h" />
     <ClInclude Include="game\uis\select\adjustItem\SelectAdjustItem.h" />
-    <ClInclude Include="Engine\base\collider\ColliderStruct.h" />
-    <ClInclude Include="Engine\base\object\shadowMap\ShadowMap.h" />
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\ObjectShadowMapDepthRootSignature.h" />
-    <ClInclude Include="Engine\base\dxEngine\pipeline\rootSignature\AnimationShadowMapDepthRootSignature.h" />
+    <ClInclude Include="Engine\basep\colliderp\ColliderStruct.h" />
+    <ClInclude Include="Engine\basep\objectp\shadowMapp\ShadowMap.h" />
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\ObjectShadowMapDepthRootSignature.h" />
+    <ClInclude Include="Engine\basep\dxEnginep\pipelinep\rootSignaturep\AnimationShadowMapDepthRootSignature.h" />
   </ItemGroup>
 </Project>
