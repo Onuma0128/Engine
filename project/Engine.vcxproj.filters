@@ -852,378 +852,378 @@
     <ClInclude Include="Engine\Math\PipelineStruct.h">
       <Filter>Engine\math</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\GameCamerap\GameCamera.cpp">
+    <ClCompile Include="Game\GameCamera\GameCamera.cpp">
       <Filter>game\gameCamera</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\GameCamerap\GameCamera.h">
+    <ClInclude Include="Game\GameCamera\GameCamera.h">
       <Filter>game\gameCamera</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\AdjustItemp\EnemyAdjustItem.cpp">
+    <ClCompile Include="Game\Objects\Enemy\AdjustItem\EnemyAdjustItem.cpp">
       <Filter>game\objects\enemy\adjustItem</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\AdjustItemp\EnemyAdjustItem.h">
+    <ClInclude Include="Game\Objects\Enemy\AdjustItem\EnemyAdjustItem.h">
       <Filter>game\objects\enemy\adjustItem</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Basep\BaseEnemy.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Base\BaseEnemy.cpp">
       <Filter>game\objects\enemy\base</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Basep\BaseEnemy.h">
+    <ClInclude Include="Game\Objects\Enemy\Base\BaseEnemy.h">
       <Filter>game\objects\enemy\base</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Basep\MeleeEnemy.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Base\MeleeEnemy.cpp">
       <Filter>game\objects\enemy\base</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Basep\MeleeEnemy.h">
+    <ClInclude Include="Game\Objects\Enemy\Base\MeleeEnemy.h">
       <Filter>game\objects\enemy\base</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Basep\RangedEliteEnemy.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Base\RangedEliteEnemy.cpp">
       <Filter>game\objects\enemy\base</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Basep\RangedEliteEnemy.h">
+    <ClInclude Include="Game\Objects\Enemy\Base\RangedEliteEnemy.h">
       <Filter>game\objects\enemy\base</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Basep\RangedEnemy.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Base\RangedEnemy.cpp">
       <Filter>game\objects\enemy\base</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Basep\RangedEnemy.h">
+    <ClInclude Include="Game\Objects\Enemy\Base\RangedEnemy.h">
       <Filter>game\objects\enemy\base</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Basep\ShieldBearerEnemy.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Base\ShieldBearerEnemy.cpp">
       <Filter>game\objects\enemy\base</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Basep\ShieldBearerEnemy.h">
+    <ClInclude Include="Game\Objects\Enemy\Base\ShieldBearerEnemy.h">
       <Filter>game\objects\enemy\base</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Bulletp\EnemyBullet.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Bullet\EnemyBullet.cpp">
       <Filter>game\objects\enemy\bullet</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Bulletp\EnemyBullet.h">
+    <ClInclude Include="Game\Objects\Enemy\Bullet\EnemyBullet.h">
       <Filter>game\objects\enemy\bullet</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Effectp\EnemyEffect.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Effect\EnemyEffect.cpp">
       <Filter>game\objects\enemy\effect</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Effectp\EnemyEffect.h">
+    <ClInclude Include="Game\Objects\Enemy\Effect\EnemyEffect.h">
       <Filter>game\objects\enemy\effect</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Rayp\EnemyRay.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Ray\EnemyRay.cpp">
       <Filter>game\objects\enemy\ray</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Rayp\EnemyRay.h">
+    <ClInclude Include="Game\Objects\Enemy\Ray\EnemyRay.h">
       <Filter>game\objects\enemy\ray</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Shadowp\CharacterShadow.cpp">
+    <ClCompile Include="Game\Objects\Shadow\CharacterShadow.cpp">
       <Filter>game\objects\enemy\shadow</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Shadowp\CharacterShadow.h">
+    <ClInclude Include="Game\Objects\Shadow\CharacterShadow.h">
       <Filter>game\objects\enemy\shadow</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Spawnerp\EnemySpawner.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Spawner\EnemySpawner.cpp">
       <Filter>game\objects\enemy\spawner</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Spawnerp\EnemySpawner.h">
+    <ClInclude Include="Game\Objects\Enemy\Spawner\EnemySpawner.h">
       <Filter>game\objects\enemy\spawner</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Spawnerp\EnemySpawnerFactory.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Spawner\EnemySpawnerFactory.cpp">
       <Filter>game\objects\enemy\spawner</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Spawnerp\EnemySpawnerFactory.h">
+    <ClInclude Include="Game\Objects\Enemy\Spawner\EnemySpawnerFactory.h">
       <Filter>game\objects\enemy\spawner</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Statep\Melee\EnemyMelee_AttackState.cpp">
+    <ClCompile Include="Game\Objects\Enemy\State\Melee\EnemyMelee_AttackState.cpp">
       <Filter>game\objects\enemy\state\Melee</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Statep\Melee\EnemyMelee_AttackState.h">
+    <ClInclude Include="Game\Objects\Enemy\State\Melee\EnemyMelee_AttackState.h">
       <Filter>game\objects\enemy\state\Melee</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Statep\Ranged\EnemyRanged_AttackState.cpp">
+    <ClCompile Include="Game\Objects\Enemy\State\Ranged\EnemyRanged_AttackState.cpp">
       <Filter>game\objects\enemy\state\Ranged</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Statep\Ranged\EnemyRanged_AttackState.h">
+    <ClInclude Include="Game\Objects\Enemy\State\Ranged\EnemyRanged_AttackState.h">
       <Filter>game\objects\enemy\state\Ranged</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Statep\RangedElite\EnemyRangedElite_AttackState.cpp">
+    <ClCompile Include="Game\Objects\Enemy\State\RangedElite\EnemyRangedElite_AttackState.cpp">
       <Filter>game\objects\enemy\state\RangedElite</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Statep\RangedElite\EnemyRangedElite_AttackState.h">
+    <ClInclude Include="Game\Objects\Enemy\State\RangedElite\EnemyRangedElite_AttackState.h">
       <Filter>game\objects\enemy\state\RangedElite</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Statep\ShieldBearer\EnemyShieldBearer_AttackState.cpp">
+    <ClCompile Include="Game\Objects\Enemy\State\ShieldBearer\EnemyShieldBearer_AttackState.cpp">
       <Filter>game\objects\enemy\state\ShieldBearer</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Statep\ShieldBearer\EnemyShieldBearer_AttackState.h">
+    <ClInclude Include="Game\Objects\Enemy\State\ShieldBearer\EnemyShieldBearer_AttackState.h">
       <Filter>game\objects\enemy\state\ShieldBearer</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Statep\EnemyBaseState.cpp">
+    <ClCompile Include="Game\Objects\Enemy\State\EnemyBaseState.cpp">
       <Filter>game\objects\enemy\state</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Statep\EnemyBaseState.h">
+    <ClInclude Include="Game\Objects\Enemy\State\EnemyBaseState.h">
       <Filter>game\objects\enemy\state</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Statep\EnemyDeadState.cpp">
+    <ClCompile Include="Game\Objects\Enemy\State\EnemyDeadState.cpp">
       <Filter>game\objects\enemy\state</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Statep\EnemyDeadState.h">
+    <ClInclude Include="Game\Objects\Enemy\State\EnemyDeadState.h">
       <Filter>game\objects\enemy\state</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Statep\EnemyMoveState.cpp">
+    <ClCompile Include="Game\Objects\Enemy\State\EnemyMoveState.cpp">
       <Filter>game\objects\enemy\state</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Statep\EnemyMoveState.h">
+    <ClInclude Include="Game\Objects\Enemy\State\EnemyMoveState.h">
       <Filter>game\objects\enemy\state</Filter>
     </ClInclude>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Typep\EnemyType.h">
+    <ClInclude Include="Game\Objects\Enemy\Type\EnemyType.h">
       <Filter>game\objects\enemy\type</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Weaponp\Axep\EnemyAxe.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Weapon\Axe\EnemyAxe.cpp">
       <Filter>game\objects\enemy\weapon\axe</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Weaponp\Axep\EnemyAxe.h">
+    <ClInclude Include="Game\Objects\Enemy\Weapon\Axe\EnemyAxe.h">
       <Filter>game\objects\enemy\weapon\axe</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Weaponp\Shieldp\EnemyShield.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Weapon\Shield\EnemyShield.cpp">
       <Filter>game\objects\enemy\weapon\shield</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Weaponp\Shieldp\EnemyShield.h">
+    <ClInclude Include="Game\Objects\Enemy\Weapon\Shield\EnemyShield.h">
       <Filter>game\objects\enemy\weapon\shield</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Enemyp\Weaponp\EnemyWeaponBase.cpp">
+    <ClCompile Include="Game\Objects\Enemy\Weapon\EnemyWeaponBase.cpp">
       <Filter>game\objects\enemy\weapon</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Enemyp\Weaponp\EnemyWeaponBase.h">
+    <ClInclude Include="Game\Objects\Enemy\Weapon\EnemyWeaponBase.h">
       <Filter>game\objects\enemy\weapon</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\FieldObjectp\Effectp\FieldObjectEffect.cpp">
+    <ClCompile Include="Game\Objects\FieldObject\Effect\FieldObjectEffect.cpp">
       <Filter>game\objects\fieldObject\effect</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\FieldObjectp\Effectp\FieldObjectEffect.h">
+    <ClInclude Include="Game\Objects\FieldObject\Effect\FieldObjectEffect.h">
       <Filter>game\objects\fieldObject\effect</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\FieldObjectp\Factory\FieldObjectFactory.cpp">
+    <ClCompile Include="Game\Objects\FieldObject\Factory\FieldObjectFactory.cpp">
       <Filter>game\objects\fieldObject\Factory</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\FieldObjectp\Factory\FieldObjectFactory.h">
+    <ClInclude Include="Game\Objects\FieldObject\Factory\FieldObjectFactory.h">
       <Filter>game\objects\fieldObject\Factory</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\FieldObjectp\FieldObject.cpp">
+    <ClCompile Include="Game\Objects\FieldObject\FieldObject.cpp">
       <Filter>game\objects\fieldObject</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\FieldObjectp\FieldObject.h">
+    <ClInclude Include="Game\Objects\FieldObject\FieldObject.h">
       <Filter>game\objects\fieldObject</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\AdjustItemp\PlayerAdjustItem.cpp">
+    <ClCompile Include="Game\Objects\Player\AdjustItem\PlayerAdjustItem.cpp">
       <Filter>game\objects\player\adjustItem</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\AdjustItemp\PlayerAdjustItem.h">
+    <ClInclude Include="Game\Objects\Player\AdjustItem\PlayerAdjustItem.h">
       <Filter>game\objects\player\adjustItem</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Bulletp\PlayerBullet.cpp">
+    <ClCompile Include="Game\Objects\Player\Bullet\PlayerBullet.cpp">
       <Filter>game\objects\player\bullet</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Bulletp\PlayerBullet.h">
+    <ClInclude Include="Game\Objects\Player\Bullet\PlayerBullet.h">
       <Filter>game\objects\player\bullet</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Bulletp\PlayerShot.cpp">
+    <ClCompile Include="Game\Objects\Player\Bullet\PlayerShot.cpp">
       <Filter>game\objects\player\bullet</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Bulletp\PlayerShot.h">
+    <ClInclude Include="Game\Objects\Player\Bullet\PlayerShot.h">
       <Filter>game\objects\player\bullet</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Bulletp\PredictionObject.cpp">
+    <ClCompile Include="Game\Objects\Player\Bullet\PredictionObject.cpp">
       <Filter>game\objects\player\bullet</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Bulletp\PredictionObject.h">
+    <ClInclude Include="Game\Objects\Player\Bullet\PredictionObject.h">
       <Filter>game\objects\player\bullet</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Effectp\PlayerBulletEffect.cpp">
+    <ClCompile Include="Game\Objects\Player\Effect\PlayerBulletEffect.cpp">
       <Filter>game\objects\player\effect</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Effectp\PlayerBulletEffect.h">
+    <ClInclude Include="Game\Objects\Player\Effect\PlayerBulletEffect.h">
       <Filter>game\objects\player\effect</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Effectp\PlayerEffect.cpp">
+    <ClCompile Include="Game\Objects\Player\Effect\PlayerEffect.cpp">
       <Filter>game\objects\player\effect</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Effectp\PlayerEffect.h">
+    <ClInclude Include="Game\Objects\Player\Effect\PlayerEffect.h">
       <Filter>game\objects\player\effect</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Reticlep\PlayerReticle.cpp">
+    <ClCompile Include="Game\Objects\Player\Reticle\PlayerReticle.cpp">
       <Filter>game\objects\player\reticle</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Reticlep\PlayerReticle.h">
+    <ClInclude Include="Game\Objects\Player\Reticle\PlayerReticle.h">
       <Filter>game\objects\player\reticle</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Statep\PlayerAvoidState.cpp">
+    <ClCompile Include="Game\Objects\Player\State\PlayerAvoidState.cpp">
       <Filter>game\objects\player\state</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Statep\PlayerAvoidState.h">
+    <ClInclude Include="Game\Objects\Player\State\PlayerAvoidState.h">
       <Filter>game\objects\player\state</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Statep\PlayerBaseState.cpp">
+    <ClCompile Include="Game\Objects\Player\State\PlayerBaseState.cpp">
       <Filter>game\objects\player\state</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Statep\PlayerBaseState.h">
+    <ClInclude Include="Game\Objects\Player\State\PlayerBaseState.h">
       <Filter>game\objects\player\state</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Statep\PlayerDeadState.cpp">
+    <ClCompile Include="Game\Objects\Player\State\PlayerDeadState.cpp">
       <Filter>game\objects\player\state</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Statep\PlayerDeadState.h">
+    <ClInclude Include="Game\Objects\Player\State\PlayerDeadState.h">
       <Filter>game\objects\player\state</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Statep\PlayerMoveState.cpp">
+    <ClCompile Include="Game\Objects\Player\State\PlayerMoveState.cpp">
       <Filter>game\objects\player\state</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Statep\PlayerMoveState.h">
+    <ClInclude Include="Game\Objects\Player\State\PlayerMoveState.h">
       <Filter>game\objects\player\state</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Statep\PlayerSpecialMoveState.cpp">
+    <ClCompile Include="Game\Objects\Player\State\PlayerSpecialMoveState.cpp">
       <Filter>game\objects\player\state</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Statep\PlayerSpecialMoveState.h">
+    <ClInclude Include="Game\Objects\Player\State\PlayerSpecialMoveState.h">
       <Filter>game\objects\player\state</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Uisp\Playerp\PlayerBulletUI.cpp">
+    <ClCompile Include="Game\Uis\Player\PlayerBulletUI.cpp">
       <Filter>game\objects\player\ui</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Uisp\Playerp\PlayerBulletUI.h">
+    <ClInclude Include="Game\Uis\Player\PlayerBulletUI.h">
       <Filter>game\objects\player\ui</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Uisp\GameSceneUIsp\PlayerControlUI.cpp">
+    <ClCompile Include="Game\Uis\GameSceneUIs\PlayerControlUI.cpp">
       <Filter>game\objects\player\ui</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Uisp\GameSceneUIsp\PlayerControlUI.h">
+    <ClInclude Include="Game\Uis\GameSceneUIs\PlayerControlUI.h">
       <Filter>game\objects\player\ui</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Uisp\Playerp\PlayerCountUI.cpp">
+    <ClCompile Include="Game\Uis\Player\PlayerCountUI.cpp">
       <Filter>game\objects\player\ui</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Uisp\Playerp\PlayerCountUI.h">
+    <ClInclude Include="Game\Uis\Player\PlayerCountUI.h">
       <Filter>game\objects\player\ui</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Uisp\GameSceneUIsp\PlayerMenuUI.cpp">
+    <ClCompile Include="Game\Uis\GameSceneUIs\PlayerMenuUI.cpp">
       <Filter>game\objects\player\ui</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Uisp\GameSceneUIsp\PlayerMenuUI.h">
+    <ClInclude Include="Game\Uis\GameSceneUIs\PlayerMenuUI.h">
       <Filter>game\objects\player\ui</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Objectsp\Playerp\Player.cpp">
+    <ClCompile Include="Game\Objects\Player\Player.cpp">
       <Filter>game\objects\player</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Objectsp\Playerp\Player.h">
+    <ClInclude Include="Game\Objects\Player\Player.h">
       <Filter>game\objects\player</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Scenep\GameClearp\GameClearScene.cpp">
+    <ClCompile Include="Game\Scene\GameClear\GameClearScene.cpp">
       <Filter>game\scene\gameClear</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Scenep\GameClearp\GameClearScene.h">
+    <ClInclude Include="Game\Scene\GameClear\GameClearScene.h">
       <Filter>game\scene\gameClear</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Scenep\GameOverp\GameOverScene.cpp">
+    <ClCompile Include="Game\Scene\GameOver\GameOverScene.cpp">
       <Filter>game\scene\gameOver</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Scenep\GameOverp\GameOverScene.h">
+    <ClInclude Include="Game\Scene\GameOver\GameOverScene.h">
       <Filter>game\scene\gameOver</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Scenep\GameScenep\GamePlayScene.cpp">
+    <ClCompile Include="Game\Scene\GameScene\GamePlayScene.cpp">
       <Filter>game\scene\gameScene</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Scenep\GameScenep\GamePlayScene.h">
+    <ClInclude Include="Game\Scene\GameScene\GamePlayScene.h">
       <Filter>game\scene\gameScene</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Scenep\SceneFadep\SceneFade.cpp">
+    <ClCompile Include="Game\Scene\SceneFade\SceneFade.cpp">
       <Filter>game\scene\sceneFade</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Scenep\SceneFadep\SceneFade.h">
+    <ClInclude Include="Game\Scene\SceneFade\SceneFade.h">
       <Filter>game\scene\sceneFade</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Scenep\TitleScenep\TitleScene.cpp">
+    <ClCompile Include="Game\Scene\TitleScene\TitleScene.cpp">
       <Filter>game\scene\titleScene</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Scenep\TitleScenep\TitleScene.h">
+    <ClInclude Include="Game\Scene\TitleScene\TitleScene.h">
       <Filter>game\scene\titleScene</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\SearchAlgorithmp\Collisionp\MapCollision.cpp">
+    <ClCompile Include="Game\SearchAlgorithm\Collision\MapCollision.cpp">
       <Filter>game\searchAlgorithm\collision</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\SearchAlgorithmp\Collisionp\MapCollision.h">
+    <ClInclude Include="Game\SearchAlgorithm\Collision\MapCollision.h">
       <Filter>game\searchAlgorithm\collision</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\SearchAlgorithmp\DebugGridp\DrawGrid.cpp">
+    <ClCompile Include="Game\SearchAlgorithm\DebugGrid\DrawGrid.cpp">
       <Filter>game\searchAlgorithm\debug</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\SearchAlgorithmp\DebugGridp\DrawGrid.h">
+    <ClInclude Include="Game\SearchAlgorithm\DebugGrid\DrawGrid.h">
       <Filter>game\searchAlgorithm\debug</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\SearchAlgorithmp\Movementp\SplineMover.cpp">
+    <ClCompile Include="Game\SearchAlgorithm\Movement\SplineMover.cpp">
       <Filter>game\searchAlgorithm\movement</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\SearchAlgorithmp\Movementp\SplineMover.h">
+    <ClInclude Include="Game\SearchAlgorithm\Movement\SplineMover.h">
       <Filter>game\searchAlgorithm\movement</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\SearchAlgorithmp\Navigationp\PathFinder.cpp">
+    <ClCompile Include="Game\SearchAlgorithm\Navigation\PathFinder.cpp">
       <Filter>game\searchAlgorithm\navigation</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\SearchAlgorithmp\Navigationp\PathFinder.h">
+    <ClInclude Include="Game\SearchAlgorithm\Navigation\PathFinder.h">
       <Filter>game\searchAlgorithm\navigation</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\SearchAlgorithmp\Samplep\AlgorithmTest.cpp">
+    <ClCompile Include="Game\SearchAlgorithm\Sample\AlgorithmTest.cpp">
       <Filter>game\searchAlgorithm\sample</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\SearchAlgorithmp\Samplep\AlgorithmTest.h">
+    <ClInclude Include="Game\SearchAlgorithm\Sample\AlgorithmTest.h">
       <Filter>game\searchAlgorithm\sample</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Uisp\GameClearUIp\GameClearUI.cpp">
+    <ClCompile Include="Game\Uis\GameClearUI\GameClearUI.cpp">
       <Filter>game\uis\gameClearUI</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Uisp\GameClearUIp\GameClearUI.h">
+    <ClInclude Include="Game\Uis\GameClearUI\GameClearUI.h">
       <Filter>game\uis\gameClearUI</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Uisp\GameOverUIp\GameOverUI.cpp">
+    <ClCompile Include="Game\Uis\GameOverUI\GameOverUI.cpp">
       <Filter>game\uis\gameOverUI</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Uisp\GameOverUIp\GameOverUI.h">
+    <ClInclude Include="Game\Uis\GameOverUI\GameOverUI.h">
       <Filter>game\uis\gameOverUI</Filter>
     </ClInclude>
-    <ClCompile Include="Gamep\Uisp\TitleUIp\TitleUI.cpp">
+    <ClCompile Include="Game\Uis\TitleUI\TitleUI.cpp">
       <Filter>game\uis\titleUI</Filter>
     </ClCompile>
-    <ClInclude Include="Gamep\Uisp\TitleUIp\TitleUI.h">
+    <ClInclude Include="Game\Uis\TitleUI\TitleUI.h">
       <Filter>game\uis\titleUI</Filter>
     </ClInclude>
-    <None Include="Resourcesp\Shadersp\Fullscreen.hlsli">
+    <None Include="Resources\Shaders\Fullscreen.hlsli">
       <Filter>resources\shaders</Filter>
     </None>
-    <None Include="Resourcesp\Shadersp\Line3d.hlsli">
+    <None Include="Resources\Shaders\Line3d.hlsli">
       <Filter>resources\shaders</Filter>
     </None>
-    <None Include="Resourcesp\Shadersp\Object3d.hlsli">
+    <None Include="Resources\Shaders\Object3d.hlsli">
       <Filter>resources\shaders</Filter>
     </None>
-    <None Include="Resourcesp\Shadersp\Particle.hlsli">
+    <None Include="Resources\Shaders\Particle.hlsli">
       <Filter>resources\shaders</Filter>
     </None>
-    <None Include="Resourcesp\Shadersp\PrimitiveDrawr.hlsli">
+    <None Include="Resources\Shaders\PrimitiveDrawr.hlsli">
       <Filter>resources\shaders</Filter>
     </None>
-    <None Include="Resourcesp\Shadersp\Skybox.hlsli">
+    <None Include="Resources\Shaders\Skybox.hlsli">
       <Filter>resources\shaders</Filter>
     </None>
-    <None Include="Resourcesp\Shadersp\Sprite.hlsli">
+    <None Include="Resources\Shaders\Sprite.hlsli">
       <Filter>resources\shaders</Filter>
     </None>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Gamep\Uisp\GameSceneUIsp\GameSceneUIs.cpp" />
-    <ClCompile Include="Gamep\Uisp\Selectp\SelectSystem.cpp" />
-    <ClCompile Include="Gamep\Uisp\Selectp\SelectUI.cpp" />
-    <ClCompile Include="Gamep\Uisp\Selectp\AdjustItemp\SelectAdjustItem.cpp" />
+    <ClCompile Include="Game\Uis\GameSceneUIs\GameSceneUIs.cpp" />
+    <ClCompile Include="Game\Uis\Select\SelectSystem.cpp" />
+    <ClCompile Include="Game\Uis\Select\SelectUI.cpp" />
+    <ClCompile Include="Game\Uis\Select\AdjustItem\SelectAdjustItem.cpp" />
     <ClCompile Include="Engine\Base\Object\ShadowMap\ShadowMap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Gamep\Uisp\GameSceneUIsp\GameSceneUIs.h" />
-    <ClInclude Include="Gamep\Uisp\Selectp\SelectSystem.h" />
-    <ClInclude Include="Gamep\Uisp\Selectp\SelectUI.h" />
-    <ClInclude Include="Gamep\Uisp\Selectp\AdjustItemp\SelectAdjustItem.h" />
+    <ClInclude Include="Game\Uis\GameSceneUIs\GameSceneUIs.h" />
+    <ClInclude Include="Game\Uis\Select\SelectSystem.h" />
+    <ClInclude Include="Game\Uis\Select\SelectUI.h" />
+    <ClInclude Include="Game\Uis\Select\AdjustItem\SelectAdjustItem.h" />
     <ClInclude Include="Engine\Base\Collider\ColliderStruct.h" />
     <ClInclude Include="Engine\Base\Object\ShadowMap\ShadowMap.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\ObjectShadowMapDepthRootSignature.h" />

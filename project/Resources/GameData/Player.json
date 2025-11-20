@@ -1,0 +1,19 @@
+{
+    "speed": 5.0,
+    "avoidTime": 0.30000001192092896,
+    "avoid_speed": 15.0,
+    "avoid_velocityY": 0.7099999785423279,
+    "avoid_acceleration": 4.0,
+    "backSpeed": 3.0,
+    "pushSpeed": 30.0,
+    "clearKill": 50,
+    "minPlayerClamp": {
+        "x": -20.5,
+        "y": -22.0
+    },
+    "maxPlayerClamp": {
+        "x": 21.0,
+        "y": 30.0
+    },
+    "avoid_coolTime": 1.0
+}
