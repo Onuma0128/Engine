@@ -1,0 +1,87 @@
+#pragma once
+#include <list>
+#include <memory>
+
+#include "Object3d.h"
+#include "Sprite.h"
+#include "Line3d.h"
+#include "PrimitiveDrawr.h"
+#include "Animation.h"
+
+/// <summary>
+/// シーンの描画を管理するクラス
+/// </summary>
+class SceneRenderer
+{
+public:
+
+	// 終了処理
+	void Finalize();
+
+	// 全ての描画
+	void AllDraw();
+	// 全ての描画(offscreenが終わってから描画)
+	void OutAllDraw();
+
+	// Obejctをセットする
+	template<typename T>
+	void SetDrawList(T* object);
+	template<typename T>
+	void SetRemoveList(T* object);
+
+private:
+
+	/// ============================== 描画するObjects ============================== ///
+
+	std::list<Object3d*>		objects_;
+	std::list<Sprite*>			sprites_;
+	std::list<Line3d*>			lines_;
+	std::list<PrimitiveDrawr*>	primitiveDrawrs_;
+	std::list<Animation*>		animations_;
+
+};
+
+template<>
+inline void SceneRenderer::SetDrawList<Object3d>(Object3d* object) {
+	objects_.push_back(object);
+}
+template<>
+inline void SceneRenderer::SetRemoveList<Object3d>(Object3d* object) {
+	objects_.remove(object);
+}
+
+template<>
+inline void SceneRenderer::SetDrawList<Sprite>(Sprite* sprite) {
+	sprites_.push_back(sprite);
+}
+template<>
+inline void SceneRenderer::SetRemoveList<Sprite>(Sprite* sprite) {
+	sprites_.remove(sprite);
+}
+
+template<>
+inline void SceneRenderer::SetDrawList<Line3d>(Line3d* line) {
+	lines_.push_back(line);
+}
+template<>
+inline void SceneRenderer::SetRemoveList<Line3d>(Line3d* line) {
+	lines_.remove(line);
+}
+
+template<>
+inline void SceneRenderer::SetDrawList<PrimitiveDrawr>(PrimitiveDrawr* primitive) {
+	primitiveDrawrs_.push_back(primitive);
+}
+template<>
+inline void SceneRenderer::SetRemoveList<PrimitiveDrawr>(PrimitiveDrawr* primitive) {
+	primitiveDrawrs_.remove(primitive);
+}
+
+template<>
+inline void SceneRenderer::SetDrawList<Animation>(Animation* animation) {
+	animations_.push_back(animation);
+}
+template<>
+inline void SceneRenderer::SetRemoveList<Animation>(Animation* animation) {
+	animations_.remove(animation);
+}

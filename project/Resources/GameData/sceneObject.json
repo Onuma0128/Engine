@@ -1,0 +1,2352 @@
+{
+    "name": "scene",
+    "objects": [
+        {
+            "type": "MESH",
+            "name": "DeadTree_1",
+            "transform": {
+                "translation": [
+                    -20.568103790283203,
+                    -25.83760643005371,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "DeadTree_1.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_1.001",
+            "transform": {
+                "translation": [
+                    18.0706729888916,
+                    19.37693977355957,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    55.00001632925764
+                ],
+                "scaling": [
+                    0.9599999189376831,
+                    0.9599999189376831,
+                    0.9599999785423279
+                ]
+            },
+            "file_name": "DeadTree_1.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_1.002",
+            "transform": {
+                "translation": [
+                    32.8497428894043,
+                    9.550068855285645,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -154.0000020087107
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "DeadTree_1.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_1.003",
+            "transform": {
+                "translation": [
+                    -14.836779594421387,
+                    12.789999961853027,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -179.999991348578
+                ],
+                "scaling": [
+                    1.2100000381469727,
+                    1.2100000381469727,
+                    1.2100000381469727
+                ]
+            },
+            "file_name": "DeadTree_1.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    -0.15729999918937665,
+                    -0.04840000044405457,
+                    1.0285002055168206
+                ],
+                "size": [
+                    0.9075000286102295,
+                    0.6231500023365015,
+                    1.44595010905266
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "BigBarn.003",
+            "transform": {
+                "translation": [
+                    -20.669998168945312,
+                    31.509998321533203,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -171.99999567941717
+                ],
+                "scaling": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ]
+            },
+            "file_name": "BigBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "BigBarn.004",
+            "transform": {
+                "translation": [
+                    23.970001220703125,
+                    7.879999160766602,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "BigBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    -0.07999999821186066,
+                    2.3899998664855957
+                ],
+                "size": [
+                    3.5399999618530273,
+                    4.085000038146973,
+                    2.4699997901916504
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Well",
+            "transform": {
+                "translation": [
+                    14.130000114440918,
+                    8.119998931884766,
+                    -0.49000000953674316
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000933466734
+                ],
+                "scaling": [
+                    1.5500000715255737,
+                    1.5500000715255737,
+                    1.5500000715255737
+                ]
+            },
+            "file_name": "Well.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    1.3020000194311123
+                ],
+                "radius": 1.0850001239776645
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "TowerWindmill.002",
+            "transform": {
+                "translation": [
+                    0.0,
+                    14.979999542236328,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -179.999991348578
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "TowerWindmill.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    1.4199999570846558
+                ],
+                "radius": 2.440000057220459
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence",
+            "transform": {
+                "translation": [
+                    21.46000099182129,
+                    1.840000033378601,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    80.00000450293254
+                ],
+                "scaling": [
+                    0.6499999165534973,
+                    0.6499999165534973,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    2.0
+                ],
+                "size": [
+                    1.949999749660492,
+                    0.40299995136260947,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.002",
+            "transform": {
+                "translation": [
+                    21.42999839782715,
+                    -1.9099998474121094,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    100.0000005060238
+                ],
+                "scaling": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    2.0
+                ],
+                "size": [
+                    1.8000000715255737,
+                    0.37200001764297497,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.003",
+            "transform": {
+                "translation": [
+                    -0.9599996209144592,
+                    26.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    3.999999115240887
+                ],
+                "scaling": [
+                    0.8000000715255737,
+                    0.8000000715255737,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    2.7280003125667633,
+                    2.069999933242798
+                ],
+                "size": [
+                    4.104000458478936,
+                    2.996000176310531,
+                    2.125
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.004",
+            "transform": {
+                "translation": [
+                    10.539999008178711,
+                    19.350000381469727,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -45.00000125223908
+                ],
+                "scaling": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    2.7999997854232817,
+                    2.0399999618530273
+                ],
+                "size": [
+                    3.384999788701535,
+                    3.35999993324279,
+                    2.0899999141693115
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.006",
+            "transform": {
+                "translation": [
+                    19.25,
+                    -0.09999994933605194,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.5
+                ],
+                "size": [
+                    1.8000000715255737,
+                    0.37200001764297497,
+                    0.75
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_3",
+            "transform": {
+                "translation": [
+                    13.649999618530273,
+                    19.71000099182129,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.7400000095367432,
+                    0.7400000095367432,
+                    0.7400000095367432
+                ]
+            },
+            "file_name": "DeadTree_3.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_2",
+            "transform": {
+                "translation": [
+                    14.90999984741211,
+                    25.479999542236328,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.75,
+                    0.75,
+                    0.75
+                ]
+            },
+            "file_name": "DeadTree_2.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_4",
+            "transform": {
+                "translation": [
+                    16.06999969482422,
+                    22.85999870300293,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    132.99999800923788
+                ],
+                "scaling": [
+                    0.5199999809265137,
+                    0.5199999809265137,
+                    0.5199999809265137
+                ]
+            },
+            "file_name": "DeadTree_4.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.009",
+            "transform": {
+                "translation": [
+                    21.030000686645508,
+                    14.550000190734863,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    130.00000134084985
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    -3.4699997901916504,
+                    2.0
+                ],
+                "size": [
+                    4.0,
+                    4.019999980926514,
+                    2.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "OpenBarn.002",
+            "transform": {
+                "translation": [
+                    11.148585319519043,
+                    -23.3686580657959,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -169.99999334703236
+                ],
+                "scaling": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ]
+            },
+            "file_name": "OpenBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    1.8399999141693115
+                ],
+                "size": [
+                    2.8349998691678024,
+                    2.8349998691678024,
+                    1.7950000762939453
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.008",
+            "transform": {
+                "translation": [
+                    17.89000129699707,
+                    -17.98999786376953,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -135.9999946776259
+                ],
+                "scaling": [
+                    1.6999999284744263,
+                    1.6999999284744263,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    4.75999971866608,
+                    2.0399999618530273
+                ],
+                "size": [
+                    5.75449974167347,
+                    5.71199998664855,
+                    2.0899999141693115
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.010",
+            "transform": {
+                "translation": [
+                    16.06999969482422,
+                    16.979999542236328,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    2.799999952316284,
+                    2.0399999618530273
+                ],
+                "size": [
+                    3.384999990463257,
+                    3.3600001335144043,
+                    2.0899999141693115
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "BigBarn.001",
+            "transform": {
+                "translation": [
+                    22.913333892822266,
+                    28.276988983154297,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -149.00001666831622
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "BigBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "OpenBarn.001",
+            "transform": {
+                "translation": [
+                    20.858585357666016,
+                    -10.858657836914062,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    109.99999850756943
+                ],
+                "scaling": [
+                    0.9999999403953552,
+                    0.7000000476837158,
+                    0.7000000476837158
+                ]
+            },
+            "file_name": "OpenBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    -0.6020000092983224,
+                    1.8760000076293863
+                ],
+                "size": [
+                    2.8450000974535783,
+                    2.548000247001653,
+                    1.823500137567521
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.011",
+            "transform": {
+                "translation": [
+                    11.199999809265137,
+                    15.799999237060547,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    33.99999866940647
+                ],
+                "scaling": [
+                    0.6000000238418579,
+                    0.6000000238418579,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.5
+                ],
+                "size": [
+                    1.9620000665187831,
+                    0.5340000126361844,
+                    0.75
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.002",
+            "transform": {
+                "translation": [
+                    -5.4300007820129395,
+                    21.599998474121094,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.014",
+            "transform": {
+                "translation": [
+                    -11.10999870300293,
+                    21.549999237060547,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    -0.5799999833106995,
+                    2.7100000381469727,
+                    2.0299999713897705
+                ],
+                "size": [
+                    3.674999952316284,
+                    3.2299997806549072,
+                    2.304999828338623
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "BigBarn.005",
+            "transform": {
+                "translation": [
+                    26.809999465942383,
+                    -23.43000030517578,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    139.99999934239548
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "BigBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_1.004",
+            "transform": {
+                "translation": [
+                    -15.809999465942383,
+                    25.479999542236328,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    161.99999767787153
+                ],
+                "scaling": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ]
+            },
+            "file_name": "DeadTree_1.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_5",
+            "transform": {
+                "translation": [
+                    -25.139999389648438,
+                    16.950000762939453,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.8199999928474426,
+                    0.8199999928474426,
+                    0.8199999928474426
+                ]
+            },
+            "file_name": "DeadTree_5.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_2.001",
+            "transform": {
+                "translation": [
+                    -22.459999084472656,
+                    22.119998931884766,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.6399999856948853,
+                    0.6399999856948853,
+                    0.6399999856948853
+                ]
+            },
+            "file_name": "DeadTree_2.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.003",
+            "transform": {
+                "translation": [
+                    -15.350000381469727,
+                    20.589998245239258,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.015",
+            "transform": {
+                "translation": [
+                    -21.329999923706055,
+                    18.339998245239258,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000933466734
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.7300000190734863
+                ],
+                "size": [
+                    2.9699997901916504,
+                    0.4649997353553772,
+                    0.9099997878074646
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.016",
+            "transform": {
+                "translation": [
+                    -21.329999923706055,
+                    10.639998435974121,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000933466734
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6599999666213989
+                ],
+                "size": [
+                    3.2300000190734863,
+                    0.45999979972839355,
+                    0.9099999070167542
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.004",
+            "transform": {
+                "translation": [
+                    -20.80000114440918,
+                    14.489998817443848,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_4.001",
+            "transform": {
+                "translation": [
+                    -29.969999313354492,
+                    -2.4800000190734863,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.800000011920929,
+                    0.800000011920929,
+                    0.800000011920929
+                ]
+            },
+            "file_name": "DeadTree_4.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_3.001",
+            "transform": {
+                "translation": [
+                    -26.329998016357422,
+                    -1.5899999141693115,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.7100000381469727,
+                    0.7100000381469727,
+                    0.7100000381469727
+                ]
+            },
+            "file_name": "DeadTree_3.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_2.002",
+            "transform": {
+                "translation": [
+                    -27.51999855041504,
+                    -4.170000076293945,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.7000000476837158,
+                    0.7000000476837158,
+                    0.7000000476837158
+                ]
+            },
+            "file_name": "DeadTree_2.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.017",
+            "transform": {
+                "translation": [
+                    -18.939998626708984,
+                    21.549999237060547,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.75,
+                    0.75,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.6375000178813934,
+                    2.6924999356269836,
+                    2.0399999618530273
+                ],
+                "size": [
+                    2.962500035762787,
+                    3.224999785423279,
+                    2.304999828338623
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.005",
+            "transform": {
+                "translation": [
+                    -20.80000114440918,
+                    6.779998779296875,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.018",
+            "transform": {
+                "translation": [
+                    -21.329999923706055,
+                    2.779998779296875,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000933466734
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.7100000381469727
+                ],
+                "size": [
+                    3.109999895095825,
+                    0.44499993324279785,
+                    0.9349998235702515
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.006",
+            "transform": {
+                "translation": [
+                    10.44999885559082,
+                    -20.200000762939453,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.013",
+            "transform": {
+                "translation": [
+                    -21.349998474121094,
+                    -5.320000171661377,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000933466734
+                ],
+                "scaling": [
+                    0.75,
+                    0.75,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.7599999904632568
+                ],
+                "size": [
+                    2.4824999570846558,
+                    0.40874992311000824,
+                    0.9649999141693115
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.019",
+            "transform": {
+                "translation": [
+                    -8.709997177124023,
+                    -20.459999084472656,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    143.00002333154018
+                ],
+                "scaling": [
+                    0.75,
+                    0.75,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    -0.3974999785423279,
+                    2.6924999356269836,
+                    2.0399999618530273
+                ],
+                "size": [
+                    3.3600000143051147,
+                    3.224999785423279,
+                    2.304999828338623
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "BigBarn.006",
+            "transform": {
+                "translation": [
+                    -13.670000076293945,
+                    -14.480000495910645,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "BigBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    -0.07999999821186066,
+                    2.3899998664855957
+                ],
+                "size": [
+                    3.5399999618530273,
+                    4.085000038146973,
+                    2.4699997901916504
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1",
+            "transform": {
+                "translation": [
+                    2.320000171661377,
+                    -22.139999389648438,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000933466734
+                ],
+                "scaling": [
+                    1.25,
+                    1.25,
+                    1.25
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6500000506639481
+                ],
+                "radius": 1.1124999821186066
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.001",
+            "transform": {
+                "translation": [
+                    -1.080000638961792,
+                    -22.17999839782715,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    82.00000000512816
+                ],
+                "scaling": [
+                    1.2300000190734863,
+                    1.2300000190734863,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.002",
+            "transform": {
+                "translation": [
+                    9.299999237060547,
+                    -10.950000762939453,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    78.00000217054775
+                ],
+                "scaling": [
+                    1.2300000190734863,
+                    1.2300000190734863,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.003",
+            "transform": {
+                "translation": [
+                    10.960000038146973,
+                    -11.460000038146973,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -108.0000030053738
+                ],
+                "scaling": [
+                    1.25,
+                    1.25,
+                    1.25
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6500000506639481
+                ],
+                "radius": 1.1124999821186066
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.004",
+            "transform": {
+                "translation": [
+                    12.499999046325684,
+                    -11.919999122619629,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    72.0000088337717
+                ],
+                "scaling": [
+                    1.2299998998641968,
+                    1.2299998998641968,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.005",
+            "transform": {
+                "translation": [
+                    7.339999198913574,
+                    -22.059999465942383,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    104.00000517079339
+                ],
+                "scaling": [
+                    1.2300000190734863,
+                    1.2300000190734863,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.006",
+            "transform": {
+                "translation": [
+                    -4.829999923706055,
+                    -11.640000343322754,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -66.00000183661733
+                ],
+                "scaling": [
+                    1.25,
+                    1.25,
+                    1.25
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6500000506639481
+                ],
+                "radius": 1.1124999821186066
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.007",
+            "transform": {
+                "translation": [
+                    -6.100000381469727,
+                    -12.199999809265137,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    113.99999634214984
+                ],
+                "scaling": [
+                    1.2300000190734863,
+                    1.2300000190734863,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.008",
+            "transform": {
+                "translation": [
+                    -3.690000534057617,
+                    -11.109999656677246,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    113.99999634214984
+                ],
+                "scaling": [
+                    1.2300000190734863,
+                    1.2300000190734863,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.008",
+            "transform": {
+                "translation": [
+                    -20.80000114440918,
+                    -1.8100013732910156,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.009",
+            "transform": {
+                "translation": [
+                    2.6600000858306885,
+                    -10.200000762939453,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    90.00000933466734
+                ],
+                "scaling": [
+                    1.25,
+                    1.25,
+                    1.25
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6500000506639481
+                ],
+                "radius": 1.1124999821186066
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.010",
+            "transform": {
+                "translation": [
+                    1.109999179840088,
+                    -10.260000228881836,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -80.99999883893577
+                ],
+                "scaling": [
+                    1.2299998998641968,
+                    1.2299998998641968,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.011",
+            "transform": {
+                "translation": [
+                    4.269999027252197,
+                    -10.260000228881836,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000933466734
+                ],
+                "scaling": [
+                    1.2300000190734863,
+                    1.2300000190734863,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.012",
+            "transform": {
+                "translation": [
+                    5.739998817443848,
+                    -22.160001754760742,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    -104.99999950679661
+                ],
+                "scaling": [
+                    1.2300001382827759,
+                    1.2300001382827759,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0947001054763774
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.013",
+            "transform": {
+                "translation": [
+                    -2.630000591278076,
+                    -22.17999839782715,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -80.99999883893577
+                ],
+                "scaling": [
+                    1.2299998998641968,
+                    1.2299998998641968,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.001",
+            "transform": {
+                "translation": [
+                    -19.34999656677246,
+                    -9.089999198913574,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    143.00002333154018
+                ],
+                "scaling": [
+                    0.75,
+                    0.75,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    -0.3974999785423279,
+                    2.6924999356269836,
+                    2.0399999618530273
+                ],
+                "size": [
+                    3.3600000143051147,
+                    3.224999785423279,
+                    2.304999828338623
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "OpenBarn.003",
+            "transform": {
+                "translation": [
+                    -6.901413440704346,
+                    24.54134178161621,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    47.000003584623876
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "OpenBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    1.8399999141693115
+                ],
+                "size": [
+                    2.8350000381469727,
+                    2.8350000381469727,
+                    1.7950000762939453
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.014",
+            "transform": {
+                "translation": [
+                    0.699999213218689,
+                    -22.160001754760742,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -90.00000933466734
+                ],
+                "scaling": [
+                    1.2300000190734863,
+                    1.2300000190734863,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bush_1.015",
+            "transform": {
+                "translation": [
+                    3.9999990463256836,
+                    -22.059999465942383,
+                    -0.07000000029802322
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    94.00000033905859
+                ],
+                "scaling": [
+                    1.2300000190734863,
+                    1.2300000190734863,
+                    1.2300000190734863
+                ]
+            },
+            "file_name": "Bush.obj",
+            "tag_name": "Bush",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.6396000597715386
+                ],
+                "radius": 1.0946999993801114
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Fence.005",
+            "transform": {
+                "translation": [
+                    16.06999969482422,
+                    16.979999542236328,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "fence.obj",
+            "tag_name": "fence",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    2.799999952316284,
+                    2.0399999618530273
+                ],
+                "size": [
+                    3.384999990463257,
+                    3.3600001335144043,
+                    2.0899999141693115
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.010",
+            "transform": {
+                "translation": [
+                    -5.120001316070557,
+                    -22.15999984741211,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Bricks_Small_Cube.014",
+            "transform": {
+                "translation": [
+                    8.220000267028809,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -73.00001683015327
+                ],
+                "scaling": [
+                    3.510000228881836,
+                    4.699999809265137,
+                    4.699999809265137
+                ]
+            },
+            "file_name": "StoneWall.obj",
+            "tag_name": "StoneWall",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    -0.21060000902563303,
+                    0.0,
+                    2.584999951124189
+                ],
+                "size": [
+                    3.439800082039824,
+                    0.6345000694990119,
+                    2.6554998810291295
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bricks_RightStraight_Cube.002",
+            "transform": {
+                "translation": [
+                    6.809999942779541,
+                    9.520000457763672,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    82.00000000512816
+                ],
+                "scaling": [
+                    3.3299999237060547,
+                    4.75,
+                    4.75
+                ]
+            },
+            "file_name": "ShortStoneWall.obj",
+            "tag_name": "ShortStoneWall",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    2.7074999660253525
+                ],
+                "size": [
+                    2.53080010874271,
+                    0.6650002151727676,
+                    2.82625013589859
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Bricks_RightStraight_Cube.001",
+            "transform": {
+                "translation": [
+                    11.84000015258789,
+                    -4.710000038146973,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    -24.000002375408137
+                ],
+                "scaling": [
+                    3.3299996852874756,
+                    4.75,
+                    4.75
+                ]
+            },
+            "file_name": "ShortStoneWall.obj",
+            "tag_name": "ShortStoneWall",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    0.0,
+                    2.7074999660253525
+                ],
+                "size": [
+                    2.530799927544578,
+                    0.6650002151727676,
+                    2.82625013589859
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "DeadTree_4.002",
+            "transform": {
+                "translation": [
+                    -10.5600004196167,
+                    6.190000057220459,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "DeadTree_4.gltf",
+            "tag_name": "DeadTree",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.03999999910593033,
+                    -0.07999999821186066,
+                    1.25
+                ],
+                "size": [
+                    1.0,
+                    0.9700000286102295,
+                    1.8299999237060547
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.001",
+            "transform": {
+                "translation": [
+                    22.35000228881836,
+                    -5.949999809265137,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.007",
+            "transform": {
+                "translation": [
+                    -13.600001335144043,
+                    -10.320001602172852,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.009",
+            "transform": {
+                "translation": [
+                    3.570000171661377,
+                    22.010000228881836,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "spawner",
+            "group_name": "EnemySpawner"
+        },
+        {
+            "type": "MESH",
+            "name": "BigBarn.002",
+            "transform": {
+                "translation": [
+                    6.563333511352539,
+                    25.326990127563477,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    134.99998668124434
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "BigBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject",
+            "collider": {
+                "type": "Box",
+                "center": [
+                    0.0,
+                    -0.07999999821186066,
+                    2.3899998664855957
+                ],
+                "size": [
+                    3.5399999618530273,
+                    4.085000038146973,
+                    2.4699997901916504
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "OpenBarn",
+            "transform": {
+                "translation": [
+                    -29.66998863220215,
+                    3.13754940032959,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    108.0000030053738
+                ],
+                "scaling": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ]
+            },
+            "file_name": "OpenBarn.obj",
+            "tag_name": "Building",
+            "group_name": "FieldObject"
+        },
+        {
+            "type": "MESH",
+            "name": "Revolver_2_Cube.050",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "Player.gltf",
+            "tag_name": "Player",
+            "collider": {
+                "type": "Sphere",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.7799999713897705
+                ],
+                "radius": 0.5
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "ground",
+            "transform": {
+                "translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    60.0,
+                    60.0,
+                    1.0
+                ]
+            },
+            "file_name": "ground.obj",
+            "tag_name": "ground",
+            "group_name": "FieldObject"
+        }
+    ]
+}

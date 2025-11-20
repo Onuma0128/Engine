@@ -1,0 +1,29 @@
+{
+    "Texture": "playerControlUI.png",
+    "AnchorPoint": {
+        "x": 0.5,
+        "y": 0.5
+    },
+    "Size": {
+        "x": 150.0,
+        "y": 120.0
+    },
+    "Rotate": 0.0,
+    "Position": {
+        "x": 1350.0,
+        "y": 770.0
+    },
+    "IsAnimation": true,
+    "AnimationTime": 1.0,
+    "Anima_Size": {
+        "x": 375.0,
+        "y": 300.0
+    },
+    "Anima_Rotate": 0.0,
+    "Anima_Position": {
+        "x": 1080.0,
+        "y": 640.0
+    },
+    "InEasingType": 24,
+    "OutEasingType": 24
+}

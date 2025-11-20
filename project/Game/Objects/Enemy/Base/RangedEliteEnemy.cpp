@@ -1,0 +1,62 @@
+#include "RangedEliteEnemy.h"
+
+#include "objects/enemy/state/EnemyMoveState.h"
+
+void RangedEliteEnemy::Initialize()
+{
+	// タイプを設定
+	type_ = EnemyType::kRangedElite;
+
+	// 敵Animationの初期化
+	Animation::Initialize("Characters_Shaun.gltf");
+	Animation::PlayByName("Idle");
+	Animation::SetSceneRenderer();
+	Animation::GetMaterial().enableDraw = false;
+	Animation::GetTimeStop() = true;
+
+	// 弾を3つ作成
+	for (uint32_t i = 0; i < 3; ++i) {
+		std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();
+		bullet->SetItem(items_);
+		bullet->Init("EnemyRangedElite", type_);
+		bullets_.push_back(std::move(bullet));
+	}
+
+	// 基底クラスの初期化
+	BaseEnemy::Initialize();
+}
+
+void RangedEliteEnemy::Update()
+{
+	// 基底クラスの更新
+	BaseEnemy::Update();
+
+	// 弾の更新
+	for (auto& bullet : bullets_) {
+		bullet->Update();
+		// 弾が消えた時のコールバック関数
+		bullet->SetOnDeactivateCallback([]() {});
+	}
+}
+
+void RangedEliteEnemy::Draw()
+{
+	effect_->Draw();
+}
+
+void RangedEliteEnemy::Dead()
+{
+	// 基底クラスの死亡処理
+	BaseEnemy::Dead();
+}
+
+void RangedEliteEnemy::Reset(const Vector3& position)
+{
+	// 基底クラスのリセット処理
+	BaseEnemy::Reset(position);
+
+	// Animationの再生を初期化
+	Animation::PlayByName("Run");
+	// ステートを初期化
+	ChengeState(std::make_unique<EnemyMoveState>(this));
+}

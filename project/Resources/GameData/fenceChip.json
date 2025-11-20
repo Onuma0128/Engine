@@ -1,0 +1,104 @@
+{
+    "Texture": "white1x1.png",
+    "UvFlipX": false,
+    "UvFlipY": false,
+    "Model": 0,
+    "BlendMode": 1,
+    "Move": true,
+    "EmitCount": 4,
+    "FrequencyTime": 0.7699999809265137,
+    "LifeTime": 0.8799999952316284,
+    "Acceleration": {
+        "x": 0.0,
+        "y": -30.0,
+        "z": 0.0
+    },
+    "AcceleField": true,
+    "MinAcceleField": {
+        "x": -10.0,
+        "y": -10.0,
+        "z": -10.0
+    },
+    "MaxAcceleField": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+    },
+    "Reflect": true,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 0.21568626165390015,
+        "y": 0.050749704241752625,
+        "z": 0.0
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.009999999776482582,
+        "y": 0.10999999940395355,
+        "z": 0.0
+    },
+    "MaxScale": {
+        "x": 0.05999999865889549,
+        "y": 0.3499999940395355,
+        "z": 0.0
+    },
+    "ChangeScale": false,
+    "EndScale": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinVelocity": {
+        "x": -2.0,
+        "y": 8.0,
+        "z": -2.0
+    },
+    "MaxVelocity": {
+        "x": 2.0,
+        "y": 8.0,
+        "z": 2.0
+    },
+    "LockDirection": false,
+    "DirectionSpeed": -3.559999942779541,
+    "Billboard": true,
+    "MinRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.5099999904632568
+    },
+    "MaxRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.5499999523162842
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -4.199999809265137
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 4.989999771118164
+    },
+    "MinSize": {
+        "x": -1.7400000095367432,
+        "y": -1.2799999713897705,
+        "z": -0.23000000417232513
+    },
+    "MaxSize": {
+        "x": 1.7400000095367432,
+        "y": 0.0,
+        "z": 0.47999998927116394
+    },
+    "Position": {
+        "x": 0.0,
+        "y": 1.3799999952316284,
+        "z": 0.0
+    },
+    "Look": true
+}

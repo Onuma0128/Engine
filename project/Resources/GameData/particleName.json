@@ -1,0 +1,104 @@
+{
+    "Texture": "Apple.dds",
+    "BlendMode": 2,
+    "Move": false,
+    "EmitCount": 0,
+    "FrequencyTime": 0.05000000074505806,
+    "LifeTime": 2.6600000858306885,
+    "Acceleration": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "AcceleField": false,
+    "MinAcceleField": {
+        "x": -10.0,
+        "y": -10.0,
+        "z": -10.0
+    },
+    "MaxAcceleField": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+    },
+    "Reflect": false,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 1.0,
+        "y": 0.20588237047195435,
+        "z": 0.0
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.30000001192092896,
+        "y": 0.30000001192092896,
+        "z": 1.0
+    },
+    "MaxScale": {
+        "x": 0.30000001192092896,
+        "y": 0.30000001192092896,
+        "z": 1.0
+    },
+    "ChangeScale": true,
+    "EndScale": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+    },
+    "MinVelocity": {
+        "x": -0.5,
+        "y": -0.5,
+        "z": 2.0
+    },
+    "MaxVelocity": {
+        "x": 0.5,
+        "y": 0.5,
+        "z": 2.0
+    },
+    "Billboard": true,
+    "MinRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 4.389999866485596
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.15000000596046448
+    },
+    "MaxSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.15000000596046448
+    },
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.10000000149011612
+    },
+    "Look": true,
+    "Model": 0,
+    "LockDirection": false,
+    "DirectionSpeed": 3.559999942779541,
+    "UvFlipX": false,
+    "UvFlipY": false
+}
