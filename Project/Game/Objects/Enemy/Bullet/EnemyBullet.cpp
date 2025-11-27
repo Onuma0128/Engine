@@ -10,7 +10,7 @@ void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 	Object3d::SetSceneRenderer();
 	Object3d::GetMaterial().enableDraw = false;
 	transform_.scale_ = { 0.1f,0.1f ,0.3f };
-	transform_.translation_.y = -5.0f;
+	transform_.translation_ = item_->GetMainData().startPosition;
 
 	isActive_ = false;
 	activeFrame_ = 0.0f;
@@ -37,7 +37,7 @@ void EnemyBullet::Update()
 			isActive_ = false;
 			Collider::isActive_ = false;
 			Object3d::GetMaterial().enableDraw = false;
-			Object3d::GetTransform().translation_ = -5.0f;
+			Object3d::GetTransform().translation_ = item_->GetMainData().startPosition;;
 		}
 	}
 
@@ -82,7 +82,7 @@ void EnemyBullet::Attack(const WorldTransform& transform)
 	// 回転と座標を取得
 	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform.rotation_);
 	transform_.rotation_ = transform.rotation_;
-	transform_.translation_ = transform.translation_ + Vector3{ 0.0f,1.0f,0.0f };
+	transform_.translation_ = transform.translation_ + Vector3::ExprUnitY;
 
 	// 速度(向き)を取得
 	velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix);
@@ -99,7 +99,7 @@ void EnemyBullet::IsCollision()
 	wasActive_ = false;
 	isActive_ = false;
 	Collider::isActive_ = false;
-	Object3d::transform_.translation_.y = -5.0f;
+	Object3d::transform_.translation_ = item_->GetMainData().startPosition;
 	Object3d::GetMaterial().enableDraw = false;
 }
 
@@ -112,7 +112,7 @@ const float EnemyBullet::GetTypeBulletSpeed()
 {
 	switch (type_)
 	{
-	case EnemyType::kRanged:			return item_->GetRangedData().bulletSpeed;
+	case EnemyType::kRanged:		return item_->GetRangedData().bulletSpeed;
 	case EnemyType::kRangedElite:	return item_->GetRangedEliteData().bulletSpeed;
 	default:
 		break;

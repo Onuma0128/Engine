@@ -34,9 +34,9 @@ void MapCollision::Init(SceneJsonLoader loader)
 		++it;
 	}
 
-	cell_ = 1.0f;			// グリッドの1マスの幅
-	size_ = 120.0f;			// グリッドの全体サイズ
-	half_ = size_ * 0.5f;	// グリッドの半径
+	cell_ = 1.0f;					// グリッドの1マスの幅
+	size_ = 120.0f;					// グリッドの全体サイズ
+	half_ = size_ * kHalfValue_;	// グリッドの半径
 
 	// グリッドを初期化
 	grid_ = std::make_unique<DrawGrid>();
@@ -90,7 +90,7 @@ void MapCollision::CreateMap()
 			float minY = -half_ + i * cell_;
 			map.aabb.min = { minX, minY };
 			map.aabb.max = { minX + cell_, minY + cell_ };
-			Vector2 center = (map.aabb.min + map.aabb.max) * 0.5f;
+			Vector2 center = (map.aabb.min + map.aabb.max) * kHalfValue_;
 			map.center = { center.x,0.0f,center.y };
 			map.isEnable = true;
 			mapDatas_[i][j] = map;
@@ -127,7 +127,7 @@ void MapCollision::CreateMapCollision()
 void MapCollision::ReloadMap()
 {
 	// グリッドの半径を作成
-	half_ = size_ * 0.5f;
+	half_ = size_ * kHalfValue_;
 	// グリッドを作成
 	grid_->SetGridPositions(cell_, size_);
 	grid_->HitAABBClear();

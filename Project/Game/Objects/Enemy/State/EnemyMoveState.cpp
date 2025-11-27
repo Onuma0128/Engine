@@ -41,9 +41,12 @@ void EnemyMoveState::Finalize()
 
 void EnemyMoveState::Update()
 {
+	// データを取得
+	const auto mainData = enemy_->GetItem()->GetMainData();
+
 	// 探索をする
 	searchTime_ += DeltaTimer::GetDeltaTime();
-	if (searchTime_ > enemy_->GetItem()->GetMainData().searchUpdateTime) {
+	if (searchTime_ > mainData.searchUpdateTime) {
 		searchTime_ = 0.0f;
 		enemy_->ResetSearch();
 	}
@@ -54,7 +57,7 @@ void EnemyMoveState::Update()
 
 	// 探索の更新
 	pathFinder.Update(speed);
-	pathFinder.DebugSpline(enemy_->GetItem()->GetMainData().debugSpline);
+	pathFinder.DebugSpline(mainData.debugSpline);
 	Vector3 velocity = pathFinder.GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
@@ -76,13 +79,13 @@ void EnemyMoveState::Update()
 	const float dist = Vector3::Distance(enemyPos, playerPos);
 	// 入り判定、出判定
 	const float attackIn = GetTypeAttackDistance();
-	const float margin = enemy_->GetItem()->GetMainData().margin;
+	const float margin = mainData.margin;
 	const float attackOut = attackIn + margin;
 	if (!inAttackRange_ && dist <= attackIn)  inAttackRange_ = true;
 	if (inAttackRange_ && dist >= attackOut) inAttackRange_ = false;
 
 	Vector3 direction = Vector3::ExprUnitZ.Transform(Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_));
-	enemy_->GetEnemyRay()->Update(enemyPos, direction * attackIn);
+	enemy_->GetEnemyRay()->Update(enemyPos + mainData.rayOffset, direction * attackIn);
 
 	if (inAttackRange_) {
 		if (enemy_->GetEnemyRay()->GetLooking()) {
@@ -110,7 +113,7 @@ const float EnemyMoveState::GetTypeSpeed()
 {
 	switch (enemy_->GetType()) {
 	case EnemyType::kMelee:			return enemy_->GetItem()->GetMeleeData().tempData.speed;
-	case EnemyType::kRanged:			return enemy_->GetItem()->GetRangedData().tempData.speed;
+	case EnemyType::kRanged:		return enemy_->GetItem()->GetRangedData().tempData.speed;
 	case EnemyType::kShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.speed;
 	case EnemyType::kRangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.speed;
 	default:break;
@@ -122,7 +125,7 @@ const float EnemyMoveState::GetTypeAttackDistance()
 {
 	switch (enemy_->GetType()) {
 	case EnemyType::kMelee:			return enemy_->GetItem()->GetMeleeData().tempData.attackDistance;
-	case EnemyType::kRanged:			return enemy_->GetItem()->GetRangedData().tempData.attackDistance;
+	case EnemyType::kRanged:		return enemy_->GetItem()->GetRangedData().tempData.attackDistance;
 	case EnemyType::kShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackDistance;
 	case EnemyType::kRangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackDistance;
 	default:break;
@@ -134,7 +137,7 @@ const float EnemyMoveState::GetTypeAttackCoolTime()
 {
 	switch (enemy_->GetType()) {
 	case EnemyType::kMelee:			return enemy_->GetItem()->GetMeleeData().tempData.attackCoolTime;
-	case EnemyType::kRanged:			return enemy_->GetItem()->GetRangedData().tempData.attackCoolTime;
+	case EnemyType::kRanged:		return enemy_->GetItem()->GetRangedData().tempData.attackCoolTime;
 	case EnemyType::kShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackCoolTime;
 	case EnemyType::kRangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackCoolTime;
 	default:break;
@@ -146,7 +149,7 @@ void EnemyMoveState::TypeChengeAttackState()
 {
 	switch (enemy_->GetType()) {
 	case EnemyType::kMelee:			enemy_->ChengeState(std::make_unique<EnemyMelee_AttackState>(enemy_)); break;
-	case EnemyType::kRanged:			enemy_->ChengeState(std::make_unique<EnemyRanged_AttackState>(enemy_)); break;
+	case EnemyType::kRanged:		enemy_->ChengeState(std::make_unique<EnemyRanged_AttackState>(enemy_)); break;
 	case EnemyType::kShieldBearer:	enemy_->ChengeState(std::make_unique<EnemyShieldBearer_AttackState>(enemy_)); break;
 	case EnemyType::kRangedElite:	enemy_->ChengeState(std::make_unique<EnemyRangedElite_AttackState>(enemy_)); break;
 	default:break;

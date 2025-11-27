@@ -44,17 +44,18 @@ void DrawGrid::HitGridInit()
 	// 当たっているグリッドの初期化
 	hitGrid_ = std::make_unique<Line3d>();
 	hitGrid_->Initialize(hitGridPositions_);
-	hitGrid_->SetColor(Vector3{ 1.0f,0.0f,0.0f });
+	hitGrid_->SetColor(Vector3::ExprUnitX);
 #endif // ENABLE_EDITOR
 }
 
 void DrawGrid::HitAABB(const AABB_2D& aabb)
 {
 	std::array<Vector3, 4> positions;
-	positions[0] = { aabb.min.x,0.15f,aabb.min.y };
-	positions[1] = { aabb.max.x,0.15f,aabb.min.y };
-	positions[2] = { aabb.max.x,0.15f,aabb.max.y };
-	positions[3] = { aabb.min.x,0.15f,aabb.max.y };
+	const float kPosY = 0.15f;
+	positions[0] = { aabb.min.x,kPosY,aabb.min.y };
+	positions[1] = { aabb.max.x,kPosY,aabb.min.y };
+	positions[2] = { aabb.max.x,kPosY,aabb.max.y };
+	positions[3] = { aabb.min.x,kPosY,aabb.max.y };
 
 	for (uint32_t i = 0; i < positions.size(); ++i) {
 		hitGridPositions_.push_back(positions[i]);

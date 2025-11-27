@@ -86,15 +86,36 @@ void PlayAnimation::Reset()
 
 void PlayAnimation::Play(size_t idx, float fadeTime)
 {
-	if (idx >= animationDatas_.size() || idx == flags_.currentAnim) { return; }
+	if (idx >= animationDatas_.size()) { return; }
 
-	blend_.active = true;
-	blend_.fromIndex = flags_.currentAnim;
-	blend_.toIndex = idx;
-	blend_.duration = std::fmax(0.001f, fadeTime);
-	blend_.time = 0.0f;
-	blend_.fromTime = flags_.animationTime;	// 現在の再生位置を保持
-	blend_.toTime = 0.0f;					// 新クリップは 0 秒から
+	// すでにそのアニメをターゲットにしてフェード中なら何もしない
+	if (!blend_.active && idx == flags_.currentAnim) {
+		return;
+	}
+	if (blend_.active && idx == blend_.toIndex) {
+		return;
+	}
+
+	AnimationBlendState newBlend;
+
+	if (!blend_.active) {
+		// 通常時：現在のアニメ → 新しいアニメ へのフェード
+		newBlend.fromIndex = flags_.currentAnim;
+		newBlend.fromTime = flags_.animationTime;
+	} else {
+		// フェード中：今向かっているアニメ → 新しいアニメ へのフェードに上書き
+		newBlend.fromIndex = blend_.toIndex;
+		newBlend.fromTime = blend_.toTime;
+	}
+
+	newBlend.toIndex = idx;
+	newBlend.toTime = 0.0f; // 新クリップは頭から
+	newBlend.duration = std::fmax(0.001f, fadeTime);
+	newBlend.time = 0.0f;
+	newBlend.active = true;
+
+	blend_ = newBlend;
+
 	flags_.timeStop = false;
 	flags_.stopped = false;
 }
@@ -102,10 +123,10 @@ void PlayAnimation::Play(size_t idx, float fadeTime)
 bool PlayAnimation::PlayByName(const std::string& clipName, float fadeTime)
 {
 	auto it = nameToIx_.find(clipName);
-	if (it == nameToIx_.end()) { return false; }          // 名前なし
-	if (blend_.active) { return false; }
+	if (it == nameToIx_.end()) { return false; }
 
-	Play(it->second, fadeTime);                           // index 切替 (前回答参照)
+	// ここで blend_.active を見て弾かないようにする
+	Play(it->second, fadeTime);
 	return true;
 }
 

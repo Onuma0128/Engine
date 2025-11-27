@@ -23,7 +23,7 @@ void EnemyRay::Update(const Vector3& start, const Vector3& end)
 	hitPointLength_ = 1000.0f;
 
 	// 座標を保存
-	start_ = start + Vector3{ 0.0f,0.5f,0.0f };
+	start_ = start;
 	end_ = end;
 
 	// 反射処理のコライダーを設定

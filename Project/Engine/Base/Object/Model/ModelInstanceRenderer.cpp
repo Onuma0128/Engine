@@ -355,11 +355,11 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
 
     for (auto& [model, batch] : objBatches_) {
         if (batch.count == 0) continue;
-		if (batch.objects.back()->GetMaterial().shadowMap == false) continue;
 
         model->BindBuffers(false);
 		commandList->SetGraphicsRootConstantBufferView(0, lightVpBuffer_->GetGPUVirtualAddress());
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
+		SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, batch.materialSrvIndex);
 
         /* ---------- Mesh ループ ---------- */
         const auto& mesh = model->GetMeshData();
@@ -380,7 +380,6 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
 
     for (auto& [model, batch] : animationBatches_) {
         if (batch.count == 0) continue;
-        if (batch.animations.back()->GetMaterial().shadowMap == false) continue;
 
         batch.animations.back()->SetVertexBuffer();
         model->BindBuffers(true);
@@ -388,6 +387,7 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
         commandList->SetGraphicsRootConstantBufferView(2, batch.jointBuffer->GetGPUVirtualAddress());
         commandList->SetGraphicsRootConstantBufferView(3, lightVpBuffer_->GetGPUVirtualAddress());
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(4, batch.materialSrvIndex);
 
         /* ---------- Mesh ループ ---------- */
         const auto& mesh = model->GetMeshData();

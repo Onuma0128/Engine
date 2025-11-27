@@ -48,7 +48,6 @@ void EnemyEffect::Update()
 
 	BulletPredictionUpdate();
 
-	//deadEmitter_->SetRotation(enemy_->GetTransform().rotation_);
 	deadEmitter_->SetPosition(enemy_->GetTransform().translation_);
 }
 
@@ -142,7 +141,7 @@ void EnemyEffect::HitReticleInit()
 	hitReticleEffect_.cylinder_ = std::make_unique<PrimitiveDrawr>();
 	hitReticleEffect_.cylinder_->TypeInit(PrimitiveType::kCylinder, 32);
 	hitReticleEffect_.cylinder_->GetTransform().scale = {};
-	hitReticleEffect_.cylinder_->SetColor({ 1.0f,1.0f,0.0f });
+	hitReticleEffect_.cylinder_->SetColor(Vector3::ExprUnitX + Vector3::ExprUnitY);
 	hitReticleEffect_.cylinder_->SetBlendMode(BlendMode::kBlendModeAdd);
 	hitReticleEffect_.cylinder_->GetRenderOptions().enabled = false;
 	hitReticleEffect_.cylinder_->GetRenderOptions().offscreen = false;
@@ -163,9 +162,8 @@ void EnemyEffect::BulletPredictionInit()
 	for (auto& effect : bulletPredictionEffect_) {
 		effect.plane_ = std::make_unique<PrimitiveDrawr>();
 		effect.plane_->TypeInit(PrimitiveType::kPlane);
-		//effect.plane_->SetTexture("white1x1.png");
 		effect.plane_->SetBlendMode(BlendMode::kBlendModeAdd);
-		effect.plane_->SetColor(Vector3{ 1.0f,0.0f,0.0f });
+		effect.plane_->SetColor(Vector3::ExprUnitX);
 		effect.plane_->SetAlpha(0.5f);
 		effect.plane_->SetSceneRenderer();
 		effect.plane_->GetRenderOptions().enabled = false;

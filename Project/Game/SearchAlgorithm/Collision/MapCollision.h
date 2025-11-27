@@ -72,6 +72,7 @@ private:
 
 private:
 
+	const float kHalfValue_ = 0.5f;
 	float cell_;		// グリッドの1マスの幅
 	float size_;		// グリッドの全体サイズ
 	float half_;		// グリッドの半径

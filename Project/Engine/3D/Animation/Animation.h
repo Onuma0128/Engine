@@ -59,7 +59,6 @@ public:
 	/// <param name="fadeTime"></今アニメから変えるアニメのチェンジフレーム>
 	void Play(size_t idx, float fadeTime = 0.3f);
 	bool PlayByName(const std::string& clipName, float fadeTime = 0.3f);
-	// 再生するアニメーションを強制変更
 
 	/// <summary>
 	/// 再生するアニメーションを強制変更

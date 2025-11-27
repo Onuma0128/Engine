@@ -32,7 +32,7 @@
     },
     "speed": 2.5,
     "attackDistance": 10.0,
-    "attackStartupTime": 1.5,
+    "attackStartupTime": 3.0,
     "attackActiveTime": 1.0,
     "attackRecoveryTime": 0.30000001192092896,
     "attackCoolTime": 1.7000000476837158,

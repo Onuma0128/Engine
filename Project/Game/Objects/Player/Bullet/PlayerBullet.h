@@ -98,7 +98,7 @@ private:
 	float speed_ = 0.0f;
 	Vector3 velocity_;
 	// 動いている時間
-	float activeFrame_ = 0.0f;
+	float activeTime_ = 0.0f;
 	// リロードされているか
 	bool isReload_ = true;
 	// 敵を倒した数を保存する

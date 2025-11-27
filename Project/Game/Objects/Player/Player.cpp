@@ -25,7 +25,7 @@ void Player::Init(SceneJsonLoader loader)
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Idle_Gun", 0.0f);
 	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
+	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
 
 	transform_ = player.transform;
 	if (player.collider.active) {
@@ -45,17 +45,16 @@ void Player::Init(SceneJsonLoader loader)
 	// プレイヤーの初期化
 	ChengeState(std::make_unique<PlayerMoveState>(this));
 
-	// 影を設定
-	shadow_ = std::make_unique<CharacterShadow>();
-	shadow_->Init();
-
+	// エフェクトの初期化
 	effect_ = std::make_unique<PlayerEffect>();
 	effect_->SetPlayer(this);
 	effect_->Init();
 
+	// レティクルの初期化
 	reticle_ = std::make_unique<PlayerReticle>();
 	reticle_->Init();
 
+	// 弾の初期化
 	shot_ = std::make_unique<PlayerShot>();
 	shot_->Init(this);
 }
@@ -66,18 +65,17 @@ void Player::Update()
 	items_->Editor();
 #endif // ENABLE_EDITOR
 
+	// ステートの更新
 	state_->Update();
 
-	Vector3 pos = transform_.translation_;
-	shadow_->SetPosition(Vector3{ pos.x,0.01f,pos.z });
-	shadow_->Update();
-
+	// エフェクトの更新
 	effect_->Update();
 
 	// 弾の更新
 	shot_->Update();
 	shot_->UpdateUI();
 
+	// コライダーの更新
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
 	Collider::Update();
@@ -86,6 +84,7 @@ void Player::Update()
 
 void Player::EffectDraw()
 {
+	// エフェクトの描画
 	effect_->Draw();
 }
 

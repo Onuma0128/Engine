@@ -5,6 +5,7 @@
 
 #include "SceneJsonLoader.h"
 #include "objects/fieldObject/FieldObject.h"
+#include "objects/fieldObject/adjustItem/FieldObjectAdjustItem.h"
 
 /// <summary>
 /// フィールドオブジェクトを管理するクラス
@@ -27,6 +28,8 @@ public:
 private:
 
 	std::list<std::unique_ptr<FieldObject>> fieldObjects_;
+
+	std::unique_ptr<FieldObjectAdjustItem> items_ = nullptr;
 
 };
 

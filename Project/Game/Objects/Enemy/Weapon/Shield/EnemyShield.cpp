@@ -20,7 +20,7 @@ void EnemyShield::Init(ColliderType type, const std::string& name)
 	Object3d::SetSceneRenderer();
 	Object3d::GetMaterial().outlineMask = true;
 	Object3d::GetMaterial().outlineSceneColor = true;
-	Object3d::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
+	Object3d::GetMaterial().outlineColor = Vector3::ExprZero;
 
 	Collider::AddCollider();
 	Collider::myType_ = type;

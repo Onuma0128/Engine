@@ -14,9 +14,6 @@ void ShieldBearerEnemy::Initialize()
 	// 敵Animationの初期化
 	Animation::Initialize("Zombie_Basic.gltf");
 	Animation::PlayByName("Idle");
-	Animation::SetSceneRenderer();
-	Animation::GetMaterial().enableDraw = false;
-	Animation::GetTimeStop() = true;
 
 	// シールド用のコライダーを作成
 	shieldWeapon_ = std::make_unique<EnemyShield>(this);
@@ -37,7 +34,11 @@ void ShieldBearerEnemy::Update()
 
 	// ウエポンの更新
 	weapon_->Update();
-	shieldWeapon_->Update();
+	if (!stateParam_.isAttacking_) {
+		shieldWeapon_->Update();
+	} else {
+		shieldWeapon_->TransformUpdate();
+	}
 }
 
 void ShieldBearerEnemy::TransformUpdate()

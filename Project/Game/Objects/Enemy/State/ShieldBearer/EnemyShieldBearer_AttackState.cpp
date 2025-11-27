@@ -14,6 +14,7 @@ EnemyShieldBearer_AttackState::EnemyShieldBearer_AttackState(BaseEnemy* enemy) :
 void EnemyShieldBearer_AttackState::Init()
 {
 	chengeStateTime_ = 0.0f;
+	enemy_->SetIsAttacking(true);
 }
 
 void EnemyShieldBearer_AttackState::Finalize()
@@ -21,6 +22,7 @@ void EnemyShieldBearer_AttackState::Finalize()
 	enemy_->GetWeapon()->SetIsActive(false);
 	enemy_->GetWeapon()->Update();
 	enemy_->GetEffect()->CreateMeleeAttackEffect(false);
+	enemy_->SetIsAttacking(false);
 }
 
 void EnemyShieldBearer_AttackState::Update()

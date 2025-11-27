@@ -1,8 +1,11 @@
 #include "TitleScene.h"
 
+#include "DirectXEngine.h"
 #include "SceneManager.h"
 #include "CameraManager.h"
 #include "Input.h"
+#include "SceneJsonLoader.h"
+#include "PostEffectManager.h"
 
 void TitleScene::Initialize()
 {
@@ -23,6 +26,15 @@ void TitleScene::Initialize()
 	titleUI_ = std::make_unique<TitleUI>();
 	titleUI_->Init();
 
+	// シーンのロード
+	SceneJsonLoader loader;
+	loader.Load("sceneObject");
+
+	// フィールド上のオブジェクトの初期化と生成
+	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
+	fieldObjectFactory_->Init(loader);
+	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kOutLine);
+
 	test = std::make_unique<ParticleEmitter>("playerHit");
 	particleManager->CreateParticleGroup(test);
 	test->SetIsCreate(false);
@@ -41,6 +53,8 @@ void TitleScene::Update()
 	titleUI_->Update();
 
 	sceneFade_->Update();
+
+	fieldObjectFactory_->Update();
 
 	particleManager->Update();
 

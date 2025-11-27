@@ -11,8 +11,10 @@ void EnemyAdjustItem::LoadItems()
 		mainData_.spawnIndex = 0;
 		mainJson_.Set("maxSpawn", 0);
 		mainJson_.Set("nextWaveKillCount", 0);
-		mainJson_.Set("colliderSize", Vector3{});
+		mainJson_.Set("startPosition", Vector3{});
+		mainJson_.Set("colliderSize", 0.0f);
 		mainJson_.Set("colliderOffset", Vector3{});
+		mainJson_.Set("rayOffset", Vector3{});
 		mainJson_.Set("margin", 1.0f);
 		mainJson_.Set("searchUpdateTime", 1.0f);
 		mainJson_.Set("maxDeadTimer", 1.0f);
@@ -26,8 +28,10 @@ void EnemyAdjustItem::LoadItems()
 		mainData_.spawnIndex = 0;
 		mainData_.maxSpawn =			mainJson_.Get("maxSpawn", mainData_.maxSpawn);
 		mainData_.nextWaveKillCount =	mainJson_.Get("nextWaveKillCount", mainData_.nextWaveKillCount);
+		mainData_.startPosition =		mainJson_.Get("startPosition", mainData_.startPosition);
 		mainData_.colliderSize =		mainJson_.Get("colliderSize", mainData_.colliderSize);
 		mainData_.colliderOffset =		mainJson_.Get("colliderOffset", mainData_.colliderOffset);
+		mainData_.rayOffset =			mainJson_.Get("rayOffset", mainData_.rayOffset);
 		mainData_.margin =				mainJson_.Get("margin", mainData_.margin);
 		mainData_.searchUpdateTime =	mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
 		mainData_.maxDeadTimer =		mainJson_.Get("maxDeadTimer", mainData_.maxDeadTimer);
@@ -150,8 +154,10 @@ void EnemyAdjustItem::Editor()
 
 			ImGui::DragInt("maxSpawn", &mainData_.maxSpawn);
 			ImGui::DragInt("nextWaveKillCount", &mainData_.nextWaveKillCount);
-			ImGui::DragFloat3("colliderSize", &mainData_.colliderSize.x, 0.01f);
+			ImGui::DragFloat3("startPosition", &mainData_.startPosition.x, 0.01f);
+			ImGui::DragFloat("colliderSize", &mainData_.colliderSize, 0.01f);
 			ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f);
+			ImGui::DragFloat3("rayOffset", &mainData_.rayOffset.x, 0.01f);
 			ImGui::DragFloat("margin", &mainData_.margin, 0.01f);
 			ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f);
 
@@ -165,8 +171,10 @@ void EnemyAdjustItem::Editor()
 			if (ImGui::Button("Save")) {
 				mainJson_.Set("maxSpawn", mainData_.maxSpawn);
 				mainJson_.Set("nextWaveKillCount", mainData_.nextWaveKillCount);
+				mainJson_.Set("startPosition", mainData_.startPosition);
 				mainJson_.Set("colliderSize", mainData_.colliderSize);
 				mainJson_.Set("colliderOffset", mainData_.colliderOffset);
+				mainJson_.Set("rayOffset", mainData_.rayOffset);
 				mainJson_.Set("margin", mainData_.margin);
 				mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
 

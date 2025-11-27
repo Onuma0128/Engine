@@ -42,6 +42,14 @@ public:
 	virtual void Update() = 0;
 
 	/// <summary>
+	/// 動かしたくない時の更新
+	/// </summary>
+	virtual void TransformUpdate() {
+		Object3d::Update();
+		Collider::Update();
+	}
+
+	/// <summary>
 	/// アクティブ状態を設定する
 	/// </summary>
 	/// <param name="flag"></param>

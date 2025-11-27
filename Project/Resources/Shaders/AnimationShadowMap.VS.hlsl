@@ -19,9 +19,23 @@ struct LightData
 {
     float4x4 LightVP;
 };
+struct Material
+{
+    float4 color;
+    float4x4 uvTransform;
+    int enableDraw;
+    int enableLighting;
+    int outlineMask;
+    int outlineSceneColor;
+    float3 outlineColor;
+    float shininess;
+    float environmentCoefficient;
+    int shadowMap;
+};
 
 StructuredBuffer<InstanceData> gInstanceData : register(t0);
 StructuredBuffer<Well> gMatrixPalette : register(t1);
+StructuredBuffer<Material> gMaterial : register(t2);
 ConstantBuffer<JointCount> gJointCount : register(b0);
 ConstantBuffer<LightData> gLightData : register(b1);
 
@@ -68,6 +82,13 @@ Skinned Skinning(VertexShaderInput input, uint id)
 VSOut main(VertexShaderInput input, uint InstID : SV_InstanceID)
 {
     VSOut output;
+    
+    if (!gMaterial[InstID].enableDraw || !gMaterial[InstID].shadowMap)
+    {
+        output.position = float4(0.0f, 0.0f, 0.0f, 0.0f);
+        return output;
+    }
+    
     Skinned skinned = Skinning(input, InstID);
 
     float3 worldPos = mul(skinned.position, gInstanceData[InstID].World).xyz;

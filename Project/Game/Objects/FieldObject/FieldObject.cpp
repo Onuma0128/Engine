@@ -6,12 +6,7 @@ void FieldObject::Init(SceneObject object)
 	Object3d::SetSceneRenderer();
 	if (object.tag != "ground") {
 		Object3d::GetMaterial().outlineMask = true;
-		if (object.tag != "Bush") {
-			//Object3d::GetMaterial().outlineSceneColor = true;
-		}
-		Object3d::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
-	}else {
-		Object3d::GetMaterial().shadowMap = false;
+		Object3d::GetMaterial().outlineColor = Vector3::ExprZero;
 	}
 	transform_ = object.transform;
 	centerPosition_ = transform_.translation_;
@@ -53,9 +48,9 @@ void FieldObject::OnCollisionEnter(Collider* other)
 	// 弾が当たったら
 	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial" ||
 		other->GetColliderName() == "EnemyRanged" || other->GetColliderName() == "EnemyRangedElite") {
+		// シェイクさせる
+		shake_ = items_->GetMainData().shakeOffset;
 		if (Collider::colliderName_ == "DeadTree" || Collider::colliderName_ == "fence") {
-			// シェイクさせる
-			shake_ = { 1.0f,0.0f,1.0f };
 			// 弾が飛んできた方向を取得
 			Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
 			Vector3 velocity = Vector3::ExprUnitZ.Transform(rotate);
@@ -64,12 +59,6 @@ void FieldObject::OnCollisionEnter(Collider* other)
 			transform.rotation_ = transform_.rotation_;
 			transform.translation_ = transform_.translation_ - (velocity * 0.2f);
 			effect_->OnceHitEffect(transform);
-		} else if (Collider::colliderName_ == "Building") {
-			// シェイクさせる
-			shake_ = { 1.0f,0.0f,1.0f };
-		} else {
-			// シェイクさせる
-			shake_ = { 1.0f,0.0f,1.0f };
 		}
 	}
 }
@@ -100,5 +89,5 @@ void FieldObject::UpdateShake(Vector3& shake)
 	};
 
 	transform_.translation_ = centerPosition_ + offset;
-	shake = shake * 0.9f;
+	shake = shake * items_->GetMainData().shakePower;
 }

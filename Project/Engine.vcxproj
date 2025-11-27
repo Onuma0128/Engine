@@ -158,6 +158,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\2D\BaseUI.cpp" />
     <ClCompile Include="Engine\3D\Animation\Play\PlayAnimation.cpp" />
     <ClCompile Include="Engine\3D\Animation\DebugBone\DebugBone.cpp" />
+    <ClCompile Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.cpp" />
     <ClCompile Include="Game\Uis\GameSceneUIs\GameSceneUIs.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Ray\EnemyRay.cpp" />
     <ClCompile Include="Game\SearchAlgorithm\Sample\AlgorithmTest.cpp" />
@@ -167,7 +168,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Uis\GameClearUI\GameClearUI.cpp" />
     <ClCompile Include="Game\Uis\GameOverUI\GameOverUI.cpp" />
     <ClCompile Include="Game\Uis\Player\PlayerCountUI.cpp" />
-    <ClCompile Include="Game\Objects\Shadow\CharacterShadow.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Weapon\Axe\EnemyAxe.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Weapon\Shield\EnemyShield.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Weapon\EnemyWeaponBase.cpp" />
@@ -310,6 +310,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\AnimationShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\ObjectShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\OutLineMaskRootSignature.h" />
+    <ClInclude Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.h" />
     <ClInclude Include="Game\Uis\GameSceneUIs\GameSceneUIs.h" />
     <ClInclude Include="Game\Objects\Enemy\Ray\EnemyRay.h" />
     <ClInclude Include="Game\SearchAlgorithm\Sample\AlgorithmTest.h" />
@@ -319,7 +320,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Uis\GameClearUI\GameClearUI.h" />
     <ClInclude Include="Game\Uis\GameOverUI\GameOverUI.h" />
     <ClInclude Include="Game\Uis\Player\PlayerCountUI.h" />
-    <ClInclude Include="Game\Objects\Shadow\CharacterShadow.h" />
     <ClInclude Include="Game\Objects\Enemy\Weapon\Axe\EnemyAxe.h" />
     <ClInclude Include="Game\Objects\Enemy\Weapon\Shield\EnemyShield.h" />
     <ClInclude Include="Game\Objects\Enemy\Weapon\EnemyWeaponBase.h" />

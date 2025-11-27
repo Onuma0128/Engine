@@ -23,11 +23,6 @@ void BaseEnemy::Initialize()
 	effect_->SetEnemy(this);
 	effect_->Init();
 
-	// 影を設定
-	shadow_ = std::make_unique<CharacterShadow>();
-	shadow_->Init(transform_);
-	shadow_->SetDraw(false);
-
 	// 探索アルゴリズムの初期化
 	pathFinder_.Search(Animation::transform_.translation_, Vector3{});
 
@@ -44,10 +39,15 @@ void BaseEnemy::Initialize()
 	};
 	Collider::DrawCollider();
 
-	Animation::GetTransform().translation_.y = -5.0f;
+	// 基本的なアニメーションを設定
+	Animation::GetTransform().translation_ = items_->GetMainData().startPosition;
+	Animation::SetSceneRenderer();
+	Animation::GetMaterial().enableDraw = false;
 	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = { 0.0f,0.0f,0.0f };
-	outlineColor_ = { 0.0f,0.0f,0.0f };
+	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
+	Animation::GetMaterial().shadowMap = false;
+	Animation::GetTimeStop() = true;
+	outlineColor_ = Vector3::ExprZero;
 }
 
 void BaseEnemy::Update()
@@ -69,18 +69,15 @@ void BaseEnemy::Update()
 		if (!stateParam_.hitReticle_) {
 			outlineColor_ = Vector3::Lerp(outlineColor_, Vector3::ExprUnitX, 0.1f);
 		} else {
-			outlineColor_ = Vector3::Lerp(outlineColor_, Vector3{1.0f,1.0f,0.0f}, 0.1f);
+			Vector3 color = Vector3::ExprUnitX + Vector3::ExprUnitY;
+			outlineColor_ = Vector3::Lerp(outlineColor_, color, 0.1f);
 		}
 	} else {
 		outlineColor_ = Vector3::Lerp(outlineColor_, Vector3::ExprZero, 0.1f);
 	}
 
-	// 影の更新
-	shadow_->Update();
-
 	// 敵コライダーの更新
-	Collider::size_ = items_->GetMainData().colliderSize;
-	Collider::radius_ = items_->GetMainData().colliderSize.x;
+	Collider::radius_ = items_->GetMainData().colliderSize;
 	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
 	Collider::Update();
 
@@ -93,8 +90,6 @@ void BaseEnemy::TransformUpdate()
 {
 	// 敵の行動許可が出ていなければ更新できない
 	if (!stateParam_.enableMove_) {
-		// 影の更新
-		shadow_->Update();
 		// オブジェクトの更新
 		Animation::TransformUpdate();
 	}
@@ -112,12 +107,12 @@ void BaseEnemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 void BaseEnemy::Dead()
 {
 	// 描画とColliderを切る
-	Animation::GetTransform().translation_.y = -5.0f;
+	Animation::GetTransform().translation_ = items_->GetMainData().startPosition;
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetTimeStop() = true;
 	Collider::isActive_ = false;
 	// 影の描画も切る
-	shadow_->SetDraw(false);
+	Animation::GetMaterial().shadowMap = false;
 	stateParam_.enableMove_ = false;
 }
 
@@ -126,12 +121,12 @@ void BaseEnemy::Reset(const Vector3& position)
 	// 描画をする
 	Animation::GetMaterial().enableDraw = true;
 	// Transformを初期化
-	transform_.scale_ = { 1.0f,1.0f,1.0f };
+	transform_.scale_ = Vector3::ExprUnitXYZ;
 	transform_.rotation_ = Quaternion::IdentityQuaternion();
 	transform_.translation_ = position;
 	Animation::TransformUpdate();
 	// 影を描画する
-	shadow_->SetDraw(true);
+	Animation::GetMaterial().shadowMap = true;
 	// ColliderをActiveに戻す
 	Collider::isActive_ = true;
 	stateParam_.isAlive_ = true;
@@ -199,7 +194,7 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 	}
 
 	if (other->GetColliderName() == "PlayerShotRay") {
-		outlineColor_ = { 1.0f,0.0f,0.0f };
+		outlineColor_ = Vector3::ExprUnitX;
 	}
 }
 

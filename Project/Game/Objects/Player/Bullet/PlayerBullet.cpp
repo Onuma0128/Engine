@@ -14,7 +14,7 @@ void PlayerBullet::Init(const std::string& colliderName)
 	transform_.translation_.y = -5.0f;
 
 	isActive_ = false;
-	activeFrame_ = 0.0f;
+	activeTime_ = 0.0f;
 
 	effect_ = std::make_unique<PlayerBulletEffect>();
 	effect_->Init();
@@ -29,8 +29,6 @@ void PlayerBullet::Init(const std::string& colliderName)
 			"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall"
 	};
 	Collider::DrawCollider();
-
-	speed_ = 20.0f;
 }
 
 void PlayerBullet::Update()
@@ -39,9 +37,9 @@ void PlayerBullet::Update()
 
 	// フレームが60立ったらIsActiveをfalseにする
 	if (isActive_) {
-		activeFrame_ += DeltaTimer::GetDeltaTime() * 2.0f;
-		if (activeFrame_ >= 1.0f) {
-			activeFrame_ = 1.0f;
+		activeTime_ += DeltaTimer::GetDeltaTime() * 2.0f;
+		if (activeTime_ >= 1.0f) {
+			activeTime_ = 1.0f;
 			isActive_ = false;
 			Collider::isActive_ = false;
 			Object3d::GetMaterial().enableDraw = false;
@@ -120,7 +118,7 @@ void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 	speed_ = speed;
 	velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix);
 
-	activeFrame_ = 0.0f;
+	activeTime_ = 0.0f;
 	isReload_ = false;
 	isActive_ = true;
 	Collider::isActive_ = true;
@@ -131,7 +129,7 @@ void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 
 void PlayerBullet::IsCollision()
 {
-	activeFrame_ = 1.0f;
+	activeTime_ = 1.0f;
 	wasActive_ = false;
 	isActive_ = false;
 	Collider::isActive_ = false;

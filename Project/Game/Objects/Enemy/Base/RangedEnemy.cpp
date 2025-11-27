@@ -10,9 +10,6 @@ void RangedEnemy::Initialize()
 	// 敵Animationの初期化
 	Animation::Initialize("Characters_Shaun.gltf");
 	Animation::PlayByName("Idle");
-	Animation::SetSceneRenderer();
-	Animation::GetMaterial().enableDraw = false;
-	Animation::GetTimeStop() = true;
 
 	// 弾を1つ作成
 	std::unique_ptr<EnemyBullet> bullet = std::make_unique<EnemyBullet>();

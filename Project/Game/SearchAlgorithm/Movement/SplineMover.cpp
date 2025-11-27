@@ -30,7 +30,7 @@ void SplineMover::Update(const float speed, float lookAt_t)
 		// ベクトルの方向に回転
 		velocity_ = { lookAtPosition_ - position_ };
 		Vector3 targetDirection = { -velocity_.x, 0.0f, velocity_.z };
-		Vector3 currentDirection = Vector3{ 0.0f,0.0f,1.0f };
+		Vector3 currentDirection = Vector3::ExprUnitZ;
 		Matrix4x4 rotationMatrix = Matrix4x4::DirectionToDirection(currentDirection, targetDirection);
 		yRotation_ = Quaternion::FormRotationMatrix(rotationMatrix);
 	}
@@ -52,10 +52,10 @@ void SplineMover::ComputeArcLengths()
 	arcLengths_.push_back(0.0f); // 始点
 
 	Vector3 prevPos = Vector3::CatmullRomPosition(splinePositions_, 0.0f);
-	int numSamples = 100; // サンプリング数
+	const int kNumSamples = 100; // サンプリング数
 
-	for (int i = 1; i <= numSamples; i++) {
-		float t = static_cast<float>(i) / numSamples;
+	for (int i = 1; i <= kNumSamples; i++) {
+		float t = static_cast<float>(i) / kNumSamples;
 		Vector3 currentPos = Vector3::CatmullRomPosition(splinePositions_, t);
 		totalLength += (currentPos - prevPos).Length(); // 距離を積算
 		arcLengths_.push_back(totalLength);
@@ -70,7 +70,7 @@ void SplineMover::ComputeArcLengths()
 	if (splines_ == nullptr) {
 		splines_ = std::make_unique<Line3d>();
 		splines_->Initialize(linePositions);
-		splines_->SetColor(Vector3{ 0.0f,0.0f,1.0f });
+		splines_->SetColor(Vector3::ExprUnitZ);
 	} else {
 		splines_->SetPositions(linePositions);
 		splines_->Update();
@@ -94,8 +94,8 @@ float SplineMover::GetArcLengthParam(float targetDistance)
 
 void SplineMover::SetLinePosition(std::vector<Vector3>& linePositions, const Vector3& start, const Vector3& end)
 {
-	float y = 0.25f;
+	const float kY = 0.25f;
 
-	linePositions.push_back(Vector3{ start.x,y,start.z });
-	linePositions.push_back(Vector3{ end.x,y,end.z });
+	linePositions.push_back(Vector3{ start.x,kY,start.z });
+	linePositions.push_back(Vector3{ end.x,kY,end.z });
 }

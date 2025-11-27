@@ -74,37 +74,40 @@ static float   ShadowZ (float4 shadowPos){ return saturate(shadowPos.z/shadowPos
 
 /// =============================================================
 
-// visibility : 中心ピクセルのシャドウ値 (0 = 真っ暗な影, 1 = 影なし)
-// shadowUV   : 中心ピクセルのシャドウUV
-// shadowZ    : 中心ピクセルのシャドウ深度
-// bias       : シャドウ比較用バイアス
 float AdjustShadowWithNeighbors(float visibility, float2 shadowUV, float shadowZ, float bias)
 {
     int width, height;
     gShadowMap.GetDimensions(width, height);
     float2 texel = float2(1.0 / width, 1.0 / height);
 
-    // 周囲4点のシャドウ値をサンプル
-    float v1 = gShadowMap.SampleCmpLevelZero(gShadowSampler, shadowUV + float2(texel.x, 0.0f), shadowZ - bias);
-    float v2 = gShadowMap.SampleCmpLevelZero(gShadowSampler, shadowUV + float2(-texel.x, 0.0f), shadowZ - bias);
-    float v3 = gShadowMap.SampleCmpLevelZero(gShadowSampler, shadowUV + float2(0.0f, texel.y), shadowZ - bias);
-    float v4 = gShadowMap.SampleCmpLevelZero(gShadowSampler, shadowUV + float2(0.0f, -texel.y), shadowZ - bias);
-    float v5 = gShadowMap.SampleCmpLevelZero(gShadowSampler, shadowUV + float2(texel.x, texel.y), shadowZ - bias);
-    float v6 = gShadowMap.SampleCmpLevelZero(gShadowSampler, shadowUV + float2(-texel.x, texel.y), shadowZ - bias);
-    float v7 = gShadowMap.SampleCmpLevelZero(gShadowSampler, shadowUV + float2(texel.x, -texel.y), shadowZ - bias);
-    float v8 = gShadowMap.SampleCmpLevelZero(gShadowSampler, shadowUV + float2(-texel.x, -texel.y), shadowZ - bias);
+    float sum = 0.0f;
+    const int radius = 3;
 
+    [unroll]
+    for (int y = -radius; y <= radius; ++y)
+    {
+        [unroll]
+        for (int x = -radius; x <= radius; ++x)
+        {
+            float2 offset = float2(x, y) * texel;
+            sum += gShadowMap.SampleCmpLevelZero(
+                gShadowSampler,
+                shadowUV + offset,
+                shadowZ - bias
+            );
+        }
+    }
 
-    float neighborAvg = (v1 + v2 + v3 + v4 + v5 + v6 + v7 + v8) * 0.125f;
+    // 49 サンプルの平均値（0～1）
+    float neighborAvg = sum / 49.0f;
 
-    // 周囲との「差」を見る（-1～1）
+    // visibility (中心1点) と の 差分調整はそのまま
     float diff = neighborAvg - visibility;
-
-    // diff > 0 : 周囲の方が明るい → 影を少し薄く
-    // diff < 0 : 周囲の方が暗い   → 影を少し濃く
-    float k = 0.5f; // 調整強度。0～1で好みに
-    return saturate(visibility + diff * k);
+    float k = 0.5f;
+    float result = saturate(visibility + diff * k);
+    return lerp(0.2f, 1.0f, result);
 }
+
 
 float SampleShadow(VertexShaderOutput input, float3 normalWS, float3 lightDirWS)
 {
@@ -197,7 +200,7 @@ PixelShaderOutput main(VertexShaderOutput input)
         environmentColor.rgb *= gMaterial[instID].environmentCoefficient;
         // ライトの処理を合算
         float visibility = SampleShadow(input, normal, lightDirectionalLight);
-
+        
         // 各ライト成分はそのまま
         float3 dirLight = (diffuseDirectionalLight + specularDirectionalLight);
         float3 otherLights =
@@ -207,7 +210,7 @@ PixelShaderOutput main(VertexShaderOutput input)
         // 太陽光だけ visibility を掛ける
         float3 litColor =
             environmentColor.rgb + // 環境光は常に有効
-            otherLights + // 他のライトも今回はシャドウ無し
+            otherLights +          // 他のライトも今回はシャドウ無し
             dirLight * visibility; // 平行光だけ影の影響を受ける
 
         output.color.rgb = litColor;

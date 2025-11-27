@@ -4,7 +4,8 @@
 
 void PlayerCountUI::Init()
 {
-	numbers_.resize(3);
+	const size_t kNumNumber = 3;
+	numbers_.resize(kNumNumber);
 
 	interval_ = 52.0f;
 

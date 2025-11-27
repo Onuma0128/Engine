@@ -8,6 +8,7 @@
 
 #include "scene/sceneFade/SceneFade.h"
 #include "uis/titleUI/TitleUI.h"
+#include "objects/fieldObject/Factory/FieldObjectFactory.h"
 
 /// <summary>
 /// タイトルシーン
@@ -44,6 +45,9 @@ private:
 	bool isFade_ = false;
 
 	std::unique_ptr<TitleUI> titleUI_ = nullptr;
+
+	// フィールド場のオブジェクト
+	std::unique_ptr<FieldObjectFactory> fieldObjectFactory_ = nullptr;
 
 	// パーティクルを管理する
 	ParticleManager* particleManager = ParticleManager::GetInstance();

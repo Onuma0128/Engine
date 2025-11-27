@@ -10,25 +10,22 @@ void PlayerShot::Init(Player* player)
 	player_ = player;
 
 	// 弾を初期化
-	bullets_.resize(6);
-	specialBullets_.resize(6);
-	bulletUIs_.resize(6);
-	// 通常弾
-	for (auto& bullet : bullets_) {
-		bullet = std::make_unique<PlayerBullet>();
-		bullet->SetItem(player->GetItem());
-		bullet->Init("PlayerBullet");
-	}
-	// 必殺技の弾
-	for (auto& bullet : specialBullets_) {
-		bullet = std::make_unique<PlayerBullet>();
-		bullet->SetItem(player->GetItem());
-		bullet->Init("PlayerBulletSpecial");
-	}
-	// 弾UIを初期化
-	for (size_t i = 0; i < bulletUIs_.size(); ++i) {
+	const size_t kBulletMax = 6;
+	bullets_.resize(kBulletMax);
+	specialBullets_.resize(kBulletMax);
+	bulletUIs_.resize(kBulletMax);
+	for (size_t i = 0; i < kBulletMax; ++i) {
+		// 通常弾
+		bullets_[i] = std::make_unique<PlayerBullet>();
+		bullets_[i]->SetItem(player->GetItem());
+		bullets_[i]->Init("PlayerBullet");
+		// 必殺技の弾
+		specialBullets_[i] = std::make_unique<PlayerBullet>();
+		specialBullets_[i]->SetItem(player->GetItem());
+		specialBullets_[i]->Init("PlayerBulletSpecial");
+		// 弾UIを初期化
 		bulletUIs_[i] = std::make_unique<PlayerBulletUI>();
-		bulletUIs_[i]->Init(Vector2{ (i * 32.0f) + 32.0f,32.0f });
+		bulletUIs_[i]->Init(Vector2{});
 	}
 	// Kill数UIの初期化
 	killCountUI_ = std::make_unique<PlayerCountUI>();

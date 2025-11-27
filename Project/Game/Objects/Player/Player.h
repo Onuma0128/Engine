@@ -15,8 +15,6 @@
 #include "objects/player/adjustItem/PlayerAdjustItem.h"
 #include "objects/player/bullet/PlayerShot.h"
 
-#include "objects/shadow/CharacterShadow.h"
-
 /// <summary>
 /// プレイヤー
 /// </summary>
@@ -82,8 +80,6 @@ private:
 	std::unique_ptr<PlayerShot> shot_ = nullptr;
 	// エフェクト
 	std::unique_ptr<PlayerEffect> effect_ = nullptr;
-	// 影
-	std::unique_ptr<CharacterShadow> shadow_ = nullptr;
 	// 必殺技時にロックオンするためのレティクル
 	std::unique_ptr<PlayerReticle> reticle_ = nullptr;
 	// 調整項目

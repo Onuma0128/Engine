@@ -118,7 +118,7 @@ void PlayerEffect::UpdatePostEffect()
 {
 	const float expandDuration = 1.0f;  // 60フレーム
 	const float holdDuration = 3.0f;	// 180フレーム
-	const float shrinkDuration = 0.5f;  // 60フレーム
+	const float shrinkDuration = 0.5f;  // 30フレーム
 
 	float delta = 1.0f / 60.0f;
 

@@ -24,8 +24,10 @@ struct EnemyMainData {
 	int maxSpawn;				// 敵が最大マップに何体まで出せるか上限
 	int nextWaveKillCount;		// 敵を何体倒したら強い敵が出てくるかカウント
 
-	Vector3 colliderSize;		// 敵本体のコライダーサイズ
+	Vector3 startPosition;		// 敵のスポーン開始位置	
+	float colliderSize;			// 敵本体のコライダーサイズ
 	Vector3 colliderOffset;		// 敵本体のコライダー座標
+	Vector3 rayOffset;			// 敵の視線レイの座標
 
 	float margin;				// 敵のアニメーションを判定しない余白距離
 

@@ -912,12 +912,6 @@
     <ClInclude Include="Game\Objects\Enemy\Ray\EnemyRay.h">
       <Filter>game\objects\enemy\ray</Filter>
     </ClInclude>
-    <ClCompile Include="Game\Objects\Shadow\CharacterShadow.cpp">
-      <Filter>game\objects\enemy\shadow</Filter>
-    </ClCompile>
-    <ClInclude Include="Game\Objects\Shadow\CharacterShadow.h">
-      <Filter>game\objects\enemy\shadow</Filter>
-    </ClInclude>
     <ClCompile Include="Game\Objects\Enemy\Spawner\EnemySpawner.cpp">
       <Filter>game\objects\enemy\spawner</Filter>
     </ClCompile>
@@ -1218,6 +1212,7 @@
     <ClCompile Include="Game\Uis\Select\SelectUI.cpp" />
     <ClCompile Include="Game\Uis\Select\AdjustItem\SelectAdjustItem.cpp" />
     <ClCompile Include="Engine\Base\Object\ShadowMap\ShadowMap.cpp" />
+    <ClCompile Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Uis\GameSceneUIs\GameSceneUIs.h" />
@@ -1228,5 +1223,6 @@
     <ClInclude Include="Engine\Base\Object\ShadowMap\ShadowMap.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\ObjectShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\AnimationShadowMapDepthRootSignature.h" />
+    <ClInclude Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.h" />
   </ItemGroup>
 </Project>

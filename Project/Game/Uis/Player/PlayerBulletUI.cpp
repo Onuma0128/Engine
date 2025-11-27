@@ -4,7 +4,6 @@ void PlayerBulletUI::Init(const Vector2& position)
 {
 	Sprite::Initialize("bulletUI.png");
 	
-	transform_.size = { 32.0f,48.0f };
 	transform_.position = position;
 }
 

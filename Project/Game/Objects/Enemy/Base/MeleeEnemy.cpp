@@ -13,9 +13,6 @@ void MeleeEnemy::Initialize()
 	// 敵Animationの初期化
 	Animation::Initialize("Zombie_Basic.gltf");
 	Animation::PlayByName("Idle");
-	Animation::SetSceneRenderer();
-	Animation::GetMaterial().enableDraw = false;
-	Animation::GetTimeStop() = true;
 
 	// 近接攻撃用のコライダーを作成
 	weapon_ = std::make_unique<EnemyAxe>(this);

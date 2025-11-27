@@ -10,7 +10,6 @@
 #include "objects/enemy/state/EnemyBaseState.h"
 #include "objects/enemy/bullet/EnemyBullet.h"
 #include "objects/enemy/effect/EnemyEffect.h"
-#include "objects/shadow/CharacterShadow.h"
 #include "objects/enemy/ray/EnemyRay.h"
 
 #include "searchAlgorithm/navigation/PathFinder.h"
@@ -19,6 +18,8 @@
 struct EnemyStateParam {
 	// 敵を動かして描画するか管理用
 	bool enableMove_ = false;
+	// 攻撃中か
+	bool isAttacking_ = false;
 	// 生きているか
 	bool isAlive_ = true;
 	// 死んだ瞬間
@@ -109,6 +110,9 @@ public:
 	// プレイヤーのレティクルに当たっているか
 	bool GetHitReticle()const { return stateParam_.hitReticle_; }
 	// 死んでいるか
+	bool GetIsAttacking()const { return stateParam_.isAttacking_; }
+	void SetIsAttacking(bool flag) { stateParam_.isAttacking_ = flag; }
+	// 死んでいるか
 	bool GetIsDead()const { return stateParam_.isDead_; }
 	void SetIsDead(bool flag) { stateParam_.isDead_ = flag; }
 
@@ -153,8 +157,6 @@ protected:
 	std::vector<std::unique_ptr<EnemyBullet>> bullets_;
 	// エフェクト
 	std::unique_ptr<EnemyEffect> effect_ = nullptr;
-	// 影
-	std::unique_ptr<CharacterShadow> shadow_ = nullptr;
 	// 敵の目線
 	std::unique_ptr<EnemyRay> ray_ = nullptr;
 	// 敵が今どうなっているか

@@ -10,9 +10,6 @@ void RangedEliteEnemy::Initialize()
 	// 敵Animationの初期化
 	Animation::Initialize("Characters_Shaun.gltf");
 	Animation::PlayByName("Idle");
-	Animation::SetSceneRenderer();
-	Animation::GetMaterial().enableDraw = false;
-	Animation::GetTimeStop() = true;
 
 	// 弾を3つ作成
 	for (uint32_t i = 0; i < 3; ++i) {

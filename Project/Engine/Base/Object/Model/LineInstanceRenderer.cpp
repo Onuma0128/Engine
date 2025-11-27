@@ -57,7 +57,7 @@ void LineInstanceRenderer::CreateCB()
 
 void LineInstanceRenderer::CreateSB()
 {
-    uint32_t maxInstance = 1024;
+    uint32_t maxInstance = 32768;
 
     sbPS_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material) * maxInstance);
     sbPS_->Map(0, nullptr, reinterpret_cast<void**>(&materialDatas_));

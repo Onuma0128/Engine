@@ -7,6 +7,7 @@
 #include "SceneJsonLoader.h"
 
 #include "objects/fieldObject/effect/FieldObjectEffect.h"
+#include "objects/fieldObject/adjustItem/FieldObjectAdjustItem.h"
 
 /// <summary>
 /// フィールドオブジェクトのクラス
@@ -25,6 +26,12 @@ public:
 	/// フィールドオブジェクトを更新する
 	/// </summary>
 	void Update();
+
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
+	/// <param name="items"></param>
+	void SetItems(FieldObjectAdjustItem* items) { items_ = items; }
 
 private:
 
@@ -51,6 +58,9 @@ private:
 
 private:
 
+	// 調整項目
+	FieldObjectAdjustItem* items_ = nullptr;
+	// エフェクト
 	std::unique_ptr<FieldObjectEffect> effect_ = nullptr;
 
 	// シェイクしている時値が入っている

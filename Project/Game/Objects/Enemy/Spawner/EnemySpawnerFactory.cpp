@@ -22,14 +22,14 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 		++it;
 	}
 
-	size_t normal = 50;
-	size_t strong = 10;
+	const size_t normalSize = 50;
+	const size_t strongSize = 10;
 
 	// 敵をタイプごとに初期化
-	InitTypeEnemy(EnemyType::kMelee, enemyMelees_, normal);
-	InitTypeEnemy(EnemyType::kRanged, enemyRnageds_, normal);
-	InitTypeEnemy(EnemyType::kShieldBearer, enemyShieldBearers_, strong);
-	InitTypeEnemy(EnemyType::kRangedElite, enemyRnagedElites_, strong);
+	InitTypeEnemy(EnemyType::kMelee, enemyMelees_, normalSize);
+	InitTypeEnemy(EnemyType::kRanged, enemyRnageds_, normalSize);
+	InitTypeEnemy(EnemyType::kShieldBearer, enemyShieldBearers_, strongSize);
+	InitTypeEnemy(EnemyType::kRangedElite, enemyRnagedElites_, strongSize);
 
 	spawnInterval_ = 1.0f;
 }
@@ -77,7 +77,7 @@ void EnemySpawnerFactory::InitTypeEnemy(EnemyType type, std::list<std::unique_pt
 	for (auto& enemy : enemys) {
 		switch (type) {
 		case EnemyType::kMelee:			enemy = std::make_unique<MeleeEnemy>(); break;
-		case EnemyType::kRanged:			enemy = std::make_unique<RangedEnemy>(); break;
+		case EnemyType::kRanged:		enemy = std::make_unique<RangedEnemy>(); break;
 		case EnemyType::kShieldBearer:	enemy = std::make_unique<ShieldBearerEnemy>(); break;
 		case EnemyType::kRangedElite:	enemy = std::make_unique<RangedEliteEnemy>(); break;
 		default:break;
@@ -99,19 +99,22 @@ void EnemySpawnerFactory::UpdateTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>&
 
 void EnemySpawnerFactory::RandomSpawnEnemy()
 {
+	// データを取得
+	const auto& mainData = items_->GetMainData();
+
 #ifdef ENABLE_EDITOR
-	if (items_->GetMainData().nowSpawn) {
+	if (mainData.nowSpawn) {
 		// タイプごとに敵を生成
-		EnemyType type = static_cast<EnemyType>(items_->GetMainData().spawnIndex);
+		EnemyType type = static_cast<EnemyType>(mainData.spawnIndex);
 		switch (type) {
 		case EnemyType::kMelee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[0]); break;
-		case EnemyType::kRanged:			ResetTypeEnemy(enemyRnageds_, enemySpawners_[0]); break;
+		case EnemyType::kRanged:		ResetTypeEnemy(enemyRnageds_, enemySpawners_[0]); break;
 		case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[0]); break;
 		case EnemyType::kRangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[0]); break;
 		default: break;
 		}
 	}
-	if (!items_->GetMainData().debugIsSpawn) { return; }
+	if (!mainData.debugIsSpawn) { return; }
 #endif // ENABLE_EDITOR
 
 	// 湧き上限を超えていないかチェックする
@@ -121,7 +124,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		enemySpawnCount += spawner->GetEnemyList().size();
 		kNockdownCount += spawner->GetNockdownCount();
 	}
-	if (enemySpawnCount >= items_->GetMainData().maxSpawn) { return; }
+	if (enemySpawnCount >= mainData.maxSpawn) { return; }
 
 	// スポーンタイムを更新
 	spawnTime_ += DeltaTimer::GetDeltaTime();
@@ -134,26 +137,26 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		int spownNumber = (spawner(randomEngine_));
 		// 何の敵が湧くか
 		EnemyType type = EnemyType::kMelee;
-		// 倒した数が25を超えていないなら
-		if (kNockdownCount <= 25) {
+		// 倒した数が超えていないなら
+		if (kNockdownCount <= static_cast<uint32_t>(mainData.nextWaveKillCount)) {
 			std::uniform_int_distribution<int> enemyType(0, 1);
 			type = static_cast<EnemyType>(enemyType(randomEngine_));
 		} else {
 			std::uniform_int_distribution<int> enemyType(0, 5);
-			int randomType = (enemyType(randomEngine_)) % 4;
+			int randomType = (enemyType(randomEngine_)) % static_cast<int>(EnemyType::kCount);
 			type = static_cast<EnemyType>(randomType);
 		}
 		// タイプごとに敵を生成
 		switch (type) {
 		case EnemyType::kMelee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[spownNumber]); break;
-		case EnemyType::kRanged:			ResetTypeEnemy(enemyRnageds_, enemySpawners_[spownNumber]); break;
+		case EnemyType::kRanged:		ResetTypeEnemy(enemyRnageds_, enemySpawners_[spownNumber]); break;
 		case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[spownNumber]); break;
 		case EnemyType::kRangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[spownNumber]); break;
 		default: break;
 		}
-
+		
 		// スポーン時間を初期化
-		if (kNockdownCount <= static_cast<uint32_t>(items_->GetMainData().nextWaveKillCount)) {
+		if (kNockdownCount <= static_cast<uint32_t>(mainData.nextWaveKillCount)) {
 			std::uniform_int_distribution<int> interval(1, 5);
 			spawnInterval_ = static_cast<float>(interval(randomEngine_)) * 0.8f;
 		} else {

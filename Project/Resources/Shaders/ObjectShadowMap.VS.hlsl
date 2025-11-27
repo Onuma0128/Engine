@@ -8,6 +8,21 @@ struct InstanceData
 };
 StructuredBuffer<InstanceData> gInstanceData : register(t0);
 
+struct Material
+{
+    float4 color;
+    float4x4 uvTransform;
+    int enableDraw;
+    int enableLighting;
+    int outlineMask;
+    int outlineSceneColor;
+    float3 outlineColor;
+    float shininess;
+    float environmentCoefficient;
+    int shadowMap;
+};
+StructuredBuffer<Material> gMaterial : register(t1);
+
 struct LightData
 {
     float4x4 LightVP;
@@ -29,6 +44,12 @@ struct VSOut
 VSOut main(VertexShaderInput input, uint InstID : SV_InstanceID)
 {
     VSOut output;
+
+    if (!gMaterial[InstID].enableDraw || !gMaterial[InstID].shadowMap)
+    {
+        output.position = float4(0.0f, 0.0f, 0.0f, 0.0f);
+        return output;
+    }
     
     float4 worldPos = mul(input.position, gInstanceData[InstID].World);
 

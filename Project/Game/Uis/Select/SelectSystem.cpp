@@ -53,7 +53,8 @@ void SelectSystem::Update()
 #endif // ENABLE_EDITOR
 
 	// ターゲットされているボタンを更新する
-	uint32_t index = targetIndex_ + 4u;
+	const uint32_t kAddIndex = 4u;
+	uint32_t index = targetIndex_ + kAddIndex;
 	selectUIs_[index]->Blinking();
 
 	for (auto& back : selectUIs_) {
