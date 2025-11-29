@@ -39,8 +39,8 @@ void Collider::Update()
 
 	linePositions_ = CreateLinePositions();
 	for (auto& linePos : linePositions_) {
-		Vector3 translate = centerPosition_ + offsetPosition_;
 		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(rotate_);
+		Vector3 translate = centerPosition_ + offsetPosition_.Transform(rotateMatrix);
 		linePos = linePos.Transform(rotateMatrix) + translate;
 	}
 	line_->SetPositions(linePositions_);

@@ -53,6 +53,13 @@ public:
 	/// <returns></returns>
 	const float GetCell() const { return cell_; }
 
+	/// <summary>
+	/// 座標や回転が変わったObjectの判定を再計算する
+	/// </summary>
+	/// <param name="prevOBB"></前のOBB>
+	/// <param name="currentOBB"></現在のOBB>
+	void ReTargetMapCollisionOBB(const OBB_2D& prevOBB, const OBB_2D& currentOBB);
+
 private:
 
 	/// <summary>
@@ -86,7 +93,7 @@ private:
 
 	// グリッドを表示
 	std::unique_ptr<DrawGrid> grid_ = nullptr;
-	bool debugLine_ = true;
+	bool debugLine_ = false;
 
 };
 

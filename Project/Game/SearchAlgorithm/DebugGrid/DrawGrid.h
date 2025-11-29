@@ -49,6 +49,12 @@ public:
 	void HitAABB(const AABB_2D& aabb);
 
 	/// <summary>
+	/// 特定のヒットグリッドを削除する
+	/// </summary>
+	/// <param name="aabb"></param>
+	void DeleteHitAABB(const AABB_2D& aabb);
+
+	/// <summary>
 	/// ヒットグリッドをクリアする
 	/// </summary>
 	void HitAABBClear() { hitGridPositions_.clear(); }
@@ -60,12 +66,22 @@ public:
 
 private:
 
+	/// <summary>
+	/// ヒットグリッドの位置を再構築する
+	/// </summary>
+	void RebuildHitGridPositions();
+
+private:
+
 	// グリッド
 	std::unique_ptr<Line3d> grid_ = nullptr;
 
 	// 判定が取れた所だけ赤くする
 	std::unique_ptr<Line3d> hitGrid_ = nullptr;
 	std::vector<Vector3> hitGridPositions_;
+
+	// ヒットしたAABBのリスト
+	std::vector<AABB_2D> hitAABBs_;
 
 };
 

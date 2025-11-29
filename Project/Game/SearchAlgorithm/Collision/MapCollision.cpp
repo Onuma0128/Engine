@@ -77,6 +77,24 @@ void MapCollision::Update()
 	grid_->Update();
 }
 
+void MapCollision::ReTargetMapCollisionOBB(const OBB_2D& prevOBB, const OBB_2D& currentOBB)
+{
+	// フィールドオブジェクトとの判定
+	for (auto& maptips : mapDatas_) {
+		for (auto& block : maptips) {
+			// OBB
+			if (Collision2D::OBBAABB(prevOBB, block.aabb)) {
+				block.isEnable = true;
+				grid_->DeleteHitAABB(block.aabb);
+			}
+			if (Collision2D::OBBAABB(currentOBB, block.aabb)) {
+				block.isEnable = false;
+				grid_->HitAABB(block.aabb);
+			}
+		}
+	}
+}
+
 void MapCollision::CreateMap()
 {
 	// サイズを決める

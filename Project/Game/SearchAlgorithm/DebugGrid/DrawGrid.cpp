@@ -50,17 +50,51 @@ void DrawGrid::HitGridInit()
 
 void DrawGrid::HitAABB(const AABB_2D& aabb)
 {
-	std::array<Vector3, 4> positions;
-	const float kPosY = 0.15f;
-	positions[0] = { aabb.min.x,kPosY,aabb.min.y };
-	positions[1] = { aabb.max.x,kPosY,aabb.min.y };
-	positions[2] = { aabb.max.x,kPosY,aabb.max.y };
-	positions[3] = { aabb.min.x,kPosY,aabb.max.y };
+	// ヒットしたAABBを登録
+	hitAABBs_.push_back(aabb);
 
-	for (uint32_t i = 0; i < positions.size(); ++i) {
-		hitGridPositions_.push_back(positions[i]);
-		uint32_t index = i + 1;
-		if (index >= positions.size()) { index = 0; }
-		hitGridPositions_.push_back(positions[index]);
+	RebuildHitGridPositions();
+}
+
+void DrawGrid::DeleteHitAABB(const AABB_2D& aabb)
+{
+	// min / max が一致する AABB を消す
+	auto isSame = [&](const AABB_2D& other) {
+		return (other.min.x == aabb.min.x &&
+			other.min.y == aabb.min.y &&
+			other.max.x == aabb.max.x &&
+			other.max.y == aabb.max.y);
+		};
+
+	auto it = std::remove_if(hitAABBs_.begin(), hitAABBs_.end(), isSame);
+	if (it != hitAABBs_.end()) {
+		hitAABBs_.erase(it, hitAABBs_.end());
+
+		// 残っている AABB から線を作り直す
+		RebuildHitGridPositions();
+	}
+}
+
+void DrawGrid::RebuildHitGridPositions()
+{
+	hitGridPositions_.clear();
+
+	const float kPosY = 0.15f;
+	for (const auto& aabb : hitAABBs_) {
+		std::array<Vector3, 4> positions;
+		positions[0] = { aabb.min.x, kPosY, aabb.min.y };
+		positions[1] = { aabb.max.x, kPosY, aabb.min.y };
+		positions[2] = { aabb.max.x, kPosY, aabb.max.y };
+		positions[3] = { aabb.min.x, kPosY, aabb.max.y };
+
+		for (uint32_t i = 0; i < positions.size(); ++i) {
+			hitGridPositions_.push_back(positions[i]);
+			uint32_t index = i + 1;
+			if (index >= positions.size()) { index = 0; }
+			hitGridPositions_.push_back(positions[index]);
+		}
+	}
+	if (hitGrid_) {
+		hitGrid_->SetPositions(hitGridPositions_);
 	}
 }

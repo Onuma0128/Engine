@@ -3,6 +3,8 @@
 #include <numbers>
 #include <algorithm>
 
+#define NOMINMAX
+
 #include <string>
 #include <array>
 
@@ -17,6 +19,7 @@ enum class EasingType : int32_t {
     kEaseInExpo, kEaseOutExpo, kEaseInOutExpo,
     kEaseInCirc, kEaseOutCirc, kEaseInOutCirc,
     kEaseInBack, kEaseOutBack, kEaseInOutBack,
+    kEaseOutBounce,
 };
 
 /// <summary>
@@ -135,7 +138,25 @@ public:
             : (std::pow(2.0f * t - 2.0f, 2.0f) * ((c2 + 1.0f) * (t * 2.0f - 2.0f) + c2) + 2.0f) / 2.0f;
     }
 
-    static constexpr const std::array<const char*, 25>& GetEaseTypeNames() { return easeTypes_; }
+    static float EaseOutBounce(float t) {
+        const float n1 = 4.0f;
+        const float d1 = 2.75f;
+
+        if (t < 1.0f / d1) {
+            return n1 * t * t;
+        } else if (t < 2.0f / d1) {
+            t -= 1.5f / d1;
+            return n1 * t * t + 0.75f;
+        } else if (t < 2.5f / d1) {
+            t -= 2.25f / d1;
+            return n1 * t * t + 0.9375f;
+        } else {
+            t -= 2.625f / d1;
+            return n1 * t * t + 0.984375f;
+        }
+    }
+
+    static constexpr const std::array<const char*, 26>& GetEaseTypeNames() { return easeTypes_; }
 
     static EasingType FromInt(int v) {
         if (v < 0) v = 0;
@@ -182,13 +203,15 @@ public:
         case EasingType::kEaseInBack:     return Easing::EaseInBack(t);
         case EasingType::kEaseOutBack:    return Easing::EaseOutBack(t);
         case EasingType::kEaseInOutBack:  return Easing::EaseInOutBack(t);
+
+        case EasingType::kEaseOutBounce: return Easing::EaseOutBounce(t);
         }
     }
 
 
 private:
 
-    static constexpr std::array<const char*, 25> easeTypes_ = {
+    static constexpr std::array<const char*, 26> easeTypes_ = {
         "Linear",
         "EaseInSine", "EaseOutSine", "EaseInOutSine",
         "EaseInQuad", "EaseOutQuad", "EaseInOutQuad",
@@ -197,7 +220,8 @@ private:
         "EaseInQuint","EaseOutQuint","EaseInOutQuint",
         "EaseInExpo", "EaseOutExpo", "EaseInOutExpo",
         "EaseInCirc", "EaseOutCirc", "EaseInOutCirc",
-        "EaseInBack", "EaseOutBack", "EaseInOutBack"
+        "EaseInBack", "EaseOutBack", "EaseInOutBack",
+        "EaseOutBounce"
     };
 
     static constexpr int kEaseCount = static_cast<int>(sizeof(easeTypes_) / sizeof(easeTypes_[0]));

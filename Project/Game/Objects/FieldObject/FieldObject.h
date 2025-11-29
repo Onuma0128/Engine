@@ -9,6 +9,10 @@
 #include "objects/fieldObject/effect/FieldObjectEffect.h"
 #include "objects/fieldObject/adjustItem/FieldObjectAdjustItem.h"
 
+/// 前方宣言
+class MapCollision;
+class GameCamera;
+
 /// <summary>
 /// フィールドオブジェクトのクラス
 /// </summary>
@@ -33,6 +37,18 @@ public:
 	/// <param name="items"></param>
 	void SetItems(FieldObjectAdjustItem* items) { items_ = items; }
 
+	/// <summary>
+	/// マップの衝突判定を取得する
+	/// </summary>
+	/// <param name="mapCollision"></param>
+	void SetMapCollision(MapCollision* mapCollision) { mapCollision_ = mapCollision; }
+
+	/// <summary>
+	/// カメラを取得する
+	/// </summary>
+	/// <param name="gameCamera"></param>
+	void SetGameCamera(GameCamera* gameCamera) { gameCamera_ = gameCamera; }
+
 private:
 
 	/// <summary>
@@ -56,13 +72,27 @@ private:
 	/// <param name="shake"></param>
 	void UpdateShake(Vector3& shake);
 
+	/// <summary>
+	/// Objectが倒れる処理
+	/// </summary>
+	void UpdateBreak();
+
 private:
 
 	// 調整項目
 	FieldObjectAdjustItem* items_ = nullptr;
+	// マップの衝突判定
+	MapCollision* mapCollision_ = nullptr;
+	// カメラ
+	GameCamera* gameCamera_ = nullptr;
 	// エフェクト
 	std::unique_ptr<FieldObjectEffect> effect_ = nullptr;
 
+	// そのObjectが倒れたか
+	bool isBreak_ = false;
+	float breakTimer_ = 0.0f;
+	Quaternion prevRotate_ = Quaternion::IdentityQuaternion();
+	Quaternion breakRotate_ = Quaternion::IdentityQuaternion();
 	// シェイクしている時値が入っている
 	Vector3 shake_;
 	// オブジェクトの元の座標

@@ -45,7 +45,7 @@ void PlayerShot::Init(Player* player)
 	Collider::myType_ = ColliderType::kOBB;
 	Collider::colliderName_ = "PlayerShotRay";
 	Collider::isActive_ = true;
-	Collider::targetColliderName_ = { "Enemy" };
+	Collider::targetColliderName_ = { "Enemy","DeadTree" };
 	Collider::DrawCollider();
 
 	rayReticle_ = std::make_unique<PlayerRayReticle>();

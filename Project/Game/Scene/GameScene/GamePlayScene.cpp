@@ -22,10 +22,6 @@ void GamePlayScene::Initialize()
 	skyBox_->GetTransform().scale = { 1024.0f,1024.0f ,1024.0f };
 	skyBox_->SetSceneRenderer();
 
-	// フィールド上のオブジェクトの初期化と生成
-	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
-	fieldObjectFactory_->Init(loader);
-
 	// プレイヤーの初期化
 	player_ = std::make_unique<Player>();
 	player_->Init(loader);
@@ -34,6 +30,12 @@ void GamePlayScene::Initialize()
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
 	gameCamera_->Init();
+
+	// フィールド上のオブジェクトの初期化と生成
+	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
+	fieldObjectFactory_->SetMapCollision(mapCollision_.get());
+	fieldObjectFactory_->SetGameCamera(gameCamera_.get());
+	fieldObjectFactory_->Init(loader);
 
 	// 敵スポナーの初期化と生成
 	enemySpawnerFactory_ = std::make_unique<EnemySpawnerFactory>();
@@ -97,6 +99,10 @@ void GamePlayScene::Update()
 	if ((!player_->GetIsAlive() || player_->GetShot()->GetNockdownCount() >= clearKill) && !isSelect_) {
 		isSelect_ = true;
 		gameSceneUis_->SelectUIFadeIn();
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_F1)) {
+		SceneManager::GetInstance()->ChangeScene("Title");
 	}
 }
 

@@ -30,6 +30,12 @@ public:
 	/// <param name="transform"></フィールドオブジェクトのTransform>
 	void OnceHitEffect(const WorldTransform& transform);
 
+	/// <summary>
+	/// ブレイク時のエフェクトを呼び出す
+	/// </summary>
+	/// <param name="transform"></フィールドオブジェクトのTransform>
+	void OnceBreakEffect(const WorldTransform& transform);
+
 private:
 
 	// パーティクルを管理する
@@ -37,7 +43,11 @@ private:
 
 	/* ==================== 弾がヒット時のエフェクト ==================== */
 
-	// 移動時の土埃
 	std::shared_ptr<ParticleEmitter> hitEmitter_ = nullptr;
+
+	/* ==================== 壊れた時のエフェクト ==================== */
+
+	std::shared_ptr<ParticleEmitter> breakEmitter_ = nullptr;
+	bool isBreakEffectPlay_ = false;
 };
 

@@ -4,5 +4,8 @@
         "x": 2.0,
         "y": 0.0,
         "z": 1.0
-    }
+    },
+    "breakTimer": 0.5,
+    "breakEmitTimer": 0.699999988079071,
+    "cameraShakePower": 5.0
 }

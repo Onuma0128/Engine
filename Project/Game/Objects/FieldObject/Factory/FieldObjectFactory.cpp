@@ -1,5 +1,8 @@
 #include "FieldObjectFactory.h"
 
+#include "SearchAlgorithm/Collision/MapCollision.h"
+#include "GameCamera/GameCamera.h"
+
 void FieldObjectFactory::Init(SceneJsonLoader loader)
 {
 	items_ = std::make_unique<FieldObjectAdjustItem>();
@@ -10,6 +13,8 @@ void FieldObjectFactory::Init(SceneJsonLoader loader)
 			std::unique_ptr<FieldObject> object = std::make_unique<FieldObject>();
 			object->Init(it->second);
 			object->SetItems(items_.get());
+			object->SetMapCollision(mapCollision_);
+			object->SetGameCamera(gameCamera_);
 			fieldObjects_.push_back(std::move(object));
 		}
 		++it;

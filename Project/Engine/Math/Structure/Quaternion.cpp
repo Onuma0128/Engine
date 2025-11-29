@@ -216,9 +216,9 @@ Vector3 Quaternion::ToEuler(const Quaternion& q) {
 	euler.x = std::atan2(sinp, cosp); // pitch
 
 	// Yaw（Y軸回転）
-	float siny = 2.0f * (q.w * q.y - q.z * q.x);
-	siny = std::clamp(siny, -1.0f, 1.0f); // asin範囲制限
-	euler.y = std::asin(siny); // yaw
+	float siny = 2.0f * (q.w * q.y + q.x * q.z);
+	float cosy = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
+	euler.y = std::atan2(siny, cosy);
 
 	// Roll（Z軸回転）
 	float sinr = 2.0f * (q.w * q.z + q.x * q.y);

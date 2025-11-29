@@ -35,7 +35,7 @@ void TitleScene::Initialize()
 	fieldObjectFactory_->Init(loader);
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kOutLine);
 
-	test = std::make_unique<ParticleEmitter>("playerHit");
+	test = std::make_unique<ParticleEmitter>("breakTree");
 	particleManager->CreateParticleGroup(test);
 	test->SetIsCreate(false);
 }

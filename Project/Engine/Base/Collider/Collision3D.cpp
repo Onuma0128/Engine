@@ -510,9 +510,10 @@ AABB Collision3D::ChangeAABB(const Collider* collider)
 
 OBB Collision3D::ChangeOBB(const Collider* collider)
 {
+	auto rotateMatrix = Quaternion::MakeRotateMatrix(collider->GetRotate());
 	return {
-		.center = collider->GetCenterPosition() + collider->GetOffsetPosition(),
-		.rotateMatrix = Quaternion::MakeRotateMatrix(collider->GetRotate()),
+		.center = collider->GetCenterPosition() + collider->GetOffsetPosition().Transform(rotateMatrix),
+		.rotateMatrix = rotateMatrix,
 		.size = collider->GetSize()
 	};
 }

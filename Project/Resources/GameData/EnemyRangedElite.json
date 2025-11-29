@@ -30,7 +30,7 @@
         "y": 0.10000000149011612,
         "z": 9.0
     },
-    "speed": 2.5,
+    "speed": 3.0,
     "attackDistance": 10.0,
     "attackStartupTime": 3.0,
     "attackActiveTime": 1.0,
