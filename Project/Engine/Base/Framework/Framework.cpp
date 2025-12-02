@@ -65,6 +65,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "bulletUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "playerControlUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "reloadUI.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "A_button.png");
 
 	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "killCountUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/select", "hitRateUI.png");

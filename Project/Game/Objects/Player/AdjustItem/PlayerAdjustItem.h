@@ -25,6 +25,7 @@ struct BulletData {
 	float speed;				// 弾の速度
 	float speed_sp;				// 必殺技の弾の速度
 	Vector3 position;			// 弾が出てくる座標
+	int maxChargeCount_sp;		// 必殺技の最大チャージ数
 
 	float reloadStartTime;		// 弾のリロードを開始する時間
 	float reloadTime;			// 弾をリロードする時間

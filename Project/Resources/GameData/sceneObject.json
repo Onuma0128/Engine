@@ -350,43 +350,6 @@
         },
         {
             "type": "MESH",
-            "name": "Fence.006",
-            "transform": {
-                "translation": [
-                    19.25,
-                    -0.09999994933605194,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    0.6000000238418579,
-                    0.6000000238418579,
-                    1.0
-                ]
-            },
-            "file_name": "fence.obj",
-            "tag_name": "fence",
-            "group_name": "FieldObject",
-            "collider": {
-                "type": "Box",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.5
-                ],
-                "size": [
-                    1.8000000715255737,
-                    0.37200001764297497,
-                    0.75
-                ]
-            }
-        },
-        {
-            "type": "MESH",
             "name": "DeadTree_3",
             "transform": {
                 "translation": [

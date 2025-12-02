@@ -123,6 +123,11 @@ private:
 	
 	std::unique_ptr<PrimitiveDrawr> playerReload_ = nullptr;
 
+	/* ==================== プレイヤーが必殺技が溜まったと分かるエフェクト ==================== */
+
+	std::unique_ptr<PrimitiveDrawr> specialMoveReady_ = nullptr;
+	float specialMoveReadyTimer_ = 0.0f;
+
 	/* ==================== プレイヤーが必殺技を撃った時のエフェクト ==================== */
 
 	// シリンダーで必殺の範囲を視覚的に

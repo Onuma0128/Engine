@@ -19,10 +19,12 @@ void PlayerShot::Init(Player* player)
 		bullets_[i] = std::make_unique<PlayerBullet>();
 		bullets_[i]->SetItem(player->GetItem());
 		bullets_[i]->Init("PlayerBullet");
+		bullets_[i]->SetPlayerShot(this);
 		// 必殺技の弾
 		specialBullets_[i] = std::make_unique<PlayerBullet>();
 		specialBullets_[i]->SetItem(player->GetItem());
 		specialBullets_[i]->Init("PlayerBulletSpecial");
+		specialBullets_[i]->SetPlayerShot(this);
 		// 弾UIを初期化
 		bulletUIs_[i] = std::make_unique<PlayerBulletUI>();
 		bulletUIs_[i]->Init(Vector2{});
@@ -56,8 +58,6 @@ void PlayerShot::Update()
 {
 	// 今リロードが終わっている弾のを取得する
 	kBulletCount_ = 0;
-	// キル数を保持する
-	kNockdownCount_ = 0;
 	// 弾の更新
 	for (auto& bullet : bullets_) {
 		bullet->Update();
@@ -65,15 +65,11 @@ void PlayerShot::Update()
 		bullet->SetOnDeactivateCallback([]() {});
 		// 弾のリロードが終わっているならカウントに追加
 		if (bullet->GetIsReload()) { ++kBulletCount_; }
-		// キル数を取得
-		kNockdownCount_ += bullet->GetNockdownCount();
 	}
 	for (auto& bullet : specialBullets_) {
 		bullet->Update();
 		// 弾が消えた時のコールバック関数
 		bullet->SetOnDeactivateCallback([]() {});
-		// キル数を取得
-		kNockdownCount_ += bullet->GetNockdownCount();
 	}
 	for (size_t i = 0; i < predictionObjects_.size(); ++i) {
 		float interval = player_->GetItem()->GetPreObjectData().interval;
@@ -228,7 +224,7 @@ void PlayerShot::RayUpdate()
 
 	// 右スティックの入力があるならその方向にRayを向ける
 	Quaternion rightQuaternion = Quaternion::IdentityQuaternion();
-	if (rotateVelocity.Length() > 0.01f) {
+	if (rotateVelocity.Length() > 0.01f && kBulletCount_ != 0) {
 		rayDirection_ = rotateVelocity;
 		Collider::isActive_ = true;
 	} else {

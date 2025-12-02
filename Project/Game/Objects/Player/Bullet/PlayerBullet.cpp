@@ -3,7 +3,8 @@
 #include "DeltaTimer.h"
 #include "Input.h"
 
-#include "objects/player/adjustItem/PlayerAdjustItem.h"
+#include "Objects/Player/AdjustItem/PlayerAdjustItem.h"
+#include "Objects/Player/Bullet/PlayerShot.h"
 
 void PlayerBullet::Init(const std::string& colliderName)
 {
@@ -92,8 +93,11 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 			IsCollision();
 			effect_->OnceBulletDeleteEffect(transform_);
 			Object3d::GetTransform().translation_.y = -2.0f;
+			if(playerShot_->GetChargeCount() <= static_cast<uint32_t>(item_->GetBulletData().maxChargeCount_sp)){
+				playerShot_->AddChargeCount();
+			}
 		}
-		++kNockdownCount_;
+		playerShot_->AddNockdownCount();
 		Input::GetInstance()->Vibrate(0.4f, 0.75f, 100);
 	}
 }

@@ -7,6 +7,7 @@
 #include "objects/player/effect/PlayerBulletEffect.h"
 
 class PlayerAdjustItem;
+class PlayerShot;
 
 /// <summary>
 /// プレイヤーの弾を表すクラス
@@ -59,12 +60,6 @@ public:
 	bool GetIsReload()const { return isReload_; }
 
 	/// <summary>
-	/// ノックダウン数を取得する
-	/// </summary>
-	/// <returns></returns>
-	uint32_t GetNockdownCount()const { return kNockdownCount_; }
-
-	/// <summary>
 	/// 弾が当たっていれば呼び出す
 	/// </summary>
 	void IsCollision();
@@ -80,12 +75,20 @@ public:
 	/// <param name="item"></param>
 	void SetItem(PlayerAdjustItem* item) { item_ = item; }
 
+	/// <summary>
+	/// プレイヤーの弾を撃つクラスのポインタを設定する
+	/// </summary>
+	/// <param name="playerShot"></param>
+	void SetPlayerShot(PlayerShot* playerShot) { playerShot_ = playerShot; }
+
 private:
 
 	// 弾のエフェクト呼び出し
 	std::unique_ptr<PlayerBulletEffect> effect_ = nullptr;
 	// 調整項目
 	PlayerAdjustItem* item_ = nullptr;
+	// プレイヤーの弾を撃つクラスのポインタ
+	PlayerShot* playerShot_ = nullptr;
 
 	// 今動いているか
 	bool isActive_ = false;
@@ -101,8 +104,6 @@ private:
 	float activeTime_ = 0.0f;
 	// リロードされているか
 	bool isReload_ = true;
-	// 敵を倒した数を保存する
-	uint32_t kNockdownCount_ = 0;
 
 };
 

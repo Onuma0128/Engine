@@ -45,6 +45,15 @@ void PlayerEffect::Init()
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kVignette);
 	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kOutLine);
 
+	specialMoveReady_ = std::make_unique<PrimitiveDrawr>();
+	specialMoveReady_->TypeInit(PrimitiveType::kPlane);
+	specialMoveReady_->SetTexture("A_button.png");
+	specialMoveReady_->SetBlendMode(BlendMode::kBlendModeNormal);
+	specialMoveReady_->GetRenderOptions().enabled = true;
+	specialMoveReady_->GetRenderOptions().offscreen = false;
+	specialMoveReady_->SetIsBillboard(true);
+	specialMoveReady_->GetTransform().scale = { 0.35f,0.35f,1.0f };
+	
 	cylinder_ = std::make_unique<PrimitiveDrawr>();
 	cylinder_->TypeInit(PrimitiveType::kCylinder, 32);
 	cylinder_->GetTransform().scale = {};
@@ -66,6 +75,13 @@ void PlayerEffect::Update()
 	playerReload_->GetTransform().translation.y = 1.6f;
 	playerReload_->GetTransform().rotation *= Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitZ, DeltaTimer::GetDeltaTime() * 9.0f);
 	playerReload_->Update();
+
+	specialMoveReadyTimer_ += DeltaTimer::GetDeltaTime();
+	if (specialMoveReadyTimer_ > 1.0f) { specialMoveReadyTimer_ = 0.0f; }
+	specialMoveReady_->GetTransform().translation = player_->GetTransform().translation_ + (-Vector3::ExprUnitX * 0.6f);
+	specialMoveReady_->GetTransform().translation.y = 1.6f;
+	specialMoveReady_->SetAlpha(std::abs(std::sin(specialMoveReadyTimer_ * std::numbers::pi_v<float>)));
+	specialMoveReady_->Update();
 }
 
 void PlayerEffect::Draw()
@@ -75,6 +91,9 @@ void PlayerEffect::Draw()
 	}
 	if (playerReload_->GetRenderOptions().enabled) {
 		playerReload_->TypeDraw();
+	}
+	if (player_->GetShot()->GetChargeCount() > static_cast<uint32_t>(player_->GetItem()->GetBulletData().maxChargeCount_sp)) {
+		specialMoveReady_->TypeDraw();
 	}
 }
 
@@ -135,7 +154,7 @@ void PlayerEffect::UpdatePostEffect()
 			// Cylinderのスケール、回転を適応
 			float scale = t * 20.0f;
 			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
-			float angle = t * 3.14f;
+			float angle = t * std::numbers::pi_v<float>;
 			cylinder_->GetTransform().rotation = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, angle);
 
 			if (specialMoveFrame_ >= expandDuration) {
@@ -174,7 +193,7 @@ void PlayerEffect::UpdatePostEffect()
 			// Cylinderのスケール、回転を適応
 			float scale = t * 20.0f;
 			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
-			float angle = t * 3.14f;
+			float angle = t * std::numbers::pi_v<float>;
 			cylinder_->GetTransform().rotation = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, angle);
 
 			if (specialMoveFrame_ >= shrinkDuration) {

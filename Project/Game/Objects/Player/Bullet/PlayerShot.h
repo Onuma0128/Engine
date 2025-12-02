@@ -64,10 +64,19 @@ public:
 	void SpecialAttackBullet();		// 必殺技の弾
 
 	/// <summary>
+	/// キル数を1増やす
+	/// </summary>
+	void AddNockdownCount() { ++kNockdownCount_; }
+	void AddChargeCount() { ++kChargeCount_; }
+
+	void ResetChargeCount() { kChargeCount_ = 0; }
+
+	/// <summary>
 	/// キル数を取得する
 	/// </summary>
 	/// <returns></returns>
 	uint32_t GetNockdownCount()const { return kNockdownCount_; }
+	uint32_t GetChargeCount()const { return kChargeCount_; }
 	
 	/// <summary>
 	/// 命中率を取得する
@@ -150,6 +159,7 @@ private:
 	// 敵のキル数UI
 	std::unique_ptr<PlayerCountUI> killCountUI_ = nullptr;
 	uint32_t kNockdownCount_ = 0;
+	uint32_t kChargeCount_ = 0;
 
 	// 撃った弾数を取得する
 	uint32_t kHitRate_ = 0;

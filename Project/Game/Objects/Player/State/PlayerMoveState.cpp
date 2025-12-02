@@ -193,9 +193,12 @@ void PlayerMoveState::SomeAction()
 	if ((input->TriggerGamepadButton(XINPUT_GAMEPAD_A) ||
 		(input->TriggerKey(DIK_SPACE) && player_->GetIsPlayingMouse())) &&
 		!player_->GetEffect()->GetIsSpecialMove()) {
-		player_->GetEffect()->SetIsSpecialMove(true);
-		player_->ChengeState(std::make_unique<PlayerSpecialMoveState>(player_));
-		return;
+		if (player_->GetShot()->GetChargeCount() > static_cast<uint32_t>(player_->GetItem()->GetBulletData().maxChargeCount_sp)) {
+			player_->GetEffect()->SetIsSpecialMove(true);
+			player_->ChengeState(std::make_unique<PlayerSpecialMoveState>(player_));
+			player_->GetShot()->ResetChargeCount();
+			return;
+		}
 	}
 }
 
