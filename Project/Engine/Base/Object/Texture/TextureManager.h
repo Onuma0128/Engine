@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <string>
 #include <unordered_map>
 
@@ -19,12 +20,7 @@ class TextureManager
 private:
 
 	// シングルトンインスタンス
-	static TextureManager* instance_;
-
-	TextureManager() = default;
-	~TextureManager() = default;
-	TextureManager(TextureManager&) = delete;
-	TextureManager& operator=(TextureManager&) = delete;
+	static std::unique_ptr<TextureManager> instance_;
 
 private:
 
@@ -38,6 +34,11 @@ private:
 	};
 
 public:
+
+	TextureManager() = default;
+	~TextureManager() = default;
+	TextureManager(TextureManager&) = delete;
+	TextureManager& operator=(TextureManager&) = delete;
 
 	// シングルトンインスタンスの取得
 	static TextureManager* GetInstance();

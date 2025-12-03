@@ -3,6 +3,7 @@
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
 
+#include <memory>
 #include <chrono>
 
 #include "PostEffectType.h"
@@ -19,14 +20,15 @@ class SrvManager
 private:
 
 	// シングルトンインスタンス
-	static SrvManager* instance_;
+	static std::unique_ptr<SrvManager> instance_;
+
+public:
 
 	SrvManager() = default;
 	~SrvManager() = default;
 	SrvManager(SrvManager&) = delete;
 	SrvManager& operator=(SrvManager&) = delete;
 
-public:
 	// 最大SRV数
 	static const uint32_t kMaxSRVCount_;
 	// シングルトンインスタンスの取得

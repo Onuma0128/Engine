@@ -7,8 +7,6 @@
 #include "ModelStruct.h"
 #include "AnimationStruct.h"
 
-class ModelBase;
-
 /// <summary>
 /// モデルクラス
 /// </summary>
@@ -83,8 +81,6 @@ private:
 
 
 private:
-
-	ModelBase* modelBase_ = nullptr;
 
 	/*==================== モデルのデータ ====================*/
 

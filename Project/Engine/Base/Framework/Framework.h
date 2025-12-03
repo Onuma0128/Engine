@@ -48,6 +48,6 @@ protected:
 
 	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
 
-	AbstractSceneFactory* sceneFactory_ = nullptr;
+	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
 
 };

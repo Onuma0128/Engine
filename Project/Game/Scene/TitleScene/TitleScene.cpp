@@ -15,7 +15,7 @@ void TitleScene::Initialize()
 	camera_->SetRotation(Vector3{ 0.55f,0.0f,0.0f });
 	camera_->SetTranslation(Vector3{ -0.4f,10.0f,-15.0f });
 	CameraManager::GetInstance()->Clear();
-	CameraManager::GetInstance()->SetCamera(camera_.get());
+	CameraManager::GetInstance()->SetCamera(camera_);
 	CameraManager::GetInstance()->SetActiveCamera(0);
 	camera_->Update();
 

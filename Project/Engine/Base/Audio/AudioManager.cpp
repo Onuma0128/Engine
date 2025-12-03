@@ -2,14 +2,14 @@
 
 #include <cassert>
 
-AudioManager* AudioManager::instance_ = nullptr;
+std::unique_ptr<AudioManager> AudioManager::instance_ = nullptr;
 
 AudioManager* AudioManager::GetInstance()
 {
     if (instance_ == nullptr) {
-        instance_ = new AudioManager;
+        instance_ = std::make_unique<AudioManager>();
     }
-    return instance_;
+    return instance_.get();
 }
 
 void AudioManager::Finalize()
@@ -87,7 +87,8 @@ AudioManager::SoundData AudioManager::SoundLoadWave(const char* filePath)
 	// 4.読み込んだ音声データをreturn
 	SoundData soundData{};
 	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*>(pBuffer);
+	soundData.buffer.resize(data.size);
+	file.read(reinterpret_cast<char*>(soundData.buffer.data()), data.size);
 	soundData.bufferSize = data.size;
 
 	return soundData;
@@ -95,9 +96,8 @@ AudioManager::SoundData AudioManager::SoundLoadWave(const char* filePath)
 
 void AudioManager::SoundUnload(SoundData* soundData)
 {
-	delete[] soundData->pBuffer;
-
-	soundData->pBuffer = 0;
+	soundData->buffer.clear();
+	soundData->buffer.shrink_to_fit();
 	soundData->bufferSize = 0;
 	soundData->wfex = {};
 }

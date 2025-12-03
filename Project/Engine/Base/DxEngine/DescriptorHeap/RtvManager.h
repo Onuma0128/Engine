@@ -3,6 +3,7 @@
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
 
+#include <memory>
 #include <stdint.h>
 
 using Microsoft::WRL::ComPtr;
@@ -17,14 +18,14 @@ class RtvManager
 private:
 
 	// シングルトンインスタンス
-	static RtvManager* instance_;
+	static std::unique_ptr<RtvManager> instance_;
+
+public:
 
 	RtvManager() = default;
 	~RtvManager() = default;
 	RtvManager(const RtvManager&) = delete;
 	RtvManager& operator=(const RtvManager&) = delete;
-
-public:
 
 	// 最大RTV数
 	static const uint32_t kMaxRTVCount = 256;

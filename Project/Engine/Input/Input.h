@@ -7,6 +7,8 @@
 #include <Xinput.h>
 #pragma comment(lib, "Xinput.lib")
 
+#include <memory>
+
 class WinApp;
 
 /// <summary>
@@ -17,19 +19,17 @@ class Input
 private:
 
 	// シングルトンインスタンス
-	static Input* instance_;
+	static std::unique_ptr<Input> instance_;
+
+public:
 
 	Input() = default;
 	~Input() = default;
 	Input(Input&) = delete;
 	Input& operator=(Input&) = delete;
 
-public:
-
 	// シングルトンインスタンスの取得
 	static Input* GetInstance();
-
-public:
 
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// 初期化

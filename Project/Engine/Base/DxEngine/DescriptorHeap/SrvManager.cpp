@@ -7,14 +7,14 @@
 
 const uint32_t SrvManager::kMaxSRVCount_ = 2048;
 
-SrvManager* SrvManager::instance_ = nullptr;
+std::unique_ptr<SrvManager> SrvManager::instance_ = nullptr;
 
 SrvManager* SrvManager::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new SrvManager;
+		instance_ = std::make_unique<SrvManager>();
 	}
-	return instance_;
+	return instance_.get();
 }
 
 void SrvManager::Initialize(DirectXEngine* dxEngine)
@@ -40,7 +40,6 @@ void SrvManager::PreDraw()
 
 void SrvManager::Finalize()
 {
-	delete instance_;
 	instance_ = nullptr;
 }
 

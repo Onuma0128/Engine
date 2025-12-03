@@ -6,19 +6,18 @@
 
 #include "DeltaTimer.h"
 
-Input* Input::instance_ = nullptr;
+std::unique_ptr<Input> Input::instance_ = nullptr;
 
 Input* Input::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new Input;
+		instance_ = std::make_unique<Input>();
 	}
-	return instance_;
+	return instance_.get();
 }
 
 void Input::Finalize()
 {
-	delete instance_;
 	instance_ = nullptr;
 }
 

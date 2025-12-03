@@ -66,7 +66,7 @@ void EnemyMoveState::Update()
 	// 移動時の回転の処理
 	if (velocity.Length() != 0.0f) {
 		Quaternion yRotation = pathFinder.GetRotation();
-		enemy_->GetTransform().rotation_ = Quaternion::Slerp(enemy_->GetTransform().rotation_, yRotation, 0.2f);
+		enemy_->SetTransformRotation(Quaternion::Slerp(enemy_->GetTransform().rotation_, yRotation, 0.2f));
 	}
 
 	// 攻撃のクールタイムを縮める
@@ -162,7 +162,8 @@ void EnemyMoveState::MoveAction(const Vector3& velocity, const float speed)
 	MoveAnimation();
 	enemy_->GetEffect()->OnceMoveEffect(enemy_->GetTransform());
 	// 距離があれば移動処理をする
-	enemy_->GetTransform().translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+	Vector3 position = enemy_->GetTransform().translation_;
+	enemy_->SetTransformTranslation(position + velocity * speed * DeltaTimer::GetDeltaTime());
 	enemy_->GetEnemyRay()->Reset();
 }
 

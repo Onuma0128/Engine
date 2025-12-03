@@ -3,14 +3,16 @@
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
 
+#include <memory>
 #include <vector>
 
 #include "Vector3.h"
 
+#include "Camera.h"
+
 using Microsoft::WRL::ComPtr;
 
 class DirectXEngine;
-class Camera;
 
 /// <summary>
 /// カメラ管理クラス
@@ -20,12 +22,7 @@ class CameraManager
 private:
 
 	// シングルトンインスタンス
-	static CameraManager* instance_;
-
-	CameraManager() = default;
-	~CameraManager() = default;
-	CameraManager(CameraManager&) = delete;
-	CameraManager& operator=(CameraManager&) = delete;
+	static std::unique_ptr<CameraManager> instance_;
 
 	// GPU用カメラデータ構造体
 	struct CameraForGPU {
@@ -33,6 +30,11 @@ private:
 	};
 
 public:
+
+	CameraManager() = default;
+	~CameraManager() = default;
+	CameraManager(CameraManager&) = delete;
+	CameraManager& operator=(CameraManager&) = delete;
 
 	// シングルトンインスタンスの取得
 	static CameraManager* GetInstance();
@@ -53,8 +55,8 @@ public:
 	void Clear();
 
 	// カメラ設定
-	void SetCamera(Camera* camera) {
-		cameras_.push_back(std::move(camera)); 
+	void SetCamera(std::shared_ptr<Camera> camera) {
+		cameras_.push_back(camera); 
 	}
 
 	// アクティブカメラ設定
@@ -63,7 +65,7 @@ public:
 	}
 
 	// アクティブカメラ取得
-	Camera* GetActiveCamera()const { return cameras_[activeCameraIndex_]; }
+	Camera* GetActiveCamera()const { return cameras_[activeCameraIndex_].get(); }
 
 	// カメラリソース
 	ID3D12Resource* GetCameraResource()const { return cameraResource_.Get(); }
@@ -78,7 +80,7 @@ private:
 	DirectXEngine* dxEngine_;
 
 	// カメラを格納 <vector>
-	std::vector<Camera*> cameras_;
+	std::vector<std::shared_ptr<Camera>> cameras_;
 	// 今どのカメラが動いているかIndex
 	uint32_t activeCameraIndex_ = 0;
 

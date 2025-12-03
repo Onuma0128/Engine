@@ -13,8 +13,8 @@ void MyGame::Initialize()
 {
 	Framework::Initialize();
 
-	sceneFactory_ = new SceneFactory();
-	SceneManager::GetInstance()->SetSceneFactory(sceneFactory_);
+	sceneFactory_ = std::make_unique<SceneFactory>();
+	SceneManager::GetInstance()->SetSceneFactory(sceneFactory_.get());
 	SceneManager::GetInstance()->ChangeScene("Title");
 
 	DeltaTimer::Initialize();

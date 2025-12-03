@@ -10,14 +10,14 @@
 #include "type/PointLight.h"
 #include "type/SpotLight.h"
 
-LightManager* LightManager::instance_ = nullptr;
+std::unique_ptr<LightManager> LightManager::instance_ = nullptr;
 
 LightManager* LightManager::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new LightManager;
+		instance_ = std::make_unique<LightManager>();
 	}
-	return instance_;
+	return instance_.get();
 }
 
 void LightManager::Initialize(DirectXEngine* dxEngine)
@@ -68,6 +68,5 @@ void LightManager::Debug_ImGui()
 
 void LightManager::Finalize()
 {
-	delete instance_;
 	instance_ = nullptr;
 }

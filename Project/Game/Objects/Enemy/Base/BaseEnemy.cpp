@@ -24,7 +24,7 @@ void BaseEnemy::Initialize()
 	effect_->Init();
 
 	// 探索アルゴリズムの初期化
-	pathFinder_.Search(Animation::transform_.translation_, Vector3{});
+	pathFinder_.Search(transform_.translation_, Vector3{});
 
 	// コライダーを設定
 	Collider::AddCollider();
@@ -40,7 +40,7 @@ void BaseEnemy::Initialize()
 	Collider::DrawCollider();
 
 	// 基本的なアニメーションを設定
-	Animation::GetTransform().translation_ = items_->GetMainData().startPosition;
+	transform_.translation_ = items_->GetMainData().startPosition;
 	Animation::SetSceneRenderer();
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetMaterial().outlineMask = true;
@@ -107,7 +107,7 @@ void BaseEnemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
 void BaseEnemy::Dead()
 {
 	// 描画とColliderを切る
-	Animation::GetTransform().translation_ = items_->GetMainData().startPosition;
+	transform_.translation_ = items_->GetMainData().startPosition;
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetTimeStop() = true;
 	Collider::isActive_ = false;
@@ -137,7 +137,7 @@ void BaseEnemy::Reset(const Vector3& position)
 
 void BaseEnemy::ResetSearch()
 {
-	pathFinder_.Search(Animation::transform_.translation_, player_->GetTransform().translation_);
+	pathFinder_.Search(transform_.translation_, player_->GetTransform().translation_);
 }
 
 void BaseEnemy::OnCollisionEnter(Collider* other)

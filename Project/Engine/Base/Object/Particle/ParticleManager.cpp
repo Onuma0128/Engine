@@ -17,14 +17,14 @@
 #include "ParticleEmitter.h"
 #include "ParticleEditor.h"
 
-ParticleManager* ParticleManager::instance_ = nullptr;
+std::unique_ptr<ParticleManager> ParticleManager::instance_ = nullptr;
 
 ParticleManager* ParticleManager::GetInstance()
 {
     if (instance_ == nullptr) {
-        instance_ = new ParticleManager;
+        instance_ = std::make_unique<ParticleManager>();
     }
-    return instance_;
+    return instance_.get();
 }
 
 void ParticleManager::Initialize(DirectXEngine* dxEngine)
@@ -170,7 +170,6 @@ void ParticleManager::Draw()
 
 void ParticleManager::Finalize()
 {
-    delete instance_;
     instance_ = nullptr;
 }
 

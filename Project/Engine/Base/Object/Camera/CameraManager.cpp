@@ -5,14 +5,14 @@
 
 #include "Camera.h"
 
-CameraManager* CameraManager::instance_ = nullptr;
+std::unique_ptr<CameraManager> CameraManager::instance_ = nullptr;
 
 CameraManager* CameraManager::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new CameraManager;
+		instance_ = std::make_unique<CameraManager>();
 	}
-	return instance_;
+	return instance_.get();
 }
 
 void CameraManager::Initialize(DirectXEngine* dxEngine)
@@ -20,7 +20,7 @@ void CameraManager::Initialize(DirectXEngine* dxEngine)
 	dxEngine_ = dxEngine;
 
 	// カメラリソースの作成
-	SetCamera(new Camera());
+	cameras_.push_back(std::make_shared<Camera>());
 	cameras_[activeCameraIndex_]->Initialize();
 	MakeCameraData();
 }
@@ -42,7 +42,6 @@ void CameraManager::Update()
 
 void CameraManager::Finalize()
 {
-	delete instance_;
 	instance_ = nullptr;
 }
 

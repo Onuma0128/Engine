@@ -37,8 +37,7 @@ void EnemyBullet::Update()
 			isActive_ = false;
 			Collider::isActive_ = false;
 			Object3d::GetMaterial().enableDraw = false;
-			Object3d::GetTransform().translation_ = item_->GetMainData().startPosition;;
-		}
+			transform_.translation_ = item_->GetMainData().startPosition;		}
 	}
 
 	// コールバック関数
@@ -99,7 +98,7 @@ void EnemyBullet::IsCollision()
 	wasActive_ = false;
 	isActive_ = false;
 	Collider::isActive_ = false;
-	Object3d::transform_.translation_ = item_->GetMainData().startPosition;
+	transform_.translation_ = item_->GetMainData().startPosition;
 	Object3d::GetMaterial().enableDraw = false;
 }
 

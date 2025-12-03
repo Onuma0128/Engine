@@ -72,7 +72,8 @@ void PlayerMoveState::Update()
 
 	// 移動の処理
 	Vector3 moveVelocity = CreateMoveVelocity();
-	player_->GetTransform().translation_ += moveVelocity * DeltaTimer::GetDeltaTime() * speed;
+	Vector3 position = player_->GetTransform().translation_;
+	player_->SetTransformTranslation(position + moveVelocity * DeltaTimer::GetDeltaTime() * speed);
 
 	// 右のスティックのvelocityを取得
 	Vector3 rotateVelocity{};
@@ -106,7 +107,7 @@ void PlayerMoveState::Update()
 		Quaternion target = Quaternion::Slerp(player_->GetShot()->GetRightStickQua(), rightStickQuaternion_, 0.3f);
 		player_->GetShot()->SetRightStickQua(target);
 		// 回転を適応
-		player_->GetTransform().rotation_ = target;
+		player_->SetTransformRotation(target);
 	}
 
 	// アニメーションを逆再生する
@@ -142,8 +143,9 @@ void PlayerMoveState::Update()
 
 	Vector2 min = player_->GetItem()->GetPlayerData().minPlayerClamp;
 	Vector2 max = player_->GetItem()->GetPlayerData().maxPlayerClamp;
-	player_->GetTransform().translation_.x = std::clamp(player_->GetTransform().translation_.x, min.x, max.x);
-	player_->GetTransform().translation_.z = std::clamp(player_->GetTransform().translation_.z, min.y, max.y);
+	position.x = std::clamp(player_->GetTransform().translation_.x, min.x, max.x);
+	position.z = std::clamp(player_->GetTransform().translation_.z, min.y, max.y);
+	player_->SetTransformTranslation(position);
 
 	// アクションを起こす
 	SomeAction();

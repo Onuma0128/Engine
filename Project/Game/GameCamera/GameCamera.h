@@ -51,8 +51,8 @@ private:
 	Player* player_ = nullptr;
 	bool playerIsAlive_ = true;
 
-	std::unique_ptr<Camera> mainCamera_ = nullptr;
-	std::unique_ptr<Camera> sabCamera_ = nullptr;
+	std::shared_ptr<Camera> mainCamera_ = nullptr;
+	std::shared_ptr<Camera> sabCamera_ = nullptr;
 
 	Vector3 mainCameraAddPos_ = {};
 

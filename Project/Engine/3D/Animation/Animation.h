@@ -84,8 +84,15 @@ public:
 	// 再生中のアニメーションデータを取得
 	void SetAnimationTime(float animationTime) { playAnim_.SetAnimationTime(animationTime); }
 
-	// ワールド変換取得
-	WorldTransform& GetTransform() { return transform_; }
+	// ワールド変換行列の取得
+	const WorldTransform& GetTransform() { return transform_; }
+	// ワールド変換行列の設定
+	void SetTransform(const WorldTransform& transform) { transform_ = transform; }
+	void SetTransformParent(const WorldTransform* parent) { transform_.parent_ = parent; }
+	void SetTransformScale(const Vector3& scale) { transform_.scale_ = scale; }
+	void SetTransformRotation(const Quaternion& rotation) { transform_.rotation_ = rotation; }
+	void SetTransformTranslation(const Vector3& translation) { transform_.translation_ = translation; }
+	
 	// 取得中のスケルトン
 	bool& GetTimeStop() { return playAnim_.GetTimeStop(); }
 	// アニメーションが止まっているか取得

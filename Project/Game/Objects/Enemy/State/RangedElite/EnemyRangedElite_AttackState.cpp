@@ -69,7 +69,7 @@ void EnemyRangedElite_AttackState::Update()
 			Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, 0.5f);
 
 			// 回転を適応
-			enemy_->GetTransform().rotation_ = result;
+			enemy_->SetTransformRotation(result);
 		}
 	}
 }

@@ -4,6 +4,7 @@
 #pragma comment(lib,"xaudio2.lib")
 #include <fstream>
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 
@@ -45,7 +46,7 @@ public:
 		// 波形フォーマット
 		WAVEFORMATEX wfex;
 		// バッファの先頭アドレス
-		BYTE* pBuffer;
+		std::vector<BYTE> buffer;
 		// バッファのサイズ
 		unsigned int bufferSize;
 	};
@@ -55,7 +56,9 @@ private:
 	/// <summary>
 	/// インスタンス
 	/// </summary>
-	static AudioManager* instance_;
+	static std::unique_ptr<AudioManager> instance_;
+
+public:
 
 	/// <summary>
 	/// コンストラクタ
@@ -79,8 +82,6 @@ private:
 	/// <param name=""></param>
 	/// <returns></returns>
 	AudioManager& operator=(AudioManager&) = delete;
-
-public:
 
 	/// <summary>
 	/// インスタンスを取得する

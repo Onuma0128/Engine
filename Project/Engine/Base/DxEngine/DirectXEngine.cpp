@@ -109,10 +109,6 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 
 	TextureManager::GetInstance()->Initialize(this);
 
-	/*==================== モデル読み込み ====================*/
-
-	ModelManager::GetInstance()->Initialize(this);
-
 	/*==================== パーティクル ====================*/
 
 	ParticleManager::GetInstance()->Initialize(this);

@@ -4,6 +4,7 @@
 #include "wrl.h"
 
 #include <stdint.h>
+#include <memory>
 
 using Microsoft::WRL::ComPtr;
 
@@ -17,14 +18,14 @@ class DsvManager
 private:
 
 	// シングルトンインスタンス
-	static DsvManager* instance_;
+	static std::unique_ptr<DsvManager> instance_;
+
+public:
 
 	DsvManager() = default;
 	~DsvManager() = default;
 	DsvManager(const DsvManager&) = delete;
 	DsvManager& operator=(const DsvManager&) = delete;
-
-public:
 
 	// 最大DSV数
 	static const uint32_t kMaxDSVCount = 256;

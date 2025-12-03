@@ -6,14 +6,14 @@
 #include "CameraManager.h"
 #include "ParticleManager.h"
 
-SceneManager* SceneManager::instance_ = nullptr;
+std::unique_ptr<SceneManager> SceneManager::instance_ = nullptr;
 
 SceneManager* SceneManager::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new SceneManager;
+		instance_ = std::make_unique<SceneManager>();
 	}
-	return instance_;
+	return instance_.get();
 }
 
 void SceneManager::Update()
@@ -28,11 +28,10 @@ void SceneManager::Update()
 			DirectXEngine::GetLineRenderer()->Finalize();
 			DirectXEngine::GetCollisionMgr()->ClearCollider();
 			scene_->Finalize();
-			delete scene_;
 		}
 
 		// シーン切り替え
-		scene_ = nextScene_;
+		scene_ = std::move(nextScene_);
 		nextScene_ = nullptr;
 		// 次シーンを初期化する
 		scene_->Initialize();
@@ -52,9 +51,7 @@ void SceneManager::Draw()
 void SceneManager::Finalize()
 {
 	scene_->Finalize();
-	delete scene_;
 
-	delete instance_;
 	instance_ = nullptr;
 }
 

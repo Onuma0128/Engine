@@ -4,14 +4,14 @@
 #include "DirectXEngine.h"
 #include "DescriptorHeap.h"
 
-RtvManager* RtvManager::instance_ = nullptr;
+std::unique_ptr<RtvManager> RtvManager::instance_ = nullptr;
 
 RtvManager* RtvManager::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new RtvManager;
+		instance_ = std::make_unique<RtvManager>();
 	}
-	return instance_;
+	return instance_.get();
 }
 
 void RtvManager::Initialize(DirectXEngine* dxEngine)
@@ -24,7 +24,6 @@ void RtvManager::Initialize(DirectXEngine* dxEngine)
 
 void RtvManager::Finalize()
 {
-	delete instance_;
 	instance_ = nullptr;
 }
 

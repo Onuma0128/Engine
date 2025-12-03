@@ -696,12 +696,6 @@
     <ClInclude Include="Engine\Base\Object\Model\LineInstanceRenderer.h">
       <Filter>Engine\base\object\model</Filter>
     </ClInclude>
-    <ClCompile Include="Engine\Base\Object\Model\ModelBase.cpp">
-      <Filter>Engine\base\object\model</Filter>
-    </ClCompile>
-    <ClInclude Include="Engine\Base\Object\Model\ModelBase.h">
-      <Filter>Engine\base\object\model</Filter>
-    </ClInclude>
     <ClCompile Include="Engine\Base\Object\Model\ModelInstanceRenderer.cpp">
       <Filter>Engine\base\object\model</Filter>
     </ClCompile>

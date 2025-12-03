@@ -32,7 +32,7 @@ void Audio::SoundPlayWave(const std::string& filePath, float volume, bool loop)
     assert(SUCCEEDED(hr) && sourceVoice);
 
     XAUDIO2_BUFFER buffer = {};
-    buffer.pAudioData = soundData.pBuffer;
+    buffer.pAudioData = soundData.buffer.data();
     buffer.AudioBytes = soundData.bufferSize;
     buffer.Flags = XAUDIO2_END_OF_STREAM;
 

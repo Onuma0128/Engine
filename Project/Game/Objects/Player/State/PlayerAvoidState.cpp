@@ -25,8 +25,8 @@ void PlayerAvoidState::Init()
 		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(rotateY_);
 		velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix).Normalize();
 	} else {
-		player_->GetTransform().rotation_ = 
-			Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, velocity_, 1.0f);
+		player_->SetTransformRotation(
+			Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, velocity_, 1.0f));
 		rotateY_ = Quaternion::ExtractYawQuaternion(player_->GetTransform().rotation_);
 	}
 
@@ -49,21 +49,25 @@ void PlayerAvoidState::Update()
 	// 回転を適応
 	Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion
 	(Vector3::ExprUnitX, (avoidTime_ * 2.0f) * std::numbers::pi_v<float>);
-	player_->GetTransform().rotation_ = rotateY_ * rotateX;
+	player_->SetTransformRotation(rotateY_ * rotateX);
 	// 座標を更新
-	player_->GetTransform().translation_ += velocity_ * speed * DeltaTimer::GetDeltaTime();
+	Vector3 position = player_->GetTransform().translation_;
+	player_->SetTransformTranslation(position + velocity_ * speed * DeltaTimer::GetDeltaTime());
 	velocityY_ -= acceleration_ * DeltaTimer::GetDeltaTime();
-	player_->GetTransform().translation_.y += velocityY_;
 	Vector2 min = player_->GetItem()->GetPlayerData().minPlayerClamp;
 	Vector2 max = player_->GetItem()->GetPlayerData().maxPlayerClamp;
-	player_->GetTransform().translation_.x = std::clamp(player_->GetTransform().translation_.x, min.x, max.x);
-	player_->GetTransform().translation_.z = std::clamp(player_->GetTransform().translation_.z, min.y, max.y);
-
+	position = player_->GetTransform().translation_;
+	position.x = std::clamp(position.x, min.x, max.x);
+	position.y += velocityY_;
+	position.z = std::clamp(position.z, min.y, max.y);
+	player_->SetTransformTranslation(position);
+	// 回避終了判定
 	if (avoidTime_ >= 1.0f) {
 		player_->GetTimeStop() = false;
 		player_->SetIsAvoid(false);
-		player_->GetTransform().translation_.y = 0.0f;
-		player_->GetTransform().rotation_ = player_->GetShot()->GetRightStickQua();
+		position.y = 0.0f;
+		player_->SetTransformTranslation(position);
+		player_->SetTransformRotation(player_->GetShot()->GetRightStickQua());
 		player_->ChengeState(std::make_unique<PlayerMoveState>(player_));
 	} else {
 		if (!chengeAnimation_) {

@@ -62,7 +62,13 @@ public:
 	// カラーの設定
 	void SetColor(const Vector4& color);
 	// ワールド変換行列の取得
-	WorldTransform& GetTransform() { return transform_; }
+	const WorldTransform& GetTransform() { return transform_; }
+	// ワールド変換行列の設定
+	void SetTransform(const WorldTransform& transform) { transform_ = transform; }
+	void SetTransformParent(const WorldTransform* parent) { transform_.parent_ = parent; }
+	void SetTransformScale(const Vector3& scale) { transform_.scale_ = scale; }
+	void SetTransformRotation(const Quaternion& rotation) { transform_.rotation_ = rotation; }
+	void SetTransformTranslation(const Vector3& translation) { transform_.translation_ = translation; }
 	// モデルの取得
 	Model* GetModel() { return model_; }
 	// マテリアルの取得

@@ -5,7 +5,6 @@
 #include <sstream>
 
 #include "DirectXEngine.h"
-#include "ModelBase.h"
 #include "TextureManager.h"
 #include "SrvManager.h"
 #include "CreateBufferResource.h"
@@ -13,8 +12,6 @@
 
 void Model::Initialize(const std::string& directoryPath, const std::string& filename)
 {
-    this->modelBase_ = ModelBase::GetInstance();
-
     modelData_ = LoadObjFile(directoryPath, filename);
 
     for (auto& material : modelData_.materials) {
@@ -40,7 +37,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
 
 void Model::BindBuffers(bool isAnimation) const
 {
-    auto commandList = modelBase_->GetDxEngine()->GetCommandList();
+    auto commandList = DirectXEngine::GetCommandList();
     if (!isAnimation) {
         commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
     }
@@ -49,7 +46,7 @@ void Model::BindBuffers(bool isAnimation) const
 
 void Model::BindMaterial(uint32_t meshIdx) const
 {
-    auto commandList = modelBase_->GetDxEngine()->GetCommandList();
+    auto commandList = DirectXEngine::GetCommandList();
     const auto& material = modelData_.materials[meshIdx];
     SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, material.textureIndex);
     SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(7, material.ENV_TextureIndex);
@@ -59,7 +56,7 @@ void Model::BindMaterial(uint32_t meshIdx) const
 void Model::MakeVertexData()
 {
     // 実際に頂点リソースを作る
-    vertexResource_ = CreateBufferResource(modelBase_->GetDxEngine()->GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
+    vertexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
     vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
     vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
     vertexBufferView_.StrideInBytes = sizeof(VertexData);
@@ -71,7 +68,7 @@ void Model::MakeVertexData()
 void Model::MakeIndexData()
 {
     // 実際に頂点リソースを作る
-    indexResource_ = CreateBufferResource(modelBase_->GetDxEngine()->GetDevice(), sizeof(uint32_t) * modelData_.indices.size());
+    indexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(uint32_t) * modelData_.indices.size());
     indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
     indexBufferView_.SizeInBytes = UINT(sizeof(uint32_t) * modelData_.indices.size());
     indexBufferView_.Format = DXGI_FORMAT_R32_UINT;

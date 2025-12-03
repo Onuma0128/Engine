@@ -4,7 +4,6 @@
 #include <memory>
 
 class DirectXEngine;
-class ModelBase;
 class Model;
 
 /// <summary>
@@ -15,20 +14,17 @@ class ModelManager
 private:
 
 	// シングルトンインスタンス
-	static ModelManager* instance_;
+	static std::unique_ptr<ModelManager> instance_;
+
+public:
 
 	ModelManager() = default;
 	~ModelManager() = default;
 	ModelManager(ModelManager&) = delete;
 	ModelManager& operator=(ModelManager&) = delete;
 
-public:
-
 	// シングルトンインスタンスの取得
 	static ModelManager* GetInstance();
-
-	// 初期化
-	void Initialize(DirectXEngine* dxEngine);
 
 	// 終了処理
 	void Finalize();
@@ -43,6 +39,4 @@ private:
 
 	// モデルデータ
 	std::map<std::string, std::unique_ptr<Model>> models_;
-
-	ModelBase* modelBase_ = nullptr;
 };

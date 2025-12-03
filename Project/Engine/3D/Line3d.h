@@ -57,7 +57,7 @@ public:
 	// ボックスを作成
 	std::vector<Vector3> CreateBox(const Vector3& min, const Vector3& max);
 	// 球を作成
-	std::vector<Vector3> CreateSphere(const float& radius);
+	std::vector<Vector3> CreateSphere(float radius);
 	// セグメントを作成
 	std::vector<Vector3> CreateSegment(const Vector3& start, const Vector3& direction);
 	// グリッドを作成

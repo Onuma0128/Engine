@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "BaseScene.h"
 #include "AbstractSceneFactory.h"
 
@@ -11,14 +13,14 @@ class SceneManager
 private:
 
 	// シングルトンインスタンス
-	static SceneManager* instance_;
+	static std::unique_ptr<SceneManager> instance_;
+
+public:
 
 	SceneManager() = default;
 	~SceneManager() = default;
 	SceneManager(SceneManager&) = delete;
 	SceneManager& operator=(SceneManager&) = delete;
-
-public:
 
 	// シングルトンインスタンスの取得
 	static SceneManager* GetInstance();
@@ -41,9 +43,9 @@ public:
 
 private:
 	// 今のシーン
-	BaseScene* scene_ = nullptr;
+	std::unique_ptr<BaseScene> scene_ = nullptr;
 	// 次のシーン
-	BaseScene* nextScene_ = nullptr;
+	std::unique_ptr<BaseScene> nextScene_ = nullptr;
 
 	AbstractSceneFactory* sceneFactory_ = nullptr;
 };

@@ -183,7 +183,7 @@ void PlayerShot::SpecialAttackBullet()
 	Vector3 dir = (transform.translation_ - player_->GetTransform().translation_).Normalize();
 	transform.rotation_ = Quaternion::DirectionToQuaternion(transform.rotation_, dir, 1.0f);
 	transform.translation_ = player_->GetTransform().translation_;
-	player_->GetTransform().rotation_ = transform.rotation_;
+	player_->SetTransformRotation(transform.rotation_);
 	specialBullets_[count]->Attack(transform, player_->GetItem()->GetBulletData().speed_sp);
 	player_->GetReticle()->EnemyCollidersPopBack();
 	++kHitRate_;

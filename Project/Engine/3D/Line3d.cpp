@@ -90,7 +90,7 @@ std::vector<Vector3> Line3d::CreateBox(const Vector3& min, const Vector3& max)
 	return linePosition;
 }
 
-std::vector<Vector3> Line3d::CreateSphere(const float& radius)
+std::vector<Vector3> Line3d::CreateSphere(float radius)
 {
 	const int latitudeLines = 6;   // 緯線の分割数
 	const int longitudeLines = 12;  // 経線の分割数

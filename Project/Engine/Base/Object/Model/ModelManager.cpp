@@ -1,29 +1,20 @@
 #include "ModelManager.h"
 
 #include "DirectXEngine.h"
-#include "ModelBase.h"
 #include "Model.h"
 
-ModelManager* ModelManager::instance_ = nullptr;
+std::unique_ptr<ModelManager> ModelManager::instance_ = nullptr;
 
 ModelManager* ModelManager::GetInstance()
 {
     if (instance_ == nullptr) {
-        instance_ = new ModelManager;
+        instance_ = std::make_unique<ModelManager>();
     }
-    return instance_;
-}
-
-void ModelManager::Initialize(DirectXEngine* dxEngine)
-{
-    modelBase_ = ModelBase::GetInstance();
-    modelBase_->Initialize(dxEngine);
+    return instance_.get();
 }
 
 void ModelManager::Finalize()
 {
-    ModelBase::GetInstance()->Finalize();
-    delete instance_;
     instance_ = nullptr;
 }
 

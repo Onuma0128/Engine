@@ -86,14 +86,14 @@ public:
 private:
 
 	// シングルトンインスタンス
-	static ParticleManager* instance_;
+	static std::unique_ptr<ParticleManager> instance_;
+
+public:
 
 	ParticleManager() = default;
 	~ParticleManager() = default;
 	ParticleManager(ParticleManager&) = delete;
 	ParticleManager& operator=(ParticleManager&) = delete;
-
-public:
 
 	// シングルトンインスタンスの取得
 	static ParticleManager* GetInstance();

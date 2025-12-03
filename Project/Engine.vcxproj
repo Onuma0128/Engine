@@ -227,7 +227,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Object\Camera\Camera.cpp" />
     <ClCompile Include="Engine\Base\Object\Camera\CameraManager.cpp" />
     <ClCompile Include="Engine\Base\Object\Light\LightManager.cpp" />
-    <ClCompile Include="Engine\Base\Object\Model\ModelBase.cpp" />
     <ClCompile Include="Engine\Base\Object\Model\ModelManager.cpp" />
     <ClCompile Include="Engine\Base\Object\Model\Object3dBase.cpp" />
     <ClCompile Include="Engine\Base\Object\Model\Line3dBase.cpp" />
@@ -391,7 +390,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Object\Camera\Camera.h" />
     <ClInclude Include="Engine\Base\Object\Camera\CameraManager.h" />
     <ClInclude Include="Engine\Base\Object\Light\LightManager.h" />
-    <ClInclude Include="Engine\Base\Object\Model\ModelBase.h" />
     <ClInclude Include="Engine\Base\Object\Model\ModelManager.h" />
     <ClInclude Include="Engine\Base\Object\Model\Object3dBase.h" />
     <ClInclude Include="Engine\Base\Object\Model\Line3dBase.h" />

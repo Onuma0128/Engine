@@ -3,13 +3,13 @@
 #include "DirectXEngine.h"
 #include "DescriptorHeap.h"
 
-DsvManager* DsvManager::instance_ = nullptr;
+std::unique_ptr<DsvManager> DsvManager::instance_ = nullptr;
 
 DsvManager* DsvManager::GetInstance() {
 	if (instance_ == nullptr) {
-		instance_ = new DsvManager;
+		instance_ = std::make_unique<DsvManager>();
 	}
-	return instance_;
+	return instance_.get();
 }
 
 void DsvManager::Initialize(DirectXEngine* dxEngine) {
@@ -20,7 +20,6 @@ void DsvManager::Initialize(DirectXEngine* dxEngine) {
 }
 
 void DsvManager::Finalize() {
-	delete instance_;
 	instance_ = nullptr;
 }
 

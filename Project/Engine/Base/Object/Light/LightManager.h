@@ -16,14 +16,14 @@ class LightManager
 private:
 
 	// シングルトンインスタンス
-	static LightManager* instance_;
+	static std::unique_ptr<LightManager> instance_;
+
+public:
 
 	LightManager() = default;
 	~LightManager() = default;
 	LightManager(LightManager&) = delete;
 	LightManager& operator=(LightManager&) = delete;
-
-public:
 
 	/*==================== メンバ関数 ====================*/
 

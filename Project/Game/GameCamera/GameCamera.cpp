@@ -14,20 +14,20 @@ void GameCamera::Init()
 	JsonInit();
 
 	// カメラの初期化
-	mainCamera_ = std::make_unique<Camera>();
+	mainCamera_ = std::make_shared<Camera>();
 	mainCamera_->Initialize();
 	mainCamera_->SetRotation(data_.Get<Vector3>("mainRotate"));
 	Vector3 translation = data_.Get<Vector3>("mainPosition");
 	mainCamera_->SetTranslation(translation + player_->GetTransform().translation_);
-	CameraManager::GetInstance()->SetCamera(mainCamera_.get());
+	CameraManager::GetInstance()->SetCamera(mainCamera_);
 	CameraManager::GetInstance()->SetActiveCamera(0);
 	mainCamera_->Update();
 
-	sabCamera_ = std::make_unique<Camera>();
+	sabCamera_ = std::make_shared<Camera>();
 	sabCamera_->Initialize();
 	translation = data_.Get<Vector3>("sabPosition");
 	sabCamera_->SetTranslation(translation + player_->GetTransform().translation_);
-	CameraManager::GetInstance()->SetCamera(sabCamera_.get());
+	CameraManager::GetInstance()->SetCamera(sabCamera_);
 	sabCamera_->Update();
 }
 

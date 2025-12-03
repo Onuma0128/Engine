@@ -4,15 +4,15 @@
 #include "SrvManager.h"
 #include "LoadTexture.h"
 
-TextureManager* TextureManager::instance_ = nullptr;
+std::unique_ptr<TextureManager> TextureManager::instance_ = nullptr;
 uint32_t TextureManager::kSRVIndexTop = 1;
 
 TextureManager* TextureManager::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = new TextureManager;
+		instance_ = std::make_unique<TextureManager>();
 	}
-	return instance_;
+	return instance_.get();
 }
 
 void TextureManager::Initialize(DirectXEngine* dxEngine)
@@ -23,7 +23,6 @@ void TextureManager::Initialize(DirectXEngine* dxEngine)
 
 void TextureManager::Finalize()
 {
-	delete instance_;
 	instance_ = nullptr;
 }
 

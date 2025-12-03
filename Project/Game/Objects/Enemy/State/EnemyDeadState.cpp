@@ -59,10 +59,10 @@ void EnemyDeadState::Update()
 	if (deadTimer_ > (maxDeadTimer_ - data.kNockbackScaleTimer)) {
 		float t = std::clamp(((maxDeadTimer_ - deadTimer_) / data.kNockbackScaleTimer), 0.0f, 1.0f);
 		float changeScale = std::sin(t * std::numbers::pi_v<float>) * kNockbackScale_;
-		enemy_->GetTransform().scale_ = Vector3::ExprUnitXYZ + (Vector3::ExprUnitXYZ * changeScale);
+		enemy_->SetTransformScale(Vector3::ExprUnitXYZ + (Vector3::ExprUnitXYZ * changeScale));
 	} else {
 		float t = ((deadTimer_ - data.kNockbackScaleTimer) / (maxDeadTimer_ - data.kNockbackScaleTimer));
-		enemy_->GetTransform().scale_ = defaultScale_ * t; 
+		enemy_->SetTransformScale(defaultScale_ * t);
 	}
 
 	// 最初の1秒はヒットバック
@@ -74,11 +74,11 @@ void EnemyDeadState::Update()
 			target_.y += velocity_.y * DeltaTimer::GetDeltaTime();
 		}
 		Vector3 target = Vector3::Lerp(enemyPosition, target_, t);
-		enemy_->GetTransform().translation_ = target;
+		enemy_->SetTransformTranslation(target);
 		velocity_.y -= accelerationY_ * DeltaTimer::GetDeltaTime();
 		// 回転をスラープさせる
 		defaultRotate_ = Quaternion::Slerp(defaultRotate_, targetRotate_, 0.2f);
-		enemy_->GetTransform().rotation_ = defaultRotate_;
+		enemy_->SetTransformRotation(defaultRotate_);
 
 	// それ以降に死亡時パーティクルを出す
 	} else if (deadTimer_ > (maxDeadTimer_ - knockbackTimer_ - particleTimer_)) {
