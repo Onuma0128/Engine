@@ -373,3 +373,12 @@ FodyWeavers.xsd
 !project/externals/assimp/lib/Debug/assimp-vc143-mtd.lib
 !project/externals/assimp/lib/Release/
 !project/externals/assimp/lib/Release/assimp-vc143-mtd.lib
+
+# ---- Build outputs (自動生成フォルダ) ----
+# Generated/outputs 以下はすべて無視する
+project/Engine/Generated/outputs/
+
+# ---- ビルド成果物無視 ----
+*.exe
+*.dll
+*.lib
