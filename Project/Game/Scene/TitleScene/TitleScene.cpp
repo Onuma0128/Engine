@@ -19,12 +19,14 @@ void TitleScene::Initialize()
 	CameraManager::GetInstance()->SetActiveCamera(0);
 	camera_->Update();
 
-	sceneFade_ = std::make_unique<SceneFade>();
-	sceneFade_->Init();
-	sceneFade_->FadeIn(2.0f);
+	sceneFade_ = std::make_unique<BaseUI>();
+	sceneFade_->Init("TitleFade", "GameData", true);
+	sceneFade_->GetSprite()->SetColor(Vector4{ 0.0f,0.0f,0.0f,1.0f });
+	sceneFade_->FadeOut();
 
 	titleUI_ = std::make_unique<TitleUI>();
 	titleUI_->Init();
+	titleUI_->FadeIn();
 
 	// シーンのロード
 	SceneJsonLoader loader;
@@ -33,7 +35,7 @@ void TitleScene::Initialize()
 	// フィールド上のオブジェクトの初期化と生成
 	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
 	fieldObjectFactory_->Init(loader);
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kOutLine);
+	PostEffectManager::GetInstance()->CreatePostEffect(PostEffectType::kOutLine);
 
 	test = std::make_unique<ParticleEmitter>("breakTree");
 	particleManager->CreateParticleGroup(test);
@@ -52,6 +54,7 @@ void TitleScene::Update()
 
 	titleUI_->Update();
 
+	sceneFade_->DrawImGui();
 	sceneFade_->Update();
 
 	fieldObjectFactory_->Update();
@@ -60,10 +63,11 @@ void TitleScene::Update()
 
     if ((input->TriggerGamepadButton(XINPUT_GAMEPAD_A) || input->TriggerKey(DIK_SPACE)) && !isFade_) {
 		isFade_ = true;
-		sceneFade_->FadeOut();
+		sceneFade_->FadeIn();
+		titleUI_->FadeOut();
 	}
 	// フェードが終わったらシーン遷移する
-	if (isFade_ && !sceneFade_->GetIsFade()) {
+	if (isFade_ && !sceneFade_->IsPlayAnimation()) {
 		SceneManager::GetInstance()->ChangeScene("Game");
 	}
 }

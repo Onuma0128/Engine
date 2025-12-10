@@ -200,7 +200,6 @@ PixelShaderOutput main(VertexShaderOutput input)
         environmentColor.rgb *= gMaterial[instID].environmentCoefficient;
         // ライトの処理を合算
         float visibility = SampleShadow(input, normal, lightDirectionalLight);
-        
         // 各ライト成分はそのまま
         float3 dirLight = (diffuseDirectionalLight + specularDirectionalLight);
         float3 otherLights =

@@ -6,6 +6,21 @@
 #include "DsvManager.h"
 #include "TextureManager.h"
 
+std::unique_ptr<ShadowMap> ShadowMap::instance_ = nullptr;
+
+ShadowMap* ShadowMap::GetInstance()
+{
+    if (instance_ == nullptr) {
+        instance_ = std::make_unique<ShadowMap>();
+    }
+    return instance_.get();
+}
+
+void ShadowMap::Finalize()
+{
+    instance_ = nullptr;
+}
+
 void ShadowMap::CreateShadowMap(uint32_t size)
 {
     shadowSize_ = size;

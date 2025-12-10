@@ -9,7 +9,20 @@
 
 class CollisionManager
 {
+private:
+
+    // シングルトンインスタンス
+    static std::unique_ptr<CollisionManager> instance_;
+
 public:
+
+    CollisionManager() = default;
+    ~CollisionManager() = default;
+    CollisionManager(CollisionManager&) = delete;
+    CollisionManager& operator=(CollisionManager&) = delete;
+
+    // シングルトンインスタンスの取得
+    static CollisionManager* GetInstance();
 
     /// <summary>
     /// すべての衝突判定を行う
@@ -47,6 +60,15 @@ public:
     /// コライダーを全てクリアする
     /// </summary>
     void ClearCollider() { colliders_.clear(); }
+
+    /// <summary>
+    /// 終了処理
+    /// </summary>
+    void Finalize() {
+        colliders_.clear();
+        previousFrame_.clear();
+		instance_ = nullptr;
+	}
 
 private:
     

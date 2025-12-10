@@ -16,6 +16,7 @@ enum class PipelineType {
 	kAnimationOutLineMask,
 	kObjectShadowMapDepth,
 	kAnimationShadowMapDepth,
+	kSpriteDissolve,
 };
 
 /// <summary>

@@ -26,7 +26,8 @@ void PipelineState::Initialize(
 		PipelineType::kSkybox,		PipelineType::kObjectOutLineMask,
 		PipelineType::kAnimationOutLineMask,
 		PipelineType::kObjectShadowMapDepth,
-		PipelineType::kAnimationShadowMapDepth
+		PipelineType::kAnimationShadowMapDepth,
+		PipelineType::kSpriteDissolve,
 	};
 
 	std::vector<PostEffectType> postEffectTypes = {

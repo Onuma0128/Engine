@@ -5,6 +5,9 @@
 #include "SrvManager.h"
 #include "CameraManager.h"
 #include "ParticleManager.h"
+#include "LineInstanceRenderer.h"
+#include "ModelInstanceRenderer.h"
+#include "CollisionManager.h"
 
 std::unique_ptr<SceneManager> SceneManager::instance_ = nullptr;
 
@@ -24,9 +27,9 @@ void SceneManager::Update()
 			CameraManager::GetInstance()->Clear();
 			ParticleManager::GetInstance()->Clear();
 			DirectXEngine::GetSceneRenderer()->Finalize();
-			DirectXEngine::GetModelRenderer()->Finalize();
-			DirectXEngine::GetLineRenderer()->Finalize();
-			DirectXEngine::GetCollisionMgr()->ClearCollider();
+			ModelInstanceRenderer::GetInstance()->Finalize();
+			LineInstanceRenderer::GetInstance()->Finalize();
+			CollisionManager::GetInstance()->ClearCollider();
 			scene_->Finalize();
 		}
 
@@ -35,7 +38,7 @@ void SceneManager::Update()
 		nextScene_ = nullptr;
 		// 次シーンを初期化する
 		scene_->Initialize();
-		DirectXEngine::GetModelRenderer()->Initialize();
+		ModelInstanceRenderer::GetInstance()->Initialize();
 	}
 
 	// 実行中のシーンの更新

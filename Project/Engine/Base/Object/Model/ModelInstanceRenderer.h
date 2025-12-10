@@ -19,7 +19,20 @@ class Model;
 /// </summary>
 class ModelInstanceRenderer
 {
+private:
+
+    // シングルトンインスタンス
+    static std::unique_ptr<ModelInstanceRenderer> instance_;
+
 public:
+
+    ModelInstanceRenderer() = default;
+    ~ModelInstanceRenderer() = default;
+    ModelInstanceRenderer(ModelInstanceRenderer&) = delete;
+    ModelInstanceRenderer& operator=(ModelInstanceRenderer&) = delete;
+
+    // シングルトンインスタンスの取得
+    static ModelInstanceRenderer* GetInstance();
 
 	// インスタンスデータ構造体
     struct InstanceData
@@ -60,6 +73,7 @@ public:
             anima.second.animations.clear();
             anima.second.count = 0;
         }
+        instance_ = nullptr;
     }
 
 	// 全てのシャドウマップ深度パス描画

@@ -3,6 +3,7 @@
 
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+#include "PostEffectManager.h"
 #include "PrimitiveDrawr.h"
 
 #include "WorldTransform.h"
@@ -108,6 +109,7 @@ private:
 
 	// パーティクルを管理する
 	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+	PostEffectManager* postEffectManager_ = PostEffectManager::GetInstance();
 
 	/* ==================== プレイヤーが移動時のエフェクト ==================== */
 

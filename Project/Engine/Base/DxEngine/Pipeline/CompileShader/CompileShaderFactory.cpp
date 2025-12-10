@@ -154,6 +154,9 @@ std::unique_ptr<CompileShaderBase> CompileShaderFactory::GetCompileShaderPtr(Pip
 	case PipelineType::kAnimationShadowMapDepth:
 		compileShader[type] = std::make_unique<AnimationShadowMapDepthCompileShader>(dxcUtils, dxcCompiler, includeHandler);
 		break;
+	case PipelineType::kSpriteDissolve:
+		compileShader[type] = std::make_unique<SpriteDissolveCompileShader>(dxcUtils, dxcCompiler, includeHandler);
+		break;
 	default:
 		assert(false && "Invalid CompileShaderType");
 		break;

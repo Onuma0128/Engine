@@ -14,6 +14,7 @@ public:
 
 	// 初期化
 	void Initialize();
+	void NoiseInitialize();
 	// 描画
 	void DrawBase();
 

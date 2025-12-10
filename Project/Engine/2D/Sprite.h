@@ -42,6 +42,17 @@ public:
 	};
 
 	/// <summary>
+	/// ディゾルブパラメータ構造体
+	/// </summary>
+	struct DissolveParams {
+		float threshold; 
+		float edgeWidth; 
+		float pad0[2];
+		Vector3 edgeColor;
+		float pad1;
+	};
+
+	/// <summary>
 	///	変換行列
 	/// </summary>
 	struct TransformationMatrix {
@@ -54,7 +65,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="textureFilePath"></param>
-	void Initialize(std::string textureFilePath);
+	void Initialize(std::string textureFilePath, bool isNoiseTexture = false);
 
 	/// <summary>
 	/// シーンレンダラーに設定する
@@ -79,11 +90,18 @@ public:
 	Transform2D& GetTransform() { return transform_; }
 
 	// Texture
-	void SetTexture(const std::string fileName);
+	void SetTexture(const std::string& fileName);
+	void SetNoiseTexture(const std::string& fileName);
 
 	// カラー
 	const Vector4& GetColor()const { return materialData_->color; }
 	void SetColor(const Vector4& color) { materialData_->color = color; }
+
+	// アルファ値
+	const float GetDissolveThreshold()const { return dissolveData_->threshold; }
+	void SetDissolveThreshold(const float threshold) { dissolveData_->threshold = threshold; }
+	void SetDissolveEdgeWidth(const float edgeWidth) { dissolveData_->edgeWidth = edgeWidth; }
+	void SetDissolveEdgeColor(const Vector3& edgeColor) { dissolveData_->edgeColor = edgeColor; }
 
 	// アンカーポイント
 	const Vector2& GetAnchorPoint()const { return anchorPoint_; }
@@ -111,6 +129,8 @@ private:
 	void VertexDataInitialize();
 	// インデックスデータ初期化
 	void MaterialDataInitialize();
+	// ディゾルブデータ初期化
+	void DissolveDataInitialize();
 	// マテリアルデータ初期化
 	void TransformationMatrixDataInitialize();
 	// アクセッサー更新
@@ -125,8 +145,10 @@ private:
 	std::unique_ptr<SpriteBase> spriteBase_ = nullptr;
 	// テクスチャ番号　
 	uint32_t textureIndex_ = 0;
+	uint32_t noiseTextureIndex_ = 0;
 	// ファイルパス
 	std::string textureFilePath_;
+	std::string noiseTextureFilePath_;
 
 	// バッファリソース
 	ComPtr<ID3D12Resource> vertexResource_ = nullptr;
@@ -140,8 +162,11 @@ private:
 
 	// マテリアルリソース
 	ComPtr<ID3D12Resource> materialResource_ = nullptr;
-	// マテリアルデータ
 	Material* materialData_ = nullptr;
+
+	// ディゾルブリソース
+	ComPtr<ID3D12Resource> dissolveResource_ = nullptr;
+	DissolveParams* dissolveData_ = nullptr;
 
 	// 座標変換行列
 	ComPtr<ID3D12Resource> transformationMatrixResource_ = nullptr;
@@ -167,5 +192,8 @@ protected:
 	Vector2 textureLeftTop_ = { 0.0f,0.0f };
 	// テクスチャ切り出しサイズ
 	Vector2 textureSize_ = { 64.0f,64.0f };
+	// noiseテクスチャを使うか
+	bool isUseNoiseTexture_ = false;
+
 };
 

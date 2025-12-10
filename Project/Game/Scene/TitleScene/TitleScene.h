@@ -41,7 +41,7 @@ private:
 
 	std::shared_ptr<Camera> camera_ = nullptr;
 
-	std::unique_ptr<SceneFade> sceneFade_ = nullptr;
+	std::unique_ptr<BaseUI> sceneFade_ = nullptr;
 	bool isFade_ = false;
 
 	std::unique_ptr<TitleUI> titleUI_ = nullptr;

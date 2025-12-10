@@ -60,6 +60,9 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "gameOverUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "menuUI.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "Apple.dds");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "noiseTexture.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "gradationTexture.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "selectBackGround.png");
 
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "bulletUI.png");

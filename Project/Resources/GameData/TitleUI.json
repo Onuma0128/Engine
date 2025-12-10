@@ -5,8 +5,8 @@
         "y": 0.5
     },
     "Size": {
-        "x": 880.0,
-        "y": 384.0
+        "x": 770.0,
+        "y": 336.0
     },
     "Rotate": 0.0,
     "Position": {
@@ -14,17 +14,17 @@
         "y": 460.0
     },
     "IsAnimation": true,
-    "AnimationTime": 0.10000000149011612,
+    "AnimationTime": 2.0,
     "Anima_Size": {
         "x": 880.0,
         "y": 384.0
     },
     "Anima_Rotate": 0.0,
     "Anima_Position": {
-        "x": -432.0,
+        "x": 640.0,
         "y": 460.0
     },
-    "InEasingType": 24,
+    "InEasingType": 23,
     "OutEasingType": 24,
     "Color": {
         "x": 1.0,
@@ -38,6 +38,13 @@
         "z": 1.0,
         "w": 1.0
     },
-    "FadeInInterval": 0.0,
-    "FadeOutInterval": 0.0
+    "FadeInInterval": 0.5,
+    "FadeOutInterval": 0.0,
+    "NoiseTexture": "noiseTexture.png",
+    "EdgeWidth": 0.10000000149011612,
+    "NoiseColor": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+    }
 }

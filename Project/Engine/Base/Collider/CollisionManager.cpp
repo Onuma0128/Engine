@@ -4,6 +4,16 @@
 
 #include "imgui.h"
 
+std::unique_ptr<CollisionManager> CollisionManager::instance_ = nullptr;
+
+CollisionManager* CollisionManager::GetInstance()
+{
+    if (instance_ == nullptr) {
+        instance_ = std::make_unique<CollisionManager>();
+    }
+    return instance_.get();
+}
+
 void CollisionManager::CheckAllCollisions()
 {
     // デバッグ用

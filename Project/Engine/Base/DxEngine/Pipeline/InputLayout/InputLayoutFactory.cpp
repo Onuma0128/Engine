@@ -45,6 +45,9 @@ D3D12_INPUT_LAYOUT_DESC& InputLayoutFactory::GetInputLayout(PipelineType type)
 	case PipelineType::kAnimationShadowMapDepth:
 		inputLayout[type] = std::make_unique<AnimationInputLayout>();
 		break;
+	case PipelineType::kSpriteDissolve:
+		inputLayout[type] = std::make_unique<SpriteInputLayout>();
+		break;
 	default:
 		assert(false && "Invalid InputLayoutType");
 		break;

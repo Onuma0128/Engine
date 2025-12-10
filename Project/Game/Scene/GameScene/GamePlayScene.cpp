@@ -44,11 +44,6 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->SetMapData(mapCollision_.get());
 	enemySpawnerFactory_->Init(loader);
 
-	// シーンフェードを初期化
-	sceneFade_ = std::make_unique<SceneFade>();
-	sceneFade_->Init();
-	sceneFade_->FadeIn(2.0f);
-
 	// ゲームシーン全体のUIを初期化
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();
 	gameSceneUis_->Init();
@@ -88,9 +83,6 @@ void GamePlayScene::Update()
 	gameSceneUis_->SetHitRate(player_->GetShot()->GetHitRate());
 	gameSceneUis_->Update();
 
-	// シーンフェードの更新
-	sceneFade_->Update();
-
 	// パーティクルの更新
 	ParticleManager::GetInstance()->Update();
 
@@ -99,10 +91,6 @@ void GamePlayScene::Update()
 	if ((!player_->GetIsAlive() || player_->GetShot()->GetNockdownCount() >= clearKill) && !isSelect_) {
 		isSelect_ = true;
 		gameSceneUis_->SelectUIFadeIn();
-	}
-
-	if (Input::GetInstance()->TriggerKey(DIK_F1)) {
-		SceneManager::GetInstance()->ChangeScene("Title");
 	}
 }
 
@@ -115,6 +103,4 @@ void GamePlayScene::Draw()
 	player_->Draw();
 
 	gameSceneUis_->Draw();
-
-	sceneFade_->Draw();
 }

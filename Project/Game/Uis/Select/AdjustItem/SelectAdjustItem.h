@@ -22,6 +22,9 @@ private:
 
 		float selectUiInterval;				// セレクトのUIが出てくるまでの時間
 		float clearCountUiTimer_;			// 数字の出てくる時間
+
+		float edgeWidth;					// エッジ幅	
+		Vector3 noiseColor;					// ノイズカラー
 	};
 	SelectData data_;
 

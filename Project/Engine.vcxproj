@@ -309,6 +309,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\AnimationShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\ObjectShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\OutLineMaskRootSignature.h" />
+    <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\SpriteDissolveRootSignature.h" />
     <ClInclude Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.h" />
     <ClInclude Include="Game\Uis\GameSceneUIs\GameSceneUIs.h" />
     <ClInclude Include="Game\Objects\Enemy\Ray\EnemyRay.h" />
@@ -480,6 +481,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <None Include="Resources\Shaders\PrimitiveDrawr.hlsli" />
     <None Include="Resources\Shaders\Skybox.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\SpriteDissolve.PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Develop|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -45,6 +45,9 @@ D3D12_RASTERIZER_DESC& RasterizerStateFactory::GetRasterizerDesc(PipelineType ty
 	case PipelineType::kAnimationShadowMapDepth:
 		rasterizerState[type] = std::make_unique<ObjectShadowMapRasterizerState>();
 		break;
+	case PipelineType::kSpriteDissolve:
+		rasterizerState[type] = std::make_unique<SpriteRasterizerState>();
+		break;
 	default:
 		assert(false && "Invalid RasterizerStateType");
 		break;

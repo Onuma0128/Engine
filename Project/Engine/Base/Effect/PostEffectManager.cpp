@@ -15,10 +15,21 @@
 #include "RenderTexture.h"
 #include "CreateBufferResource.h"
 
+std::unique_ptr<PostEffectManager> PostEffectManager::instance_ = nullptr;
+
+PostEffectManager* PostEffectManager::GetInstance()
+{
+    if (instance_ == nullptr) {
+        instance_ = std::make_unique<PostEffectManager>();
+    }
+    return instance_.get();
+}
+
 void PostEffectManager::Finalize()
 {
     enabledEffects_.clear();
     passes_.clear();
+    instance_ = nullptr;
 }
 
 void PostEffectManager::Initialize(DirectXEngine* dxEngine)

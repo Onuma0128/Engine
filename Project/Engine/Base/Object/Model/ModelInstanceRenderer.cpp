@@ -7,6 +7,7 @@
 #include "PipelineStruct.h"
 #include "PostEffectType.h"
 #include "LightManager.h"
+#include "ShadowMap.h"
 
 #include "Object3d.h"
 #include "Animation.h"
@@ -15,6 +16,15 @@
 
 #include "CreateBufferResource.h"
 
+std::unique_ptr<ModelInstanceRenderer> ModelInstanceRenderer::instance_ = nullptr;
+
+ModelInstanceRenderer* ModelInstanceRenderer::GetInstance()
+{
+    if (instance_ == nullptr) {
+        instance_ = std::make_unique<ModelInstanceRenderer>();
+    }
+    return instance_.get();
+}
 
 void ModelInstanceRenderer::Initialize()
 {
@@ -295,7 +305,7 @@ void ModelInstanceRenderer::ObjUpdate()
             matrix.World = batch.objects[i]->GetTransform().instanceMatrix_.World;
             matrix.WorldInvT = batch.objects[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
             matrix.WVP = batch.objects[i]->GetTransform().instanceMatrix_.WVP;
-            // Materialを代入
+			// Materialを代入
             Material& material = batch.materialData[i];
             material = batch.objects[i]->GetMaterial();
         }
@@ -463,7 +473,7 @@ void ModelInstanceRenderer::AllDraw()
         model->BindBuffers(false);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(9, DirectXEngine::GetShadowMap()->GetShadowMapSrvIndex());
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(9, ShadowMap::GetInstance()->GetShadowMapSrvIndex());
         commandList->SetGraphicsRootConstantBufferView(10, lightVpBuffer_->GetGPUVirtualAddress());
 
         /* ---------- Mesh ループ ---------- */
@@ -488,7 +498,7 @@ void ModelInstanceRenderer::AllDraw()
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
         SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.paletteSrvIndex);
         commandList->SetGraphicsRootConstantBufferView(10, batch.jointBuffer->GetGPUVirtualAddress());
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(11, DirectXEngine::GetShadowMap()->GetShadowMapSrvIndex());
+        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(11, ShadowMap::GetInstance()->GetShadowMapSrvIndex());
         commandList->SetGraphicsRootConstantBufferView(12, lightVpBuffer_->GetGPUVirtualAddress());
 
         /* ---------- Mesh ループ ---------- */

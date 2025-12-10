@@ -1,7 +1,5 @@
 #include "PlayerEffect.h"
 
-#include "DirectXEngine.h"
-#include "PostEffectManager.h"
 #include "DeltaTimer.h"
 #include "Input.h"
 
@@ -10,8 +8,8 @@
 
 PlayerEffect::~PlayerEffect()
 {
-	DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 0.0f;
-	DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = 0.0f;
+	PostEffectManager::GetInstance()->GetGrayscaleData()->t = 0.0f;
+	PostEffectManager::GetInstance()->GetVignetteData()->gamma = 0.0f;
 }
 
 void PlayerEffect::Init()
@@ -41,9 +39,9 @@ void PlayerEffect::Init()
 	playerReload_->GetTransform().scale = { 0.35f,0.35f,1.0f };
 
 	// PostEffectを初期化
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kGrayscale);
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kVignette);
-	DirectXEngine::GetPostEffectMgr()->CreatePostEffect(PostEffectType::kOutLine);
+	postEffectManager_->CreatePostEffect(PostEffectType::kGrayscale);
+	postEffectManager_->CreatePostEffect(PostEffectType::kVignette);
+	postEffectManager_->CreatePostEffect(PostEffectType::kOutLine);
 
 	specialMoveReady_ = std::make_unique<PrimitiveDrawr>();
 	specialMoveReady_->TypeInit(PrimitiveType::kPlane);
@@ -149,8 +147,8 @@ void PlayerEffect::UpdatePostEffect()
 			float t = std::clamp(specialMoveFrame_ / expandDuration, 0.0f, 1.0f);
 			t = Easing::EaseInQuint(t);
 			// PostEffectへの値を適応
-			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = t;
-			DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = t * 0.8f;
+			postEffectManager_->GetGrayscaleData()->t = t;
+			postEffectManager_->GetVignetteData()->gamma = t * 0.8f;
 			// Cylinderのスケール、回転を適応
 			float scale = t * 20.0f;
 			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
@@ -169,7 +167,7 @@ void PlayerEffect::UpdatePostEffect()
 		specialMoveFrame_ += delta;
 		{
 			// PostEffectへの値を適応
-			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 1.0f;
+			postEffectManager_->GetGrayscaleData()->t = 1.0f;
 			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.2f);
 
 			if (Input::GetInstance()->GetGamepadLeftTrigger() == 0.0f &&
@@ -188,8 +186,8 @@ void PlayerEffect::UpdatePostEffect()
 			float t = std::clamp(1.0f - (specialMoveFrame_ / shrinkDuration), 0.0f, 1.0f);
 			t = Easing::EaseInQuint(t);
 			// PostEffectへの値を適応
-			DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = t;
-			DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = t * 0.8f;
+			postEffectManager_->GetGrayscaleData()->t = t;
+			postEffectManager_->GetVignetteData()->gamma = t * 0.8f;
 			// Cylinderのスケール、回転を適応
 			float scale = t * 20.0f;
 			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
@@ -200,8 +198,8 @@ void PlayerEffect::UpdatePostEffect()
 				specialMoveFrame_ = 0.0f;
 				specialMoveState_ = SpecialMoveState::kNone;
 				isSpecialMove_ = false;
-				DirectXEngine::GetPostEffectMgr()->GetGrayscaleData()->t = 0.0f;
-				DirectXEngine::GetPostEffectMgr()->GetVignetteData()->gamma = 0.0f;
+				postEffectManager_->GetGrayscaleData()->t = 0.0f;
+				postEffectManager_->GetVignetteData()->gamma = 0.0f;
 				cylinder_->GetTransform().scale = {};
 				cylinder_->GetRenderOptions().enabled = false;
 				//player_->SpecialAttackBullet();

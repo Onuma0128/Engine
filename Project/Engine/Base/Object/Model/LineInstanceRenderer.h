@@ -23,7 +23,21 @@ class Line3d;
 /// </summary>
 class LineInstanceRenderer
 {
+private:
+
+    // シングルトンインスタンス
+    static std::unique_ptr<LineInstanceRenderer> instance_;
+
 public:
+
+    LineInstanceRenderer() = default;
+    ~LineInstanceRenderer() = default;
+    LineInstanceRenderer(LineInstanceRenderer&) = delete;
+    LineInstanceRenderer& operator=(LineInstanceRenderer&) = delete;
+
+    // シングルトンインスタンスの取得
+    static LineInstanceRenderer* GetInstance();
+
     // capacity は初期の線分(インスタンス)予約数
     void Initialize(uint32_t capacity = 2048);
 
@@ -37,7 +51,7 @@ public:
     void SetMaterial(Line3d* owner, const Material& material);
 
     // 全破棄
-    void Finalize();
+    void Finalize(bool instanceDelete = false);
 
     // 毎フレーム（VP更新と必要ならGPUアップロード）
     void Update();

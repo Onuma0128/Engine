@@ -1218,5 +1218,9 @@
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\ObjectShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\AnimationShadowMapDepthRootSignature.h" />
     <ClInclude Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.h" />
+    <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\SpriteDissolveRootSignature.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\Shaders\SpriteDissolve.PS.hlsl" />
   </ItemGroup>
 </Project>

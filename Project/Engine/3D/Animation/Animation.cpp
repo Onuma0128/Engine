@@ -4,6 +4,7 @@
 #include <numeric>
 
 #include "DirectXEngine.h"
+#include "ModelInstanceRenderer.h"
 
 #include "Object3d.h"
 #include "Model.h"
@@ -40,12 +41,12 @@ void Animation::Initialize(const std::string& filename)
 
 void Animation::SetSceneRenderer()
 {
-	DirectXEngine::GetModelRenderer()->Push(this);
+	ModelInstanceRenderer::GetInstance()->Push(this);
 }
 
 void Animation::RemoveRenderer()
 {
-	DirectXEngine::GetModelRenderer()->Remove(this);
+	ModelInstanceRenderer::GetInstance()->Remove(this);
 }
 
 void Animation::Update()

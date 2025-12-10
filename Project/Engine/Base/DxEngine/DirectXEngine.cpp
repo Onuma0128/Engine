@@ -12,24 +12,25 @@
 #include "SrvManager.h"
 #include "RtvManager.h"
 #include "DsvManager.h"
+
 #include "CameraManager.h"
 #include "LightManager.h"
 #include "AudioManager.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
+#include "ModelInstanceRenderer.h"
+#include "LineInstanceRenderer.h"
 #include "ParticleManager.h"
+#include "PostEffectManager.h"
+#include "CollisionManager.h"
+#include "ShadowMap.h"
 
 using Microsoft::WRL::ComPtr;
 
 ComPtr<ID3D12Device> DirectXEngine::device_ = nullptr;
 ComPtr<ID3D12GraphicsCommandList> DirectXEngine::commandList_ = nullptr;
 std::unique_ptr<PipelineState> DirectXEngine::pipelineState_ = nullptr;
-std::unique_ptr<PostEffectManager> DirectXEngine::postEffectManager_ = nullptr;
 std::unique_ptr<SceneRenderer> DirectXEngine::sceneRendrer_ = nullptr;
-std::unique_ptr<ModelInstanceRenderer> DirectXEngine::modelInstanceRenderer_ = nullptr;
-std::unique_ptr<LineInstanceRenderer> DirectXEngine::lineInstanceRenderer_ = nullptr;
-std::unique_ptr<CollisionManager> DirectXEngine::collisionManager_ = nullptr;
-std::unique_ptr<ShadowMap> DirectXEngine::shadowMap_ = nullptr;
 
 DirectXEngine::~DirectXEngine()
 {
@@ -40,21 +41,19 @@ DirectXEngine::~DirectXEngine()
 	TextureManager::GetInstance()->Finalize();
 	LightManager::GetInstance()->Finalize();
 	ModelManager::GetInstance()->Finalize();
+	ModelInstanceRenderer::GetInstance()->Finalize();
+	LineInstanceRenderer::GetInstance()->Finalize(true);
 	ParticleManager::GetInstance()->Finalize();
+	PostEffectManager::GetInstance()->Finalize();
 	AudioManager::GetInstance()->Finalize();
+	CollisionManager::GetInstance()->Finalize();
+	ShadowMap::GetInstance()->Finalize();
 
 	device_.Reset();
 	commandList_.Reset();
 	pipelineState_.reset();
-	postEffectManager_.reset();
 	sceneRendrer_->Finalize();
 	sceneRendrer_.reset();
-	modelInstanceRenderer_->Finalize();
-	modelInstanceRenderer_.reset();
-	lineInstanceRenderer_->Finalize();
-	lineInstanceRenderer_.reset();
-	collisionManager_.reset();
-	shadowMap_.reset();
 
 	//解放の処理
 	CloseHandle(fenceEvent_);
@@ -109,24 +108,21 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 
 	TextureManager::GetInstance()->Initialize(this);
 
+	/*==================== シーンの描画 ====================*/
+
+	sceneRendrer_ = std::make_unique<SceneRenderer>();
+
 	/*==================== パーティクル ====================*/
 
 	ParticleManager::GetInstance()->Initialize(this);
 
-	postEffectManager_ = std::make_unique<PostEffectManager>();
-	postEffectManager_->Initialize(this);
+	PostEffectManager::GetInstance()->Initialize(this);
 
-	sceneRendrer_ = std::make_unique<SceneRenderer>();
+	ModelInstanceRenderer::GetInstance()->Initialize();
 
-	modelInstanceRenderer_ = std::make_unique<ModelInstanceRenderer>();
+	LineInstanceRenderer::GetInstance()->Initialize(65536);
 
-	lineInstanceRenderer_ = std::make_unique<LineInstanceRenderer>();
-	lineInstanceRenderer_->Initialize(65536);
-
-	collisionManager_ = std::make_unique<CollisionManager>();
-
-	shadowMap_ = std::make_unique<ShadowMap>();
-	shadowMap_->CreateShadowMap(8192);
+	ShadowMap::GetInstance()->CreateShadowMap(8192);
 }
 
 void DirectXEngine::DeviceInitialize()
@@ -460,6 +456,6 @@ void DirectXEngine::PostDraw()
 void DirectXEngine::SetPostEffectDraw(PostEffectType type)
 {
 	// PostEffectの描画
-	auto index = postEffectManager_->DrawEffect(type, renderTexture_->GetFinalSrvIndex());
+	auto index = PostEffectManager::GetInstance()->DrawEffect(type, renderTexture_->GetFinalSrvIndex());
 	renderTexture_->SetFinalSrvIndex(index);
 }

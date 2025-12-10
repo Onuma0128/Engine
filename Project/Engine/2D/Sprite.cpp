@@ -11,21 +11,25 @@
 
 #include "CreateBufferResource.h"
 
-void Sprite::Initialize(std::string textureFilePath)
+void Sprite::Initialize(std::string textureFilePath, bool isNoiseTexture)
 {
 	spriteBase_ = std::make_unique<SpriteBase>();
-	spriteBase_->Initialize();
+	if(isNoiseTexture) {
+		spriteBase_->NoiseInitialize();
+		isUseNoiseTexture_ = true;
+		noiseTextureFilePath_ = "white1x1.png";
+		noiseTextureIndex_ = TextureManager::GetInstance()->GetSrvIndex(noiseTextureFilePath_);
+		DissolveDataInitialize();
+	} else {
+		spriteBase_->Initialize();
+	}
 
 	textureFilePath_ = textureFilePath;
-
 	textureIndex_ = TextureManager::GetInstance()->GetSrvIndex(textureFilePath);
 
 	VertexDataInitialize();
-
 	MaterialDataInitialize();
-
 	TransformationMatrixDataInitialize();
-
 	AdjustTextureSize();
 }
 
@@ -56,14 +60,25 @@ void Sprite::Draw()
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, transformationMatrixResource_->GetGPUVirtualAddress());
 	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, textureIndex_);
+	if (isUseNoiseTexture_) {
+		SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, noiseTextureIndex_);
+		commandList->SetGraphicsRootConstantBufferView(4, dissolveResource_->GetGPUVirtualAddress());
+	}
 	
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
 
-void Sprite::SetTexture(const std::string fileName)
+void Sprite::SetTexture(const std::string& fileName)
 {
 	textureFilePath_ = fileName;
 	textureIndex_ = TextureManager::GetInstance()->GetSrvIndex(fileName);
+	AdjustTextureSize();
+}
+
+void Sprite::SetNoiseTexture(const std::string& fileName)
+{
+	textureFilePath_ = fileName;
+	noiseTextureIndex_ = TextureManager::GetInstance()->GetSrvIndex(fileName);
 	AdjustTextureSize();
 }
 
@@ -104,6 +119,16 @@ void Sprite::MaterialDataInitialize()
 
 	materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData_->uvTransform = Matrix4x4::Identity();
+}
+
+void Sprite::DissolveDataInitialize()
+{
+	dissolveResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(DissolveParams));
+	dissolveResource_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
+
+	dissolveData_->threshold = 0.5f;
+	dissolveData_->edgeWidth = 0.1f;
+	dissolveData_->edgeColor = Vector3(1.0f, 1.0f, 1.0f);
 }
 
 void Sprite::TransformationMatrixDataInitialize()

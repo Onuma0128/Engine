@@ -88,7 +88,16 @@ void SelectSystem::SelectUIFadeIn()
 
 void SelectSystem::SelectInput()
 {
-	if (!updateSelectUI_) { return; }
+	// シーンフェードインが完了したらシーン遷移
+	if (isSceneFadeIn_ && !sceneFade_->IsPlayAnimation()) {
+		if (targetIndex_ == 0u) {
+			SceneManager::GetInstance()->ChangeScene("Title");
+		} else {
+			SceneManager::GetInstance()->ChangeScene("Game");
+		}
+	}
+	// セレクトUIが表示されていなければ処理しない
+	if (!updateSelectUI_ || isSceneFadeIn_) { return; }
 
 	Input* input = Input::GetInstance();
 
@@ -108,22 +117,20 @@ void SelectSystem::SelectInput()
 
 	// ボタンを押したらシーン遷移する
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_A)) {
-		if (targetIndex_ == 0u) {
-			SceneManager::GetInstance()->ChangeScene("Title");
-		} else {
-			SceneManager::GetInstance()->ChangeScene("Game");
-		}
+		isSceneFadeIn_ = true;
+		sceneFade_->FadeIn();
 	}
 }
 
 void SelectSystem::CounterUiUpdate()
 {
 	// 数字をフェードさせる
+	const auto& data = items_->GetSelectData();
 	if (isFadeIn_ && !updateSelectUI_) {
 		clearCountUiTimer_ += DeltaTimer::GetDeltaTime();
-		killCountUI_->SetAlpha(clearCountUiTimer_ - 1.0f);
-		hitRateUI_->SetAlpha(clearCountUiTimer_ - 1.0f);
-		if (clearCountUiTimer_ > items_->GetSelectData().selectUiInterval) {
+		killCountUI_->SetAlpha(clearCountUiTimer_ - 2.0f);
+		hitRateUI_->SetAlpha(clearCountUiTimer_ - 2.0f);
+		if (clearCountUiTimer_ > data.selectUiInterval) {
 			updateSelectUI_ = true;
 			clearCountUiTimer_ = 0.0f;
 		}

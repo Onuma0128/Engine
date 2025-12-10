@@ -12,8 +12,15 @@ void GameSceneUIs::Init()
 	menuUI->Init();
 	controlUIs_.push_back(std::move(menuUI));
 
+	// シーンフェードを初期化
+	sceneFade_ = std::make_unique<BaseUI>();
+	sceneFade_->Init("GameFade", "GameData", true);
+	sceneFade_->GetSprite()->SetColor(Vector4{ 0.0f,0.0f,0.0f,1.0f });
+	sceneFade_->FadeOut();
+
 	selectSystem_ = std::make_unique<SelectSystem>();
 	selectSystem_->Init();
+	selectSystem_->SetSceneFade(sceneFade_.get());
 
 	Update();
 }
@@ -25,6 +32,8 @@ void GameSceneUIs::Update()
 	}
 
 	selectSystem_->Update();
+	
+	sceneFade_->Update();
 }
 
 void GameSceneUIs::Draw()
@@ -34,6 +43,8 @@ void GameSceneUIs::Draw()
 	}
 
 	selectSystem_->Draw();
+
+	sceneFade_->Draw();
 }
 
 void GameSceneUIs::SelectUIFadeIn()

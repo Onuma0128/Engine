@@ -67,8 +67,6 @@ private:
 	// ゲームの操作UI
 	std::unique_ptr<GameSceneUIs> gameSceneUis_ = nullptr;
 
-	// シーンフェード
-	std::unique_ptr<SceneFade> sceneFade_ = nullptr;
 	bool isSelect_ = false;
 };
 

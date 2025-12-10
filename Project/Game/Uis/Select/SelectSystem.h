@@ -55,6 +55,12 @@ public:
 	/// <param name="num"></param>
 	void SetHitRate(int num) { hitRate_ = num; }
 
+	/// <summary>
+	/// シーンフェードを設定する
+	/// </summary>
+	/// <param name="sceneFade"></param>
+	void SetSceneFade(BaseUI* sceneFade) { sceneFade_ = sceneFade; }
+
 private:
 
 	// インプット系を更新する
@@ -85,6 +91,10 @@ private:
 	// 倒した数を表示する
 	std::unique_ptr<PlayerCountUI> killCountUI_ = nullptr;
 	std::unique_ptr<PlayerCountUI> hitRateUI_ = nullptr;
+
+	// シーンフェード
+	BaseUI* sceneFade_ = nullptr;
+	bool isSceneFadeIn_ = false;
 
 	// 位ごとに描画する
 	CountUiOrder countUiOrder_ = CountUiOrder::First;

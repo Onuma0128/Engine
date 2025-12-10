@@ -60,5 +60,8 @@ private:
 	// セレクトUI
 	std::unique_ptr<SelectSystem> selectSystem_ = nullptr;
 
+	// フェード
+	std::unique_ptr<BaseUI> sceneFade_ = nullptr;
+
 };
 

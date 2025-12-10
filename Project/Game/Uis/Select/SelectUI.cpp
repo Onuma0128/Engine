@@ -2,7 +2,7 @@
 
 void SelectUI::Init(const std::string& name)
 {
-	BaseUI::Init(name, "GameData");
+	BaseUI::Init(name, "GameData", true);
 }
 
 void SelectUI::Update()

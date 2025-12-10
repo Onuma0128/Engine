@@ -6,7 +6,7 @@
     },
     "Size": {
         "x": 225.0,
-        "y": 0.0
+        "y": 75.0
     },
     "Rotate": 0.0,
     "Position": {
@@ -36,8 +36,15 @@
         "z": 1.0,
         "w": 1.0
     },
-    "InEasingType": 23,
-    "OutEasingType": 23,
-    "FadeInInterval": 3.0,
-    "FadeOutInterval": 0.0
+    "InEasingType": 0,
+    "OutEasingType": 0,
+    "FadeInInterval": 3.5,
+    "FadeOutInterval": 0.0,
+    "NoiseTexture": "gradationTexture.png",
+    "EdgeWidth": 0.029999999329447746,
+    "NoiseColor": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+    }
 }

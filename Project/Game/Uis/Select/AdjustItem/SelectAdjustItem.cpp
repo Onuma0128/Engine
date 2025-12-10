@@ -18,6 +18,9 @@ void SelectAdjustItem::LoadItems()
 		json_.Set("selectUiInterval", 0.0f);
 		json_.Set("clearCountUiTimer", 0.0f);
 
+		json_.Set("edgeWidth", 1.0f);
+		json_.Set("noiseColor", Vector3{ 1.0f,1.0f,1.0f });
+
 	} else {
 
 		data_.killNumberUiInterval = json_.Get("killNumberUiInterval", data_.killNumberUiInterval);
@@ -30,6 +33,9 @@ void SelectAdjustItem::LoadItems()
 
 		data_.selectUiInterval = json_.Get("selectUiInterval", data_.selectUiInterval);
 		data_.clearCountUiTimer_ = json_.Get("clearCountUiTimer", data_.clearCountUiTimer_);
+
+		data_.edgeWidth = json_.Get("edgeWidth", data_.edgeWidth);
+		data_.noiseColor = json_.Get("noiseColor", data_.noiseColor);
 	}
 }
 
@@ -51,6 +57,9 @@ void SelectAdjustItem::Editor()
 
 		ImGui::DragFloat("selectUiInterval", &data_.selectUiInterval, 0.01f);
 		ImGui::DragFloat("clearCountUiTimer", &data_.clearCountUiTimer_, 0.01f);
+
+		ImGui::DragFloat("edgeWidth", &data_.edgeWidth, 0.01f, 0.0f, 10.0f);
+		ImGui::ColorEdit3("noiseColor", &data_.noiseColor.x);
 
 		if (ImGui::Button("Save")) {
 			Save();
@@ -74,5 +83,9 @@ void SelectAdjustItem::Save()
 
 	json_.Set("selectUiInterval", data_.selectUiInterval);
 	json_.Set("clearCountUiTimer", data_.clearCountUiTimer_);
+
+	json_.Set("edgeWidth", data_.edgeWidth);
+	json_.Set("noiseColor", data_.noiseColor);
+
 	json_.Save();
 }

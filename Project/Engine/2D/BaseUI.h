@@ -21,10 +21,13 @@ private:
 		std::string filename;			// 保存ファイル名
 		std::string biginName;			// ImGuiの入れる名前
 		std::string texture;			// テクスチャ名
+		std::string noiseTexture;		// ノイズテクスチャ名
 
 		Vector2 anchorPoint;			// アンカーポイント
 		Transform2D transform;			// トランスフォーム
 		Vector4 color;					// カラー
+		float edgeWidth;				// エッジ幅	
+		Vector3 noiseColor;				// ノイズカラー
 
 		bool isAnimation;				// アニメーションを適応するか
 		float animationTime;			// アニメーション時間
@@ -45,7 +48,7 @@ public:
 	/// </summary>
 	/// <param name="uiName"></このUIの名前を設定する>
 	/// <param name="biginName"></ImGuiで描画するBiginNameを設定する>
-	void Init(const std::string uiName, const std::string biginName);
+	void Init(const std::string uiName, const std::string biginName, bool isNoiseTexture = false);
 
 	/// <summary>
 	/// 更新
@@ -86,6 +89,12 @@ public:
 	/// <returns></returns>
 	Sprite* GetSprite()const { return ui_.get(); }
 
+	/// <summary>
+	/// アニメーション中かどうか
+	/// </summary>
+	/// <returns></returns>
+	bool IsPlayAnimation()const { return isPlayAnimation_; }
+
 private:
 
 	/// <summary>
@@ -107,11 +116,14 @@ private:
 	JsonFunction json_;
 
 	// 選択中インデックス
-	int textureIndex_ = 0;
+	uint32_t textureIndex_ = 0;
+	uint32_t noiseTextureIndex_ = 0;
 
 	// Animation中のTimerとフラグ
 	float playAnimationTimer_ = 0.0f;
 	bool isPlayAnimation_ = false;
+	// Noiseテクスチャを使うか
+	bool isNoiseTexture_ = false;
 	// 逆再生
 	bool reversePlayBack_ = false;
 	// 点滅時間

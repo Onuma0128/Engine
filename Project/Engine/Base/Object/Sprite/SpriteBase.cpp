@@ -9,6 +9,12 @@ void SpriteBase::Initialize()
 	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::kSprite).Get();
 }
 
+void SpriteBase::NoiseInitialize()
+{
+	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::kSpriteDissolve).Get();
+	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::kSpriteDissolve).Get();
+}
+
 void SpriteBase::DrawBase()
 {
 	auto commandList = DirectXEngine::GetCommandList();

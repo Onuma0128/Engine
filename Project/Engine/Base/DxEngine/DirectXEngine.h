@@ -9,13 +9,8 @@
 
 #include "StringUtility.h"
 #include "PipelineState.h"
-#include "PostEffectManager.h"
-#include "RenderTexture.h"
 #include "SceneRenderer.h"
-#include "ModelInstanceRenderer.h"
-#include "LineInstanceRenderer.h"
-#include "CollisionManager.h"
-#include "ShadowMap.h"
+#include "RenderTexture.h"
 
 class WinApp;
 class ImGuiManager;
@@ -83,18 +78,8 @@ public:
 	static ID3D12GraphicsCommandList* GetCommandList() { return commandList_.Get(); }
 	// パイプライン
 	static PipelineState* GetPipelineState() { return pipelineState_.get(); }
-	// ポストエフェクト
-	static PostEffectManager* GetPostEffectMgr() { return postEffectManager_.get(); }
 	// 全ての描画
 	static SceneRenderer* GetSceneRenderer() { return sceneRendrer_.get(); }
-	// モデル全ての描画
-	static ModelInstanceRenderer* GetModelRenderer() { return modelInstanceRenderer_.get(); }
-	// ライン全ての描画
-	static LineInstanceRenderer* GetLineRenderer() { return lineInstanceRenderer_.get(); }
-	// 当たり判定
-	static CollisionManager* GetCollisionMgr() { return collisionManager_.get(); }
-	// シャドウマップ
-	static ShadowMap* GetShadowMap() { return shadowMap_.get(); }
 	// RenderTexture
 	RenderTexture* GetRenderTexrure() { return renderTexture_.get(); }
 
@@ -105,24 +90,14 @@ private:
 	WinApp* winApp_ = nullptr;
 	// RenderTexture
 	std::unique_ptr<RenderTexture> renderTexture_ = nullptr;
-	// PipelineState
-	static std::unique_ptr<PipelineState> pipelineState_;
-	// PostEffectManager
-	static std::unique_ptr<PostEffectManager> postEffectManager_;
 	// D3D12Deviceの作成
 	static ComPtr<ID3D12Device> device_;
 	// commandListを生成する
 	static ComPtr<ID3D12GraphicsCommandList> commandList_;
+	// PipelineState
+	static std::unique_ptr<PipelineState> pipelineState_;
 	// SceneRendrer
 	static std::unique_ptr<SceneRenderer> sceneRendrer_;
-	// ModelInstanceRenderer
-	static std::unique_ptr<ModelInstanceRenderer> modelInstanceRenderer_;
-	// LineInstanceRenderer
-	static std::unique_ptr<LineInstanceRenderer> lineInstanceRenderer_;
-	// CollisionManager
-	static std::unique_ptr<CollisionManager> collisionManager_;
-	// ShadowMap
-	static std::unique_ptr<ShadowMap> shadowMap_;
 
 	///==============================================================
 

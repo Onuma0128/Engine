@@ -2,23 +2,26 @@
 
 #include <algorithm> 
 
-void PlayerCountUI::Init()
+#include "DeltaTimer.h"
+
+void PlayerCountUI::Init(bool isNoiseTexture)
 {
 	const size_t kNumNumber = 3;
 	numbers_.resize(kNumNumber);
 
-	interval_ = 52.0f;
+	interval_ = 56.0f;
 
 	for (uint32_t i = 0; i < numbers_.size(); ++i) {
 		numbers_[i] = std::make_unique<NumbersUI>();
 		Vector2 position = { static_cast<float>(600 + (i * interval_)),50.0f };
-		numbers_[i]->Init(position);
+		numbers_[i]->Init(position, isNoiseTexture);
 	}
 }
 
 void PlayerCountUI::Update(const uint32_t killCount)
 {
 	uint32_t clamped = std::clamp(killCount, 0u, 999u);
+	prevNumber_ = clamped;
 
 	// 100・10・1 の各位を取り出す
 	uint32_t digits[3] = {
@@ -30,6 +33,20 @@ void PlayerCountUI::Update(const uint32_t killCount)
 	// NumbersUIを更新
 	for (size_t i = 0; i < numbers_.size(); ++i) {
 		numbers_[i]->Update(digits[i]);
+	}
+}
+
+void PlayerCountUI::MochiPuniScale(const uint32_t killCount)
+{
+	if(killCount != prevNumber_) {
+		mochiPuniTime_ = 0.0f;
+	}
+
+	mochiPuniTime_ += DeltaTimer::GetDeltaTime() * 3.0f;
+	mochiPuniTime_ = std::clamp(mochiPuniTime_, 0.0f, 1.0f);
+	Vector2 scale = Vector2::MochiPuniScaleNormalized(mochiPuniTime_);
+	for (size_t i = 0; i < numbers_.size(); ++i) {
+		numbers_[i]->GetTransform().size = scale * 80.0f;
 	}
 }
 
@@ -69,10 +86,22 @@ void PlayerCountUI::SetAlpha(const float alpha)
 	}
 }
 
-
-void NumbersUI::Init(const Vector2& position)
+void PlayerCountUI::SetDissolvePrames(const float threshold, const float edgeWidth, const Vector3& edgeColor)
 {
-	Sprite::Initialize("numbers.png");
+	for (auto& number : numbers_) {
+		number->SetDissolveThreshold(threshold);
+		number->SetDissolveEdgeWidth(edgeWidth);
+		number->SetDissolveEdgeColor(edgeColor);
+	}
+}
+
+
+void NumbersUI::Init(const Vector2& position, bool isNoiseTexture)
+{
+	Sprite::Initialize("numbers.png", isNoiseTexture);
+	if(isNoiseTexture) {
+		Sprite::SetNoiseTexture("gradationTexture.png");
+	}
 	Sprite::transform_.position = position;
 	Sprite::anchorPoint_ = { 0.5f,0.5f };
 	Sprite::transform_.size = { 80.0f,80.0f };

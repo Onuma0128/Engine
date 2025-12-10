@@ -84,6 +84,7 @@ void PlayerShot::Update()
 
 void PlayerShot::UpdateUI()
 {
+	killCountUI_->MochiPuniScale(kNockdownCount_);
 	killCountUI_->Update(kNockdownCount_);
 
 	size_t bulletUICount = 0;

@@ -6,8 +6,14 @@
 #include "SceneManager.h"
 #include "CameraManager.h"
 #include "LightManager.h"
-#include "DeltaTimer.h"
+#include "ModelInstanceRenderer.h"
+#include "LineInstanceRenderer.h"
 #include "ParticleManager.h"
+#include "PostEffectManager.h"
+#include "CollisionManager.h"
+#include "ShadowMap.h"
+
+#include "DeltaTimer.h"
 
 void MyGame::Initialize()
 {
@@ -38,13 +44,13 @@ void MyGame::Update()
 	DeltaTimer::Update();
 
 	// 当たり判定
-	directXEngine_->GetCollisionMgr()->CheckAllCollisions();
+	CollisionManager::GetInstance()->CheckAllCollisions();
 
 	// シーンの更新
 	SceneManager::GetInstance()->Update();
 
 	// 登録済みのLineを更新
-	directXEngine_->GetLineRenderer()->Update();
+	LineInstanceRenderer::GetInstance()->Update();
 
 	// カメラの更新
 	CameraManager::GetInstance()->Debug_ImGui();
@@ -63,21 +69,21 @@ void MyGame::Draw()
 	//描画用のDescriptorHeapの設定
 	SrvManager::GetInstance()->PreDraw();
 	// シャドウマップ深度処理
-	directXEngine_->GetShadowMap()->BeginShadowMapPass();
-	directXEngine_->GetModelRenderer()->AllDrawShadowDepth();
-	directXEngine_->GetShadowMap()->EndShadowMapPass();
+	ShadowMap::GetInstance()->BeginShadowMapPass();
+	ModelInstanceRenderer::GetInstance()->AllDrawShadowDepth();
+	ShadowMap::GetInstance()->EndShadowMapPass();
 	// 描画前の処理
 	directXEngine_->PreDraw();
 	// offscreen描画
-	directXEngine_->GetModelRenderer()->AllDraw();
+	ModelInstanceRenderer::GetInstance()->AllDraw();
 	directXEngine_->GetSceneRenderer()->AllDraw();
 	// パーティクルの描画
 	//directXEngine_->RenderTexturePreDraw();
 	ParticleManager::GetInstance()->Draw();
 	// outlineMask処理
-	directXEngine_->GetPostEffectMgr()->BeginOutlineMaskPass();
-	directXEngine_->GetModelRenderer()->AllDrawOutlineMask();
-	directXEngine_->GetPostEffectMgr()->EndOutlineMaskPass();
+	PostEffectManager::GetInstance()->BeginOutlineMaskPass();
+	ModelInstanceRenderer::GetInstance()->AllDrawOutlineMask();
+	PostEffectManager::GetInstance()->EndOutlineMaskPass();
 	// offscreen描画終了
 	directXEngine_->RenderPost();
 	// postEffectの書き込み描画
@@ -90,7 +96,7 @@ void MyGame::Draw()
 	// offscreenを掛けたくない描画
 	directXEngine_->GetSceneRenderer()->OutAllDraw();
 	// Lineの描画
-	directXEngine_->GetLineRenderer()->Draws();
+	LineInstanceRenderer::GetInstance()->Draws();
 	SceneManager::GetInstance()->Draw();
 
 

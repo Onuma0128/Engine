@@ -4,6 +4,7 @@
 #include "wrl.h"
 
 #include <stdint.h>
+#include <memory>
 
 using Microsoft::WRL::ComPtr;
 
@@ -12,7 +13,25 @@ using Microsoft::WRL::ComPtr;
 /// </summary>
 class ShadowMap
 {
+private:
+
+    // シングルトンインスタンス
+    static std::unique_ptr<ShadowMap> instance_;
+
 public:
+
+    ShadowMap() = default;
+    ~ShadowMap() = default;
+    ShadowMap(ShadowMap&) = delete;
+    ShadowMap& operator=(ShadowMap&) = delete;
+
+    // シングルトンインスタンスの取得
+    static ShadowMap* GetInstance();
+
+	/// <summary>
+	/// 終了処理
+    /// </summary>
+	void Finalize();
 
     /// <summary>
     /// シャドウマップの作成

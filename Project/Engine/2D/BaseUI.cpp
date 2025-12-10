@@ -8,8 +8,9 @@
 #include "DeltaTimer.h"
 #include "Easing.h"
 
-void BaseUI::Init(const std::string uiName, const std::string biginName)
+void BaseUI::Init(const std::string uiName, const std::string biginName, bool isNoiseTexture)
 {
+	isNoiseTexture_ = isNoiseTexture;
 	parameters_.filename = uiName;
 	parameters_.biginName = biginName;
 	json_.Init(uiName);
@@ -19,7 +20,15 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 		// Texture
 		json_.Set("Texture", "white1x1.png");
 		parameters_.texture = "white1x1.png";
-
+		if (isNoiseTexture) {
+			json_.Set("NoiseTexture", "white1x1.png");
+			parameters_.noiseTexture = "white1x1.png";
+			// EdgeWidth,NoiseColor
+			json_.Set("EdgeWidth", 0.0f);
+			parameters_.edgeWidth = 0.0f;
+			json_.Set("NoiseColor", Vector3{ 1.0f,1.0f,1.0f });
+			parameters_.noiseColor = Vector3{ 1.0f,1.0f,1.0f };
+		}
 		// AnchorPoint
 		json_.Set("AnchorPoint", Vector2{ 0.0f,0.0f });
 		// Transform
@@ -54,7 +63,12 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 	} else {
 		// Texture
 		parameters_.texture = json_.Get<std::string>("Texture", "white1x1.png");
-
+		if (isNoiseTexture_) {
+			parameters_.noiseTexture = json_.Get<std::string>("NoiseTexture", "white1x1.png");
+			// EdgeWidth,NoiseColor
+			parameters_.edgeWidth = json_.Get<float>("EdgeWidth", 0.0f);
+			parameters_.noiseColor = json_.Get<Vector3>("NoiseColor", Vector3{ 1.0f,1.0f,1.0f });
+		}
 		// AnchorPoint
 		parameters_.anchorPoint = json_.Get<Vector2>("AnchorPoint", Vector2{ 0.0f,0.0f });
 		// Transform
@@ -87,12 +101,22 @@ void BaseUI::Init(const std::string uiName, const std::string biginName)
 	// 選択できるテクスチャ
 	auto items = TextureManager::GetInstance()->GetTextures();
 	// テクスチャを検索
-	for (int i = 0; i < items.size(); ++i) { if (parameters_.texture == items[i]) { textureIndex_ = i; } }
+	for (size_t i = 0; i < items.size(); ++i) { 
+		if (parameters_.texture == items[i]) { textureIndex_ = static_cast<uint32_t>(i); } 
+		if (parameters_.noiseTexture == items[i]) { noiseTextureIndex_ = static_cast<uint32_t>(i); }
+	}
 
 	ui_ = std::make_unique<Sprite>();
-	ui_->Initialize(parameters_.texture);
+	ui_->Initialize(parameters_.texture, isNoiseTexture);
 	ui_->SetAnchorPoint(parameters_.anchorPoint);
 	ui_->GetTransform() = parameters_.transform;
+	ui_->SetColor(parameters_.color);
+	if (isNoiseTexture) {
+		ui_->SetNoiseTexture(parameters_.noiseTexture);
+		ui_->SetDissolveThreshold(1.0f);
+		ui_->SetDissolveEdgeWidth(parameters_.edgeWidth);
+		ui_->SetDissolveEdgeColor(parameters_.noiseColor);
+	}
 
 	playAnimationTimer_ = 0.0f;
 }
@@ -120,7 +144,7 @@ void BaseUI::DrawImGui()
 
 		// テクスチャを選択
 		int index = textureIndex_;
-		auto items = TextureManager::GetInstance()->GetTextures();
+		const auto& items = TextureManager::GetInstance()->GetTextures();
 		if (ImGui::BeginCombo("Textrue", items[textureIndex_].c_str())) {
 			for (int i = 0; i < items.size(); ++i) {
 				const bool is_selected = (textureIndex_ == i);
@@ -131,6 +155,27 @@ void BaseUI::DrawImGui()
 		}
 		parameters_.texture = items[textureIndex_];
 		if (index != textureIndex_) { ui_->SetTexture(parameters_.texture); }
+
+		// ノイズテクスチャを選択
+		if (isNoiseTexture_) {
+			index = noiseTextureIndex_;
+			if (ImGui::BeginCombo("NoiseTexture", items[noiseTextureIndex_].c_str())) {
+				for (int i = 0; i < items.size(); ++i) {
+					const bool is_selected = (noiseTextureIndex_ == i);
+					if (ImGui::Selectable(items[i].c_str(), is_selected)) { noiseTextureIndex_ = i; }
+					if (is_selected) { ImGui::SetItemDefaultFocus(); }
+				}
+				ImGui::EndCombo();
+			}
+			parameters_.noiseTexture = items[noiseTextureIndex_];
+			if (index != noiseTextureIndex_) { ui_->SetNoiseTexture(parameters_.noiseTexture); }
+
+			// EdgeWidth,NoiseColor
+			ImGui::DragFloat("EdgeWidth", &parameters_.edgeWidth, 0.01f);
+			ImGui::ColorEdit3("NoiseColor", &parameters_.noiseColor.x);
+			ui_->SetDissolveEdgeWidth(parameters_.edgeWidth);
+			ui_->SetDissolveEdgeColor(parameters_.noiseColor);
+		}
 
 		// AnchorPoint
 		ImGui::DragFloat2("AnchorPoint", &parameters_.anchorPoint.x, 0.01f);
@@ -200,6 +245,12 @@ void BaseUI::Save()
 {
 	// Texture
 	json_.Set("Texture", parameters_.texture);
+	if (isNoiseTexture_) {
+		json_.Set("NoiseTexture", parameters_.noiseTexture);
+		// EdgeWidth,NoiseColor
+		json_.Set("EdgeWidth", parameters_.edgeWidth);
+		json_.Set("NoiseColor", parameters_.noiseColor);
+	}
 	// AnchorPoint
 	json_.Set("AnchorPoint", parameters_.anchorPoint);
 	// Transform
@@ -284,5 +335,8 @@ void BaseUI::UI_Animation()
 		ui_->GetTransform().rotate = (1.0f - t) * parameters_.transform.rotate + t * parameters_.animaTransform.rotate;
 		ui_->GetTransform().position = Vector2::EaseLerp(parameters_.transform.position, parameters_.animaTransform.position, t);
 		ui_->SetColor(Vector4::Lerp(parameters_.color,parameters_.animaColor,t));
+		if (isNoiseTexture_) {
+			ui_->SetDissolveThreshold(1.0f - t);
+		}
 	}
 }

@@ -2,7 +2,7 @@
 
 #include <numbers>
 
-#include "DirectXEngine.h"
+#include "LineInstanceRenderer.h"
 
 #include "Camera.h"
 #include "CameraManager.h"
@@ -12,15 +12,15 @@ void Line3d::Initialize(const std::vector<Vector3>& positions)
 {
 	assert((positions.size() & 1u) == 0 && "偶数個の座標が必要です");
 	
-	DirectXEngine::GetLineRenderer()->RegisterLine(this);
-	lineIndex_ = DirectXEngine::GetLineRenderer()->GetLineID(this);
+	LineInstanceRenderer::GetInstance()->RegisterLine(this);
+	lineIndex_ = LineInstanceRenderer::GetInstance()->GetLineID(this);
 
 	MakeMaterialData();
 }
 
 void Line3d::Update()
 {
-	DirectXEngine::GetLineRenderer()->SetMaterial(this, materialData_);
+	LineInstanceRenderer::GetInstance()->SetMaterial(this, materialData_);
 }
 
 void Line3d::MakeMaterialData()
@@ -39,7 +39,7 @@ void Line3d::SetPositions(const std::vector<Vector3>& positions)
 {
 	assert((positions.size() & 1u) == 0 && "偶数個の座標が必要です");
 
-	DirectXEngine::GetLineRenderer()->SetLineInstances(this, positions);
+	LineInstanceRenderer::GetInstance()->SetLineInstances(this, positions);
 }
 
 void Line3d::SetColor(const Vector3& color)

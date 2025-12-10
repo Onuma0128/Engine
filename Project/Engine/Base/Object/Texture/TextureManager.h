@@ -22,8 +22,6 @@ private:
 	// シングルトンインスタンス
 	static std::unique_ptr<TextureManager> instance_;
 
-private:
-
 	// テクスチャ一枚分のデータ
 	struct TextureData {
 		DirectX::TexMetadata metadata;

@@ -1,24 +1,25 @@
 #include "Collider.h"
 
 #include "DirectXEngine.h"
+#include "CollisionManager.h"
 
 #include "Line3d.h"
 
 Collider::~Collider()
 {
-	DirectXEngine::GetCollisionMgr()->RemoveCollider(this);
+	CollisionManager::GetInstance()->RemoveCollider(this);
 	if (line_ == nullptr) { return; }
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
 void Collider::AddCollider()
 {
-	DirectXEngine::GetCollisionMgr()->AddCollider(this);
+	CollisionManager::GetInstance()->AddCollider(this);
 }
 
 void Collider::RemoveCollider()
 {
-	DirectXEngine::GetCollisionMgr()->RemoveCollider(this);
+	CollisionManager::GetInstance()->RemoveCollider(this);
 	if (line_ == nullptr) { return; }
 	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }

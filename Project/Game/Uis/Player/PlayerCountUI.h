@@ -16,7 +16,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="position"></param>
-	void Init(const Vector2& position);
+	void Init(const Vector2& position, bool isNoiseTexture = false);
 
 	/// <summary>
 	/// 更新
@@ -42,6 +42,7 @@ public:
 	void SetPosition(const Vector2& position) { transform_.position = position; }
 
 private:
+
 };
 
 /// <summary>
@@ -54,13 +55,18 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Init();
+	void Init(bool isNoiseTexture = false);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
 	/// <param name="killCount"></param>
 	void Update(const uint32_t killCount);
+
+	/// <summary>
+	/// 数字のモチぷにスケール
+	/// </summary>
+	void MochiPuniScale(const uint32_t killCount);
 
 	/// <summary>
 	/// 描画
@@ -91,6 +97,14 @@ public:
 	/// <param name="alpha"></param>
 	void SetAlpha(const float alpha);
 
+	/// <summary>
+	/// ダイソルブのパラメータを設定する
+	/// </summary>
+	/// <param name="threshold"></param>
+	/// <param name="edgeWidth"></param>
+	/// <param name="edgeColor"></param>
+	void SetDissolvePrames(const float threshold, const float edgeWidth, const Vector3& edgeColor);
+
 private:
 
 	// 数字のSprite
@@ -98,6 +112,10 @@ private:
 
 	// 間隔
 	float interval_;
+
+	// 前の数字
+	uint32_t prevNumber_;
+	float mochiPuniTime_ = 0.0f;
 
 };
 

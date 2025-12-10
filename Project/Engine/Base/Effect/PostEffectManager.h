@@ -4,6 +4,7 @@
 #include "wrl.h"
 
 #include <stdint.h>
+#include <memory>
 #include <vector>
 #include <unordered_map>
 
@@ -16,7 +17,20 @@ class PipelineState;
 
 class PostEffectManager
 {
+private:
+
+    // シングルトンインスタンス
+    static std::unique_ptr<PostEffectManager> instance_;
+
 public:
+
+    PostEffectManager() = default;
+    ~PostEffectManager() = default;
+    PostEffectManager(PostEffectManager&) = delete;
+    PostEffectManager& operator=(PostEffectManager&) = delete;
+
+    // シングルトンインスタンスの取得
+    static PostEffectManager* GetInstance();
 
     /// <summary>
     /// 終了処理

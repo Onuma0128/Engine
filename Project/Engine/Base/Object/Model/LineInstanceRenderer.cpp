@@ -8,6 +8,16 @@
 #include "Camera.h"
 #include "CameraManager.h"
 
+std::unique_ptr<LineInstanceRenderer> LineInstanceRenderer::instance_ = nullptr;
+
+LineInstanceRenderer* LineInstanceRenderer::GetInstance()
+{
+    if (instance_ == nullptr) {
+        instance_ = std::make_unique<LineInstanceRenderer>();
+    }
+    return instance_.get();
+}
+
 void LineInstanceRenderer::Initialize(uint32_t capacity)
 {
     base_ = std::make_unique<Line3dBase>();
@@ -152,13 +162,14 @@ void LineInstanceRenderer::SetMaterial(Line3d* owner, const Material& material)
     materialDatas_[id] = material;
 }
 
-void LineInstanceRenderer::Finalize()
+void LineInstanceRenderer::Finalize(bool instanceDelete)
 {
     entries_.clear();
     merged_.clear();
     nextLineID_ = 0;
     totalInstances_ = 0;
     mergedDirty_ = true;
+    if (instanceDelete) { instance_ = nullptr; }
 }
 
 void LineInstanceRenderer::Update()
