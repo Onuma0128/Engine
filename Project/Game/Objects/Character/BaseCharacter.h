@@ -9,6 +9,11 @@ class BaseCharacter : public Animation, public Collider
 public:
 
 	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	virtual ~BaseCharacter() = default;
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	virtual void Initialize() = 0;
@@ -22,17 +27,6 @@ public:
 	/// 描画
 	/// </summary>
 	virtual void Draw() = 0;
-
-	/// <summary>
-	/// ローダーを設定
-	/// </summary>
-	/// <param name="loader"></param>
-	void SetLoader(SceneJsonLoader* loader) { loader_ = loader; }
-	
-protected:
-
-	// ローダーのポインタ
-	SceneJsonLoader* loader_ = nullptr;
 
 };
 

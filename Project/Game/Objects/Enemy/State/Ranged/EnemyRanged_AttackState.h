@@ -42,11 +42,6 @@ private:
 	/// </summary>
 	void Attack();
 
-	/// <summary>
-	/// 視線を合わせる
-	/// </summary>
-	void LookOn();
-
 private:
 
 	float chengeStateTime_ = 0.0f;

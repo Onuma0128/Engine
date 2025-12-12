@@ -186,7 +186,7 @@ void PlayerMoveState::SomeAction()
 			(input->TriggerKey(DIK_LSHIFT) && player_->GetIsPlayingMouse())) {
 			player_->GetEffect()->OnceAvoidEffect();
 			player_->GetReversePlay() = false;
-			player_->ChengeState(std::make_unique<PlayerAvoidState>(player_));
+			player_->ChangeState(std::make_unique<PlayerAvoidState>(player_));
 			return;
 		}
 	}
@@ -197,7 +197,7 @@ void PlayerMoveState::SomeAction()
 		!player_->GetEffect()->GetIsSpecialMove()) {
 		if (player_->GetShot()->GetChargeCount() > static_cast<uint32_t>(player_->GetItem()->GetBulletData().maxChargeCount_sp)) {
 			player_->GetEffect()->SetIsSpecialMove(true);
-			player_->ChengeState(std::make_unique<PlayerSpecialMoveState>(player_));
+			player_->ChangeState(std::make_unique<PlayerSpecialMoveState>(player_));
 			player_->GetShot()->ResetChargeCount();
 			return;
 		}

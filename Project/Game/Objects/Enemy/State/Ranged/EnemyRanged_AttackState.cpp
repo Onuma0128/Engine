@@ -45,7 +45,7 @@ void EnemyRanged_AttackState::Update()
 			time += data.tempData.attackRecoveryTime;
 			enemy_->GetEffect()->SetBulletPredictionEffect(false);
 			if (time < chengeStateTime_) {
-				enemy_->ChengeState(std::make_unique<EnemyMoveState>(enemy_));
+				enemy_->ChangeState(std::make_unique<EnemyMoveState>(enemy_));
 				return;
 			}
 		}
@@ -64,8 +64,4 @@ void EnemyRanged_AttackState::Attack()
 	}
 	isAttack_ = true;
 	enemy_->GetEffect()->OnceBulletEffect(enemy_->GetTransform());
-}
-
-void EnemyRanged_AttackState::LookOn()
-{
 }

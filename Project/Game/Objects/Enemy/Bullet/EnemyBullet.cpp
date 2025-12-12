@@ -2,7 +2,8 @@
 
 #include "DeltaTimer.h"
 
-#include "objects/enemy/adjustItem/EnemyAdjustItem.h"
+#include "Collision/CollisionFilter.h"
+#include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
 
 void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 {
@@ -69,9 +70,7 @@ void EnemyBullet::OnCollisionEnter(Collider* other)
 	const auto& name = other->GetColliderName();
 
 	// 当たったらな消す
-	if (name == "Player" || name == "DeadTree" ||
-		name == "Building" || name == "fence" || name == "Bush" ||
-		name == "StoneWall" || name == "ShortStoneWall") {
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		IsCollision();
 	}
 }

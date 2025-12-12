@@ -45,7 +45,7 @@ void EnemyMelee_AttackState::Update()
 			time += data.tempData.attackRecoveryTime;
 			weapon->SetIsActive(false);
 			if (time < chengeStateTime_) {
-				enemy_->ChengeState(std::make_unique<EnemyMoveState>(enemy_));
+				enemy_->ChangeState(std::make_unique<EnemyMoveState>(enemy_));
 				return;
 			} else {
 				if (!chengeAniamtion_) {

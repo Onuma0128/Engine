@@ -51,7 +51,7 @@ void PlayerSpecialMoveState::Update()
 		if (t <= 0.0f) {
 			player_->GetReticle()->GetTransform().size = Vector2{ 0.0f,0.0f };
 			player_->GetReticle()->GetRenderOptions().enabled = false;
-			player_->ChengeState(std::make_unique<PlayerMoveState>(player_));
+			player_->ChangeState(std::make_unique<PlayerMoveState>(player_));
 			return;
 		}
 	}

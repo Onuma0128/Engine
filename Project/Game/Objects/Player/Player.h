@@ -46,7 +46,7 @@ public:
 	/// ステートを変える
 	/// </summary>
 	/// <param name="newState"></新しいステートを入れる>
-	void ChengeState(std::unique_ptr<PlayerBaseState> newState);
+	void ChangeState(std::unique_ptr<PlayerBaseState> newState);
 
 	/// <summary>
 	/// 当たり判定
@@ -62,6 +62,7 @@ public:
 	PlayerEffect* GetEffect()const { return effect_.get(); }
 	PlayerReticle* GetReticle()const { return reticle_.get(); }
 	PlayerAdjustItem* GetItem() const { return items_.get(); }
+	void SetLoader(SceneJsonLoader* loader) { loader_ = loader; }
 
 	bool GetIsAlive()const { return isAlive_; }
 	bool GetIsPlayingMouse()const { return isPlayingMouse_; }
@@ -84,6 +85,8 @@ private:
 	std::unique_ptr<PlayerReticle> reticle_ = nullptr;
 	// 調整項目
 	std::unique_ptr<PlayerAdjustItem> items_;
+	// ローダーのポインタ
+	SceneJsonLoader* loader_ = nullptr;
 
 	// 今生きているか
 	bool isAlive_ = true;

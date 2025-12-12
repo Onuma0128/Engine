@@ -148,10 +148,10 @@ const float EnemyMoveState::GetTypeAttackCoolTime()
 void EnemyMoveState::TypeChengeAttackState()
 {
 	switch (enemy_->GetType()) {
-	case EnemyType::kMelee:			enemy_->ChengeState(std::make_unique<EnemyMelee_AttackState>(enemy_)); break;
-	case EnemyType::kRanged:		enemy_->ChengeState(std::make_unique<EnemyRanged_AttackState>(enemy_)); break;
-	case EnemyType::kShieldBearer:	enemy_->ChengeState(std::make_unique<EnemyShieldBearer_AttackState>(enemy_)); break;
-	case EnemyType::kRangedElite:	enemy_->ChengeState(std::make_unique<EnemyRangedElite_AttackState>(enemy_)); break;
+	case EnemyType::kMelee:			enemy_->ChangeState(std::make_unique<EnemyMelee_AttackState>(enemy_)); break;
+	case EnemyType::kRanged:		enemy_->ChangeState(std::make_unique<EnemyRanged_AttackState>(enemy_)); break;
+	case EnemyType::kShieldBearer:	enemy_->ChangeState(std::make_unique<EnemyShieldBearer_AttackState>(enemy_)); break;
+	case EnemyType::kRangedElite:	enemy_->ChangeState(std::make_unique<EnemyRangedElite_AttackState>(enemy_)); break;
 	default:break;
 	}
 }

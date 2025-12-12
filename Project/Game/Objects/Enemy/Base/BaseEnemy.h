@@ -76,7 +76,7 @@ public:
 	/// ステートを変える
 	/// </summary>
 	/// <param name="newState"></新しいステートを入れる>
-	void ChengeState(std::unique_ptr<EnemyBaseState> newState);
+	void ChangeState(std::unique_ptr<EnemyBaseState> newState);
 
 	/// <summary>
 	/// 死亡時呼び出し

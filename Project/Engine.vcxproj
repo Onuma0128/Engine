@@ -155,6 +155,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Collision\CollisionFilter.cpp" />
     <ClCompile Include="Game\Objects\Character\BaseCharacter.cpp" />
     <ClCompile Include="Engine\2D\BaseUI.cpp" />
     <ClCompile Include="Engine\3D\Animation\Play\PlayAnimation.cpp" />
@@ -312,6 +313,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\ObjectShadowMapDepthRootSignature.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\OutLineMaskRootSignature.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\SpriteDissolveRootSignature.h" />
+    <ClInclude Include="Game\Collision\CollisionFilter.h" />
     <ClInclude Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.h" />
     <ClInclude Include="Game\Uis\GameSceneUIs\GameSceneUIs.h" />
     <ClInclude Include="Game\Objects\Enemy\Ray\EnemyRay.h" />

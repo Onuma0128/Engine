@@ -3,6 +3,7 @@
 #include "DeltaTimer.h"
 #include "Input.h"
 
+#include "Collision/CollisionFilter.h"
 #include "Objects/Player/AdjustItem/PlayerAdjustItem.h"
 #include "Objects/Player/Bullet/PlayerShot.h"
 
@@ -81,9 +82,7 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	const auto& name = other->GetColliderName();
 
 	// 敵と当たったらなエフェクトを出す
-	if (name == "EnemyShield" || name == "DeadTree" ||
-		name == "Building" || name == "fence" || name == "Bush" ||
-		name == "StoneWall" || name == "ShortStoneWall") {
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		IsCollision();
 		effect_->OnceBulletDeleteEffect(transform_);
 		transform_.translation_.y = -2.0f;

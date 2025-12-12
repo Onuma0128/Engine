@@ -16,7 +16,7 @@ void BaseEnemy::Initialize()
 	ray_->Init();
 	
 	// ステートを初期化
-	ChengeState(std::make_unique<EnemyMoveState>(this));
+	ChangeState(std::make_unique<EnemyMoveState>(this));
 
 	// エフェクトの初期化
 	effect_ = std::make_unique<EnemyEffect>();
@@ -95,7 +95,7 @@ void BaseEnemy::TransformUpdate()
 	}
 }
 
-void BaseEnemy::ChengeState(std::unique_ptr<EnemyBaseState> newState)
+void BaseEnemy::ChangeState(std::unique_ptr<EnemyBaseState> newState)
 {
 	if (state_ != nullptr) {
 		state_->Finalize();
@@ -166,7 +166,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		transform.translation_ = transform_.translation_ - (velocity_ * 0.5f);
 		effect_->OnceBulletHitExplosionEffect(transform);
 		// 死亡時のステートに遷移
-		ChengeState(std::make_unique<EnemyDeadState>(this));
+		ChangeState(std::make_unique<EnemyDeadState>(this));
 	}
 
 	// プレイヤーのレティクルと当たっているなら

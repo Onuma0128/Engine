@@ -2,6 +2,8 @@
 
 #include "Collision3D.h"
 
+#include "Collision/CollisionFilter.h"
+
 void EnemyRay::Init()
 {
 	// コライダーを設定
@@ -54,8 +56,7 @@ void EnemyRay::OnCollisionStay(Collider* other)
 	const auto type = other->GetMyColliderType();
 
 	RaycastHit hit{};
-	if (name == "Building" || name == "DeadTree" || name == "fence" ||
-		name == "Bush" || name == "StoneWall" || name == "ShortStoneWall") {
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		if (type == ColliderType::kOBB) {
 			if (Collision3D::OBBSegment(other, this, &hit)) {
 				float length = (hit.point - start_).Length();

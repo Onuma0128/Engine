@@ -68,7 +68,7 @@ void PlayerAvoidState::Update()
 		position.y = 0.0f;
 		player_->SetTransformTranslation(position);
 		player_->SetTransformRotation(player_->GetShot()->GetRightStickQua());
-		player_->ChengeState(std::make_unique<PlayerMoveState>(player_));
+		player_->ChangeState(std::make_unique<PlayerMoveState>(player_));
 	} else {
 		if (!chengeAnimation_) {
 			if (player_->PlayByName("Duck", 0.0f)) {

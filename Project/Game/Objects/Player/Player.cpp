@@ -3,8 +3,9 @@
 #include "imgui.h"
 
 #include "DeltaTimer.h"
-#include "objects/player/state/PlayerMoveState.h"
-#include "objects/player/state/PlayerDeadState.h"
+#include "Collision/CollisionFilter.h"
+#include "Objects/Player/State/PlayerMoveState.h"
+#include "Objects/Player/State/PlayerDeadState.h"
 
 void Player::Initialize()
 {
@@ -26,8 +27,8 @@ void Player::Initialize()
 	Animation::PlayByName("Idle_Gun", 0.0f);
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
+	Animation::SetTransform(player.transform);
 
-	transform_ = player.transform;
 	if (player.collider.active) {
 		Collider::AddCollider();
 		Collider::colliderName_ = player.tag;
@@ -43,7 +44,7 @@ void Player::Initialize()
 	}
 
 	// プレイヤーの初期化
-	ChengeState(std::make_unique<PlayerMoveState>(this));
+	ChangeState(std::make_unique<PlayerMoveState>(this));
 
 	// エフェクトの初期化
 	effect_ = std::make_unique<PlayerEffect>();
@@ -96,7 +97,7 @@ void Player::Draw()
 	shot_->DrawUI();
 }
 
-void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)
+void Player::ChangeState(std::unique_ptr<PlayerBaseState> newState)
 {
 	if (state_ != nullptr) {
 		state_->Finalize();
@@ -107,13 +108,10 @@ void Player::ChengeState(std::unique_ptr<PlayerBaseState> newState)
 
 void Player::OnCollisionEnter(Collider* other)
 {
-	if (other->GetColliderName() == "EnemyMelee" ||
-		other->GetColliderName() == "EnemyRanged" ||
-		other->GetColliderName() == "EnemyShieldBearer" ||
-		other->GetColliderName() == "EnemyRangedElite") {
+	if (CollisionFilter::CheckColliderNameEnemy(other->GetColliderName())) {
 		if (!isAvoid_ && !items_->GetPlayerData().isInvincible && isAlive_) {
 			isAlive_ = false;
-			ChengeState(std::make_unique<PlayerDeadState>(this));
+			ChangeState(std::make_unique<PlayerDeadState>(this));
 		}
 	}
 }
@@ -121,12 +119,7 @@ void Player::OnCollisionEnter(Collider* other)
 void Player::OnCollisionStay(Collider* other)
 {
 	// 建物系の押し出し判定(OBB,Sphere)、木の押し出し判定(OBB)
-	if (other->GetColliderName() == "Building" || 
-		other->GetColliderName() == "DeadTree" ||
-		other->GetColliderName() == "fence" ||
-		other->GetColliderName() == "Bush" ||
-		other->GetColliderName() == "ShortStoneWall" ||
-		other->GetColliderName() == "StoneWall") {
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		isPushMove_ = true;
 		Vector3 push{};
 		if (other->GetMyColliderType() == ColliderType::kOBB) {
@@ -146,12 +139,7 @@ void Player::OnCollisionExit(Collider* other)
 {
 	// 建物系の押し出し判定(OBB,Sphere)
 	// 木の押し出し判定(OBB)
-	if (other->GetColliderName() == "Building" || 
-		other->GetColliderName() == "DeadTree" ||
-		other->GetColliderName() == "fence" ||
-		other->GetColliderName() == "Bush" ||
-		other->GetColliderName() == "ShortStoneWall" ||
-		other->GetColliderName() == "StoneWall") {
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		isPushMove_ = false;
 	}
 }

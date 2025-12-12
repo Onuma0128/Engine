@@ -53,5 +53,5 @@ void RangedEnemy::Reset(const Vector3& position)
 	// Animationの再生を初期化
 	Animation::PlayByName("Run");
 	// ステートを初期化
-	ChengeState(std::make_unique<EnemyMoveState>(this));
+	ChangeState(std::make_unique<EnemyMoveState>(this));
 }
