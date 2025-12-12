@@ -19,12 +19,13 @@ void GamePlayScene::Initialize()
 	// スカイボックスの初期化
 	skyBox_ = std::make_unique<PrimitiveDrawr>();
 	skyBox_->TypeInit(PrimitiveType::kSkybox);
-	skyBox_->GetTransform().scale = { 1024.0f,1024.0f ,1024.0f };
+	skyBox_->GetTransform().scale = Vector3::ExprUnitXYZ * 1024.0f;
 	skyBox_->SetSceneRenderer();
 
 	// プレイヤーの初期化
 	player_ = std::make_unique<Player>();
-	player_->Init(loader);
+	player_->SetLoader(&loader);
+	player_->Initialize();
 
 	// ゲームカメラの初期化
 	gameCamera_ = std::make_unique<GameCamera>();

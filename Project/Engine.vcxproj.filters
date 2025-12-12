@@ -1207,6 +1207,7 @@
     <ClCompile Include="Game\Uis\Select\AdjustItem\SelectAdjustItem.cpp" />
     <ClCompile Include="Engine\Base\Object\ShadowMap\ShadowMap.cpp" />
     <ClCompile Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.cpp" />
+    <ClCompile Include="Game\Objects\Character\BaseCharacter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Uis\GameSceneUIs\GameSceneUIs.h" />
@@ -1219,6 +1220,7 @@
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\AnimationShadowMapDepthRootSignature.h" />
     <ClInclude Include="Game\Objects\FieldObject\AdjustItem\FieldObjectAdjustItem.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\SpriteDissolveRootSignature.h" />
+    <ClInclude Include="Game\Objects\Character\BaseCharacter.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\SpriteDissolve.PS.hlsl" />

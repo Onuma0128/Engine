@@ -6,7 +6,7 @@
 #include "objects/player/state/PlayerMoveState.h"
 #include "objects/player/state/PlayerDeadState.h"
 
-void Player::Init(SceneJsonLoader loader)
+void Player::Initialize()
 {
 	// 全ての調整項目をロード
 	items_ = std::make_unique<PlayerAdjustItem>();
@@ -14,7 +14,7 @@ void Player::Init(SceneJsonLoader loader)
 
 	// シーンのオブジェクトをロード、初期化
 	SceneObject player;
-	for (auto it = loader.GetData().begin(); it != loader.GetData().end();) {
+	for (auto it = loader_->GetData().begin(); it != loader_->GetData().end();) {
 		if (it->second.tag == "Player") {
 			player = it->second;
 			break;
@@ -30,7 +30,7 @@ void Player::Init(SceneJsonLoader loader)
 	transform_ = player.transform;
 	if (player.collider.active) {
 		Collider::AddCollider();
-		Collider::colliderName_ = "Player";
+		Collider::colliderName_ = player.tag;
 		Collider::myType_ = player.collider.type;
 		Collider::offsetPosition_ = player.collider.center;
 		Collider::size_ = player.collider.size;

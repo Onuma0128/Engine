@@ -3,12 +3,11 @@
 #include <array>
 #include <vector>
 
-#include "Animation.h"
-#include "Collider.h"
 #include "Collision3D.h"
 #include "SceneJsonLoader.h"
 #include "JsonFunction.h"
 
+#include "Objects/Character/BaseCharacter.h"
 #include "objects/player/state/PlayerBaseState.h"
 #include "objects/player/effect/PlayerEffect.h"
 #include "objects/player/reticle/PlayerReticle.h"
@@ -18,30 +17,30 @@
 /// <summary>
 /// プレイヤー
 /// </summary>
-class Player : public Animation,Collider
+class Player : public BaseCharacter
 {
 public:
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	/// <param name="object"></Jsonの保存データを取得する>
-	void Init(SceneJsonLoader loader);
+	void Initialize() override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
-
-	/// <summary>
-	/// エフェクト描画
-	/// </summary>
-	void EffectDraw();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw() override;
+	/// <summary>
+
+	/// </summary>
+	/// エフェクト描画
+	/// </summary>
+	void EffectDraw();
 
 	/// <summary>
 	/// ステートを変える
@@ -66,11 +65,12 @@ public:
 
 	bool GetIsAlive()const { return isAlive_; }
 	bool GetIsPlayingMouse()const { return isPlayingMouse_; }
+	float GetAvoidCoolTimer()const { return avoidCoolTimer_; }
+	bool GetIsPushMove()const { return isPushMove_; }
+
 	void SetIsPlayingMouse(bool flag) { isPlayingMouse_ = flag; }
 	void SetIsAvoid(bool flag) { isAvoid_ = flag; }
-	float GetAvoidCoolTimer()const { return avoidCoolTimer_; }
 	void SetAvoidCoolTimer(float time) { avoidCoolTimer_ = time; }
-	bool GetIsPushMove()const { return isPushMove_; }
 
 private:
 

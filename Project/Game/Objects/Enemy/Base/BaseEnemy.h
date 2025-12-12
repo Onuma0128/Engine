@@ -3,8 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "Animation.h"
-#include "Collider.h"
+#include "Objects/Character/BaseCharacter.h"
 
 #include "objects/enemy/type/EnemyType.h"
 #include "objects/enemy/state/EnemyBaseState.h"
@@ -37,19 +36,19 @@ class EnemyWeaponBase;
 /// <summary>
 /// 敵の基底クラス
 /// </summary>
-class BaseEnemy : public Animation, public Collider
+class BaseEnemy : public BaseCharacter
 {
 public:
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	virtual void Initialize();
+	virtual void Initialize() override;
 
 	/// <summary>
 	/// 更新
 	/// </summary>
-	virtual void Update();
+	virtual void Update() override;
 
 	/// <summary>
 	/// 描画をしていない時の更新
@@ -59,7 +58,7 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	virtual void Draw() = 0;
+	virtual void Draw() override = 0;
 
 private:
 

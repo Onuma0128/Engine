@@ -155,6 +155,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\Character\BaseCharacter.cpp" />
     <ClCompile Include="Engine\2D\BaseUI.cpp" />
     <ClCompile Include="Engine\3D\Animation\Play\PlayAnimation.cpp" />
     <ClCompile Include="Engine\3D\Animation\DebugBone\DebugBone.cpp" />
@@ -301,6 +302,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Object\ShadowMap\ShadowMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\Character\BaseCharacter.h" />
     <ClInclude Include="Engine\2D\BaseUI.h" />
     <ClInclude Include="Engine\3D\Animation\Play\PlayAnimation.h" />
     <ClInclude Include="Engine\3D\Animation\DebugBone\DebugBone.h" />
