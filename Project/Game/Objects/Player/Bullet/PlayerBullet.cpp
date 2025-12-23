@@ -82,7 +82,8 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 	const auto& name = other->GetColliderName();
 
 	// 敵と当たったらなエフェクトを出す
-	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) || 
+		other->GetColliderName() == "EnemyShield") {
 		IsCollision();
 		effect_->OnceBulletDeleteEffect(transform_);
 		transform_.translation_.y = -2.0f;

@@ -275,16 +275,22 @@ void BaseUI::Save()
 
 void BaseUI::FadeIn()
 {
+	if (!isPlayAnimation_) {
+		playAnimationTimer_ = 0.0f;
+		playAnimationTimer_ -= parameters_.fadeInInterval;
+	}
 	isPlayAnimation_ = true;
 	reversePlayBack_ = false;
-	playAnimationTimer_ -= parameters_.fadeInInterval;
 }
 
 void BaseUI::FadeOut()
 {
+	if (!isPlayAnimation_) {
+		playAnimationTimer_ = 1.0f;
+		playAnimationTimer_ += parameters_.fadeOutInterval;
+	}
 	isPlayAnimation_ = true;
 	reversePlayBack_ = true;
-	playAnimationTimer_ += parameters_.fadeOutInterval;
 }
 
 void BaseUI::Blinking()
@@ -319,7 +325,7 @@ void BaseUI::UI_Animation()
 			playAnimationTimer_ += (DeltaTimer::GetDeltaTime() / parameters_.animationTime);
 		}
 		float t = std::clamp(playAnimationTimer_, 0.0f, 1.0f);
-		//playAnimationTimer_ = t;
+
 		// 逆再生なら
 		if (reversePlayBack_) {
 			t = Easing::Apply(Easing::FromInt(parameters_.outEasingType), t);

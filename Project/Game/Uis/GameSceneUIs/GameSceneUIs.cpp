@@ -33,6 +33,7 @@ void GameSceneUIs::Update()
 
 	selectSystem_->Update();
 	
+	sceneFade_->DrawImGui();
 	sceneFade_->Update();
 }
 

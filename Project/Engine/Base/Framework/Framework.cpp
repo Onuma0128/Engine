@@ -63,6 +63,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "noiseTexture.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "gradationTexture.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture", "selectBackGround.png");
+	TextureManager::GetInstance()->LoadTexture("resources/texture", "muscleTexture.png");
 
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("resources/texture/player", "bulletUI.png");

@@ -1,6 +1,6 @@
 {
     "Texture": "white1x1.png",
-    "NoiseTexture": "noiseTexture.png",
+    "NoiseTexture": "muscleTexture.png",
     "EdgeWidth": 0.10000000149011612,
     "NoiseColor": {
         "x": 1.0,

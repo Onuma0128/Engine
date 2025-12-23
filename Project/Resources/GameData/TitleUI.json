@@ -25,7 +25,7 @@
         "y": 460.0
     },
     "InEasingType": 23,
-    "OutEasingType": 24,
+    "OutEasingType": 23,
     "Color": {
         "x": 1.0,
         "y": 1.0,
@@ -38,7 +38,7 @@
         "z": 1.0,
         "w": 1.0
     },
-    "FadeInInterval": 0.5,
+    "FadeInInterval": 0.800000011920929,
     "FadeOutInterval": 0.0,
     "NoiseTexture": "noiseTexture.png",
     "EdgeWidth": 0.10000000149011612,
