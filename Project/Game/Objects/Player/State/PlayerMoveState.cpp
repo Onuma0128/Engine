@@ -172,6 +172,7 @@ void PlayerMoveState::SomeAction()
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_LEFT_SHOULDER) ||
 		(input->TriggerMouseButton(1) && player_->GetIsPlayingMouse())) {
 		isReloadBullet_ = true;
+		player_->GetShot()->ReloadBullet();
 	}
 	// リロードをする関数
 	ReloadBullet();

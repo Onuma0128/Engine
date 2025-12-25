@@ -18,6 +18,15 @@ void PlayAnimation::Init(const ModelData& modelData)
 
 void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 {
+	requestCooldown_ = std::max(0.0f, requestCooldown_ - DeltaTimer::GetDeltaTime());
+
+	if (requestCooldown_ <= 0.0f && pendingIx_.has_value()) {
+		// ここで反映（fadeTime は固定でもいいし保持してもOK）
+		Play(*pendingIx_, 0.15f);
+		pendingIx_.reset();
+		requestCooldown_ = minRequestInterval_;
+	}
+
 	if (!blend_.active) {
 
 		const AnimationData& clip = animationDatas_[flags_.currentAnim];
@@ -125,8 +134,14 @@ bool PlayAnimation::PlayByName(const std::string& clipName, float fadeTime)
 	auto it = nameToIx_.find(clipName);
 	if (it == nameToIx_.end()) { return false; }
 
-	// ここで blend_.active を見て弾かないようにする
+	// クールダウン中は捨てずに予約
+	if (requestCooldown_ > 0.0f) {
+		pendingIx_ = it->second;
+		return true;
+	}
+
 	Play(it->second, fadeTime);
+	requestCooldown_ = minRequestInterval_;
 	return true;
 }
 

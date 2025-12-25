@@ -1,0 +1,59 @@
+#pragma once
+
+#include <memory>
+#include <vector>
+
+#include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
+#include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
+
+/// <summary>
+/// プレイヤーの仲間を管理するクラス
+/// </summary>
+class MuscleCompanionManager
+{
+public:
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void Initialize();
+
+	/// <summary>
+	/// 更新
+	/// </summary>
+	void Update();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
+	void Draw();
+
+
+	// セッター
+	void SetPlayer(Player* player) { player_ = player; }
+	void SetMapData(MapCollision* map) { mapData_ = map; }
+
+private:
+
+	/// <summary>
+	/// 仲間の集合要求
+	/// </summary>
+	void GatherCompanions();
+
+private:
+
+	// プレイヤーのポインタ
+	Player* player_ = nullptr;
+	// マップデータのポインタ
+	MapCollision* mapData_ = nullptr;
+
+	// 仲間の調整項目
+	std::unique_ptr<CompanionAdjustItem> items_ = nullptr;
+
+	// プレイヤーの仲間達
+	std::vector<std::unique_ptr<MuscleCompanion>> companions_;
+
+
+
+};
+

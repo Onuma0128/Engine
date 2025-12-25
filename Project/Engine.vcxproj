@@ -155,6 +155,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionAttackState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionIdleState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\AdjustItem\CompanionAdjustItem.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionMoveState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionBaseState.cpp" />
     <ClCompile Include="Game\Collision\CollisionFilter.cpp" />
     <ClCompile Include="Game\Objects\Character\BaseCharacter.cpp" />
     <ClCompile Include="Engine\2D\BaseUI.cpp" />
@@ -301,8 +306,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Uis\Select\SelectUI.cpp" />
     <ClCompile Include="Game\Uis\Select\AdjustItem\SelectAdjustItem.cpp" />
     <ClCompile Include="Engine\Base\Object\ShadowMap\ShadowMap.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionAttackState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionIdleState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\AdjustItem\CompanionAdjustItem.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionMoveState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionBaseState.h" />
     <ClInclude Include="Game\Objects\Character\BaseCharacter.h" />
     <ClInclude Include="Engine\2D\BaseUI.h" />
     <ClInclude Include="Engine\3D\Animation\Play\PlayAnimation.h" />
@@ -471,6 +483,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Uis\Select\SelectUI.h" />
     <ClInclude Include="Game\Uis\Select\AdjustItem\SelectAdjustItem.h" />
     <ClInclude Include="Engine\Base\Object\ShadowMap\ShadowMap.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli">

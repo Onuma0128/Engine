@@ -101,6 +101,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("resources/model/fieldObject", "StoneWall.obj");
 
 	ModelManager::GetInstance()->LoadModel("resources/model/player", "Player.gltf");
+	ModelManager::GetInstance()->LoadModel("resources/model/muscleCompanion", "muscleCompanion.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/model/enemy/shield", "Shield_Heater.obj");
 	ModelManager::GetInstance()->LoadModel("resources/model/enemy", "Zombie_Basic.gltf");
 	ModelManager::GetInstance()->LoadModel("resources/model/enemy", "Characters_Shaun.gltf");

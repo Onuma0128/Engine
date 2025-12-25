@@ -115,7 +115,32 @@ public:
 	/// <summary>
 	/// Rayが当たったかどうかをリセットする
 	/// </summary>
-	void ResetRayHit() { isRayHit_ = false; rayHitPosition_ = Vector3::ExprZero; }
+	void ResetRayHit() { 
+		if (isRayHit_) { targetPosition_ = rayHitPosition_; }
+		else { targetPosition_ = Vector3::ExprZero; }
+		isRayHit_ = false; 
+		rayHitPosition_ = Vector3::ExprZero;
+	}
+
+	/// <summary>
+	/// 攻撃をしたかどうかを設定する
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetIsShot(const bool flag) { isShot_ = flag; }
+	const bool GetIsShot()const { return isShot_; }
+
+	/// <summary>
+	/// 集合要求を設定する
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetGatherRequested(const bool flag) { isGatherRequested_ = flag; }
+	bool GetGatherRequested()const { return isGatherRequested_; }
+
+	/// <summary>
+	/// Rayが当たった座標を取得する
+	/// </summary>
+	/// <returns></returns>
+	const Vector3& GetTargetPosition()const { return targetPosition_; }
 
 private:
 
@@ -133,6 +158,12 @@ private:
 private:
 
 	Player* player_ = nullptr;
+
+	// 攻撃したかどうか
+	bool isShot_ = false;
+	Vector3 targetPosition_{};
+	// 集合要求したかどうか
+	bool isGatherRequested_ = false;
 
 	// Rayのスプライト
 	std::unique_ptr<PlayerRayReticle> rayReticle_ = nullptr;

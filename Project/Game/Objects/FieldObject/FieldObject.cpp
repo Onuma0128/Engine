@@ -27,7 +27,7 @@ void FieldObject::Init(SceneObject object)
 		Collider::size_ = object.collider.size;
 		Collider::radius_ = object.collider.radius;
 		Collider::targetColliderName_ = {
-			"Player","PlayerBullet","PlayerBulletSpecial",
+			"Player","PlayerBullet","PlayerBulletSpecial","MuscleCompanion",
 			"EnemyRanged","EnemyRangedElite","EnemyRay","PlayerShotRay"
 		};
 		Collider::DrawCollider();

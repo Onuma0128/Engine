@@ -1,5 +1,7 @@
 #pragma once
 
+#define NOMINMAX
+
 #include <map>
 #include <string>
 #include <vector>
@@ -98,6 +100,10 @@ private:
 	std::unordered_map<std::string, size_t> nameToIx_;
 
 	AnimationBlendState blend_;
+
+	std::optional<size_t> pendingIx_;
+	float requestCooldown_ = 0.0f;
+	float minRequestInterval_ = 0.08f;
 
 	PlayAnimationFlags flags_;
 

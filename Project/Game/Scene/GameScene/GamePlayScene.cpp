@@ -27,6 +27,12 @@ void GamePlayScene::Initialize()
 	player_->SetLoader(&loader);
 	player_->Initialize();
 
+	// 仲間管理クラスの初期化
+	companionManager_ = std::make_unique<MuscleCompanionManager>();
+	companionManager_->SetPlayer(player_.get());
+	companionManager_->SetMapData(mapCollision_.get());
+	companionManager_->Initialize();
+
 	// ゲームカメラの初期化
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
@@ -67,6 +73,9 @@ void GamePlayScene::Update()
 	// プレイヤーの更新
 	player_->Update();
 
+	// 仲間管理クラスの更新
+	companionManager_->Update();
+
 	// 敵スポナーと敵の更新
 	enemySpawnerFactory_->Update();
 
@@ -98,6 +107,8 @@ void GamePlayScene::Update()
 void GamePlayScene::Draw()
 {
 	player_->EffectDraw();
+
+	companionManager_->Draw();
 
 	enemySpawnerFactory_->Draw();
 

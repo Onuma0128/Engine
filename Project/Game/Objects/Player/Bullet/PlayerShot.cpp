@@ -120,17 +120,19 @@ void PlayerShot::DrawUI()
 
 void PlayerShot::ReloadBullet()
 {
-	// 動きが終わっている弾からリロードをする
-	for (auto& bullet : bullets_) {
-		if (!bullet->GetIsActive() && !bullet->GetIsReload()) {
-			WorldTransform transform;
-			transform.rotation_ = rightStickQuaternion_;
-			transform.translation_ = player_->GetTransform().translation_;
-			bullet->Reload(transform, true);
-			Input::GetInstance()->Vibrate(0.3f, 0.6f, 60);
-			break;
-		}
-	}
+	//// 動きが終わっている弾からリロードをする
+	//for (auto& bullet : bullets_) {
+	//	if (!bullet->GetIsActive() && !bullet->GetIsReload()) {
+	//		WorldTransform transform;
+	//		transform.rotation_ = rightStickQuaternion_;
+	//		transform.translation_ = player_->GetTransform().translation_;
+	//		bullet->Reload(transform, true);
+	//		Input::GetInstance()->Vibrate(0.3f, 0.6f, 60);
+	//		break;
+	//	}
+	//}
+
+	isGatherRequested_ = true;
 }
 
 void PlayerShot::AllReloadBullet()
@@ -159,7 +161,7 @@ bool PlayerShot::IsReloadBullet()
 void PlayerShot::AttackBullet()
 {
 	// リロードが終わっていて動いていない弾を発射する
-	for (auto& bullet : bullets_) {
+	/*for (auto& bullet : bullets_) {
 		if (!bullet->GetIsActive() && bullet->GetIsReload()) {
 			WorldTransform transform;
 			transform.rotation_ = rightStickQuaternion_;
@@ -169,7 +171,9 @@ void PlayerShot::AttackBullet()
 			++kHitRate_;
 			break;
 		}
-	}
+	}*/
+
+	isShot_ = true;
 }
 
 void PlayerShot::SpecialAttackBullet()

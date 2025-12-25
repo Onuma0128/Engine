@@ -35,7 +35,7 @@ void BaseEnemy::Initialize()
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
 		"Player","PlayerBullet","PlayerBulletSpecial",
-		"PlayerReticle","Enemy" ,"PlayerShotRay"
+		"PlayerReticle","Enemy" ,"PlayerShotRay","MuscleCompanion"
 	};
 	Collider::DrawCollider();
 
@@ -146,11 +146,13 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 	if (other->GetColliderName() == "PlayerBullet") {
 		gameCamera_->SetShake(2.0f);
 	}
-	if (other->GetColliderName() == "PlayerBulletSpecial") {
+	if (other->GetColliderName() == "PlayerBulletSpecial" ||
+		other->GetColliderName() == "MuscleCompanion") {
 		gameCamera_->SetShake(5.0f);
 		DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
 	}
-	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial") {
+	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial" ||
+		other->GetColliderName() == "MuscleCompanion") {
 		Collider::isActive_ = false;
 		stateParam_.isAlive_ = false;
 		// 敵がノックバックする方向を取得

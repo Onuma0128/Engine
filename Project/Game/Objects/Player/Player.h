@@ -35,7 +35,6 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw() override;
-	/// <summary>
 
 	/// </summary>
 	/// エフェクト描画
@@ -64,6 +63,7 @@ public:
 	PlayerAdjustItem* GetItem() const { return items_.get(); }
 	void SetLoader(SceneJsonLoader* loader) { loader_ = loader; }
 
+	const WorldTransform& GetTransform() const { return transform_; }
 	bool GetIsAlive()const { return isAlive_; }
 	bool GetIsPlayingMouse()const { return isPlayingMouse_; }
 	float GetAvoidCoolTimer()const { return avoidCoolTimer_; }

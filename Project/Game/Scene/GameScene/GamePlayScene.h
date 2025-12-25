@@ -10,13 +10,14 @@
 
 #include "scene/sceneFade/SceneFade.h"
 
-#include "objects/player/Player.h"
-#include "objects/enemy/spawner/EnemySpawnerFactory.h"
-#include "objects/fieldObject/Factory/FieldObjectFactory.h"
+#include "Objects/Player/Player.h"
+#include "Objects/Enemy/Spawner/EnemySpawnerFactory.h"
+#include "Objects/FieldObject/Factory/FieldObjectFactory.h"
+#include "Objects/MuscleCompanion/Manager/MuscleCompanionManager.h"
 
-#include "gameCamera/GameCamera.h"
-#include "searchAlgorithm/collision/MapCollision.h"
-#include "uis/gameSceneUIs/GameSceneUIs.h"
+#include "GameCamera/GameCamera.h"
+#include "SearchAlgorithm/Collision/MapCollision.h"
+#include "Uis/GameSceneUIs/GameSceneUIs.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -51,6 +52,9 @@ private:
 	
 	// プレイヤーの生成
 	std::unique_ptr<Player> player_ = nullptr;
+
+	// プレイヤーの仲間管理クラスを生成
+	std::unique_ptr<MuscleCompanionManager> companionManager_ = nullptr;
 
 	// 敵の生成
 	std::unique_ptr<EnemySpawnerFactory> enemySpawnerFactory_ = nullptr;
