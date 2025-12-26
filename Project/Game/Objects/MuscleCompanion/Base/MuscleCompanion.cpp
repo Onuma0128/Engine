@@ -8,6 +8,7 @@
 
 #include "Objects/MuscleCompanion/State/CompanionIdleState.h"
 #include "Objects/MuscleCompanion/State/CompanionMoveState.h"
+#include "Objects/MuscleCompanion/State/CompanionAttackState.h"
 
 void MuscleCompanion::Initialize()
 {
@@ -26,15 +27,25 @@ void MuscleCompanion::Initialize()
 	Collider::radius_ = transform_.scale_.x;
 	Collider::isActive_ = true;
 	Collider::targetColliderName_ = { 
-		"MuscleCompanion","Building","DeadTree","Enemy",
-		"fence","Bush","StoneWall","ShortStoneWall"
+		"MuscleCompanion","Enemy","EnemyRay","EnemyMelee",
+		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
 	Collider::DrawCollider();
 
 	// ステートの初期化
 	ChangeState(std::make_unique<CompanionMoveState>(this));
 
+	attackCollider_ = std::make_unique<CompanionAttackCollider>();
+	attackCollider_->SetCompanion(this);
+	attackCollider_->Initialize();
+
+	// ダッシュ時の一回目の攻撃フラグの初期化
+	isFirstDashAttack_ = true;
+	// 集合要求フラグの初期化
 	isGatherRequested_ = true;
+	// HPの初期化
+	maxHp_ = items_->GetMainData().maxHP;
+	currentHp_ = maxHp_;
 }
 
 void MuscleCompanion::Update()
@@ -42,8 +53,10 @@ void MuscleCompanion::Update()
 	// ステートの更新
 	state_->Update();
 
-	// 敵コライダーの更新
-	Collider::radius_ = items_->GetMainData().colliderSize;
+
+	// コライダーの更新
+	attackCollider_->Update();
+	Collider::radius_ = items_->GetMainData().colliderSize * dashColliderScale_;
 	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
 	Collider::Update();
 
@@ -58,10 +71,24 @@ void MuscleCompanion::Draw()
 
 void MuscleCompanion::OnCollisionEnter(Collider* other)
 {
-	// 攻撃状態で建物に当たったら
-	if ((CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) ||
-		other->GetColliderName() == "Enemy") && state_->GetState() == CharacterState::Attack) {
-		ChangeState(std::make_unique<CompanionIdleState>(this));
+	// ダッシュ状態で当たったら
+	if (state_->GetState() == CharacterState::Dash) {
+		// 建物に当たったら待機状態へ
+		if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
+			ChangeState(std::make_unique<CompanionIdleState>(this));
+		// 敵に当たったら攻撃状態へ
+		} else if (other->GetColliderName() == "Enemy") {
+			isFirstDashAttack_ = true;
+			Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
+			Quaternion yRotation_ = Quaternion::DirectionToQuaternion(
+				transform_.rotation_, velocity.Normalize(), 1.0f);
+			transform_.rotation_ = yRotation_;
+			ChangeState(std::make_unique<CompanionAttackState>(this));
+		}
+	}
+	// 敵の攻撃に当たったら体力を1減らす
+	if (CollisionFilter::CheckColliderNameEnemy(other->GetColliderName())) {
+		--currentHp_;
 	}
 }
 

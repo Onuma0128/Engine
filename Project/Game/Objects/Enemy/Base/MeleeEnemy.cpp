@@ -2,8 +2,9 @@
 
 #include "DeltaTimer.h"
 
-#include "objects/enemy/state/EnemyMoveState.h"
-#include "objects/enemy/weapon/axe/EnemyAxe.h"
+#include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
+#include "Objects/Enemy/State/EnemyMoveState.h"
+#include "Objects/Enemy/Weapon/Axe/EnemyAxe.h"
 
 void MeleeEnemy::Initialize()
 {
@@ -20,6 +21,10 @@ void MeleeEnemy::Initialize()
 
 	// 基底クラスの初期化
 	BaseEnemy::Initialize();
+
+	// 体力の初期化
+	maxHp_ = items_->GetMeleeData().tempData.maxHp;
+	currentHp_ = maxHp_;
 }
 
 void MeleeEnemy::Update()
@@ -44,6 +49,10 @@ void MeleeEnemy::Dead()
 
 void MeleeEnemy::Reset(const Vector3& position)
 {
+	// 体力を最大値に戻す
+	maxHp_ = items_->GetMeleeData().tempData.maxHp;
+	 currentHp_ = maxHp_;
+
 	// 基底クラスのリセット処理
 	BaseEnemy::Reset(position);
 

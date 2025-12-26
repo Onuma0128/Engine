@@ -7,6 +7,7 @@ class MuscleCompanion;
 enum class CharacterState {
 	Idle,
 	Move,
+	Dash,
 	Attack,
 };
 

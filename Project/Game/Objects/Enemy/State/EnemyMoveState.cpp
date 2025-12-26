@@ -8,14 +8,9 @@
 
 #include "objects/player/Player.h"
 
-#include "objects/enemy/adjustItem/EnemyAdjustItem.h"
-#include "objects/enemy/type/EnemyType.h"
-#include "objects/enemy/ray/EnemyRay.h"
-
-#include "objects/enemy/state/Melee/EnemyMelee_AttackState.h"
-#include "objects/enemy/state/Ranged/EnemyRanged_AttackState.h"
-#include "objects/enemy/state/ShieldBearer/EnemyShieldBearer_AttackState.h"
-#include "objects/enemy/state/RangedElite/EnemyRangedElite_AttackState.h"
+#include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
+#include "Objects/enemy/type/EnemyType.h"
+#include "Objects/enemy/ray/EnemyRay.h"
 
 EnemyMoveState::EnemyMoveState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 
@@ -27,7 +22,7 @@ void EnemyMoveState::Init()
 	isIdleAnima_ = false;
 
 	enemy_->ResetSearch();
-	enemy_->GetEnemyRay()->SetActive(true);
+	//enemy_->GetEnemyRay()->SetActive(true);
 	enemy_->GetEnemyRay()->Reset();
 }
 
@@ -36,7 +31,7 @@ void EnemyMoveState::Finalize()
 	auto& pathFinder = enemy_->GetPathFinder();
 	pathFinder.DebugSpline(false);
 
-	enemy_->GetEnemyRay()->SetActive(false);
+	//enemy_->GetEnemyRay()->SetActive(false);
 }
 
 void EnemyMoveState::Update()
@@ -75,17 +70,15 @@ void EnemyMoveState::Update()
 
 	// 攻撃のクールタイムが0になっているなら攻撃ステートに遷移
 	Vector3 playerPos = enemy_->GetPlayer()->GetTransform().translation_;
+	if (enemy_->GetHitCollider()) { playerPos = enemy_->GetHitCollider()->GetCenterPosition(); }
 	Vector3 enemyPos = enemy_->GetTransform().translation_ + (velocity * speed * DeltaTimer::GetDeltaTime());
 	const float dist = Vector3::Distance(enemyPos, playerPos);
 	// 入り判定、出判定
-	const float attackIn = GetTypeAttackDistance();
+	const float attackIn = enemy_->GetTypeAttackDistance();
 	const float margin = mainData.margin;
 	const float attackOut = attackIn + margin;
 	if (!inAttackRange_ && dist <= attackIn)  inAttackRange_ = true;
 	if (inAttackRange_ && dist >= attackOut) inAttackRange_ = false;
-
-	Vector3 direction = Vector3::ExprUnitZ.Transform(Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_));
-	enemy_->GetEnemyRay()->Update(enemyPos + mainData.rayOffset, direction * attackIn);
 
 	if (inAttackRange_) {
 		if (enemy_->GetEnemyRay()->GetLooking()) {
@@ -96,7 +89,7 @@ void EnemyMoveState::Update()
 			MoveAction(velocity, speed);
 		}
 		if (attackCoolTime_ <= 0.0f && enemy_->GetEnemyRay()->GetLooking()) {
-			TypeChengeAttackState();
+			enemy_->TypeChengeAttackState();
 			return;
 		}
 	} else {
@@ -121,18 +114,6 @@ const float EnemyMoveState::GetTypeSpeed()
 	return 0.0f;
 }
 
-const float EnemyMoveState::GetTypeAttackDistance()
-{
-	switch (enemy_->GetType()) {
-	case EnemyType::kMelee:			return enemy_->GetItem()->GetMeleeData().tempData.attackDistance;
-	case EnemyType::kRanged:		return enemy_->GetItem()->GetRangedData().tempData.attackDistance;
-	case EnemyType::kShieldBearer:	return enemy_->GetItem()->GetShieldBearerData().tempData.attackDistance;
-	case EnemyType::kRangedElite:	return enemy_->GetItem()->GetRangedEliteData().tempData.attackDistance;
-	default:break;
-	}
-	return 0.0f;
-}
-
 const float EnemyMoveState::GetTypeAttackCoolTime()
 {
 	switch (enemy_->GetType()) {
@@ -143,17 +124,6 @@ const float EnemyMoveState::GetTypeAttackCoolTime()
 	default:break;
 	}
 	return 0.0f;
-}
-
-void EnemyMoveState::TypeChengeAttackState()
-{
-	switch (enemy_->GetType()) {
-	case EnemyType::kMelee:			enemy_->ChangeState(std::make_unique<EnemyMelee_AttackState>(enemy_)); break;
-	case EnemyType::kRanged:		enemy_->ChangeState(std::make_unique<EnemyRanged_AttackState>(enemy_)); break;
-	case EnemyType::kShieldBearer:	enemy_->ChangeState(std::make_unique<EnemyShieldBearer_AttackState>(enemy_)); break;
-	case EnemyType::kRangedElite:	enemy_->ChangeState(std::make_unique<EnemyRangedElite_AttackState>(enemy_)); break;
-	default:break;
-	}
 }
 
 void EnemyMoveState::MoveAction(const Vector3& velocity, const float speed)

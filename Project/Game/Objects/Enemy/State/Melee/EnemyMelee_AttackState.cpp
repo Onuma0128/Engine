@@ -15,7 +15,7 @@ void EnemyMelee_AttackState::Init()
 {
 	chengeStateTime_ = 0.0f;
 
-	chengeAniamtion_ = false;
+	changeAniamtion_ = false;
 }
 
 void EnemyMelee_AttackState::Finalize()
@@ -48,20 +48,20 @@ void EnemyMelee_AttackState::Update()
 				enemy_->ChangeState(std::make_unique<EnemyMoveState>(enemy_));
 				return;
 			} else {
-				if (!chengeAniamtion_) {
-					chengeAniamtion_ = true;
+				if (!changeAniamtion_) {
+					changeAniamtion_ = true;
 					enemy_->PlayByName("Idle");
 				}
 			}
 		} else {
-			if (chengeAniamtion_) {
-				chengeAniamtion_ = false;
+			if (changeAniamtion_) {
+				changeAniamtion_ = false;
 				enemy_->PlayByName("Idle_Attack");
 			}
 		}
 	} else {
-		if (!chengeAniamtion_) {
-			chengeAniamtion_ = true;
+		if (!changeAniamtion_) {
+			changeAniamtion_ = true;
 			enemy_->PlayByName("Idle");
 		}
 	}

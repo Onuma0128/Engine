@@ -17,7 +17,7 @@ void EnemyAxe::Init(ColliderType type, const std::string& name)
 	Collider::colliderName_ = name;
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
-		"Player"
+		"Player","MuscleCompanion"
 	};
 	Collider::DrawCollider();
 }

@@ -2,9 +2,10 @@
 
 #include "DeltaTimer.h"
 
-#include "objects/enemy/state/EnemyMoveState.h"
-#include "objects/enemy/weapon/axe/EnemyAxe.h"
-#include "objects/enemy/weapon/shield/EnemyShield.h"
+#include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
+#include "Objects/Enemy/State/EnemyMoveState.h"
+#include "Objects/Enemy/Weapon/Axe/EnemyAxe.h"
+#include "Objects/Enemy/Weapon/Shield/EnemyShield.h"
 
 void ShieldBearerEnemy::Initialize()
 {
@@ -25,6 +26,10 @@ void ShieldBearerEnemy::Initialize()
 
 	// 基底クラスの初期化
 	BaseEnemy::Initialize();
+
+	// 体力の初期化
+	maxHp_ = items_->GetShieldBearerData().tempData.maxHp;
+	currentHp_ = maxHp_;
 }
 
 void ShieldBearerEnemy::Update()
@@ -67,6 +72,10 @@ void ShieldBearerEnemy::Dead()
 
 void ShieldBearerEnemy::Reset(const Vector3& position)
 {
+	// 体力を最大値に戻す
+	maxHp_ = items_->GetShieldBearerData().tempData.maxHp;
+	currentHp_ = maxHp_;
+
 	// 基底クラスのリセット処理
 	BaseEnemy::Reset(position);
 

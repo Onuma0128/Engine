@@ -158,10 +158,10 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		// スポーン時間を初期化
 		if (kNockdownCount <= static_cast<uint32_t>(mainData.nextWaveKillCount)) {
 			std::uniform_int_distribution<int> interval(1, 5);
-			spawnInterval_ = static_cast<float>(interval(randomEngine_)) * 0.8f;
+			spawnInterval_ = static_cast<float>(interval(randomEngine_)) * 1.5f;
 		} else {
 			std::uniform_int_distribution<int> interval(1, 5);
-			spawnInterval_ = static_cast<float>(interval(randomEngine_)) * 0.5f;
+			spawnInterval_ = static_cast<float>(interval(randomEngine_)) * 1.0f;
 		}
 		spawnTime_ = 0.0f;
 	}

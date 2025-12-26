@@ -9,26 +9,26 @@ void PlayerShot::Init(Player* player)
 {
 	player_ = player;
 
-	// 弾を初期化
-	const size_t kBulletMax = 6;
-	bullets_.resize(kBulletMax);
-	specialBullets_.resize(kBulletMax);
-	bulletUIs_.resize(kBulletMax);
-	for (size_t i = 0; i < kBulletMax; ++i) {
-		// 通常弾
-		bullets_[i] = std::make_unique<PlayerBullet>();
-		bullets_[i]->SetItem(player->GetItem());
-		bullets_[i]->Init("PlayerBullet");
-		bullets_[i]->SetPlayerShot(this);
-		// 必殺技の弾
-		specialBullets_[i] = std::make_unique<PlayerBullet>();
-		specialBullets_[i]->SetItem(player->GetItem());
-		specialBullets_[i]->Init("PlayerBulletSpecial");
-		specialBullets_[i]->SetPlayerShot(this);
-		// 弾UIを初期化
-		bulletUIs_[i] = std::make_unique<PlayerBulletUI>();
-		bulletUIs_[i]->Init(Vector2{});
-	}
+	//// 弾を初期化
+	//const size_t kBulletMax = 6;
+	//bullets_.resize(kBulletMax);
+	//specialBullets_.resize(kBulletMax);
+	//bulletUIs_.resize(kBulletMax);
+	//for (size_t i = 0; i < kBulletMax; ++i) {
+	//	// 通常弾
+	//	bullets_[i] = std::make_unique<PlayerBullet>();
+	//	bullets_[i]->SetItem(player->GetItem());
+	//	bullets_[i]->Init("PlayerBullet");
+	//	bullets_[i]->SetPlayerShot(this);
+	//	// 必殺技の弾
+	//	specialBullets_[i] = std::make_unique<PlayerBullet>();
+	//	specialBullets_[i]->SetItem(player->GetItem());
+	//	specialBullets_[i]->Init("PlayerBulletSpecial");
+	//	specialBullets_[i]->SetPlayerShot(this);
+	//	// 弾UIを初期化
+	//	bulletUIs_[i] = std::make_unique<PlayerBulletUI>();
+	//	bulletUIs_[i]->Init(Vector2{});
+	//}
 	// Kill数UIの初期化
 	killCountUI_ = std::make_unique<PlayerCountUI>();
 	killCountUI_->Init();
@@ -229,7 +229,7 @@ void PlayerShot::RayUpdate()
 
 	// 右スティックの入力があるならその方向にRayを向ける
 	Quaternion rightQuaternion = Quaternion::IdentityQuaternion();
-	if (rotateVelocity.Length() > 0.01f && kBulletCount_ != 0) {
+	if (rotateVelocity.Length() > 0.01f) {
 		rayDirection_ = rotateVelocity;
 		Collider::isActive_ = true;
 	} else {

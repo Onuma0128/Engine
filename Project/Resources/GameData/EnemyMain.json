@@ -25,5 +25,8 @@
         "x": 0.0,
         "y": 0.800000011920929,
         "z": 0.0
-    }
+    },
+    "hitJumpVelocityY": 24.0,
+    "hitJumpAccelerY": -50.0,
+    "hitJumpNockbackScale": 0.30000001192092896
 }

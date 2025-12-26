@@ -6,6 +6,7 @@
 // 基本的な敵のデータ用構造体
 struct EnemyTemplate {
 
+	int maxHp;					// 最大体力
 	float speed;				// 移動速度
 
 	float attackDistance;		// 攻撃が始まる距離
@@ -33,6 +34,10 @@ struct EnemyMainData {
 
 	float searchUpdateTime;		// 敵の探索を更新する時間
 	bool debugSpline;			// 敵の探索経路デバッグ用
+
+	float hitJumpVelocityY;		// ヒットジャンプのジャンプの速度
+	float hitJumpAccelerY;		// ヒットジャンプのジャンプ加速度
+	float hitJumpNockbackScale;	// ヒットジャンプのノックバック変化スケール
 
 	float maxDeadTimer;			// 死亡時消えるまでの時間
 	float kNockbackTimer;		// 死亡時ノックバックの時間

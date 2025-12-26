@@ -10,5 +10,6 @@
         "y": 0.6800000071525574,
         "z": 0.75
     },
-    "attackCoolTime": 1.0
+    "attackCoolTime": 1.0,
+    "maxHp": 3
 }

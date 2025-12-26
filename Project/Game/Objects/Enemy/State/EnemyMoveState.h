@@ -48,21 +48,10 @@ private:
 	const float GetTypeSpeed();
 
 	/// <summary>
-	/// 敵のタイプごとの攻撃ステートへの距離を取得する
-	/// </summary>
-	/// <returns></returns>
-	const float GetTypeAttackDistance();
-
-	/// <summary>
 	/// 敵のタイプごとの攻撃クールタイムを取得する
 	/// </summary>
 	/// <returns></returns>
 	const float GetTypeAttackCoolTime();
-
-	/// <summary>
-	/// 敵のタイプごとの攻撃ステートに遷移する
-	/// </summary>
-	void TypeChengeAttackState();
 
 	/// <summary>
 	/// 移動処理を行う

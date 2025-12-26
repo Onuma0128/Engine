@@ -17,6 +17,9 @@ void EnemyAdjustItem::LoadItems()
 		mainJson_.Set("rayOffset", Vector3{});
 		mainJson_.Set("margin", 1.0f);
 		mainJson_.Set("searchUpdateTime", 1.0f);
+		mainJson_.Set("hitJumpVelocityY", 1.0f);
+		mainJson_.Set("hitJumpAccelerY", 1.0f);
+		mainJson_.Set("hitJumpNockbackScale", 1.0f);
 		mainJson_.Set("maxDeadTimer", 1.0f);
 		mainJson_.Set("kNockbackTimer", 1.0f);
 		mainJson_.Set("particleTimer", 1.0f);
@@ -34,6 +37,9 @@ void EnemyAdjustItem::LoadItems()
 		mainData_.rayOffset =			mainJson_.Get("rayOffset", mainData_.rayOffset);
 		mainData_.margin =				mainJson_.Get("margin", mainData_.margin);
 		mainData_.searchUpdateTime =	mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
+		mainData_.hitJumpVelocityY =	mainJson_.Get("hitJumpVelocityY", mainData_.hitJumpVelocityY);
+		mainData_.hitJumpAccelerY =		mainJson_.Get("hitJumpAccelerY", mainData_.hitJumpAccelerY);
+		mainData_.hitJumpNockbackScale =mainJson_.Get("hitJumpNockbackScale", mainData_.hitJumpNockbackScale);
 		mainData_.maxDeadTimer =		mainJson_.Get("maxDeadTimer", mainData_.maxDeadTimer);
 		mainData_.kNockbackTimer =		mainJson_.Get("kNockbackTimer", mainData_.kNockbackTimer);
 		mainData_.particleTimer =		mainJson_.Get("particleTimer", mainData_.particleTimer);
@@ -160,7 +166,10 @@ void EnemyAdjustItem::Editor()
 			ImGui::DragFloat3("rayOffset", &mainData_.rayOffset.x, 0.01f);
 			ImGui::DragFloat("margin", &mainData_.margin, 0.01f);
 			ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f);
-
+			
+			ImGui::DragFloat("hitJumpVelocityY", &mainData_.hitJumpVelocityY, 0.01f);
+			ImGui::DragFloat("hitJumpAccelerY", &mainData_.hitJumpAccelerY, 0.01f);
+			ImGui::DragFloat("hitJumpNockbackScale", &mainData_.hitJumpNockbackScale, 0.01f);
 			ImGui::DragFloat("maxDeadTimer", &mainData_.maxDeadTimer, 0.01f);
 			ImGui::DragFloat("particleTimer", &mainData_.particleTimer, 0.01f);
 			ImGui::DragFloat("kNockbackTimer", &mainData_.kNockbackTimer, 0.01f);
@@ -178,6 +187,9 @@ void EnemyAdjustItem::Editor()
 				mainJson_.Set("margin", mainData_.margin);
 				mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
 
+				mainJson_.Set("hitJumpVelocityY", mainData_.hitJumpVelocityY);
+				mainJson_.Set("hitJumpAccelerY", mainData_.hitJumpAccelerY);
+				mainJson_.Set("hitJumpNockbackScale", mainData_.hitJumpNockbackScale);
 				mainJson_.Set("maxDeadTimer", mainData_.maxDeadTimer);
 				mainJson_.Set("kNockbackTimer", mainData_.kNockbackTimer);
 				mainJson_.Set("particleTimer", mainData_.particleTimer);
@@ -292,6 +304,7 @@ void EnemyAdjustItem::Editor()
 
 void EnemyAdjustItem::SetJsonParameter(JsonFunction json)
 {
+	json.Set("maxHp", 0);
 	json.Set("speed", 0.0f);
 	json.Set("attackDistance", 0.0f);
 	json.Set("attackStartupTime", 0.0f);
@@ -303,6 +316,7 @@ void EnemyAdjustItem::SetJsonParameter(JsonFunction json)
 EnemyTemplate EnemyAdjustItem::GetTemplateData(JsonFunction json)
 {
 	EnemyTemplate data{};
+	data.maxHp = json.Get("maxHp", data.maxHp);
 	data.speed = json.Get("speed", data.speed);
 	data.attackDistance = json.Get("attackDistance", data.attackDistance);
 	data.attackStartupTime = json.Get("attackStartupTime", data.attackStartupTime);
@@ -315,6 +329,7 @@ EnemyTemplate EnemyAdjustItem::GetTemplateData(JsonFunction json)
 
 void EnemyAdjustItem::SetImGuiData(JsonFunction& json, EnemyTemplate& tempData)
 {
+	ImGui::DragInt("maxHp", &tempData.maxHp);
 	ImGui::DragFloat("speed", &tempData.speed, 0.01f, 0.0f, 100.0f);
 	ImGui::DragFloat("attackDistance", &tempData.attackDistance, 0.01f);
 	ImGui::DragFloat("attackStartupTime", &tempData.attackStartupTime, 0.01f);
@@ -325,6 +340,7 @@ void EnemyAdjustItem::SetImGuiData(JsonFunction& json, EnemyTemplate& tempData)
 
 void EnemyAdjustItem::SetTemplateData(JsonFunction& json, EnemyTemplate& tempData)
 {
+	json.Set("maxHp", tempData.maxHp);
 	json.Set("speed", tempData.speed);
 	json.Set("attackDistance", tempData.attackDistance);
 	json.Set("attackStartupTime", tempData.attackStartupTime);

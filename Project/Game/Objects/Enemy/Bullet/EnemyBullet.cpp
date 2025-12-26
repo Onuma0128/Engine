@@ -23,7 +23,7 @@ void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 	Collider::size_ = transform_.scale_;
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
-		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall"
+		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","MuscleCompanion",
 	};
 	Collider::DrawCollider();
 }

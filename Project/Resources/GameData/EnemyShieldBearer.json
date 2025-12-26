@@ -31,5 +31,6 @@
     "attackActiveTime": 1.2999999523162842,
     "attackRecoveryTime": 0.5,
     "attackCoolTime": 1.0,
-    "lerpSpeed": 2.5
+    "lerpSpeed": 2.5,
+    "maxHp": 3
 }

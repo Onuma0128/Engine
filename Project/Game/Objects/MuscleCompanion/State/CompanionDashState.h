@@ -2,16 +2,10 @@
 
 #include "Objects/MuscleCompanion/State/CompanionBaseState.h"
 
-// 攻撃ステートの状態
-enum class AttackState
-{
-	StartUp,
-	Active,
-	Recovery,
-	Finish,
-};
+#include "Vector3.h"
+#include "Quaternion.h"
 
-class CompanionAttackState : public CompanionBaseState
+class CompanionDashState : public CompanionBaseState
 {
 public:
 
@@ -19,13 +13,13 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="player"></param>
-	CompanionAttackState(MuscleCompanion* companion);
+	CompanionDashState(MuscleCompanion* companion);
 
 	/// <summary>
 	/// 現在のステートを取得する
 	/// </summary>
 	/// <returns></returns>
-	CharacterState GetState() const override { return CharacterState::Attack; }
+	CharacterState GetState() const override { return CharacterState::Dash; }
 
 	/// <summary>
 	/// 初期化
@@ -49,15 +43,11 @@ public:
 
 private:
 
-	void ChangeAttackState(AttackState newState);
+	// 攻撃の速度ベクトル
+	Vector3 velocity_ = Vector3::ExprZero;
 
-private:
 
-	// 攻撃タイマー
-	float timer_ = 0.0f;
-
-	// 攻撃ステート
-	AttackState attackState_ = AttackState::StartUp;
+	Quaternion yRotation_ = Quaternion::IdentityQuaternion();
 
 };
 

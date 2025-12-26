@@ -4,7 +4,7 @@
 
 #include "BaseEnemy.h"
 
-#include "objects/enemy/bullet/EnemyBullet.h"
+#include "Objects/Enemy/Bullet/EnemyBullet.h"
 
 /// <summary>
 /// 弱遠距離敵の派生クラス

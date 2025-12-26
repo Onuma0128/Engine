@@ -2,57 +2,115 @@
 
 #include "DeltaTimer.h"
 
-#include "Objects/Player/Player.h"
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
+#include "Objects/MuscleCompanion/State/CompanionIdleState.h"
+#include "Objects/MuscleCompanion/Collider/CompanionAttackCollider.h"
 
 CompanionAttackState::CompanionAttackState(MuscleCompanion* companion) : CompanionBaseState(companion) {}
 
 void CompanionAttackState::Init()
 {
-	// アニメーションを変更
-	companion_->PlayByName("Run_Arms");
+	companion_->PlayByName("Idle");
+	companion_->GetMaterial().outlineColor = Vector3::ExprUnitXYZ - Vector3::ExprUnitZ;
+	ChangeAttackState(AttackState::StartUp);
 
-	// 集合要求フラグをfalseにする
-	companion_->SetGatherRequested(false);
-
-	// 向きをプレイヤーと同じにする
-	const auto& player = companion_->GetPlayer();
-	Vector3 targetPosition = player->GetTransform().translation_;
-
-	if (player->GetShot()->GetTargetPosition().Length() == 0.0f) {
-		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(player->GetTransform().rotation_);
-		targetPosition += (Vector3::ExprUnitZ * 15.0f).Transform(rotate);
-	} else {
-		targetPosition = player->GetShot()->GetTargetPosition();
+	const auto& colliders = companion_->GetAttackCollider()->GetHitColliders();
+	for (const auto& collider : colliders) {
+		if (collider->GetActive()) {
+			Vector3 velocity = collider->GetCenterPosition() - companion_->GetTransform().translation_;
+			Quaternion yRotation_ = Quaternion::DirectionToQuaternion(
+				companion_->GetTransform().rotation_, velocity.Normalize(), 1.0f);
+			companion_->SetTransformRotation(yRotation_);
+			break;
+		}
 	}
-
-	// 攻撃の速度ベクトルを設定する
-	velocity_ = targetPosition - companion_->GetTransform().translation_;
-	velocity_.y = 0.0f;
-	velocity_ = velocity_.Normalize();
-	// 攻撃時の回転を設定する
-	yRotation_ = Quaternion::DirectionToQuaternion(
-		companion_->GetTransform().rotation_, velocity_, 1.0f);
 }
 
 void CompanionAttackState::Finalize()
 {
+	companion_->SetFirstDashAttack(false);
+	companion_->GetAttackCollider()->SetActive(false);
 }
 
 void CompanionAttackState::Update()
 {
-	// 回転を更新
-	companion_->SetTransformRotation(
-		Quaternion::Slerp(companion_->GetTransform().rotation_, yRotation_, 0.2f));
+	// データを取得する
+	const auto& data = companion_->GetItems()->GetAttackData();
 
-	// 移動を更新
-	companion_->SetTransformTranslation(
-		companion_->GetTransform().translation_ + velocity_ *
-		companion_->GetItems()->GetMainData().dashSpeed * DeltaTimer::GetDeltaTime());
+	// タイムを加算
+	timer_ += DeltaTimer::GetDeltaTime();
+
+	// ダッシュ攻撃の一回目なら硬直時間を与える
+	if (companion_->GetFirstDashAttack()) {
+		if (timer_ > data.firstDashTime) {
+			companion_->SetFirstDashAttack(false);
+		} else {
+			return;
+		}
+	}
+
+	// 攻撃ステートごとの処理
+	switch (attackState_)
+	{
+	case AttackState::StartUp:
+
+		if (timer_ >= data.attackStartupTime) {
+			companion_->GetAttackCollider()->SetActive(true);
+			companion_->PlayByName("Punch");
+			ChangeAttackState(AttackState::Active);
+		}
+		break;
+	case AttackState::Active:
+
+		if (timer_ >= data.attackActiveTime) {
+			companion_->GetAttackCollider()->SetActive(false);
+			companion_->PlayByName("Idle");
+			ChangeAttackState(AttackState::Recovery);
+		}
+		break;
+	case AttackState::Recovery:
+
+		if (timer_ >= data.attackRecoveryTime) {
+			companion_->PlayByName("Idle");
+			ChangeAttackState(AttackState::Finish);
+		}
+		break;
+	case AttackState::Finish:
+	{
+		// nullポインタチェック
+		if (companion_->GetAttackCollider()->GetHitColliders().empty()) {
+			companion_->GetAttackCollider()->ResetHitColliders();
+			companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
+			return;
+		}
+
+		// 攻撃が当たっていたら攻撃状態へ、当たっていなければ待機状態へ
+		const auto& colliders = companion_->GetAttackCollider()->GetHitColliders();
+		for (const auto& collider : colliders) {
+			if (collider->GetActive()) {
+				companion_->ChangeState(std::make_unique<CompanionAttackState>(companion_));
+				return;
+			}
+		}
+		companion_->GetAttackCollider()->ResetHitColliders();
+		companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
+		return;
+
+	}
+		break;
+	default:
+		break;
+	}
 }
 
 void CompanionAttackState::Draw()
 {
+}
+
+void CompanionAttackState::ChangeAttackState(AttackState newState)
+{
+	attackState_ = newState;
+	timer_ = 0.0f;
 }
 
 

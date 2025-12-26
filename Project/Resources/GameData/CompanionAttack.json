@@ -1,0 +1,12 @@
+{
+    "attackColliderSize": 1.2000000476837158,
+    "attackColliderOffset": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "attackStartupTime": 0.5,
+    "attackActiveTime": 0.800000011920929,
+    "attackRecoveryTime": 0.5,
+    "firstDashTime": 1.2000000476837158
+}

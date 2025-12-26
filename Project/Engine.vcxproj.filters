@@ -1289,6 +1289,9 @@
     <ClCompile Include="Game\Objects\MuscleCompanion\AdjustItem\CompanionAdjustItem.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionIdleState.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionAttackState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionDashState.cpp" />
+    <ClCompile Include="Game\Objects\Enemy\State\EnemyHitJumpState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Collider\CompanionAttackCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1298,5 +1301,8 @@
     <ClInclude Include="Game\Objects\MuscleCompanion\AdjustItem\CompanionAdjustItem.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionIdleState.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionAttackState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionDashState.h" />
+    <ClInclude Include="Game\Objects\Enemy\State\EnemyHitJumpState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Collider\CompanionAttackCollider.h" />
   </ItemGroup>
 </Project>

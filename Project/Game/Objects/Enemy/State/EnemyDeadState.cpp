@@ -9,6 +9,7 @@
 #include "objects/enemy/weapon/EnemyWeaponBase.h"
 
 #include "objects/enemy/adjustItem/EnemyAdjustItem.h"
+#include "EnemyHitJumpState.h"
 
 EnemyDeadState::EnemyDeadState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 

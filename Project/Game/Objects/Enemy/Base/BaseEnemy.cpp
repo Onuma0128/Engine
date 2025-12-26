@@ -2,12 +2,17 @@
 
 #include "DeltaTimer.h"
 
-#include "objects/player/Player.h"
-#include "gameCamera/GameCamera.h"
-#include "objects/enemy/adjustItem/EnemyAdjustItem.h"
+#include "Objects/Player/Player.h"
+#include "GameCamera/GameCamera.h"
+#include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
 
-#include "objects/enemy/state/EnemyMoveState.h"
-#include "objects/enemy/state/EnemyDeadState.h"
+#include "Objects/Enemy/state/EnemyMoveState.h"
+#include "Objects/Enemy/state/EnemyDeadState.h"
+#include "Objects/Enemy/state/EnemyHitJumpState.h"
+#include "Objects/Enemy/state/Melee/EnemyMelee_AttackState.h"
+#include "Objects/Enemy/state/Ranged/EnemyRanged_AttackState.h"
+#include "Objects/Enemy/state/ShieldBearer/EnemyShieldBearer_AttackState.h"
+#include "Objects/Enemy/state/RangedElite/EnemyRangedElite_AttackState.h"
 
 void BaseEnemy::Initialize()
 {
@@ -34,8 +39,8 @@ void BaseEnemy::Initialize()
 	Collider::radius_ = transform_.scale_.x;
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
-		"Player","PlayerBullet","PlayerBulletSpecial",
-		"PlayerReticle","Enemy" ,"PlayerShotRay","MuscleCompanion"
+		"Player","MuscleCompanionAttack",
+		"Enemy" ,"PlayerShotRay","MuscleCompanion"
 	};
 	Collider::DrawCollider();
 
@@ -52,6 +57,11 @@ void BaseEnemy::Initialize()
 
 void BaseEnemy::Update()
 {
+	// レイの更新
+	const float attackIn = GetTypeAttackDistance();
+	Vector3 direction = Vector3::ExprUnitZ.Transform(Quaternion::MakeRotateMatrix(transform_.rotation_));
+	ray_->Update(transform_.translation_ + items_->GetMainData().rayOffset, direction * attackIn);
+
 	// ステートの更新
 	state_->Update();
 
@@ -129,6 +139,8 @@ void BaseEnemy::Reset(const Vector3& position)
 	Animation::GetMaterial().shadowMap = true;
 	// ColliderをActiveに戻す
 	Collider::isActive_ = true;
+	ray_->SetActive(true);
+	hitCollider_ = nullptr;
 	stateParam_.isAlive_ = true;
 	stateParam_.isDead_ = false;
 	stateParam_.hitReticle_ = false;
@@ -137,29 +149,33 @@ void BaseEnemy::Reset(const Vector3& position)
 
 void BaseEnemy::ResetSearch()
 {
-	pathFinder_.Search(transform_.translation_, player_->GetTransform().translation_);
+	if (hitCollider_) {
+		pathFinder_.Search(transform_.translation_, hitCollider_->GetCenterPosition());
+	} else {
+		pathFinder_.Search(transform_.translation_, player_->GetTransform().translation_);
+	}
 }
+
 
 void BaseEnemy::OnCollisionEnter(Collider* other)
 {
 	// プレイヤーの弾と当たっているなら
-	if (other->GetColliderName() == "PlayerBullet") {
-		gameCamera_->SetShake(2.0f);
-	}
-	if (other->GetColliderName() == "PlayerBulletSpecial" ||
-		other->GetColliderName() == "MuscleCompanion") {
-		gameCamera_->SetShake(5.0f);
-		DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
-	}
-	if (other->GetColliderName() == "PlayerBullet" || other->GetColliderName() == "PlayerBulletSpecial" ||
-		other->GetColliderName() == "MuscleCompanion") {
-		Collider::isActive_ = false;
-		stateParam_.isAlive_ = false;
-		// 敵がノックバックする方向を取得
-		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
-		velocity_ = Vector3::ExprUnitZ.Transform(rotate);
-		playerBulletPosition_ = other->GetCenterPosition();
+	if (other->GetColliderName() == "MuscleCompanion" ||
+		other->GetColliderName() == "MuscleCompanionAttack") {
+		// 小さな当たり判定は無視する
+		if (other->GetRadius() < 0.5f) {
+			return;
+		}
+		// 初回ヒット時はヒットジャンプステートに遷移
+		if (currentHp_ == maxHp_) {
+			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
+			ChangeState(std::make_unique<EnemyHitJumpState>(this));
+			hitCollider_ = other;
+		}
+		// ダメージ処理
+		--currentHp_;
 		// エフェクトを描画
+		gameCamera_->SetShake(2.0f);
 		WorldTransform transform;
 		transform.rotation_ = other->GetRotate();
 		transform.translation_ = transform_.translation_;
@@ -167,14 +183,19 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		transform.rotation_ = transform_.rotation_;
 		transform.translation_ = transform_.translation_ - (velocity_ * 0.5f);
 		effect_->OnceBulletHitExplosionEffect(transform);
-		// 死亡時のステートに遷移
-		ChangeState(std::make_unique<EnemyDeadState>(this));
-	}
-
-	// プレイヤーのレティクルと当たっているなら
-	if (other->GetColliderName() == "PlayerReticle") {
-		stateParam_.hitReticle_ = true;
-		Collider::isActive_ = false;
+		// 体力が0以下なら死亡処理へ
+		if (currentHp_ <= 0) {
+			// Colliderを無効化する
+			Collider::isActive_ = false;
+			ray_->SetActive(false);
+			stateParam_.isAlive_ = false;
+			// 敵がノックバックする方向を取得
+			Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
+			velocity_ = Vector3::ExprUnitZ.Transform(rotate);
+			playerBulletPosition_ = other->GetCenterPosition();
+			// 死亡時のステートに遷移
+			ChangeState(std::make_unique<EnemyDeadState>(this));
+		}
 	}
 }
 
@@ -202,4 +223,27 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 
 void BaseEnemy::OnCollisionExit(Collider* other)
 {
+}
+
+void BaseEnemy::TypeChengeAttackState()
+{
+	switch (type_) {
+	case EnemyType::kMelee:			ChangeState(std::make_unique<EnemyMelee_AttackState>(this)); break;
+	case EnemyType::kRanged:		ChangeState(std::make_unique<EnemyRanged_AttackState>(this)); break;
+	case EnemyType::kShieldBearer:	ChangeState(std::make_unique<EnemyShieldBearer_AttackState>(this)); break;
+	case EnemyType::kRangedElite:	ChangeState(std::make_unique<EnemyRangedElite_AttackState>(this)); break;
+	default:break;
+	}
+}
+
+const float BaseEnemy::GetTypeAttackDistance()
+{
+	switch (type_) {
+	case EnemyType::kMelee:			return items_->GetMeleeData().tempData.attackDistance;
+	case EnemyType::kRanged:		return items_->GetRangedData().tempData.attackDistance;
+	case EnemyType::kShieldBearer:	return items_->GetShieldBearerData().tempData.attackDistance;
+	case EnemyType::kRangedElite:	return items_->GetRangedEliteData().tempData.attackDistance;
+	default:break;
+	}
+	return 0.0f;
 }

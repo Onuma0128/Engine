@@ -5,13 +5,12 @@
 
 #include "Objects/Character/BaseCharacter.h"
 
-#include "objects/enemy/type/EnemyType.h"
-#include "objects/enemy/state/EnemyBaseState.h"
-#include "objects/enemy/bullet/EnemyBullet.h"
-#include "objects/enemy/effect/EnemyEffect.h"
-#include "objects/enemy/ray/EnemyRay.h"
-
-#include "searchAlgorithm/navigation/PathFinder.h"
+#include "Objects/Enemy/Type/EnemyType.h"
+#include "Objects/Enemy/State/EnemyBaseState.h"
+#include "Objects/Enemy/Bullet/EnemyBullet.h"
+#include "Objects/Enemy/Effect/EnemyEffect.h"
+#include "Objects/Enemy/Ray/EnemyRay.h"
+#include "SearchAlgorithm/Navigation/PathFinder.h"
 
 // 敵が今どうなっているか
 struct EnemyStateParam {
@@ -94,6 +93,17 @@ public:
 	/// </summary>
 	void ResetSearch();
 
+	/// <summary>
+	/// 敵のタイプごとの攻撃ステートに遷移する
+	/// </summary>
+	void TypeChengeAttackState();
+
+	/// <summary>
+	/// 敵のタイプごとの攻撃ステートへの距離を取得する
+	/// </summary>
+	/// <returns></returns>
+	const float GetTypeAttackDistance();
+
 	/// ==================== アクセッサ ==================== ///
 
 	// 敵のタイプ
@@ -138,6 +148,8 @@ public:
 	// 探索アルゴリズム
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
 	PathFinder& GetPathFinder() { return pathFinder_; }
+	// 当たったCollider
+	const Collider* GetHitCollider()const { return hitCollider_; }
 
 protected:
 
@@ -148,6 +160,10 @@ protected:
 	// 調整項目
 	EnemyAdjustItem* items_ = nullptr;
 
+	// 敵のMaxHP
+	uint32_t maxHp_ = 1;
+	// 敵の現在のHP
+	uint32_t currentHp_ = 1;
 	// 敵のタイプ
 	EnemyType type_;
 	// 状態遷移
@@ -169,5 +185,8 @@ protected:
 	Vector3 playerBulletPosition_{};
 	// OutLineのColor
 	Vector3 outlineColor_;
+	// 当たってきたColliderを保存
+	Collider* hitCollider_ = nullptr;
+
 };
 

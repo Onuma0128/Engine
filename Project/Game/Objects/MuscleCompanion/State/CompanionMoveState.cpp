@@ -7,6 +7,7 @@
 #include "Objects/Player/Player.h"
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 #include "Objects/MuscleCompanion/State/CompanionIdleState.h"
+#include "Objects/MuscleCompanion/State/CompanionDashState.h"
 #include "Objects/MuscleCompanion/State/CompanionAttackState.h"	
 
 CompanionMoveState::CompanionMoveState(MuscleCompanion* companion) : CompanionBaseState(companion) {}
@@ -15,6 +16,7 @@ void CompanionMoveState::Init()
 {
 	// アニメーションを変更
 	companion_->PlayByName("Run");
+	companion_->GetMaterial().outlineColor = Vector3::ExprUnitZ;
 	// 探索を更新する
 	companion_->ResetSearch();
 }
@@ -60,7 +62,7 @@ void CompanionMoveState::Update()
 
 	// プレイヤーが指示を出したら攻撃ステートに遷移する
 	if (companion_->GetPlayer()->GetShot()->GetIsShot()) {
-		companion_->ChangeState(std::make_unique<CompanionAttackState>(companion_));
+		companion_->ChangeState(std::make_unique<CompanionDashState>(companion_));
 		companion_->GetPlayer()->GetShot()->SetIsShot(false);
 		return;
 	}
