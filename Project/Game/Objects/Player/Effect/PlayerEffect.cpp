@@ -43,14 +43,13 @@ void PlayerEffect::Init()
 	postEffectManager_->CreatePostEffect(PostEffectType::kVignette);
 	postEffectManager_->CreatePostEffect(PostEffectType::kOutLine);
 
-	specialMoveReady_ = std::make_unique<PrimitiveDrawr>();
-	specialMoveReady_->TypeInit(PrimitiveType::kPlane);
-	specialMoveReady_->SetTexture("A_button.png");
-	specialMoveReady_->SetBlendMode(BlendMode::kBlendModeNormal);
-	specialMoveReady_->GetRenderOptions().enabled = true;
-	specialMoveReady_->GetRenderOptions().offscreen = false;
-	specialMoveReady_->SetIsBillboard(true);
-	specialMoveReady_->GetTransform().scale = { 0.35f,0.35f,1.0f };
+	needMoreMachoEffect = std::make_unique<PrimitiveDrawr>();
+	needMoreMachoEffect->TypeInit(PrimitiveType::kPlane);
+	needMoreMachoEffect->SetTexture("needMoreMacho.png");
+	needMoreMachoEffect->SetBlendMode(BlendMode::kBlendModeNormal);
+	needMoreMachoEffect->GetRenderOptions().enabled = true;
+	needMoreMachoEffect->GetRenderOptions().offscreen = false;
+	needMoreMachoEffect->SetIsBillboard(true);
 	
 	cylinder_ = std::make_unique<PrimitiveDrawr>();
 	cylinder_->TypeInit(PrimitiveType::kCylinder, 32);
@@ -76,10 +75,10 @@ void PlayerEffect::Update()
 
 	specialMoveReadyTimer_ += DeltaTimer::GetDeltaTime();
 	if (specialMoveReadyTimer_ > 1.0f) { specialMoveReadyTimer_ = 0.0f; }
-	specialMoveReady_->GetTransform().translation = player_->GetTransform().translation_ + (-Vector3::ExprUnitX * 0.6f);
-	specialMoveReady_->GetTransform().translation.y = 1.6f;
-	specialMoveReady_->SetAlpha(std::abs(std::sin(specialMoveReadyTimer_ * std::numbers::pi_v<float>)));
-	specialMoveReady_->Update();
+	needMoreMachoEffect->GetTransform().translation = player_->GetTransform().translation_;
+	needMoreMachoEffect->GetTransform().translation.y = 2.0f;
+	needMoreMachoEffect->SetAlpha(std::abs(std::sin(specialMoveReadyTimer_ * std::numbers::pi_v<float>)));
+	needMoreMachoEffect->Update();
 }
 
 void PlayerEffect::Draw()
@@ -90,8 +89,8 @@ void PlayerEffect::Draw()
 	if (playerReload_->GetRenderOptions().enabled) {
 		playerReload_->TypeDraw();
 	}
-	if (player_->GetShot()->GetChargeCount() > static_cast<uint32_t>(player_->GetItem()->GetBulletData().maxChargeCount_sp)) {
-		specialMoveReady_->TypeDraw();
+	if (!player_->GetShot()->GetIsCanAttack()) {
+		needMoreMachoEffect->TypeDraw();
 	}
 }
 

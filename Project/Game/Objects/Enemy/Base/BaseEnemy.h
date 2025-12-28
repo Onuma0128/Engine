@@ -104,6 +104,11 @@ public:
 	/// <returns></returns>
 	const float GetTypeAttackDistance();
 
+	/// <summary>
+	/// 当たった判定が無効になったときの処理
+	/// </summary>
+	void HitColliderNotActive();
+
 	/// ==================== アクセッサ ==================== ///
 
 	// 敵のタイプ

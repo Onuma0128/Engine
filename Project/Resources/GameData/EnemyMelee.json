@@ -1,7 +1,7 @@
 {
     "speed": 4.0,
     "attackDistance": 1.5,
-    "attackStartupTime": 0.5,
+    "attackStartupTime": 0.30000001192092896,
     "attackActiveTime": 1.2999999523162842,
     "attackRecoveryTime": 0.5,
     "colliderSize": 1.0,

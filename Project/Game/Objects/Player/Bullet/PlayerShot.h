@@ -130,6 +130,13 @@ public:
 	const bool GetIsShot()const { return isShot_; }
 
 	/// <summary>
+	/// 攻撃ができたかどうかを設定する
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetIsCanAttack(const bool flag) { isCanAttack_ = flag; }
+	const bool GetIsCanAttack()const { return isCanAttack_; }
+
+	/// <summary>
 	/// 集合要求を設定する
 	/// </summary>
 	/// <param name="flag"></param>
@@ -161,6 +168,8 @@ private:
 
 	// 攻撃したかどうか
 	bool isShot_ = false;
+	// 攻撃ができたか
+	bool isCanAttack_ = false;
 	Vector3 targetPosition_{};
 	// 集合要求したかどうか
 	bool isGatherRequested_ = false;

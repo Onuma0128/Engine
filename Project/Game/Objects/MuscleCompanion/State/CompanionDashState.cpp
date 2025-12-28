@@ -14,8 +14,10 @@ void CompanionDashState::Init()
 	companion_->GetMaterial().outlineColor = Vector3::ExprUnitX;
 	// 集合要求フラグをfalseにする
 	companion_->SetGatherRequested(false);
+	// 元の場所に戻ったフラグをfalseにする
+	companion_->SetReturnOriginal(false);
 	// ダッシュ用のコライダースケールを設定する
-	companion_->SetDashColliderScale(companion_->GetItems()->GetDashData().dashColliderScale);
+	companion_->SetColliderScale(companion_->GetItems()->GetDashData().dashColliderScale);
 
 	// 向きをプレイヤーと同じにする
 	const auto& player = companion_->GetPlayer();
@@ -40,8 +42,8 @@ void CompanionDashState::Init()
 
 void CompanionDashState::Finalize()
 {
-	// ダッシュ用のコライダースケールを元に戻す
-	companion_->SetDashColliderScale(1.0f);
+	// コライダースケールを元に戻す
+	companion_->SetColliderScale(1.0f);
 }
 
 void CompanionDashState::Update()

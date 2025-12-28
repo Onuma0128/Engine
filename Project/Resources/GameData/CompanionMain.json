@@ -10,6 +10,8 @@
     },
     "hitPushSpeed": 1.75,
     "dashSpeed": 8.0,
-    "maxHP": 10,
-    "dashColliderScale": 2.0
+    "maxHP": 5,
+    "dashColliderScale": 2.0,
+    "distanceToAlly": 2.5,
+    "followerColliderSize": 0.75
 }

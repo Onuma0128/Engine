@@ -8,6 +8,7 @@
 #include "Objects/MuscleCompanion/State/CompanionBaseState.h"
 #include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
 #include "Objects/MuscleCompanion/Collider/CompanionAttackCollider.h"
+#include "Objects/MuscleCompanion/Collider/CompanionFollowerCollider.h"
 
 // 前方宣言
 class Player;
@@ -68,15 +69,19 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetItems(CompanionAdjustItem* items) { items_ = items; }
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
+	void SetColliderIsActive(bool flag) { isActive_ = flag; }
+	void SetColliderScale(float scale) { colliderScale_ = scale; }
 	void SetGatherRequested(bool flag) { isGatherRequested_ = flag; }
-	void SetDashColliderScale(float scale) { dashColliderScale_ = scale; }
+	void SetReturnOriginal(bool flag) { isReturnOriginal_ = flag; }
 	void SetFirstDashAttack(bool flag) { isFirstDashAttack_ = flag; }
 	// ゲッター
 	const CompanionAdjustItem* GetItems()const { return items_; }
 	const Player* GetPlayer()const { return player_; }
 	const CharacterState GetState() const { return state_->GetState(); }
 	CompanionAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
+	CompanionFollowerCollider* GetFollowerCollider() { return followerCollider_.get(); }
 	bool GetGatherRequested() const { return isGatherRequested_; }
+	bool GetReturnOriginal() const { return isReturnOriginal_; }
 	bool GetFirstDashAttack() const { return isFirstDashAttack_; }
 	PathFinder& GetPathFinder() { return pathFinder_; }
 
@@ -90,6 +95,8 @@ private:
 	std::unique_ptr<CompanionBaseState> state_ = nullptr;
 	// 攻撃用コライダー
 	std::unique_ptr<CompanionAttackCollider> attackCollider_ = nullptr;
+	// 後続用コライダー
+	std::unique_ptr<CompanionFollowerCollider> followerCollider_ = nullptr;
 	// 経路探索
 	PathFinder pathFinder_;
 
@@ -97,10 +104,12 @@ private:
 	uint32_t maxHp_ = 1;
 	// 仲間の現在のHP
 	uint32_t currentHp_ = 1;
+	// コライダーのスケール
+	float colliderScale_ = 1.0f;
 	// 集合要求フラグ
 	bool isGatherRequested_ = false;
-	// ダッシュ時のコライダーのスケール
-	float dashColliderScale_ = 1.0f;
+	// 元の場所に戻ったか
+	bool isReturnOriginal_ = true;
 	// ダッシュ時の一回目の攻撃かどうか
 	bool isFirstDashAttack_ = true;
 };

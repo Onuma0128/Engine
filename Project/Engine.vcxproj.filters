@@ -1292,6 +1292,9 @@
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionDashState.cpp" />
     <ClCompile Include="Game\Objects\Enemy\State\EnemyHitJumpState.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Collider\CompanionAttackCollider.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Collider\CompanionFollowerCollider.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Effect\CompanionEffect.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionDeadState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1304,5 +1307,8 @@
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionDashState.h" />
     <ClInclude Include="Game\Objects\Enemy\State\EnemyHitJumpState.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Collider\CompanionAttackCollider.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Collider\CompanionFollowerCollider.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Effect\CompanionEffect.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionDeadState.h" />
   </ItemGroup>
 </Project>

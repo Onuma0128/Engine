@@ -155,6 +155,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionDeadState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Effect\CompanionEffect.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Collider\CompanionFollowerCollider.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Collider\CompanionAttackCollider.cpp" />
     <ClCompile Include="Game\Objects\Enemy\State\EnemyHitJumpState.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionDashState.cpp" />
@@ -313,6 +316,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionDeadState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Effect\CompanionEffect.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Collider\CompanionFollowerCollider.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Collider\CompanionAttackCollider.h" />
     <ClInclude Include="Game\Objects\Enemy\State\EnemyHitJumpState.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionDashState.h" />

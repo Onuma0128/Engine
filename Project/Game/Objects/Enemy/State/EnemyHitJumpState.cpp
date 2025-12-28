@@ -4,6 +4,7 @@
 
 #include "Objects/Enemy/Base/BaseEnemy.h"
 #include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
+#include "Objects/Enemy/State/EnemyMoveState.h"
 
 EnemyHitJumpState::EnemyHitJumpState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 
@@ -46,8 +47,12 @@ void EnemyHitJumpState::Update()
         hitJumpVelocityY_ = 0.0f;
         // 座標を更新する
         SetTranslate(translateY, veloctiy);
-		// 攻撃ステートに遷移する
-        enemy_->TypeChengeAttackState();
+        if (enemy_->GetHitCollider()) {
+            // 攻撃ステートに遷移する
+            enemy_->TypeChengeAttackState();
+        } else {
+			enemy_->ChangeState(std::make_unique<EnemyMoveState>(enemy_));
+        }
         return;
     }
 }

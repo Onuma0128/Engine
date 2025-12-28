@@ -19,10 +19,16 @@ void CompanionMoveState::Init()
 	companion_->GetMaterial().outlineColor = Vector3::ExprUnitZ;
 	// 探索を更新する
 	companion_->ResetSearch();
+	// ダッシュ用のコライダースケールを設定する
+	if (!companion_->GetReturnOriginal()) {
+		companion_->SetColliderScale(companion_->GetItems()->GetDashData().dashColliderScale);
+	}
 }
 
 void CompanionMoveState::Finalize()
 {
+	// コライダースケールを元に戻す
+	companion_->SetColliderScale(1.0f);
 }
 
 void CompanionMoveState::Update()
@@ -36,8 +42,12 @@ void CompanionMoveState::Update()
 		companion_->ResetSearch();
 		searchTimer_ = 0.0f;
 	}
+
+	// スピードを取得
+	float speed = data.speed;
+	if (!companion_->GetReturnOriginal()) { speed = companion_->GetItems()->GetDashData().dashSpeed; }
 	// 経路探索の更新
-	companion_->GetPathFinder().Update(data.speed);
+	companion_->GetPathFinder().Update(speed);
 	companion_->GetPathFinder().DebugSpline(data.debugSpline);
 
 	// 移動の更新
@@ -45,7 +55,7 @@ void CompanionMoveState::Update()
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 	Vector3 translate = companion_->GetTransform().translation_ +
-		data.speed * velocity * DeltaTimer::GetDeltaTime();
+		speed * velocity * DeltaTimer::GetDeltaTime();
 	companion_->SetTransformTranslation(translate);
 
 	// 移動時の回転の更新
@@ -56,14 +66,15 @@ void CompanionMoveState::Update()
 
 	// 距離が近づいたら待機ステートに遷移する
 	if (!companion_->SearchDistance()) {
+		companion_->SetReturnOriginal(true);
 		companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
 		return;
 	}
 
 	// プレイヤーが指示を出したら攻撃ステートに遷移する
 	if (companion_->GetPlayer()->GetShot()->GetIsShot()) {
-		companion_->ChangeState(std::make_unique<CompanionDashState>(companion_));
 		companion_->GetPlayer()->GetShot()->SetIsShot(false);
+		companion_->ChangeState(std::make_unique<CompanionDashState>(companion_));
 		return;
 	}
 }

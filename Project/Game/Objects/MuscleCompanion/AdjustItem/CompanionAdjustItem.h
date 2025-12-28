@@ -10,6 +10,9 @@ struct CompanionMainData {
 	float colliderSize;				// 仲間本体のコライダーサイズ
 	Vector3 colliderOffset;			// 仲間本体のコライダー座標
 
+	float distanceToAlly;			// 仲間同士の距離
+	float followerColliderSize;		// 後続判定された仲間のコライダーサイズ
+
 	float searchUpdateTime;			// 仲間の探索を更新する時間
 	float searchCancelDistance;		// 仲間の探索をやめる距離
 	bool debugSpline;				// 仲間の探索経路デバッグ用

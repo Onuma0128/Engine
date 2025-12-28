@@ -43,6 +43,7 @@ void EnemyMoveState::Update()
 	searchTime_ += DeltaTimer::GetDeltaTime();
 	if (searchTime_ > mainData.searchUpdateTime) {
 		searchTime_ = 0.0f;
+		enemy_->HitColliderNotActive();
 		enemy_->ResetSearch();
 	}
 

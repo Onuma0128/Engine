@@ -125,9 +125,9 @@ private:
 	
 	std::unique_ptr<PrimitiveDrawr> playerReload_ = nullptr;
 
-	/* ==================== プレイヤーが必殺技が溜まったと分かるエフェクト ==================== */
+	/* ==================== プレイヤーのマッチョが無くなった時のエフェクト ==================== */
 
-	std::unique_ptr<PrimitiveDrawr> specialMoveReady_ = nullptr;
+	std::unique_ptr<PrimitiveDrawr> needMoreMachoEffect = nullptr;
 	float specialMoveReadyTimer_ = 0.0f;
 
 	/* ==================== プレイヤーが必殺技を撃った時のエフェクト ==================== */

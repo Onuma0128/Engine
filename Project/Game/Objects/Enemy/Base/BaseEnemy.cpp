@@ -39,7 +39,7 @@ void BaseEnemy::Initialize()
 	Collider::radius_ = transform_.scale_.x;
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
-		"Player","MuscleCompanionAttack",
+		"Player","MuscleCompanionAttack","FollowerMuscleCompanion",
 		"Enemy" ,"PlayerShotRay","MuscleCompanion"
 	};
 	Collider::DrawCollider();
@@ -161,6 +161,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 {
 	// プレイヤーの弾と当たっているなら
 	if (other->GetColliderName() == "MuscleCompanion" ||
+		other->GetColliderName() == "FollowerMuscleCompanion" ||
 		other->GetColliderName() == "MuscleCompanionAttack") {
 		// 小さな当たり判定は無視する
 		if (other->GetRadius() < 0.5f) {
@@ -170,6 +171,8 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		if (currentHp_ == maxHp_) {
 			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
 			ChangeState(std::make_unique<EnemyHitJumpState>(this));
+		}
+		if (!hitCollider_ && (other->GetColliderName() == "MuscleCompanion" || other->GetColliderName() == "MuscleCompanionAttack")) {
 			hitCollider_ = other;
 		}
 		// ダメージ処理
@@ -246,4 +249,11 @@ const float BaseEnemy::GetTypeAttackDistance()
 	default:break;
 	}
 	return 0.0f;
+}
+
+void BaseEnemy::HitColliderNotActive()
+{
+	if (hitCollider_ && !hitCollider_->GetActive()) {
+		hitCollider_ = nullptr;
+	}
 }

@@ -40,6 +40,17 @@ private:
 	/// </summary>
 	void GatherCompanions();
 
+	/// <summary>
+	/// 仲間同士の後続判定
+	/// </summary>
+	void FollowerDistanceCollision();
+
+	/// <summary>
+	/// 仲間が発射できるか判定
+	/// </summary>
+	/// <returns></returns>
+	bool IsShotCompanion();
+
 private:
 
 	// プレイヤーのポインタ

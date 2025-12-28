@@ -9,6 +9,7 @@ enum class CharacterState {
 	Move,
 	Dash,
 	Attack,
+	Dead,
 };
 
 /// <summary>
