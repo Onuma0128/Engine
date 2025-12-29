@@ -110,16 +110,16 @@ public:
 	/// Rayが当たった座標を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Vector3& GetRayHitPosition()const { return rayHitPosition_; }
+	const Collider* GetRayHitCollider()const { return rayHitCollider_; }
 
 	/// <summary>
 	/// Rayが当たったかどうかをリセットする
 	/// </summary>
 	void ResetRayHit() { 
-		if (isRayHit_) { targetPosition_ = rayHitPosition_; }
-		else { targetPosition_ = Vector3::ExprZero; }
+		if (isRayHit_) { targetCollider_ = rayHitCollider_; }
+		else { targetCollider_ = nullptr; }
 		isRayHit_ = false; 
-		rayHitPosition_ = Vector3::ExprZero;
+		rayHitCollider_ = nullptr;
 	}
 
 	/// <summary>
@@ -147,7 +147,7 @@ public:
 	/// Rayが当たった座標を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Vector3& GetTargetPosition()const { return targetPosition_; }
+	Collider* GetTargetCollider() { return targetCollider_; }
 
 private:
 
@@ -170,7 +170,7 @@ private:
 	bool isShot_ = false;
 	// 攻撃ができたか
 	bool isCanAttack_ = false;
-	Vector3 targetPosition_{};
+	Collider* targetCollider_{};
 	// 集合要求したかどうか
 	bool isGatherRequested_ = false;
 
@@ -180,7 +180,7 @@ private:
 	// Rayが当たったかどうか
 	bool isRayHit_ = false;
 	// Rayが当たった座標
-	Vector3 rayHitPosition_{};
+	Collider* rayHitCollider_ = nullptr;
 
 	// 弾を撃つ方向の回転
 	Quaternion rightStickQuaternion_{};

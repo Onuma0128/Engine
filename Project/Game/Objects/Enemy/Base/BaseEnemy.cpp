@@ -145,6 +145,7 @@ void BaseEnemy::Reset(const Vector3& position)
 	stateParam_.isDead_ = false;
 	stateParam_.hitReticle_ = false;
 	stateParam_.enableMove_ = true;
+	stateParam_.isJumping_ = false;
 }
 
 void BaseEnemy::ResetSearch()
@@ -168,8 +169,9 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 			return;
 		}
 		// 初回ヒット時はヒットジャンプステートに遷移
-		if (currentHp_ == maxHp_) {
+		if (other->GetColliderName() == "MuscleCompanion" && other->GetRadius() > 0.75f && !stateParam_.isJumping_) {
 			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
+			stateParam_.isJumping_ = true;
 			ChangeState(std::make_unique<EnemyHitJumpState>(this));
 		}
 		if (!hitCollider_ && (other->GetColliderName() == "MuscleCompanion" || other->GetColliderName() == "MuscleCompanionAttack")) {

@@ -4,6 +4,7 @@
 
 #include "Objects/Player/Player.h"
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
+#include "Objects/MuscleCompanion/State/CompanionMoveState.h"
 
 CompanionDashState::CompanionDashState(MuscleCompanion* companion) : CompanionBaseState(companion) {}
 
@@ -23,11 +24,13 @@ void CompanionDashState::Init()
 	const auto& player = companion_->GetPlayer();
 	Vector3 targetPosition = player->GetTransform().translation_;
 
-	if (player->GetShot()->GetTargetPosition().Length() == 0.0f) {
+	if (!player->GetShot()->GetTargetCollider()) {
 		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(player->GetTransform().rotation_);
 		targetPosition += (Vector3::ExprUnitZ * 15.0f).Transform(rotate);
 	} else {
-		targetPosition = player->GetShot()->GetTargetPosition();
+		targetCollider_ = player->GetShot()->GetTargetCollider();
+		// 探索を更新する
+		companion_->ResetSearch(targetCollider_->GetCenterPosition());
 	}
 
 	// 攻撃の速度ベクトルを設定する
@@ -48,10 +51,44 @@ void CompanionDashState::Finalize()
 
 void CompanionDashState::Update()
 {
+	// スピードを取得
+	const float speed = companion_->GetItems()->GetDashData().dashSpeed;;
+
+	if (targetCollider_) {
+		// データを取得する
+		const auto& data = companion_->GetItems()->GetMainData();
+		// 時間を更新
+		searchTimer_ += DeltaTimer::GetDeltaTime();
+		// 更新時間が来たら探索を再更新する
+		if (searchTimer_ > data.searchUpdateTime) {
+			companion_->ResetSearch(targetCollider_->GetCenterPosition());
+			searchTimer_ = 0.0f;
+		}
+
+		// 経路探索の更新
+		companion_->GetPathFinder().Update(speed);
+		companion_->GetPathFinder().DebugSpline(data.debugSpline);
+
+		// 移動の更新
+		velocity_ = companion_->GetPathFinder().GetVelocity();
+		velocity_.y = 0.0f;
+		if (velocity_.Length() != 0.0f) { velocity_ = velocity_.Normalize(); }
+
+		// 移動時の回転の更新
+		if (velocity_.Length() != 0.0f) {
+			Quaternion yRotation = companion_->GetPathFinder().GetRotation();
+			companion_->SetTransformRotation(Quaternion::Slerp(companion_->GetTransform().rotation_, yRotation, 0.2f));
+		}
+		if (!targetCollider_->GetActive()) {
+			companion_->SetGatherRequested(true);
+			companion_->ChangeState(std::make_unique<CompanionMoveState>(companion_));
+		}
+	}
+
 	// 移動を更新
 	companion_->SetTransformTranslation(
-		companion_->GetTransform().translation_ + velocity_ *
-		companion_->GetItems()->GetDashData().dashSpeed * DeltaTimer::GetDeltaTime());
+		companion_->GetTransform().translation_ +
+		velocity_ * speed * DeltaTimer::GetDeltaTime());
 }
 
 void CompanionDashState::Draw()

@@ -4,6 +4,7 @@
 
 #include "Vector3.h"
 #include "Quaternion.h"
+#include "Collider.h"
 
 class CompanionDashState : public CompanionBaseState
 {
@@ -19,7 +20,12 @@ public:
 	/// 現在のステートを取得する
 	/// </summary>
 	/// <returns></returns>
-	CharacterState GetState() const override { return CharacterState::Dash; }
+	CharacterState GetState() const override { 
+		if (targetCollider_) {
+			return CharacterState::SearchDash;
+		}
+		return CharacterState::Dash; 
+	}
 
 	/// <summary>
 	/// 初期化
@@ -43,11 +49,16 @@ public:
 
 private:
 
+	float searchTimer_ = 0.0f;
+
 	// 攻撃の速度ベクトル
 	Vector3 velocity_ = Vector3::ExprZero;
 
 
 	Quaternion yRotation_ = Quaternion::IdentityQuaternion();
+
+
+	Collider* targetCollider_ = nullptr;
 
 };
 

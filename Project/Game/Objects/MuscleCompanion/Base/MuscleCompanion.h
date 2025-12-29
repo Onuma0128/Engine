@@ -57,7 +57,7 @@ public:
 	/// <summary>
 	/// 経路探索をリセットする
 	/// </summary>
-	void ResetSearch();
+	void ResetSearch(const Vector3& goalPosition);
 
 	/// <summary>
 	/// プレイヤーとの距離を測りフラグを返す

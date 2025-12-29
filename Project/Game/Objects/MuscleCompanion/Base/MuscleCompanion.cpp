@@ -28,7 +28,7 @@ void MuscleCompanion::Initialize()
 	Collider::radius_ = transform_.scale_.x;
 	Collider::isActive_ = true;
 	Collider::targetColliderName_ = { 
-		"MuscleCompanion","Enemy","EnemyRay","EnemyMelee",
+		"MuscleCompanion","Enemy","EnemyRay","EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
 	Collider::DrawCollider();
@@ -84,13 +84,17 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	}
 
 	// ダッシュ状態で当たったら
-	if (state_->GetState() == CharacterState::Dash || state_->GetState() == CharacterState::Move) {
+	bool isDash = state_->GetState() == CharacterState::Dash;
+	bool isSearchDash = state_->GetState() == CharacterState::SearchDash;
+	bool isMove = state_->GetState() == CharacterState::Move;
+
+	if (isDash || isSearchDash || isMove) {
 		// 建物に当たったら待機状態へ
-		if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
+		if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) && isDash) {
 			ChangeState(std::make_unique<CompanionIdleState>(this));
 		// 敵に当たったら攻撃状態へ
 		} else if (other->GetColliderName() == "Enemy") {
-			if (Collider::radius_ > 0.5f) {
+			if (Collider::radius_ > 0.6f) {
 				isFirstDashAttack_ = true;
 				Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
 				Quaternion yRotation_ = Quaternion::DirectionToQuaternion(
@@ -149,9 +153,9 @@ void MuscleCompanion::ChangeState(std::unique_ptr<CompanionBaseState> newState)
 	state_->Init();
 }
 
-void MuscleCompanion::ResetSearch() 
+void MuscleCompanion::ResetSearch(const Vector3& goalPosition)
 {
-	pathFinder_.Search(transform_.translation_, player_->GetTransform().translation_);
+	pathFinder_.Search(transform_.translation_, goalPosition);
 }
 
 bool MuscleCompanion::SearchDistance()

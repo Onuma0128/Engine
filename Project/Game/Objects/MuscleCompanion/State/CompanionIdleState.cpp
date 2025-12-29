@@ -27,6 +27,12 @@ void CompanionIdleState::Update()
 {
 	// 集合要求がなければ何もしない
 	if(!companion_->GetGatherRequested()) {
+		// 距離が近づいたら待機ステートに遷移する 
+		if (!companion_->SearchDistance()) {
+			companion_->SetGatherRequested(true);
+			companion_->SetReturnOriginal(true);
+			companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
+		}
 		return;
 	}
 
@@ -38,8 +44,8 @@ void CompanionIdleState::Update()
 
 	// プレイヤーが指示を出したら攻撃ステートに遷移する
 	if (companion_->GetPlayer()->GetShot()->GetIsShot()) {
-		companion_->ChangeState(std::make_unique<CompanionDashState>(companion_));
 		companion_->GetPlayer()->GetShot()->SetIsShot(false);
+		companion_->ChangeState(std::make_unique<CompanionDashState>(companion_));
 		return;
 	}
 }

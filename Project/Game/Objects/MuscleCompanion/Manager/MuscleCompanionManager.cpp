@@ -53,10 +53,12 @@ void MuscleCompanionManager::GatherCompanions()
 	}
 	player_->GetShot()->SetIsCanAttack(IsShotCompanion());
 
-	// プレイヤーの弾から集合要求が来ていたら
+	// プレイヤーから集合要求が来ていたら
 	if (player_->GetShot()->GetGatherRequested()) {
 		for (auto& companion : companions_) {
-			companion->SetGatherRequested(true);
+			if (companion->GetState() == CharacterState::Idle) {
+				companion->SetGatherRequested(true);
+			}
 		}
 		player_->GetShot()->SetIsCanAttack(true);
 		player_->GetShot()->SetGatherRequested(false);
@@ -97,7 +99,7 @@ bool MuscleCompanionManager::IsShotCompanion()
 {
 	bool isShot = false;
 	for (auto& companion : companions_) {
-		if (companion->GetGatherRequested()) {
+		if (companion->GetGatherRequested() && companion->GetState() != CharacterState::Dead) {
 			isShot = true;
 			break;
 		}

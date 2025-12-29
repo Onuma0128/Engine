@@ -100,7 +100,7 @@ void PlayerMoveState::Update()
 	// StickのVelocityから回転を計算
 	if (rotateVelocity.Length() != 0.0f) {
 		if(player_->GetShot()->GetIsRayHit()) {
-			rotateVelocity = (player_->GetShot()->GetRayHitPosition() - player_->GetTransform().translation_).Normalize();
+			rotateVelocity = (player_->GetShot()->GetRayHitCollider()->GetCenterPosition() - player_->GetTransform().translation_).Normalize();
 		}
 		rightStickVelocity_ = rotateVelocity;
 		rightStickQuaternion_ = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rightStickVelocity_, 1.0f);

@@ -18,10 +18,10 @@ void CompanionMoveState::Init()
 	companion_->PlayByName("Run");
 	companion_->GetMaterial().outlineColor = Vector3::ExprUnitZ;
 	// 探索を更新する
-	companion_->ResetSearch();
+	companion_->ResetSearch(companion_->GetPlayer()->GetTransform().translation_);
 	// ダッシュ用のコライダースケールを設定する
 	if (!companion_->GetReturnOriginal()) {
-		companion_->SetColliderScale(companion_->GetItems()->GetDashData().dashColliderScale);
+		companion_->SetColliderScale(1.3f);
 	}
 }
 
@@ -39,7 +39,7 @@ void CompanionMoveState::Update()
 	searchTimer_ += DeltaTimer::GetDeltaTime();
 	// 更新時間が来たら探索を再更新する
 	if (searchTimer_ > data.searchUpdateTime) {
-		companion_->ResetSearch();
+		companion_->ResetSearch(companion_->GetPlayer()->GetTransform().translation_);
 		searchTimer_ = 0.0f;
 	}
 

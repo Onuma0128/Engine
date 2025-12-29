@@ -70,7 +70,8 @@ void EnemyBullet::OnCollisionEnter(Collider* other)
 	const auto& name = other->GetColliderName();
 
 	// 当たったらな消す
-	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) ||
+		other->GetColliderName() == "MuscleCompanion") {
 		IsCollision();
 	}
 }

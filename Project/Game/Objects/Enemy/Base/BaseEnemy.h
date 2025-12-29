@@ -24,6 +24,8 @@ struct EnemyStateParam {
 	bool isDead_ = false;
 	// プレイヤーのReticleに当たっているか
 	bool hitReticle_ = false;
+	// ジャンプをしたか
+	bool isJumping_ = false;
 };
 
 class Player;

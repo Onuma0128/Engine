@@ -207,13 +207,13 @@ void PlayerShot::OnCollisionStay(Collider* other)
 {
 	isRayHit_ = true;
 
-	if (rayHitPosition_ == Vector3::ExprZero) {
-		rayHitPosition_ = other->GetCenterPosition();
+	if (!rayHitCollider_) {
+		rayHitCollider_ = other;
 	} else {
-		float distanceNow = Vector3::Distance(player_->GetTransform().translation_, rayHitPosition_);
+		float distanceNow = Vector3::Distance(player_->GetTransform().translation_, rayHitCollider_->GetCenterPosition());
 		float distanceOther = Vector3::Distance(player_->GetTransform().translation_, other->GetCenterPosition());
 		if (distanceOther < distanceNow) {
-			rayHitPosition_ = other->GetCenterPosition();
+			rayHitCollider_ = other;
 		}
 	}
 }
@@ -247,7 +247,9 @@ void PlayerShot::RayUpdate()
 	Collider::Update();
 
 	rayReticle_->SetRaticleAlpha(isRayHit_);
-	rayReticle_->SetPosition(rayHitPosition_);
+	if (rayHitCollider_) {
+		rayReticle_->SetPosition(rayHitCollider_->GetCenterPosition());
+	}
 	rayReticle_->Update();
 
 	ResetRayHit();

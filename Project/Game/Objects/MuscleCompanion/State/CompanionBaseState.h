@@ -8,6 +8,7 @@ enum class CharacterState {
 	Idle,
 	Move,
 	Dash,
+	SearchDash,
 	Attack,
 	Dead,
 };
