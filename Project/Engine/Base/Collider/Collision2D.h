@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector2.h"
+#include "Vector3.h"
 
 // 円
 struct Circle {
@@ -17,6 +18,7 @@ struct OBB_2D {
 	Vector2 center;
 	float rotate;
 	Vector2 size;
+	Vector3 worldPosition;
 };
 
 /// <summary>

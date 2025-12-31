@@ -47,6 +47,8 @@ public:
 	/// <param name="newState"></新しいステートを入れる>
 	void ChangeState(std::unique_ptr<PlayerBaseState> newState);
 
+private:
+
 	/// <summary>
 	/// 当たり判定
 	/// </summary>
@@ -54,6 +56,8 @@ public:
 	void OnCollisionEnter(Collider* other) override;
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
+
+public:
 
 	/// ==================== アクセッサ ==================== ///
 

@@ -16,7 +16,6 @@ void CompanionIdleState::Init()
 	} else {
 		companion_->PlayByName("Idle");
 	}
-	companion_->GetMaterial().outlineColor = Vector3::ExprZero;
 }
 
 void CompanionIdleState::Finalize()

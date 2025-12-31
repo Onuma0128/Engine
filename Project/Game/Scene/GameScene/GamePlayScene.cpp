@@ -51,6 +51,13 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->SetMapData(mapCollision_.get());
 	enemySpawnerFactory_->Init(loader);
 
+	// ボス敵の初期化と生成
+	bossEnemy_ = std::make_unique<BossEnemy>();
+	bossEnemy_->SetMapData(mapCollision_.get());
+	bossEnemy_->SetPlayer(player_.get());
+	bossEnemy_->SetEnemySpawnerFactory(enemySpawnerFactory_.get());
+	bossEnemy_->Initialize();
+
 	// ゲームシーン全体のUIを初期化
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();
 	gameSceneUis_->Init();
@@ -78,6 +85,9 @@ void GamePlayScene::Update()
 
 	// 敵スポナーと敵の更新
 	enemySpawnerFactory_->Update();
+
+	// ボス敵の更新
+	bossEnemy_->Update();
 
 	// フィールド上のオブジェクトの更新
 	fieldObjectFactory_->Update();

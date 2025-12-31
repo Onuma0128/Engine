@@ -6,9 +6,9 @@
 #include "ParticleEmitter.h"
 #include "Camera.h"
 
-#include "scene/sceneFade/SceneFade.h"
-#include "uis/titleUI/TitleUI.h"
-#include "objects/fieldObject/Factory/FieldObjectFactory.h"
+#include "Scene/SceneFade/SceneFade.h"
+#include "Uis/TitleUI/TitleUI.h"
+#include "Objects/FieldObject/Factory/FieldObjectFactory.h"
 
 /// <summary>
 /// タイトルシーン
@@ -51,8 +51,8 @@ private:
 
 	// パーティクルを管理する
 	ParticleManager* particleManager = ParticleManager::GetInstance();
+
 	// エフェクト
 	std::shared_ptr<ParticleEmitter> test = nullptr;
-
 
 };

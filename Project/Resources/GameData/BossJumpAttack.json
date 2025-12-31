@@ -1,0 +1,16 @@
+{
+    "attackColliderSize": 1.7999999523162842,
+    "attackColliderOffset": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "attackStartupTime": 1.5,
+    "jumpUpTime": 1.0,
+    "airHoldTime": 2.0,
+    "fallDownTime": 0.5,
+    "attackRecoveryTime": 1.0,
+    "jumpVelocityY": 30.0,
+    "jumpAccelerY": -30.0,
+    "airSpeed": 6.0
+}

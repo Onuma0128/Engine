@@ -18,7 +18,7 @@ void MuscleCompanion::Initialize()
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Idle");
 	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
+	Animation::GetMaterial().outlineColor = Vector3::ExprUnitY;
 
 	// コライダーを設定
 	Collider::AddCollider();
@@ -28,7 +28,8 @@ void MuscleCompanion::Initialize()
 	Collider::radius_ = transform_.scale_.x;
 	Collider::isActive_ = true;
 	Collider::targetColliderName_ = { 
-		"MuscleCompanion","Enemy","EnemyRay","EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite",
+		"MuscleCompanion","Enemy","BossEnemy" ,"EnemyRay",
+		"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
 	Collider::DrawCollider();
@@ -107,6 +108,9 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	// 敵の攻撃に当たったら体力を1減らす
 	if (CollisionFilter::CheckColliderNameEnemy(other->GetColliderName())) {
 		--currentHp_;
+		float color = static_cast<float>(currentHp_) / static_cast<float>(maxHp_);
+		Vector3 outlineColor = { 1.0f - color,color,0.0f };
+		Animation::GetMaterial().outlineColor = outlineColor;
 		if (currentHp_ <= 0) {
 			ChangeState(std::make_unique<CompanionDeadState>(this));
 		}

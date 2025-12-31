@@ -51,6 +51,13 @@ public:
 	/// <param name="mapData"></param>
 	void SetMapData(MapCollision* mapData) { mapData_ = mapData; }
 
+	/// <summary>
+	/// 敵を指定座標に湧かせる
+	/// </summary>
+	/// <param name="type"></湧かせたい敵のタイプ>
+	/// <param name="position"></湧かせたい座標>
+	void SetSpawnEnemy(EnemyType type, const Vector3& position);
+
 private:
 
 	/// <summary>
@@ -84,6 +91,18 @@ private:
 	/// <param name="enemys"></敵のリスト>
 	/// <param name="spawner"></スポナーを決める>
 	void ResetTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& enemys, std::unique_ptr<EnemySpawner>& spawner);
+
+	const std::list<std::unique_ptr<BaseEnemy>>& GetEnemys(EnemyType type) {
+		switch (type)
+		{
+		case EnemyType::kMelee:			return enemyMelees_;		break;
+		case EnemyType::kRanged:		return enemyRnageds_;		break;
+		case EnemyType::kShieldBearer:	return enemyShieldBearers_;	break;
+		case EnemyType::kRangedElite:	return enemyRnagedElites_;	break;
+		default:										break;
+		}
+		return enemyMelees_;
+	}
 
 private:
 

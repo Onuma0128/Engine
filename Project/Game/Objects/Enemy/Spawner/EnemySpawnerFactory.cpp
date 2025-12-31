@@ -63,6 +63,20 @@ void EnemySpawnerFactory::Draw()
 
 }
 
+void EnemySpawnerFactory::SetSpawnEnemy(EnemyType type, const Vector3& position)
+{
+	const auto& enemys = GetEnemys(type);
+
+	for (const auto& enemy : enemyMelees_) {
+		if (!enemy->GetEnableMove()) {
+			Vector3 pos = position;
+			enemy->Reset(Vector3{ pos.x,0.0f,pos.z });
+			enemySpawners_[0]->GetEnemyList().push_back(enemy.get());
+			break;
+		}
+	}
+}
+
 void EnemySpawnerFactory::CreateSpawner(SceneObject object)
 {
 	std::unique_ptr<EnemySpawner> spawner = std::make_unique<EnemySpawner>();

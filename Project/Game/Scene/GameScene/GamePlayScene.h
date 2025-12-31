@@ -14,6 +14,7 @@
 #include "Objects/Enemy/Spawner/EnemySpawnerFactory.h"
 #include "Objects/FieldObject/Factory/FieldObjectFactory.h"
 #include "Objects/MuscleCompanion/Manager/MuscleCompanionManager.h"
+#include "Objects/Boss/Base/BossEnemy.h"
 
 #include "GameCamera/GameCamera.h"
 #include "SearchAlgorithm/Collision/MapCollision.h"
@@ -58,6 +59,9 @@ private:
 
 	// 敵の生成
 	std::unique_ptr<EnemySpawnerFactory> enemySpawnerFactory_ = nullptr;
+
+	// ボス敵の生成
+	std::unique_ptr<BossEnemy> bossEnemy_ = nullptr;
 
 	// フィールド場のオブジェクト
 	std::unique_ptr<FieldObjectFactory> fieldObjectFactory_ = nullptr;

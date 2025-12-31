@@ -16,7 +16,6 @@ void CompanionMoveState::Init()
 {
 	// アニメーションを変更
 	companion_->PlayByName("Run");
-	companion_->GetMaterial().outlineColor = Vector3::ExprUnitZ;
 	// 探索を更新する
 	companion_->ResetSearch(companion_->GetPlayer()->GetTransform().translation_);
 	// ダッシュ用のコライダースケールを設定する

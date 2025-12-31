@@ -11,7 +11,7 @@ EnemyHitJumpState::EnemyHitJumpState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 void EnemyHitJumpState::Init()
 {
 	// ジャンプ関連パラメータを取得
-	const auto data = enemy_->GetItem()->GetMainData();
+	const auto& data = enemy_->GetItem()->GetMainData();
 	hitJumpVelocityY_ = data.hitJumpVelocityY;
 	hitJumpAccelerY_ = data.hitJumpAccelerY;
 	hitJumpNockbackScale_ = data.hitJumpNockbackScale;

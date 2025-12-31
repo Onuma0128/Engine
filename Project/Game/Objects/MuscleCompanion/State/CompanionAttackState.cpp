@@ -11,7 +11,6 @@ CompanionAttackState::CompanionAttackState(MuscleCompanion* companion) : Compani
 void CompanionAttackState::Init()
 {
 	companion_->PlayByName("Idle");
-	companion_->GetMaterial().outlineColor = Vector3::ExprUnitXYZ - Vector3::ExprUnitZ;
 	ChangeAttackState(AttackState::StartUp);
 
 	const auto& colliders = companion_->GetAttackCollider()->GetHitColliders();

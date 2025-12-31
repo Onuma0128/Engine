@@ -19,7 +19,8 @@ void MapCollision::Init(SceneJsonLoader loader)
 					OBB_2D obb = {
 						.center = object.collider.defPosition + center,
 						.rotate = object.collider.rotate,
-						.size = {object.collider.size.x,object.collider.size.z}
+						.size = {object.collider.size.x,object.collider.size.z},
+						.worldPosition = object.transform.translation_
 					};
 					objects_obb_.push_back(obb);
 				} else {
@@ -35,7 +36,7 @@ void MapCollision::Init(SceneJsonLoader loader)
 	}
 
 	cell_ = 1.0f;					// グリッドの1マスの幅
-	size_ = 120.0f;					// グリッドの全体サイズ
+	size_ = 70.0f;					// グリッドの全体サイズ
 	half_ = size_ * kHalfValue_;	// グリッドの半径
 
 	// グリッドを初期化

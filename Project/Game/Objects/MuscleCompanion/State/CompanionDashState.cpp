@@ -12,7 +12,6 @@ void CompanionDashState::Init()
 {
 	// アニメーションを変更
 	companion_->PlayByName("Run_Arms");
-	companion_->GetMaterial().outlineColor = Vector3::ExprUnitX;
 	// 集合要求フラグをfalseにする
 	companion_->SetGatherRequested(false);
 	// 元の場所に戻ったフラグをfalseにする

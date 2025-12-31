@@ -1295,6 +1295,16 @@
     <ClCompile Include="Game\Objects\MuscleCompanion\Collider\CompanionFollowerCollider.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Effect\CompanionEffect.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionDeadState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\Base\BossEnemy.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossBaseState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossMoveState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\AdjustItem\BossAdjustItem.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossEnemySpawnState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossJumpAttackState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossDashAttackState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossMeleeState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\Collider\BossAttackCollider.cpp" />
+    <ClCompile Include="Game\Objects\Boss\Ray\BossRay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1310,5 +1320,15 @@
     <ClInclude Include="Game\Objects\MuscleCompanion\Collider\CompanionFollowerCollider.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Effect\CompanionEffect.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionDeadState.h" />
+    <ClInclude Include="Game\Objects\Boss\Base\BossEnemy.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossBaseState.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossMoveState.h" />
+    <ClInclude Include="Game\Objects\Boss\AdjustItem\BossAdjustItem.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossEnemySpawnState.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossJumpAttackState.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossDashAttackState.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossMeleeState.h" />
+    <ClInclude Include="Game\Objects\Boss\Collider\BossAttackCollider.h" />
+    <ClInclude Include="Game\Objects\Boss\Ray\BossRay.h" />
   </ItemGroup>
 </Project>

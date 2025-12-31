@@ -6,7 +6,6 @@ CompanionDeadState::CompanionDeadState(MuscleCompanion* companion) : CompanionBa
 
 void CompanionDeadState::Init()
 {
-	companion_->GetMaterial().outlineColor = Vector3::ExprUnitXYZ;
 	companion_->ForcePlayByName("Death");
 	companion_->GetTimeStop() = true;
 
