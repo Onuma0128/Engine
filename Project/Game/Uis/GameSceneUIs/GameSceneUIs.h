@@ -5,7 +5,9 @@
 
 #include "BaseUI.h"
 
-#include "uis/select/SelectSystem.h"
+#include "Uis/Select/SelectSystem.h"
+#include "Uis/Player/NumberCountUI.h"
+#include "Uis/GameSceneUIs/AdjustItem/GameUiAdjustItem.h"
 
 /// <summary>
 /// ゲームシーンのUIを管理するクラス
@@ -44,15 +46,15 @@ public:
 	/// キル数を設定する
 	/// </summary>
 	/// <param name="num"></param>
-	void SetKillCount(int num) { selectSystem_->SetKillCount(num); }
-
-	/// <summary>
-	/// 命中率を設定する
-	/// </summary>
-	/// <param name="num"></param>
-	void SetHitRate(int num) { selectSystem_->SetHitRate(num); }
+	void SetKillCount(int num) { 
+		knockdownCount_ = num;
+		selectSystem_->SetKillCount(num);
+	}
 
 private:
+
+	// 調整項目
+	std::unique_ptr<GameUiAdjustItem> items_ = nullptr;
 
 	// 操作系のUI
 	std::vector<std::unique_ptr<BaseUI>> controlUIs_;
@@ -62,6 +64,12 @@ private:
 
 	// フェード
 	std::unique_ptr<BaseUI> sceneFade_ = nullptr;
+
+	// 敵のキル数UI
+	std::unique_ptr<NumberCountUI> killCountUI_ = nullptr;
+	std::unique_ptr<NumberCountUI> maxKillCountUI_ = nullptr;
+	std::unique_ptr<BaseUI> catUI_ = nullptr;
+	uint32_t knockdownCount_ = 0;
 
 };
 

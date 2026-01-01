@@ -5,6 +5,7 @@
 #include "Objects/Boss/Base/BossEnemy.h"
 #include "Objects/Player/Player.h"
 #include "Objects/Boss/State/BossEnemySpawnState.h"
+#include "Objects/Boss/Evaluator/BossStateEvaluator.h"
 
 BossMoveState::BossMoveState(BossEnemy* boss) : BossBaseState(boss) {}
 
@@ -53,6 +54,9 @@ void BossMoveState::Update()
 		Quaternion yRotation = boss_->GetPathFinder().GetRotation();
 		boss_->SetTransformRotation(Quaternion::Slerp(boss_->GetTransform().rotation_, yRotation, 0.2f));
 	}
+
+	// ステートを変更する
+	boss_->GetStateEvaluator()->Update();
 }
 
 void BossMoveState::Draw()

@@ -1,0 +1,23 @@
+{
+    "scoreAccumulationTime": 3.0,
+    "phaseHpThreshold": 0,
+    "playerToDistance": 7.0,
+    "spawnHpHigh": 30,
+    "spawnHpLow": 5,
+    "spawnDistanceHigh": 25,
+    "spawnDistanceLow": 10,
+    "spawnLookHigh": 20,
+    "spawnLookLow": 3,
+    "jumpAttackHpHigh": 15,
+    "jumpAttackHpLow": 7,
+    "jumpAttackDistanceHigh": 20,
+    "jumpAttackDistanceLow": -5,
+    "jumpAttackLookHigh": 30,
+    "jumpAttackLookLow": -5,
+    "dashAttackHpHigh": 10,
+    "dashAttackHpLow": 5,
+    "dashAttackDistanceHigh": 10,
+    "dashAttackDistanceLow": -5,
+    "dashAttackLookHigh": 25,
+    "dashAttackLookLow": -5
+}

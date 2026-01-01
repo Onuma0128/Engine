@@ -38,7 +38,7 @@ void Player::Initialize()
 		Collider::radius_ = player.collider.radius;
 		Collider::targetColliderName_ = {
 			"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite","EnemyRay","BossRay",
-			"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","BossEnemy",
+			"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","BossEnemy","BossAttack",
 		};
 		Collider::DrawCollider();
 	}

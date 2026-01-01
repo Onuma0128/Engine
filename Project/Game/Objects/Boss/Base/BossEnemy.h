@@ -8,6 +8,7 @@
 #include "Objects/Boss/AdjustItem/BossAdjustItem.h"
 #include "Objects/Boss/State/BossBaseState.h"
 #include "Objects/Boss/Collider/BossAttackCollider.h"
+#include "Objects/Boss/Evaluator/BossStateEvaluator.h"
 #include "Objects/Boss/Ray/BossRay.h"
 
 // 前方宣言
@@ -66,8 +67,11 @@ public:
 	void SetEnemySpawnerFactory(EnemySpawnerFactory* factory) { spawnerFactory_ = factory; }
 
 	// ゲッター
+	const bool GetLooking()const { return ray_->GetLooking(); }
+	const uint32_t GetCurrentHp()const { return currentHp_; }
 	const Player* GetPlayer()const { return player_; }
 	const BossAdjustItem* GetItems() const { return items_.get(); }
+	BossStateEvaluator* GetStateEvaluator() { return stateEvaluator_.get(); }
 	EnemySpawnerFactory* GetSpawnerFactory() { return spawnerFactory_; }
 	BossAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
 	PathFinder& GetPathFinder() { return pathFinder_; }
@@ -85,6 +89,7 @@ private:
 
 	// ボスの状態遷移用ステート
 	std::unique_ptr<BossBaseState> state_ = nullptr;
+	std::unique_ptr<BossStateEvaluator> stateEvaluator_ = nullptr;
 
 	// ボスの攻撃用コライダー
 	std::unique_ptr<BossAttackCollider> attackCollider_ = nullptr;
@@ -94,6 +99,11 @@ private:
 
 	// 経路探索
 	PathFinder pathFinder_;
+
+	// ボスのMaxHP
+	uint32_t maxHp_ = 1;
+	// ボスの現在のHP
+	uint32_t currentHp_ = 1;
 
 };
 

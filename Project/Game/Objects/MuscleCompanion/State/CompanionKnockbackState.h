@@ -2,16 +2,12 @@
 
 #include "Objects/MuscleCompanion/State/CompanionBaseState.h"
 
-// 攻撃ステートの状態
-enum class AttackState
-{
-	StartUp,
-	Active,
-	Recovery,
-	Finish,
-};
+#include "Vector3.h"
 
-class CompanionAttackState : public CompanionBaseState
+/// <summary>
+/// ノックバックステートクラス
+/// </summary>
+class CompanionKnockbackState : public CompanionBaseState
 {
 public:
 
@@ -19,13 +15,13 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="player"></param>
-	CompanionAttackState(MuscleCompanion* companion);
+	CompanionKnockbackState(MuscleCompanion* companion);
 
 	/// <summary>
 	/// 現在のステートを取得する
 	/// </summary>
 	/// <returns></returns>
-	CharacterState GetState() const override { return CharacterState::Attack; }
+	CharacterState GetState() const override { return CharacterState::Knockback; }
 
 	/// <summary>
 	/// 初期化
@@ -49,18 +45,13 @@ public:
 
 private:
 
-	void ChangeAttackState(AttackState newState);
-
-private:
-
-	// 攻撃タイマー
+	// 時間
 	float timer_ = 0.0f;
+	float maxTime_ = 0.0f;
 
-	// 攻撃ステート
-	AttackState attackState_ = AttackState::StartUp;
-
-	// ヒットしたかを判定する
-	bool isHit_ = false;
+	// ノックバックされる座標
+	Vector3 prePos_ = {};
+	Vector3 target_ = {};
 
 };
 

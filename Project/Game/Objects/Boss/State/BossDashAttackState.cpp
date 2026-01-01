@@ -12,6 +12,11 @@ BossDashAttackState::BossDashAttackState(BossEnemy* boss) : BossBaseState(boss) 
 
 void BossDashAttackState::Init()
 {
+	if (!boss_->GetLooking()) {
+		boss_->ChangeState(std::make_unique<BossMoveState>(boss_));
+		return;
+	}
+
 	boss_->PlayByName("Run");
 }
 
@@ -79,7 +84,7 @@ void BossDashAttackState::Update()
 	case DashAttackState::Finish:
 
 		// ステートを変える
-		boss_->ChangeState(std::make_unique<BossDashAttackState>(boss_));
+		boss_->ChangeState(std::make_unique<BossMoveState>(boss_));
 
 		break;
 	default:

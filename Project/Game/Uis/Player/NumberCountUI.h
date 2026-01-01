@@ -48,7 +48,7 @@ private:
 /// <summary>
 /// プレイヤーの数を表示するUI
 /// </summary>
-class PlayerCountUI
+class NumberCountUI
 {
 public:
 
@@ -66,7 +66,7 @@ public:
 	/// <summary>
 	/// 数字のモチぷにスケール
 	/// </summary>
-	void MochiPuniScale(const uint32_t killCount);
+	void MochiPuniScale(const uint32_t killCount, const float mochiPuniScale);
 
 	/// <summary>
 	/// 描画

@@ -155,6 +155,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossDeadState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionKnockbackState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossDownState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\Evaluator\BossStateEvaluator.cpp" />
     <ClCompile Include="Game\Objects\Boss\Ray\BossRay.cpp" />
     <ClCompile Include="Game\Objects\Boss\Collider\BossAttackCollider.cpp" />
     <ClCompile Include="Game\Objects\Boss\State\BossMeleeState.cpp" />
@@ -190,7 +195,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\Enemy\Base\BaseEnemy.cpp" />
     <ClCompile Include="Game\Uis\GameClearUI\GameClearUI.cpp" />
     <ClCompile Include="Game\Uis\GameOverUI\GameOverUI.cpp" />
-    <ClCompile Include="Game\Uis\Player\PlayerCountUI.cpp" />
+    <ClCompile Include="Game\Uis\Player\NumberCountUI.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Weapon\Axe\EnemyAxe.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Weapon\Shield\EnemyShield.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Weapon\EnemyWeaponBase.cpp" />
@@ -326,6 +331,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossDeadState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionKnockbackState.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossDownState.h" />
+    <ClInclude Include="Game\Objects\Boss\Evaluator\BossStateEvaluator.h" />
     <ClInclude Include="Game\Objects\Boss\Ray\BossRay.h" />
     <ClInclude Include="Game\Objects\Boss\Collider\BossAttackCollider.h" />
     <ClInclude Include="Game\Objects\Boss\State\BossMeleeState.h" />
@@ -367,7 +377,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Objects\Enemy\Base\BaseEnemy.h" />
     <ClInclude Include="Game\Uis\GameClearUI\GameClearUI.h" />
     <ClInclude Include="Game\Uis\GameOverUI\GameOverUI.h" />
-    <ClInclude Include="Game\Uis\Player\PlayerCountUI.h" />
+    <ClInclude Include="Game\Uis\Player\NumberCountUI.h" />
     <ClInclude Include="Game\Objects\Enemy\Weapon\Axe\EnemyAxe.h" />
     <ClInclude Include="Game\Objects\Enemy\Weapon\Shield\EnemyShield.h" />
     <ClInclude Include="Game\Objects\Enemy\Weapon\EnemyWeaponBase.h" />

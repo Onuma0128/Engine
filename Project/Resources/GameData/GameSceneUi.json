@@ -1,0 +1,21 @@
+{
+    "killNumberUiInterval": 45.0,
+    "killNumberUiSize": {
+        "x": 72.0,
+        "y": 72.0
+    },
+    "killNumberUiPos": {
+        "x": 560.0,
+        "y": 45.0
+    },
+    "maxKillCount": 30,
+    "maxKillNumberUiInterval": 45.0,
+    "maxKillNumberUiSize": {
+        "x": 72.0,
+        "y": 72.0
+    },
+    "maxKillNumberUiPos": {
+        "x": 678.0,
+        "y": 45.0
+    }
+}

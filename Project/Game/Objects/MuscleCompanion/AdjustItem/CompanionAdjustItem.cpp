@@ -58,6 +58,16 @@ void CompanionAdjustItem::LoadItems()
 		attackData_.attackActiveTime = attackJson_.Get("attackActiveTime", attackData_.attackActiveTime);
 		attackData_.attackRecoveryTime = attackJson_.Get("attackRecoveryTime", attackData_.attackRecoveryTime);
 	}
+
+	/* ============================== Knockback ============================== */
+	knockbackJson_.Init("CompanionKnockback");
+	if (!knockbackJson_.Load()) {
+		knockbackJson_.Set("knockbackSpeed", 0.0f);
+		knockbackJson_.Set("knockbackTime", 1.0f);
+	} else {
+		knockbackData_.knockbackSpeed = knockbackJson_.Get("knockbackSpeed", knockbackData_.knockbackSpeed);
+		knockbackData_.knockbackTime = knockbackJson_.Get("knockbackTime", knockbackData_.knockbackTime);
+	}
 }
 
 void CompanionAdjustItem::Editor()
@@ -94,6 +104,20 @@ void CompanionAdjustItem::Editor()
 			}
 			ImGui::TreePop();
 		}
+		ImGui::Separator();
+		// ノックバック項目
+		if (ImGui::TreeNode("Knockback")) {
+			ImGui::DragFloat("knockbackSpeed", &knockbackData_.knockbackSpeed, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("knockbackTime", &knockbackData_.knockbackTime, 0.01f, 0.1f, 10.0f);
+			// セーブボタン
+			if (ImGui::Button("Save")) {
+				knockbackJson_.Set("knockbackSpeed", knockbackData_.knockbackSpeed);
+				knockbackJson_.Set("knockbackTime", knockbackData_.knockbackTime);
+				knockbackJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+
 		ImGui::Separator();
 		// ダッシュ項目
 		if (ImGui::TreeNode("Dash")) {

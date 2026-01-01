@@ -35,6 +35,12 @@ struct CompanionAttackData {
 	float attackRecoveryTime;		// 攻撃が終わってから硬直時間
 };
 
+// 仲間のノックバックの調整項目
+struct CompanionKnockbackData {
+	float knockbackSpeed;			// ノックバックスピード
+	float knockbackTime;			// ノックバックしている時間
+};
+
 
 /// <summary>
 /// 仲間の調整項目を調整、ロード、保存管理するクラス
@@ -59,6 +65,7 @@ public:
 	const CompanionMainData& GetMainData() const { return mainData_; }
 	const CompanionDashData& GetDashData() const { return dashData_; }
 	const CompanionAttackData& GetAttackData() const { return attackData_; }
+	const CompanionKnockbackData& GetKnockbackData()const { return knockbackData_; }
 
 private:
 
@@ -66,15 +73,16 @@ private:
 	JsonFunction mainJson_;
 	JsonFunction dashJson_;
 	JsonFunction attackJson_;
+	JsonFunction knockbackJson_;
 
 	// 仲間全体の項目
 	CompanionMainData mainData_;
-
 	// 仲間のダッシュの項目
 	CompanionDashData dashData_;
-
 	// 仲間の攻撃の項目
 	CompanionAttackData attackData_;
+	// 仲間のノックバックの項目
+	CompanionKnockbackData knockbackData_;
 
 };
 

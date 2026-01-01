@@ -23,6 +23,7 @@ void CompanionAttackState::Init()
 			break;
 		}
 	}
+	isHit_ = false;
 }
 
 void CompanionAttackState::Finalize()
@@ -61,6 +62,10 @@ void CompanionAttackState::Update()
 		break;
 	case AttackState::Active:
 
+		if (!isHit_) {
+			isHit_ = companion_->GetAttackCollider()->GetIsHit();
+		}
+
 		if (timer_ >= data.attackActiveTime) {
 			companion_->GetAttackCollider()->SetActive(false);
 			companion_->PlayByName("Idle");
@@ -86,7 +91,7 @@ void CompanionAttackState::Update()
 		// 攻撃が当たっていたら攻撃状態へ、当たっていなければ待機状態へ
 		const auto& colliders = companion_->GetAttackCollider()->GetHitColliders();
 		for (const auto& collider : colliders) {
-			if (collider->GetActive()) {
+			if (collider->GetActive() && isHit_) {
 				companion_->ChangeState(std::make_unique<CompanionAttackState>(companion_));
 				return;
 			}

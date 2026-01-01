@@ -1,10 +1,10 @@
-#include "PlayerCountUI.h"
+#include "NumberCountUI.h"
 
 #include <algorithm> 
 
 #include "DeltaTimer.h"
 
-void PlayerCountUI::Init(bool isNoiseTexture)
+void NumberCountUI::Init(bool isNoiseTexture)
 {
 	const size_t kNumNumber = 3;
 	numbers_.resize(kNumNumber);
@@ -18,7 +18,7 @@ void PlayerCountUI::Init(bool isNoiseTexture)
 	}
 }
 
-void PlayerCountUI::Update(const uint32_t killCount)
+void NumberCountUI::Update(const uint32_t killCount)
 {
 	uint32_t clamped = std::clamp(killCount, 0u, 999u);
 	prevNumber_ = clamped;
@@ -34,9 +34,17 @@ void PlayerCountUI::Update(const uint32_t killCount)
 	for (size_t i = 0; i < numbers_.size(); ++i) {
 		numbers_[i]->Update(digits[i]);
 	}
+	// 二桁目と三桁目が0なら描画しない
+	bool showHundreds = (digits[0] != 0);
+	bool showTens = (digits[0] != 0) || (digits[1] != 0);
+	bool showOnes = true;
+
+	numbers_[0]->GetRenderOptions().enabled = showHundreds;
+	numbers_[1]->GetRenderOptions().enabled = showTens;
+	numbers_[2]->GetRenderOptions().enabled = showOnes;
 }
 
-void PlayerCountUI::MochiPuniScale(const uint32_t killCount)
+void NumberCountUI::MochiPuniScale(const uint32_t killCount, const float mochiPuniScale)
 {
 	if(killCount != prevNumber_) {
 		mochiPuniTime_ = 0.0f;
@@ -46,25 +54,27 @@ void PlayerCountUI::MochiPuniScale(const uint32_t killCount)
 	mochiPuniTime_ = std::clamp(mochiPuniTime_, 0.0f, 1.0f);
 	Vector2 scale = Vector2::MochiPuniScaleNormalized(mochiPuniTime_);
 	for (size_t i = 0; i < numbers_.size(); ++i) {
-		numbers_[i]->GetTransform().size = scale * 80.0f;
+		numbers_[i]->GetTransform().size = scale * mochiPuniScale;
 	}
 }
 
-void PlayerCountUI::Draw()
+void NumberCountUI::Draw()
 {
 	for (auto& number : numbers_) {
-		number->Draw();
+		if (number->GetRenderOptions().enabled) {
+			number->Draw();
+		}
 	}
 }
 
-void PlayerCountUI::SetSize(const Vector2& size)
+void NumberCountUI::SetSize(const Vector2& size)
 {
 	for (auto& number : numbers_) {
 		number->SetSize(size);
 	}
 }
 
-void PlayerCountUI::SetPosition(const Vector2& position)
+void NumberCountUI::SetPosition(const Vector2& position)
 {
 	int count = -1;
 	for (auto& number : numbers_) {
@@ -74,19 +84,19 @@ void PlayerCountUI::SetPosition(const Vector2& position)
 	}
 }
 
-void PlayerCountUI::SetInterval(const float interval)
+void NumberCountUI::SetInterval(const float interval)
 {
 	interval_ = interval;
 }
 
-void PlayerCountUI::SetAlpha(const float alpha)
+void NumberCountUI::SetAlpha(const float alpha)
 {
 	for (auto& number : numbers_) {
 		number->SetColor(Vector4{ 1.0f,1.0f,1.0f,alpha });
 	}
 }
 
-void PlayerCountUI::SetDissolvePrames(const float threshold, const float edgeWidth, const Vector3& edgeColor)
+void NumberCountUI::SetDissolvePrames(const float threshold, const float edgeWidth, const Vector3& edgeColor)
 {
 	for (auto& number : numbers_) {
 		number->SetDissolveThreshold(threshold);

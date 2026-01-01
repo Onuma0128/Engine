@@ -10,6 +10,7 @@
 #include "Objects/MuscleCompanion/State/CompanionMoveState.h"
 #include "Objects/MuscleCompanion/State/CompanionAttackState.h"
 #include "Objects/MuscleCompanion/State/CompanionDeadState.h"
+#include "Objects/MuscleCompanion/State/CompanionKnockbackState.h"
 
 void MuscleCompanion::Initialize()
 {
@@ -28,7 +29,7 @@ void MuscleCompanion::Initialize()
 	Collider::radius_ = transform_.scale_.x;
 	Collider::isActive_ = true;
 	Collider::targetColliderName_ = { 
-		"MuscleCompanion","Enemy","BossEnemy" ,"EnemyRay",
+		"MuscleCompanion","Enemy","BossEnemy" ,"EnemyRay","BossAttack",
 		"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
@@ -94,7 +95,7 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 		if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) && isDash) {
 			ChangeState(std::make_unique<CompanionIdleState>(this));
 		// 敵に当たったら攻撃状態へ
-		} else if (other->GetColliderName() == "Enemy") {
+		} else if (other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") {
 			if (Collider::radius_ > 0.6f) {
 				isFirstDashAttack_ = true;
 				Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
@@ -113,6 +114,9 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 		Animation::GetMaterial().outlineColor = outlineColor;
 		if (currentHp_ <= 0) {
 			ChangeState(std::make_unique<CompanionDeadState>(this));
+		} else if (other->GetColliderName() == "BossAttack") {
+			knockbackDirection_ = transform_.translation_ - other->GetCenterPosition();
+			ChangeState(std::make_unique<CompanionKnockbackState>(this));
 		}
 	}
 }

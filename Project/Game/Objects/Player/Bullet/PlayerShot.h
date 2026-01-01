@@ -10,7 +10,6 @@
 #include "objects/player/reticle/PlayerReticle.h"
 
 #include "uis/player/PlayerBulletUI.h"
-#include "uis/player/PlayerCountUI.h"
 
 class Player;
 
@@ -196,8 +195,6 @@ private:
 	// 必殺技用の弾を6つ生成
 	std::vector<std::unique_ptr<PlayerBullet>> specialBullets_;
 
-	// 敵のキル数UI
-	std::unique_ptr<PlayerCountUI> killCountUI_ = nullptr;
 	uint32_t kNockdownCount_ = 0;
 	uint32_t kChargeCount_ = 0;
 

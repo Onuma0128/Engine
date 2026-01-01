@@ -9,30 +9,6 @@ void PlayerShot::Init(Player* player)
 {
 	player_ = player;
 
-	//// 弾を初期化
-	//const size_t kBulletMax = 6;
-	//bullets_.resize(kBulletMax);
-	//specialBullets_.resize(kBulletMax);
-	//bulletUIs_.resize(kBulletMax);
-	//for (size_t i = 0; i < kBulletMax; ++i) {
-	//	// 通常弾
-	//	bullets_[i] = std::make_unique<PlayerBullet>();
-	//	bullets_[i]->SetItem(player->GetItem());
-	//	bullets_[i]->Init("PlayerBullet");
-	//	bullets_[i]->SetPlayerShot(this);
-	//	// 必殺技の弾
-	//	specialBullets_[i] = std::make_unique<PlayerBullet>();
-	//	specialBullets_[i]->SetItem(player->GetItem());
-	//	specialBullets_[i]->Init("PlayerBulletSpecial");
-	//	specialBullets_[i]->SetPlayerShot(this);
-	//	// 弾UIを初期化
-	//	bulletUIs_[i] = std::make_unique<PlayerBulletUI>();
-	//	bulletUIs_[i]->Init(Vector2{});
-	//}
-	// Kill数UIの初期化
-	killCountUI_ = std::make_unique<PlayerCountUI>();
-	killCountUI_->Init();
-
 	// 弾の予測オブジェクトの初期化
 	for (auto& object : predictionObjects_) {
 		object = std::make_unique<PredictionObject>();
@@ -47,7 +23,7 @@ void PlayerShot::Init(Player* player)
 	Collider::myType_ = ColliderType::kOBB;
 	Collider::colliderName_ = "PlayerShotRay";
 	Collider::isActive_ = true;
-	Collider::targetColliderName_ = { "Enemy","DeadTree" };
+	Collider::targetColliderName_ = { "Enemy","BossEnemy" };
 	Collider::DrawCollider();
 
 	rayReticle_ = std::make_unique<PlayerRayReticle>();
@@ -84,9 +60,6 @@ void PlayerShot::Update()
 
 void PlayerShot::UpdateUI()
 {
-	killCountUI_->MochiPuniScale(kNockdownCount_);
-	killCountUI_->Update(kNockdownCount_);
-
 	size_t bulletUICount = 0;
 	float startPos = player_->GetItem()->GetBulletUIData().startPosition;
 	Vector2 position = player_->GetItem()->GetBulletUIData().position;
@@ -106,8 +79,6 @@ void PlayerShot::UpdateUI()
 
 void PlayerShot::DrawUI()
 {
-	killCountUI_->Draw();
-
 	rayReticle_->Draw();
 
 	for (auto& bulletUI : bulletUIs_) {

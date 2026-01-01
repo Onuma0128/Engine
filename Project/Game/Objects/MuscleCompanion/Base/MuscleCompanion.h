@@ -80,10 +80,11 @@ public:
 	const CharacterState GetState() const { return state_->GetState(); }
 	CompanionAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
 	CompanionFollowerCollider* GetFollowerCollider() { return followerCollider_.get(); }
+	PathFinder& GetPathFinder() { return pathFinder_; }
 	bool GetGatherRequested() const { return isGatherRequested_; }
 	bool GetReturnOriginal() const { return isReturnOriginal_; }
 	bool GetFirstDashAttack() const { return isFirstDashAttack_; }
-	PathFinder& GetPathFinder() { return pathFinder_; }
+	const Vector3& GetKnockbackDire()const { return knockbackDirection_; }
 
 private:
 
@@ -112,5 +113,7 @@ private:
 	bool isReturnOriginal_ = true;
 	// ダッシュ時の一回目の攻撃かどうか
 	bool isFirstDashAttack_ = true;
+	// ノックバック方向
+	Vector3 knockbackDirection_ = {};
 };
 

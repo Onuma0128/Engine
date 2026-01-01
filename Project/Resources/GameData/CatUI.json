@@ -1,17 +1,24 @@
 {
-    "Texture": "countUI.png",
+    "Texture": "catUI.png",
+    "NoiseTexture": "white1x1.png",
+    "EdgeWidth": 0.0,
+    "NoiseColor": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
     "AnchorPoint": {
         "x": 0.5,
         "y": 0.5
     },
     "Size": {
-        "x": 75.0,
-        "y": 75.0
+        "x": 80.0,
+        "y": 80.0
     },
     "Rotate": 0.0,
     "Position": {
-        "x": 950.0,
-        "y": 372.0
+        "x": 640.0,
+        "y": 43.0
     },
     "Color": {
         "x": 1.0,
@@ -19,16 +26,16 @@
         "z": 1.0,
         "w": 1.0
     },
-    "IsAnimation": true,
-    "AnimationTime": 0.5,
+    "IsAnimation": false,
+    "AnimationTime": 1.0,
     "Anima_Size": {
-        "x": 75.0,
-        "y": 75.0
+        "x": 1.0,
+        "y": 1.0
     },
     "Anima_Rotate": 0.0,
     "Anima_Position": {
-        "x": 950.0,
-        "y": 372.0
+        "x": 0.0,
+        "y": 0.0
     },
     "Anima_Color": {
         "x": 1.0,
@@ -38,13 +45,6 @@
     },
     "InEasingType": 0,
     "OutEasingType": 0,
-    "FadeInInterval": 3.5,
-    "FadeOutInterval": 0.0,
-    "NoiseTexture": "gradationTexture.png",
-    "EdgeWidth": 0.029999999329447746,
-    "NoiseColor": {
-        "x": 1.0,
-        "y": 0.0,
-        "z": 0.0
-    }
+    "FadeInInterval": 0.0,
+    "FadeOutInterval": 0.0
 }

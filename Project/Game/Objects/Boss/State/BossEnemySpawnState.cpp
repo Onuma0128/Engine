@@ -2,6 +2,8 @@
 
 #include "Objects/Boss/Base/BossEnemy.h"
 #include "Objects/Boss/State/BossJumpAttackState.h"
+#include "Objects/Boss/State/BossMoveState.h"
+
 #include "Objects/Enemy/Spawner/EnemySpawnerFactory.h"
 
 BossEnemySpawnState::BossEnemySpawnState(BossEnemy* boss) : BossBaseState(boss) {}
@@ -23,7 +25,7 @@ void BossEnemySpawnState::Finalize()
 
 void BossEnemySpawnState::Update()
 {
-	boss_->ChangeState(std::make_unique<BossJumpAttackState>(boss_));
+	boss_->ChangeState(std::make_unique<BossMoveState>(boss_));
 }
 
 void BossEnemySpawnState::Draw()

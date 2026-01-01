@@ -7,8 +7,9 @@
 #include "SceneJsonLoader.h"
 
 #include "EnemySpawner.h"
-#include "objects/enemy/base/BaseEnemy.h"
-#include "objects/enemy/adjustItem/EnemyAdjustItem.h"
+#include "Objects/Enemy/Base/BaseEnemy.h"
+#include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
+#include "Uis/Player/NumberCountUI.h"
 
 /// <summary>
 /// スポナーを管理するクラス
@@ -57,6 +58,12 @@ public:
 	/// <param name="type"></湧かせたい敵のタイプ>
 	/// <param name="position"></湧かせたい座標>
 	void SetSpawnEnemy(EnemyType type, const Vector3& position);
+
+	/// <summary>
+	/// 敵のキル数を取得する
+	/// </summary>
+	/// <returns></returns>
+	const uint32_t GetKnockdownCount()const { return knockdownCount_; }
 
 private:
 
@@ -111,6 +118,9 @@ private:
 	GameCamera* gameCamera_ = nullptr;
 	MapCollision* mapData_ = nullptr;
 
+	// 敵の調整項目
+	std::unique_ptr<EnemyAdjustItem> items_ = nullptr;
+
 	// 敵のスポナーリスト
 	std::vector<std::unique_ptr<EnemySpawner>> enemySpawners_;
 
@@ -119,14 +129,15 @@ private:
 	std::list<std::unique_ptr<BaseEnemy>> enemyRnageds_;		// 遠距離リスト
 	std::list<std::unique_ptr<BaseEnemy>> enemyShieldBearers_;	// 盾持ちリスト
 	std::list<std::unique_ptr<BaseEnemy>> enemyRnagedElites_;	// 遠距離(強化版)リスト
+	uint32_t spawnCount_ = 0;
+
+	// 敵のキル数
+	uint32_t knockdownCount_ = 0;
 
 	// ランダムデバイス
 	std::random_device seedGenerator_;
 	// スポーンの間隔とスポーンする時間
 	float spawnInterval_ = 0.0f;
 	float spawnTime_ = 0.0f;
-
-	// 敵の調整項目
-	std::unique_ptr<EnemyAdjustItem> items_ = nullptr;
 
 };

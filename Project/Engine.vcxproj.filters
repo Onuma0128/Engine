@@ -1227,10 +1227,10 @@
     <ClInclude Include="Game\Uis\Player\PlayerBulletUI.h">
       <Filter>Game\Uis\Player</Filter>
     </ClInclude>
-    <ClCompile Include="Game\Uis\Player\PlayerCountUI.cpp">
+    <ClCompile Include="Game\Uis\Player\NumberCountUI.cpp">
       <Filter>Game\Uis\Player</Filter>
     </ClCompile>
-    <ClInclude Include="Game\Uis\Player\PlayerCountUI.h">
+    <ClInclude Include="Game\Uis\Player\NumberCountUI.h">
       <Filter>Game\Uis\Player</Filter>
     </ClInclude>
     <ClCompile Include="Game\Uis\Select\AdjustItem\SelectAdjustItem.cpp">
@@ -1305,6 +1305,11 @@
     <ClCompile Include="Game\Objects\Boss\State\BossMeleeState.cpp" />
     <ClCompile Include="Game\Objects\Boss\Collider\BossAttackCollider.cpp" />
     <ClCompile Include="Game\Objects\Boss\Ray\BossRay.cpp" />
+    <ClCompile Include="Game\Objects\Boss\Evaluator\BossStateEvaluator.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossDownState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionKnockbackState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossDeadState.cpp" />
+    <ClCompile Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1330,5 +1335,10 @@
     <ClInclude Include="Game\Objects\Boss\State\BossMeleeState.h" />
     <ClInclude Include="Game\Objects\Boss\Collider\BossAttackCollider.h" />
     <ClInclude Include="Game\Objects\Boss\Ray\BossRay.h" />
+    <ClInclude Include="Game\Objects\Boss\Evaluator\BossStateEvaluator.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossDownState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionKnockbackState.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossDeadState.h" />
+    <ClInclude Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.h" />
   </ItemGroup>
 </Project>

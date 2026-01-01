@@ -9,7 +9,17 @@ BossMeleeState::BossMeleeState(BossEnemy* boss) : BossBaseState(boss) {}
 
 void BossMeleeState::Init()
 {
-	boss_->PlayByName("Jump");
+	// アニメーションの初期化
+	boss_->ForcePlayByName("Jump");
+	boss_->GetTimeStop() = true;
+
+	// ジャンプ関連のパラメーター取得
+	const auto& data = boss_->GetItems()->GetMeleeData();
+	jumpVelocityY_ = data.jumpVelocityY;
+	jumpAccelerY_ = data.jumpAccelerY;
+
+	// 開始Y座標を初期化
+	startY_ = boss_->GetTransform().translation_.y;
 }
 
 void BossMeleeState::Finalize()
@@ -29,15 +39,26 @@ void BossMeleeState::Update()
 	{
 	case MeleeAttackState::StartupTime:
 
+		UpdateJump();
+
 		if (timer_ >= data.attackStartupTime) {
 			boss_->ForcePlayByName("Jump_Land");
+			boss_->GetTimeStop() = false;
+			boss_->SetAnimationTime(0.0f);
 			ChangeAttackState(MeleeAttackState::Attack);
 		}
 		break;
 	case MeleeAttackState::Attack:
 
-		if (timer_ >= data.attackTime) {
+		UpdateJump();
+
+		if (timer_ >= data.attackTime && boss_->GetTransform().translation_.y <= startY_) {
 			boss_->PlayByName("Idle");
+			boss_->GetTimeStop() = false;
+			boss_->SetAnimationTime(1.0f);
+			Vector3 translate = boss_->GetTransform().translation_;
+			translate.y = startY_;
+			boss_->SetTransformTranslation(translate);
 			boss_->GetAttackCollider()->SetActive(true);
 			boss_->GetAttackCollider()->SetColliderSize(data.attackColliderSize);
 			boss_->GetAttackCollider()->SetColliderOffset(data.attackColliderOffset);
@@ -64,6 +85,17 @@ void BossMeleeState::Update()
 
 void BossMeleeState::Draw()
 {
+}
+
+void BossMeleeState::UpdateJump()
+{
+	// 速度更新（加速度）
+	jumpVelocityY_ += jumpAccelerY_ * DeltaTimer::GetDeltaTime();
+
+	// 位置更新（Y方向）
+	Vector3 translate = boss_->GetTransform().translation_;
+	translate.y += jumpVelocityY_ * DeltaTimer::GetDeltaTime();
+	boss_->SetTransformTranslation(translate);
 }
 
 void BossMeleeState::ChangeAttackState(MeleeAttackState newState)

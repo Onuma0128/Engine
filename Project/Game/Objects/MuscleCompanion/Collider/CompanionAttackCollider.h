@@ -32,6 +32,7 @@ public:
 
 	// ゲッター
 	const std::vector<Collider*>& GetHitColliders() { return hitColliders_; }
+	const bool GetIsHit() { return isHit_; }
 
 private:
 
@@ -50,6 +51,7 @@ private:
 
 	// 当たったかどうかのフラグ
 	std::vector<Collider*> hitColliders_;
+	bool isHit_ = true;
 
 };
 

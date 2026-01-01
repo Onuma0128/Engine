@@ -81,6 +81,7 @@ void CompanionDashState::Update()
 		if (!targetCollider_->GetActive()) {
 			companion_->SetGatherRequested(true);
 			companion_->ChangeState(std::make_unique<CompanionMoveState>(companion_));
+			return;
 		}
 	}
 

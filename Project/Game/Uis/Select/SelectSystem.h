@@ -6,9 +6,9 @@
 
 #include "BaseUI.h"
 
-#include "uis/player/PlayerCountUI.h"
+#include "Uis/Player/NumberCountUI.h"
 #include "SelectUI.h"
-#include "adjustItem/SelectAdjustItem.h"
+#include "AdjustItem/SelectAdjustItem.h"
 
 /// <summary>
 /// セレクトUIの表時や更新を管理するクラス
@@ -50,12 +50,6 @@ public:
 	void SetKillCount(int num) { killCount_ = num; }
 
 	/// <summary>
-	/// 命中率を設定する
-	/// </summary>
-	/// <param name="num"></param>
-	void SetHitRate(int num) { hitRate_ = num; }
-
-	/// <summary>
 	/// シーンフェードを設定する
 	/// </summary>
 	/// <param name="sceneFade"></param>
@@ -83,14 +77,13 @@ private:
 	// セレクトの背景画像
 	// キルと命中率のUI
 	// タイトルともう一度のUI
-	std::array<std::unique_ptr<SelectUI>, 8> selectUIs_;
+	std::array<std::unique_ptr<SelectUI>, 6> selectUIs_;
 
 	// タイトルかもう一度かどちらを選んでいるかのIndex
 	uint32_t targetIndex_ = 0u;
 
 	// 倒した数を表示する
-	std::unique_ptr<PlayerCountUI> killCountUI_ = nullptr;
-	std::unique_ptr<PlayerCountUI> hitRateUI_ = nullptr;
+	std::unique_ptr<NumberCountUI> killCountUI_ = nullptr;
 
 	// シーンフェード
 	BaseUI* sceneFade_ = nullptr;
@@ -105,9 +98,8 @@ private:
 	bool isFadeIn_ = false;
 	bool updateSelectUI_ = false;
 
-	// セッターで受け取るキル数と命中率
+	// セッターで受け取るキル数
 	int killCount_ = 0;
-	int hitRate_ = 0;
 
 	// ランダムデバイス
 	std::random_device seedGenerator_;

@@ -42,10 +42,10 @@ void EnemySpawnerFactory::Update()
 	RandomSpawnEnemy();
 
 	// スポナーの更新
-	uint32_t kNockdownCount = 0;
+	knockdownCount_ = 0;
 	for (auto& spawner : enemySpawners_) {
 		spawner->Update();
-		kNockdownCount += spawner->GetNockdownCount();
+		knockdownCount_ += spawner->GetNockdownCount();
 	}
 
 	// スポーンしていない敵の更新処理
@@ -139,6 +139,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		kNockdownCount += spawner->GetNockdownCount();
 	}
 	if (enemySpawnCount >= mainData.maxSpawn) { return; }
+	if (static_cast<int>(spawnCount_) >= mainData.maxSpawnCount) { return; }
 
 	// スポーンタイムを更新
 	spawnTime_ += DeltaTimer::GetDeltaTime();
@@ -185,6 +186,7 @@ void EnemySpawnerFactory::ResetTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& 
 {
 	for (auto& enemy : enemys) {
 		if (!enemy->GetEnableMove()) {
+			++spawnCount_;
 			Vector3 pos = spawner->GetTransform().translation_;
 			enemy->Reset(Vector3{ pos.x,0.0f,pos.z });
 			spawner->GetEnemyList().push_back(enemy.get());

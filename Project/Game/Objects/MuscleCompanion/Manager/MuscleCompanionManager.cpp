@@ -6,7 +6,7 @@ void MuscleCompanionManager::Initialize()
 {
 	items_ = std::make_unique<CompanionAdjustItem>();
 	items_->LoadItems();
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 8; ++i) {
 		std::unique_ptr<MuscleCompanion> companion = std::make_unique<MuscleCompanion>();
 		companions_.push_back(std::move(companion));
 	}

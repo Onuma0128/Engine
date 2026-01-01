@@ -51,6 +51,8 @@ private:
 
 	void ChangeAttackState(MeleeAttackState newState);
 
+	void UpdateJump();
+
 private:
 
 	// 攻撃タイマー
@@ -59,6 +61,11 @@ private:
 	// 攻撃ステート
 	MeleeAttackState meleeAttackState_ = MeleeAttackState::StartupTime;
 
+	// 開始Y座標
+	float startY_ = 0.0f;
 
+	// ジャンプ関連パラメータ
+	float jumpVelocityY_ = 0.0f;
+	float jumpAccelerY_ = 0.0f;
 };
 

@@ -5,7 +5,9 @@
         "y": 0.0,
         "z": 0.0
     },
-    "attackStartupTime": 0.33000001311302185,
-    "attackTime": 0.05999999865889549,
-    "attackRecoveryTime": 1.0
+    "attackStartupTime": 0.5899999737739563,
+    "attackTime": 0.0,
+    "attackRecoveryTime": 1.0,
+    "jumpVelocityY": 8.260000228881836,
+    "jumpAccelerY": -24.399999618530273
 }

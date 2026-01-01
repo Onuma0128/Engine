@@ -160,7 +160,7 @@ void BaseEnemy::ResetSearch()
 
 void BaseEnemy::OnCollisionEnter(Collider* other)
 {
-	// プレイヤーの弾と当たっているなら
+	// プレイヤーの仲間と当たっているなら
 	if (other->GetColliderName() == "MuscleCompanion" ||
 		other->GetColliderName() == "FollowerMuscleCompanion" ||
 		other->GetColliderName() == "MuscleCompanionAttack") {

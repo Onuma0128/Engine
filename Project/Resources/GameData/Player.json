@@ -6,7 +6,7 @@
     "avoid_acceleration": 4.0,
     "backSpeed": 3.0,
     "pushSpeed": 30.0,
-    "clearKill": 50,
+    "clearKill": 30,
     "minPlayerClamp": {
         "x": -20.5,
         "y": -22.0

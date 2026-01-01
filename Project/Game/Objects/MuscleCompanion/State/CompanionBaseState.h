@@ -5,12 +5,13 @@ class MuscleCompanion;
 
 // キャラクターステートの列挙型
 enum class CharacterState {
-	Idle,
-	Move,
-	Dash,
-	SearchDash,
-	Attack,
-	Dead,
+	Idle,			// 待機
+	Move,			// 移動
+	Dash,			// ダッシュ
+	SearchDash,		// ダッシュ移動
+	Attack,			// 攻撃
+	Knockback,		// ノックバック
+	Dead,			// 死亡
 };
 
 /// <summary>

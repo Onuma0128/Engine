@@ -28,5 +28,6 @@
     },
     "hitJumpVelocityY": 24.0,
     "hitJumpAccelerY": -50.0,
-    "hitJumpNockbackScale": 0.30000001192092896
+    "hitJumpNockbackScale": 0.30000001192092896,
+    "maxSpawnCount": 30
 }

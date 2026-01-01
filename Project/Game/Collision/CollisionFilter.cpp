@@ -3,7 +3,7 @@
 bool CollisionFilter::CheckColliderNameEnemy(const std::string& name)
 {
 	static const std::unordered_set<std::string> names =
-	{ "EnemyMelee","EnemyRanged","EnemyShieldBearer","EnemyRangedElite" };
+	{ "EnemyMelee","EnemyRanged","EnemyShieldBearer","EnemyRangedElite","BossAttack" };
 	return names.contains(name);
 }
 

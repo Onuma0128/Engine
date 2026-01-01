@@ -5,6 +5,11 @@
 
 void GameSceneUIs::Init()
 {
+	// 調整項目の初期化
+	items_ = std::make_unique<GameUiAdjustItem>();
+	items_->LoadItems();
+
+	// 操作UIの初期化
 	std::unique_ptr<PlayerControlUI> controlUI = std::make_unique<PlayerControlUI>();
 	controlUI->Init();
 	controlUIs_.push_back(std::move(controlUI));
@@ -22,11 +27,23 @@ void GameSceneUIs::Init()
 	selectSystem_->Init();
 	selectSystem_->SetSceneFade(sceneFade_.get());
 
+	// Kill数UIの初期化
+	killCountUI_ = std::make_unique<NumberCountUI>();
+	killCountUI_->Init();
+	maxKillCountUI_ = std::make_unique<NumberCountUI>();
+	maxKillCountUI_->Init();
+	catUI_ = std::make_unique<BaseUI>();
+	catUI_->Init("CatUI", "GameData");
+
 	Update();
 }
 
 void GameSceneUIs::Update()
 {
+#ifdef ENABLE_EDITOR
+	items_->Editor();
+#endif // ENABLE_EDITOR
+
 	for (auto& ui : controlUIs_) {
 		ui->Update();
 	}
@@ -35,6 +52,21 @@ void GameSceneUIs::Update()
 	
 	sceneFade_->DrawImGui();
 	sceneFade_->Update();
+
+	// 調整項目をセットし、更新する
+	killCountUI_->SetInterval(items_->GetSelectData().killNumberUiInterval);
+	killCountUI_->SetSize(items_->GetSelectData().killNumberUiSize);
+	killCountUI_->SetPosition(items_->GetSelectData().killNumberUiPos);
+	killCountUI_->MochiPuniScale(knockdownCount_, items_->GetSelectData().killNumberUiSize.y);
+	killCountUI_->Update(knockdownCount_);
+
+	maxKillCountUI_->SetInterval(items_->GetSelectData().maxKillNumberUiInterval);
+	maxKillCountUI_->SetSize(items_->GetSelectData().maxKillNumberUiSize);
+	maxKillCountUI_->SetPosition(items_->GetSelectData().maxKillNumberUiPos);
+	maxKillCountUI_->MochiPuniScale(items_->GetSelectData().maxKillCount, items_->GetSelectData().maxKillNumberUiSize.y);
+	maxKillCountUI_->Update(items_->GetSelectData().maxKillCount);
+
+	catUI_->Update();
 }
 
 void GameSceneUIs::Draw()
@@ -42,6 +74,10 @@ void GameSceneUIs::Draw()
 	for (auto& ui : controlUIs_) {
 		ui->Draw();
 	}
+
+	killCountUI_->Draw();
+	maxKillCountUI_->Draw();
+	catUI_->Draw();
 
 	selectSystem_->Draw();
 

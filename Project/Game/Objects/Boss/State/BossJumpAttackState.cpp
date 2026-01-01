@@ -107,7 +107,7 @@ void BossJumpAttackState::Update()
 
 		// ステートを変える
 
-		boss_->ChangeState(std::make_unique<BossJumpAttackState>(boss_));
+		boss_->ChangeState(std::make_unique<BossMoveState>(boss_));
 		break;
 	default:
 		break;

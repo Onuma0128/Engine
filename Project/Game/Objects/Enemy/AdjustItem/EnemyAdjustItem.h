@@ -24,6 +24,7 @@ struct EnemyMainData {
 
 	int maxSpawn;				// 敵が最大マップに何体まで出せるか上限
 	int nextWaveKillCount;		// 敵を何体倒したら強い敵が出てくるかカウント
+	int maxSpawnCount;			// 敵をスポーンさせる上限値
 
 	Vector3 startPosition;		// 敵のスポーン開始位置	
 	float colliderSize;			// 敵本体のコライダーサイズ

@@ -9,12 +9,13 @@ void CompanionAttackCollider::Initialize()
 	Collider::myType_ = ColliderType::kSphere;
 	Collider::colliderName_ = "MuscleCompanionAttack";
 	Collider::isActive_ = false;
-	Collider::targetColliderName_ = { "Enemy" };
+	Collider::targetColliderName_ = { "Enemy","BossEnemy"};
 	Collider::DrawCollider();
 }
 
 void CompanionAttackCollider::Update()
 {
+	isHit_ = false;
 	Collider::radius_ = companion_->GetItems()->GetAttackData().attackColliderSize;
 	Collider::rotate_ = companion_->GetTransform().rotation_;
 	Vector3 offset = companion_->GetItems()->GetAttackData().attackColliderOffset.Transform(
@@ -25,6 +26,7 @@ void CompanionAttackCollider::Update()
 
 void CompanionAttackCollider::OnCollisionEnter(Collider* other)
 {
+	isHit_ = true;
 	hitColliders_.push_back(other);
 }
 

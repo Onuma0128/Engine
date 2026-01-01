@@ -3,34 +3,39 @@
 #include "Collision/CollisionFilter.h"
 
 #include "Objects/Boss/State/BossMoveState.h"
+#include "Objects/Boss/State/BossDownState.h"
 #include "Objects/Boss/State/BossMeleeState.h"
-#include "Objects/Boss/State/BossJumpAttackState.h"
-#include "Objects/Boss/State/BossDashAttackState.h"
+#include "Objects/Boss/State/BossDeadState.h"
 
 #include "Objects/Player/Player.h"
 
 void BossEnemy::Initialize()
 {
+	// 調整項目の設定
+	items_ = std::make_unique<BossAdjustItem>();
+	items_->LoadItems();
+
 	// アニメーションを設定
 	Animation::Initialize("BossEnemy.gltf");
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Idle", 0.0f);
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
+	Animation::SetTransformTranslation(items_->GetMainData().startPosition);
 
 	// コライダーを設定
 	Collider::AddCollider();
 	Collider::colliderName_ = "BossEnemy";
 	Collider::myType_ = ColliderType::kSphere;
 	Collider::targetColliderName_ = { 
-		"Player","MuscleCompanion",
+		"Player","MuscleCompanion","PlayerShotRay","MuscleCompanionAttack",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
 	Collider::DrawCollider();
 
-	// 調整項目の設定
-	items_ = std::make_unique<BossAdjustItem>();
-	items_->LoadItems();
+	// HPの初期化
+	maxHp_ = items_->GetMainData().maxHP;
+	currentHp_ = maxHp_;
 
 	// 攻撃用コライダーを設定
 	attackCollider_ = std::make_unique<BossAttackCollider>();
@@ -42,6 +47,10 @@ void BossEnemy::Initialize()
 	ray_->Init();
 	ray_->SetActive(true);
 
+	stateEvaluator_ = std::make_unique<BossStateEvaluator>();
+	stateEvaluator_->SetBossEnemy(this);
+	stateEvaluator_->Initialize();
+
 	ChangeState(std::make_unique<BossMoveState>(this));
 }
 
@@ -50,6 +59,8 @@ void BossEnemy::Update()
 #ifdef ENABLE_EDITOR
 	items_->Editor();
 #endif // ENABLE_EDITOR
+
+	stateEvaluator_->DrawImGui();
 
 	// レイの更新
 	const float attackIn = items_->GetMainData().rayDistance;
@@ -75,20 +86,29 @@ void BossEnemy::Draw()
 
 void BossEnemy::OnCollisionEnter(Collider* other)
 {
+	if (state_->GetState() == BossState::Dead) { return; }
+
 	bool isPlayer = other->GetColliderName() == "Player";
 	bool isCompanion = other->GetColliderName() == "MuscleCompanion";
+	bool isCompanionAttack = other->GetColliderName() == "MuscleCompanionAttack";
 
-	// 移動中にプレイヤーか仲間に触れたら近接範囲攻撃
-	if (state_->GetState() == BossState::Move) {
-		if (isPlayer || isCompanion) {
-			ChangeState(std::make_unique<BossMeleeState>(this));
+	if (isCompanion || isCompanionAttack) {
+		// 小さな当たり判定は無視する
+		if (other->GetRadius() < 0.5f) {
+			return;
+		}
+		// ダメージ処理
+		--currentHp_;
+		// 今のHPが0になったら死亡ステートになる
+		if (currentHp_ <= 0) {
+			ChangeState(std::make_unique<BossDeadState>(this));
 		}
 	}
 
 	// ダッシュ攻撃中に建物に当たったら移動に戻る
 	if (state_->GetState() == BossState::DashAttack) {
 		if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
-			ChangeState(std::make_unique<BossMoveState>(this));
+			ChangeState(std::make_unique<BossDownState>(this));
 		}
 	}
 
@@ -96,6 +116,18 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 
 void BossEnemy::OnCollisionStay(Collider* other)
 {
+	if (state_->GetState() == BossState::Dead) { return; }
+
+	bool isPlayer = other->GetColliderName() == "Player";
+	bool isCompanion = other->GetColliderName() == "MuscleCompanion";
+	bool isCompanionAttack = other->GetColliderName() == "MuscleCompanionAttack";
+
+	// 移動中にプレイヤーか仲間に触れたら近接範囲攻撃
+	if (state_->GetState() == BossState::Move) {
+		if (isPlayer || isCompanion || isCompanionAttack) {
+			ChangeState(std::make_unique<BossMeleeState>(this));
+		}
+	}
 }
 
 void BossEnemy::OnCollisionExit(Collider* other)

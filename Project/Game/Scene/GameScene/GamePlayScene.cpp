@@ -52,11 +52,11 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->Init(loader);
 
 	// ボス敵の初期化と生成
-	bossEnemy_ = std::make_unique<BossEnemy>();
+	/*bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->SetMapData(mapCollision_.get());
 	bossEnemy_->SetPlayer(player_.get());
 	bossEnemy_->SetEnemySpawnerFactory(enemySpawnerFactory_.get());
-	bossEnemy_->Initialize();
+	bossEnemy_->Initialize();*/
 
 	// ゲームシーン全体のUIを初期化
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();
@@ -87,7 +87,7 @@ void GamePlayScene::Update()
 	enemySpawnerFactory_->Update();
 
 	// ボス敵の更新
-	bossEnemy_->Update();
+	//bossEnemy_->Update();
 
 	// フィールド上のオブジェクトの更新
 	fieldObjectFactory_->Update();
@@ -99,8 +99,7 @@ void GamePlayScene::Update()
 	skyBox_->Update();
 
 	// ゲームシーン全体のUIの更新
-	gameSceneUis_->SetKillCount(player_->GetShot()->GetNockdownCount());
-	gameSceneUis_->SetHitRate(player_->GetShot()->GetHitRate());
+	gameSceneUis_->SetKillCount(enemySpawnerFactory_->GetKnockdownCount());
 	gameSceneUis_->Update();
 
 	// パーティクルの更新
@@ -108,7 +107,7 @@ void GamePlayScene::Update()
 
 	// プレイヤーが死んだかクリアをしたらセレクトUIを表示する
 	uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);
-	if ((!player_->GetIsAlive() || player_->GetShot()->GetNockdownCount() >= clearKill) && !isSelect_) {
+	if ((!player_->GetIsAlive() || enemySpawnerFactory_->GetKnockdownCount() >= clearKill) && !isSelect_) {
 		isSelect_ = true;
 		gameSceneUis_->SelectUIFadeIn();
 	}

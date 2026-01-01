@@ -78,6 +78,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "selectOnceAgainUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "countUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "ratioUI.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "catUI.png");
 
 	// ============================== Model ============================== //
 
