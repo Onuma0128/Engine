@@ -12,5 +12,12 @@
     "attackRecoveryTime": 1.0,
     "jumpVelocityY": 30.0,
     "jumpAccelerY": -30.0,
-    "airSpeed": 6.0
+    "airSpeed": 6.0,
+    "attackEffectSize": 1.7999999523162842,
+    "attackEffectOffset": {
+        "x": 0.0,
+        "y": 0.10000000149011612,
+        "z": 0.0
+    },
+    "attackEffectAppearTime": 0.5
 }

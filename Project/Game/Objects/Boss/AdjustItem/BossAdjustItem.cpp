@@ -66,6 +66,10 @@ void BossAdjustItem::LoadItems()
         meleeAttackJson_.Set("attackStartupTime", meleeData_.attackStartupTime);
         meleeAttackJson_.Set("attackTime", meleeData_.attackTime);
         meleeAttackJson_.Set("attackRecoveryTime", meleeData_.attackRecoveryTime);
+
+        meleeAttackJson_.Set("attackEffectSize", meleeData_.attackEffectSize);
+        meleeAttackJson_.Set("attackEffectOffset", meleeData_.attackEffectOffset);
+        meleeAttackJson_.Set("attackEffectAppearTime", meleeData_.attackEffectAppearTime);
     } else
     {
         meleeData_.jumpVelocityY = meleeAttackJson_.Get("jumpVelocityY", meleeData_.jumpVelocityY);
@@ -75,6 +79,10 @@ void BossAdjustItem::LoadItems()
         meleeData_.attackStartupTime = meleeAttackJson_.Get("attackStartupTime", meleeData_.attackStartupTime);
         meleeData_.attackTime = meleeAttackJson_.Get("attackTime", meleeData_.attackTime);
         meleeData_.attackRecoveryTime = meleeAttackJson_.Get("attackRecoveryTime", meleeData_.attackRecoveryTime);
+
+        meleeData_.attackEffectSize = meleeAttackJson_.Get("attackEffectSize", meleeData_.attackEffectSize);
+        meleeData_.attackEffectOffset = meleeAttackJson_.Get("attackEffectOffset", meleeData_.attackEffectOffset);
+        meleeData_.attackEffectAppearTime = meleeAttackJson_.Get("attackEffectAppearTime", meleeData_.attackEffectAppearTime);
     }
 
     /* ============================== JumpAttack ============================== */
@@ -91,6 +99,9 @@ void BossAdjustItem::LoadItems()
         jumpAttackJson_.Set("airHoldTime", 0.0f);
         jumpAttackJson_.Set("fallDownTime", 0.0f);
         jumpAttackJson_.Set("attackRecoveryTime", 0.0f);
+        jumpAttackJson_.Set("attackEffectSize", 0.0f);
+        jumpAttackJson_.Set("attackEffectOffset", Vector3{});
+        jumpAttackJson_.Set("attackEffectAppearTime", 0.0f);
     } else {
         jumpAttackData_.airSpeed = jumpAttackJson_.Get("airSpeed", jumpAttackData_.airSpeed);
         jumpAttackData_.jumpVelocityY = jumpAttackJson_.Get("jumpVelocityY", jumpAttackData_.jumpVelocityY);
@@ -102,6 +113,10 @@ void BossAdjustItem::LoadItems()
         jumpAttackData_.airHoldTime = jumpAttackJson_.Get("airHoldTime", jumpAttackData_.airHoldTime);
         jumpAttackData_.fallDownTime = jumpAttackJson_.Get("fallDownTime", jumpAttackData_.fallDownTime);
         jumpAttackData_.attackRecoveryTime = jumpAttackJson_.Get("attackRecoveryTime", jumpAttackData_.attackRecoveryTime);
+
+        jumpAttackData_.attackEffectSize = jumpAttackJson_.Get("attackEffectSize", jumpAttackData_.attackEffectSize);
+        jumpAttackData_.attackEffectOffset = jumpAttackJson_.Get("attackEffectOffset", jumpAttackData_.attackEffectOffset);
+        jumpAttackData_.attackEffectAppearTime = jumpAttackJson_.Get("attackEffectAppearTime", jumpAttackData_.attackEffectAppearTime);
     }
 
     /* ============================== BossDashAttack ============================== */
@@ -114,6 +129,9 @@ void BossAdjustItem::LoadItems()
         dashAttackJson_.Set("attackStartupTime", dashAttackData_.attackStartupTime);
         dashAttackJson_.Set("dashTime", dashAttackData_.dashTime);
         dashAttackJson_.Set("attackRecoveryTime", dashAttackData_.attackRecoveryTime);
+        dashAttackJson_.Set("attackEffectSize", dashAttackData_.attackEffectSize);
+        dashAttackJson_.Set("attackEffectOffset", dashAttackData_.attackEffectOffset);
+        dashAttackJson_.Set("attackEffectAppearTime", dashAttackData_.attackEffectAppearTime);
     } else
     {
         dashAttackData_.dashSpeed = dashAttackJson_.Get("dashSpeed", dashAttackData_.dashSpeed);
@@ -122,6 +140,10 @@ void BossAdjustItem::LoadItems()
         dashAttackData_.attackStartupTime = dashAttackJson_.Get("attackStartupTime", dashAttackData_.attackStartupTime);
         dashAttackData_.dashTime = dashAttackJson_.Get("dashTime", dashAttackData_.dashTime);
         dashAttackData_.attackRecoveryTime = dashAttackJson_.Get("attackRecoveryTime", dashAttackData_.attackRecoveryTime);
+
+        dashAttackData_.attackEffectSize = dashAttackJson_.Get("attackEffectSize", dashAttackData_.attackEffectSize);
+        dashAttackData_.attackEffectOffset = dashAttackJson_.Get("attackEffectOffset", dashAttackData_.attackEffectOffset);
+        dashAttackData_.attackEffectAppearTime = dashAttackJson_.Get("attackEffectAppearTime", dashAttackData_.attackEffectAppearTime);
     }
 
     // ============================== BossStateScore ==============================
@@ -291,6 +313,10 @@ void BossAdjustItem::Editor()
             ImGui::DragFloat("attackTime", &meleeData_.attackTime, 0.01f, 0.0f, 10.0f);
             ImGui::DragFloat("attackRecoveryTime", &meleeData_.attackRecoveryTime, 0.01f, 0.0f, 10.0f);
 
+            ImGui::DragFloat("attackEffectSize", &meleeData_.attackEffectSize, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat3("attackEffectOffset", &meleeData_.attackEffectOffset.x, 0.01f);
+            ImGui::DragFloat("attackEffectAppearTime", &meleeData_.attackEffectAppearTime, 0.01f, 0.0f, 10.0f);
+
             if (ImGui::Button("Save"))
             {
                 meleeAttackJson_.Set("jumpVelocityY", meleeData_.jumpVelocityY);
@@ -300,6 +326,10 @@ void BossAdjustItem::Editor()
                 meleeAttackJson_.Set("attackStartupTime", meleeData_.attackStartupTime);
                 meleeAttackJson_.Set("attackTime", meleeData_.attackTime);
                 meleeAttackJson_.Set("attackRecoveryTime", meleeData_.attackRecoveryTime);
+
+                meleeAttackJson_.Set("attackEffectSize", meleeData_.attackEffectSize);
+                meleeAttackJson_.Set("attackEffectOffset", meleeData_.attackEffectOffset);
+                meleeAttackJson_.Set("attackEffectAppearTime", meleeData_.attackEffectAppearTime);
                 meleeAttackJson_.Save();
             }
 
@@ -320,6 +350,9 @@ void BossAdjustItem::Editor()
             ImGui::DragFloat("airHoldTime", &jumpAttackData_.airHoldTime, 0.01f, 0.0f, 10.0f);
             ImGui::DragFloat("fallDownTime", &jumpAttackData_.fallDownTime, 0.01f, 0.0f, 10.0f);
             ImGui::DragFloat("attackRecoveryTime", &jumpAttackData_.attackRecoveryTime, 0.01f, 0.0f, 10.0f);
+            ImGui::DragFloat("attackEffectSize", &jumpAttackData_.attackEffectSize, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat3("attackEffectOffset", &jumpAttackData_.attackEffectOffset.x, 0.01f);
+            ImGui::DragFloat("attackEffectAppearTime", &jumpAttackData_.attackEffectAppearTime, 0.01f, 0.0f, 10.0f);
 
             if (ImGui::Button("Save")) {
                 jumpAttackJson_.Set("airSpeed", jumpAttackData_.airSpeed);
@@ -332,6 +365,10 @@ void BossAdjustItem::Editor()
                 jumpAttackJson_.Set("airHoldTime", jumpAttackData_.airHoldTime);
                 jumpAttackJson_.Set("fallDownTime", jumpAttackData_.fallDownTime);
                 jumpAttackJson_.Set("attackRecoveryTime", jumpAttackData_.attackRecoveryTime);
+
+                jumpAttackJson_.Set("attackEffectSize", jumpAttackData_.attackEffectSize);
+                jumpAttackJson_.Set("attackEffectOffset", jumpAttackData_.attackEffectOffset);
+                jumpAttackJson_.Set("attackEffectAppearTime", jumpAttackData_.attackEffectAppearTime);
                 jumpAttackJson_.Save();
             }
             ImGui::TreePop();
@@ -347,6 +384,11 @@ void BossAdjustItem::Editor()
             ImGui::DragFloat("attackStartupTime",&dashAttackData_.attackStartupTime, 0.01f, 0.0f, 5.0f);
             ImGui::DragFloat("dashTime",&dashAttackData_.dashTime, 0.01f, 0.0f, 5.0f);
             ImGui::DragFloat("attackRecoveryTime",&dashAttackData_.attackRecoveryTime, 0.01f, 0.0f, 5.0f);
+            
+            ImGui::DragFloat2("attackEffectSize", &dashAttackData_.attackEffectSize.x, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat3("attackEffectOffset", &dashAttackData_.attackEffectOffset.x, 0.01f);
+            ImGui::DragFloat("attackEffectAppearTime", &dashAttackData_.attackEffectAppearTime, 0.01f, 0.0f, 10.0f);
+
             if (ImGui::Button("Save")) {
                 dashAttackJson_.Set("dashSpeed", dashAttackData_.dashSpeed);
                 dashAttackJson_.Set("attackColliderSize", dashAttackData_.attackColliderSize);
@@ -354,6 +396,9 @@ void BossAdjustItem::Editor()
                 dashAttackJson_.Set("attackStartupTime", dashAttackData_.attackStartupTime);
                 dashAttackJson_.Set("dashTime", dashAttackData_.dashTime);
                 dashAttackJson_.Set("attackRecoveryTime", dashAttackData_.attackRecoveryTime);
+                dashAttackJson_.Set("attackEffectSize", dashAttackData_.attackEffectSize);
+                dashAttackJson_.Set("attackEffectOffset", dashAttackData_.attackEffectOffset);
+                dashAttackJson_.Set("attackEffectAppearTime", dashAttackData_.attackEffectAppearTime);
                 dashAttackJson_.Save();
             }
 

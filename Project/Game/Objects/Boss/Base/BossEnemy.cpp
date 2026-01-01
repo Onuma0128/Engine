@@ -2,6 +2,7 @@
 
 #include "Collision/CollisionFilter.h"
 
+#include "Objects/Boss/State/BossIdleState.h"
 #include "Objects/Boss/State/BossMoveState.h"
 #include "Objects/Boss/State/BossDownState.h"
 #include "Objects/Boss/State/BossMeleeState.h"
@@ -19,12 +20,14 @@ void BossEnemy::Initialize()
 	Animation::Initialize("BossEnemy.gltf");
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Idle", 0.0f);
-	Animation::GetMaterial().outlineMask = true;
+	Animation::GetMaterial().enableDraw = false;
+	Animation::GetMaterial().outlineMask = false;
 	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
 	Animation::SetTransformTranslation(items_->GetMainData().startPosition);
 
 	// コライダーを設定
 	Collider::AddCollider();
+	Collider::isActive_ = false;
 	Collider::colliderName_ = "BossEnemy";
 	Collider::myType_ = ColliderType::kSphere;
 	Collider::targetColliderName_ = { 
@@ -45,22 +48,28 @@ void BossEnemy::Initialize()
 	// ボスの視線を設定
 	ray_ = std::make_unique<BossRay>();
 	ray_->Init();
-	ray_->SetActive(true);
+	ray_->SetActive(false);
 
+	// ステート計算の初期化
 	stateEvaluator_ = std::make_unique<BossStateEvaluator>();
 	stateEvaluator_->SetBossEnemy(this);
 	stateEvaluator_->Initialize();
 
-	ChangeState(std::make_unique<BossMoveState>(this));
+	// エフェクトの初期化
+	effect_ = std::make_unique<BossEffect>();
+	effect_->SetBossEnemy(this);
+	effect_->Init();
+
+	// ステートの初期化
+	ChangeState(std::make_unique<BossIdleState>(this));
 }
 
 void BossEnemy::Update()
 {
 #ifdef ENABLE_EDITOR
 	items_->Editor();
-#endif // ENABLE_EDITOR
-
 	stateEvaluator_->DrawImGui();
+#endif // ENABLE_EDITOR
 
 	// レイの更新
 	const float attackIn = items_->GetMainData().rayDistance;
@@ -70,6 +79,9 @@ void BossEnemy::Update()
 	// ステートの更新
 	state_->Update();
 
+	// エフェクトの更新
+	effect_->Update();
+
 	// 敵コライダーの更新
 	const auto& data = items_->GetMainData();
 	Collider::radius_ = data.colliderSize;
@@ -77,11 +89,16 @@ void BossEnemy::Update()
 	Collider::Update();
 	attackCollider_->Update();
 	// アニメーションの更新
-	Animation::Update();
+	if (Animation::GetMaterial().enableDraw) {
+		Animation::Update();
+	} else {
+		Animation::TransformUpdate();
+	}
 }
 
 void BossEnemy::Draw()
 {
+	effect_->Draw();
 }
 
 void BossEnemy::OnCollisionEnter(Collider* other)
@@ -146,5 +163,14 @@ void BossEnemy::ChangeState(std::unique_ptr<BossBaseState> newState)
 void BossEnemy::ResetSearch(const Vector3& goalPosition)
 {
 	pathFinder_.Search(transform_.translation_, goalPosition);
+}
+
+void BossEnemy::StartBossEnemy()
+{
+	Animation::GetMaterial().enableDraw = true;
+	Animation::GetMaterial().outlineMask = true;
+	Collider::isActive_ = true;
+	ray_->SetActive(true);
+	ChangeState(std::make_unique<BossMoveState>(this));
 }
 

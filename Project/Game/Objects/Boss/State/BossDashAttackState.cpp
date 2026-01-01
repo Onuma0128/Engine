@@ -18,11 +18,13 @@ void BossDashAttackState::Init()
 	}
 
 	boss_->PlayByName("Run");
+	boss_->GetEffect()->SetAttackEffect(BossAttackEffect::DashAttack);
 }
 
 void BossDashAttackState::Finalize()
 {
 	boss_->GetAttackCollider()->SetActive(false);
+	boss_->GetEffect()->AttackEffectReset();
 }
 
 void BossDashAttackState::Update()
@@ -45,6 +47,8 @@ void BossDashAttackState::Update()
 		Vector3 velocity = (target - translate);
 		velocity.y = 0.0f;
 
+		boss_->GetEffect()->SetAttackEffect(BossAttackEffect::DashAttack);
+
 		// 回転の更新
 		if (distance > 0.1f) {
 			Quaternion yRotation = Quaternion::DirectionToQuaternion(Quaternion::IdentityQuaternion(), velocity, 1.0f);
@@ -54,6 +58,7 @@ void BossDashAttackState::Update()
 		if (timer_ >= data.attackStartupTime) {
 			CreateVelocity();
 			boss_->PlayByName("Run_Attack");
+			boss_->GetEffect()->AttackEffectReset();
 			boss_->GetAttackCollider()->SetActive(true);
 			ChangeAttackState(DashAttackState::DashAttack);
 		}

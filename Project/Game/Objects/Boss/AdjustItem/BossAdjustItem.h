@@ -41,6 +41,10 @@ struct BossMeleeData {
 	float attackStartupTime;		// 攻撃を開始する硬直時間
 	float attackTime;				// 攻撃している時間
 	float attackRecoveryTime;		// 攻撃が終わってから硬直時間
+
+	float attackEffectSize;			// 攻撃のエフェクトサイズ
+	Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
+	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
 // ボスのジャンプ攻撃の調整項目
@@ -57,6 +61,10 @@ struct BossJumpAttackData {
 	float airHoldTime;				// 空中にいる時間
 	float fallDownTime;				// 落下にかかる時間
 	float attackRecoveryTime;		// 攻撃が終わってから硬直時間
+
+	float attackEffectSize;			// 攻撃のエフェクトサイズ
+	Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
+	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
 // ボスのダッシュ攻撃の調整項目
@@ -68,6 +76,10 @@ struct BossDashAttackData {
 	float attackStartupTime;		// 攻撃を開始する硬直時間
 	float dashTime;					// ダッシュをしている時間
 	float attackRecoveryTime;		// 攻撃が終わってから硬直時間
+
+	Vector2 attackEffectSize;		// 攻撃のエフェクトサイズ
+	Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
+	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
 // ボスのスコア計算の調整項目

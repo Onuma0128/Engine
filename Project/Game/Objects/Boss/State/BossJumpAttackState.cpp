@@ -12,6 +12,7 @@ void BossJumpAttackState::Init()
 {
 	// アニメーションの初期化
 	boss_->PlayByName("Wave");
+	boss_->GetEffect()->SetAttackEffect(BossAttackEffect::JumpAttack);
 
 	// ジャンプ関連のパラメーター取得
 	const auto& data = boss_->GetItems()->GetJumpAttackData();
@@ -25,6 +26,7 @@ void BossJumpAttackState::Init()
 void BossJumpAttackState::Finalize()
 {
 	boss_->GetAttackCollider()->SetActive(false);
+	boss_->GetEffect()->AttackEffectReset();
 }
 
 void BossJumpAttackState::Update()
@@ -67,6 +69,8 @@ void BossJumpAttackState::Update()
 		Vector3 velocity = (target - translate);
 		velocity.y = 0.0f;
 
+		boss_->GetEffect()->SetAttackEffect(BossAttackEffect::JumpAttack);
+
 		// 移動と回転の更新
 		if (distance > 0.1f) {
 			translate += velocity.Normalize() * data.airSpeed * DeltaTimer::GetDeltaTime();
@@ -89,6 +93,7 @@ void BossJumpAttackState::Update()
 		if (timer_ >= data.fallDownTime && boss_->GetTransform().translation_.y <= startY_) {
 			Vector3 translate = boss_->GetTransform().translation_;
 			translate.y = startY_;
+			boss_->GetEffect()->AttackEffectReset();
 			boss_->GetAttackCollider()->SetActive(true);
 			boss_->GetAttackCollider()->SetColliderSize(data.attackColliderSize);
 			boss_->GetAttackCollider()->SetColliderOffset(data.attackColliderOffset);

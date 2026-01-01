@@ -1310,6 +1310,8 @@
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionKnockbackState.cpp" />
     <ClCompile Include="Game\Objects\Boss\State\BossDeadState.cpp" />
     <ClCompile Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossIdleState.cpp" />
+    <ClCompile Include="Game\Objects\Boss\Effect\BossEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1340,5 +1342,7 @@
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionKnockbackState.h" />
     <ClInclude Include="Game\Objects\Boss\State\BossDeadState.h" />
     <ClInclude Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossIdleState.h" />
+    <ClInclude Include="Game\Objects\Boss\Effect\BossEffect.h" />
   </ItemGroup>
 </Project>

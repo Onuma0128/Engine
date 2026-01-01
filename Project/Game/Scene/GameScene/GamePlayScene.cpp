@@ -52,11 +52,11 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->Init(loader);
 
 	// ボス敵の初期化と生成
-	/*bossEnemy_ = std::make_unique<BossEnemy>();
+	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->SetMapData(mapCollision_.get());
 	bossEnemy_->SetPlayer(player_.get());
 	bossEnemy_->SetEnemySpawnerFactory(enemySpawnerFactory_.get());
-	bossEnemy_->Initialize();*/
+	bossEnemy_->Initialize();
 
 	// ゲームシーン全体のUIを初期化
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();
@@ -86,8 +86,16 @@ void GamePlayScene::Update()
 	// 敵スポナーと敵の更新
 	enemySpawnerFactory_->Update();
 
+	// ボスをスタートさせる
+	uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);
+	if (bossEnemy_->GetBossState() == BossState::Idle && enemySpawnerFactory_->GetKnockdownCount() >= clearKill) {
+		bossEnemy_->StartBossEnemy();
+	}
+	if (Input::GetInstance()->TriggerKey(DIK_L)) {
+		bossEnemy_->StartBossEnemy();
+	}
 	// ボス敵の更新
-	//bossEnemy_->Update();
+	bossEnemy_->Update();
 
 	// フィールド上のオブジェクトの更新
 	fieldObjectFactory_->Update();
@@ -106,8 +114,7 @@ void GamePlayScene::Update()
 	ParticleManager::GetInstance()->Update();
 
 	// プレイヤーが死んだかクリアをしたらセレクトUIを表示する
-	uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);
-	if ((!player_->GetIsAlive() || enemySpawnerFactory_->GetKnockdownCount() >= clearKill) && !isSelect_) {
+	if ((!player_->GetIsAlive() || bossEnemy_->GetBossState() == BossState::Dead) && !isSelect_) {
 		isSelect_ = true;
 		gameSceneUis_->SelectUIFadeIn();
 	}
@@ -116,6 +123,8 @@ void GamePlayScene::Update()
 void GamePlayScene::Draw()
 {
 	player_->EffectDraw();
+
+	bossEnemy_->Draw();
 
 	companionManager_->Draw();
 

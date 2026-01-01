@@ -12,6 +12,7 @@ void BossMeleeState::Init()
 	// アニメーションの初期化
 	boss_->ForcePlayByName("Jump");
 	boss_->GetTimeStop() = true;
+	boss_->GetEffect()->SetAttackEffect(BossAttackEffect::Melee);
 
 	// ジャンプ関連のパラメーター取得
 	const auto& data = boss_->GetItems()->GetMeleeData();
@@ -25,6 +26,7 @@ void BossMeleeState::Init()
 void BossMeleeState::Finalize()
 {
 	boss_->GetAttackCollider()->SetActive(false);
+	boss_->GetEffect()->AttackEffectReset();
 }
 
 void BossMeleeState::Update()
@@ -41,6 +43,8 @@ void BossMeleeState::Update()
 
 		UpdateJump();
 
+		boss_->GetEffect()->SetAttackEffect(BossAttackEffect::Melee);
+
 		if (timer_ >= data.attackStartupTime) {
 			boss_->ForcePlayByName("Jump_Land");
 			boss_->GetTimeStop() = false;
@@ -56,6 +60,7 @@ void BossMeleeState::Update()
 			boss_->PlayByName("Idle");
 			boss_->GetTimeStop() = false;
 			boss_->SetAnimationTime(1.0f);
+			boss_->GetEffect()->AttackEffectReset();
 			Vector3 translate = boss_->GetTransform().translation_;
 			translate.y = startY_;
 			boss_->SetTransformTranslation(translate);
