@@ -11,7 +11,7 @@ CompanionDashState::CompanionDashState(MuscleCompanion* companion) : CompanionBa
 void CompanionDashState::Init()
 {
 	// アニメーションを変更
-	companion_->PlayByName("Run_Arms");
+	companion_->PlayByName("Run");
 	// 集合要求フラグをfalseにする
 	companion_->SetGatherRequested(false);
 	// 元の場所に戻ったフラグをfalseにする

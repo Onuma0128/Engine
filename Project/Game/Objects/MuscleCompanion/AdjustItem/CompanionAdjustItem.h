@@ -7,6 +7,7 @@ struct CompanionMainData {
 	int maxHP;						// 最大体力
 	float speed;					// 移動速度
 	float hitPushSpeed;				// 仲間同士の押し出しスピード
+	float objectScale;				// 仲間のオブジェクトスケール
 	float colliderSize;				// 仲間本体のコライダーサイズ
 	Vector3 colliderOffset;			// 仲間本体のコライダー座標
 

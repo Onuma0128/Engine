@@ -12,9 +12,9 @@ CompanionIdleState::CompanionIdleState(MuscleCompanion* companion) : CompanionBa
 void CompanionIdleState::Init()
 {
 	if (!companion_->GetGatherRequested()) {
-		companion_->PlayByName("Wave");
+		companion_->PlayByName("Training");
 	} else {
-		companion_->PlayByName("Idle");
+		companion_->PlayByName("Wait");
 	}
 }
 

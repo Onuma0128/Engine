@@ -10,6 +10,7 @@ void CompanionAdjustItem::LoadItems()
 		mainJson_.Set("maxHP", 1);
 		mainJson_.Set("speed", 0.0f);
 		mainJson_.Set("hitPushSpeed", 0.0f);
+		mainJson_.Set("objectScale", 0.0f);
 		mainJson_.Set("searchUpdateTime", 0.0f);
 		mainJson_.Set("searchCancelDistance", 0.0f);
 		mainJson_.Set("colliderSize", 0.0f);
@@ -21,6 +22,7 @@ void CompanionAdjustItem::LoadItems()
 		mainData_.maxHP = mainJson_.Get("maxHP", mainData_.maxHP);
 		mainData_.speed = mainJson_.Get("speed", mainData_.speed);
 		mainData_.hitPushSpeed = mainJson_.Get("hitPushSpeed", mainData_.hitPushSpeed);
+		mainData_.objectScale = mainJson_.Get("objectScale", mainData_.objectScale);
 		mainData_.colliderSize = mainJson_.Get("colliderSize", mainData_.colliderSize);
 		mainData_.colliderOffset = mainJson_.Get("colliderOffset", mainData_.colliderOffset);
 		mainData_.searchUpdateTime = mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
@@ -82,6 +84,7 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragInt("maxHP", &mainData_.maxHP, 1, 1, 1000);
 			ImGui::DragFloat("speed", &mainData_.speed, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("hitPushSpeed", &mainData_.hitPushSpeed, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("objectScale", &mainData_.objectScale, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("colliderSize", &mainData_.colliderSize, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("distanceToAlly", &mainData_.distanceToAlly, 0.01f, 0.0f, 100.0f);
@@ -94,6 +97,7 @@ void CompanionAdjustItem::Editor()
 				mainJson_.Set("maxHP", mainData_.maxHP);
 				mainJson_.Set("speed", mainData_.speed);
 				mainJson_.Set("hitPushSpeed", mainData_.hitPushSpeed);
+				mainJson_.Set("objectScale", mainData_.objectScale);
 				mainJson_.Set("colliderSize", mainData_.colliderSize);
 				mainJson_.Set("colliderOffset", mainData_.colliderOffset);
 				mainJson_.Set("distanceToAlly", mainData_.distanceToAlly);

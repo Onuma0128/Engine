@@ -5,18 +5,18 @@
         "y": 0.5
     },
     "Size": {
-        "x": 150.0,
-        "y": 120.0
+        "x": 310.0,
+        "y": 240.0
     },
     "Rotate": 0.0,
     "Position": {
-        "x": 1350.0,
-        "y": 770.0
+        "x": 1116.0,
+        "y": 624.0
     },
-    "IsAnimation": true,
+    "IsAnimation": false,
     "AnimationTime": 1.0,
     "Anima_Size": {
-        "x": 300.0,
+        "x": 310.0,
         "y": 240.0
     },
     "Anima_Rotate": 0.0,
@@ -28,8 +28,8 @@
     "OutEasingType": 24,
     "Color": {
         "x": 1.0,
-        "y": 1.0,
-        "z": 1.0,
+        "y": 0.9901960492134094,
+        "z": 0.9901960492134094,
         "w": 1.0
     },
     "Anima_Color": {

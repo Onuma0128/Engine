@@ -116,6 +116,9 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 		}
 		// ダメージ処理
 		--currentHp_;
+		float color = static_cast<float>(currentHp_) / static_cast<float>(maxHp_);
+		Vector3 outlineColor = { 1.0f - color,color,0.0f };
+		Animation::GetMaterial().outlineColor = outlineColor;
 		// 今のHPが0になったら死亡ステートになる
 		if (currentHp_ <= 0) {
 			ChangeState(std::make_unique<BossDeadState>(this));

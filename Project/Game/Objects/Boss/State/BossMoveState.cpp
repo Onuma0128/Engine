@@ -13,7 +13,6 @@ void BossMoveState::Init()
 {
 	// アニメーションを変更
 	boss_->PlayByName("Walk");
-	boss_->GetMaterial().outlineColor = Vector3::ExprUnitZ;
 	// 探索を更新する
 	boss_->ResetSearch(boss_->GetPlayer()->GetTransform().translation_);
 }

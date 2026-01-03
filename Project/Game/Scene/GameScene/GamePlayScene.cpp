@@ -91,9 +91,6 @@ void GamePlayScene::Update()
 	if (bossEnemy_->GetBossState() == BossState::Idle && enemySpawnerFactory_->GetKnockdownCount() >= clearKill) {
 		bossEnemy_->StartBossEnemy();
 	}
-	if (Input::GetInstance()->TriggerKey(DIK_L)) {
-		bossEnemy_->StartBossEnemy();
-	}
 	// ボス敵の更新
 	bossEnemy_->Update();
 

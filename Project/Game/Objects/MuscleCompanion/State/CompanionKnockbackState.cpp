@@ -12,7 +12,7 @@ CompanionKnockbackState::CompanionKnockbackState(MuscleCompanion* companion) : C
 void CompanionKnockbackState::Init()
 {
 	// アニメーションの初期化
-	companion_->PlayByName("No");
+	companion_->PlayByName("Wait");
 
 	// ノックバック方向を取得する
 	Vector3 direction = companion_->GetKnockbackDire();

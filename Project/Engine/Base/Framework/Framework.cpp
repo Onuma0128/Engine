@@ -110,6 +110,7 @@ void Framework::LoadFiles()
 	ModelManager::GetInstance()->LoadModel("Resources/Model/enemy", "Zombie_Basic.gltf");
 	ModelManager::GetInstance()->LoadModel("Resources/Model/enemy", "Characters_Shaun.gltf");
 	ModelManager::GetInstance()->LoadModel("Resources/Model/Boss", "BossEnemy.gltf");
+	ModelManager::GetInstance()->LoadModel("Resources/Model/Mattyo", "Mattyo.gltf");
 
 	// ============================== Audio ============================== //
 

@@ -2,7 +2,7 @@
     "speed": 4.0,
     "searchUpdateTime": 0.30000001192092896,
     "searchCancelDistance": 2.0,
-    "colliderSize": 0.4000000059604645,
+    "colliderSize": 0.5,
     "colliderOffset": {
         "x": 0.0,
         "y": 0.75,
@@ -13,5 +13,6 @@
     "maxHP": 7,
     "dashColliderScale": 2.0,
     "distanceToAlly": 2.5,
-    "followerColliderSize": 0.75
+    "followerColliderSize": 0.75,
+    "objectScale": 1.2999999523162842
 }

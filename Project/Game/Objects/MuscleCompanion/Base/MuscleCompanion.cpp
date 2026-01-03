@@ -15,9 +15,9 @@
 void MuscleCompanion::Initialize()
 {
 	// 基本的なアニメーションを設定
-	Animation::Initialize("muscleCompanion.gltf");
+	Animation::Initialize("Mattyo.gltf");
 	Animation::SetSceneRenderer();
-	Animation::PlayByName("Idle");
+	Animation::PlayByName("Wait");
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = Vector3::ExprUnitY;
 
@@ -70,6 +70,7 @@ void MuscleCompanion::Update()
 	Collider::Update();
 
 	// アニメーションの更新
+	Animation::SetTransformScale(Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
 	Animation::Update();
 }
 

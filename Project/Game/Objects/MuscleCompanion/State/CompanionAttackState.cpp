@@ -10,7 +10,7 @@ CompanionAttackState::CompanionAttackState(MuscleCompanion* companion) : Compani
 
 void CompanionAttackState::Init()
 {
-	companion_->PlayByName("Idle");
+	companion_->PlayByName("Wait");
 	ChangeAttackState(AttackState::StartUp);
 
 	const auto& colliders = companion_->GetAttackCollider()->GetHitColliders();
@@ -56,7 +56,7 @@ void CompanionAttackState::Update()
 
 		if (timer_ >= data.attackStartupTime) {
 			companion_->GetAttackCollider()->SetActive(true);
-			companion_->PlayByName("Punch");
+			companion_->PlayByName("Attack");
 			ChangeAttackState(AttackState::Active);
 		}
 		break;
@@ -68,14 +68,14 @@ void CompanionAttackState::Update()
 
 		if (timer_ >= data.attackActiveTime) {
 			companion_->GetAttackCollider()->SetActive(false);
-			companion_->PlayByName("Idle");
+			companion_->PlayByName("Wait");
 			ChangeAttackState(AttackState::Recovery);
 		}
 		break;
 	case AttackState::Recovery:
 
 		if (timer_ >= data.attackRecoveryTime) {
-			companion_->PlayByName("Idle");
+			companion_->PlayByName("Wait");
 			ChangeAttackState(AttackState::Finish);
 		}
 		break;

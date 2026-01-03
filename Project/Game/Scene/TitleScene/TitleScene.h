@@ -4,6 +4,7 @@
 #include "BaseScene.h"
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
+#include "Animation.h"
 #include "Camera.h"
 
 #include "Scene/SceneFade/SceneFade.h"

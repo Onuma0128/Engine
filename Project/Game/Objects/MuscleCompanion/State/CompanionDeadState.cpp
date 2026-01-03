@@ -6,7 +6,7 @@ CompanionDeadState::CompanionDeadState(MuscleCompanion* companion) : CompanionBa
 
 void CompanionDeadState::Init()
 {
-	companion_->ForcePlayByName("Death");
+	companion_->ForcePlayByName("Dead");
 	companion_->GetTimeStop() = true;
 
 	companion_->SetColliderIsActive(false);
