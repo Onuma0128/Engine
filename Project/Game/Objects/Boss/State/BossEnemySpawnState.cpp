@@ -10,7 +10,11 @@ BossEnemySpawnState::BossEnemySpawnState(BossEnemy* boss) : BossBaseState(boss) 
 
 void BossEnemySpawnState::Init()
 {
+	// データを取得
 	const auto& data = boss_->GetItems()->GetSpawnData();
+	const auto& volume = boss_->GetItems()->GetSeVolumeData();
+	// 効果音を鳴らす
+	boss_->GetAudio()->SoundPlayWave("BossEnemySpawn.wav", volume.enemySpawn);
 
 	for (const auto& pos : data.positions) {
 		Vector3 position = pos.Transform(Quaternion::MakeRotateMatrix(boss_->GetTransform().rotation_));

@@ -53,6 +53,11 @@ public:
 	/// <param name="volume"></音量>
 	void SetVolume(const std::string& filePath, float volume);
 
+	/// <summary>
+	/// 指定したオーディオが再生中か（同一ファイルのボイスが1つでも生きていればtrue）
+	/// </summary>
+	bool IsPlaying(const std::string& filePath);
+
 private:
 
 	/// <summary>

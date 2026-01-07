@@ -1,0 +1,105 @@
+{
+    "Texture": "blood.png",
+    "BlendMode": 3,
+    "Move": true,
+    "EmitCount": 64,
+    "FrequencyTime": 1.3700000047683716,
+    "LifeTime": 0.75,
+    "Acceleration": {
+        "x": 0.0,
+        "y": -20.0,
+        "z": 0.0
+    },
+    "AcceleField": true,
+    "MinAcceleField": {
+        "x": -10.0,
+        "y": -10.0,
+        "z": -10.0
+    },
+    "MaxAcceleField": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+    },
+    "Reflect": true,
+    "ReflectY": 0.10000000149011612,
+    "Color": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.5,
+        "y": 0.5,
+        "z": 1.0
+    },
+    "MaxScale": {
+        "x": 0.75,
+        "y": 0.75,
+        "z": 1.0
+    },
+    "ChangeScale": true,
+    "EndScale": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+    },
+    "MinVelocity": {
+        "x": -5.0,
+        "y": -4.0,
+        "z": -7.0
+    },
+    "MaxVelocity": {
+        "x": 5.0,
+        "y": 12.0,
+        "z": 4.0
+    },
+    "Billboard": false,
+    "MinRotate": {
+        "x": -0.5,
+        "y": -3.140000104904175,
+        "z": 0.0
+    },
+    "MaxRotate": {
+        "x": 1.5700000524520874,
+        "y": 3.140000104904175,
+        "z": 0.0
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 5.400000095367432,
+        "z": 0.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 6.980000019073486,
+        "z": 0.0
+    },
+    "MinSize": {
+        "x": -0.10000000149011612,
+        "y": -0.3400000035762787,
+        "z": -0.10000000149011612
+    },
+    "MaxSize": {
+        "x": 0.10000000149011612,
+        "y": 0.30000001192092896,
+        "z": 0.10000000149011612
+    },
+    "Position": {
+        "x": 0.0,
+        "y": 2.049999952316284,
+        "z": 0.0
+    },
+    "Look": true,
+    "Model": 0,
+    "UvFlipX": false,
+    "UvFlipY": false,
+    "LockDirectionXY": false,
+    "LockDirectionXZ": true,
+    "DirectionSpeed": 6.0
+}

@@ -1,0 +1,105 @@
+{
+    "Texture": "downLine.png",
+    "UvFlipX": false,
+    "UvFlipY": true,
+    "Model": 1,
+    "BlendMode": 1,
+    "Move": true,
+    "EmitCount": 3,
+    "FrequencyTime": 5.0,
+    "LifeTime": 5.0,
+    "Acceleration": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "AcceleField": false,
+    "MinAcceleField": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxAcceleField": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Reflect": false,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "uvTranslation": {
+        "x": -2.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 0.0
+    },
+    "MaxScale": {
+        "x": 1.399999976158142,
+        "y": 1.399999976158142,
+        "z": 0.0
+    },
+    "ChangeScale": true,
+    "EndScale": {
+        "x": 0.800000011920929,
+        "y": 0.800000011920929,
+        "z": 0.0
+    },
+    "MinVelocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxVelocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "LockDirectionXY": false,
+    "LockDirectionXZ": false,
+    "DirectionSpeed": 0.0,
+    "Billboard": false,
+    "MinRotate": {
+        "x": 1.5700000524520874,
+        "y": 0.0,
+        "z": -0.30000001192092896
+    },
+    "MaxRotate": {
+        "x": 1.5700000524520874,
+        "y": 1.5700000524520874,
+        "z": 0.30000001192092896
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": -10.0,
+        "z": 0.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 10.0,
+        "z": 0.0
+    },
+    "MinSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxSize": {
+        "x": 0.0,
+        "y": 0.11999999731779099,
+        "z": 0.0
+    },
+    "Position": {
+        "x": 0.0,
+        "y": 2.0,
+        "z": 0.0
+    },
+    "Look": true
+}

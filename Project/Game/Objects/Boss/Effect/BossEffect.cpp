@@ -12,12 +12,29 @@ void BossEffect::Init()
 	// 近接攻撃の初期化
 	PrimitiveInit(meleeEffect_);
 	meleeEffect_->SetTexture("circleWhite.png");
+	PrimitiveInit(meleeTimeEffect_);
+	meleeTimeEffect_->SetTexture("circleWhite.png");
 	// ジャンプ攻撃の初期化
 	PrimitiveInit(jumpAttackEffect_);
 	jumpAttackEffect_->SetTexture("circleWhite.png");
+	PrimitiveInit(jumpAttackTimeEffect_);
+	jumpAttackTimeEffect_->SetTexture("circleWhite.png");
 	// ダッシュ攻撃の初期化
 	PrimitiveInit(dashAttackEffect_);
-	dashAttackEffect_->SetTexture("white1x1.png");
+	dashAttackEffect_->SetTexture("gradationWhite.png");
+	PrimitiveInit(dashAttackTimeEffect_);
+	dashAttackTimeEffect_->SetTexture("gradationWhite.png");
+	// ジャンプ時の煙エフェクト
+	jumpDustEmitter_ = std::make_unique<ParticleEmitter>("jumpDust");
+	particleManager_->CreateParticleGroup(jumpDustEmitter_);
+	jumpDustEmitter_->SetIsCreate(false);
+	// ダッシュ時のダウンエフェクト
+	downLineEmitter_ = std::make_unique<ParticleEmitter>("downLine");
+	particleManager_->CreateParticleGroup(downLineEmitter_);
+	downLineEmitter_->SetIsCreate(false);
+	downStarEmitter_ = std::make_unique<ParticleEmitter>("downStar");
+	particleManager_->CreateParticleGroup(downStarEmitter_);
+	downStarEmitter_->SetIsCreate(false);
 }
 
 void BossEffect::PrimitiveInit(std::unique_ptr<PrimitiveDrawr>& effect)
@@ -25,7 +42,7 @@ void BossEffect::PrimitiveInit(std::unique_ptr<PrimitiveDrawr>& effect)
 	effect = std::make_unique<PrimitiveDrawr>();
 	effect->TypeInit(PrimitiveType::kPlane);
 	effect->SetColor(Vector3::ExprUnitX);
-	effect->SetAlpha(0.5f);
+	effect->SetAlpha(0.6f);
 	effect->SetBlendMode(BlendMode::kBlendModeAdd);
 	effect->GetRenderOptions().enabled = false;
 	effect->GetTransform().scale = {};
@@ -62,20 +79,28 @@ void BossEffect::PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect, const 
 void BossEffect::Update()
 {
 	meleeEffect_->Update();
+	meleeTimeEffect_->Update();
+
 	jumpAttackEffect_->Update();
+	jumpAttackTimeEffect_->Update();
+	
 	dashAttackEffect_->Update();
+	dashAttackTimeEffect_->Update();
 }
 
 void BossEffect::Draw()
 {
 	if (meleeEffect_->GetRenderOptions().enabled) {
 		meleeEffect_->TypeDraw();
+		meleeTimeEffect_->TypeDraw();
 	}
 	if (jumpAttackEffect_->GetRenderOptions().enabled) {
 		jumpAttackEffect_->TypeDraw();
+		jumpAttackTimeEffect_->TypeDraw();
 	}
 	if (dashAttackEffect_->GetRenderOptions().enabled) {
 		dashAttackEffect_->TypeDraw();
+		dashAttackTimeEffect_->TypeDraw();
 	}
 }
 
@@ -93,6 +118,8 @@ void BossEffect::SetAttackEffect(BossAttackEffect effect)
 		// エフェクトスケールを発生させる
 		PrimitiveUpdate(meleeEffect_, data.attackEffectAppearTime,
 			data.attackEffectSize, data.attackEffectOffset);
+		PrimitiveUpdate(meleeTimeEffect_, data.attackStartupTime,
+			data.attackEffectSize, data.attackEffectOffset);
 	}
 		break;
 	case BossAttackEffect::JumpAttack:
@@ -102,6 +129,8 @@ void BossEffect::SetAttackEffect(BossAttackEffect effect)
 		// エフェクトスケールを発生させる
 		PrimitiveUpdate(jumpAttackEffect_, data.attackEffectAppearTime,
 			data.attackEffectSize, data.attackEffectOffset);
+		PrimitiveUpdate(jumpAttackTimeEffect_, data.airHoldTime + data.fallDownTime,
+			data.attackEffectSize, data.attackEffectOffset);
 	}
 		break;
 	case BossAttackEffect::DashAttack:
@@ -110,6 +139,8 @@ void BossEffect::SetAttackEffect(BossAttackEffect effect)
 		const auto& data = boss_->GetItems()->GetDashAttackData();
 		// エフェクトスケールを発生させる
 		PrimitiveUpdate(dashAttackEffect_, data.attackEffectAppearTime,
+			data.attackEffectSize, data.attackEffectOffset);
+		PrimitiveUpdate(dashAttackTimeEffect_, data.attackStartupTime,
 			data.attackEffectSize, data.attackEffectOffset);
 	}
 		break;
@@ -121,10 +152,54 @@ void BossEffect::SetAttackEffect(BossAttackEffect effect)
 void BossEffect::AttackEffectReset()
 {
 	meleeEffect_->GetRenderOptions().enabled = false;
-	jumpAttackEffect_->GetRenderOptions().enabled = false;
-	dashAttackEffect_->GetRenderOptions().enabled = false;
+	meleeTimeEffect_->GetRenderOptions().enabled = false;
 	meleeEffect_->GetTransform().scale = {};
+	meleeTimeEffect_->GetTransform().scale = {};
+
+	jumpAttackEffect_->GetRenderOptions().enabled = false;
 	jumpAttackEffect_->GetTransform().scale = {};
+	jumpAttackTimeEffect_->GetRenderOptions().enabled = false;
+	jumpAttackTimeEffect_->GetTransform().scale = {};
+
+	dashAttackEffect_->GetRenderOptions().enabled = false;
 	dashAttackEffect_->GetTransform().scale = {};
+	dashAttackTimeEffect_->GetRenderOptions().enabled = false;
+	dashAttackTimeEffect_->GetTransform().scale = {};
 	attackEffectTime_ = 0.0f;
+}
+
+void BossEffect::OnceJumpEffect()
+{
+	jumpDustEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = boss_->GetTransform().rotation_;
+	Vector3 position = boss_->GetTransform().translation_;
+
+	jumpDustEmitter_->SetRotation(rotate);
+	jumpDustEmitter_->SetPosition(position);
+}
+
+void BossEffect::OnceDownEffect()
+{
+	downLineEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = boss_->GetTransform().rotation_;
+	Vector3 position = boss_->GetTransform().translation_;
+
+	downLineEmitter_->SetRotation(rotate);
+	downLineEmitter_->SetPosition(position);
+}
+
+void BossEffect::EmitDownStar(bool flag)
+{
+	downStarEmitter_->SetIsCreate(flag);
+
+	// パーティクルの座標を設定
+	Quaternion rotate = boss_->GetTransform().rotation_;
+	Vector3 position = boss_->GetTransform().translation_;
+
+	downStarEmitter_->SetRotation(rotate);
+	downStarEmitter_->SetPosition(position);
 }

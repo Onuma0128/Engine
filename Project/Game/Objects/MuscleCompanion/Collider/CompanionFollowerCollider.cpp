@@ -22,6 +22,10 @@ void CompanionFollowerCollider::Update()
 
 void CompanionFollowerCollider::OnCollisionEnter(Collider* other)
 {
+	if (!companion_->GetAudio()->IsPlaying("MattyoGiveDamage.wav")) {
+		const auto& volume = companion_->GetItems()->GetSeVolumeData();
+		companion_->GetAudio()->SoundPlayWave("MattyoGiveDamage.wav", volume.giveDamage);
+	}
 }
 
 void CompanionFollowerCollider::OnCollisionStay(Collider* other)

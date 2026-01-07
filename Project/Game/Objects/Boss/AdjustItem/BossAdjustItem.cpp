@@ -205,6 +205,24 @@ void BossAdjustItem::LoadItems()
         stateScoreData_.dashAttackLookHigh = stateScoreJson_.Get("dashAttackLookHigh", stateScoreData_.dashAttackLookHigh);
         stateScoreData_.dashAttackLookLow = stateScoreJson_.Get("dashAttackLookLow", stateScoreData_.dashAttackLookLow);
     }
+
+    /* ============================== SeVolume ============================== */
+    seVolumeJson_.Init("BossSeVolume");
+    if (!seVolumeJson_.Load()) {
+        seVolumeJson_.Set("attackCaveat", 0.0f);
+        seVolumeJson_.Set("attackDash", 1.0f);
+        seVolumeJson_.Set("down", 0.0f);
+        seVolumeJson_.Set("enemySpawn", 1.0f);
+        seVolumeJson_.Set("jump", 0.0f);
+        seVolumeJson_.Set("landing", 1.0f);
+    } else {
+        seVolumeData_.attackCaveat = seVolumeJson_.Get("attackCaveat", seVolumeData_.attackCaveat);
+        seVolumeData_.attackDash = seVolumeJson_.Get("attackDash", seVolumeData_.attackDash);
+        seVolumeData_.down = seVolumeJson_.Get("down", seVolumeData_.down);
+        seVolumeData_.enemySpawn = seVolumeJson_.Get("enemySpawn", seVolumeData_.enemySpawn);
+        seVolumeData_.jump = seVolumeJson_.Get("jump", seVolumeData_.jump);
+        seVolumeData_.landing = seVolumeJson_.Get("landing", seVolumeData_.landing);
+    }
 }
 
 
@@ -471,6 +489,28 @@ void BossAdjustItem::Editor()
                 stateScoreJson_.Save();
             }
 
+            ImGui::TreePop();
+        }
+
+        ImGui::Separator();
+        // 効果音の項目
+        if (ImGui::TreeNode("SeVolume")) {
+            ImGui::DragFloat("attackCaveat", &seVolumeData_.attackCaveat, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("attackDash", &seVolumeData_.attackDash, 0.01f, 0.1f, 10.0f);
+            ImGui::DragFloat("down", &seVolumeData_.down, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("enemySpawn", &seVolumeData_.enemySpawn, 0.01f, 0.1f, 10.0f);
+            ImGui::DragFloat("jump", &seVolumeData_.jump, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("landing", &seVolumeData_.landing, 0.01f, 0.1f, 10.0f);
+            // セーブボタン
+            if (ImGui::Button("Save")) {
+                seVolumeJson_.Set("attackCaveat", seVolumeData_.attackCaveat);
+                seVolumeJson_.Set("attackDash", seVolumeData_.attackDash);
+                seVolumeJson_.Set("down", seVolumeData_.down);
+                seVolumeJson_.Set("enemySpawn", seVolumeData_.enemySpawn);
+                seVolumeJson_.Set("jump", seVolumeData_.jump);
+                seVolumeJson_.Set("landing", seVolumeData_.landing);
+                seVolumeJson_.Save();
+            }
             ImGui::TreePop();
         }
 

@@ -42,6 +42,15 @@ struct CompanionKnockbackData {
 	float knockbackTime;			// ノックバックしている時間
 };
 
+// 仲間の効果音の音量
+struct CompanionSeVolumeData {
+	float dashHit;					// ダッシュで敵に当たった時
+	float footsteps;				// 足音
+	float getDamage;				// ダメージを受けた時
+	float giveDamage;				// ダメージを与えた時
+	float set;						// 集合
+	float shot;						// 発射
+};
 
 /// <summary>
 /// 仲間の調整項目を調整、ロード、保存管理するクラス
@@ -66,7 +75,8 @@ public:
 	const CompanionMainData& GetMainData() const { return mainData_; }
 	const CompanionDashData& GetDashData() const { return dashData_; }
 	const CompanionAttackData& GetAttackData() const { return attackData_; }
-	const CompanionKnockbackData& GetKnockbackData()const { return knockbackData_; }
+	const CompanionKnockbackData& GetKnockbackData() const { return knockbackData_; }
+	const CompanionSeVolumeData& GetSeVolumeData() const { return seVolumeData_; }
 
 private:
 
@@ -75,6 +85,7 @@ private:
 	JsonFunction dashJson_;
 	JsonFunction attackJson_;
 	JsonFunction knockbackJson_;
+	JsonFunction seVolumeJson_;;
 
 	// 仲間全体の項目
 	CompanionMainData mainData_;
@@ -84,6 +95,8 @@ private:
 	CompanionAttackData attackData_;
 	// 仲間のノックバックの項目
 	CompanionKnockbackData knockbackData_;
+	// 仲間の効果音の項目
+	CompanionSeVolumeData seVolumeData_;
 
 };
 

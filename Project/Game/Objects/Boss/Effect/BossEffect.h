@@ -1,5 +1,7 @@
 #pragma once
+
 #include <memory>
+#include <array>
 
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
@@ -56,6 +58,17 @@ public:
 	/// </summary>
 	void AttackEffectReset();
 
+	/// <summary>
+	/// ジャンプ時のエフェクトを呼び出す
+	/// </summary>
+	void OnceJumpEffect();
+
+	/// <summary>
+	/// ダウン時のエフェクトを呼び出す
+	/// </summary>
+	void OnceDownEffect();
+	void EmitDownStar(bool flag);
+
 private:
 
 	/// <summary>
@@ -77,22 +90,35 @@ private:
 	// ボス本体のポインタ
 	BossEnemy* boss_ = nullptr;
 
+	// パーティクルを管理する
+	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+
 	// 攻撃エフェクト時間
 	float attackEffectTime_ = 0.0f;
+
+	/* ==================== ジャンプ攻撃時のエフェクト ==================== */
+
+	std::shared_ptr<ParticleEmitter> jumpDustEmitter_ = nullptr;
 
 	/* ==================== 近接攻撃の攻撃範囲エフェクト ==================== */
 
 	std::unique_ptr<PrimitiveDrawr> meleeEffect_ = nullptr;
+	std::unique_ptr<PrimitiveDrawr> meleeTimeEffect_ = nullptr;
 
 	/* ==================== ジャンプ攻撃の攻撃範囲エフェクト ==================== */
 
 	std::unique_ptr<PrimitiveDrawr> jumpAttackEffect_ = nullptr;
+	std::unique_ptr<PrimitiveDrawr> jumpAttackTimeEffect_ = nullptr;
 
 	/* ==================== ダッシュ攻撃の攻撃範囲エフェクト ==================== */
 
 	std::unique_ptr<PrimitiveDrawr> dashAttackEffect_ = nullptr;
+	std::unique_ptr<PrimitiveDrawr> dashAttackTimeEffect_ = nullptr;
 
-
+	/* ==================== ダッシュ攻撃の後の怯みエフェクト ==================== */
+	
+	std::shared_ptr<ParticleEmitter> downLineEmitter_ = nullptr;
+	std::shared_ptr<ParticleEmitter> downStarEmitter_ = nullptr;
 
 };
 

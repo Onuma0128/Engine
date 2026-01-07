@@ -33,6 +33,7 @@ void BossJumpAttackState::Update()
 {
 	// データを取得する
 	const auto& data = boss_->GetItems()->GetJumpAttackData();
+	const auto& volume = boss_->GetItems()->GetSeVolumeData();
 
 	// タイムを加算
 	timer_ += DeltaTimer::GetDeltaTime();
@@ -56,6 +57,8 @@ void BossJumpAttackState::Update()
 		if (timer_ >= data.JumpUpTime) {
 			boss_->GetTimeStop() = false;
 			boss_->PlayByName("Run");
+			// 効果音を鳴らす
+			boss_->GetAudio()->SoundPlayWave("BossAttackCaveat.wav", volume.attackCaveat);
 			ChangeAttackState(JumpAttackState::AirHold);
 		}
 		break;
@@ -69,6 +72,7 @@ void BossJumpAttackState::Update()
 		Vector3 velocity = (target - translate);
 		velocity.y = 0.0f;
 
+		// エフェクトの更新
 		boss_->GetEffect()->SetAttackEffect(BossAttackEffect::JumpAttack);
 
 		// 移動と回転の更新
@@ -89,11 +93,15 @@ void BossJumpAttackState::Update()
 
 		// ジャンプ処理の更新
 		UpdateJump();
+		// エフェクトの更新
+		boss_->GetEffect()->SetAttackEffect(BossAttackEffect::JumpAttack);
 
 		if (timer_ >= data.fallDownTime && boss_->GetTransform().translation_.y <= startY_) {
 			Vector3 translate = boss_->GetTransform().translation_;
 			translate.y = startY_;
 			boss_->GetEffect()->AttackEffectReset();
+			boss_->GetEffect()->OnceJumpEffect();
+			boss_->GetAudio()->SoundPlayWave("BossLanding.wav", volume.landing);
 			boss_->GetAttackCollider()->SetActive(true);
 			boss_->GetAttackCollider()->SetColliderSize(data.attackColliderSize);
 			boss_->GetAttackCollider()->SetColliderOffset(data.attackColliderOffset);

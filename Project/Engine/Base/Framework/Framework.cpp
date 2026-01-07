@@ -46,6 +46,9 @@ void Framework::LoadFiles()
 {
 	// ============================== Texture ============================== //
 
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "star.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "gradationWhite.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "downLine.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "smoke.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "circle.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "circleWhite.png");
@@ -114,7 +117,21 @@ void Framework::LoadFiles()
 
 	// ============================== Audio ============================== //
 
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "GameSceneBGM.wav");
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio", "mokugyo.wav");
+
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoDashHit.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoFootsteps.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoGetDamage.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoGiveDamage.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoSet.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoShot.wav");
+
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossAttackCaveat.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossAttackDash.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossDown.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossEnemySpawn.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossLanding.wav");
 }
 
 void Framework::Run()

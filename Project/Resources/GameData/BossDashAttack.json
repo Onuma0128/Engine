@@ -6,7 +6,7 @@
         "y": 0.6700000166893005,
         "z": 0.0
     },
-    "attackStartupTime": 2.0,
+    "attackStartupTime": 3.5,
     "dashTime": 0.44999998807907104,
     "attackRecoveryTime": 1.0,
     "attackEffectSize": {

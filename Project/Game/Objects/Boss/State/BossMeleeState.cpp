@@ -33,6 +33,7 @@ void BossMeleeState::Update()
 {
 	// データを取得する
 	const auto& data = boss_->GetItems()->GetMeleeData();
+	const auto& volume = boss_->GetItems()->GetSeVolumeData();
 
 	// タイムを加算
 	timer_ += DeltaTimer::GetDeltaTime();
@@ -61,6 +62,8 @@ void BossMeleeState::Update()
 			boss_->GetTimeStop() = false;
 			boss_->SetAnimationTime(1.0f);
 			boss_->GetEffect()->AttackEffectReset();
+			boss_->GetEffect()->OnceJumpEffect();
+			boss_->GetAudio()->SoundPlayWave("BossLanding.wav", volume.landing);
 			Vector3 translate = boss_->GetTransform().translation_;
 			translate.y = startY_;
 			boss_->SetTransformTranslation(translate);

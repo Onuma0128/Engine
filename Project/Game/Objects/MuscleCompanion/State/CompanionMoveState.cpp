@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "Input.h"
 #include "DeltaTimer.h"
 
 #include "Objects/Player/Player.h"
@@ -34,6 +35,8 @@ void CompanionMoveState::Update()
 {
 	// データを取得する
 	const auto& data = companion_->GetItems()->GetMainData();
+	const auto& volume = companion_->GetItems()->GetSeVolumeData();
+
 	// 時間を更新
 	searchTimer_ += DeltaTimer::GetDeltaTime();
 	// 更新時間が来たら探索を再更新する
@@ -56,6 +59,14 @@ void CompanionMoveState::Update()
 	Vector3 translate = companion_->GetTransform().translation_ +
 		speed * velocity * DeltaTimer::GetDeltaTime();
 	companion_->SetTransformTranslation(translate);
+	// エフェクトを追加する
+	companion_->GetEffect()->OnceMoveEffect();
+	if (!companion_->GetReturnOriginal()) { companion_->GetEffect()->OnceDashEffect(); }
+
+	// 足音のSEがなっていなければ鳴らす
+	if (!companion_->GetAudio()->IsPlaying("MattyoFootsteps.wav")) {
+		companion_->GetAudio()->SoundPlayWave("MattyoFootsteps.wav", volume.footsteps);
+	}
 
 	// 移動時の回転の更新
 	if (velocity.Length() != 0.0f) {
@@ -65,6 +76,7 @@ void CompanionMoveState::Update()
 
 	// 距離が近づいたら待機ステートに遷移する
 	if (!companion_->SearchDistance()) {
+		if (!companion_->GetReturnOriginal()) { Input::GetInstance()->Vibrate(0.3f, 0.6f, 60); }
 		companion_->SetReturnOriginal(true);
 		companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
 		return;
@@ -72,6 +84,8 @@ void CompanionMoveState::Update()
 
 	// プレイヤーが指示を出したら攻撃ステートに遷移する
 	if (companion_->GetPlayer()->GetShot()->GetIsShot()) {
+		Input::GetInstance()->Vibrate(0.5f, 0.9f, 90);
+		companion_->GetAudio()->SoundPlayWave("MattyoShot.wav", volume.shot);
 		companion_->GetPlayer()->GetShot()->SetIsShot(false);
 		companion_->ChangeState(std::make_unique<CompanionDashState>(companion_));
 		return;

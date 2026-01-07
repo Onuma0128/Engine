@@ -71,7 +71,8 @@ public:
 
 		bool isLock;				// Emitterを固定するか
 		bool isMoveStart;			// Particleを動かすか
-		bool isLockDirection;		// Particle発生時のvelocityを固定
+		bool isLockDirectionXY;		// Particle発生時のvelocityを固定
+		bool isLockDirectionXZ;		// Particle発生時のvelocityを固定
 		bool isFieldStart;			// ParticleにAccelerationを掛けるか
 		bool isReflect;				// Y軸の高さで反射をするか
 		bool isChangeScale;			// 生きている時間でScaleを変えるか

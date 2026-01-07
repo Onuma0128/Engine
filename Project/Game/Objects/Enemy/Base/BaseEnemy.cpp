@@ -165,7 +165,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		other->GetColliderName() == "FollowerMuscleCompanion" ||
 		other->GetColliderName() == "MuscleCompanionAttack") {
 		// 小さな当たり判定は無視する
-		if (other->GetRadius() < 0.5f) {
+		if (other->GetRadius() < 0.6f) {
 			return;
 		}
 		// 初回ヒット時はヒットジャンプステートに遷移

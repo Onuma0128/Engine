@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "Audio.h"
 #include "Objects/Character/BaseCharacter.h"
 #include "SearchAlgorithm/Navigation/PathFinder.h"
 
@@ -9,6 +10,7 @@
 #include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
 #include "Objects/MuscleCompanion/Collider/CompanionAttackCollider.h"
 #include "Objects/MuscleCompanion/Collider/CompanionFollowerCollider.h"
+#include "Objects/MuscleCompanion/Effect/CompanionEffect.h"
 
 // 前方宣言
 class Player;
@@ -80,6 +82,8 @@ public:
 	const CharacterState GetState() const { return state_->GetState(); }
 	CompanionAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
 	CompanionFollowerCollider* GetFollowerCollider() { return followerCollider_.get(); }
+	CompanionEffect* GetEffect() { return effect_.get(); }
+	Audio* GetAudio() { return audio_.get(); }
 	PathFinder& GetPathFinder() { return pathFinder_; }
 	bool GetGatherRequested() const { return isGatherRequested_; }
 	bool GetReturnOriginal() const { return isReturnOriginal_; }
@@ -98,6 +102,10 @@ private:
 	std::unique_ptr<CompanionAttackCollider> attackCollider_ = nullptr;
 	// 後続用コライダー
 	std::unique_ptr<CompanionFollowerCollider> followerCollider_ = nullptr;
+	// エフェクト
+	std::unique_ptr<CompanionEffect> effect_ = nullptr;
+	// Audio
+	std::unique_ptr<Audio> audio_ = nullptr;
 	// 経路探索
 	PathFinder pathFinder_;
 

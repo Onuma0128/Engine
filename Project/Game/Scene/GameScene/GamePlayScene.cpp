@@ -61,6 +61,11 @@ void GamePlayScene::Initialize()
 	// ゲームシーン全体のUIを初期化
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();
 	gameSceneUis_->Init();
+
+	// BGMを流す
+	const float kBGMVolume = 0.04f;
+	bgm_ = std::make_unique<Audio>();
+	bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
 }
 
 void GamePlayScene::Finalize()

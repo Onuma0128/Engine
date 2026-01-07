@@ -3,6 +3,7 @@
 
 #include "BaseScene.h"
 
+#include "Audio.h"
 #include "Object3d.h"
 #include "Animation.h"
 #include "PrimitiveDrawr.h"
@@ -74,6 +75,8 @@ private:
 
 	// ゲームの操作UI
 	std::unique_ptr<GameSceneUIs> gameSceneUis_ = nullptr;
+
+	std::unique_ptr<Audio> bgm_;
 
 	bool isSelect_ = false;
 };

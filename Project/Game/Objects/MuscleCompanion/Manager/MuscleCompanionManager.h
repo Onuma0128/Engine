@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 
+#include "Audio.h"
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 #include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
 
@@ -63,6 +64,9 @@ private:
 
 	// プレイヤーの仲間達
 	std::vector<std::unique_ptr<MuscleCompanion>> companions_;
+
+	// Audio
+	std::unique_ptr<Audio> audio_ = nullptr;
 
 
 

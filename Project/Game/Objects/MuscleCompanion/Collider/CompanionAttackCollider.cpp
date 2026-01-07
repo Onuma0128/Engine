@@ -28,6 +28,11 @@ void CompanionAttackCollider::OnCollisionEnter(Collider* other)
 {
 	isHit_ = true;
 	hitColliders_.push_back(other);
+
+	if (!companion_->GetAudio()->IsPlaying("MattyoGiveDamage.wav")) {
+		const auto& volume = companion_->GetItems()->GetSeVolumeData();
+		companion_->GetAudio()->SoundPlayWave("MattyoGiveDamage.wav", volume.giveDamage);
+	}
 }
 
 void CompanionAttackCollider::OnCollisionStay(Collider* other)

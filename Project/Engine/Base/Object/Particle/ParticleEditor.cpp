@@ -59,7 +59,8 @@ void ParticleEditor::Initialize(std::string filePath)
 		// 速度
 		parameters_.Set("MinVelocity", Vector3{});
 		parameters_.Set("MaxVelocity", Vector3{});
-		parameters_.Set("LockDirection", false);
+		parameters_.Set("LockDirectionXY", false);
+		parameters_.Set("LockDirectionXZ", false);
 		parameters_.Set("DirectionSpeed", 0.0f);
 		// 回転
 		parameters_.Set("Billboard", true);
@@ -130,7 +131,8 @@ void ParticleEditor::Initialize(std::string filePath)
 		baseEmitter_.minVelocity = parameters_.Get<Vector3>("MinVelocity", baseEmitter_.minVelocity);
 		baseEmitter_.maxVelocity = parameters_.Get<Vector3>("MaxVelocity", baseEmitter_.maxVelocity);
 		baseEmitter_.directionSpeed = parameters_.Get<float>("DirectionSpeed", baseEmitter_.directionSpeed);
-		baseEmitter_.isLockDirection = parameters_.Get<bool>("LockDirection", baseEmitter_.isLockDirection);
+		baseEmitter_.isLockDirectionXY = parameters_.Get<bool>("LockDirectionXY", baseEmitter_.isLockDirectionXY);
+		baseEmitter_.isLockDirectionXZ = parameters_.Get<bool>("LockDirectionXZ", baseEmitter_.isLockDirectionXZ);
 		// 回転
 		baseEmitter_.isBillboard = parameters_.Get<bool>("Billboard", baseEmitter_.isBillboard);
 		baseEmitter_.minRotate = parameters_.Get<Vector3>("MinRotate", baseEmitter_.minRotate);
@@ -252,7 +254,8 @@ void ParticleEditor::Update()
 			// 速度
 			ImGui::DragFloat3("MinVelocity", &baseEmitter_.minVelocity.x, 0.01f);
 			ImGui::DragFloat3("MaxVelocity", &baseEmitter_.maxVelocity.x, 0.01f);
-			ImGui::Checkbox("LockDirection", &baseEmitter_.isLockDirection);
+			ImGui::Checkbox("LockDirectionXY", &baseEmitter_.isLockDirectionXY);
+			ImGui::Checkbox("LockDirectionXZ", &baseEmitter_.isLockDirectionXZ);
 			ImGui::DragFloat("DirectionSpeed", &baseEmitter_.directionSpeed, 0.01f);
 			ImGui::Separator();
 			// 回転
@@ -334,7 +337,8 @@ void ParticleEditor::Save()
 	// 速度
 	parameters_.Set("MinVelocity", baseEmitter_.minVelocity);
 	parameters_.Set("MaxVelocity", baseEmitter_.maxVelocity);
-	parameters_.Set("LockDirection", baseEmitter_.isLockDirection);
+	parameters_.Set("LockDirectionXY", baseEmitter_.isLockDirectionXY);
+	parameters_.Set("LockDirectionXZ", baseEmitter_.isLockDirectionXZ);
 	parameters_.Set("DirectionSpeed", baseEmitter_.directionSpeed);
 	// 回転
 	parameters_.Set("Billboard", baseEmitter_.isBillboard);

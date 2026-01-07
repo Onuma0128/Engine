@@ -47,12 +47,7 @@ void EnemyHitJumpState::Update()
         hitJumpVelocityY_ = 0.0f;
         // 座標を更新する
         SetTranslate(translateY, veloctiy);
-        if (enemy_->GetHitCollider()) {
-            // 攻撃ステートに遷移する
-            enemy_->TypeChengeAttackState();
-        } else {
-			enemy_->ChangeState(std::make_unique<EnemyMoveState>(enemy_));
-        }
+        enemy_->ChangeState(std::make_unique<EnemyMoveState>(enemy_));
         return;
     }
 }

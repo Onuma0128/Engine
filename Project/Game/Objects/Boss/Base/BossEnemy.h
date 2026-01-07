@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "Audio.h"
 #include "Objects/Character/BaseCharacter.h"
 #include "SearchAlgorithm/Navigation/PathFinder.h"
 
@@ -82,29 +83,26 @@ public:
 	EnemySpawnerFactory* GetSpawnerFactory() { return spawnerFactory_; }
 	BossAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
 	BossEffect* GetEffect() { return effect_.get(); }
+	Audio* GetAudio() { return audio_.get(); }
 	PathFinder& GetPathFinder() { return pathFinder_; }
 
 private:
 	
 	// プレイヤーのポインタ
 	Player* player_ = nullptr;
-
 	// 敵スポナー管理クラスのポインタ
 	EnemySpawnerFactory* spawnerFactory_ = nullptr;
-
 	// ボスの調整項目
 	std::unique_ptr<BossAdjustItem> items_ = nullptr;
-
 	// ボスの状態遷移用ステート
 	std::unique_ptr<BossBaseState> state_ = nullptr;
 	std::unique_ptr<BossStateEvaluator> stateEvaluator_ = nullptr;
-
 	// ボスの攻撃用コライダー
 	std::unique_ptr<BossAttackCollider> attackCollider_ = nullptr;
-
 	// ボスのエフェクト
 	std::unique_ptr<BossEffect> effect_ = nullptr;
-
+	// Audio
+	std::unique_ptr<Audio> audio_ = nullptr;
 	// ボスの目線
 	std::unique_ptr<BossRay> ray_ = nullptr;
 

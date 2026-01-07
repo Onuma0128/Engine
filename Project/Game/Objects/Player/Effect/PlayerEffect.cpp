@@ -90,7 +90,7 @@ void PlayerEffect::Draw()
 		playerReload_->TypeDraw();
 	}
 	if (!player_->GetShot()->GetIsCanAttack()) {
-		//needMoreMachoEffect->TypeDraw();
+		needMoreMachoEffect->TypeDraw();
 	}
 }
 

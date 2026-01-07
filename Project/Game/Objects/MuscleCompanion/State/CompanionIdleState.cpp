@@ -34,6 +34,7 @@ void CompanionIdleState::Update()
 		}
 		return;
 	}
+	if (!companion_->GetGatherRequested()) { return; }
 
 	// 距離が離れたら移動ステートに遷移する
 	if (companion_->SearchDistance()) {
@@ -43,6 +44,8 @@ void CompanionIdleState::Update()
 
 	// プレイヤーが指示を出したら攻撃ステートに遷移する
 	if (companion_->GetPlayer()->GetShot()->GetIsShot()) {
+		const auto& volume = companion_->GetItems()->GetSeVolumeData();
+		companion_->GetAudio()->SoundPlayWave("MattyoShot.wav", volume.shot);
 		companion_->GetPlayer()->GetShot()->SetIsShot(false);
 		companion_->ChangeState(std::make_unique<CompanionDashState>(companion_));
 		return;

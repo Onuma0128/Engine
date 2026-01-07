@@ -89,6 +89,9 @@ void CompanionDashState::Update()
 	companion_->SetTransformTranslation(
 		companion_->GetTransform().translation_ +
 		velocity_ * speed * DeltaTimer::GetDeltaTime());
+	// エフェクトを追加する
+	companion_->GetEffect()->OnceMoveEffect();
+	companion_->GetEffect()->OnceDashEffect();
 }
 
 void CompanionDashState::Draw()

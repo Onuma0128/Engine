@@ -1,0 +1,106 @@
+{
+    "Texture": "smoke.png",
+    "UvFlipX": false,
+    "UvFlipY": false,
+    "Model": 1,
+    "BlendMode": 1,
+    "Move": true,
+    "EmitCount": 128,
+    "FrequencyTime": 1.0,
+    "LifeTime": 0.800000011920929,
+    "Acceleration": {
+        "x": 0.0,
+        "y": -8.0,
+        "z": 0.0
+    },
+    "AcceleField": true,
+    "MinAcceleField": {
+        "x": -5.0,
+        "y": -5.0,
+        "z": -5.0
+    },
+    "MaxAcceleField": {
+        "x": 5.0,
+        "y": 5.0,
+        "z": 5.0
+    },
+    "Reflect": true,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 0.13725490868091583,
+        "y": 0.09803921729326248,
+        "z": 0.08235294371843338
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.15000000596046448,
+        "y": 0.15000000596046448,
+        "z": 1.0
+    },
+    "MaxScale": {
+        "x": 0.4000000059604645,
+        "y": 0.4000000059604645,
+        "z": 1.0
+    },
+    "ChangeScale": false,
+    "EndScale": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinVelocity": {
+        "x": -3.0,
+        "y": 1.0,
+        "z": -3.0
+    },
+    "MaxVelocity": {
+        "x": 3.0,
+        "y": 2.0,
+        "z": 3.0
+    },
+    "LockDirection": false,
+    "DirectionSpeed": 4.0,
+    "Billboard": true,
+    "MinRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -3.140000104904175
+    },
+    "MaxRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 3.140000104904175
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 8.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 9.0
+    },
+    "MinSize": {
+        "x": -0.3499999940395355,
+        "y": 0.0,
+        "z": -0.3499999940395355
+    },
+    "MaxSize": {
+        "x": 0.3499999940395355,
+        "y": 0.800000011920929,
+        "z": 0.3499999940395355
+    },
+    "Position": {
+        "x": 0.0,
+        "y": 0.20000000298023224,
+        "z": 0.0
+    },
+    "Look": true,
+    "LockDirectionXY": false,
+    "LockDirectionXZ": true
+}

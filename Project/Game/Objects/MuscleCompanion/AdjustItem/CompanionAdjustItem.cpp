@@ -70,6 +70,24 @@ void CompanionAdjustItem::LoadItems()
 		knockbackData_.knockbackSpeed = knockbackJson_.Get("knockbackSpeed", knockbackData_.knockbackSpeed);
 		knockbackData_.knockbackTime = knockbackJson_.Get("knockbackTime", knockbackData_.knockbackTime);
 	}
+
+	/* ============================== SeVolume ============================== */
+	seVolumeJson_.Init("CompanionSeVolume");
+	if (!seVolumeJson_.Load()) {
+		seVolumeJson_.Set("dashHit", 0.0f);
+		seVolumeJson_.Set("footsteps", 1.0f);
+		seVolumeJson_.Set("getDamage", 0.0f);
+		seVolumeJson_.Set("giveDamage", 1.0f);
+		seVolumeJson_.Set("set", 0.0f);
+		seVolumeJson_.Set("shot", 1.0f);
+	} else {
+		seVolumeData_.dashHit = seVolumeJson_.Get("dashHit", seVolumeData_.dashHit);
+		seVolumeData_.footsteps = seVolumeJson_.Get("footsteps", seVolumeData_.footsteps);
+		seVolumeData_.getDamage = seVolumeJson_.Get("getDamage", seVolumeData_.getDamage);
+		seVolumeData_.giveDamage = seVolumeJson_.Get("giveDamage", seVolumeData_.giveDamage);
+		seVolumeData_.set = seVolumeJson_.Get("set", seVolumeData_.set);
+		seVolumeData_.shot = seVolumeJson_.Get("shot", seVolumeData_.shot);
+	}
 }
 
 void CompanionAdjustItem::Editor()
@@ -156,6 +174,28 @@ void CompanionAdjustItem::Editor()
 			}
 			ImGui::TreePop();
 		}
+		ImGui::Separator();
+		// 効果音の項目
+		if (ImGui::TreeNode("SeVolume")) {
+			ImGui::DragFloat("dashHit", &seVolumeData_.dashHit, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("footsteps", &seVolumeData_.footsteps, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat("getDamage", &seVolumeData_.getDamage, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("giveDamage", &seVolumeData_.giveDamage, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat("set", &seVolumeData_.set, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("shot", &seVolumeData_.shot, 0.01f, 0.1f, 10.0f);
+			// セーブボタン
+			if (ImGui::Button("Save")) {
+				seVolumeJson_.Set("dashHit", seVolumeData_.dashHit);
+				seVolumeJson_.Set("footsteps", seVolumeData_.footsteps);
+				seVolumeJson_.Set("getDamage", seVolumeData_.getDamage);
+				seVolumeJson_.Set("giveDamage", seVolumeData_.giveDamage);
+				seVolumeJson_.Set("set", seVolumeData_.set);
+				seVolumeJson_.Set("shot", seVolumeData_.shot);
+				seVolumeJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+
 		ImGui::TreePop();
 	}
 	ImGui::Separator();

@@ -12,6 +12,12 @@ void CompanionAttackState::Init()
 {
 	companion_->PlayByName("Wait");
 	ChangeAttackState(AttackState::StartUp);
+	companion_->SetGatherRequested(false);
+
+	if (companion_->GetFirstDashAttack()) {
+		const auto& volume = companion_->GetItems()->GetSeVolumeData();
+		companion_->GetAudio()->SoundPlayWave("MattyoDashHit.wav", volume.dashHit);
+	}
 
 	const auto& colliders = companion_->GetAttackCollider()->GetHitColliders();
 	for (const auto& collider : colliders) {

@@ -1,0 +1,105 @@
+{
+    "Texture": "circle.png",
+    "UvFlipX": false,
+    "UvFlipY": false,
+    "Model": 1,
+    "BlendMode": 2,
+    "Move": true,
+    "EmitCount": 8,
+    "FrequencyTime": 0.019999999552965164,
+    "LifeTime": 0.36000001430511475,
+    "Acceleration": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -10.0
+    },
+    "AcceleField": true,
+    "MinAcceleField": {
+        "x": -10.0,
+        "y": -10.0,
+        "z": -10.0
+    },
+    "MaxAcceleField": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+    },
+    "Reflect": false,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 0.8284313678741455,
+        "y": 0.6198902726173401,
+        "z": 0.04060940444469452
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxScale": {
+        "x": 0.10000000149011612,
+        "y": 0.6000000238418579,
+        "z": 0.0
+    },
+    "ChangeScale": true,
+    "EndScale": {
+        "x": 0.5,
+        "y": 3.0,
+        "z": 0.0
+    },
+    "MinVelocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxVelocity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "LockDirectionXY": true,
+    "LockDirectionXZ": false,
+    "DirectionSpeed": -2.0,
+    "Billboard": true,
+    "MinRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinSize": {
+        "x": -0.10000000149011612,
+        "y": -0.20000000298023224,
+        "z": -0.10000000149011612
+    },
+    "MaxSize": {
+        "x": 0.10000000149011612,
+        "y": 0.20000000298023224,
+        "z": 0.10000000149011612
+    },
+    "Position": {
+        "x": 0.0,
+        "y": 1.350000023841858,
+        "z": 1.850000023841858
+    },
+    "Look": true
+}

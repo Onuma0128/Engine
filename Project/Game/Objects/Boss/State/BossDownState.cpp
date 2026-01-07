@@ -10,6 +10,7 @@ BossDownState::BossDownState(BossEnemy* boss) : BossBaseState(boss) {}
 void BossDownState::Init()
 {
 	boss_->PlayByName("No");
+	boss_->GetEffect()->OnceDownEffect();
 }
 
 void BossDownState::Finalize()
@@ -24,8 +25,18 @@ void BossDownState::Update()
 	// タイムを加算
 	timer_ += DeltaTimer::GetDeltaTime();
 
+	// エフェクトを更新
+	boss_->GetEffect()->EmitDownStar(true);
+
+	// ダウンのSEがなっていなければ鳴らす
+	const auto& volume = boss_->GetItems()->GetSeVolumeData();
+	if (!boss_->GetAudio()->IsPlaying("BossDown.wav")) {
+		boss_->GetAudio()->SoundPlayWave("BossDown.wav", volume.down);
+	}
+
 	// 時間が経ったらステートを戻す
 	if (timer_ >= data.downTime) {
+		boss_->GetEffect()->EmitDownStar(false);
 		boss_->ChangeState(std::make_unique<BossMoveState>(boss_));
 	}
 }

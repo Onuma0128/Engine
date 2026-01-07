@@ -19,6 +19,10 @@ void BossDashAttackState::Init()
 
 	boss_->PlayByName("Run");
 	boss_->GetEffect()->SetAttackEffect(BossAttackEffect::DashAttack);
+
+	// 効果音を鳴らす
+	const auto& volume = boss_->GetItems()->GetSeVolumeData();
+	boss_->GetAudio()->SoundPlayWave("BossAttackCaveat.wav", volume.attackCaveat);
 }
 
 void BossDashAttackState::Finalize()
@@ -31,6 +35,7 @@ void BossDashAttackState::Update()
 {
 	// データを取得する
 	const auto& data = boss_->GetItems()->GetDashAttackData();
+	const auto& volume = boss_->GetItems()->GetSeVolumeData();
 
 	// タイムを加算
 	timer_ += DeltaTimer::GetDeltaTime();
@@ -60,6 +65,7 @@ void BossDashAttackState::Update()
 			boss_->PlayByName("Run_Attack");
 			boss_->GetEffect()->AttackEffectReset();
 			boss_->GetAttackCollider()->SetActive(true);
+			boss_->GetAudio()->SoundPlayWave("BossAttackDash.wav", volume.attackDash);
 			ChangeAttackState(DashAttackState::DashAttack);
 		}
 	}

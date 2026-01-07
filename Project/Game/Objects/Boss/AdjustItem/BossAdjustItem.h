@@ -82,6 +82,16 @@ struct BossDashAttackData {
 	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
+// ボスの効果音の音量
+struct BossSeVolumeData {
+	float attackCaveat;				// ボスの攻撃警告
+	float attackDash;				// ボスのダッシュ攻撃
+	float down;						// ダウン
+	float enemySpawn;				// 敵召喚
+	float jump;						// ジャンプ時
+	float landing;					// 着地時
+};
+
 // ボスのスコア計算の調整項目
 struct BossStateScoreData {
 	float scoreAccumulationTime;	// スコアが加算される時間
@@ -138,6 +148,7 @@ public:
 	const BossJumpAttackData& GetJumpAttackData() const { return jumpAttackData_; }
 	const BossDashAttackData& GetDashAttackData() const { return dashAttackData_; }
 	const BossStateScoreData& GetStateScoreData() const { return stateScoreData_; }
+	const BossSeVolumeData& GetSeVolumeData() const { return seVolumeData_; }
 
 private:
 
@@ -149,6 +160,7 @@ private:
 	JsonFunction jumpAttackJson_;
 	JsonFunction dashAttackJson_;
 	JsonFunction stateScoreJson_;
+	JsonFunction seVolumeJson_;
 
 	BossMainData mainData_;
 	BossDownData downData_;
@@ -157,6 +169,7 @@ private:
 	BossJumpAttackData jumpAttackData_;
 	BossDashAttackData dashAttackData_;
 	BossStateScoreData stateScoreData_;
+	BossSeVolumeData seVolumeData_;
 	int savedSpawnCount_ = 0;
 
 };

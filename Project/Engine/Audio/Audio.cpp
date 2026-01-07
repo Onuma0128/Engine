@@ -90,6 +90,50 @@ void Audio::SetVolume(const std::string& filePath, float volume)
     }
 }
 
+bool Audio::IsPlaying(const std::string& filePath)
+{
+    auto it = playingVoices_.find(filePath);
+    if (it == playingVoices_.end()) {
+        return false;
+    }
+
+    auto& voices = it->second;
+    bool anyPlaying = false;
+
+    // 終わった voice を掃除しつつ、再生中があるかチェック
+    for (auto vit = voices.begin(); vit != voices.end(); )
+    {
+        IXAudio2SourceVoice* v = *vit;
+        if (!v) {
+            vit = voices.erase(vit);
+            continue;
+        }
+
+        XAUDIO2_VOICE_STATE state{};
+        v->GetState(&state, XAUDIO2_VOICE_NOSAMPLESPLAYED);
+
+        // バッファが0なら「再生終了（またはStop済み）」扱い
+        if (state.BuffersQueued == 0)
+        {
+            v->Stop(0);
+            v->FlushSourceBuffers();
+            v->DestroyVoice();
+            vit = voices.erase(vit);
+            continue;
+        }
+
+        anyPlaying = true;
+        ++vit;
+    }
+
+    // 空になったらキーも消す
+    if (voices.empty()) {
+        playingVoices_.erase(it);
+    }
+
+    return anyPlaying;
+}
+
 void Audio::StopAll()
 {
     for (auto& kv : playingVoices_) {

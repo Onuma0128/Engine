@@ -6,6 +6,7 @@ void MuscleCompanionManager::Initialize()
 {
 	items_ = std::make_unique<CompanionAdjustItem>();
 	items_->LoadItems();
+	audio_ = std::make_unique<Audio>();
 	for (int i = 0; i < 8; ++i) {
 		std::unique_ptr<MuscleCompanion> companion = std::make_unique<MuscleCompanion>();
 		companions_.push_back(std::move(companion));
@@ -58,6 +59,9 @@ void MuscleCompanionManager::GatherCompanions()
 		for (auto& companion : companions_) {
 			if (companion->GetState() == CharacterState::Idle) {
 				companion->SetGatherRequested(true);
+			}
+			if (!companion->GetReturnOriginal() && !audio_->IsPlaying("MattyoSet.wav")) {
+				audio_->SoundPlayWave("MattyoSet.wav", items_->GetSeVolumeData().set);
 			}
 		}
 		player_->GetShot()->SetIsCanAttack(true);

@@ -100,5 +100,7 @@
         "y": 2.440000057220459,
         "z": -0.6399999856948853
     },
-    "Look": true
+    "Look": true,
+    "LockDirectionXY": true,
+    "LockDirectionXZ": false
 }

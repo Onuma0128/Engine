@@ -5,8 +5,8 @@
         "y": 1.0,
         "z": 1.0
     },
-    "attackStartupTime": 0.5,
+    "attackStartupTime": 0.699999988079071,
     "attackActiveTime": 0.20999999344348907,
-    "attackRecoveryTime": 0.5,
+    "attackRecoveryTime": 0.699999988079071,
     "firstDashTime": 1.2000000476837158
 }

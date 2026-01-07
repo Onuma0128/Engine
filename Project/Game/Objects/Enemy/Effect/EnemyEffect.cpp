@@ -20,7 +20,7 @@ void EnemyEffect::Init()
 	moveDustEmitter_->SetIsCreate(false);
 
 	// ヒット時のエフェクト
-	hitEmitter_ = std::make_unique<ParticleEmitter>("enemyHit");
+	hitEmitter_ = std::make_unique<ParticleEmitter>("hitDamage");
 	particleManager_->CreateParticleGroup(hitEmitter_);
 	hitEmitter_->SetIsCreate(false);
 

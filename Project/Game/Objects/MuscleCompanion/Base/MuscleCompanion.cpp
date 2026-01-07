@@ -1,5 +1,6 @@
 #include "MuscleCompanion.h"
 
+#include "Input.h"
 #include "DeltaTimer.h"
 
 #include "Collision/CollisionFilter.h"
@@ -14,6 +15,9 @@
 
 void MuscleCompanion::Initialize()
 {
+	// Audioの初期化
+	audio_ = std::make_unique<Audio>();
+
 	// 基本的なアニメーションを設定
 	Animation::Initialize("Mattyo.gltf");
 	Animation::SetSceneRenderer();
@@ -46,6 +50,11 @@ void MuscleCompanion::Initialize()
 	followerCollider_->SetCompanion(this);
 	followerCollider_->Initialize();
 
+	// エフェクトの初期化
+	effect_ = std::make_unique<CompanionEffect>();
+	effect_->SetCompanion(this);
+	effect_->Init();
+
 	// ダッシュ時の一回目の攻撃フラグの初期化
 	isFirstDashAttack_ = true;
 	// 集合要求フラグの初期化
@@ -77,6 +86,8 @@ void MuscleCompanion::Update()
 void MuscleCompanion::Draw()
 {
 	state_->Draw();
+
+	effect_->Draw();
 }
 
 void MuscleCompanion::OnCollisionEnter(Collider* other)
@@ -99,6 +110,7 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 		} else if (other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") {
 			if (Collider::radius_ > 0.6f) {
 				isFirstDashAttack_ = true;
+				Input::GetInstance()->Vibrate(0.4f, 0.75f, 100);
 				Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
 				Quaternion yRotation_ = Quaternion::DirectionToQuaternion(
 					transform_.rotation_, velocity.Normalize(), 1.0f);
@@ -113,6 +125,9 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 		float color = static_cast<float>(currentHp_) / static_cast<float>(maxHp_);
 		Vector3 outlineColor = { 1.0f - color,color,0.0f };
 		Animation::GetMaterial().outlineColor = outlineColor;
+		effect_->OnceHitEffect();
+		const auto& volume = items_->GetSeVolumeData();
+		audio_->SoundPlayWave("MattyoGetDamage.wav", volume.getDamage);
 		if (currentHp_ <= 0) {
 			ChangeState(std::make_unique<CompanionDeadState>(this));
 		} else if (other->GetColliderName() == "BossAttack") {
