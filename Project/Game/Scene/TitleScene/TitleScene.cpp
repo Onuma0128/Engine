@@ -40,6 +40,11 @@ void TitleScene::Initialize()
 	test = std::make_unique<ParticleEmitter>("downStar");
 	particleManager->CreateParticleGroup(test);
 	test->SetIsCreate(false);
+
+	// BGMを流す
+	const float kBGMVolume = 0.04f;
+	bgm_ = std::make_unique<Audio>();
+	bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
 }
 
 void TitleScene::Finalize()

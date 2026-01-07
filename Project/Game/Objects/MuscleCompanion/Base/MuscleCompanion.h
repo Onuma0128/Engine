@@ -71,6 +71,7 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetItems(CompanionAdjustItem* items) { items_ = items; }
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
+	void SetAudio(Audio* audio) { audio_ = audio; }
 	void SetColliderIsActive(bool flag) { isActive_ = flag; }
 	void SetColliderScale(float scale) { colliderScale_ = scale; }
 	void SetGatherRequested(bool flag) { isGatherRequested_ = flag; }
@@ -83,7 +84,7 @@ public:
 	CompanionAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
 	CompanionFollowerCollider* GetFollowerCollider() { return followerCollider_.get(); }
 	CompanionEffect* GetEffect() { return effect_.get(); }
-	Audio* GetAudio() { return audio_.get(); }
+	Audio* GetAudio() { return audio_; }
 	PathFinder& GetPathFinder() { return pathFinder_; }
 	bool GetGatherRequested() const { return isGatherRequested_; }
 	bool GetReturnOriginal() const { return isReturnOriginal_; }
@@ -96,6 +97,8 @@ private:
 	Player* player_ = nullptr;
 	// 調整項目のポインタ
 	CompanionAdjustItem* items_ = nullptr;
+	// Audio
+	Audio* audio_ = nullptr;
 	// 状態遷移
 	std::unique_ptr<CompanionBaseState> state_ = nullptr;
 	// 攻撃用コライダー
@@ -104,8 +107,6 @@ private:
 	std::unique_ptr<CompanionFollowerCollider> followerCollider_ = nullptr;
 	// エフェクト
 	std::unique_ptr<CompanionEffect> effect_ = nullptr;
-	// Audio
-	std::unique_ptr<Audio> audio_ = nullptr;
 	// 経路探索
 	PathFinder pathFinder_;
 

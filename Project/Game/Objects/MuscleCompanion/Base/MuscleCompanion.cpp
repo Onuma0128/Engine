@@ -15,9 +15,6 @@
 
 void MuscleCompanion::Initialize()
 {
-	// Audioの初期化
-	audio_ = std::make_unique<Audio>();
-
 	// 基本的なアニメーションを設定
 	Animation::Initialize("Mattyo.gltf");
 	Animation::SetSceneRenderer();

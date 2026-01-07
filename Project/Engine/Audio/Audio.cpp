@@ -16,6 +16,8 @@ Audio::Audio()
 
 Audio::~Audio()
 {
+    StopAll();
+
     if (masterVoice_) {
         masterVoice_->DestroyVoice();
         masterVoice_ = nullptr;

@@ -6,6 +6,7 @@
 #include "ParticleEmitter.h"
 #include "Animation.h"
 #include "Camera.h"
+#include "Audio.h"
 
 #include "Scene/SceneFade/SceneFade.h"
 #include "Uis/TitleUI/TitleUI.h"
@@ -55,5 +56,7 @@ private:
 
 	// エフェクト
 	std::shared_ptr<ParticleEmitter> test = nullptr;
+
+	std::unique_ptr<Audio> bgm_;
 
 };

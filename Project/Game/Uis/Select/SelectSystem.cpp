@@ -135,7 +135,7 @@ void SelectSystem::CounterUiUpdate()
 	if (countUiOrder_ != CountUiOrder::End) {
 		// ランダムで数字を決める
 		std::mt19937 randomEngine(seedGenerator_());
-		std::uniform_int_distribution<uint32_t> number(0, 9);
+		std::uniform_int_distribution<uint32_t> number(1, 9);
 		first = (number(randomEngine));
 		second = (number(randomEngine));
 		third = (number(randomEngine));

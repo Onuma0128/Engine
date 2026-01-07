@@ -17,6 +17,7 @@ void MuscleCompanionManager::Initialize()
 		companion->SetPlayer(player_);
 		companion->SetMapData(mapData_);
 		companion->SetItems(items_.get());
+		companion->SetAudio(audio_.get());
 		companion->Initialize();
 		companion->SetTransformTranslation(Vector3::ExprUnitZ * static_cast<float>(count));
 		count++;
