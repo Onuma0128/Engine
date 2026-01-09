@@ -8,6 +8,7 @@ void BossAdjustItem::LoadItems()
 	mainJson_.Init("BossMain");
 	if (!mainJson_.Load()) {
         mainJson_.Set("startPosition", Vector3{});
+        mainJson_.Set("sabStartPosition", Vector3{});
 		mainJson_.Set("maxHP", 20);
 		mainJson_.Set("speed", 2.0f);
         mainJson_.Set("rayDistance", 2.0f);
@@ -17,6 +18,7 @@ void BossAdjustItem::LoadItems()
 		mainJson_.Set("searchUpdateTime", 0.0f);
 	} else {
         mainData_.startPosition = mainJson_.Get("startPosition", mainData_.startPosition);
+        mainData_.sabStartPosition = mainJson_.Get("sabStartPosition", mainData_.sabStartPosition);
 		mainData_.maxHP = mainJson_.Get("maxHP", mainData_.maxHP);
 		mainData_.speed = mainJson_.Get("speed", mainData_.speed);
         mainData_.rayDistance = mainJson_.Get("rayDistance", mainData_.rayDistance);
@@ -30,10 +32,11 @@ void BossAdjustItem::LoadItems()
     /* ============================== Down ============================== */
     downJson_.Init("BossDown");
     if (!downJson_.Load()) {
+        downJson_.Set("shakePower", 0.0f);
         downJson_.Set("downTime", 0.0f);
     } else {
         downData_.downTime = downJson_.Get("downTime", downData_.downTime);
-        
+        downData_.shakePower = downJson_.Get("shakePower", downData_.shakePower);
     }
 
 	/* ============================== Spawn ============================== */
@@ -59,6 +62,7 @@ void BossAdjustItem::LoadItems()
 
     if (!meleeAttackJson_.Load())
     {
+        meleeAttackJson_.Set("shakePower", 0.0f);
         meleeAttackJson_.Set("jumpVelocityY", 0.0f);
         meleeAttackJson_.Set("jumpAccelerY", 0.0f);
         meleeAttackJson_.Set("attackColliderSize", meleeData_.attackColliderSize);
@@ -72,6 +76,7 @@ void BossAdjustItem::LoadItems()
         meleeAttackJson_.Set("attackEffectAppearTime", meleeData_.attackEffectAppearTime);
     } else
     {
+        meleeData_.shakePower = meleeAttackJson_.Get("shakePower", meleeData_.shakePower);
         meleeData_.jumpVelocityY = meleeAttackJson_.Get("jumpVelocityY", meleeData_.jumpVelocityY);
         meleeData_.jumpAccelerY = meleeAttackJson_.Get("jumpAccelerY", meleeData_.jumpAccelerY);
         meleeData_.attackColliderSize = meleeAttackJson_.Get("attackColliderSize", meleeData_.attackColliderSize);
@@ -89,6 +94,7 @@ void BossAdjustItem::LoadItems()
     jumpAttackJson_.Init("BossJumpAttack");
     if (!jumpAttackJson_.Load()) {
         jumpAttackJson_.Set("airSpeed", 0.0f);
+        jumpAttackJson_.Set("shakePower", 0.0f);
         jumpAttackJson_.Set("jumpVelocityY", 0.0f);
         jumpAttackJson_.Set("jumpAccelerY", 0.0f);
         jumpAttackJson_.Set("airHoldTime", 0.0f);
@@ -104,6 +110,7 @@ void BossAdjustItem::LoadItems()
         jumpAttackJson_.Set("attackEffectAppearTime", 0.0f);
     } else {
         jumpAttackData_.airSpeed = jumpAttackJson_.Get("airSpeed", jumpAttackData_.airSpeed);
+        jumpAttackData_.shakePower = jumpAttackJson_.Get("shakePower", jumpAttackData_.shakePower);
         jumpAttackData_.jumpVelocityY = jumpAttackJson_.Get("jumpVelocityY", jumpAttackData_.jumpVelocityY);
         jumpAttackData_.jumpAccelerY = jumpAttackJson_.Get("jumpAccelerY", jumpAttackData_.jumpAccelerY);
         jumpAttackData_.attackColliderSize = jumpAttackJson_.Get("attackColliderSize", jumpAttackData_.attackColliderSize);
@@ -144,6 +151,24 @@ void BossAdjustItem::LoadItems()
         dashAttackData_.attackEffectSize = dashAttackJson_.Get("attackEffectSize", dashAttackData_.attackEffectSize);
         dashAttackData_.attackEffectOffset = dashAttackJson_.Get("attackEffectOffset", dashAttackData_.attackEffectOffset);
         dashAttackData_.attackEffectAppearTime = dashAttackJson_.Get("attackEffectAppearTime", dashAttackData_.attackEffectAppearTime);
+    }
+
+    /* ============================== Appear ============================== */
+    appearJson_.Init("BossAppear");
+    if (!appearJson_.Load()) {
+        appearJson_.Set("shakePower", 0.0f);
+        appearJson_.Set("jumpVelocityY", 0.0f);
+        appearJson_.Set("jumpAccelerY", 0.0f);
+        appearJson_.Set("startupTime", 0.0f);
+        appearJson_.Set("fallDownTime", 0.0f);
+        appearJson_.Set("recoveryTime", 0.0f);
+    } else {
+        appearData_.shakePower = appearJson_.Get("shakePower", appearData_.shakePower);
+        appearData_.jumpVelocityY = appearJson_.Get("jumpVelocityY", appearData_.jumpVelocityY);
+        appearData_.jumpAccelerY = appearJson_.Get("jumpAccelerY", appearData_.jumpAccelerY);
+        appearData_.startupTime = appearJson_.Get("startupTime", appearData_.startupTime);
+        appearData_.fallDownTime = appearJson_.Get("fallDownTime", appearData_.fallDownTime);
+        appearData_.recoveryTime = appearJson_.Get("recoveryTime", appearData_.recoveryTime);
     }
 
     // ============================== BossStateScore ==============================
@@ -236,6 +261,7 @@ void BossAdjustItem::Editor()
         // メイン項目
         if (ImGui::TreeNode("Main")) {
             ImGui::DragFloat3("startPosition", &mainData_.startPosition.x, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat3("sabStartPosition", &mainData_.sabStartPosition.x, 0.01f, 0.0f, 100.0f);
             ImGui::DragInt("maxHP", &mainData_.maxHP, 1, 1, 1000);
             ImGui::DragFloat("speed", &mainData_.speed, 0.01f, 0.0f, 100.0f);
             ImGui::DragFloat("rayDistance", &mainData_.rayDistance, 0.01f, 0.0f, 100.0f);
@@ -247,6 +273,7 @@ void BossAdjustItem::Editor()
 
             if (ImGui::Button("Save")) {
                 mainJson_.Set("startPosition", mainData_.startPosition);
+                mainJson_.Set("sabStartPosition", mainData_.sabStartPosition);
                 mainJson_.Set("maxHP", mainData_.maxHP);
                 mainJson_.Set("speed", mainData_.speed);
                 mainJson_.Set("rayDistance", mainData_.rayDistance);
@@ -262,9 +289,11 @@ void BossAdjustItem::Editor()
 
         // ダウン項目
         if (ImGui::TreeNode("Down")) {
+            ImGui::DragFloat("shakePower", &downData_.shakePower, 0.01f, 0.0f, 100.0f);
             ImGui::DragFloat("downTime", &downData_.downTime, 0.01f, 0.0f, 100.0f);
 
             if (ImGui::Button("Save")) {
+                downJson_.Set("shakePower", downData_.shakePower);
                 downJson_.Set("downTime", downData_.downTime);
                 downJson_.Save();
             }
@@ -322,6 +351,7 @@ void BossAdjustItem::Editor()
         // ボスの近接攻撃
         if (ImGui::TreeNode("MeleeAttack"))
         {
+            ImGui::DragFloat("shakePower", &meleeData_.shakePower, 0.01f, -100.0f, 100.0f);
             ImGui::DragFloat("jumpVelocityY", &meleeData_.jumpVelocityY, 0.01f, -100.0f, 100.0f);
             ImGui::DragFloat("jumpAccelerY", &meleeData_.jumpAccelerY, 0.01f, -100.0f, 100.0f);
 
@@ -337,6 +367,7 @@ void BossAdjustItem::Editor()
 
             if (ImGui::Button("Save"))
             {
+                meleeAttackJson_.Set("shakePower", meleeData_.shakePower);
                 meleeAttackJson_.Set("jumpVelocityY", meleeData_.jumpVelocityY);
                 meleeAttackJson_.Set("jumpAccelerY", meleeData_.jumpAccelerY);
                 meleeAttackJson_.Set("attackColliderSize", meleeData_.attackColliderSize);
@@ -359,6 +390,7 @@ void BossAdjustItem::Editor()
         // ボスのジャンプ落下攻撃
         if (ImGui::TreeNode("JumpAttack")) {
             ImGui::DragFloat("airSpeed", &jumpAttackData_.airSpeed, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("shakePower", &jumpAttackData_.shakePower, 0.01f, 0.0f, 100.0f);
             ImGui::DragFloat("jumpVelocityY", &jumpAttackData_.jumpVelocityY, 0.01f, 0.0f, 100.0f);
             ImGui::DragFloat("jumpAccelerY", &jumpAttackData_.jumpAccelerY, 0.01f, 0.0f, 100.0f);
             ImGui::DragFloat("attackColliderSize", &jumpAttackData_.attackColliderSize, 0.01f, 0.0f, 100.0f);
@@ -374,6 +406,7 @@ void BossAdjustItem::Editor()
 
             if (ImGui::Button("Save")) {
                 jumpAttackJson_.Set("airSpeed", jumpAttackData_.airSpeed);
+                jumpAttackJson_.Set("shakePower", jumpAttackData_.shakePower);
                 jumpAttackJson_.Set("jumpVelocityY", jumpAttackData_.jumpVelocityY);
                 jumpAttackJson_.Set("jumpAccelerY", jumpAttackData_.jumpAccelerY);
                 jumpAttackJson_.Set("attackColliderSize", jumpAttackData_.attackColliderSize);
@@ -423,6 +456,28 @@ void BossAdjustItem::Editor()
             ImGui::TreePop();
         }
 
+        ImGui::Separator();
+
+        // 登場シーン項目
+        if (ImGui::TreeNode("Appear")) {
+            ImGui::DragFloat("shakePower", &appearData_.shakePower, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("jumpVelocityY", &appearData_.jumpVelocityY, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("jumpAccelerY", &appearData_.jumpAccelerY, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("startupTime", &appearData_.startupTime, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("fallDownTime", &appearData_.fallDownTime, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("recoveryTime", &appearData_.recoveryTime, 0.01f, 0.0f, 100.0f);
+
+            if (ImGui::Button("Save")) {
+                appearJson_.Set("shakePower", appearData_.shakePower);
+                appearJson_.Set("jumpVelocityY", appearData_.jumpVelocityY);
+                appearJson_.Set("jumpAccelerY", appearData_.jumpAccelerY);
+                appearJson_.Set("startupTime", appearData_.startupTime);
+                appearJson_.Set("fallDownTime", appearData_.fallDownTime);
+                appearJson_.Set("recoveryTime", appearData_.recoveryTime);
+                appearJson_.Save();
+            }
+            ImGui::TreePop();
+        }
         ImGui::Separator();
 
         // ステートのスコア計算

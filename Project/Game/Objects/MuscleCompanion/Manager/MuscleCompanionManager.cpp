@@ -1,6 +1,7 @@
 #include "MuscleCompanionManager.h"
 
 #include "Objects/Player/Player.h"
+#include "GameCamera/GameCamera.h"
 
 void MuscleCompanionManager::Initialize()
 {
@@ -17,6 +18,7 @@ void MuscleCompanionManager::Initialize()
 		companion->SetPlayer(player_);
 		companion->SetMapData(mapData_);
 		companion->SetItems(items_.get());
+		companion->SetCamera(camera_);
 		companion->SetAudio(audio_.get());
 		companion->Initialize();
 		companion->SetTransformTranslation(Vector3::ExprUnitZ * static_cast<float>(count));
@@ -61,7 +63,8 @@ void MuscleCompanionManager::GatherCompanions()
 			if (companion->GetState() == CharacterState::Idle) {
 				companion->SetGatherRequested(true);
 			}
-			if (!companion->GetReturnOriginal() && !audio_->IsPlaying("MattyoSet.wav")) {
+			if (!companion->GetReturnOriginal() && !audio_->IsPlaying("MattyoSet.wav") &&
+				companion->GetState() != CharacterState::Dead) {
 				audio_->SoundPlayWave("MattyoSet.wav", items_->GetSeVolumeData().set);
 			}
 		}

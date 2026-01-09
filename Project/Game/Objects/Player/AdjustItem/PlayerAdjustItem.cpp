@@ -19,6 +19,9 @@ void PlayerAdjustItem::LoadItems()
 		playerJson_.Set("avoid_velocityY", 1.0f);
 		playerJson_.Set("avoid_acceleration", 1.0f);
 		playerJson_.Set("avoid_coolTime", 1.0f);
+		playerJson_.Set("avoidEffectScale", Vector3{});
+		playerJson_.Set("avoidEffectPos", Vector3{});
+		playerJson_.Set("avoidEffectAlpha", 1.0f);
 	} else {
 		playerData_.isInvincible = false;
 		playerData_.clearKill = playerJson_.Get("clearKill", playerData_.clearKill);
@@ -32,6 +35,9 @@ void PlayerAdjustItem::LoadItems()
 		playerData_.avoid_velocityY = playerJson_.Get("avoid_velocityY", playerData_.avoid_velocityY);
 		playerData_.avoid_acceleration = playerJson_.Get("avoid_acceleration", playerData_.avoid_acceleration);
 		playerData_.avoid_coolTime = playerJson_.Get("avoid_coolTime", playerData_.avoid_coolTime);
+		playerData_.avoidEffectScale = playerJson_.Get("avoidEffectScale", playerData_.avoidEffectScale);
+		playerData_.avoidEffectPos = playerJson_.Get("avoidEffectPos", playerData_.avoidEffectPos);
+		playerData_.avoidEffectAlpha = playerJson_.Get("avoidEffectAlpha", playerData_.avoidEffectAlpha);
 	}
 
 	/* ============================== Bullet ============================== */
@@ -113,6 +119,9 @@ void PlayerAdjustItem::Editor()
 			ImGui::DragFloat("avoid_velocityY", &playerData_.avoid_velocityY, 0.01f);
 			ImGui::DragFloat("avoid_acceleration", &playerData_.avoid_acceleration, 0.01f);
 			ImGui::DragFloat("avoid_coolTime", &playerData_.avoid_coolTime, 0.01f);
+			ImGui::DragFloat3("avoidEffectScale", &playerData_.avoidEffectScale.x, 0.1f, -10.0f, 10.0f);
+			ImGui::DragFloat3("avoidEffectPos", &playerData_.avoidEffectPos.x, 0.1f, -10.0f, 10.0f);
+			ImGui::DragFloat("avoidEffectAlpha", &playerData_.avoidEffectAlpha, 0.01f);
 
 			if (ImGui::Button("Save")) {
 				playerJson_.Set("clearKill", playerData_.clearKill);
@@ -126,6 +135,9 @@ void PlayerAdjustItem::Editor()
 				playerJson_.Set("avoid_velocityY", playerData_.avoid_velocityY);
 				playerJson_.Set("avoid_acceleration", playerData_.avoid_acceleration);
 				playerJson_.Set("avoid_coolTime", playerData_.avoid_coolTime);
+				playerJson_.Set("avoidEffectScale", playerData_.avoidEffectScale);
+				playerJson_.Set("avoidEffectPos", playerData_.avoidEffectPos);
+				playerJson_.Set("avoidEffectAlpha", playerData_.avoidEffectAlpha);
 				playerJson_.Save();
 			}
 			ImGui::TreePop();

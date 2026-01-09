@@ -4,6 +4,7 @@
 
 #include "Objects/Boss/Base/BossEnemy.h"
 #include "Objects/Boss/State/BossMoveState.h"
+#include "GameCamera/GameCamera.h"
 
 BossMeleeState::BossMeleeState(BossEnemy* boss) : BossBaseState(boss) {}
 
@@ -63,6 +64,7 @@ void BossMeleeState::Update()
 			boss_->SetAnimationTime(1.0f);
 			boss_->GetEffect()->AttackEffectReset();
 			boss_->GetEffect()->OnceJumpEffect();
+			boss_->GetGameCamera()->SetShake(data.shakePower);
 			boss_->GetAudio()->SoundPlayWave("BossLanding.wav", volume.landing);
 			Vector3 translate = boss_->GetTransform().translation_;
 			translate.y = startY_;

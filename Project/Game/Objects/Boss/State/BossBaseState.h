@@ -6,6 +6,7 @@ class BossEnemy;
 // キャラクターステートの列挙型
 enum class BossState {
 	Idle,				// 待機状態
+	Appear,				// 登場シーン
 	Down,				// ダウン状態
 	Move,				// 移動
 	EnemySpawn,			// 敵スポーン

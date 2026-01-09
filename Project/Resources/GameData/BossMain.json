@@ -1,5 +1,5 @@
 {
-    "maxHP": 50,
+    "maxHP": 75,
     "speed": 1.2000000476837158,
     "searchUpdateTime": 0.5,
     "colliderSize": 0.5,
@@ -16,7 +16,12 @@
     },
     "startPosition": {
         "x": -4.0,
-        "y": 0.0,
+        "y": 30.0,
         "z": 8.0
+    },
+    "sabStartPosition": {
+        "x": 10.0,
+        "y": 30.0,
+        "z": 10.0
     }
 }

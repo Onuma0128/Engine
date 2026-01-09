@@ -33,6 +33,7 @@ public:
 	// セッター
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetMapData(MapCollision* map) { mapData_ = map; }
+	void SetCamera(GameCamera* camera) { camera_ = camera; }
 
 private:
 
@@ -58,6 +59,8 @@ private:
 	Player* player_ = nullptr;
 	// マップデータのポインタ
 	MapCollision* mapData_ = nullptr;
+	// ゲームカメラ
+	GameCamera* camera_ = nullptr;
 
 	// 仲間の調整項目
 	std::unique_ptr<CompanionAdjustItem> items_ = nullptr;
@@ -65,7 +68,7 @@ private:
 	// プレイヤーの仲間達
 	std::vector<std::unique_ptr<MuscleCompanion>> companions_;
 
-	// Audio
+	// オーディオ
 	std::unique_ptr<Audio> audio_ = nullptr;
 
 

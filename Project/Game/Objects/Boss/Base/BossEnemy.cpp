@@ -3,12 +3,14 @@
 #include "Collision/CollisionFilter.h"
 
 #include "Objects/Boss/State/BossIdleState.h"
+#include "Objects/Boss/State/BossAppearState.h"
 #include "Objects/Boss/State/BossMoveState.h"
 #include "Objects/Boss/State/BossDownState.h"
 #include "Objects/Boss/State/BossMeleeState.h"
 #include "Objects/Boss/State/BossDeadState.h"
 
 #include "Objects/Player/Player.h"
+#include "Objects/Enemy/Spawner/EnemySpawnerFactory.h"
 
 void BossEnemy::Initialize()
 {
@@ -23,7 +25,7 @@ void BossEnemy::Initialize()
 	Animation::Initialize("BossEnemy.gltf");
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Idle", 0.0f);
-	Animation::GetMaterial().enableDraw = false;
+	Animation::GetMaterial().enableDraw = true;
 	Animation::GetMaterial().outlineMask = false;
 	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
 	Animation::SetTransformTranslation(items_->GetMainData().startPosition);
@@ -74,6 +76,12 @@ void BossEnemy::Update()
 	stateEvaluator_->DrawImGui();
 #endif // ENABLE_EDITOR
 
+	// ボスをスタートさせる
+	uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);
+	if (state_->GetState() == BossState::Idle && spawnerFactory_->GetKnockdownCount() >= clearKill) {
+		StartBossEnemy();
+	}
+
 	// レイの更新
 	const float attackIn = items_->GetMainData().rayDistance;
 	Vector3 direction = Vector3(player_->GetTransform().translation_ - transform_.translation_).Normalize();
@@ -122,6 +130,7 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 		float color = static_cast<float>(currentHp_) / static_cast<float>(maxHp_);
 		Vector3 outlineColor = { 1.0f - color,color,0.0f };
 		Animation::GetMaterial().outlineColor = outlineColor;
+		effect_->OnceHitExplosionEffect();
 		// 今のHPが0になったら死亡ステートになる
 		if (currentHp_ <= 0) {
 			ChangeState(std::make_unique<BossDeadState>(this));
@@ -177,6 +186,6 @@ void BossEnemy::StartBossEnemy()
 	Animation::GetMaterial().outlineMask = true;
 	Collider::isActive_ = true;
 	ray_->SetActive(true);
-	ChangeState(std::make_unique<BossMoveState>(this));
+	ChangeState(std::make_unique<BossAppearState>(this));
 }
 

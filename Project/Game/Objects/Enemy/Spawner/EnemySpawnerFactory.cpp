@@ -28,7 +28,6 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 	// 敵をタイプごとに初期化
 	InitTypeEnemy(EnemyType::kMelee, enemyMelees_, normalSize);
 	InitTypeEnemy(EnemyType::kRanged, enemyRnageds_, normalSize);
-	InitTypeEnemy(EnemyType::kShieldBearer, enemyShieldBearers_, strongSize);
 	InitTypeEnemy(EnemyType::kRangedElite, enemyRnagedElites_, strongSize);
 
 	spawnInterval_ = 1.0f;
@@ -165,7 +164,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		switch (type) {
 		case EnemyType::kMelee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[spownNumber]); break;
 		case EnemyType::kRanged:		ResetTypeEnemy(enemyRnageds_, enemySpawners_[spownNumber]); break;
-		case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[spownNumber]); break;
+		case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyMelees_, enemySpawners_[spownNumber]); break;
 		case EnemyType::kRangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[spownNumber]); break;
 		default: break;
 		}

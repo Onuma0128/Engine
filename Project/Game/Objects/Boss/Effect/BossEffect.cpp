@@ -35,6 +35,13 @@ void BossEffect::Init()
 	downStarEmitter_ = std::make_unique<ParticleEmitter>("downStar");
 	particleManager_->CreateParticleGroup(downStarEmitter_);
 	downStarEmitter_->SetIsCreate(false);
+	// ヒット時のエフェクト
+	hitExplosionEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
+	particleManager_->CreateParticleGroup(hitExplosionEmitter_);
+	hitExplosionEmitter_->SetIsCreate(false);
+	hitRingEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRing");
+	particleManager_->CreateParticleGroup(hitRingEmitter_);
+	hitRingEmitter_->SetIsCreate(false);
 }
 
 void BossEffect::PrimitiveInit(std::unique_ptr<PrimitiveDrawr>& effect)
@@ -202,4 +209,19 @@ void BossEffect::EmitDownStar(bool flag)
 
 	downStarEmitter_->SetRotation(rotate);
 	downStarEmitter_->SetPosition(position);
+}
+
+void BossEffect::OnceHitExplosionEffect()
+{
+	hitExplosionEmitter_->onceEmit();
+	hitRingEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = boss_->GetTransform().rotation_;
+	Vector3 position = boss_->GetTransform().translation_;
+
+	hitExplosionEmitter_->SetRotation(rotate);
+	hitExplosionEmitter_->SetPosition(position);
+	hitRingEmitter_->SetRotation(rotate);
+	hitRingEmitter_->SetPosition(position);
 }

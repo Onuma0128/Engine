@@ -16,6 +16,12 @@ void GameUiAdjustItem::LoadItems()
 		json_.Set("maxKillNumberUiSize", Vector2{});
 		json_.Set("maxKillNumberUiPos", Vector2{});
 
+		json_.Set("startInTime", 0.0f);
+		json_.Set("startOutTime", 0.0f);
+		json_.Set("activeTime", 0.0f);
+		json_.Set("recoverInTime", 0.0f);
+		json_.Set("recoverOutTime", 0.0f);
+
 	} else {
 
 		data_.killNumberUiInterval = json_.Get("killNumberUiInterval", data_.killNumberUiInterval);
@@ -26,6 +32,12 @@ void GameUiAdjustItem::LoadItems()
 		data_.maxKillNumberUiInterval = json_.Get("maxKillNumberUiInterval", data_.maxKillNumberUiInterval);
 		data_.maxKillNumberUiSize = json_.Get("maxKillNumberUiSize", data_.maxKillNumberUiSize);
 		data_.maxKillNumberUiPos = json_.Get("maxKillNumberUiPos", data_.maxKillNumberUiPos);
+
+		data_.startInTime = json_.Get("startInTime", data_.startInTime);
+		data_.startOutTime = json_.Get("startOutTime", data_.startOutTime);
+		data_.activeTime = json_.Get("activeTime", data_.activeTime);
+		data_.recoverInTime = json_.Get("recoverInTime", data_.recoverInTime);
+		data_.recoverOutTime = json_.Get("recoverOutTime", data_.recoverOutTime);
 	}
 }
 
@@ -45,6 +57,12 @@ void GameUiAdjustItem::Editor()
 		ImGui::DragFloat("maxKillNumberUiInterval", &data_.maxKillNumberUiInterval);
 		ImGui::DragFloat2("maxKillNumberUiSize", &data_.maxKillNumberUiSize.x);
 		ImGui::DragFloat2("maxKillNumberUiPos", &data_.maxKillNumberUiPos.x);
+
+		ImGui::DragFloat("startInTime", &data_.startInTime);
+		ImGui::DragFloat("startOutTime", &data_.startOutTime);
+		ImGui::DragFloat("activeTime", &data_.activeTime);
+		ImGui::DragFloat("recoverInTime", &data_.recoverInTime);
+		ImGui::DragFloat("recoverOutTime", &data_.recoverOutTime);
 
 		if (ImGui::Button("Save")) {
 			Save();
@@ -66,6 +84,12 @@ void GameUiAdjustItem::Save()
 	json_.Set("maxKillNumberUiInterval", data_.maxKillNumberUiInterval);
 	json_.Set("maxKillNumberUiSize", data_.maxKillNumberUiSize);
 	json_.Set("maxKillNumberUiPos", data_.maxKillNumberUiPos);
+
+	json_.Set("startInTime", data_.startInTime);
+	json_.Set("startOutTime", data_.startOutTime);
+	json_.Set("activeTime", data_.activeTime);
+	json_.Set("recoverInTime", data_.recoverInTime);
+	json_.Set("recoverOutTime", data_.recoverOutTime);
 
 	json_.Save();
 }

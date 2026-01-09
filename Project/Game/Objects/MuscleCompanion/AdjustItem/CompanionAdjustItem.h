@@ -27,6 +27,8 @@ struct CompanionDashData {
 
 // 仲間の攻撃の調整項目
 struct CompanionAttackData {
+	float shakePowerHigh;			// カメラシェイクの振動値
+	float shakePowerLow;			// カメラシェイクの振動値
 	float attackColliderSize;		// 攻撃時のコライダーサイズ
 	Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
 

@@ -7,6 +7,7 @@
 // ボス全体の調整項目
 struct BossMainData {
 	Vector3 startPosition;			// ボスの最初の座標
+	Vector3 sabStartPosition;		// ボスのもう1つの最初の座標
 	int maxHP = 20;					// ボスの最大体力
 	float speed = 2.0f;				// ボスの移動速度
 	float rayDistance;				// ボスの視線距離
@@ -21,6 +22,7 @@ struct BossMainData {
 
 // ボスダウン時の調整項目
 struct BossDownData {
+	float shakePower;				// カメラシェイクの振動値
 	float downTime;					// ダウンしている時間
 };
 
@@ -32,6 +34,7 @@ struct BossEnemySpawnData {
 
 // ボスの近接攻撃の調整項目
 struct BossMeleeData {
+	float shakePower;				// カメラシェイクの振動値
 	float jumpVelocityY;			// ジャンプの速度
 	float jumpAccelerY;				// ジャンプの加速度
 
@@ -50,6 +53,7 @@ struct BossMeleeData {
 // ボスのジャンプ攻撃の調整項目
 struct BossJumpAttackData {
 	float airSpeed;					// 空中にいる時のスピード
+	float shakePower;				// カメラシェイクの振動値
 	float jumpVelocityY;			// ジャンプの速度
 	float jumpAccelerY;				// ジャンプの加速度
 
@@ -80,6 +84,17 @@ struct BossDashAttackData {
 	Vector2 attackEffectSize;		// 攻撃のエフェクトサイズ
 	Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
 	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
+};
+
+// ボスの登場シーンデータ
+struct BossAppearData {
+	float shakePower;				// カメラシェイクの振動値
+	float jumpVelocityY;			// ジャンプの速度
+	float jumpAccelerY;				// ジャンプの加速度
+
+	float startupTime;				// フェードインしている時間
+	float fallDownTime;				// 落下にかかる時間
+	float recoveryTime;				// フェードインが終わりカメラ切り替えを待っている時間
 };
 
 // ボスの効果音の音量
@@ -147,6 +162,7 @@ public:
 	const BossMeleeData& GetMeleeData()const { return meleeData_; }
 	const BossJumpAttackData& GetJumpAttackData() const { return jumpAttackData_; }
 	const BossDashAttackData& GetDashAttackData() const { return dashAttackData_; }
+	const BossAppearData& GetAppearData() const { return appearData_; }
 	const BossStateScoreData& GetStateScoreData() const { return stateScoreData_; }
 	const BossSeVolumeData& GetSeVolumeData() const { return seVolumeData_; }
 
@@ -159,6 +175,7 @@ private:
 	JsonFunction meleeAttackJson_;
 	JsonFunction jumpAttackJson_;
 	JsonFunction dashAttackJson_;
+	JsonFunction appearJson_;
 	JsonFunction stateScoreJson_;
 	JsonFunction seVolumeJson_;
 
@@ -168,6 +185,7 @@ private:
 	BossMeleeData meleeData_;
 	BossJumpAttackData jumpAttackData_;
 	BossDashAttackData dashAttackData_;
+	BossAppearData appearData_;
 	BossStateScoreData stateScoreData_;
 	BossSeVolumeData seVolumeData_;
 	int savedSpawnCount_ = 0;

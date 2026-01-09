@@ -4,6 +4,7 @@
 
 #include "Objects/Boss/Base/BossEnemy.h"
 #include "Objects/Boss/State/BossMoveState.h"
+#include "GameCamera/GameCamera.h"
 
 BossDownState::BossDownState(BossEnemy* boss) : BossBaseState(boss) {}
 
@@ -11,6 +12,10 @@ void BossDownState::Init()
 {
 	boss_->PlayByName("No");
 	boss_->GetEffect()->OnceDownEffect();
+
+	// データを取得する
+	const auto& data = boss_->GetItems()->GetDownData();
+	boss_->GetGameCamera()->SetShake(data.shakePower);
 }
 
 void BossDownState::Finalize()

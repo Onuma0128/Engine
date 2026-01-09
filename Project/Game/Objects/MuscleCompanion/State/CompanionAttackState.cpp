@@ -5,6 +5,7 @@
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 #include "Objects/MuscleCompanion/State/CompanionIdleState.h"
 #include "Objects/MuscleCompanion/Collider/CompanionAttackCollider.h"
+#include "GameCamera/GameCamera.h"
 
 CompanionAttackState::CompanionAttackState(MuscleCompanion* companion) : CompanionBaseState(companion) {}
 
@@ -17,6 +18,7 @@ void CompanionAttackState::Init()
 	if (companion_->GetFirstDashAttack()) {
 		const auto& volume = companion_->GetItems()->GetSeVolumeData();
 		companion_->GetAudio()->SoundPlayWave("MattyoDashHit.wav", volume.dashHit);
+		companion_->GetCamera()->SetShake(companion_->GetItems()->GetAttackData().shakePowerHigh);
 	}
 
 	const auto& colliders = companion_->GetAttackCollider()->GetHitColliders();

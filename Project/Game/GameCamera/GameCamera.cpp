@@ -4,20 +4,26 @@
 #include "imgui.h"
 
 #include "Input.h"
+#include "Easing.h"
 #include "CameraManager.h"
 #include "DeltaTimer.h"
 
-#include "objects/player/Player.h"
+#include "Objects/Player/Player.h"
+#include "Objects/Boss/Base/BossEnemy.h"
+#include "Objects/Enemy/Spawner/EnemySpawnerFactory.h"
 
 void GameCamera::Init()
 {
-	JsonInit();
+	// 調整項目の初期化
+	items_ = std::make_unique<CameraAdjustItem>();
+	items_->LoadItems();
+	const auto& data = items_->GetCameraData();
 
 	// カメラの初期化
 	mainCamera_ = std::make_shared<Camera>();
 	mainCamera_->Initialize();
-	mainCamera_->SetRotation(data_.Get<Vector3>("mainRotate"));
-	Vector3 translation = data_.Get<Vector3>("mainPosition");
+	mainCamera_->SetRotation(data.mainRotate);
+	Vector3 translation = data.mainPosition;
 	mainCamera_->SetTranslation(translation + player_->GetTransform().translation_);
 	CameraManager::GetInstance()->SetCamera(mainCamera_);
 	CameraManager::GetInstance()->SetActiveCamera(0);
@@ -25,62 +31,28 @@ void GameCamera::Init()
 
 	sabCamera_ = std::make_shared<Camera>();
 	sabCamera_->Initialize();
-	translation = data_.Get<Vector3>("sabPosition");
+	translation = data.sabPosition;
 	sabCamera_->SetTranslation(translation + player_->GetTransform().translation_);
 	CameraManager::GetInstance()->SetCamera(sabCamera_);
 	sabCamera_->Update();
-}
 
-void GameCamera::JsonInit()
-{
-	data_.Init("GameCamera");
-
-	if (!data_.Load()) {
-		data_.Set("mainRotate", Vector3{});
-		data_.Set("mainPosition", Vector3{});
-		data_.Set("sabPosition", Vector3{});
-		data_.Set("isSabRotate", false);
-		data_.Set("sabRotateSpeed", 0.0f);
-		data_.Set("sabRadius", 0.0f);
-		data_.Set("sabPosY", 0.0f);
-	} else {
-	}
-}
-
-void GameCamera::SaveJson()
-{
-}
-
-void GameCamera::ValueImGui()
-{
-	ImGui::Begin("GameData");
-	if (ImGui::TreeNode("GameCamera")) {
-		ImGui::PushItemWidth(150);
-		ImGui::Separator();
-
-		data_.DrawImGui();
-
-		if (ImGui::Button("mainCamera")) {
-			CameraManager::GetInstance()->SetActiveCamera(0);
-		}
-		if (ImGui::Button("sabCamera")) {
-			CameraManager::GetInstance()->SetActiveCamera(1);
-		}
-
-		if (ImGui::Button("Save")) {
-			data_.Save();
-		}
-		ImGui::TreePop();
-	}
-	ImGui::Separator();
-	ImGui::End();
+	// カメラの初期化
+	bossCamera_ = std::make_shared<Camera>();
+	bossCamera_->Initialize();
+	bossCamera_->SetRotation(data.bossStartRotate);
+	translation = data.bossStartPosition;
+	bossCamera_->SetTranslation(translation);
+	CameraManager::GetInstance()->SetCamera(bossCamera_);
+	bossCamera_->Update();
 }
 
 void GameCamera::Update()
 {
 	Input* input = Input::GetInstance();
 
-	ValueImGui();
+#ifdef ENABLE_EDITOR
+	items_->Editor();
+#endif // ENABLE_EDITOR
 
 	// プレイヤーが死んだらカメラを切り替え
 	if (playerIsAlive_ && !player_->GetIsAlive()) {
@@ -88,7 +60,8 @@ void GameCamera::Update()
 	}
 
 	// オフセットの回転角
-	const Vector3 offsetRotation = data_.Get<Vector3>("mainRotate");
+	const auto& data = items_->GetCameraData();
+	const Vector3 offsetRotation = data.mainRotate;
 	// 回転を更新
 	mainCamera_->SetRotation(offsetRotation);
 
@@ -105,7 +78,7 @@ void GameCamera::Update()
 
 	// カメラの回転に合わせた座標を更新
 	Vector2 R_StickDire = { input->GetGamepadRightStickX(),input->GetGamepadRightStickY() };
-	Vector3 translation = data_.Get<Vector3>("mainPosition") + Vector3{ R_StickDire.x,0.0f,R_StickDire.y };
+	Vector3 translation = data.mainPosition + Vector3{ R_StickDire.x,0.0f,R_StickDire.y };
 	Vector3 previous = mainCamera_->GetTranslation();
 	Vector3 current = player_->GetTransform().translation_ + translation + mainCameraAddPos_;
 
@@ -115,22 +88,28 @@ void GameCamera::Update()
 	// サブカメラの更新
 	SabUpdate(shakeOffset);
 
+	// サブカメラの更新
+	BossUpdate(shakeOffset);
+
 	playerIsAlive_ = player_->GetIsAlive();
 }
 
 void GameCamera::SabUpdate(const Vector3& shakeOffset)
 {
+	// データを取得する
+	const auto& data = items_->GetCameraData();
+
 	// プレイヤーの位置と回転
 	Vector3 playerPos = player_->GetTransform().translation_;
 	Quaternion playerRot = Quaternion::IdentityQuaternion();
-	sabAnima_.isRotate = data_.Get<bool>("isSabRotate");
-	sabAnima_.rotateSpeed = data_.Get<float>("sabRotateSpeed");
-	sabAnima_.radius = data_.Get<float>("sabRadius");
-	sabAnima_.positionY = data_.Get<float>("sabPosY");
+	sabAnima_.isRotate = data.isSabRotate;
+	sabAnima_.rotateSpeed = data.sabRotateSpeed;
+	sabAnima_.radius = data.sabRadius;
+	sabAnima_.positionY = data.sabPosY;
 
 	// オフセット（プレイヤーの後方）
 	if (!sabAnima_.isRotate) {
-		sabAnima_.sabCameraOffset = data_.Get<Vector3>("sabPosition");
+		sabAnima_.sabCameraOffset = data.sabPosition;
 	} else {
 		sabAnima_.rotateTimer += DeltaTimer::GetDeltaTime() / sabAnima_.rotateSpeed;
 		sabAnima_.rotateTimer = std::clamp(sabAnima_.rotateTimer, 0.0f, 1.0f);
@@ -155,4 +134,74 @@ void GameCamera::SabUpdate(const Vector3& shakeOffset)
 	// プレイヤーを見つめる
 	sabCamera_->SetLookAt(cameraPos, playerPos);
 
+}
+
+void GameCamera::BossUpdate(const Vector3& shakeOffset)
+{
+	// データを取得
+	const auto& data = items_->GetCameraData();
+
+	// タイムを加算
+	if (bossCameraTime_ >= 0.0f) {
+		bossCameraTime_ += DeltaTimer::GetDeltaTime();
+	// キル数が一定以上になったら
+	} else {
+		uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);
+		if (spawner_->GetKnockdownCount() >= clearKill) {
+			bossCameraTime_ = 0.0f;
+		}
+	}
+
+	switch (bossCameraState_)
+	{
+	case GameCamera::BossCameraState::Startup:
+	{
+		// 待機時間が終了したらカメラを切り替える
+		if (bossCameraTime_ > data.bossStartupTime) {
+			CameraManager::GetInstance()->SetActiveCamera(2);
+			bossCameraState_ = BossCameraState::Active;
+			bossCameraTime_ = 0.0f;
+		}
+	}
+		break;
+	case GameCamera::BossCameraState::Active:
+	{
+		float t = bossCameraTime_ / data.bossActiveTime;
+		t = Easing::EaseInQuint(std::clamp(t, 0.0f, 1.0f));
+		Vector3 rotation = Vector3::Lerp(data.bossStartRotate, data.bossEndRotate, t);
+		Vector3 translate = Vector3::Lerp(data.bossStartPosition, data.bossEndPosition, t);
+		Vector3 bossPos = { boss_->GetTransform().translation_ };
+		translate += Vector3{ bossPos.x,0.0f,bossPos.z };
+		translate = Vector3::Lerp(translate, translate + shakeOffset, 0.1f);
+		// 回転と座標を更新
+		bossCamera_->SetRotation(rotation);
+		bossCamera_->SetTranslation(translate);
+
+		if (bossCameraTime_ > data.bossActiveTime) {
+			preBossCameraPosition_ = bossCamera_->GetTranslation();
+			bossCameraState_ = BossCameraState::Recover;
+			bossCameraTime_ = 0.0f;
+		}
+	}
+		break;
+	case GameCamera::BossCameraState::Recover:
+	{
+		Vector3 translate = preBossCameraPosition_;
+		translate = Vector3::Lerp(translate, translate + shakeOffset, 0.1f);
+		// 座標を更新
+		bossCamera_->SetTranslation(translate);
+
+		// 待機時間が終了したらカメラを切り替える
+		if (bossCameraTime_ > data.bossRecoverTime) {
+			CameraManager::GetInstance()->SetActiveCamera(0);
+			bossCameraState_ = BossCameraState::End;
+			bossCameraTime_ = 0.0f;
+		}
+	}
+		break;
+	case GameCamera::BossCameraState::End:
+		break;
+	default:
+		break;
+	}
 }

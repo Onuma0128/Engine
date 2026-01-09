@@ -97,12 +97,6 @@ public:
 	/// <param name="flag"></param>
 	void SetIsSpecialMove(bool flag) { isSpecialMove_ = flag; }
 
-	/// <summary>
-	/// リロードUIの描画を有効/無効にする
-	/// </summary>
-	/// <param name="flag"></param>
-	void SetIsDrawReloadUI(bool flag) { playerReload_->GetRenderOptions().enabled = flag; }
-
 private:
 
 	Player* player_ = nullptr;
@@ -120,10 +114,8 @@ private:
 
 	// 避けた時の土埃
 	std::shared_ptr<ParticleEmitter> avoidDustEmitter_ = nullptr;
-
-	/* ==================== プレイヤーがリロードした時のエフェクト ==================== */
-	
-	std::unique_ptr<PrimitiveDrawr> playerReload_ = nullptr;
+	// 次の回避が使えるまでのエフェクト
+	std::unique_ptr<PrimitiveDrawr> avoidCoolTimeEffect_ = nullptr;
 
 	/* ==================== プレイヤーのマッチョが無くなった時のエフェクト ==================== */
 

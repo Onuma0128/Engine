@@ -23,20 +23,18 @@ void PlayerEffect::Init()
 	avoidDustEmitter_ = std::make_unique<ParticleEmitter>("avoidDust");
 	particleManager_->CreateParticleGroup(avoidDustEmitter_);
 	avoidDustEmitter_->SetIsCreate(false);
+	avoidCoolTimeEffect_ = std::make_unique<PrimitiveDrawr>();
+	avoidCoolTimeEffect_->TypeInit(PrimitiveType::kPlane);
+	avoidCoolTimeEffect_->SetTexture("white1x1.png");
+	avoidCoolTimeEffect_->SetBlendMode(BlendMode::kBlendModeNormal);
+	avoidCoolTimeEffect_->GetRenderOptions().enabled = true;
+	avoidCoolTimeEffect_->GetRenderOptions().offscreen = false;
+	avoidCoolTimeEffect_->SetIsBillboard(true);
 
 	// 攻撃を受けた時のエフェクト
 	playerHit_ = std::make_unique<ParticleEmitter>("playerHit");
 	particleManager_->CreateParticleGroup(playerHit_);
 	playerHit_->SetIsCreate(false);
-
-	playerReload_ = std::make_unique<PrimitiveDrawr>();
-	playerReload_->TypeInit(PrimitiveType::kPlane);
-	playerReload_->SetTexture("reloadUI.png");
-	playerReload_->SetBlendMode(BlendMode::kBlendModeNone);
-	playerReload_->GetRenderOptions().enabled = true;
-	playerReload_->GetRenderOptions().offscreen = false;
-	playerReload_->SetIsBillboard(true);
-	playerReload_->GetTransform().scale = { 0.35f,0.35f,1.0f };
 
 	// PostEffectを初期化
 	postEffectManager_->CreatePostEffect(PostEffectType::kGrayscale);
@@ -62,16 +60,24 @@ void PlayerEffect::Init()
 
 void PlayerEffect::Update()
 {	
+	// データを取得する
+	const auto& data = player_->GetItem()->GetPlayerData();
+	float avoidCoolTime = player_->GetAvoidCoolTimer();
+	float t = (avoidCoolTime / data.avoid_coolTime);
+	t = std::clamp(t, 0.0f, 1.0f);
+	if (t <= 0.0f) { avoidCoolTimeEffect_->GetRenderOptions().enabled = false; }
+	else{ avoidCoolTimeEffect_->GetRenderOptions().enabled = true; }
+	float scaleX = data.avoidEffectScale.x * t;
+	avoidCoolTimeEffect_->SetAlpha(data.avoidEffectAlpha);
+	avoidCoolTimeEffect_->GetTransform().scale = { scaleX,data.avoidEffectScale.y,data.avoidEffectScale.z };
+	avoidCoolTimeEffect_->GetTransform().translation = player_->GetTransform().translation_ + data.avoidEffectPos;
+	avoidCoolTimeEffect_->Update();
+
 	UpdatePostEffect();
 
 	cylinder_->GetTransform().translation = player_->GetTransform().translation_;
 	cylinder_->GetTransform().translation.y = 0.0f;
 	cylinder_->Update();
-
-	playerReload_->GetTransform().translation = player_->GetTransform().translation_ + (Vector3::ExprUnitX * 0.6f);
-	playerReload_->GetTransform().translation.y = 1.6f;
-	playerReload_->GetTransform().rotation *= Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitZ, DeltaTimer::GetDeltaTime() * 9.0f);
-	playerReload_->Update();
 
 	specialMoveReadyTimer_ += DeltaTimer::GetDeltaTime();
 	if (specialMoveReadyTimer_ > 1.0f) { specialMoveReadyTimer_ = 0.0f; }
@@ -86,11 +92,11 @@ void PlayerEffect::Draw()
 	if (cylinder_->GetRenderOptions().enabled) {
 		cylinder_->TypeDraw();
 	}
-	if (playerReload_->GetRenderOptions().enabled) {
-		playerReload_->TypeDraw();
-	}
 	if (!player_->GetShot()->GetIsCanAttack()) {
 		needMoreMachoEffect->TypeDraw();
+	}
+	if (avoidCoolTimeEffect_->GetRenderOptions().enabled) {
+		avoidCoolTimeEffect_->TypeDraw();
 	}
 }
 

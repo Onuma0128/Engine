@@ -52,13 +52,13 @@ void MyGame::Update()
 	// 登録済みのLineを更新
 	LineInstanceRenderer::GetInstance()->Update();
 
-	// カメラの更新
-	CameraManager::GetInstance()->Debug_ImGui();
-	CameraManager::GetInstance()->Update();
-
 	// ライトの更新
 	LightManager::GetInstance()->Debug_ImGui();
 	LightManager::GetInstance()->Update();
+
+	// カメラの更新
+	CameraManager::GetInstance()->Debug_ImGui();
+	CameraManager::GetInstance()->Update();
 
 	// ImGui受付終了
 	imGuiManager_->End();

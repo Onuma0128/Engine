@@ -1312,6 +1312,8 @@
     <ClCompile Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.cpp" />
     <ClCompile Include="Game\Objects\Boss\State\BossIdleState.cpp" />
     <ClCompile Include="Game\Objects\Boss\Effect\BossEffect.cpp" />
+    <ClCompile Include="Game\GameCamera\AdjustItem\CameraAdjustItem.cpp" />
+    <ClCompile Include="Game\Objects\Boss\State\BossAppearState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1344,5 +1346,7 @@
     <ClInclude Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.h" />
     <ClInclude Include="Game\Objects\Boss\State\BossIdleState.h" />
     <ClInclude Include="Game\Objects\Boss\Effect\BossEffect.h" />
+    <ClInclude Include="Game\GameCamera\AdjustItem\CameraAdjustItem.h" />
+    <ClInclude Include="Game\Objects\Boss\State\BossAppearState.h" />
   </ItemGroup>
 </Project>

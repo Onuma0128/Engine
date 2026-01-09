@@ -180,7 +180,6 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		// ダメージ処理
 		--currentHp_;
 		// エフェクトを描画
-		gameCamera_->SetShake(2.0f);
 		WorldTransform transform;
 		transform.rotation_ = other->GetRotate();
 		transform.translation_ = transform_.translation_;

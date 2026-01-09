@@ -16,5 +16,6 @@
         "y": 0.10000000149011612,
         "z": 0.0
     },
-    "attackEffectAppearTime": 0.5
+    "attackEffectAppearTime": 0.5,
+    "shakePower": 1.0
 }

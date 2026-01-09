@@ -99,21 +99,26 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	bool isSearchDash = state_->GetState() == CharacterState::SearchDash;
 	bool isMove = state_->GetState() == CharacterState::Move;
 
-	if (isDash || isSearchDash || isMove) {
-		// 建物に当たったら待機状態へ
-		if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) && isDash) {
-			ChangeState(std::make_unique<CompanionIdleState>(this));
+	// 建物に当たったら待機状態へ
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) && isDash) {
+		ChangeState(std::make_unique<CompanionIdleState>(this));
 		// 敵に当たったら攻撃状態へ
-		} else if (other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") {
-			if (Collider::radius_ > 0.6f) {
-				isFirstDashAttack_ = true;
-				Input::GetInstance()->Vibrate(0.4f, 0.75f, 100);
-				Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
-				Quaternion yRotation_ = Quaternion::DirectionToQuaternion(
-					transform_.rotation_, velocity.Normalize(), 1.0f);
-				transform_.rotation_ = yRotation_;
-				ChangeState(std::make_unique<CompanionAttackState>(this));
-			}
+	} else if (other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") {
+		if (Collider::radius_ > 0.6f && (isDash || isSearchDash)) {
+			isFirstDashAttack_ = true;
+			Input::GetInstance()->Vibrate(0.4f, 0.75f, 100);
+			Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
+			Quaternion yRotation_ = Quaternion::DirectionToQuaternion(
+				transform_.rotation_, velocity.Normalize(), 1.0f);
+			transform_.rotation_ = yRotation_;
+			ChangeState(std::make_unique<CompanionAttackState>(this));
+		}
+	}
+	// 敵に当たったら効果音を鳴らす
+	if ((other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") && isMove) {
+		if (Collider::radius_ > 0.6f) {
+			const auto& volume = items_->GetSeVolumeData();
+			audio_->SoundPlayWave("MattyoGiveDamage.wav", volume.giveDamage);
 		}
 	}
 	// 敵の攻撃に当たったら体力を1減らす

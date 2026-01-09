@@ -1,6 +1,7 @@
 #include "CompanionAttackCollider.h"
 
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
+#include "GameCamera/GameCamera.h"
 
 void CompanionAttackCollider::Initialize()
 {
@@ -29,6 +30,7 @@ void CompanionAttackCollider::OnCollisionEnter(Collider* other)
 	if (!isHit_) {
 		const auto& volume = companion_->GetItems()->GetSeVolumeData();
 		companion_->GetAudio()->SoundPlayWave("MattyoGiveDamage.wav", volume.giveDamage);
+		companion_->GetCamera()->SetShake(companion_->GetItems()->GetAttackData().shakePowerLow);
 	}
 	isHit_ = true;
 	hitColliders_.push_back(other);

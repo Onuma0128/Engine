@@ -155,6 +155,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\Boss\State\BossAppearState.cpp" />
+    <ClCompile Include="Game\GameCamera\AdjustItem\CameraAdjustItem.cpp" />
     <ClCompile Include="Game\Objects\Boss\Effect\BossEffect.cpp" />
     <ClCompile Include="Game\Objects\Boss\State\BossIdleState.cpp" />
     <ClCompile Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.cpp" />
@@ -333,6 +335,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\Boss\State\BossAppearState.h" />
+    <ClInclude Include="Game\GameCamera\AdjustItem\CameraAdjustItem.h" />
     <ClInclude Include="Game\Objects\Boss\Effect\BossEffect.h" />
     <ClInclude Include="Game\Objects\Boss\State\BossIdleState.h" />
     <ClInclude Include="Game\Uis\GameSceneUIs\AdjustItem\GameUiAdjustItem.h" />

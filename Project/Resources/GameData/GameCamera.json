@@ -17,5 +17,29 @@
     "isSabRotate": false,
     "sabRotateSpeed": 9.1899995803833,
     "sabRadius": 5.0,
-    "sabPosY": 20.31999969482422
+    "sabPosY": 20.31999969482422,
+    "bossStopTime": 1.0,
+    "bossActiveTime": 0.6000000238418579,
+    "bossStartRotate": {
+        "x": -1.0,
+        "y": -0.15000000596046448,
+        "z": 0.0
+    },
+    "bossStartPosition": {
+        "x": 2.450000047683716,
+        "y": 3.0,
+        "z": -10.0
+    },
+    "bossEndRotate": {
+        "x": 0.20000000298023224,
+        "y": -0.375,
+        "z": 0.0
+    },
+    "bossEndPosition": {
+        "x": 3.700000047683716,
+        "y": 3.0,
+        "z": -10.0
+    },
+    "bossStartupTime": 1.0,
+    "bossRecoverTime": 4.400000095367432
 }

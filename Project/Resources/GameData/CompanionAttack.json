@@ -8,5 +8,7 @@
     "attackStartupTime": 0.699999988079071,
     "attackActiveTime": 0.20999999344348907,
     "attackRecoveryTime": 0.699999988079071,
-    "firstDashTime": 1.2000000476837158
+    "firstDashTime": 1.2000000476837158,
+    "shakePowerHigh": 2.0,
+    "shakePowerLow": 1.0
 }

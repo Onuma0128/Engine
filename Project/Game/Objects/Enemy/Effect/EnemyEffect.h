@@ -117,13 +117,13 @@ private:
 	// 移動時の土埃
 	std::shared_ptr<ParticleEmitter> moveDustEmitter_ = nullptr;
 
-	/* ==================== 弾がヒットした時のエフェクト ==================== */
+	/* ==================== 仲間がヒットした時のエフェクト ==================== */
 
-	// 弾がヒットした時のエフェクト(血飛沫)
+	// 仲間がヒットした時のエフェクト(血飛沫)
 	std::shared_ptr<ParticleEmitter> hitEmitter_;
-	// 弾がヒットした時のエフェクト(爆発)
+	// 仲間がヒットした時のエフェクト(爆発)
 	std::shared_ptr<ParticleEmitter> hitExplosionEmitter_;
-	// 弾がヒットした時のエフェクト(爆発)
+	// 仲間がヒットした時のエフェクト(爆発)
 	std::shared_ptr<ParticleEmitter> hitRingEmitter_;
 
 	/* ==================== 敵が死亡時のエフェクト ==================== */

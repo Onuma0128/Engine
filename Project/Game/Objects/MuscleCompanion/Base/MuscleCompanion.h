@@ -15,6 +15,7 @@
 // 前方宣言
 class Player;
 class MapCollision;
+class GameCamera;
 
 /// <summary>
 /// プレイヤー仲間の筋肉クラス
@@ -71,6 +72,7 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetItems(CompanionAdjustItem* items) { items_ = items; }
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
+	void SetCamera(GameCamera* camera) { camera_ = camera; }
 	void SetAudio(Audio* audio) { audio_ = audio; }
 	void SetColliderIsActive(bool flag) { isActive_ = flag; }
 	void SetColliderScale(float scale) { colliderScale_ = scale; }
@@ -84,6 +86,7 @@ public:
 	CompanionAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
 	CompanionFollowerCollider* GetFollowerCollider() { return followerCollider_.get(); }
 	CompanionEffect* GetEffect() { return effect_.get(); }
+	GameCamera* GetCamera() { return camera_; }
 	Audio* GetAudio() { return audio_; }
 	PathFinder& GetPathFinder() { return pathFinder_; }
 	bool GetGatherRequested() const { return isGatherRequested_; }
@@ -97,7 +100,9 @@ private:
 	Player* player_ = nullptr;
 	// 調整項目のポインタ
 	CompanionAdjustItem* items_ = nullptr;
-	// Audio
+	// ゲームカメラ
+	GameCamera* camera_ = nullptr;
+	// オーディオ
 	Audio* audio_ = nullptr;
 	// 状態遷移
 	std::unique_ptr<CompanionBaseState> state_ = nullptr;

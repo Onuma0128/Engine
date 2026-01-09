@@ -5,6 +5,7 @@
 #include "Objects/Boss/Base/BossEnemy.h"
 #include "Objects/Boss/State/BossMoveState.h"
 #include "Objects/Player/Player.h"
+#include "GameCamera/GameCamera.h"
 
 BossJumpAttackState::BossJumpAttackState(BossEnemy* boss) : BossBaseState(boss) {}
 
@@ -101,6 +102,7 @@ void BossJumpAttackState::Update()
 			translate.y = startY_;
 			boss_->GetEffect()->AttackEffectReset();
 			boss_->GetEffect()->OnceJumpEffect();
+			boss_->GetGameCamera()->SetShake(data.shakePower);
 			boss_->GetAudio()->SoundPlayWave("BossLanding.wav", volume.landing);
 			boss_->GetAttackCollider()->SetActive(true);
 			boss_->GetAttackCollider()->SetColliderSize(data.attackColliderSize);

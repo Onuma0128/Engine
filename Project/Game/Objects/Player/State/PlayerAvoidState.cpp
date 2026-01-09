@@ -16,7 +16,7 @@ void PlayerAvoidState::Init()
 	player_->SetIsAvoid(true);
 
 	velocity_ = CreateVelocity();
-	PlayerData data = player_->GetItem()->GetPlayerData();
+	const auto& data = player_->GetItem()->GetPlayerData();
 	velocityY_ = data.avoid_velocityY;
 	acceleration_ = data.avoid_acceleration;
 
@@ -29,12 +29,12 @@ void PlayerAvoidState::Init()
 			Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, velocity_, 1.0f));
 		rotateY_ = Quaternion::ExtractYawQuaternion(player_->GetTransform().rotation_);
 	}
-
-	player_->SetAvoidCoolTimer(data.avoid_coolTime);
 }
 
 void PlayerAvoidState::Finalize()
 {
+	const auto& data = player_->GetItem()->GetPlayerData();
+	player_->SetAvoidCoolTimer(data.avoid_coolTime);
 }
 
 void PlayerAvoidState::Update()

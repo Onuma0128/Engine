@@ -27,16 +27,17 @@ void GamePlayScene::Initialize()
 	player_->SetLoader(&loader);
 	player_->Initialize();
 
-	// 仲間管理クラスの初期化
-	companionManager_ = std::make_unique<MuscleCompanionManager>();
-	companionManager_->SetPlayer(player_.get());
-	companionManager_->SetMapData(mapCollision_.get());
-	companionManager_->Initialize();
-
 	// ゲームカメラの初期化
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->SetPlayer(player_.get());
 	gameCamera_->Init();
+
+	// 仲間管理クラスの初期化
+	companionManager_ = std::make_unique<MuscleCompanionManager>();
+	companionManager_->SetPlayer(player_.get());
+	companionManager_->SetMapData(mapCollision_.get());
+	companionManager_->SetCamera(gameCamera_.get());
+	companionManager_->Initialize();
 
 	// フィールド上のオブジェクトの初期化と生成
 	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
@@ -50,16 +51,21 @@ void GamePlayScene::Initialize()
 	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
 	enemySpawnerFactory_->SetMapData(mapCollision_.get());
 	enemySpawnerFactory_->Init(loader);
+	gameCamera_->SetSpawner(enemySpawnerFactory_.get());
 
 	// ボス敵の初期化と生成
 	bossEnemy_ = std::make_unique<BossEnemy>();
 	bossEnemy_->SetMapData(mapCollision_.get());
 	bossEnemy_->SetPlayer(player_.get());
 	bossEnemy_->SetEnemySpawnerFactory(enemySpawnerFactory_.get());
+	bossEnemy_->SetCamera(gameCamera_.get());
 	bossEnemy_->Initialize();
+	gameCamera_->SetBossEnemy(bossEnemy_.get());
 
 	// ゲームシーン全体のUIを初期化
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();
+	gameSceneUis_->SetPlayer(player_.get());
+	gameSceneUis_->SetSpawner(enemySpawnerFactory_.get());
 	gameSceneUis_->Init();
 
 	// BGMを流す
@@ -91,11 +97,6 @@ void GamePlayScene::Update()
 	// 敵スポナーと敵の更新
 	enemySpawnerFactory_->Update();
 
-	// ボスをスタートさせる
-	uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);
-	if (bossEnemy_->GetBossState() == BossState::Idle && enemySpawnerFactory_->GetKnockdownCount() >= clearKill) {
-		bossEnemy_->StartBossEnemy();
-	}
 	// ボス敵の更新
 	bossEnemy_->Update();
 

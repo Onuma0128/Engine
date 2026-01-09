@@ -139,8 +139,6 @@ void PlayerMoveState::Update()
 		}
 	}
 
-	player_->GetEffect()->SetIsDrawReloadUI(isReloadBullet_);
-
 	Vector2 min = player_->GetItem()->GetPlayerData().minPlayerClamp;
 	Vector2 max = player_->GetItem()->GetPlayerData().maxPlayerClamp;
 	position.x = std::clamp(player_->GetTransform().translation_.x, min.x, max.x);

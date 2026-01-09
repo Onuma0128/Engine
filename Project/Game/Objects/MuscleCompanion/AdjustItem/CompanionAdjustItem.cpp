@@ -46,6 +46,8 @@ void CompanionAdjustItem::LoadItems()
 	/* ============================== Attack ============================== */
 	attackJson_.Init("CompanionAttack");
 	if (!attackJson_.Load()) {
+		attackJson_.Set("shakePowerHigh", 0.0f);
+		attackJson_.Set("shakePowerLow", 0.0f);
 		attackJson_.Set("attackColliderSize", 0.0f);
 		attackJson_.Set("attackColliderOffset", Vector3{});
 		attackJson_.Set("firstDashTime", 0.0f);
@@ -53,6 +55,8 @@ void CompanionAdjustItem::LoadItems()
 		attackJson_.Set("attackActiveTime", 0.0f);
 		attackJson_.Set("attackRecoveryTime", 0.0f);
 	} else {
+		attackData_.shakePowerHigh = attackJson_.Get("shakePowerHigh", attackData_.shakePowerHigh);
+		attackData_.shakePowerLow = attackJson_.Get("shakePowerLow", attackData_.shakePowerLow);
 		attackData_.attackColliderSize = attackJson_.Get("attackColliderSize", attackData_.attackColliderSize);
 		attackData_.attackColliderOffset = attackJson_.Get("attackColliderOffset", attackData_.attackColliderOffset);
 		attackData_.firstDashTime = attackJson_.Get("firstDashTime", attackData_.firstDashTime);
@@ -156,6 +160,8 @@ void CompanionAdjustItem::Editor()
 		ImGui::Separator();
 		// 攻撃項目
 		if (ImGui::TreeNode("Attack")) {
+			ImGui::DragFloat("shakePowerHigh", &attackData_.shakePowerHigh, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("shakePowerLow", &attackData_.shakePowerLow, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("attackColliderSize", &attackData_.attackColliderSize, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat3("attackColliderOffset", &attackData_.attackColliderOffset.x, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("firstDashTime", &attackData_.firstDashTime, 0.01f, 0.0f, 10.0f);
@@ -164,6 +170,8 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("attackRecoveryTime", &attackData_.attackRecoveryTime, 0.01f, 0.0f, 10.0f);
 			// セーブボタン
 			if (ImGui::Button("Save")) {
+				attackJson_.Set("shakePowerHigh", attackData_.shakePowerHigh);
+				attackJson_.Set("shakePowerLow", attackData_.shakePowerLow);
 				attackJson_.Set("attackColliderSize", attackData_.attackColliderSize);
 				attackJson_.Set("attackColliderOffset", attackData_.attackColliderOffset);
 				attackJson_.Set("firstDashTime", attackData_.firstDashTime);

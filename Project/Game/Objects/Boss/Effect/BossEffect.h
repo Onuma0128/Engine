@@ -69,6 +69,11 @@ public:
 	void OnceDownEffect();
 	void EmitDownStar(bool flag);
 
+	/// <summary>
+	/// ヒット時のエフェクトを呼び出す
+	/// </summary>
+	void OnceHitExplosionEffect();
+
 private:
 
 	/// <summary>
@@ -119,6 +124,13 @@ private:
 	
 	std::shared_ptr<ParticleEmitter> downLineEmitter_ = nullptr;
 	std::shared_ptr<ParticleEmitter> downStarEmitter_ = nullptr;
+
+	/* ==================== 仲間がヒットした時のエフェクト ==================== */
+
+	// 仲間がヒットした時のエフェクト(爆発)
+	std::shared_ptr<ParticleEmitter> hitExplosionEmitter_;
+	// 仲間がヒットした時のエフェクト(爆発)
+	std::shared_ptr<ParticleEmitter> hitRingEmitter_;
 
 };
 

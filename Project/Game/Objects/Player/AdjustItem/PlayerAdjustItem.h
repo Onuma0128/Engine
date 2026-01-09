@@ -18,6 +18,9 @@ struct PlayerData {
 	float avoid_velocityY;		// 避けのジャンプ高さ
 	float avoid_acceleration;	// 避けの加速度
 	float avoid_coolTime;		// 避けの待機時間
+	Vector3 avoidEffectScale;	// 避けのエフェクトの大きさ
+	Vector3 avoidEffectPos;		// 避けのエフェクトの座標
+	float avoidEffectAlpha;		// 避けのエフェクトのアルファ値
 };
 
 // 弾の項目
@@ -72,13 +75,13 @@ public:
 	/// </summary>
 	
 	// プレイヤーの項目
-	PlayerData GetPlayerData()const { return playerData_; }
+	const PlayerData GetPlayerData()const { return playerData_; }
 	// 弾の項目
-	BulletData GetBulletData()const { return bulletData_; }
+	const BulletData GetBulletData()const { return bulletData_; }
 	// 弾の予測オブジェクトの項目
-	PreObjectData GetPreObjectData()const { return preObjectData_; }
+	const PreObjectData GetPreObjectData()const { return preObjectData_; }
 	// 弾UIの項目
-	BulletUIData GetBulletUIData()const { return bulletUIData_; }
+	const BulletUIData GetBulletUIData()const { return bulletUIData_; }
 
 private:
 

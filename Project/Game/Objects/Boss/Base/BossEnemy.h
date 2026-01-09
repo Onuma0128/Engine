@@ -17,6 +17,7 @@
 class Player;
 class MapCollision;
 class EnemySpawnerFactory;
+class GameCamera;
 
 /// <summary>
 /// ボス敵のクラス
@@ -72,6 +73,7 @@ public:
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetEnemySpawnerFactory(EnemySpawnerFactory* factory) { spawnerFactory_ = factory; }
+	void SetCamera(GameCamera* camera) { camera_ = camera; }
 
 	// ゲッター
 	const bool GetLooking()const { return ray_->GetLooking(); }
@@ -81,6 +83,7 @@ public:
 	const BossState GetBossState()const { return state_->GetState(); }
 	BossStateEvaluator* GetStateEvaluator() { return stateEvaluator_.get(); }
 	EnemySpawnerFactory* GetSpawnerFactory() { return spawnerFactory_; }
+	GameCamera* GetGameCamera() { return camera_; }
 	BossAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
 	BossEffect* GetEffect() { return effect_.get(); }
 	Audio* GetAudio() { return audio_.get(); }
@@ -92,6 +95,8 @@ private:
 	Player* player_ = nullptr;
 	// 敵スポナー管理クラスのポインタ
 	EnemySpawnerFactory* spawnerFactory_ = nullptr;
+	// ゲームカメラ
+	GameCamera* camera_ = nullptr;
 	// ボスの調整項目
 	std::unique_ptr<BossAdjustItem> items_ = nullptr;
 	// ボスの状態遷移用ステート

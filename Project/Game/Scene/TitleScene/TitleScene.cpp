@@ -37,7 +37,7 @@ void TitleScene::Initialize()
 	fieldObjectFactory_->Init(loader);
 	PostEffectManager::GetInstance()->CreatePostEffect(PostEffectType::kOutLine);
 
-	test = std::make_unique<ParticleEmitter>("downStar");
+	test = std::make_unique<ParticleEmitter>("enemyHitRing");
 	particleManager->CreateParticleGroup(test);
 	test->SetIsCreate(false);
 
