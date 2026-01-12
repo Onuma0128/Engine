@@ -2,10 +2,10 @@
     "maxHP": 35,
     "speed": 1.2000000476837158,
     "searchUpdateTime": 0.5,
-    "colliderSize": 0.5,
+    "colliderSize": 1.2000000476837158,
     "colliderOffset": {
         "x": 0.0,
-        "y": 0.800000011920929,
+        "y": 1.5,
         "z": 0.0
     },
     "rayDistance": 10.0,
@@ -23,5 +23,6 @@
         "x": 10.0,
         "y": 30.0,
         "z": 10.0
-    }
+    },
+    "modelScale": 2.0
 }

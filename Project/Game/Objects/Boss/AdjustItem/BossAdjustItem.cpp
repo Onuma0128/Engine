@@ -9,6 +9,7 @@ void BossAdjustItem::LoadItems()
 	if (!mainJson_.Load()) {
         mainJson_.Set("startPosition", Vector3{});
         mainJson_.Set("sabStartPosition", Vector3{});
+        mainJson_.Set("modelScale", 0.0f);
 		mainJson_.Set("maxHP", 20);
 		mainJson_.Set("speed", 2.0f);
         mainJson_.Set("rayDistance", 2.0f);
@@ -19,7 +20,8 @@ void BossAdjustItem::LoadItems()
 	} else {
         mainData_.startPosition = mainJson_.Get("startPosition", mainData_.startPosition);
         mainData_.sabStartPosition = mainJson_.Get("sabStartPosition", mainData_.sabStartPosition);
-		mainData_.maxHP = mainJson_.Get("maxHP", mainData_.maxHP);
+        mainData_.modelScale = mainJson_.Get("modelScale", mainData_.modelScale);
+        mainData_.maxHP = mainJson_.Get("maxHP", mainData_.maxHP);
 		mainData_.speed = mainJson_.Get("speed", mainData_.speed);
         mainData_.rayDistance = mainJson_.Get("rayDistance", mainData_.rayDistance);
         mainData_.rayOffset = mainJson_.Get("rayOffset", mainData_.rayOffset);
@@ -262,6 +264,7 @@ void BossAdjustItem::Editor()
         if (ImGui::TreeNode("Main")) {
             ImGui::DragFloat3("startPosition", &mainData_.startPosition.x, 0.01f, 0.0f, 100.0f);
             ImGui::DragFloat3("sabStartPosition", &mainData_.sabStartPosition.x, 0.01f, 0.0f, 100.0f);
+            ImGui::DragFloat("modelScale", &mainData_.modelScale, 0.01f, 0.0f, 100.0f);
             ImGui::DragInt("maxHP", &mainData_.maxHP, 1, 1, 1000);
             ImGui::DragFloat("speed", &mainData_.speed, 0.01f, 0.0f, 100.0f);
             ImGui::DragFloat("rayDistance", &mainData_.rayDistance, 0.01f, 0.0f, 100.0f);
@@ -274,6 +277,7 @@ void BossAdjustItem::Editor()
             if (ImGui::Button("Save")) {
                 mainJson_.Set("startPosition", mainData_.startPosition);
                 mainJson_.Set("sabStartPosition", mainData_.sabStartPosition);
+                mainJson_.Set("modelScale", mainData_.modelScale);
                 mainJson_.Set("maxHP", mainData_.maxHP);
                 mainJson_.Set("speed", mainData_.speed);
                 mainJson_.Set("rayDistance", mainData_.rayDistance);

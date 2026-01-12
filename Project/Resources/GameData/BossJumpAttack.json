@@ -1,5 +1,5 @@
 {
-    "attackColliderSize": 2.200000047683716,
+    "attackColliderSize": 3.0,
     "attackColliderOffset": {
         "x": 0.0,
         "y": 0.0,
@@ -13,12 +13,12 @@
     "jumpVelocityY": 30.0,
     "jumpAccelerY": -30.0,
     "airSpeed": 8.0,
-    "attackEffectSize": 2.200000047683716,
+    "attackEffectSize": 3.0,
     "attackEffectOffset": {
         "x": 0.0,
         "y": 0.10000000149011612,
         "z": 0.0
     },
     "attackEffectAppearTime": 0.5,
-    "shakePower": 2.5
+    "shakePower": 3.0
 }

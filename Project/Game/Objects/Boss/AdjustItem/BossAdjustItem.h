@@ -8,6 +8,7 @@
 struct BossMainData {
 	Vector3 startPosition;			// ボスの最初の座標
 	Vector3 sabStartPosition;		// ボスのもう1つの最初の座標
+	float modelScale;				// ボスモデルのサイズ
 	int maxHP = 20;					// ボスの最大体力
 	float speed = 2.0f;				// ボスの移動速度
 	float rayDistance;				// ボスの視線距離

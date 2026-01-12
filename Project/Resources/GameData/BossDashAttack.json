@@ -1,16 +1,16 @@
 {
     "dashSpeed": 25.0,
-    "attackColliderSize": 1.0,
+    "attackColliderSize": 1.399999976158142,
     "attackColliderOffset": {
         "x": 0.0,
-        "y": 0.6700000166893005,
+        "y": 1.0,
         "z": 0.0
     },
     "attackStartupTime": 3.5,
     "dashTime": 0.44999998807907104,
     "attackRecoveryTime": 1.0,
     "attackEffectSize": {
-        "x": 0.6000000238418579,
+        "x": 1.4500000476837158,
         "y": 6.0
     },
     "attackEffectOffset": {

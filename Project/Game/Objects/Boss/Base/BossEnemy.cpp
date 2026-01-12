@@ -101,6 +101,7 @@ void BossEnemy::Update()
 	attackCollider_->Update();
 	// アニメーションの更新
 	if (Animation::GetMaterial().enableDraw) {
+		Animation::SetTransformScale(Vector3::ExprUnitXYZ * data.modelScale);
 		Animation::Update();
 	} else {
 		Animation::TransformUpdate();
@@ -118,9 +119,10 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 
 	bool isPlayer = other->GetColliderName() == "Player";
 	bool isCompanion = other->GetColliderName() == "MuscleCompanion";
+	bool isSearchDashCompanion = other->GetColliderName() == "SearchDashMuscleCompanion";
 	bool isCompanionAttack = other->GetColliderName() == "MuscleCompanionAttack";
 
-	if (isCompanion || isCompanionAttack) {
+	if (isCompanion || isCompanionAttack || isSearchDashCompanion) {
 		// 小さな当たり判定は無視する
 		if (other->GetRadius() < 0.6f) {
 			return;
