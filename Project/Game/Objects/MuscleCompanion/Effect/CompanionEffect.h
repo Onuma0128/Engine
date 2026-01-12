@@ -42,7 +42,7 @@ public:
 	/// <summary>
 	/// ダッシュ時のエフェクトを呼び出す
 	/// </summary>
-	void OnceDashEffect();
+	void OnceDashEffect(bool isSearch);
 
 	/// <summary>
 	/// ヒット時のエフェクトを呼び出す
@@ -66,6 +66,7 @@ private:
 
 	// 移動時の土埃
 	std::shared_ptr<ParticleEmitter> dashEmitter_ = nullptr;
+	std::shared_ptr<ParticleEmitter> searchDashEmitter_ = nullptr;
 
 	/* ==================== 仲間がダメージ時のエフェクト ==================== */
 

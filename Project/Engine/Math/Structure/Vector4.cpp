@@ -6,6 +6,7 @@
 
 Vector4::Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
+const Vector4 Vector4::ExprUnitXYZW = { 1.0f,1.0f,1.0f,1.0f };
 const Vector4 Vector4::ExprUnitX = { 1.0f,0.0f,0.0f,0.0f };
 const Vector4 Vector4::ExprUnitY = { 0.0f,1.0f,0.0f,0.0f };
 const Vector4 Vector4::ExprUnitZ = { 0.0f,0.0f,1.0f,0.0f };

@@ -1,5 +1,5 @@
 {
-    "maxHP": 75,
+    "maxHP": 35,
     "speed": 1.2000000476837158,
     "searchUpdateTime": 0.5,
     "colliderSize": 0.5,

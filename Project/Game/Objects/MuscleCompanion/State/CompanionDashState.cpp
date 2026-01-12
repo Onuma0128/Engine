@@ -91,7 +91,7 @@ void CompanionDashState::Update()
 		velocity_ * speed * DeltaTimer::GetDeltaTime());
 	// エフェクトを追加する
 	companion_->GetEffect()->OnceMoveEffect();
-	companion_->GetEffect()->OnceDashEffect();
+	companion_->GetEffect()->OnceDashEffect(false);
 }
 
 void CompanionDashState::Draw()

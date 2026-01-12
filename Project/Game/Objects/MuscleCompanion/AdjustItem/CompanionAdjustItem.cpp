@@ -15,6 +15,9 @@ void CompanionAdjustItem::LoadItems()
 		mainJson_.Set("searchCancelDistance", 0.0f);
 		mainJson_.Set("colliderSize", 0.0f);
 		mainJson_.Set("colliderOffset", Vector3{});
+
+		mainJson_.Set("blinkingHP", 0);
+		mainJson_.Set("blinkingColor", 0.0f);
 		mainJson_.Set("distanceToAlly", 0.0f);
 		mainJson_.Set("followerColliderSize", 0.0f);
 		mainJson_.Set("debugSpline", false);
@@ -25,6 +28,9 @@ void CompanionAdjustItem::LoadItems()
 		mainData_.objectScale = mainJson_.Get("objectScale", mainData_.objectScale);
 		mainData_.colliderSize = mainJson_.Get("colliderSize", mainData_.colliderSize);
 		mainData_.colliderOffset = mainJson_.Get("colliderOffset", mainData_.colliderOffset);
+
+		mainData_.blinkingHP = mainJson_.Get("blinkingHP", mainData_.blinkingHP);
+		mainData_.blinkingColor = mainJson_.Get("blinkingColor", mainData_.blinkingColor);
 		mainData_.searchUpdateTime = mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
 		mainData_.searchCancelDistance = mainJson_.Get("searchCancelDistance", mainData_.searchCancelDistance);
 		mainData_.distanceToAlly = mainJson_.Get("distanceToAlly", mainData_.distanceToAlly);
@@ -38,9 +44,11 @@ void CompanionAdjustItem::LoadItems()
 	if(!dashJson_.Load()) {
 		dashJson_.Set("dashSpeed", 0.0f);
 		dashJson_.Set("dashColliderScale", 1.0f);
+		dashJson_.Set("searchDashColliderScale", 1.0f);
 	} else {
 		dashData_.dashSpeed = dashJson_.Get("dashSpeed", dashData_.dashSpeed);
 		dashData_.dashColliderScale = dashJson_.Get("dashColliderScale", dashData_.dashColliderScale);
+		dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale);
 	}
 
 	/* ============================== Attack ============================== */
@@ -109,6 +117,9 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("objectScale", &mainData_.objectScale, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("colliderSize", &mainData_.colliderSize, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat3("colliderOffset", &mainData_.colliderOffset.x, 0.01f, 0.0f, 100.0f);
+
+			ImGui::DragInt("blinkingHP", &mainData_.blinkingHP, 1, 1, 1000);
+			ImGui::DragFloat("blinkingColor", &mainData_.blinkingColor, 0.01f, 0.0f, 10.0f);
 			ImGui::DragFloat("distanceToAlly", &mainData_.distanceToAlly, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("followerColliderSize", &mainData_.followerColliderSize, 0.01f, 0.0f, 10.0f);
 			ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f, 0.0f, 100.0f);
@@ -122,6 +133,8 @@ void CompanionAdjustItem::Editor()
 				mainJson_.Set("objectScale", mainData_.objectScale);
 				mainJson_.Set("colliderSize", mainData_.colliderSize);
 				mainJson_.Set("colliderOffset", mainData_.colliderOffset);
+				mainJson_.Set("blinkingHP", mainData_.blinkingHP);
+				mainJson_.Set("blinkingColor", mainData_.blinkingColor);
 				mainJson_.Set("distanceToAlly", mainData_.distanceToAlly);
 				mainJson_.Set("followerColliderSize", mainData_.followerColliderSize);
 				mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
@@ -149,10 +162,12 @@ void CompanionAdjustItem::Editor()
 		if (ImGui::TreeNode("Dash")) {
 			ImGui::DragFloat("dashSpeed", &dashData_.dashSpeed, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("dashColliderScale", &dashData_.dashColliderScale, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat("searchDashColliderScale", &dashData_.searchDashColliderScale, 0.01f, 0.1f, 10.0f);
 			// セーブボタン
 			if(ImGui::Button("Save")) {
 				dashJson_.Set("dashSpeed", dashData_.dashSpeed);
 				dashJson_.Set("dashColliderScale", dashData_.dashColliderScale);
+				dashJson_.Set("searchDashColliderScale", dashData_.searchDashColliderScale);
 				dashJson_.Save();
 			}
 			ImGui::TreePop();

@@ -1,5 +1,6 @@
 #include "MuscleCompanion.h"
 
+#include <numbers>
 #include "Input.h"
 #include "DeltaTimer.h"
 
@@ -20,7 +21,7 @@ void MuscleCompanion::Initialize()
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Wait");
 	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = Vector3::ExprUnitY;
+	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
 
 	// コライダーを設定
 	Collider::AddCollider();
@@ -67,6 +68,9 @@ void MuscleCompanion::Update()
 {
 	// ステートの更新
 	state_->Update();
+
+	// カラーを点滅させる
+	BlinkingColor();
 
 	// コライダーの更新
 	attackCollider_->Update();
@@ -124,9 +128,6 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	// 敵の攻撃に当たったら体力を1減らす
 	if (CollisionFilter::CheckColliderNameEnemy(other->GetColliderName())) {
 		--currentHp_;
-		float color = static_cast<float>(currentHp_) / static_cast<float>(maxHp_);
-		Vector3 outlineColor = { 1.0f - color,color,0.0f };
-		Animation::GetMaterial().outlineColor = outlineColor;
 		effect_->OnceHitEffect();
 		const auto& volume = items_->GetSeVolumeData();
 		audio_->SoundPlayWave("MattyoGetDamage.wav", volume.getDamage);
@@ -168,6 +169,24 @@ void MuscleCompanion::OnCollisionStay(Collider* other)
 
 void MuscleCompanion::OnCollisionExit(Collider* other)
 {
+}
+
+void MuscleCompanion::BlinkingColor()
+{
+	const auto& data = items_->GetMainData();
+	if (static_cast<uint32_t>(data.blinkingHP) > currentHp_ && currentHp_ > 0) {
+		float scale = static_cast<float>(data.blinkingHP) / static_cast<float>(currentHp_);
+		blinkingTime_ += DeltaTimer::GetDeltaTime() * scale;
+		blinkingTime_ = std::clamp(blinkingTime_, 0.0f, std::numbers::pi_v<float>);
+		float color = std::sinf(blinkingTime_) + (data.blinkingColor / scale);
+		color = std::clamp(color, 0.0f, 1.0f);
+		Animation::GetMaterial().color = { 1.0f,color,color,1.0f };
+		if (blinkingTime_ >= std::numbers::pi_v<float>) {
+			blinkingTime_ = 0.0f;
+		}
+	} else {
+		Animation::GetMaterial().color = Vector4::ExprUnitXYZW;
+	}
 }
 
 void MuscleCompanion::ChangeState(std::unique_ptr<CompanionBaseState> newState)

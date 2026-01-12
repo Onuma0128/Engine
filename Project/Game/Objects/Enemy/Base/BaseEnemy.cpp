@@ -4,6 +4,7 @@
 
 #include "Objects/Player/Player.h"
 #include "GameCamera/GameCamera.h"
+#include "Collision/CollisionFilter.h"
 #include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
 
 #include "Objects/Enemy/state/EnemyMoveState.h"
@@ -40,7 +41,7 @@ void BaseEnemy::Initialize()
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
 		"Player","MuscleCompanionAttack","FollowerMuscleCompanion",
-		"Enemy" ,"PlayerShotRay","MuscleCompanion"
+		"Enemy" ,"PlayerShotRay","MuscleCompanion","SearchDashMuscleCompanion",
 	};
 	Collider::DrawCollider();
 
@@ -130,8 +131,7 @@ void BaseEnemy::Reset(const Vector3& position)
 {
 	// 描画をする
 	Animation::GetMaterial().enableDraw = true;
-	// Transformを初期化
-	transform_.scale_ = Vector3::ExprUnitXYZ;
+	// 座標と回転を初期化する
 	transform_.rotation_ = Quaternion::IdentityQuaternion();
 	transform_.translation_ = position;
 	Animation::TransformUpdate();
@@ -161,9 +161,7 @@ void BaseEnemy::ResetSearch()
 void BaseEnemy::OnCollisionEnter(Collider* other)
 {
 	// プレイヤーの仲間と当たっているなら
-	if (other->GetColliderName() == "MuscleCompanion" ||
-		other->GetColliderName() == "FollowerMuscleCompanion" ||
-		other->GetColliderName() == "MuscleCompanionAttack") {
+	if (CollisionFilter::CheckColliderNameCompanion(other->GetColliderName())) {
 		// 小さな当たり判定は無視する
 		if (other->GetRadius() < 0.6f) {
 			return;

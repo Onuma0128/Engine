@@ -12,5 +12,6 @@ namespace CollisionFilter {
 	/// <returns></returns>
 	bool CheckColliderNameEnemy(const std::string& name);
 	bool CheckColliderNameFieldObject(const std::string& name);
+	bool CheckColliderNameCompanion(const std::string& name);
 
 }

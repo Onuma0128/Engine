@@ -1,4 +1,5 @@
 {
     "dashSpeed": 8.0,
-    "dashColliderScale": 2.0
+    "dashColliderScale": 2.0,
+    "searchDashColliderScale": 2.0
 }

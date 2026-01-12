@@ -8,6 +8,7 @@ struct EnemyTemplate {
 
 	int maxHp;					// 最大体力
 	float speed;				// 移動速度
+	float modelScale;			// モデルのスケール倍率
 
 	float attackDistance;		// 攻撃が始まる距離
 	float attackStartupTime;	// 攻撃を開始する硬直時間

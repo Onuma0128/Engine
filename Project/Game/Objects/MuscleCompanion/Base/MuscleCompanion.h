@@ -49,6 +49,11 @@ private:
 	void OnCollisionStay(Collider* other) override;
 	void OnCollisionExit(Collider* other) override;
 
+	/// <summary>
+	/// マテリアルを点滅させる
+	/// </summary>
+	void BlinkingColor();
+
 public:
 
 	/// <summary>
@@ -79,6 +84,7 @@ public:
 	void SetGatherRequested(bool flag) { isGatherRequested_ = flag; }
 	void SetReturnOriginal(bool flag) { isReturnOriginal_ = flag; }
 	void SetFirstDashAttack(bool flag) { isFirstDashAttack_ = flag; }
+	void SetColliderName(const std::string& name) { Collider::colliderName_ = name; }
 	// ゲッター
 	const CompanionAdjustItem* GetItems()const { return items_; }
 	const Player* GetPlayer()const { return player_; }
@@ -119,6 +125,8 @@ private:
 	uint32_t maxHp_ = 1;
 	// 仲間の現在のHP
 	uint32_t currentHp_ = 1;
+	// 点滅タイマー
+	float blinkingTime_ = 0.0f;
 	// コライダーのスケール
 	float colliderScale_ = 1.0f;
 	// 集合要求フラグ

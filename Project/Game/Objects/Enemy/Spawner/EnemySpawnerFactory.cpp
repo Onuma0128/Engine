@@ -50,7 +50,6 @@ void EnemySpawnerFactory::Update()
 	// スポーンしていない敵の更新処理
 	UpdateTypeEnemy(enemyMelees_);
 	UpdateTypeEnemy(enemyRnageds_);
-	UpdateTypeEnemy(enemyShieldBearers_);
 	UpdateTypeEnemy(enemyRnagedElites_);
 }
 

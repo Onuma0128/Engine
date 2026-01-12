@@ -13,3 +13,11 @@ bool CollisionFilter::CheckColliderNameFieldObject(const std::string& name)
 	{ "Building","DeadTree","fence","Bush","ShortStoneWall","StoneWall" };
 	return names.contains(name);
 }
+
+bool CollisionFilter::CheckColliderNameCompanion(const std::string& name)
+{
+	static const std::unordered_set<std::string> names =
+	{ "MuscleCompanion","FollowerMuscleCompanion",
+		"MuscleCompanionAttack","SearchDashMuscleCompanion" };
+	return names.contains(name);
+}

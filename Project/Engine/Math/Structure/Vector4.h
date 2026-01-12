@@ -16,6 +16,7 @@ public:
 	Vector4(float x = 0, float y = 0, float z = 0, float w = 0);
 
     // 定数定義
+    static const Vector4 ExprUnitXYZW;
     static const Vector4 ExprUnitX;
     static const Vector4 ExprUnitY;
     static const Vector4 ExprUnitZ;

@@ -25,7 +25,7 @@ void BossEnemy::Initialize()
 	Animation::Initialize("BossEnemy.gltf");
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Idle", 0.0f);
-	Animation::GetMaterial().enableDraw = true;
+	Animation::GetMaterial().enableDraw = false;
 	Animation::GetMaterial().outlineMask = false;
 	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
 	Animation::SetTransformTranslation(items_->GetMainData().startPosition);
@@ -35,8 +35,8 @@ void BossEnemy::Initialize()
 	Collider::isActive_ = false;
 	Collider::colliderName_ = "BossEnemy";
 	Collider::myType_ = ColliderType::kSphere;
-	Collider::targetColliderName_ = { 
-		"Player","MuscleCompanion","PlayerShotRay","MuscleCompanionAttack",
+	Collider::targetColliderName_ = {
+		"Player","MuscleCompanion","PlayerShotRay","MuscleCompanionAttack","SearchDashMuscleCompanion",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
 	Collider::DrawCollider();

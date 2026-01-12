@@ -11,6 +11,9 @@ struct CompanionMainData {
 	float colliderSize;				// 仲間本体のコライダーサイズ
 	Vector3 colliderOffset;			// 仲間本体のコライダー座標
 
+	int blinkingHP;					// 点滅し始める体力
+	float blinkingColor;			// 点滅する振れ幅
+
 	float distanceToAlly;			// 仲間同士の距離
 	float followerColliderSize;		// 後続判定された仲間のコライダーサイズ
 
@@ -23,6 +26,7 @@ struct CompanionMainData {
 struct CompanionDashData {
 	float dashSpeed;				// 攻撃時の移動速度
 	float dashColliderScale;		// 攻撃時のコライダースケール倍率
+	float searchDashColliderScale;	// 集合の戻り時の攻撃コライダースケール倍率
 };
 
 // 仲間の攻撃の調整項目

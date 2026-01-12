@@ -21,7 +21,8 @@ void CompanionMoveState::Init()
 	companion_->ResetSearch(companion_->GetPlayer()->GetTransform().translation_);
 	// ダッシュ用のコライダースケールを設定する
 	if (!companion_->GetReturnOriginal()) {
-		companion_->SetColliderScale(1.3f);
+		companion_->SetColliderName("SearchDashMuscleCompanion");
+		companion_->SetColliderScale(companion_->GetItems()->GetDashData().searchDashColliderScale);
 	}
 }
 
@@ -29,6 +30,7 @@ void CompanionMoveState::Finalize()
 {
 	// コライダースケールを元に戻す
 	companion_->SetColliderScale(1.0f);
+	companion_->SetColliderName("MuscleCompanion");
 }
 
 void CompanionMoveState::Update()
@@ -61,7 +63,7 @@ void CompanionMoveState::Update()
 	companion_->SetTransformTranslation(translate);
 	// エフェクトを追加する
 	companion_->GetEffect()->OnceMoveEffect();
-	if (!companion_->GetReturnOriginal()) { companion_->GetEffect()->OnceDashEffect(); }
+	if (!companion_->GetReturnOriginal()) { companion_->GetEffect()->OnceDashEffect(true); }
 
 	// 足音のSEがなっていなければ鳴らす
 	if (!companion_->GetAudio()->IsPlaying("MattyoFootsteps.wav")) {

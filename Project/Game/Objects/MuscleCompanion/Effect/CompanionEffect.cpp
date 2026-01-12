@@ -13,6 +13,9 @@ void CompanionEffect::Init()
 	dashEmitter_ = std::make_unique<ParticleEmitter>("dash");
 	particleManager_->CreateParticleGroup(dashEmitter_);
 	dashEmitter_->SetIsCreate(false);
+	searchDashEmitter_ = std::make_unique<ParticleEmitter>("searchDash");
+	particleManager_->CreateParticleGroup(searchDashEmitter_);
+	searchDashEmitter_->SetIsCreate(false);
 
 	// ヒット時のエフェクト
 	hitEmitter_ = std::make_unique<ParticleEmitter>("hitDamage");
@@ -42,16 +45,21 @@ void CompanionEffect::OnceMoveEffect()
 	moveDustEmitter_->SetPosition(position);
 }
 
-void CompanionEffect::OnceDashEffect()
+void CompanionEffect::OnceDashEffect(bool isSearch)
 {
-	dashEmitter_->onceEmit();
-
 	// パーティクルの座標を設定
 	Quaternion rotate = companion_->GetTransform().rotation_;
 	Vector3 position = companion_->GetTransform().translation_;
 
-	dashEmitter_->SetRotation(rotate);
-	dashEmitter_->SetPosition(position);
+	if (isSearch) {
+		searchDashEmitter_->onceEmit();
+		searchDashEmitter_->SetRotation(rotate);
+		searchDashEmitter_->SetPosition(position);
+	} else {
+		dashEmitter_->onceEmit();
+		dashEmitter_->SetRotation(rotate);
+		dashEmitter_->SetPosition(position);
+	}
 }
 
 void CompanionEffect::OnceHitEffect()

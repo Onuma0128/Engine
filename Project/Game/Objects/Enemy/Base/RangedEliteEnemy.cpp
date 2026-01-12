@@ -54,14 +54,15 @@ void RangedEliteEnemy::Dead()
 
 void RangedEliteEnemy::Reset(const Vector3& position)
 {
-	// 体力を最大値に戻す
-	maxHp_ = items_->GetRangedEliteData().tempData.maxHp;
-	currentHp_ = maxHp_;
-
 	// 基底クラスのリセット処理
 	BaseEnemy::Reset(position);
-
+	// データを取得する
+	const auto& data = items_->GetRangedEliteData().tempData;
+	// 体力を最大値に戻す
+	maxHp_ = data.maxHp;
+	currentHp_ = maxHp_;
 	// Animationの再生を初期化
+	transform_.scale_ = Vector3::ExprUnitXYZ * data.modelScale;
 	Animation::PlayByName("Run");
 	// ステートを初期化
 	ChangeState(std::make_unique<EnemyMoveState>(this));
