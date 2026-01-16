@@ -3,7 +3,7 @@
     "BlendMode": 2,
     "Move": true,
     "EmitCount": 10,
-    "FrequencyTime": 4.0,
+    "FrequencyTime": 2.609999895095825,
     "LifeTime": 0.5,
     "Acceleration": {
         "x": 0.0,
@@ -24,9 +24,9 @@
     "Reflect": true,
     "ReflectY": 0.0,
     "Color": {
-        "x": 1.0,
-        "y": 0.501960813999176,
-        "z": 0.0
+        "x": 0.0,
+        "y": 0.35294103622436523,
+        "z": 1.0
     },
     "uvTranslation": {
         "x": 6.0,

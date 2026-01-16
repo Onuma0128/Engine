@@ -132,6 +132,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <WarningLevel>Level3</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -155,6 +156,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\Player\Bullet\PredictionObject.cpp" />
+    <ClCompile Include="Game\Uis\Boss\BossHpUI.cpp" />
+    <ClCompile Include="Game\Objects\Enemy\State\EnemyKnockbackState.cpp" />
     <ClCompile Include="Game\Objects\Boss\State\BossAppearState.cpp" />
     <ClCompile Include="Game\GameCamera\AdjustItem\CameraAdjustItem.cpp" />
     <ClCompile Include="Game\Objects\Boss\Effect\BossEffect.cpp" />
@@ -300,7 +304,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\Player\State\PlayerSpecialMoveState.cpp" />
     <ClCompile Include="Game\Objects\Player\Reticle\PlayerReticle.cpp" />
     <ClCompile Include="Game\Objects\Player\Effect\PlayerBulletEffect.cpp" />
-    <ClCompile Include="Game\Objects\Player\Bullet\PredictionObject.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\PredictionObject\PredictionObjects.cpp" />
     <ClCompile Include="Engine\JsonFunction\JsonFunction.cpp" />
     <ClCompile Include="Engine\Base\Object\Particle\ParticleEditor.cpp" />
     <ClCompile Include="Engine\JsonFunction\SceneJsonLoader.cpp" />
@@ -333,8 +337,12 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\Object\ShadowMap\ShadowMap.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\Player\Bullet\PredictionObject.h" />
+    <ClInclude Include="Game\Uis\Boss\BossHpUI.h" />
+    <ClInclude Include="Game\Objects\Enemy\State\EnemyKnockbackState.h" />
     <ClInclude Include="Game\Objects\Boss\State\BossAppearState.h" />
     <ClInclude Include="Game\GameCamera\AdjustItem\CameraAdjustItem.h" />
     <ClInclude Include="Game\Objects\Boss\Effect\BossEffect.h" />
@@ -502,7 +510,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Objects\Player\State\PlayerSpecialMoveState.h" />
     <ClInclude Include="Game\Objects\Player\Reticle\PlayerReticle.h" />
     <ClInclude Include="Game\Objects\Player\Effect\PlayerBulletEffect.h" />
-    <ClInclude Include="Game\Objects\Player\Bullet\PredictionObject.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\PredictionObject\PredictionObjects.h" />
     <ClInclude Include="Engine\JsonFunction\JsonFunction.h" />
     <ClInclude Include="Engine\Base\Object\Particle\ParticleEditor.h" />
     <ClInclude Include="Engine\JsonFunction\SceneJsonLoader.h" />
@@ -535,6 +543,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\Object\ShadowMap\ShadowMap.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli">

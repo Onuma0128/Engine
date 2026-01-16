@@ -5,6 +5,8 @@
 
 #include "Audio.h"
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
+#include "Objects/MuscleCompanion/Effect/CompanionEffect.h"
+#include "Objects/MuscleCompanion/Effect/NextArrowEffect.h"
 #include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
 
 /// <summary>
@@ -29,11 +31,15 @@ public:
 	/// </summary>
 	void Draw();
 
-
 	// セッター
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetMapData(MapCollision* map) { mapData_ = map; }
 	void SetCamera(GameCamera* camera) { camera_ = camera; }
+
+	/// <summary>
+	/// 仲間のデータをリセットする
+	/// </summary>
+	void Reset();
 
 private:
 
@@ -53,6 +59,11 @@ private:
 	/// <returns></returns>
 	bool IsShotCompanion();
 
+	/// <summary>
+	/// エフェクトを更新する
+	/// </summary>
+	void UpdateEffect();
+
 private:
 
 	// プレイヤーのポインタ
@@ -64,13 +75,12 @@ private:
 
 	// 仲間の調整項目
 	std::unique_ptr<CompanionAdjustItem> items_ = nullptr;
-
 	// プレイヤーの仲間達
 	std::vector<std::unique_ptr<MuscleCompanion>> companions_;
-
+	// 次発射の仲間エフェクト
+	std::unique_ptr<NextArrowEffect> arrowEffect_ = nullptr;
 	// オーディオ
 	std::unique_ptr<Audio> audio_ = nullptr;
-
 
 
 };

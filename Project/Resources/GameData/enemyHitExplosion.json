@@ -34,13 +34,13 @@
         "z": 0.0
     },
     "MinScale": {
-        "x": 0.6000000238418579,
-        "y": 3.0,
+        "x": 0.800000011920929,
+        "y": 4.0,
         "z": 1.0
     },
     "MaxScale": {
-        "x": 0.800000011920929,
-        "y": 4.0,
+        "x": 1.0,
+        "y": 5.0,
         "z": 1.0
     },
     "ChangeScale": true,
@@ -92,9 +92,14 @@
     },
     "Position": {
         "x": 0.0,
-        "y": 0.75,
-        "z": 0.0
+        "y": 1.399999976158142,
+        "z": 0.20000000298023224
     },
     "Look": true,
-    "Model": 0
+    "Model": 0,
+    "UvFlipX": false,
+    "UvFlipY": false,
+    "LockDirectionXY": false,
+    "LockDirectionXZ": false,
+    "DirectionSpeed": 0.0
 }

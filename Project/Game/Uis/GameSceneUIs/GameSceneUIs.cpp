@@ -17,7 +17,7 @@ void GameSceneUIs::Init()
 	// 操作UIの初期化
 	controlUI_ = std::make_unique<PlayerControlUI>();
 	controlUI_->Init();
-	isDrawGameUIs_ = true;
+	isDrawControlUI_ = true;
 
 	// シーンフェードを初期化
 	sceneFade_ = std::make_unique<BaseUI>();
@@ -28,10 +28,6 @@ void GameSceneUIs::Init()
 	bossFade_ = std::make_unique<BaseUI>();
 	bossFade_->Init("BossFade", "GameData");
 
-	selectSystem_ = std::make_unique<SelectSystem>();
-	selectSystem_->Init();
-	selectSystem_->SetSceneFade(sceneFade_.get());
-
 	// Kill数UIの初期化
 	killCountUI_ = std::make_unique<NumberCountUI>();
 	killCountUI_->Init();
@@ -39,6 +35,13 @@ void GameSceneUIs::Init()
 	maxKillCountUI_->Init();
 	catUI_ = std::make_unique<BaseUI>();
 	catUI_->Init("CatUI", "GameData");
+	isDrawGameUIs_ = true;
+	
+	bossHpFrame_ = std::make_unique<BaseUI>();
+	bossHpFrame_->Init("BossHpFrame", "GameData");
+	bossHpBar_ = std::make_unique<BossHpBarUI>();
+	bossHpBar_->SetBossEnemy(boss_);
+	bossHpBar_->Init(items_->GetSelectData().bossHpBarPos);
 
 	Update();
 }
@@ -53,14 +56,13 @@ void GameSceneUIs::Update()
 
 	controlUI_->Update();
 
-	selectSystem_->Update();
-	
 	sceneFade_->DrawImGui();
 	sceneFade_->Update();
 	bossFade_->DrawImGui();
 	bossFade_->Update();
 
 	// 調整項目をセットし、更新する
+	knockdownCount_ = spawner_->GetKnockdownCount();
 	killCountUI_->SetInterval(items_->GetSelectData().killNumberUiInterval);
 	killCountUI_->SetSize(items_->GetSelectData().killNumberUiSize);
 	killCountUI_->SetPosition(items_->GetSelectData().killNumberUiPos);
@@ -74,6 +76,10 @@ void GameSceneUIs::Update()
 	maxKillCountUI_->Update(items_->GetSelectData().maxKillCount);
 
 	catUI_->Update();
+
+	bossHpFrame_->DrawImGui();
+	bossHpFrame_->Update();
+	bossHpBar_->Update(items_->GetSelectData().bossHpBarPos);
 }
 
 void GameSceneUIs::BossFadeUpdate()
@@ -99,6 +105,7 @@ void GameSceneUIs::BossFadeUpdate()
 		
 		// 時間が来たらステートを変える
 		if (bossFadeTime_ > data.startInTime) {
+			isDrawControlUI_ = false;
 			isDrawGameUIs_ = false;
 			bossFade_->FadeOut();
 			ChangeFadeState(BossFadeState::StartOut);
@@ -131,7 +138,7 @@ void GameSceneUIs::BossFadeUpdate()
 		// 時間が来たらステートを変える
 		if (bossFadeTime_ > data.recoverOutTime) {
 			bossFade_->FadeOut();
-			isDrawGameUIs_ = true;
+			isDrawControlUI_ = true;
 			ChangeFadeState(BossFadeState::End);
 		}
 		break;
@@ -145,23 +152,40 @@ void GameSceneUIs::BossFadeUpdate()
 
 void GameSceneUIs::Draw()
 {
-	if (isDrawGameUIs_) {
+	if (isDrawControlUI_) {
 		controlUI_->Draw();
-
+		if (!isDrawGameUIs_) {
+			bossHpBar_->Draw();
+			bossHpFrame_->Draw();
+		}
+	}
+	if (isDrawGameUIs_) {
 		killCountUI_->Draw();
 		maxKillCountUI_->Draw();
 		catUI_->Draw();
 	}
+}
 
-	selectSystem_->Draw();
-
+void GameSceneUIs::FadeUiDraw()
+{
 	bossFade_->Draw();
 	sceneFade_->Draw();
 }
 
-void GameSceneUIs::SelectUIFadeIn()
+void GameSceneUIs::GameSceneUIFadeIn()
 {
-	selectSystem_->SelectUIFadeIn();
+	sceneFade_->FadeIn();
+}
+
+void GameSceneUIs::GameSceneUIFadeOut()
+{
+	sceneFade_->FadeOut();
+}
+
+void GameSceneUIs::BossFadeReset()
+{
+	bossFadeState_ = BossFadeState::StartIn;
+	bossFadeTime_ = -1.0f;
 }
 
 void GameSceneUIs::ChangeFadeState(BossFadeState changeState)

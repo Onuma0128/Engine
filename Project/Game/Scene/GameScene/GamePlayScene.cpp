@@ -66,7 +66,18 @@ void GamePlayScene::Initialize()
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();
 	gameSceneUis_->SetPlayer(player_.get());
 	gameSceneUis_->SetSpawner(enemySpawnerFactory_.get());
+	gameSceneUis_->SetBossEnemy(bossEnemy_.get());
 	gameSceneUis_->Init();
+
+	// セレクトシーンの初期化
+	selectSystem_ = std::make_unique<SelectSystem>();
+	selectSystem_->SetGameSceneUis(gameSceneUis_.get());
+	selectSystem_->SetPlayer(player_.get());
+	selectSystem_->SetSpawner(enemySpawnerFactory_.get());
+	selectSystem_->SetBossEnemy(bossEnemy_.get());
+	selectSystem_->SetCamera(gameCamera_.get());
+	selectSystem_->SetCompanionManager(companionManager_.get());
+	selectSystem_->Init();
 
 	// BGMを流す
 	const float kBGMVolume = 0.04f;
@@ -80,8 +91,9 @@ void GamePlayScene::Finalize()
 
 void GamePlayScene::Update()
 {
-	if (gameSceneUis_->GetIsSelectIn()) {
+	if (selectSystem_->GetIsSelectIn()) {
 		gameSceneUis_->Update();
+		selectSystem_->Update();
 		return;
 	}
 
@@ -110,17 +122,13 @@ void GamePlayScene::Update()
 	skyBox_->Update();
 
 	// ゲームシーン全体のUIの更新
-	gameSceneUis_->SetKillCount(enemySpawnerFactory_->GetKnockdownCount());
 	gameSceneUis_->Update();
+
+	// セレクトシーンの更新
+	selectSystem_->Update();
 
 	// パーティクルの更新
 	ParticleManager::GetInstance()->Update();
-
-	// プレイヤーが死んだかクリアをしたらセレクトUIを表示する
-	if ((!player_->GetIsAlive() || bossEnemy_->GetBossState() == BossState::Dead) && !isSelect_) {
-		isSelect_ = true;
-		gameSceneUis_->SelectUIFadeIn();
-	}
 }
 
 void GamePlayScene::Draw()
@@ -136,4 +144,8 @@ void GamePlayScene::Draw()
 	player_->Draw();
 
 	gameSceneUis_->Draw();
+
+	selectSystem_->Draw();
+
+	gameSceneUis_->FadeUiDraw();
 }

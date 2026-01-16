@@ -27,7 +27,7 @@ void BossEnemy::Initialize()
 	Animation::PlayByName("Idle", 0.0f);
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetMaterial().outlineMask = false;
-	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
+	Animation::GetMaterial().outlineColor = Vector3::ExprUnitX;
 	Animation::SetTransformTranslation(items_->GetMainData().startPosition);
 
 	// コライダーを設定
@@ -129,10 +129,11 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 		}
 		// ダメージ処理
 		--currentHp_;
-		float color = static_cast<float>(currentHp_) / static_cast<float>(maxHp_);
-		Vector3 outlineColor = { 1.0f - color,color,0.0f };
-		Animation::GetMaterial().outlineColor = outlineColor;
-		effect_->OnceHitExplosionEffect();
+		if (isSearchDashCompanion) {
+			effect_->OnceHitExplosionBlueEffect();
+		} else {
+			effect_->OnceHitExplosionEffect();
+		}
 		// 今のHPが0になったら死亡ステートになる
 		if (currentHp_ <= 0) {
 			ChangeState(std::make_unique<BossDeadState>(this));
@@ -184,10 +185,34 @@ void BossEnemy::ResetSearch(const Vector3& goalPosition)
 
 void BossEnemy::StartBossEnemy()
 {
+	Animation::PlayByName("Idle", 0.0f);
 	Animation::GetMaterial().enableDraw = true;
 	Animation::GetMaterial().outlineMask = true;
 	Collider::isActive_ = true;
 	ray_->SetActive(true);
 	ChangeState(std::make_unique<BossAppearState>(this));
+
+	// HPの初期化
+	maxHp_ = items_->GetMainData().maxHP;
+	currentHp_ = maxHp_;
+
+	// スコアの初期化
+	stateEvaluator_->ScoreReset();
 }
 
+void BossEnemy::Reset()
+{
+	// アニメーションを設定
+	Animation::PlayByName("Idle", 0.0f);
+	Animation::GetMaterial().enableDraw = false;
+	Animation::GetMaterial().outlineMask = false;
+	Animation::SetTransformTranslation(items_->GetMainData().startPosition);
+	Animation::TransformUpdate();
+
+	// コライダーを設定
+	Collider::isActive_ = false;
+	Collider::Update();
+
+	// ステートの初期化
+	ChangeState(std::make_unique<BossIdleState>(this));
+}

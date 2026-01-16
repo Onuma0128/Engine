@@ -76,8 +76,9 @@ private:
 	// ゲームの操作UI
 	std::unique_ptr<GameSceneUIs> gameSceneUis_ = nullptr;
 
-	std::unique_ptr<Audio> bgm_;
+	// セレクト
+	std::unique_ptr<SelectSystem> selectSystem_ = nullptr;
 
-	bool isSelect_ = false;
+	std::unique_ptr<Audio> bgm_;
 };
 

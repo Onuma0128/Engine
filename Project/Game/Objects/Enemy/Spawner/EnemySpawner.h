@@ -36,6 +36,11 @@ public:
 	/// <param name="enemy"></スポーンさせる敵を入れる>
 	void EnemySpawn(BaseEnemy* enemy);
 
+	/// <summary>
+	/// スポナーのデータをリセットする
+	/// </summary>
+	void Reset();
+
 	/* ============================== アクセッサ ============================== */
 
 	/// <summary>

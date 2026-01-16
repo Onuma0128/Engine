@@ -57,6 +57,11 @@ public:
 	/// </summary>
 	void StartBossEnemy();
 
+	/// <summary>
+	/// ボスをリセットする
+	/// </summary>
+	void Reset();
+
 private:
 
 	/// <summary>

@@ -24,6 +24,9 @@ void MuscleCompanionManager::Initialize()
 		companion->SetTransformTranslation(Vector3::ExprUnitZ * static_cast<float>(count));
 		count++;
 	}
+	arrowEffect_ = std::make_unique<NextArrowEffect>();
+	arrowEffect_->SetItems(items_.get());
+	arrowEffect_->Init();
 }
 
 void MuscleCompanionManager::Update()
@@ -42,11 +45,15 @@ void MuscleCompanionManager::Update()
 	for (auto& companion : companions_) {
 		companion->Update();
 	}
+
+	// エフェクトの更新
+	UpdateEffect();
 }
 
 void MuscleCompanionManager::Draw()
 {
-
+	// エフェクトの描画
+	arrowEffect_->Draw();
 }
 
 void MuscleCompanionManager::GatherCompanions()
@@ -113,4 +120,29 @@ bool MuscleCompanionManager::IsShotCompanion()
 		}
 	}
 	return isShot;
+}
+
+void MuscleCompanionManager::UpdateEffect()
+{
+	// エフェクト用の座標を取得する
+	Vector3 position = {};
+	arrowEffect_->SetDraw(false);
+	for (auto& companion : companions_) {
+		if (companion->GetGatherRequested() && companion->GetState() != CharacterState::Dead) {
+			position = companion->GetTransform().translation_;
+			arrowEffect_->SetDraw(true);
+			break;
+		}
+	}
+	arrowEffect_->Update(position);
+}
+
+void MuscleCompanionManager::Reset()
+{
+	uint32_t count = 0;
+	for (auto& companion : companions_) {
+		companion->Reset();
+		companion->SetTransformTranslation(Vector3::ExprUnitZ * static_cast<float>(count));
+		count++;
+	}
 }

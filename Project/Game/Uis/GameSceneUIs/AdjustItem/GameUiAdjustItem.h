@@ -14,6 +14,8 @@ struct GameUiData {
 	Vector2 maxKillNumberUiSize;		// キル数のサイズ
 	Vector2 maxKillNumberUiPos;			// キル数の座標
 
+	Vector2 bossHpBarPos;				// ボスのHPバーの座標
+
 	float startInTime;					// カメラ切り替え前のフェードイン
 	float startOutTime;					// カメラ切り替え後のフェードアウト
 	float activeTime;					// ボス登場演出中

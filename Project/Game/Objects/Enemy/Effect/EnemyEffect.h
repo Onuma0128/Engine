@@ -59,6 +59,7 @@ public:
 	/// </summary>
 	/// <param name="transform"></敵のTransformを入れる>
 	void OnceBulletHitExplosionEffect(const WorldTransform& transform);
+	void OnceBulletHitExplosionBlueEffect(const WorldTransform& transform);
 
 	/// <summary>
 	/// 近接敵攻撃時のエフェクトをセットする
@@ -123,8 +124,10 @@ private:
 	std::shared_ptr<ParticleEmitter> hitEmitter_;
 	// 仲間がヒットした時のエフェクト(爆発)
 	std::shared_ptr<ParticleEmitter> hitExplosionEmitter_;
+	std::shared_ptr<ParticleEmitter> hitExplosionBlueEmitter_;
 	// 仲間がヒットした時のエフェクト(爆発)
 	std::shared_ptr<ParticleEmitter> hitRingEmitter_;
+	std::shared_ptr<ParticleEmitter> hitRingBlueEmitter_;
 
 	/* ==================== 敵が死亡時のエフェクト ==================== */
 

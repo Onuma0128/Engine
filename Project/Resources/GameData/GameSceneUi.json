@@ -22,5 +22,9 @@
     "startOutTime": 1.0,
     "activeTime": 2.0,
     "recoverInTime": 1.0,
-    "recoverOutTime": 1.0
+    "recoverOutTime": 1.0,
+    "bossHpBarPos": {
+        "x": 128.0,
+        "y": 0.0
+    }
 }

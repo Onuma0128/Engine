@@ -1,0 +1,23 @@
+{
+    "nextArrowAnimaTime": 0.75,
+    "nextArrowScale": {
+        "x": 0.6000000238418579,
+        "y": 0.6000000238418579,
+        "z": 1.0
+    },
+    "nextArrowPosition": {
+        "x": 0.0,
+        "y": 3.0,
+        "z": 0.0
+    },
+    "nextArrowVarianceScale": {
+        "x": 0.10000000149011612,
+        "y": 0.10000000149011612,
+        "z": 1.0
+    },
+    "nextArrowVariancePosition": {
+        "x": 0.0,
+        "y": 0.3499999940395355,
+        "z": 0.0
+    }
+}

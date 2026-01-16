@@ -39,6 +39,11 @@ public:
 	void SetShake(float shakeStrength) { shakeStrength_ = shakeStrength; }
 
 	/// <summary>
+	/// ボスのカメラをリセットする
+	/// </summary>
+	void BossCameraReset();
+
+	/// <summary>
 	/// アクセッサ
 	/// </summary>
 	/// <param name="player"></param>

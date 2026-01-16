@@ -70,6 +70,9 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "muscleTexture.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "needMoreMacho.png");
 
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture/game", "bossHpBar.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture/game", "bossHpFrame.png");
+
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/player", "2dReticle.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/player", "bulletUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/player", "playerControlUI.png");
@@ -83,6 +86,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "countUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "ratioUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "catUI.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "rematchUI.png");
 
 	// ============================== Model ============================== //
 

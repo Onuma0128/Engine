@@ -47,6 +47,11 @@ public:
 	/// <param name="newState"></新しいステートを入れる>
 	void ChangeState(std::unique_ptr<PlayerBaseState> newState);
 
+	/// <summary>
+	/// プレイヤーのデータをリセットする
+	/// </summary>
+	void Reset();
+
 private:
 
 	/// <summary>
@@ -89,6 +94,7 @@ private:
 	std::unique_ptr<PlayerReticle> reticle_ = nullptr;
 	// 調整項目
 	std::unique_ptr<PlayerAdjustItem> items_;
+	WorldTransform startTransform_{};
 	// ローダーのポインタ
 	SceneJsonLoader* loader_ = nullptr;
 

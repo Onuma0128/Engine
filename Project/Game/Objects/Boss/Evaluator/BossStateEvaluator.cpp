@@ -28,17 +28,8 @@ void BossStateEvaluator::Update()
 
 	// タイムが超えたら
 	if (timer_ > data.scoreAccumulationTime) {
-		// プレイヤーとの距離を計算
-		float distance = Vector3::Distance(
-			boss_->GetTransform().translation_, boss_->GetPlayer()->GetTransform().translation_);
-		// プレイヤーとの距離でスコアを加算する
-		DistanceScore(data, BossState::EnemySpawn, distance);
-		DistanceScore(data, BossState::JumpAttack, distance);
-		DistanceScore(data, BossState::DashAttack, distance);
-		// プレイヤーを見たかでスコアを加算する
-		LookingScore(data);
-		// ボスのHPに応じてスコアを加算する
-		BossHpScore(data);
+		// スコア更新をする
+		UpdateScore();
 		// リセット
 		timer_ = 0.0f;
 
@@ -53,6 +44,23 @@ void BossStateEvaluator::Update()
 	ScoreChangeToState();
 }
 
+void BossStateEvaluator::UpdateScore()
+{
+	// データを取得する
+	const auto& data = boss_->GetItems()->GetStateScoreData();
+	// プレイヤーとの距離を計算
+	float distance = Vector3::Distance(
+		boss_->GetTransform().translation_, boss_->GetPlayer()->GetTransform().translation_);
+	// プレイヤーとの距離でスコアを加算する
+	DistanceScore(data, BossState::EnemySpawn, distance);
+	DistanceScore(data, BossState::JumpAttack, distance);
+	DistanceScore(data, BossState::DashAttack, distance);
+	// プレイヤーを見たかでスコアを加算する
+	LookingScore(data);
+	// ボスのHPに応じてスコアを加算する
+	BossHpScore(data);
+}
+
 void BossStateEvaluator::DrawImGui() 
 {
 	ImGui::Begin("BossScore");
@@ -62,6 +70,18 @@ void BossStateEvaluator::DrawImGui()
 	ImGui::Text("\n");
 	ImGui::Text("JumpAttackScore : %u", static_cast<int>(jumpAttackScore_));
 	ImGui::End();
+}
+
+void BossStateEvaluator::ScoreReset()
+{
+	newBossStates_.clear();
+	timer_ = 0.0f;
+	isLook_ = false;
+
+	// ステートごとのスコアをリセットする
+	jumpAttackScore_ = 0;
+	dashAttackScore_ = 0;
+	spawnScore_ = 0;
 }
 
 void BossStateEvaluator::BossHpScore(const BossStateScoreData& data)
@@ -134,17 +154,29 @@ void BossStateEvaluator::LookingScore(const BossStateScoreData& data)
 
 void BossStateEvaluator::ScoreChangeToState()
 {
+	// データを取得し、ボスのHpを見る
+	const auto& mainData = boss_->GetItems()->GetMainData();
+	uint32_t maxHp = mainData.maxHP;
+	uint32_t currentHp = boss_->GetCurrentHp();
+	bool bossHpHalf = (maxHp / 2) >= currentHp;
+
 	if (spawnScore_ >= 100) {
-		spawnScore_ = 0;
 		newBossStates_.push_back(BossState::EnemySpawn);
+		spawnScore_ = 0;
 	} 
 	if (jumpAttackScore_ >= 100) {
-		jumpAttackScore_ = 0;
 		newBossStates_.push_back(BossState::JumpAttack);
+		if (bossHpHalf && jumpAttackScore_ >= 110) {
+			newBossStates_.push_back(BossState::JumpAttack);
+		}
+		jumpAttackScore_ = 0;
 	} 
 	if (dashAttackScore_ >= 100) {
-		dashAttackScore_ = 0;
 		newBossStates_.push_back(BossState::DashAttack);
+		if (bossHpHalf && dashAttackScore_ >= 110) {
+			newBossStates_.push_back(BossState::DashAttack);
+		}
+		dashAttackScore_ = 0;
 	}
 
 	if (!newBossStates_.empty()) {

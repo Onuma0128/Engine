@@ -78,7 +78,9 @@ void BossMeleeState::Update()
 	case MeleeAttackState::LandingRecover:
 
 		boss_->GetAttackCollider()->SetActive(false);
+		// 近接攻撃の終わりにスコア計算をしてステートを変化させる
 		if (timer_ >= data.attackRecoveryTime) {
+			boss_->GetStateEvaluator()->UpdateScore();
 			ChangeAttackState(MeleeAttackState::Finish);
 		}
 		break;

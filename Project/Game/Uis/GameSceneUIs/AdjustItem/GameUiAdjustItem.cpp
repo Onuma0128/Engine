@@ -16,6 +16,8 @@ void GameUiAdjustItem::LoadItems()
 		json_.Set("maxKillNumberUiSize", Vector2{});
 		json_.Set("maxKillNumberUiPos", Vector2{});
 
+		json_.Set("bossHpBarPos", Vector2{});
+
 		json_.Set("startInTime", 0.0f);
 		json_.Set("startOutTime", 0.0f);
 		json_.Set("activeTime", 0.0f);
@@ -32,6 +34,8 @@ void GameUiAdjustItem::LoadItems()
 		data_.maxKillNumberUiInterval = json_.Get("maxKillNumberUiInterval", data_.maxKillNumberUiInterval);
 		data_.maxKillNumberUiSize = json_.Get("maxKillNumberUiSize", data_.maxKillNumberUiSize);
 		data_.maxKillNumberUiPos = json_.Get("maxKillNumberUiPos", data_.maxKillNumberUiPos);
+
+		data_.bossHpBarPos = json_.Get("bossHpBarPos", data_.bossHpBarPos);
 
 		data_.startInTime = json_.Get("startInTime", data_.startInTime);
 		data_.startOutTime = json_.Get("startOutTime", data_.startOutTime);
@@ -57,6 +61,8 @@ void GameUiAdjustItem::Editor()
 		ImGui::DragFloat("maxKillNumberUiInterval", &data_.maxKillNumberUiInterval);
 		ImGui::DragFloat2("maxKillNumberUiSize", &data_.maxKillNumberUiSize.x);
 		ImGui::DragFloat2("maxKillNumberUiPos", &data_.maxKillNumberUiPos.x);
+
+		ImGui::DragFloat2("bossHpBarPos", &data_.bossHpBarPos.x);
 
 		ImGui::DragFloat("startInTime", &data_.startInTime);
 		ImGui::DragFloat("startOutTime", &data_.startOutTime);
@@ -84,6 +90,8 @@ void GameUiAdjustItem::Save()
 	json_.Set("maxKillNumberUiInterval", data_.maxKillNumberUiInterval);
 	json_.Set("maxKillNumberUiSize", data_.maxKillNumberUiSize);
 	json_.Set("maxKillNumberUiPos", data_.maxKillNumberUiPos);
+
+	json_.Set("bossHpBarPos", data_.bossHpBarPos);
 
 	json_.Set("startInTime", data_.startInTime);
 	json_.Set("startOutTime", data_.startOutTime);

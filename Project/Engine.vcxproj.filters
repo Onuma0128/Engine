@@ -1071,10 +1071,10 @@
     <ClInclude Include="Game\Objects\Player\Bullet\PlayerShot.h">
       <Filter>Game\Objects\Player\Bullet</Filter>
     </ClInclude>
-    <ClCompile Include="Game\Objects\Player\Bullet\PredictionObject.cpp">
+    <ClCompile Include="Game\Objects\MuscleCompanion\PredictionObject\PredictionObjects.cpp">
       <Filter>Game\Objects\Player\Bullet</Filter>
     </ClCompile>
-    <ClInclude Include="Game\Objects\Player\Bullet\PredictionObject.h">
+    <ClInclude Include="Game\Objects\MuscleCompanion\PredictionObject\PredictionObjects.h">
       <Filter>Game\Objects\Player\Bullet</Filter>
     </ClInclude>
     <ClCompile Include="Game\Objects\Player\Effect\PlayerBulletEffect.cpp">
@@ -1314,6 +1314,10 @@
     <ClCompile Include="Game\Objects\Boss\Effect\BossEffect.cpp" />
     <ClCompile Include="Game\GameCamera\AdjustItem\CameraAdjustItem.cpp" />
     <ClCompile Include="Game\Objects\Boss\State\BossAppearState.cpp" />
+    <ClCompile Include="Game\Objects\Enemy\State\EnemyKnockbackState.cpp" />
+    <ClCompile Include="Game\Uis\Boss\BossHpUI.cpp" />
+    <ClCompile Include="Game\Objects\Player\Bullet\PredictionObject.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1348,5 +1352,9 @@
     <ClInclude Include="Game\Objects\Boss\Effect\BossEffect.h" />
     <ClInclude Include="Game\GameCamera\AdjustItem\CameraAdjustItem.h" />
     <ClInclude Include="Game\Objects\Boss\State\BossAppearState.h" />
+    <ClInclude Include="Game\Objects\Enemy\State\EnemyKnockbackState.h" />
+    <ClInclude Include="Game\Uis\Boss\BossHpUI.h" />
+    <ClInclude Include="Game\Objects\Player\Bullet\PredictionObject.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.h" />
   </ItemGroup>
 </Project>

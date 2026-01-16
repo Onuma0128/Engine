@@ -28,6 +28,7 @@ void Player::Initialize()
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
 	Animation::SetTransform(player.transform);
+	startTransform_ = player.transform;
 
 	if (player.collider.active) {
 		Collider::AddCollider();
@@ -142,4 +143,20 @@ void Player::OnCollisionExit(Collider* other)
 	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		isPushMove_ = false;
 	}
+}
+
+void Player::Reset()
+{
+	// プレイヤーのリセットをする
+	Animation::GetTimeStop() = false;
+	Animation::PlayByName("Idle_Gun", 0.0f);
+	Animation::SetTransform(startTransform_);
+	ChangeState(std::make_unique<PlayerMoveState>(this));
+	
+	// 初期化する
+	isAlive_ = true;
+	isAvoid_ = false;
+	avoidCoolTimer_ = 0.0f;
+	isPushMove_ = false;
+	isPlayingMouse_ = false;
 }

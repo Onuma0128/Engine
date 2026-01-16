@@ -18,6 +18,7 @@ void CompanionAdjustItem::LoadItems()
 
 		mainJson_.Set("blinkingHP", 0);
 		mainJson_.Set("blinkingColor", 0.0f);
+		mainJson_.Set("blinkingTimeScale", 0.0f);
 		mainJson_.Set("distanceToAlly", 0.0f);
 		mainJson_.Set("followerColliderSize", 0.0f);
 		mainJson_.Set("debugSpline", false);
@@ -31,6 +32,8 @@ void CompanionAdjustItem::LoadItems()
 
 		mainData_.blinkingHP = mainJson_.Get("blinkingHP", mainData_.blinkingHP);
 		mainData_.blinkingColor = mainJson_.Get("blinkingColor", mainData_.blinkingColor);
+		mainData_.blinkingTimeScale = mainJson_.Get("blinkingTimeScale", mainData_.blinkingTimeScale);
+
 		mainData_.searchUpdateTime = mainJson_.Get("searchUpdateTime", mainData_.searchUpdateTime);
 		mainData_.searchCancelDistance = mainJson_.Get("searchCancelDistance", mainData_.searchCancelDistance);
 		mainData_.distanceToAlly = mainJson_.Get("distanceToAlly", mainData_.distanceToAlly);
@@ -83,6 +86,22 @@ void CompanionAdjustItem::LoadItems()
 		knockbackData_.knockbackTime = knockbackJson_.Get("knockbackTime", knockbackData_.knockbackTime);
 	}
 
+	/* ============================== Effect ============================== */
+	effectJson_.Init("CompanionEffect");
+	if (!effectJson_.Load()) {
+		effectJson_.Set("nextArrowAnimaTime", 0.0f);
+		effectJson_.Set("nextArrowScale", 1.0f);
+		effectJson_.Set("nextArrowPosition", 1.0f);
+		effectJson_.Set("nextArrowVarianceScale", 1.0f);
+		effectJson_.Set("nextArrowVariancePosition", 1.0f);
+	} else {
+		effectData_.nextArrowAnimaTime = effectJson_.Get("nextArrowAnimaTime", effectData_.nextArrowAnimaTime);
+		effectData_.nextArrowScale = effectJson_.Get("nextArrowScale", effectData_.nextArrowScale);
+		effectData_.nextArrowPosition = effectJson_.Get("nextArrowPosition", effectData_.nextArrowPosition);
+		effectData_.nextArrowVarianceScale = effectJson_.Get("nextArrowVarianceScale", effectData_.nextArrowVarianceScale);
+		effectData_.nextArrowVariancePosition = effectJson_.Get("nextArrowVariancePosition", effectData_.nextArrowVariancePosition);
+	}
+
 	/* ============================== SeVolume ============================== */
 	seVolumeJson_.Init("CompanionSeVolume");
 	if (!seVolumeJson_.Load()) {
@@ -120,6 +139,8 @@ void CompanionAdjustItem::Editor()
 
 			ImGui::DragInt("blinkingHP", &mainData_.blinkingHP, 1, 1, 1000);
 			ImGui::DragFloat("blinkingColor", &mainData_.blinkingColor, 0.01f, 0.0f, 10.0f);
+			ImGui::DragFloat("blinkingTimeScale", &mainData_.blinkingTimeScale, 0.01f, 0.0f, 10.0f);
+
 			ImGui::DragFloat("distanceToAlly", &mainData_.distanceToAlly, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("followerColliderSize", &mainData_.followerColliderSize, 0.01f, 0.0f, 10.0f);
 			ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f, 0.0f, 100.0f);
@@ -135,6 +156,7 @@ void CompanionAdjustItem::Editor()
 				mainJson_.Set("colliderOffset", mainData_.colliderOffset);
 				mainJson_.Set("blinkingHP", mainData_.blinkingHP);
 				mainJson_.Set("blinkingColor", mainData_.blinkingColor);
+				mainJson_.Set("blinkingTimeScale", mainData_.blinkingTimeScale);
 				mainJson_.Set("distanceToAlly", mainData_.distanceToAlly);
 				mainJson_.Set("followerColliderSize", mainData_.followerColliderSize);
 				mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
@@ -197,6 +219,26 @@ void CompanionAdjustItem::Editor()
 			}
 			ImGui::TreePop();
 		}
+		ImGui::Separator();
+		// エフェクトの項目
+		if (ImGui::TreeNode("Effect")) {
+			ImGui::DragFloat("nextArrowAnimaTime", &effectData_.nextArrowAnimaTime, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat3("nextArrowScale", &effectData_.nextArrowScale.x, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat3("nextArrowPosition", &effectData_.nextArrowPosition.x, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat3("nextArrowVarianceScale", &effectData_.nextArrowVarianceScale.x, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat3("nextArrowVariancePosition", &effectData_.nextArrowVariancePosition.x, 0.01f, 0.1f, 10.0f);
+			// セーブボタン
+			if (ImGui::Button("Save")) {
+				effectJson_.Set("nextArrowAnimaTime", effectData_.nextArrowAnimaTime);
+				effectJson_.Set("nextArrowScale", effectData_.nextArrowScale);
+				effectJson_.Set("nextArrowPosition", effectData_.nextArrowPosition);
+				effectJson_.Set("nextArrowVarianceScale", effectData_.nextArrowVarianceScale);
+				effectJson_.Set("nextArrowVariancePosition", effectData_.nextArrowVariancePosition);
+				effectJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+
 		ImGui::Separator();
 		// 効果音の項目
 		if (ImGui::TreeNode("SeVolume")) {

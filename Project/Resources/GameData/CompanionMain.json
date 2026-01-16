@@ -14,7 +14,8 @@
     "dashColliderScale": 2.0,
     "distanceToAlly": 2.5,
     "followerColliderSize": 0.75,
-    "objectScale": 1.2999999523162842,
+    "objectScale": 1.100000023841858,
     "blinkingHP": 5,
-    "blinkingColor": 0.699999988079071
+    "blinkingColor": 0.30000001192092896,
+    "blinkingTimeScale": 2.0
 }

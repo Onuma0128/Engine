@@ -9,10 +9,12 @@
 #include "Uis/Select/SelectSystem.h"
 #include "Uis/Player/NumberCountUI.h"
 #include "Uis/GameSceneUIs/AdjustItem/GameUiAdjustItem.h"
+#include "Uis/Boss/BossHpUI.h"
 
 // 前方宣言
 class Player;
 class EnemySpawnerFactory;
+class BossEnemy;
 
 /// <summary>
 /// ゲームシーンのUIを管理するクラス
@@ -36,32 +38,20 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
+	void FadeUiDraw();
 
 	/// <summary>
-	/// セレクトUIのフェードイン
+	/// ゲームシーンのUIをフェードインアウト
 	/// </summary>
-	void SelectUIFadeIn();
-
-	/// <summary>
-	/// セレクトが出ているか判定
-	/// </summary>
-	/// <returns></returns>
-	bool GetIsSelectIn()const { return selectSystem_->GetIsSelectIn(); }
-	
-	/// <summary>
-	/// キル数を設定する
-	/// </summary>
-	/// <param name="num"></param>
-	void SetKillCount(int num) { 
-		knockdownCount_ = num;
-		selectSystem_->SetKillCount(num);
-	}
+	void GameSceneUIFadeIn();
+	void GameSceneUIFadeOut();
 
 	/// <summary>
 	/// ゲーム上のUIを描画するかセットする
 	/// </summary>
 	/// <param name="flag"></param>
 	void SetDrawGameUIs(bool flag) { isDrawGameUIs_ = flag; }
+	void BossFadeReset();
 
 	/// <summary>
 	/// アクセッサ
@@ -69,33 +59,34 @@ public:
 	/// <param name="player"></param>
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetSpawner(EnemySpawnerFactory* spawner) { spawner_ = spawner; }
+	void SetBossEnemy(BossEnemy* boss) { boss_ = boss; }
+
+	bool GetIsFadePlayAnimation()const { return sceneFade_->IsPlayAnimation(); }
 
 private:
 
 	// プレイヤーのポインタ
 	Player* player_ = nullptr;
-
 	// 敵スポナーファクトリー
 	EnemySpawnerFactory* spawner_ = nullptr;
+	// ボスのポインタ
+	BossEnemy* boss_ = nullptr;
 
 	// 調整項目
 	std::unique_ptr<GameUiAdjustItem> items_ = nullptr;
-
 	// 操作系のUI
 	std::unique_ptr<PlayerControlUI> controlUI_;
-
-	// セレクトUI
-	std::unique_ptr<SelectSystem> selectSystem_ = nullptr;
-
 	// フェード
 	std::unique_ptr<BaseUI> sceneFade_ = nullptr;
 	std::unique_ptr<BaseUI> bossFade_ = nullptr;
-
 	// 敵のキル数UI
 	std::unique_ptr<NumberCountUI> killCountUI_ = nullptr;
 	std::unique_ptr<NumberCountUI> maxKillCountUI_ = nullptr;
 	std::unique_ptr<BaseUI> catUI_ = nullptr;
 	uint32_t knockdownCount_ = 0;
+	// ボスのHPUI
+	std::unique_ptr<BaseUI> bossHpFrame_ = nullptr;
+	std::unique_ptr<BossHpBarUI> bossHpBar_ = nullptr;
 
 	// ボス登場シーンのフェードステート
 	enum class BossFadeState {
@@ -113,6 +104,7 @@ private:
 	float bossFadeTime_ = -1.0f;
 	// ゲーム内のUIを描画するか
 	bool isDrawGameUIs_ = true;
+	bool isDrawControlUI_ = true;
 
 };
 

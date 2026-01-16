@@ -35,6 +35,10 @@ void BossAppearState::Init()
 
 	// 開始Y座標を初期化
 	startY_ = 0.0f;
+
+	// アニメーションの初期化
+	boss_->GetTimeStop() = false;
+	boss_->SetAnimationTime(0.0f);
 }
 
 void BossAppearState::Finalize()

@@ -73,6 +73,7 @@ public:
 	/// ヒット時のエフェクトを呼び出す
 	/// </summary>
 	void OnceHitExplosionEffect();
+	void OnceHitExplosionBlueEffect();
 
 private:
 
@@ -129,8 +130,10 @@ private:
 
 	// 仲間がヒットした時のエフェクト(爆発)
 	std::shared_ptr<ParticleEmitter> hitExplosionEmitter_;
+	std::shared_ptr<ParticleEmitter> hitExplosionBlueEmitter_;
 	// 仲間がヒットした時のエフェクト(爆発)
 	std::shared_ptr<ParticleEmitter> hitRingEmitter_;
+	std::shared_ptr<ParticleEmitter> hitRingBlueEmitter_;
 
 };
 

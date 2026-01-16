@@ -1,16 +1,23 @@
 {
-    "Texture": "selectTitleUI.png",
+    "Texture": "rematchUI.png",
+    "NoiseTexture": "gradationTexture.png",
+    "EdgeWidth": 0.15000000596046448,
+    "NoiseColor": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+    },
     "AnchorPoint": {
         "x": 0.5,
         "y": 0.5
     },
     "Size": {
-        "x": 192.0,
-        "y": 48.0
+        "x": 205.0,
+        "y": 55.0
     },
     "Rotate": 0.0,
     "Position": {
-        "x": 432.0,
+        "x": 875.0,
         "y": 580.0
     },
     "Color": {
@@ -22,12 +29,12 @@
     "IsAnimation": true,
     "AnimationTime": 0.5,
     "Anima_Size": {
-        "x": 192.0,
-        "y": 48.0
+        "x": 205.0,
+        "y": 55.0
     },
     "Anima_Rotate": 0.0,
     "Anima_Position": {
-        "x": 432.0,
+        "x": 875.0,
         "y": 580.0
     },
     "Anima_Color": {
@@ -39,12 +46,5 @@
     "InEasingType": 0,
     "OutEasingType": 0,
     "FadeInInterval": 3.5,
-    "FadeOutInterval": 0.0,
-    "NoiseTexture": "gradationTexture.png",
-    "EdgeWidth": 0.15000000596046448,
-    "NoiseColor": {
-        "x": 1.0,
-        "y": 0.0,
-        "z": 0.0
-    }
+    "FadeOutInterval": 0.0
 }

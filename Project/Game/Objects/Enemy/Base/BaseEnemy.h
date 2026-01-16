@@ -190,8 +190,6 @@ protected:
 	Vector3 velocity_{};
 	// 当たったプレイヤーの弾の座標を保存
 	Vector3 playerBulletPosition_{};
-	// OutLineのColor
-	Vector3 outlineColor_;
 	// 当たってきたColliderを保存
 	Collider* hitCollider_ = nullptr;
 

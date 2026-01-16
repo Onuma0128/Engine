@@ -205,3 +205,10 @@ void GameCamera::BossUpdate(const Vector3& shakeOffset)
 		break;
 	}
 }
+
+void GameCamera::BossCameraReset()
+{
+	bossCameraTime_ = -1.0f;
+	bossCameraState_ = BossCameraState::Startup;
+	CameraManager::GetInstance()->SetActiveCamera(0);
+}

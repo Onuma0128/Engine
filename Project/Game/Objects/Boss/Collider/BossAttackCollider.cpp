@@ -9,7 +9,7 @@ void BossAttackCollider::Initialize()
 	Collider::myType_ = ColliderType::kSphere;
 	Collider::colliderName_ = "BossAttack";
 	Collider::isActive_ = false;
-	Collider::targetColliderName_ = { "Player","MuscleCompanion" };
+	Collider::targetColliderName_ = { "Player","MuscleCompanion","SearchDashMuscleCompanion", };
 	Collider::DrawCollider();
 }
 

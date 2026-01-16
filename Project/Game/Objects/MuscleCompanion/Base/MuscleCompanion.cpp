@@ -34,6 +34,7 @@ void MuscleCompanion::Initialize()
 		"MuscleCompanion","Enemy","BossEnemy" ,"EnemyRay","BossAttack",
 		"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
+		"SearchDashMuscleCompanion",
 	};
 	Collider::DrawCollider();
 
@@ -53,15 +54,8 @@ void MuscleCompanion::Initialize()
 	effect_->SetCompanion(this);
 	effect_->Init();
 
-	// ダッシュ時の一回目の攻撃フラグの初期化
-	isFirstDashAttack_ = true;
-	// 集合要求フラグの初期化
-	isGatherRequested_ = true;
-	// 元の場所に戻ったかのフラグの初期化
-	isReturnOriginal_ = true;
-	// HPの初期化
-	maxHp_ = items_->GetMainData().maxHP;
-	currentHp_ = maxHp_;
+	// 初期化
+	Reset();
 }
 
 void MuscleCompanion::Update()
@@ -147,8 +141,10 @@ void MuscleCompanion::OnCollisionStay(Collider* other)
 		return;
 	}
 
+	bool isCompanion = other->GetColliderName() == "MuscleCompanion" || other->GetColliderName() == "SearchDashMuscleCompanion";
+
 	// 仲間と当たっているなら
-	if (other->GetColliderName() == "MuscleCompanion") {
+	if (isCompanion) {
 		// プレイヤーとの距離を測る
 		const auto dist1 = Vector3::Distance(transform_.translation_, player_->GetTransform().translation_);
 		const auto dist2 = Vector3::Distance(other->GetCenterPosition(), player_->GetTransform().translation_);
@@ -176,7 +172,8 @@ void MuscleCompanion::BlinkingColor()
 	const auto& data = items_->GetMainData();
 	if (static_cast<uint32_t>(data.blinkingHP) > currentHp_ && currentHp_ > 0) {
 		float scale = static_cast<float>(data.blinkingHP) / static_cast<float>(currentHp_);
-		blinkingTime_ += DeltaTimer::GetDeltaTime() * scale;
+		float timeScale = data.blinkingTimeScale * scale;
+		blinkingTime_ += DeltaTimer::GetDeltaTime() * timeScale;
 		blinkingTime_ = std::clamp(blinkingTime_, 0.0f, std::numbers::pi_v<float>);
 		float color = std::sinf(blinkingTime_) + (data.blinkingColor / scale);
 		color = std::clamp(color, 0.0f, 1.0f);
@@ -209,4 +206,25 @@ bool MuscleCompanion::SearchDistance()
 	const float dist = Vector3::Distance(transform_.translation_, player_->GetTransform().translation_);
 	if (dist > items_->GetMainData().searchCancelDistance) { return true; }
 	return false;
+}
+
+void MuscleCompanion::Reset()
+{
+	// コライダーの初期化
+	Collider::colliderName_ = "MuscleCompanion";
+	Collider::isActive_ = true;
+	colliderScale_ = 1.0f;
+
+	// ダッシュ時の一回目の攻撃フラグの初期化
+	isFirstDashAttack_ = true;
+	// 集合要求フラグの初期化
+	isGatherRequested_ = true;
+	// 元の場所に戻ったかのフラグの初期化
+	isReturnOriginal_ = true;
+	// HPの初期化
+	maxHp_ = items_->GetMainData().maxHP;
+	currentHp_ = maxHp_;
+
+	// ステートの初期化
+	ChangeState(std::make_unique<CompanionMoveState>(this));
 }

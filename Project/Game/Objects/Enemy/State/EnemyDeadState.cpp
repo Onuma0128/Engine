@@ -36,6 +36,11 @@ void EnemyDeadState::Init()
 {
 	GlobalInit();
 
+	// アニメーションをセットする
+	enemy_->SetAnimationTime(0.0f);
+	enemy_->ForcePlayByName("Death");
+	enemy_->GetTimeStop() = true;
+
 	// 死亡するフレーム
 	deadTimer_ = maxDeadTimer_;
 	// 敵がノックバックする方向
@@ -48,6 +53,7 @@ void EnemyDeadState::Init()
 
 void EnemyDeadState::Finalize()
 {
+	enemy_->GetEffect()->SetDeadEffect(false);
 }
 
 void EnemyDeadState::Update()

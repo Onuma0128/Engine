@@ -13,6 +13,7 @@ struct CompanionMainData {
 
 	int blinkingHP;					// 点滅し始める体力
 	float blinkingColor;			// 点滅する振れ幅
+	float blinkingTimeScale;		// 点滅する時間倍率
 
 	float distanceToAlly;			// 仲間同士の距離
 	float followerColliderSize;		// 後続判定された仲間のコライダーサイズ
@@ -46,6 +47,15 @@ struct CompanionAttackData {
 struct CompanionKnockbackData {
 	float knockbackSpeed;			// ノックバックスピード
 	float knockbackTime;			// ノックバックしている時間
+};
+
+// 仲間のエフェクトの調整項目
+struct CompanionEffectData {
+	Vector3 nextArrowScale;				// 次発射される矢印のスケール
+	Vector3 nextArrowPosition;			// 次発射される矢印の座標
+	float nextArrowAnimaTime;			// 矢印のアニメーション時間
+	Vector3 nextArrowVarianceScale;		// 次発射される矢印の変動スケール
+	Vector3 nextArrowVariancePosition;	// 次発射される矢印の変動座標
 };
 
 // 仲間の効果音の音量
@@ -82,6 +92,7 @@ public:
 	const CompanionDashData& GetDashData() const { return dashData_; }
 	const CompanionAttackData& GetAttackData() const { return attackData_; }
 	const CompanionKnockbackData& GetKnockbackData() const { return knockbackData_; }
+	const CompanionEffectData& GetEffectData() const { return effectData_; }
 	const CompanionSeVolumeData& GetSeVolumeData() const { return seVolumeData_; }
 
 private:
@@ -91,7 +102,8 @@ private:
 	JsonFunction dashJson_;
 	JsonFunction attackJson_;
 	JsonFunction knockbackJson_;
-	JsonFunction seVolumeJson_;;
+	JsonFunction effectJson_;
+	JsonFunction seVolumeJson_;
 
 	// 仲間全体の項目
 	CompanionMainData mainData_;
@@ -101,6 +113,8 @@ private:
 	CompanionAttackData attackData_;
 	// 仲間のノックバックの項目
 	CompanionKnockbackData knockbackData_;
+	// 仲間のエフェクトの項目
+	CompanionEffectData effectData_;
 	// 仲間の効果音の項目
 	CompanionSeVolumeData seVolumeData_;
 

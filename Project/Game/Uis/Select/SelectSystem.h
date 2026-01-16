@@ -10,6 +10,14 @@
 #include "SelectUI.h"
 #include "AdjustItem/SelectAdjustItem.h"
 
+// 前方宣言
+class GameSceneUIs;
+class Player;
+class EnemySpawnerFactory;
+class BossEnemy;
+class GameCamera;
+class MuscleCompanionManager;
+
 /// <summary>
 /// セレクトUIの表時や更新を管理するクラス
 /// </summary>
@@ -44,16 +52,25 @@ public:
 	bool GetIsSelectIn()const { return updateSelectUI_; }
 
 	/// <summary>
-	/// キル数を設定する
-	/// </summary>
-	/// <param name="num"></param>
-	void SetKillCount(int num) { killCount_ = num; }
-
-	/// <summary>
 	/// シーンフェードを設定する
 	/// </summary>
 	/// <param name="sceneFade"></param>
-	void SetSceneFade(BaseUI* sceneFade) { sceneFade_ = sceneFade; }
+	void SetGameSceneUis(GameSceneUIs* gameSceneUis) { gameSceneUis_ = gameSceneUis; }
+
+	/// <summary>
+	/// セレクトをリセットする
+	/// </summary>
+	void Reset();
+
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
+	/// <param name="player"></param>
+	void SetPlayer(Player* player) { player_ = player; }
+	void SetSpawner(EnemySpawnerFactory* spawner) { spawner_ = spawner; }
+	void SetBossEnemy(BossEnemy* boss) { boss_ = boss; }
+	void SetCamera(GameCamera* camera) { camera_ = camera; }
+	void SetCompanionManager(MuscleCompanionManager* manager) { companionManager_ = manager; }
 
 private:
 
@@ -74,38 +91,44 @@ private:
 
 private:
 
+	// プレイヤーのポインタ
+	Player* player_ = nullptr;
+	// 敵スポナーファクトリー
+	EnemySpawnerFactory* spawner_ = nullptr;
+	// ボス敵のポインタ
+	BossEnemy* boss_ = nullptr;
+	// 仲間の管理ポインタ
+	MuscleCompanionManager* companionManager_ = nullptr;
+	// ゲームカメラのポインタ
+	GameCamera* camera_ = nullptr;
+	// ゲームシーンのUIポインタ
+	GameSceneUIs* gameSceneUis_ = nullptr;
+
+	// 調整項目
+	std::unique_ptr<SelectAdjustItem> items_ = nullptr;
 	// セレクトの背景画像
 	// キルと命中率のUI
 	// タイトルともう一度のUI
-	std::array<std::unique_ptr<SelectUI>, 6> selectUIs_;
-
-	// タイトルかもう一度かどちらを選んでいるかのIndex
-	uint32_t targetIndex_ = 0u;
-
+	static const size_t kSelectUiSize_ = 7;
+	std::array<std::unique_ptr<SelectUI>, kSelectUiSize_> selectUIs_;
 	// 倒した数を表示する
 	std::unique_ptr<NumberCountUI> killCountUI_ = nullptr;
 
-	// シーンフェード
-	BaseUI* sceneFade_ = nullptr;
+	// タイトルかもう一度かどちらを選んでいるかのIndex
+	uint32_t targetIndex_ = 0u;
+	float targetTime_ = 0.0f;
+	// セレクトに移行したか
 	bool isSceneFadeIn_ = false;
-
 	// 位ごとに描画する
 	CountUiOrder countUiOrder_ = CountUiOrder::First;
 	float selectUiInterval_ = 0.0f;
 	float clearCountUiTimer_ = 0.0f;
-
 	// 描画するか決める
 	bool isFadeIn_ = false;
 	bool updateSelectUI_ = false;
 
-	// セッターで受け取るキル数
-	int killCount_ = 0;
-
 	// ランダムデバイス
 	std::random_device seedGenerator_;
-
-	// 調整項目
-	std::unique_ptr<SelectAdjustItem> items_ = nullptr;
 
 };
 

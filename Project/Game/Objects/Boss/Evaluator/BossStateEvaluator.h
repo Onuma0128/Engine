@@ -25,10 +25,25 @@ public:
 	/// </summary>
 	void Update();
 
-	// セッター
+	/// <summary>
+	/// スコアを更新する
+	/// </summary>
+	void UpdateScore();
+
+	/// <summary>
+	/// アクセッサ
+	/// </summary>
 	void SetBossEnemy(BossEnemy* boss) { boss_ = boss; }
 
+	/// <summary>
+	/// ボスのデバッグスコア描画
+	/// </summary>
 	void DrawImGui();
+	
+	/// <summary>
+	/// スコアをリセットする
+	/// </summary>
+	void ScoreReset();
 
 private:
 

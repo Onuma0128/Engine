@@ -8,6 +8,7 @@
 #include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
 
 #include "Objects/Enemy/state/EnemyMoveState.h"
+#include "Objects/Enemy/state/EnemyKnockbackState.h"
 #include "Objects/Enemy/state/EnemyDeadState.h"
 #include "Objects/Enemy/state/EnemyHitJumpState.h"
 #include "Objects/Enemy/state/Melee/EnemyMelee_AttackState.h"
@@ -50,10 +51,9 @@ void BaseEnemy::Initialize()
 	Animation::SetSceneRenderer();
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
+	Animation::GetMaterial().outlineColor = Vector3::ExprUnitX;
 	Animation::GetMaterial().shadowMap = false;
 	Animation::GetTimeStop() = true;
-	outlineColor_ = Vector3::ExprZero;
 }
 
 void BaseEnemy::Update()
@@ -69,31 +69,12 @@ void BaseEnemy::Update()
 	// エフェクトの更新
 	effect_->Update();
 
-	// 必殺技が打たれている時の敵の描画を変更
-	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::kShrinking) {
-		if (stateParam_.isAlive_) {
-			Collider::isActive_ = true;
-			stateParam_.hitReticle_ = false;
-		}
-	}
-	if (player_->GetEffect()->GetSpecialState() == SpecialMoveState::kHolding && stateParam_.isAlive_) {
-		if (!stateParam_.hitReticle_) {
-			outlineColor_ = Vector3::Lerp(outlineColor_, Vector3::ExprUnitX, 0.1f);
-		} else {
-			Vector3 color = Vector3::ExprUnitX + Vector3::ExprUnitY;
-			outlineColor_ = Vector3::Lerp(outlineColor_, color, 0.1f);
-		}
-	} else {
-		outlineColor_ = Vector3::Lerp(outlineColor_, Vector3::ExprZero, 0.1f);
-	}
-
 	// 敵コライダーの更新
 	Collider::radius_ = items_->GetMainData().colliderSize;
 	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
 	Collider::Update();
 
 	// アニメーションの更新
-	Animation::GetMaterial().outlineColor = outlineColor_;
 	Animation::Update();
 }
 
@@ -102,6 +83,7 @@ void BaseEnemy::TransformUpdate()
 	// 敵の行動許可が出ていなければ更新できない
 	if (!stateParam_.enableMove_) {
 		// オブジェクトの更新
+		Collider::Update();
 		Animation::TransformUpdate();
 	}
 }
@@ -117,11 +99,15 @@ void BaseEnemy::ChangeState(std::unique_ptr<EnemyBaseState> newState)
 
 void BaseEnemy::Dead()
 {
+	// ステートを初期化
+	ChangeState(std::make_unique<EnemyMoveState>(this));
 	// 描画とColliderを切る
 	transform_.translation_ = items_->GetMainData().startPosition;
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetTimeStop() = true;
 	Collider::isActive_ = false;
+	ray_->SetActive(false);
+	ray_->Update(Vector3::ExprZero, Vector3::ExprUnitZ);
 	// 影の描画も切る
 	Animation::GetMaterial().shadowMap = false;
 	stateParam_.enableMove_ = false;
@@ -129,14 +115,17 @@ void BaseEnemy::Dead()
 
 void BaseEnemy::Reset(const Vector3& position)
 {
+	// ステートを初期化
+	ChangeState(std::make_unique<EnemyMoveState>(this));
 	// 描画をする
 	Animation::GetMaterial().enableDraw = true;
+	Animation::GetTimeStop() = false;
+	// 影を描画する
+	Animation::GetMaterial().shadowMap = true;
 	// 座標と回転を初期化する
 	transform_.rotation_ = Quaternion::IdentityQuaternion();
 	transform_.translation_ = position;
 	Animation::TransformUpdate();
-	// 影を描画する
-	Animation::GetMaterial().shadowMap = true;
 	// ColliderをActiveに戻す
 	Collider::isActive_ = true;
 	ray_->SetActive(true);
@@ -160,6 +149,12 @@ void BaseEnemy::ResetSearch()
 
 void BaseEnemy::OnCollisionEnter(Collider* other)
 {
+	// 判定用フラグ
+	bool isCompanion = other->GetColliderName() == "MuscleCompanion";
+	bool isCompanionAttack = other->GetColliderName() == "MuscleCompanionAttack";
+	bool isSearchDashCompanion = other->GetColliderName() == "SearchDashMuscleCompanion";
+	bool isFollowerCompanion = other->GetColliderName() == "FollowerMuscleCompanion";
+
 	// プレイヤーの仲間と当たっているなら
 	if (CollisionFilter::CheckColliderNameCompanion(other->GetColliderName())) {
 		// 小さな当たり判定は無視する
@@ -167,12 +162,15 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 			return;
 		}
 		// 初回ヒット時はヒットジャンプステートに遷移
-		if (other->GetColliderName() == "MuscleCompanion" && other->GetRadius() > 0.75f && !stateParam_.isJumping_) {
+		if (isCompanion && other->GetRadius() > 0.75f && !stateParam_.isJumping_) {
 			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
 			stateParam_.isJumping_ = true;
 			ChangeState(std::make_unique<EnemyHitJumpState>(this));
+		} else if (isFollowerCompanion || isSearchDashCompanion) {
+			velocity_ = Vector3{ transform_.translation_ - player_->GetTransform().translation_}.Normalize();
+			ChangeState(std::make_unique<EnemyKnockbackState>(this));
 		}
-		if (!hitCollider_ && (other->GetColliderName() == "MuscleCompanion" || other->GetColliderName() == "MuscleCompanionAttack")) {
+		if (!hitCollider_ && (isCompanion || isCompanionAttack)) {
 			hitCollider_ = other;
 		}
 		// ダメージ処理
@@ -184,7 +182,11 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		effect_->OnceBulletHitEffect(transform);
 		transform.rotation_ = transform_.rotation_;
 		transform.translation_ = transform_.translation_ - (velocity_ * 0.5f);
-		effect_->OnceBulletHitExplosionEffect(transform);
+		if (isSearchDashCompanion) {
+			effect_->OnceBulletHitExplosionBlueEffect(transform);
+		} else {
+			effect_->OnceBulletHitExplosionEffect(transform);
+		}
 		// 体力が0以下なら死亡処理へ
 		if (currentHp_ <= 0) {
 			// Colliderを無効化する
@@ -216,10 +218,6 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 		velocity.y = 0.0f;
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
-	}
-
-	if (other->GetColliderName() == "PlayerShotRay") {
-		outlineColor_ = Vector3::ExprUnitX;
 	}
 }
 

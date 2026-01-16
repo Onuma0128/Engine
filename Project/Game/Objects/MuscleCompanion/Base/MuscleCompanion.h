@@ -73,6 +73,11 @@ public:
 	/// <returns></returns>
 	bool SearchDistance();
 
+	/// <summary>
+	/// 仲間のデータを初期化する
+	/// </summary>
+	void Reset();
+
 	// セッター
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetItems(CompanionAdjustItem* items) { items_ = items; }

@@ -192,3 +192,10 @@ void EnemySpawnerFactory::ResetTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& 
 		}
 	}
 }
+
+void EnemySpawnerFactory::Reset()
+{
+	for (auto& spawner : enemySpawners_) {
+		spawner->Reset();
+	}
+}

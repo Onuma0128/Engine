@@ -20,6 +20,8 @@ void BossDownState::Init()
 
 void BossDownState::Finalize()
 {
+	boss_->GetEffect()->EmitDownStar(false);
+	boss_->GetAudio()->StopAudio("BossDown.wav");
 }
 
 void BossDownState::Update()

@@ -27,10 +27,16 @@ void EnemyEffect::Init()
 	hitExplosionEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
 	particleManager_->CreateParticleGroup(hitExplosionEmitter_);
 	hitExplosionEmitter_->SetIsCreate(false);
+	hitExplosionBlueEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosionBlue");
+	particleManager_->CreateParticleGroup(hitExplosionBlueEmitter_);
+	hitExplosionBlueEmitter_->SetIsCreate(false);
 
 	hitRingEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRing");
 	particleManager_->CreateParticleGroup(hitRingEmitter_);
 	hitRingEmitter_->SetIsCreate(false);
+	hitRingBlueEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRingBlue");
+	particleManager_->CreateParticleGroup(hitRingBlueEmitter_);
+	hitRingBlueEmitter_->SetIsCreate(false);
 
 	// 死亡時のエフェクト
 	deadEmitter_ = std::make_unique<ParticleEmitter>("enemyDead");
@@ -117,6 +123,21 @@ void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
 	hitExplosionEmitter_->SetPosition(position);
 	hitRingEmitter_->SetRotation(rotate);
 	hitRingEmitter_->SetPosition(position);
+}
+
+void EnemyEffect::OnceBulletHitExplosionBlueEffect(const WorldTransform& transform)
+{
+	hitExplosionBlueEmitter_->onceEmit();
+	hitRingBlueEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = transform.rotation_;
+	Vector3 position = transform.translation_;
+
+	hitExplosionBlueEmitter_->SetRotation(rotate);
+	hitExplosionBlueEmitter_->SetPosition(position);
+	hitRingBlueEmitter_->SetRotation(rotate);
+	hitRingBlueEmitter_->SetPosition(position);
 }
 
 void EnemyEffect::SetMeleeAttackEffect(const WorldTransform& transform)

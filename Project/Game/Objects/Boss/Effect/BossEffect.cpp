@@ -39,9 +39,16 @@ void BossEffect::Init()
 	hitExplosionEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
 	particleManager_->CreateParticleGroup(hitExplosionEmitter_);
 	hitExplosionEmitter_->SetIsCreate(false);
+	hitExplosionBlueEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosionBlue");
+	particleManager_->CreateParticleGroup(hitExplosionBlueEmitter_);
+	hitExplosionBlueEmitter_->SetIsCreate(false);
+
 	hitRingEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRing");
 	particleManager_->CreateParticleGroup(hitRingEmitter_);
 	hitRingEmitter_->SetIsCreate(false);
+	hitRingBlueEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRingBlue");
+	particleManager_->CreateParticleGroup(hitRingBlueEmitter_);
+	hitRingBlueEmitter_->SetIsCreate(false);
 }
 
 void BossEffect::PrimitiveInit(std::unique_ptr<PrimitiveDrawr>& effect)
@@ -224,4 +231,19 @@ void BossEffect::OnceHitExplosionEffect()
 	hitExplosionEmitter_->SetPosition(position);
 	hitRingEmitter_->SetRotation(rotate);
 	hitRingEmitter_->SetPosition(position);
+}
+
+void BossEffect::OnceHitExplosionBlueEffect()
+{
+	hitExplosionBlueEmitter_->onceEmit();
+	hitRingBlueEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = boss_->GetTransform().rotation_;
+	Vector3 position = boss_->GetTransform().translation_;
+
+	hitExplosionBlueEmitter_->SetRotation(rotate);
+	hitExplosionBlueEmitter_->SetPosition(position);
+	hitRingBlueEmitter_->SetRotation(rotate);
+	hitRingBlueEmitter_->SetPosition(position);
 }

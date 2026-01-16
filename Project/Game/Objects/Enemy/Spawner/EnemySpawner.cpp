@@ -56,3 +56,12 @@ void EnemySpawner::EnemySpawn(BaseEnemy* enemy)
 	enemy->Reset(pos);
 	enemys_.push_back(enemy);
 }
+
+void EnemySpawner::Reset() 
+{
+	for (auto& enemy : enemys_) {
+		enemy->Dead();
+	}
+	enemys_.clear();
+	kNockdownCount_ = 0;
+}

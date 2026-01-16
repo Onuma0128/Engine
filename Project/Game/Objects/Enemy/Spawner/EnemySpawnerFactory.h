@@ -65,6 +65,11 @@ public:
 	/// <returns></returns>
 	const uint32_t GetKnockdownCount()const { return knockdownCount_; }
 
+	/// <summary>
+	/// スポナーのリセットを行う
+	/// </summary>
+	void Reset();
+
 private:
 
 	/// <summary>

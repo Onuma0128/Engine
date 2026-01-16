@@ -10,7 +10,7 @@
     },
     "Rotate": 0.0,
     "Position": {
-        "x": 800.0,
+        "x": 640.0,
         "y": 580.0
     },
     "Color": {
@@ -27,7 +27,7 @@
     },
     "Anima_Rotate": 0.0,
     "Anima_Position": {
-        "x": 800.0,
+        "x": 640.0,
         "y": 580.0
     },
     "Anima_Color": {
