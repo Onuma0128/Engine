@@ -70,8 +70,6 @@ private:
 	float velocityY_ = 0.0;
 	float accelerationY_ = 0.0;
 	float kNockbackScale_ = 0.0f;
-	// アニメーションを変える
-	bool chengeAnimation_ = false;
 
 	// ノックバックする方向
 	Vector3 velocity_{};

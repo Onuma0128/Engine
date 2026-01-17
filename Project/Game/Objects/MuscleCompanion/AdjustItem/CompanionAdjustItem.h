@@ -26,6 +26,7 @@ struct CompanionMainData {
 // 仲間のダッシュの調整項目
 struct CompanionDashData {
 	float dashSpeed;				// 攻撃時の移動速度
+	float dashTargetDistance;		// ダッシュ時の目指す距離
 	float dashColliderScale;		// 攻撃時のコライダースケール倍率
 	float searchDashColliderScale;	// 集合の戻り時の攻撃コライダースケール倍率
 };
@@ -56,6 +57,8 @@ struct CompanionEffectData {
 	float nextArrowAnimaTime;			// 矢印のアニメーション時間
 	Vector3 nextArrowVarianceScale;		// 次発射される矢印の変動スケール
 	Vector3 nextArrowVariancePosition;	// 次発射される矢印の変動座標
+
+	float lerpSpeed;					// エフェクトのラープ移動スピード
 };
 
 // 仲間の効果音の音量

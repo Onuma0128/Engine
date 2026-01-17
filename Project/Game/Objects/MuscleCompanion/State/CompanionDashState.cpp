@@ -12,6 +12,7 @@ void CompanionDashState::Init()
 {
 	// アニメーションを変更
 	companion_->PlayByName("Run");
+	companion_->GetMaterial().outlineColor = Vector3::ExprZero;
 	// 集合要求フラグをfalseにする
 	companion_->SetGatherRequested(false);
 	// 元の場所に戻ったフラグをfalseにする
@@ -22,10 +23,11 @@ void CompanionDashState::Init()
 	// 向きをプレイヤーと同じにする
 	const auto& player = companion_->GetPlayer();
 	Vector3 targetPosition = player->GetTransform().translation_;
+	const float distance = companion_->GetItems()->GetDashData().dashTargetDistance;
 
 	if (!player->GetShot()->GetTargetCollider()) {
 		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(player->GetTransform().rotation_);
-		targetPosition += (Vector3::ExprUnitZ * 15.0f).Transform(rotate);
+		targetPosition += (Vector3::ExprUnitZ * distance).Transform(rotate);
 	} else {
 		targetCollider_ = player->GetShot()->GetTargetCollider();
 		// 探索を更新する

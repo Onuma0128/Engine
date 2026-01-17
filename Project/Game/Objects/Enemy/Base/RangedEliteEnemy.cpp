@@ -63,7 +63,7 @@ void RangedEliteEnemy::Reset(const Vector3& position)
 	currentHp_ = maxHp_;
 	// Animationの再生を初期化
 	transform_.scale_ = Vector3::ExprUnitXYZ * data.modelScale;
-	Animation::PlayByName("Run");
+	Animation::ForcePlayByName("Run");
 	// ステートを初期化
 	ChangeState(std::make_unique<EnemyMoveState>(this));
 }

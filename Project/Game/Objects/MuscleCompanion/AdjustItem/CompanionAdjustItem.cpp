@@ -46,10 +46,12 @@ void CompanionAdjustItem::LoadItems()
 	dashJson_.Init("CompanionDash");
 	if(!dashJson_.Load()) {
 		dashJson_.Set("dashSpeed", 0.0f);
+		dashJson_.Set("dashTargetDistance", 0.0f);
 		dashJson_.Set("dashColliderScale", 1.0f);
 		dashJson_.Set("searchDashColliderScale", 1.0f);
 	} else {
 		dashData_.dashSpeed = dashJson_.Get("dashSpeed", dashData_.dashSpeed);
+		dashData_.dashTargetDistance = dashJson_.Get("dashTargetDistance", dashData_.dashTargetDistance);
 		dashData_.dashColliderScale = dashJson_.Get("dashColliderScale", dashData_.dashColliderScale);
 		dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale);
 	}
@@ -94,12 +96,14 @@ void CompanionAdjustItem::LoadItems()
 		effectJson_.Set("nextArrowPosition", 1.0f);
 		effectJson_.Set("nextArrowVarianceScale", 1.0f);
 		effectJson_.Set("nextArrowVariancePosition", 1.0f);
+		effectJson_.Set("lerpSpeed", 1.0f);
 	} else {
 		effectData_.nextArrowAnimaTime = effectJson_.Get("nextArrowAnimaTime", effectData_.nextArrowAnimaTime);
 		effectData_.nextArrowScale = effectJson_.Get("nextArrowScale", effectData_.nextArrowScale);
 		effectData_.nextArrowPosition = effectJson_.Get("nextArrowPosition", effectData_.nextArrowPosition);
 		effectData_.nextArrowVarianceScale = effectJson_.Get("nextArrowVarianceScale", effectData_.nextArrowVarianceScale);
 		effectData_.nextArrowVariancePosition = effectJson_.Get("nextArrowVariancePosition", effectData_.nextArrowVariancePosition);
+		effectData_.lerpSpeed = effectJson_.Get("lerpSpeed", effectData_.lerpSpeed);
 	}
 
 	/* ============================== SeVolume ============================== */
@@ -183,11 +187,13 @@ void CompanionAdjustItem::Editor()
 		// ダッシュ項目
 		if (ImGui::TreeNode("Dash")) {
 			ImGui::DragFloat("dashSpeed", &dashData_.dashSpeed, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("dashTargetDistance", &dashData_.dashTargetDistance, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("dashColliderScale", &dashData_.dashColliderScale, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat("searchDashColliderScale", &dashData_.searchDashColliderScale, 0.01f, 0.1f, 10.0f);
 			// セーブボタン
 			if(ImGui::Button("Save")) {
 				dashJson_.Set("dashSpeed", dashData_.dashSpeed);
+				dashJson_.Set("dashTargetDistance", dashData_.dashTargetDistance);
 				dashJson_.Set("dashColliderScale", dashData_.dashColliderScale);
 				dashJson_.Set("searchDashColliderScale", dashData_.searchDashColliderScale);
 				dashJson_.Save();
@@ -227,6 +233,7 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat3("nextArrowPosition", &effectData_.nextArrowPosition.x, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat3("nextArrowVarianceScale", &effectData_.nextArrowVarianceScale.x, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat3("nextArrowVariancePosition", &effectData_.nextArrowVariancePosition.x, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat("lerpSpeed", &effectData_.lerpSpeed, 0.01f, 0.0f, 100.0f);
 			// セーブボタン
 			if (ImGui::Button("Save")) {
 				effectJson_.Set("nextArrowAnimaTime", effectData_.nextArrowAnimaTime);
@@ -234,6 +241,7 @@ void CompanionAdjustItem::Editor()
 				effectJson_.Set("nextArrowPosition", effectData_.nextArrowPosition);
 				effectJson_.Set("nextArrowVarianceScale", effectData_.nextArrowVarianceScale);
 				effectJson_.Set("nextArrowVariancePosition", effectData_.nextArrowVariancePosition);
+				effectJson_.Set("lerpSpeed", effectData_.lerpSpeed);
 				effectJson_.Save();
 			}
 			ImGui::TreePop();

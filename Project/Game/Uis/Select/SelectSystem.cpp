@@ -100,6 +100,7 @@ void SelectSystem::SelectInput()
 		} else {
 			if (targetIndex_ == 1u) {
 				boss_->Reset();
+				spawner_->CountReset();
 				gameSceneUis_->BossFadeReset();
 				gameSceneUis_->SetDrawGameUIs(true);
 			} else {

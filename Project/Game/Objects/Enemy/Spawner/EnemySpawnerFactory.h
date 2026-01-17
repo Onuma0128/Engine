@@ -69,6 +69,7 @@ public:
 	/// スポナーのリセットを行う
 	/// </summary>
 	void Reset();
+	void CountReset();
 
 private:
 

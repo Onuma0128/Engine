@@ -13,6 +13,9 @@ PlayerAvoidState::PlayerAvoidState(Player* player) :PlayerBaseState(player) {}
 
 void PlayerAvoidState::Init()
 {
+	player_->ForcePlayByName("Duck", 0.0f);
+	player_->SetAnimationTime(0.0f);
+	player_->GetTimeStop() = true;
 	player_->SetIsAvoid(true);
 
 	velocity_ = CreateVelocity();
@@ -35,6 +38,7 @@ void PlayerAvoidState::Finalize()
 {
 	const auto& data = player_->GetItem()->GetPlayerData();
 	player_->SetAvoidCoolTimer(data.avoid_coolTime);
+	player_->GetTimeStop() = false;
 }
 
 void PlayerAvoidState::Update()
@@ -69,13 +73,6 @@ void PlayerAvoidState::Update()
 		player_->SetTransformTranslation(position);
 		player_->SetTransformRotation(player_->GetShot()->GetRightStickQua());
 		player_->ChangeState(std::make_unique<PlayerMoveState>(player_));
-	} else {
-		if (!chengeAnimation_) {
-			if (player_->PlayByName("Duck", 0.0f)) {
-				player_->GetTimeStop() = true;
-				chengeAnimation_ = true;
-			}
-		}
 	}
 }
 

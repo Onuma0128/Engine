@@ -12,7 +12,9 @@ CompanionKnockbackState::CompanionKnockbackState(MuscleCompanion* companion) : C
 void CompanionKnockbackState::Init()
 {
 	// アニメーションの初期化
-	companion_->PlayByName("Wait");
+	companion_->ForcePlayByName("Damage", 0.0f);
+	companion_->SetAnimationTime(0.0f);
+	companion_->GetTimeStop() = true;
 
 	// ノックバック方向を取得する
 	Vector3 direction = companion_->GetKnockbackDire();
@@ -44,6 +46,7 @@ void CompanionKnockbackState::Update()
 	companion_->SetTransformTranslation(position);
 
 	if (timer_ >= maxTime_) {
+		companion_->GetTimeStop() = false;
 		companion_->ChangeState(std::make_unique<CompanionMoveState>(companion_));
 	}
 }

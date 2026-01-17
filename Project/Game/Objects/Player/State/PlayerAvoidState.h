@@ -49,7 +49,6 @@ private:
 private:
 
 	float avoidTime_ = 0.0f;
-	bool chengeAnimation_ = false;
 
 	Vector3 velocity_ = {};
 	float velocityY_ = 0.0f;

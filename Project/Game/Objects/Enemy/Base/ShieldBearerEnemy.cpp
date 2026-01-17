@@ -82,7 +82,7 @@ void ShieldBearerEnemy::Reset(const Vector3& position)
 	// Activeを戻す
 	shieldWeapon_->SetIsActive(true);
 	// Animationの再生を初期化
-	Animation::PlayByName("Run_Arms");
+	Animation::ForcePlayByName("Run_Arms");
 	// ステートを初期化
 	ChangeState(std::make_unique<EnemyMoveState>(this));
 }

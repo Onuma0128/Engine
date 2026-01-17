@@ -37,8 +37,8 @@ void EnemyDeadState::Init()
 	GlobalInit();
 
 	// アニメーションをセットする
+	enemy_->ForcePlayByName("Death", 0.0f);
 	enemy_->SetAnimationTime(0.0f);
-	enemy_->ForcePlayByName("Death");
 	enemy_->GetTimeStop() = true;
 
 	// 死亡するフレーム
@@ -53,6 +53,7 @@ void EnemyDeadState::Init()
 
 void EnemyDeadState::Finalize()
 {
+	enemy_->GetTimeStop() = false;
 	enemy_->GetEffect()->SetDeadEffect(false);
 }
 
@@ -97,13 +98,6 @@ void EnemyDeadState::Update()
 	// 5秒経ったら消す
 	if (deadTimer_ <= 0.0f) {
 		enemy_->SetIsDead(true);
-	} else {
-		if (!chengeAnimation_) {
-			if (enemy_->ForcePlayByName("Death", 0.1f)) {
-				enemy_->GetTimeStop() = true;
-				chengeAnimation_ = true;
-			}
-		}
 	}
 }
 

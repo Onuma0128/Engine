@@ -69,6 +69,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "selectBackGround.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "muscleTexture.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "needMoreMacho.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "nextArrow.png");
 
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/game", "bossHpBar.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/game", "bossHpFrame.png");

@@ -43,10 +43,11 @@ void CompanionIdleState::Update()
 	}
 
 	// プレイヤーが指示を出したら攻撃ステートに遷移する
-	if (companion_->GetPlayer()->GetShot()->GetIsShot()) {
+	if (companion_->GetDashAttack()) {
 		const auto& volume = companion_->GetItems()->GetSeVolumeData();
 		companion_->GetAudio()->SoundPlayWave("MattyoShot.wav", volume.shot);
 		companion_->GetPlayer()->GetShot()->SetIsShot(false);
+		companion_->SetDashAttack(false);
 		companion_->ChangeState(std::make_unique<CompanionDashState>(companion_));
 		return;
 	}

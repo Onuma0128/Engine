@@ -58,7 +58,7 @@ void MeleeEnemy::Reset(const Vector3& position)
 	 currentHp_ = maxHp_;
 	// Animationの再生を初期化
 	transform_.scale_ = Vector3::ExprUnitXYZ * data.modelScale;
-	Animation::PlayByName("Run_Arms");
+	Animation::ForcePlayByName("Run_Arms");
 	// ステートを初期化
 	ChangeState(std::make_unique<EnemyMoveState>(this));
 }

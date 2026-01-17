@@ -11,6 +11,7 @@ void NextArrowEffect::Init()
 	// 矢印エフェクトの初期化
 	arrow_ = std::make_unique<PrimitiveDrawr>();
 	arrow_->TypeInit(PrimitiveType::kPlane);
+	arrow_->SetTexture("nextArrow.png");
 	arrow_->SetIsBillboard(true);
 }
 
@@ -26,8 +27,10 @@ void NextArrowEffect::Update(const Vector3& position)
 
 	// スケールと座標を設定
 	arrow_->GetTransform().scale = data.nextArrowScale + data.nextArrowVarianceScale * t;
-	arrow_->GetTransform().translation = data.nextArrowPosition + data.nextArrowVariancePosition * t;
-	arrow_->GetTransform().translation += position;
+	Vector3 offset = data.nextArrowPosition + data.nextArrowVariancePosition * t;
+	Vector3 prePosition = arrow_->GetTransform().translation;
+	Vector3 newPosition = offset + position;
+	arrow_->GetTransform().translation = Vector3::Lerp(prePosition, newPosition, data.lerpSpeed);
 
 	// 更新
 	arrow_->Update();

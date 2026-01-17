@@ -88,8 +88,10 @@ public:
 	void SetColliderScale(float scale) { colliderScale_ = scale; }
 	void SetGatherRequested(bool flag) { isGatherRequested_ = flag; }
 	void SetReturnOriginal(bool flag) { isReturnOriginal_ = flag; }
+	void SetDashAttack(bool flag) { isDashAttack_ = flag; }
 	void SetFirstDashAttack(bool flag) { isFirstDashAttack_ = flag; }
 	void SetColliderName(const std::string& name) { Collider::colliderName_ = name; }
+	void SetOutLineColor(const Vector3& color) { Animation::GetMaterial().outlineColor = color; }
 	// ゲッター
 	const CompanionAdjustItem* GetItems()const { return items_; }
 	const Player* GetPlayer()const { return player_; }
@@ -102,6 +104,7 @@ public:
 	PathFinder& GetPathFinder() { return pathFinder_; }
 	bool GetGatherRequested() const { return isGatherRequested_; }
 	bool GetReturnOriginal() const { return isReturnOriginal_; }
+	bool GetDashAttack()const { return isDashAttack_; }
 	bool GetFirstDashAttack() const { return isFirstDashAttack_; }
 	const Vector3& GetKnockbackDire()const { return knockbackDirection_; }
 
@@ -138,6 +141,8 @@ private:
 	bool isGatherRequested_ = false;
 	// 元の場所に戻ったか
 	bool isReturnOriginal_ = true;
+	// ダッシュ攻撃をするか
+	bool isDashAttack_ = false;
 	// ダッシュ時の一回目の攻撃かどうか
 	bool isFirstDashAttack_ = true;
 	// ノックバック方向

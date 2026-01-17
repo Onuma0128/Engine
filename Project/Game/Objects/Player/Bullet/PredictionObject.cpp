@@ -6,7 +6,9 @@ void PredictionObject::Init()
 {
 	Object3d::Initialize("Box.obj");
 	Object3d::SetSceneRenderer();
+	Object3d::GetMaterial().enableDraw = false;
 	Object3d::GetMaterial().outlineMask = true;
+	Object3d::GetMaterial().shadowMap = false;
 	Object3d::GetMaterial().outlineSceneColor = true;
 	transform_.scale_ = { 0.1f,0.1f,0.1f };
 }

@@ -199,3 +199,10 @@ void EnemySpawnerFactory::Reset()
 		spawner->Reset();
 	}
 }
+
+void EnemySpawnerFactory::CountReset()
+{
+	spawnCount_ = 0;
+	spawnInterval_ = 1.0f;
+	spawnTime_ = 0.0f;
+}

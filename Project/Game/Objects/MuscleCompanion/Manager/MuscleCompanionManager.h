@@ -8,6 +8,7 @@
 #include "Objects/MuscleCompanion/Effect/CompanionEffect.h"
 #include "Objects/MuscleCompanion/Effect/NextArrowEffect.h"
 #include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
+#include "Objects/MuscleCompanion/PredictionObject/PredictionObjects.h"
 
 /// <summary>
 /// プレイヤーの仲間を管理するクラス
@@ -77,6 +78,8 @@ private:
 	std::unique_ptr<CompanionAdjustItem> items_ = nullptr;
 	// プレイヤーの仲間達
 	std::vector<std::unique_ptr<MuscleCompanion>> companions_;
+	// 発射する時の予測線
+	std::unique_ptr<PredictionObjects> predictionObjects_ = nullptr;
 	// 次発射の仲間エフェクト
 	std::unique_ptr<NextArrowEffect> arrowEffect_ = nullptr;
 	// オーディオ

@@ -9,7 +9,7 @@ PlayerDeadState::PlayerDeadState(Player* player) :PlayerBaseState(player) {}
 void PlayerDeadState::Init()
 {
 	player_->GetEffect()->OnceHitEffect();
-	player_->ForcePlayByName("Death", 0.1f);
+	player_->ForcePlayByName("Death", 0.0f);
 	player_->SetAnimationTime(0.0f);
 	player_->GetTimeStop() = true;
 }
