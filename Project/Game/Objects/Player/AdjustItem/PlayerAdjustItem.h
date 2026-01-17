@@ -21,6 +21,12 @@ struct PlayerData {
 	Vector3 avoidEffectScale;	// 避けのエフェクトの大きさ
 	Vector3 avoidEffectPos;		// 避けのエフェクトの座標
 	float avoidEffectAlpha;		// 避けのエフェクトのアルファ値
+
+	float needMachoEffectTime;		// マッチョ不足のエフェクトアニメーションタイム
+	Vector3 needMachoScale;			// マッチョ不足のエフェクトスケール
+	Vector3 needMachoPos;			// マッチョ不足のエフェクト座標
+	Vector3 needMachoVarianceScale;	// マッチョ不足のエフェクト変動スケール
+	Vector3 needMachoVariancePos;	// マッチョ不足のエフェクト変動座標
 };
 
 // 弾の項目

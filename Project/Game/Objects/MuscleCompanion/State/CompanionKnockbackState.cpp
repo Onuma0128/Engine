@@ -17,7 +17,7 @@ void CompanionKnockbackState::Init()
 	companion_->GetTimeStop() = true;
 
 	// ノックバック方向を取得する
-	Vector3 direction = companion_->GetKnockbackDire();
+	Vector3 direction = companion_->GetTransform().translation_ - companion_->GetKnockbackPos();
 	direction.y = 0.0f;
 	if (direction.Length() != 0.0f) { direction = direction.Normalize(); }
 
@@ -34,6 +34,7 @@ void CompanionKnockbackState::Init()
 void CompanionKnockbackState::Finalize()
 {
 	companion_->SetGatherRequested(true);
+	companion_->GetTimeStop() = false;
 }
 
 void CompanionKnockbackState::Update()
@@ -46,7 +47,6 @@ void CompanionKnockbackState::Update()
 	companion_->SetTransformTranslation(position);
 
 	if (timer_ >= maxTime_) {
-		companion_->GetTimeStop() = false;
 		companion_->ChangeState(std::make_unique<CompanionMoveState>(companion_));
 	}
 }

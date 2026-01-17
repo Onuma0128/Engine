@@ -22,6 +22,12 @@ void PlayerAdjustItem::LoadItems()
 		playerJson_.Set("avoidEffectScale", Vector3{});
 		playerJson_.Set("avoidEffectPos", Vector3{});
 		playerJson_.Set("avoidEffectAlpha", 1.0f);
+
+		playerJson_.Set("needMachoEffectTime", 1.0f);
+		playerJson_.Set("needMachoScale", Vector3{});
+		playerJson_.Set("needMachoPos", Vector3{});
+		playerJson_.Set("needMachoVarianceScale", Vector3{});
+		playerJson_.Set("needMachoVariancePos", Vector3{});
 	} else {
 		playerData_.isInvincible = false;
 		playerData_.clearKill = playerJson_.Get("clearKill", playerData_.clearKill);
@@ -38,6 +44,12 @@ void PlayerAdjustItem::LoadItems()
 		playerData_.avoidEffectScale = playerJson_.Get("avoidEffectScale", playerData_.avoidEffectScale);
 		playerData_.avoidEffectPos = playerJson_.Get("avoidEffectPos", playerData_.avoidEffectPos);
 		playerData_.avoidEffectAlpha = playerJson_.Get("avoidEffectAlpha", playerData_.avoidEffectAlpha);
+
+		playerData_.needMachoEffectTime = playerJson_.Get("needMachoEffectTime", playerData_.needMachoEffectTime);
+		playerData_.needMachoScale = playerJson_.Get("needMachoScale", playerData_.needMachoScale);
+		playerData_.needMachoPos = playerJson_.Get("needMachoPos", playerData_.needMachoPos);
+		playerData_.needMachoVarianceScale = playerJson_.Get("needMachoVarianceScale", playerData_.needMachoVarianceScale);
+		playerData_.needMachoVariancePos = playerJson_.Get("needMachoVariancePos", playerData_.needMachoVariancePos);
 	}
 
 	/* ============================== Bullet ============================== */
@@ -122,6 +134,12 @@ void PlayerAdjustItem::Editor()
 			ImGui::DragFloat3("avoidEffectScale", &playerData_.avoidEffectScale.x, 0.1f, -10.0f, 10.0f);
 			ImGui::DragFloat3("avoidEffectPos", &playerData_.avoidEffectPos.x, 0.1f, -10.0f, 10.0f);
 			ImGui::DragFloat("avoidEffectAlpha", &playerData_.avoidEffectAlpha, 0.01f);
+			ImGui::Separator();
+			ImGui::DragFloat("needMachoEffectTime", &playerData_.needMachoEffectTime, 0.01f);
+			ImGui::DragFloat3("needMachoScale", &playerData_.needMachoScale.x, 0.1f, -10.0f, 10.0f);
+			ImGui::DragFloat3("needMachoPos", &playerData_.needMachoPos.x, 0.1f, -10.0f, 10.0f);
+			ImGui::DragFloat3("needMachoVarianceScale", &playerData_.needMachoVarianceScale.x, 0.1f, -10.0f, 10.0f);
+			ImGui::DragFloat3("needMachoVariancePos", &playerData_.needMachoVariancePos.x, 0.1f, -10.0f, 10.0f);
 
 			if (ImGui::Button("Save")) {
 				playerJson_.Set("clearKill", playerData_.clearKill);
@@ -138,6 +156,12 @@ void PlayerAdjustItem::Editor()
 				playerJson_.Set("avoidEffectScale", playerData_.avoidEffectScale);
 				playerJson_.Set("avoidEffectPos", playerData_.avoidEffectPos);
 				playerJson_.Set("avoidEffectAlpha", playerData_.avoidEffectAlpha);
+				playerJson_.Set("needMachoEffectTime", playerData_.needMachoEffectTime);
+				playerJson_.Set("needMachoScale", playerData_.needMachoScale);
+				playerJson_.Set("needMachoPos", playerData_.needMachoPos);
+				playerJson_.Set("needMachoVarianceScale", playerData_.needMachoVarianceScale);
+				playerJson_.Set("needMachoVariancePos", playerData_.needMachoVariancePos);
+
 				playerJson_.Save();
 			}
 			ImGui::TreePop();

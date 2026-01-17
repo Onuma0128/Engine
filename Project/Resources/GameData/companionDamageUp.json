@@ -1,0 +1,105 @@
+{
+    "Texture": "nextArrow.png",
+    "UvFlipX": false,
+    "UvFlipY": true,
+    "Model": 0,
+    "BlendMode": 2,
+    "Move": true,
+    "EmitCount": 1,
+    "FrequencyTime": 0.07000000029802322,
+    "LifeTime": 0.6000000238418579,
+    "Acceleration": {
+        "x": 0.0,
+        "y": 10.0,
+        "z": 0.0
+    },
+    "AcceleField": true,
+    "MinAcceleField": {
+        "x": -1.0,
+        "y": 0.0,
+        "z": -1.0
+    },
+    "MaxAcceleField": {
+        "x": 1.0,
+        "y": 2.2300000190734863,
+        "z": 1.0
+    },
+    "Reflect": false,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.4000000059604645,
+        "y": 0.15000000596046448,
+        "z": 0.0
+    },
+    "MaxScale": {
+        "x": 0.6000000238418579,
+        "y": 0.15000000596046448,
+        "z": 0.0
+    },
+    "ChangeScale": true,
+    "EndScale": {
+        "x": 0.0,
+        "y": 0.6000000238418579,
+        "z": 0.0
+    },
+    "MinVelocity": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0
+    },
+    "MaxVelocity": {
+        "x": 0.0,
+        "y": 2.5,
+        "z": 0.0
+    },
+    "LockDirectionXY": false,
+    "LockDirectionXZ": false,
+    "DirectionSpeed": 0.0,
+    "Billboard": true,
+    "MinRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinSize": {
+        "x": -0.6499999761581421,
+        "y": 0.0,
+        "z": -1.2000000476837158
+    },
+    "MaxSize": {
+        "x": 0.6499999761581421,
+        "y": 0.0,
+        "z": 0.6499999761581421
+    },
+    "Position": {
+        "x": 0.0,
+        "y": -0.10000000149011612,
+        "z": 0.0
+    },
+    "Look": true
+}

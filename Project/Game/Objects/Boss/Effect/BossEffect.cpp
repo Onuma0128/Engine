@@ -24,6 +24,8 @@ void BossEffect::Init()
 	dashAttackEffect_->SetTexture("gradationWhite.png");
 	PrimitiveInit(dashAttackTimeEffect_);
 	dashAttackTimeEffect_->SetTexture("gradationWhite.png");
+	dashAttackPrediction_ = std::make_unique<BossDashPrediction>();
+	dashAttackPrediction_->Init();
 	// ジャンプ時の煙エフェクト
 	jumpDustEmitter_ = std::make_unique<ParticleEmitter>("jumpDust");
 	particleManager_->CreateParticleGroup(jumpDustEmitter_);
@@ -156,6 +158,9 @@ void BossEffect::SetAttackEffect(BossAttackEffect effect)
 			data.attackEffectSize, data.attackEffectOffset);
 		PrimitiveUpdate(dashAttackTimeEffect_, data.attackStartupTime,
 			data.attackEffectSize, data.attackEffectOffset);
+		dashAttackPrediction_->SetBossRotate(boss_->GetTransform().rotation_);
+		dashAttackPrediction_->SetBossPosition(boss_->GetTransform().translation_);
+		dashAttackPrediction_->Update(dashAttackEffect_.get(), dashAttackTimeEffect_.get());
 	}
 		break;
 	default:

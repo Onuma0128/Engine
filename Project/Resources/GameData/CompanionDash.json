@@ -2,5 +2,6 @@
     "dashSpeed": 8.0,
     "dashColliderScale": 2.0,
     "searchDashColliderScale": 2.0,
-    "dashTargetDistance": 13.479999542236328
+    "dashTargetDistance": 13.479999542236328,
+    "pushUpTime": 3.0
 }

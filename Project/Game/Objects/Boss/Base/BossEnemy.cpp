@@ -1,5 +1,7 @@
 #include "BossEnemy.h"
 
+#include "DeltaTimer.h"
+
 #include "Collision/CollisionFilter.h"
 
 #include "Objects/Boss/State/BossIdleState.h"
@@ -37,7 +39,7 @@ void BossEnemy::Initialize()
 	Collider::myType_ = ColliderType::kSphere;
 	Collider::targetColliderName_ = {
 		"Player","MuscleCompanion","PlayerShotRay","MuscleCompanionAttack","SearchDashMuscleCompanion",
-		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
+		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","BlowDashMuscleCompanion",
 	};
 	Collider::DrawCollider();
 
@@ -121,20 +123,30 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 	bool isCompanion = other->GetColliderName() == "MuscleCompanion";
 	bool isSearchDashCompanion = other->GetColliderName() == "SearchDashMuscleCompanion";
 	bool isCompanionAttack = other->GetColliderName() == "MuscleCompanionAttack";
+	bool isBlowDashCompanion = other->GetColliderName() == "BlowDashMuscleCompanion";
 
-	if (isCompanion || isCompanionAttack || isSearchDashCompanion) {
+	if (isCompanion || isCompanionAttack || isSearchDashCompanion || isBlowDashCompanion) {
 		// 小さな当たり判定は無視する
 		if (other->GetRadius() < 0.6f) {
 			return;
 		}
 		// ダメージ処理
-		--currentHp_;
+		if (isBlowDashCompanion) {
+			if (currentHp_ > 2) {
+				currentHp_ -= 3;
+			} else {
+				currentHp_ = 0;
+			}
+		} else {
+			--currentHp_;
+		}
 		if (isSearchDashCompanion) {
 			effect_->OnceHitExplosionBlueEffect();
 		} else {
 			effect_->OnceHitExplosionEffect();
 		}
 		// 今のHPが0になったら死亡ステートになる
+		currentHp_ = std::clamp(currentHp_, 0u, 10000u);
 		if (currentHp_ <= 0) {
 			ChangeState(std::make_unique<BossDeadState>(this));
 		}
@@ -162,6 +174,22 @@ void BossEnemy::OnCollisionStay(Collider* other)
 		if (isPlayer || isCompanion || isCompanionAttack) {
 			ChangeState(std::make_unique<BossMeleeState>(this));
 		}
+	}
+
+	// 建物系の押し出し判定(OBB,Sphere)、木の押し出し判定(OBB)
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) &&
+		state_->GetState() == BossState::DashAttack) {
+		Vector3 push{};
+		if (other->GetMyColliderType() == ColliderType::kOBB) {
+			push = Collision3D::GetOBBSpherePushVector(other, this);
+		} else if (other->GetMyColliderType() == ColliderType::kSphere) {
+			push = Collision3D::GetSphereSpherePushVector(other, this);
+		}
+		push.y = 0.0f;
+		transform_.translation_ += push * 100.0f * DeltaTimer::GetDeltaTime();
+		Collider::centerPosition_ = transform_.translation_;
+		Collider::Update();
+		Animation::TransformUpdate();
 	}
 }
 

@@ -11,6 +11,7 @@ enum class CharacterState {
 	SearchDash,		// ダッシュ移動
 	Attack,			// 攻撃
 	Knockback,		// ノックバック
+	ShieldKnockback,// 敵シールドのノックバック
 	Dead,			// 死亡
 };
 

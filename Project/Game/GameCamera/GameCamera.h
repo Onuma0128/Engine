@@ -42,6 +42,7 @@ public:
 	/// ボスのカメラをリセットする
 	/// </summary>
 	void BossCameraReset();
+	void BossCameraEnd();
 
 	/// <summary>
 	/// アクセッサ

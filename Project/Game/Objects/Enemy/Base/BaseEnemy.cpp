@@ -41,7 +41,7 @@ void BaseEnemy::Initialize()
 	Collider::radius_ = transform_.scale_.x;
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
-		"Player","MuscleCompanionAttack","FollowerMuscleCompanion",
+		"Player","MuscleCompanionAttack","FollowerMuscleCompanion","BlowDashMuscleCompanion",
 		"Enemy" ,"PlayerShotRay","MuscleCompanion","SearchDashMuscleCompanion",
 	};
 	Collider::DrawCollider();
@@ -154,6 +154,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 	bool isCompanionAttack = other->GetColliderName() == "MuscleCompanionAttack";
 	bool isSearchDashCompanion = other->GetColliderName() == "SearchDashMuscleCompanion";
 	bool isFollowerCompanion = other->GetColliderName() == "FollowerMuscleCompanion";
+	bool isBlowDashCompanion = other->GetColliderName() == "BlowDashMuscleCompanion";
 
 	// プレイヤーの仲間と当たっているなら
 	if (CollisionFilter::CheckColliderNameCompanion(other->GetColliderName())) {
@@ -174,7 +175,11 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 			hitCollider_ = other;
 		}
 		// ダメージ処理
-		--currentHp_;
+		if (isBlowDashCompanion) {
+			currentHp_ = 0;
+		} else {
+			--currentHp_;
+		}
 		// エフェクトを描画
 		WorldTransform transform;
 		transform.rotation_ = other->GetRotate();

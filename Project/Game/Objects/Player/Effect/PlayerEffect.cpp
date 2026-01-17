@@ -80,10 +80,11 @@ void PlayerEffect::Update()
 	cylinder_->Update();
 
 	specialMoveReadyTimer_ += DeltaTimer::GetDeltaTime();
-	if (specialMoveReadyTimer_ > 1.0f) { specialMoveReadyTimer_ = 0.0f; }
+	t = specialMoveReadyTimer_ / data.needMachoEffectTime;
+	t = std::sinf(t * std::numbers::pi_v<float>);
+	needMoreMachoEffect->GetTransform().scale = data.needMachoScale + data.needMachoVarianceScale * t;
 	needMoreMachoEffect->GetTransform().translation = player_->GetTransform().translation_;
-	needMoreMachoEffect->GetTransform().translation.y = 2.0f;
-	needMoreMachoEffect->SetAlpha(std::abs(std::sin(specialMoveReadyTimer_ * std::numbers::pi_v<float>)));
+	needMoreMachoEffect->GetTransform().translation += data.needMachoPos + data.needMachoVariancePos * t;
 	needMoreMachoEffect->Update();
 }
 

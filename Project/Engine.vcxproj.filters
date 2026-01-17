@@ -1318,6 +1318,9 @@
     <ClCompile Include="Game\Uis\Boss\BossHpUI.cpp" />
     <ClCompile Include="Game\Objects\Player\Bullet\PredictionObject.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionShieldKnockbackState.cpp" />
+    <ClCompile Include="Game\Objects\Enemy\Effect\EnemyBulletPredictionEffect.cpp" />
+    <ClCompile Include="Game\Objects\Boss\Collider\BossDashPrediction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1356,5 +1359,8 @@
     <ClInclude Include="Game\Uis\Boss\BossHpUI.h" />
     <ClInclude Include="Game\Objects\Player\Bullet\PredictionObject.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionShieldKnockbackState.h" />
+    <ClInclude Include="Game\Objects\Enemy\Effect\EnemyBulletPredictionEffect.h" />
+    <ClInclude Include="Game\Objects\Boss\Collider\BossDashPrediction.h" />
   </ItemGroup>
 </Project>

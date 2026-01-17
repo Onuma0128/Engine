@@ -106,7 +106,8 @@ public:
 	bool GetReturnOriginal() const { return isReturnOriginal_; }
 	bool GetDashAttack()const { return isDashAttack_; }
 	bool GetFirstDashAttack() const { return isFirstDashAttack_; }
-	const Vector3& GetKnockbackDire()const { return knockbackDirection_; }
+	const Vector3& GetKnockbackPos()const { return knockbackPosition_; }
+	const Quaternion& GetKnockbackRotate()const { return knockbackRotate_; }
 
 private:
 
@@ -146,6 +147,7 @@ private:
 	// ダッシュ時の一回目の攻撃かどうか
 	bool isFirstDashAttack_ = true;
 	// ノックバック方向
-	Vector3 knockbackDirection_ = {};
+	Vector3 knockbackPosition_ = {};
+	Quaternion knockbackRotate_ = {};
 };
 

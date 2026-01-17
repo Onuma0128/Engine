@@ -117,13 +117,13 @@ void PlayerMoveState::Update()
 		// 向けている方向でアニメーションを決める
 		float dot = Vector3::Dot(moveVelocity, rightStickVelocity_);
 		if (dot <= -0.5f) {
-			if ((!isReversePlay_ || !chengeAniamtion_) && player_->PlayByName("Walk_Gun")) {
+			if ((!isReversePlay_ || !chengeAniamtion_) && player_->PlayByName("Walk")) {
 				player_->GetReversePlay() = true;
 				isReversePlay_ = true;
 				chengeAniamtion_ = true;
 			}
 		} else {
-			if ((isReversePlay_ || !chengeAniamtion_) && player_->PlayByName("Run_Gun")) {
+			if ((isReversePlay_ || !chengeAniamtion_) && player_->PlayByName("Run")) {
 				player_->GetReversePlay() = false;
 				isReversePlay_ = false;
 				chengeAniamtion_ = true;
@@ -132,7 +132,7 @@ void PlayerMoveState::Update()
 
 	} else {
 		if (chengeAniamtion_) {
-			if (player_->PlayByName("Idle_Gun")) {
+			if (player_->PlayByName("Idle")) {
 				player_->GetReversePlay() = false;
 				chengeAniamtion_ = false;
 			}

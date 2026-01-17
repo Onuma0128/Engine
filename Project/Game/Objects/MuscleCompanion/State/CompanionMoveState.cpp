@@ -21,7 +21,9 @@ void CompanionMoveState::Init()
 	companion_->ResetSearch(companion_->GetPlayer()->GetTransform().translation_);
 	// ダッシュ用のコライダースケールを設定する
 	if (!companion_->GetReturnOriginal()) {
-		companion_->SetColliderName("SearchDashMuscleCompanion");
+		if (companion_->GetColliderName() == "MuscleCompanion") {
+			companion_->SetColliderName("SearchDashMuscleCompanion");
+		}
 		companion_->SetColliderScale(companion_->GetItems()->GetDashData().searchDashColliderScale);
 	}
 }
@@ -31,6 +33,7 @@ void CompanionMoveState::Finalize()
 	// コライダースケールを元に戻す
 	companion_->SetColliderScale(1.0f);
 	companion_->SetColliderName("MuscleCompanion");
+	companion_->GetEffect()->DamageUpEffect(false);
 }
 
 void CompanionMoveState::Update()

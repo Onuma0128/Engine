@@ -29,6 +29,8 @@ struct CompanionDashData {
 	float dashTargetDistance;		// ダッシュ時の目指す距離
 	float dashColliderScale;		// 攻撃時のコライダースケール倍率
 	float searchDashColliderScale;	// 集合の戻り時の攻撃コライダースケール倍率
+
+	float pushUpTime;				// 待ち時間の後の攻撃力アップする時間
 };
 
 // 仲間の攻撃の調整項目
@@ -48,6 +50,10 @@ struct CompanionAttackData {
 struct CompanionKnockbackData {
 	float knockbackSpeed;			// ノックバックスピード
 	float knockbackTime;			// ノックバックしている時間
+
+	Vector3 shieldKnockbackDire;	// ノックバックする方向
+	float shieldKnockbackSpeed;		// ノックバックスピード
+	float shieldKnockbackTime;		// ノックバックしている時間
 };
 
 // 仲間のエフェクトの調整項目

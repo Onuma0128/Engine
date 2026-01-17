@@ -4,9 +4,11 @@
 #include "ParticleManager.h"
 #include "ParticleEmitter.h"
 #include "PrimitiveDrawr.h"
-
 #include "WorldTransform.h"
 
+#include "EnemyBulletPredictionEffect.h"
+
+// 前方宣言
 class BaseEnemy;
 
 /// <summary>
@@ -149,10 +151,7 @@ private:
 
 	/* ==================== 敵が弾発射時のエフェクト(予測線) ==================== */
 
-	struct BulletPredictionEffect {
-		std::unique_ptr<PrimitiveDrawr> plane_;
-	};
-	std::vector<BulletPredictionEffect> bulletPredictionEffect_;
+	std::vector<std::unique_ptr<EnemyBulletPredictionEffect>> bulletPredictionEffect_;
 
 	// 弾を撃った時の爆発
 	std::shared_ptr<ParticleEmitter> bulletExplosionEmitter_ = nullptr;

@@ -212,3 +212,10 @@ void GameCamera::BossCameraReset()
 	bossCameraState_ = BossCameraState::Startup;
 	CameraManager::GetInstance()->SetActiveCamera(0);
 }
+
+void GameCamera::BossCameraEnd()
+{
+	bossCameraTime_ = -1.0f;
+	bossCameraState_ = BossCameraState::End;
+	CameraManager::GetInstance()->SetActiveCamera(0);
+}

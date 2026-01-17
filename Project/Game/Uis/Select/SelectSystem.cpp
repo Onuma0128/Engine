@@ -102,9 +102,11 @@ void SelectSystem::SelectInput()
 				boss_->Reset();
 				spawner_->CountReset();
 				gameSceneUis_->BossFadeReset();
+				camera_->BossCameraReset();
 				gameSceneUis_->SetDrawGameUIs(true);
 			} else {
 				boss_->StartBossEnemy();
+				camera_->BossCameraEnd();
 				gameSceneUis_->SetDrawGameUIs(false);
 			}
 			player_->Reset();
@@ -112,7 +114,6 @@ void SelectSystem::SelectInput()
 			companionManager_->Reset();
 			this->Reset();
 			gameSceneUis_->GameSceneUIFadeOut();
-			camera_->BossCameraReset();
 		}
 	}
 	// セレクトUIが表示されていなければ処理しない

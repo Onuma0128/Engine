@@ -7,6 +7,8 @@
 #include "ParticleEmitter.h"
 #include "PrimitiveDrawr.h"
 
+#include "Objects/Boss/Collider/BossDashPrediction.h"
+
 /// <summary>
 /// ボスの攻撃エフェクト
 /// </summary>
@@ -120,6 +122,7 @@ private:
 
 	std::unique_ptr<PrimitiveDrawr> dashAttackEffect_ = nullptr;
 	std::unique_ptr<PrimitiveDrawr> dashAttackTimeEffect_ = nullptr;
+	std::unique_ptr<BossDashPrediction> dashAttackPrediction_ = nullptr;
 
 	/* ==================== ダッシュ攻撃の後の怯みエフェクト ==================== */
 	

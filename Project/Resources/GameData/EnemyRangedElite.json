@@ -35,7 +35,7 @@
     "attackStartupTime": 3.0,
     "attackActiveTime": 1.0,
     "attackRecoveryTime": 0.30000001192092896,
-    "attackCoolTime": 1.7000000476837158,
+    "attackCoolTime": 1.5,
     "bulletRadSpace": 0.11999999731779099,
     "maxHp": 3,
     "modelScale": 1.399999976158142

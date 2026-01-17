@@ -13,6 +13,7 @@ void CompanionDeadState::Init()
 	companion_->SetColliderIsActive(false);
 	companion_->GetAttackCollider()->SetActive(false);
 	companion_->GetFollowerCollider()->SetActive(false);
+	companion_->GetEffect()->DamageUpEffect(false);
 }
 
 void CompanionDeadState::Finalize()

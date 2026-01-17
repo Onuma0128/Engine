@@ -24,7 +24,7 @@ void Player::Initialize()
 	}
 	Animation::Initialize(player.fileName);
 	Animation::SetSceneRenderer();
-	Animation::PlayByName("Idle_Gun", 0.0f);
+	Animation::PlayByName("Idle", 0.0f);
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
 	Animation::SetTransform(player.transform);
@@ -149,7 +149,7 @@ void Player::Reset()
 {
 	// プレイヤーのリセットをする
 	Animation::GetTimeStop() = false;
-	Animation::PlayByName("Idle_Gun", 0.0f);
+	Animation::PlayByName("Idle", 0.0f);
 	Animation::SetTransform(startTransform_);
 	ChangeState(std::make_unique<PlayerMoveState>(this));
 	

@@ -72,16 +72,17 @@ void ShieldBearerEnemy::Dead()
 
 void ShieldBearerEnemy::Reset(const Vector3& position)
 {
-	// 体力を最大値に戻す
-	maxHp_ = items_->GetShieldBearerData().tempData.maxHp;
-	currentHp_ = maxHp_;
-
 	// 基底クラスのリセット処理
 	BaseEnemy::Reset(position);
-
+	// データを取得する
+	const auto& data = items_->GetShieldBearerData().tempData;
+	// 体力を最大値に戻す
+	maxHp_ = data.maxHp;
+	currentHp_ = maxHp_;
 	// Activeを戻す
 	shieldWeapon_->SetIsActive(true);
 	// Animationの再生を初期化
+	transform_.scale_ = Vector3::ExprUnitXYZ * data.modelScale;
 	Animation::ForcePlayByName("Run_Arms");
 	// ステートを初期化
 	ChangeState(std::make_unique<EnemyMoveState>(this));

@@ -13,6 +13,7 @@
 #include "Objects/MuscleCompanion/State/CompanionAttackState.h"
 #include "Objects/MuscleCompanion/State/CompanionDeadState.h"
 #include "Objects/MuscleCompanion/State/CompanionKnockbackState.h"
+#include "Objects/MuscleCompanion/State/CompanionShieldKnockbackState.h"
 
 void MuscleCompanion::Initialize()
 {
@@ -34,7 +35,7 @@ void MuscleCompanion::Initialize()
 		"MuscleCompanion","Enemy","BossEnemy" ,"EnemyRay","BossAttack",
 		"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
-		"SearchDashMuscleCompanion",
+		"SearchDashMuscleCompanion","EnemyShield","EnemyBulletRay",
 	};
 	Collider::DrawCollider();
 
@@ -62,6 +63,9 @@ void MuscleCompanion::Update()
 {
 	// ステートの更新
 	state_->Update();
+
+	// エフェクトの更新
+	effect_->Update();
 
 	// カラーを点滅させる
 	BlinkingColor();
@@ -100,7 +104,7 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	// 建物に当たったら待機状態へ
 	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) && isDash) {
 		ChangeState(std::make_unique<CompanionIdleState>(this));
-		// 敵に当たったら攻撃状態へ
+	// 敵に当たったら攻撃状態へ
 	} else if (other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") {
 		if (Collider::radius_ > 0.6f && (isDash || isSearchDash)) {
 			isFirstDashAttack_ = true;
@@ -128,9 +132,16 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 		if (currentHp_ <= 0) {
 			ChangeState(std::make_unique<CompanionDeadState>(this));
 		} else if (other->GetColliderName() == "BossAttack") {
-			knockbackDirection_ = transform_.translation_ - other->GetCenterPosition();
+			knockbackRotate_ = other->GetRotate();
+			knockbackPosition_ = other->GetCenterPosition();
 			ChangeState(std::make_unique<CompanionKnockbackState>(this));
 		}
+	}
+	// 敵のシールドに当たったら
+	if (other->GetColliderName() == "EnemyShield") {
+		knockbackRotate_ = other->GetRotate();
+		knockbackPosition_ = other->GetCenterPosition();
+		ChangeState(std::make_unique<CompanionShieldKnockbackState>(this));
 	}
 }
 

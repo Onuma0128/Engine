@@ -49,11 +49,13 @@ void CompanionAdjustItem::LoadItems()
 		dashJson_.Set("dashTargetDistance", 0.0f);
 		dashJson_.Set("dashColliderScale", 1.0f);
 		dashJson_.Set("searchDashColliderScale", 1.0f);
+		dashJson_.Set("pushUpTime", 1.0f);
 	} else {
 		dashData_.dashSpeed = dashJson_.Get("dashSpeed", dashData_.dashSpeed);
 		dashData_.dashTargetDistance = dashJson_.Get("dashTargetDistance", dashData_.dashTargetDistance);
 		dashData_.dashColliderScale = dashJson_.Get("dashColliderScale", dashData_.dashColliderScale);
-		dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale);
+		dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale); dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale);
+		dashData_.pushUpTime = dashJson_.Get("pushUpTime", dashData_.pushUpTime);
 	}
 
 	/* ============================== Attack ============================== */
@@ -83,9 +85,17 @@ void CompanionAdjustItem::LoadItems()
 	if (!knockbackJson_.Load()) {
 		knockbackJson_.Set("knockbackSpeed", 0.0f);
 		knockbackJson_.Set("knockbackTime", 1.0f);
+
+		knockbackJson_.Set("shieldKnockbackDire", 0.0f);
+		knockbackJson_.Set("shieldKnockbackSpeed", 0.0f);
+		knockbackJson_.Set("shieldKnockbackTime", 1.0f);
 	} else {
 		knockbackData_.knockbackSpeed = knockbackJson_.Get("knockbackSpeed", knockbackData_.knockbackSpeed);
 		knockbackData_.knockbackTime = knockbackJson_.Get("knockbackTime", knockbackData_.knockbackTime);
+
+		knockbackData_.shieldKnockbackDire = knockbackJson_.Get("shieldKnockbackDire", knockbackData_.shieldKnockbackDire);
+		knockbackData_.shieldKnockbackSpeed = knockbackJson_.Get("shieldKnockbackSpeed", knockbackData_.shieldKnockbackSpeed);
+		knockbackData_.shieldKnockbackTime = knockbackJson_.Get("shieldKnockbackTime", knockbackData_.shieldKnockbackTime);
 	}
 
 	/* ============================== Effect ============================== */
@@ -174,10 +184,16 @@ void CompanionAdjustItem::Editor()
 		if (ImGui::TreeNode("Knockback")) {
 			ImGui::DragFloat("knockbackSpeed", &knockbackData_.knockbackSpeed, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("knockbackTime", &knockbackData_.knockbackTime, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat3("shieldKnockbackDire", &knockbackData_.shieldKnockbackDire.x, 0.01f, -100.0f, 100.0f);
+			ImGui::DragFloat("shieldKnockbackSpeed", &knockbackData_.shieldKnockbackSpeed, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("shieldKnockbackTime", &knockbackData_.shieldKnockbackTime, 0.01f, 0.1f, 10.0f);
 			// セーブボタン
 			if (ImGui::Button("Save")) {
 				knockbackJson_.Set("knockbackSpeed", knockbackData_.knockbackSpeed);
 				knockbackJson_.Set("knockbackTime", knockbackData_.knockbackTime);
+				knockbackJson_.Set("shieldKnockbackDire", knockbackData_.shieldKnockbackDire);
+				knockbackJson_.Set("shieldKnockbackSpeed", knockbackData_.shieldKnockbackSpeed);
+				knockbackJson_.Set("shieldKnockbackTime", knockbackData_.shieldKnockbackTime);
 				knockbackJson_.Save();
 			}
 			ImGui::TreePop();
@@ -190,12 +206,14 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("dashTargetDistance", &dashData_.dashTargetDistance, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("dashColliderScale", &dashData_.dashColliderScale, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat("searchDashColliderScale", &dashData_.searchDashColliderScale, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat("pushUpTime", &dashData_.pushUpTime, 0.01f, 0.1f, 10.0f);
 			// セーブボタン
 			if(ImGui::Button("Save")) {
 				dashJson_.Set("dashSpeed", dashData_.dashSpeed);
 				dashJson_.Set("dashTargetDistance", dashData_.dashTargetDistance);
 				dashJson_.Set("dashColliderScale", dashData_.dashColliderScale);
 				dashJson_.Set("searchDashColliderScale", dashData_.searchDashColliderScale);
+				dashJson_.Set("pushUpTime", dashData_.pushUpTime);
 				dashJson_.Save();
 			}
 			ImGui::TreePop();

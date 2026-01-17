@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "DeltaTimer.h"
+
 #include "Objects/Player/Player.h"
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 #include "Objects/MuscleCompanion/State/CompanionMoveState.h"
@@ -20,21 +22,36 @@ void CompanionIdleState::Init()
 
 void CompanionIdleState::Finalize()
 {
+	// データを取得する
+	const auto& data = companion_->GetItems()->GetDashData();
+
+	// タイムが過ぎていれば攻撃力を上げるコライダーを設定する
+	if (pushUpTime_ > data.pushUpTime) {
+		companion_->SetColliderName("BlowDashMuscleCompanion");
+	}
 }
 
 void CompanionIdleState::Update()
 {
+	// データを取得する
+	const auto& data = companion_->GetItems()->GetDashData();
+
 	// 集合要求がなければ何もしない
 	if(!companion_->GetGatherRequested()) {
 		// 距離が近づいたら待機ステートに遷移する 
 		if (!companion_->SearchDistance()) {
 			companion_->SetGatherRequested(true);
 			companion_->SetReturnOriginal(true);
+			companion_->GetEffect()->DamageUpEffect(false);
 			companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
+		} else {
+			pushUpTime_ += DeltaTimer::GetDeltaTime();
+			if (pushUpTime_ > data.pushUpTime) {
+				companion_->GetEffect()->DamageUpEffect(true);
+			}
 		}
 		return;
 	}
-	if (!companion_->GetGatherRequested()) { return; }
 
 	// 距離が離れたら移動ステートに遷移する
 	if (companion_->SearchDistance()) {

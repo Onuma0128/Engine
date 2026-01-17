@@ -49,6 +49,12 @@ public:
 	/// </summary>
 	void OnceHitEffect();
 
+	/// <summary>
+	/// ダメージアップエフェクトを呼び出す
+	/// </summary>
+	/// <param name="isCreate"></param>
+	void DamageUpEffect(bool isCreate);
+
 private:
 
 	// 仲間のポインタ
@@ -64,13 +70,17 @@ private:
 
 	/* ==================== 仲間がダッシュ時のエフェクト ==================== */
 
-	// 移動時の土埃
 	std::shared_ptr<ParticleEmitter> dashEmitter_ = nullptr;
 	std::shared_ptr<ParticleEmitter> searchDashEmitter_ = nullptr;
 
+
+	/* ==================== 仲間のダメージアップエフェクト ==================== */
+
+	std::shared_ptr<ParticleEmitter> damageUpEmitter_ = nullptr;
+
 	/* ==================== 仲間がダメージ時のエフェクト ==================== */
 
-	// 移動時の土埃
+	// 血飛沫
 	std::shared_ptr<ParticleEmitter> hitEmitter_ = nullptr;
 
 };

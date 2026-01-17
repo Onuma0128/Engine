@@ -26,7 +26,7 @@ void EnemyShield::Init(ColliderType type, const std::string& name)
 	Collider::myType_ = type;
 	Collider::colliderName_ = name;
 	Collider::targetColliderName_ = {
-		"PlayerBullet"
+		"MuscleCompanion","SearchDashMuscleCompanion",
 	};
 	Collider::DrawCollider();
 

@@ -153,7 +153,7 @@ void EnemyEffect::SetMeleeAttackEffect(const WorldTransform& transform)
 void EnemyEffect::SetBulletPredictionEffect(bool flag)
 {
 	for (auto& effect : bulletPredictionEffect_) {
-		effect.plane_->GetRenderOptions().enabled = flag;
+		effect->SetEnabledDraw(flag);
 	}
 }
 
@@ -181,13 +181,8 @@ void EnemyEffect::BulletPredictionInit()
 
 	// Planeの初期化
 	for (auto& effect : bulletPredictionEffect_) {
-		effect.plane_ = std::make_unique<PrimitiveDrawr>();
-		effect.plane_->TypeInit(PrimitiveType::kPlane);
-		effect.plane_->SetBlendMode(BlendMode::kBlendModeAdd);
-		effect.plane_->SetColor(Vector3::ExprUnitX);
-		effect.plane_->SetAlpha(0.5f);
-		effect.plane_->SetSceneRenderer();
-		effect.plane_->GetRenderOptions().enabled = false;
+		effect = std::make_unique<EnemyBulletPredictionEffect>();
+		effect->Init();
 	}
 	if (!bulletPredictionEffect_.empty()) {
 		// 弾を撃つ時のエフェクト
@@ -249,63 +244,65 @@ void EnemyEffect::BulletPredictionUpdate()
 	{
 	case EnemyType::kRanged:
 	{
-		RangedData data = enemy_->GetItem()->GetRangedData();
+		const auto& data = enemy_->GetItem()->GetRangedData();
 		auto& effect = bulletPredictionEffect_[0];
 
 		// サイズを更新
-		effect.plane_->GetTransform().scale = data.planeSize;
+		effect->SetScale(data.planeSize);
 		// 座標を計算
 		Quaternion quaternionY = Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
 		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(quaternionY);
-		Vector3 offset = data.planeOffset.Transform(rotateMatrix);
-		effect.plane_->GetTransform().translation = enemy_->GetTransform().translation_ + offset;
+		Vector3 offset = data.planeOffset.Transform(rotateMatrix) + enemy_->GetTransform().translation_;
+		effect->SetTranslate(offset);
 		// 回転を更新
 		Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, -std::numbers::pi_v<float> / 2.0f);
-		Vector3 direction = (effect.plane_->GetTransform().translation - enemy_->GetTransform().translation_);
+		Vector3 direction = (offset - enemy_->GetTransform().translation_);
 		direction.y = 0.0f;
 		if (direction.Length() != 0.0f) {
 			direction = direction.Normalize();
 			Quaternion rotateY = Quaternion::DirectionToQuaternion(enemy_->GetTransform().rotation_, direction, 0.1f);
-			effect.plane_->GetTransform().rotation = rotateY * rotateX;
+			effect->SetRotate(rotateY * rotateX);
 		} else {
-			effect.plane_->GetTransform().rotation = rotateX;
+			effect->SetRotate(rotateX);
 		}
 		// 更新
-		effect.plane_->GetUVTransform().position.x += 0.1f;
-		effect.plane_->Update();
+		effect->SetAddUvPosition(Vector2{ 0.1f,0.0f });
+		effect->SetEnemyPosition(enemy_->GetTransform().translation_);
+		effect->Update();
 	}
 		break;
 
 	case EnemyType::kRangedElite:
 	{
-		RangedEliteData data = enemy_->GetItem()->GetRangedEliteData();
+		const auto& data = enemy_->GetItem()->GetRangedEliteData();
 		float rad = -data.bulletRadSpace;
 		float pi = std::numbers::pi_v<float> / 4.0f;
 
 		for (size_t i = 0; i < bulletPredictionEffect_.size(); ++i) {
 			auto& effect = bulletPredictionEffect_[i];
 			// サイズを更新
-			effect.plane_->GetTransform().scale = data.planeSize[i];
+			effect->SetScale(data.planeSize[i]);
 			// 座標を計算
 			Quaternion quaternionY = Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
 			Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(quaternionY);
-			Vector3 offset = data.planeOffset[i].Transform(rotateMatrix);
-			effect.plane_->GetTransform().translation = enemy_->GetTransform().translation_ + offset;
+			Vector3 offset = data.planeOffset[i].Transform(rotateMatrix) + enemy_->GetTransform().translation_;
+			effect->SetTranslate(offset);
 			// 回転を更新
 			Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, std::numbers::pi_v<float> / 2.0f);
-			Vector3 direction = (effect.plane_->GetTransform().translation - enemy_->GetTransform().translation_);
+			Vector3 direction = (offset - enemy_->GetTransform().translation_);
 			direction.y = 0.0f;
 			if (direction.Length() != 0.0f) {
 				direction = direction.Normalize();
 				quaternionY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, pi * rad);
 				Quaternion rotateY = Quaternion::DirectionToQuaternion(enemy_->GetTransform().rotation_, direction, 0.1f) * quaternionY;
-				effect.plane_->GetTransform().rotation = rotateY * rotateX;
+				effect->SetRotate(rotateY * rotateX);
 			} else {
-				effect.plane_->GetTransform().rotation = rotateX;
+				effect->SetRotate(rotateX);
 			}
 			// 更新
-			effect.plane_->GetUVTransform().position.x += 0.1f;
-			effect.plane_->Update();
+			effect->SetAddUvPosition(Vector2{ 0.1f,0.0f });
+			effect->SetEnemyPosition(enemy_->GetTransform().translation_);
+			effect->Update();
 			rad += data.bulletRadSpace;
 		}
 	}

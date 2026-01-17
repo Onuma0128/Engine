@@ -156,6 +156,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\Boss\Collider\BossDashPrediction.cpp" />
+    <ClCompile Include="Game\Objects\Enemy\Effect\EnemyBulletPredictionEffect.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionShieldKnockbackState.cpp" />
     <ClCompile Include="Game\Objects\Player\Bullet\PredictionObject.cpp" />
     <ClCompile Include="Game\Uis\Boss\BossHpUI.cpp" />
     <ClCompile Include="Game\Objects\Enemy\State\EnemyKnockbackState.cpp" />
@@ -340,6 +343,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\Boss\Collider\BossDashPrediction.h" />
+    <ClInclude Include="Game\Objects\Enemy\Effect\EnemyBulletPredictionEffect.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionShieldKnockbackState.h" />
     <ClInclude Include="Game\Objects\Player\Bullet\PredictionObject.h" />
     <ClInclude Include="Game\Uis\Boss\BossHpUI.h" />
     <ClInclude Include="Game\Objects\Enemy\State\EnemyKnockbackState.h" />

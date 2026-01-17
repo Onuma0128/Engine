@@ -2,10 +2,12 @@
 
 #include "Objects/MuscleCompanion/State/CompanionBaseState.h"
 
+#include "Vector3.h"
+
 /// <summary>
-/// 待機ステートクラス
+/// 敵のシールドに弾かれた際のノックバックステートクラス
 /// </summary>
-class CompanionIdleState : public CompanionBaseState
+class CompanionShieldKnockbackState : public CompanionBaseState
 {
 public:
 
@@ -13,13 +15,13 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="player"></param>
-	CompanionIdleState(MuscleCompanion* companion);
+	CompanionShieldKnockbackState(MuscleCompanion* companion);
 
 	/// <summary>
 	/// 現在のステートを取得する
 	/// </summary>
 	/// <returns></returns>
-	CharacterState GetState() const override { return CharacterState::Idle; }
+	CharacterState GetState() const override { return CharacterState::ShieldKnockback; }
 
 	/// <summary>
 	/// 初期化
@@ -43,7 +45,13 @@ public:
 
 private:
 
-	float pushUpTime_ = 0.0f;
+	// 時間
+	float timer_ = 0.0f;
+	float maxTime_ = 0.0f;
+
+	// ノックバックされる座標
+	Vector3 prePos_ = {};
+	Vector3 target_ = {};
 
 };
 

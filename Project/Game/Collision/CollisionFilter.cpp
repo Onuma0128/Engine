@@ -17,7 +17,7 @@ bool CollisionFilter::CheckColliderNameFieldObject(const std::string& name)
 bool CollisionFilter::CheckColliderNameCompanion(const std::string& name)
 {
 	static const std::unordered_set<std::string> names =
-	{ "MuscleCompanion","FollowerMuscleCompanion",
+	{ "MuscleCompanion","FollowerMuscleCompanion","BlowDashMuscleCompanion",
 		"MuscleCompanionAttack","SearchDashMuscleCompanion" };
 	return names.contains(name);
 }
