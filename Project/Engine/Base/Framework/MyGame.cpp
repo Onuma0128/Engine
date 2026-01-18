@@ -75,8 +75,8 @@ void MyGame::Draw()
 	// 描画前の処理
 	directXEngine_->PreDraw();
 	// offscreen描画
-	ModelInstanceRenderer::GetInstance()->AllDraw();
 	directXEngine_->GetSceneRenderer()->AllDraw();
+	ModelInstanceRenderer::GetInstance()->AllDraw();
 	// パーティクルの描画
 	//directXEngine_->RenderTexturePreDraw();
 	ParticleManager::GetInstance()->Draw();

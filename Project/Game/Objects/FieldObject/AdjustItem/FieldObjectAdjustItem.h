@@ -8,6 +8,9 @@ struct FieldObjectMainData {
 	Vector3 shakeOffset;	// シェイクのオフセット
 	float cameraShakePower;	// カメラシェイクの強さ
 
+	float cameraDistance;	// カメラの距離
+	float alphaTime;		// オブジェクトのアルファを下げる時間
+
 	float breakTimer;		// 壊れるまでの時間
 	float breakEmitTimer;	// 壊れた後にエミットする時間
 };

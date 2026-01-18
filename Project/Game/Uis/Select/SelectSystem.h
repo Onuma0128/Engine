@@ -43,7 +43,7 @@ public:
 	/// <summary>
 	/// セレクトUIのフェードイン
 	/// </summary>
-	void SelectUIFadeIn();
+	void SelectUIFadeIn(bool isClear);
 
 	/// <summary>
 	/// セレクトUIが表示されているか判定

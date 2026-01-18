@@ -11,6 +11,7 @@
 #include "Objects/Player/Player.h"
 #include "Objects/Boss/Base/BossEnemy.h"
 #include "Objects/Enemy/Spawner/EnemySpawnerFactory.h"
+#include "Objects/MuscleCompanion/Manager/MuscleCompanionManager.h"
 
 void GameCamera::Init()
 {
@@ -48,8 +49,6 @@ void GameCamera::Init()
 
 void GameCamera::Update()
 {
-	Input* input = Input::GetInstance();
-
 #ifdef ENABLE_EDITOR
 	items_->Editor();
 #endif // ENABLE_EDITOR
@@ -58,12 +57,6 @@ void GameCamera::Update()
 	if (playerIsAlive_ && !player_->GetIsAlive()) {
 		CameraManager::GetInstance()->SetActiveCamera(1);
 	}
-
-	// オフセットの回転角
-	const auto& data = items_->GetCameraData();
-	const Vector3 offsetRotation = data.mainRotate;
-	// 回転を更新
-	mainCamera_->SetRotation(offsetRotation);
 
 	// シェイクオフセット（ランダムな微小ノイズ）
     Vector3 shakeOffset{};
@@ -76,7 +69,98 @@ void GameCamera::Update()
         shakeStrength_ *= shakeDecay_; // 減衰させる
     }
 
+	// メインカメラの更新
+	mainUpdate(shakeOffset);
+
+	// サブカメラの更新
+	SabUpdate(shakeOffset);
+
+	// ボスカメラの更新
+	BossUpdate(shakeOffset);
+
+	playerIsAlive_ = player_->GetIsAlive();
+}
+
+void GameCamera::mainUpdate(const Vector3& shakeOffset)
+{
+	// データを取得する
+	const auto& data = items_->GetCameraData();
+
+	// タイムを加算
+	if (clearCameraTime_ >= 0.0f) {
+		if (clearCameraTime_ == 0.0f) {
+			if (data.clearShackIndex == clearDataIndex_) {
+				shakeStrength_ = data.clearShackPow;
+			}
+		}
+		clearCameraTime_ += DeltaTimer::GetDeltaTime();
+	// ボスが死んだら
+	} else if (boss_->GetBossState() == BossState::Dead) {
+		clearCameraTime_ = 0.0f;
+		clearDataIndex_ = 0;
+	}
+
+	// ボスが死んだらカメラ操作をする
+	bool isDataSize = data.clearData.size() > clearDataIndex_ + 1;
+	if (boss_->GetBossState() == BossState::Dead) {
+		if (isDataSize) {
+			// 現在のインデックス
+			int idx = static_cast<int>(clearDataIndex_);
+			int maxIdx = static_cast<int>(data.clearData.size()) - 1;
+
+			// Catmull-Romに必要な4点（P0, P1, P2, P3）のインデックスを計算
+			// P1(始点) と P2(終点) が現在の区間。P0とP3は曲線の制御用。
+			// 配列外に出ないよう clamp する
+			int i0 = std::clamp(idx - 1, 0, maxIdx);
+			int i1 = std::clamp(idx, 0, maxIdx);
+			int i2 = std::clamp(idx + 1, 0, maxIdx);
+			int i3 = std::clamp(idx + 2, 0, maxIdx);
+
+			// 4点のデータを取得
+			const auto& p0 = data.clearData[i0];
+			const auto& p1 = data.clearData[i1];
+			const auto& p2 = data.clearData[i2];
+			const auto& p3 = data.clearData[i3];
+
+			// 進行度 t の計算（現在の区間 P1->P2 にかかる時間を使用）
+			float segmentDuration = p1.time;
+			// ゼロ除算対策（念のため）
+			if (segmentDuration <= 0.0f) { segmentDuration = 0.001f; }
+
+			float t = clearCameraTime_ / segmentDuration;
+			t = std::clamp(t, 0.0f, 1.0f);
+
+			// 次の区間へ
+			if (t >= 1.0f) {
+				clearCameraTime_ = 0.0f;
+				++clearDataIndex_;
+			}
+
+			Vector3 centerPos = companionManager_->CompanionCenterPosition();
+
+			// 回転の補間
+			Vector3 clearRotate = Vector3::CatmullRomInterpolation(
+				p0.rotate, p1.rotate, p2.rotate, p3.rotate, t
+			);
+			// 位置の補間
+			Vector3 localPos = Vector3::CatmullRomInterpolation(
+				p0.position, p1.position, p2.position, p3.position, t
+			);
+			Vector3 clearPos = localPos + centerPos;
+			Vector3 prePos = mainCamera_->GetTranslation();
+			mainCamera_->SetRotation(clearRotate);
+			mainCamera_->SetTranslation(Vector3::Lerp(prePos, clearPos + shakeOffset, 0.1f));
+		} else {
+			isClearCameraEnd_ = true;
+		}
+		return;
+	}
+	// オフセットの回転角
+	const Vector3 offsetRotation = data.mainRotate;
+	// 回転を更新
+	mainCamera_->SetRotation(offsetRotation);
 	// カメラの回転に合わせた座標を更新
+	Input* input = Input::GetInstance();
 	Vector2 R_StickDire = { input->GetGamepadRightStickX(),input->GetGamepadRightStickY() };
 	Vector3 translation = data.mainPosition + Vector3{ R_StickDire.x,0.0f,R_StickDire.y };
 	Vector3 previous = mainCamera_->GetTranslation();
@@ -84,14 +168,6 @@ void GameCamera::Update()
 
 	previous = Vector3::Lerp(previous, current + shakeOffset, 0.1f);
 	mainCamera_->SetTranslation(previous);
-
-	// サブカメラの更新
-	SabUpdate(shakeOffset);
-
-	// サブカメラの更新
-	BossUpdate(shakeOffset);
-
-	playerIsAlive_ = player_->GetIsAlive();
 }
 
 void GameCamera::SabUpdate(const Vector3& shakeOffset)
@@ -195,7 +271,7 @@ void GameCamera::BossUpdate(const Vector3& shakeOffset)
 		if (bossCameraTime_ > data.bossRecoverTime) {
 			CameraManager::GetInstance()->SetActiveCamera(0);
 			bossCameraState_ = BossCameraState::End;
-			bossCameraTime_ = 0.0f;
+			bossCameraTime_ = -1.0f;
 		}
 	}
 		break;
@@ -209,6 +285,8 @@ void GameCamera::BossUpdate(const Vector3& shakeOffset)
 void GameCamera::BossCameraReset()
 {
 	bossCameraTime_ = -1.0f;
+	clearCameraTime_ = -1.0f;
+	isClearCameraEnd_ = false;
 	bossCameraState_ = BossCameraState::Startup;
 	CameraManager::GetInstance()->SetActiveCamera(0);
 }
@@ -216,6 +294,8 @@ void GameCamera::BossCameraReset()
 void GameCamera::BossCameraEnd()
 {
 	bossCameraTime_ = -1.0f;
+	clearCameraTime_ = -1.0f;
+	isClearCameraEnd_ = false;
 	bossCameraState_ = BossCameraState::End;
 	CameraManager::GetInstance()->SetActiveCamera(0);
 }

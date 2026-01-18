@@ -148,11 +148,12 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 void MuscleCompanion::OnCollisionStay(Collider* other)
 {
 	// 死亡状態なら何もしない
-	if (state_->GetState() == CharacterState::Dead) {
+	if (state_->GetState() == CharacterState::Dead || state_->GetState() == CharacterState::Dead) {
 		return;
 	}
 
 	bool isCompanion = other->GetColliderName() == "MuscleCompanion" || other->GetColliderName() == "SearchDashMuscleCompanion";
+	bool isKnockback = state_->GetState() == CharacterState::ShieldKnockback;
 
 	// 仲間と当たっているなら
 	if (isCompanion) {
@@ -170,6 +171,12 @@ void MuscleCompanion::OnCollisionStay(Collider* other)
 		} else if (SearchDistance()) {
 			const float speed = 1.0f;
 			transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+		}
+	}
+
+	if (isKnockback) {
+		if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
+			ChangeState(std::make_unique<CompanionIdleState>(this));
 		}
 	}
 }

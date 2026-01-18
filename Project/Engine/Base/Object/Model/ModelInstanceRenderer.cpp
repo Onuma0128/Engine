@@ -16,6 +16,9 @@
 
 #include "CreateBufferResource.h"
 
+// ===== 追加：LateDraw 制御用 =====
+#include <algorithm>
+
 std::unique_ptr<ModelInstanceRenderer> ModelInstanceRenderer::instance_ = nullptr;
 
 ModelInstanceRenderer* ModelInstanceRenderer::GetInstance()
@@ -38,7 +41,7 @@ void ModelInstanceRenderer::Initialize()
         BlendMode::kBlendModeNone);
 
     animaMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
-        PipelineType::kAnimationOutLineMask ,
+        PipelineType::kAnimationOutLineMask,
         PostEffectType::kNone,
         BlendMode::kBlendModeNone);
     animaMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
@@ -65,8 +68,79 @@ void ModelInstanceRenderer::Initialize()
         BlendMode::kBlendModeNormal);
 
     lightVpBuffer_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4));
-	lightVpBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&lightData_));
+    lightVpBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&lightData_));
     lightData_->lightVP = Matrix4x4::Identity();
+}
+
+/// =====================================================================
+///                             LateDraw
+/// =====================================================================
+
+namespace {
+    // vector<Model*> から指定モデルを取り除く
+    void RemoveFromModelVector(std::vector<Model*>& v, Model* model)
+    {
+        v.erase(std::remove(v.begin(), v.end(), model), v.end());
+    }
+}
+
+bool ModelInstanceRenderer::IsLateDrawModel(Model* model) const
+{
+    if (!model) return false;
+    if (lateDrawModelNames_.empty()) return false;
+
+    // NOTE:
+    // Model 側の名前取得 API は環境依存なので、あなたの Model に合わせて関数名を調整してください。
+    // 例: GetName() / GetFileName() / GetModelName() ...
+    const std::string& name = model->GetModelData().filePath;
+    return lateDrawModelNames_.contains(name);
+}
+
+void ModelInstanceRenderer::MoveObjModelToLate(Model* model)
+{
+    RemoveFromModelVector(objDrawOrder_, model);
+    if (std::find(objLateDrawOrder_.begin(), objLateDrawOrder_.end(), model) == objLateDrawOrder_.end()) {
+        objLateDrawOrder_.push_back(model);
+    }
+}
+
+void ModelInstanceRenderer::MoveAnimModelToLate(Model* model)
+{
+    RemoveFromModelVector(animDrawOrder_, model);
+    if (std::find(animLateDrawOrder_.begin(), animLateDrawOrder_.end(), model) == animLateDrawOrder_.end()) {
+        animLateDrawOrder_.push_back(model);
+    }
+}
+
+void ModelInstanceRenderer::AddLateDrawModelName(const std::string& modelName)
+{
+    lateDrawModelNames_.insert(modelName);
+
+    // すでに確保済みのモデルも Late 側へ移動
+    // Object
+    for (Model* m : objDrawOrder_) {
+        if (m && m->GetModelData().filePath == modelName) {
+            MoveObjModelToLate(m);
+        }
+    }
+    // Animation
+    for (Model* m : animDrawOrder_) {
+        if (m && m->GetModelData().filePath == modelName) {
+            MoveAnimModelToLate(m);
+        }
+    }
+}
+
+void ModelInstanceRenderer::RemoveLateDrawModelName(const std::string& modelName)
+{
+    lateDrawModelNames_.erase(modelName);
+    // NOTE:
+    // 「元の順へ戻す」まで行う場合は、描画順の再構築が必要になります。
+}
+
+void ModelInstanceRenderer::ClearLateDrawModelNames()
+{
+    lateDrawModelNames_.clear();
 }
 
 /// =====================================================================
@@ -123,6 +197,18 @@ void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstan
         batch.materialSrvIndex, batch.materialBuffer.Get(), maxInstance, sizeof(Material));
 
     objBatches_[object->GetModel()] = std::move(batch);
+
+    // ===== 追加：描画順へ登録（unordered_map の順序に依存しない） =====
+    Model* model = object->GetModel();
+    if (IsLateDrawModel(model)) {
+        if (std::find(objLateDrawOrder_.begin(), objLateDrawOrder_.end(), model) == objLateDrawOrder_.end()) {
+            objLateDrawOrder_.push_back(model);
+        }
+    } else {
+        if (std::find(objDrawOrder_.begin(), objDrawOrder_.end(), model) == objDrawOrder_.end()) {
+            objDrawOrder_.push_back(model);
+        }
+    }
 }
 
 /// =====================================================================
@@ -201,6 +287,18 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
 
 
     animationBatches_[animation->GetModel()] = std::move(batch);
+
+    // ===== 追加：描画順へ登録（unordered_map の順序に依存しない） =====
+    Model* model = animation->GetModel();
+    if (IsLateDrawModel(model)) {
+        if (std::find(animLateDrawOrder_.begin(), animLateDrawOrder_.end(), model) == animLateDrawOrder_.end()) {
+            animLateDrawOrder_.push_back(model);
+        }
+    } else {
+        if (std::find(animDrawOrder_.begin(), animDrawOrder_.end(), model) == animDrawOrder_.end()) {
+            animDrawOrder_.push_back(model);
+        }
+    }
 }
 
 /// =====================================================================
@@ -305,7 +403,7 @@ void ModelInstanceRenderer::ObjUpdate()
             matrix.World = batch.objects[i]->GetTransform().instanceMatrix_.World;
             matrix.WorldInvT = batch.objects[i]->GetTransform().instanceMatrix_.WorldInverseTranspose;
             matrix.WVP = batch.objects[i]->GetTransform().instanceMatrix_.WVP;
-			// Materialを代入
+            // Materialを代入
             Material& material = batch.materialData[i];
             material = batch.objects[i]->GetMaterial();
         }
@@ -361,24 +459,33 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
         commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     }
 
-	lightData_->lightVP = LightManager::GetInstance()->GetDirectionalLight()->GetLightVP();
+    lightData_->lightVP = LightManager::GetInstance()->GetDirectionalLight()->GetLightVP();
 
-    for (auto& [model, batch] : objBatches_) {
-        if (batch.count == 0) continue;
+    // ===== 追加：描画順を保証（通常 → Late） =====
+    auto DrawObjShadowDepth = [&](const std::vector<Model*>& drawOrder) {
+        for (Model* model : drawOrder) {
+            auto it = objBatches_.find(model);
+            if (it == objBatches_.end()) continue;
+            ObjectBatch& batch = it->second;
+            if (batch.count == 0) continue;
 
-        model->BindBuffers(false);
-		commandList->SetGraphicsRootConstantBufferView(0, lightVpBuffer_->GetGPUVirtualAddress());
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
-		SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, batch.materialSrvIndex);
+            model->BindBuffers(false);
+            commandList->SetGraphicsRootConstantBufferView(0, lightVpBuffer_->GetGPUVirtualAddress());
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, batch.materialSrvIndex);
 
-        /* ---------- Mesh ループ ---------- */
-        const auto& mesh = model->GetMeshData();
-        for (uint32_t i = 0; i < mesh.size(); ++i) {
-            commandList->DrawIndexedInstanced(
-                mesh[i].indexCount, batch.count,
-                mesh[i].indexStart, 0, 0);
+            /* ---------- Mesh ループ ---------- */
+            const auto& mesh = model->GetMeshData();
+            for (uint32_t i = 0; i < mesh.size(); ++i) {
+                commandList->DrawIndexedInstanced(
+                    mesh[i].indexCount, batch.count,
+                    mesh[i].indexStart, 0, 0);
+            }
         }
-    }
+        };
+
+    DrawObjShadowDepth(objDrawOrder_);
+    DrawObjShadowDepth(objLateDrawOrder_);
 
     AnimationUpdate();
 
@@ -388,25 +495,34 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
         commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     }
 
-    for (auto& [model, batch] : animationBatches_) {
-        if (batch.count == 0) continue;
+    // ===== 追加：描画順を保証（通常 → Late） =====
+    auto DrawAnimShadowDepth = [&](const std::vector<Model*>& drawOrder) {
+        for (Model* model : drawOrder) {
+            auto it = animationBatches_.find(model);
+            if (it == animationBatches_.end()) continue;
+            AnimationBatch& batch = it->second;
+            if (batch.count == 0) continue;
 
-        batch.animations.back()->SetVertexBuffer();
-        model->BindBuffers(true);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
-        commandList->SetGraphicsRootConstantBufferView(2, batch.jointBuffer->GetGPUVirtualAddress());
-        commandList->SetGraphicsRootConstantBufferView(3, lightVpBuffer_->GetGPUVirtualAddress());
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(4, batch.materialSrvIndex);
+            batch.animations.back()->SetVertexBuffer();
+            model->BindBuffers(true);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
+            commandList->SetGraphicsRootConstantBufferView(2, batch.jointBuffer->GetGPUVirtualAddress());
+            commandList->SetGraphicsRootConstantBufferView(3, lightVpBuffer_->GetGPUVirtualAddress());
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(4, batch.materialSrvIndex);
 
-        /* ---------- Mesh ループ ---------- */
-        const auto& mesh = model->GetMeshData();
-        for (uint32_t i = 0; i < mesh.size(); ++i) {
-            commandList->DrawIndexedInstanced(
-                mesh[i].indexCount, batch.count,
-                mesh[i].indexStart, 0, 0);
+            /* ---------- Mesh ループ ---------- */
+            const auto& mesh = model->GetMeshData();
+            for (uint32_t i = 0; i < mesh.size(); ++i) {
+                commandList->DrawIndexedInstanced(
+                    mesh[i].indexCount, batch.count,
+                    mesh[i].indexStart, 0, 0);
+            }
         }
-    }
+        };
+
+    DrawAnimShadowDepth(animDrawOrder_);
+    DrawAnimShadowDepth(animLateDrawOrder_);
 }
 
 void ModelInstanceRenderer::AllDrawOutlineMask() {
@@ -419,19 +535,28 @@ void ModelInstanceRenderer::AllDrawOutlineMask() {
     }
 
     // === Object3d バッチ ===
-    for (auto& [model, batch] : objBatches_) {
-        if (batch.count == 0) continue;
+    // ===== 追加：描画順を保証（通常 → Late） =====
+    auto DrawObjOutlineMask = [&](const std::vector<Model*>& drawOrder) {
+        for (Model* model : drawOrder) {
+            auto it = objBatches_.find(model);
+            if (it == objBatches_.end()) continue;
+            ObjectBatch& batch = it->second;
+            if (batch.count == 0) continue;
 
-        model->BindBuffers(false);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.materialSrvIndex);
-        commandList->SetGraphicsRootConstantBufferView(2, lightVpBuffer_->GetGPUVirtualAddress());
+            model->BindBuffers(false);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.materialSrvIndex);
+            commandList->SetGraphicsRootConstantBufferView(2, lightVpBuffer_->GetGPUVirtualAddress());
 
-        const auto& mesh = model->GetMeshData();
-        for (uint32_t i = 0; i < mesh.size(); ++i) {
-            commandList->DrawIndexedInstanced(mesh[i].indexCount, batch.count, mesh[i].indexStart, 0, 0);
+            const auto& mesh = model->GetMeshData();
+            for (uint32_t i = 0; i < mesh.size(); ++i) {
+                commandList->DrawIndexedInstanced(mesh[i].indexCount, batch.count, mesh[i].indexStart, 0, 0);
+            }
         }
-    }
+        };
+
+    DrawObjOutlineMask(objDrawOrder_);
+    DrawObjOutlineMask(objLateDrawOrder_);
 
     if (!animationBatches_.empty()) {
         commandList->SetPipelineState(animaMaskPipelineState_.Get());
@@ -440,22 +565,31 @@ void ModelInstanceRenderer::AllDrawOutlineMask() {
     }
 
     // === Animation バッチ ===
-    for (auto& [model, batch] : animationBatches_) {
-        if (batch.count == 0) continue;
+    // ===== 追加：描画順を保証（通常 → Late） =====
+    auto DrawAnimOutlineMask = [&](const std::vector<Model*>& drawOrder) {
+        for (Model* model : drawOrder) {
+            auto it = animationBatches_.find(model);
+            if (it == animationBatches_.end()) continue;
+            AnimationBatch& batch = it->second;
+            if (batch.count == 0) continue;
 
-        model->BindBuffers(true);
-        batch.animations[0]->SetVertexBuffer();
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, batch.materialSrvIndex);
-        commandList->SetGraphicsRootConstantBufferView(3, batch.jointBuffer->GetGPUVirtualAddress());
-        commandList->SetGraphicsRootConstantBufferView(4, lightVpBuffer_->GetGPUVirtualAddress());
+            model->BindBuffers(true);
+            batch.animations[0]->SetVertexBuffer();
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.instSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.paletteSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(2, batch.materialSrvIndex);
+            commandList->SetGraphicsRootConstantBufferView(3, batch.jointBuffer->GetGPUVirtualAddress());
+            commandList->SetGraphicsRootConstantBufferView(4, lightVpBuffer_->GetGPUVirtualAddress());
 
-        const auto& mesh = model->GetMeshData();
-        for (uint32_t i = 0; i < mesh.size(); ++i) {
-            commandList->DrawIndexedInstanced(mesh[i].indexCount, batch.count, mesh[i].indexStart, 0, 0);
+            const auto& mesh = model->GetMeshData();
+            for (uint32_t i = 0; i < mesh.size(); ++i) {
+                commandList->DrawIndexedInstanced(mesh[i].indexCount, batch.count, mesh[i].indexStart, 0, 0);
+            }
         }
-    }
+        };
+
+    DrawAnimOutlineMask(animDrawOrder_);
+    DrawAnimOutlineMask(animLateDrawOrder_);
 }
 
 
@@ -463,52 +597,70 @@ void ModelInstanceRenderer::AllDraw()
 {
     auto* commandList = DirectXEngine::GetCommandList();
 
-    for (auto& [model, batch] : objBatches_) {
-        if (batch.count == 0) continue;
+    // ===== 追加：描画順を保証（通常 → Late） =====
+    auto DrawAnimations = [&](const std::vector<Model*>& drawOrder) {
+        for (Model* model : drawOrder) {
+            auto it = animationBatches_.find(model);
+            if (it == animationBatches_.end()) continue;
+            AnimationBatch& batch = it->second;
+            if (batch.count == 0) continue;
 
-        /* ---------- IA 共通バインド ---------- */
-        for (auto& object : batch.objects) {
-            object->Draw();
+            /* ---------- IA 共通バインド ---------- */
+            for (auto& animation : batch.animations) {
+                animation->Draw();
+            }
+            model->BindBuffers(true);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.paletteSrvIndex);
+            commandList->SetGraphicsRootConstantBufferView(10, batch.jointBuffer->GetGPUVirtualAddress());
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(11, ShadowMap::GetInstance()->GetShadowMapSrvIndex());
+            commandList->SetGraphicsRootConstantBufferView(12, lightVpBuffer_->GetGPUVirtualAddress());
+
+            /* ---------- Mesh ループ ---------- */
+            const auto& mesh = model->GetMeshData();
+            for (uint32_t i = 0; i < mesh.size(); ++i) {
+                model->BindMaterial(mesh[i].materialIndex);
+                commandList->DrawIndexedInstanced(
+                    mesh[i].indexCount, batch.count,
+                    mesh[i].indexStart, 0, 0);
+            }
         }
-        model->BindBuffers(false);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(9, ShadowMap::GetInstance()->GetShadowMapSrvIndex());
-        commandList->SetGraphicsRootConstantBufferView(10, lightVpBuffer_->GetGPUVirtualAddress());
+        };
 
-        /* ---------- Mesh ループ ---------- */
-        const auto& mesh = model->GetMeshData();
-        for (uint32_t i = 0; i < mesh.size(); ++i) {
-            model->BindMaterial(mesh[i].materialIndex);
-            commandList->DrawIndexedInstanced(
-                mesh[i].indexCount, batch.count,
-                mesh[i].indexStart, 0, 0);
+    auto DrawObjects = [&](const std::vector<Model*>& drawOrder) {
+        for (Model* model : drawOrder) {
+            auto it = objBatches_.find(model);
+            if (it == objBatches_.end()) continue;
+            ObjectBatch& batch = it->second;
+            if (batch.count == 0) continue;
+
+            /* ---------- IA 共通バインド ---------- */
+            for (auto& object : batch.objects) {
+                object->Draw();
+            }
+            model->BindBuffers(false);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
+            SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(9, ShadowMap::GetInstance()->GetShadowMapSrvIndex());
+            commandList->SetGraphicsRootConstantBufferView(10, lightVpBuffer_->GetGPUVirtualAddress());
+
+            /* ---------- Mesh ループ ---------- */
+            const auto& mesh = model->GetMeshData();
+            for (uint32_t i = 0; i < mesh.size(); ++i) {
+                model->BindMaterial(mesh[i].materialIndex);
+                commandList->DrawIndexedInstanced(
+                    mesh[i].indexCount, batch.count,
+                    mesh[i].indexStart, 0, 0);
+            }
         }
-    }
+        };
 
-    for (auto& [model, batch] : animationBatches_) {
-        if (batch.count == 0) continue;
+    // 通常
+    DrawAnimations(animDrawOrder_);
+    DrawObjects(objDrawOrder_);
 
-        /* ---------- IA 共通バインド ---------- */
-        for (auto& animation : batch.animations) {
-            animation->Draw();
-        }
-        model->BindBuffers(true);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, batch.materialSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, batch.instSrvIndex);
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(3, batch.paletteSrvIndex);
-        commandList->SetGraphicsRootConstantBufferView(10, batch.jointBuffer->GetGPUVirtualAddress());
-        SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(11, ShadowMap::GetInstance()->GetShadowMapSrvIndex());
-        commandList->SetGraphicsRootConstantBufferView(12, lightVpBuffer_->GetGPUVirtualAddress());
-
-        /* ---------- Mesh ループ ---------- */
-        const auto& mesh = model->GetMeshData();
-        for (uint32_t i = 0; i < mesh.size(); ++i) {
-            model->BindMaterial(mesh[i].materialIndex);
-            commandList->DrawIndexedInstanced(
-                mesh[i].indexCount, batch.count,
-                mesh[i].indexStart, 0, 0);
-        }
-    }
-
+    // 最後に描画
+    DrawAnimations(animLateDrawOrder_);
+    DrawObjects(objLateDrawOrder_);
 }

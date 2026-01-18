@@ -17,7 +17,7 @@
         "x": 800.0,
         "y": 400.0
     },
-    "clearCountUiTimer": 1.0,
+    "clearCountUiTimer": 0.0,
     "selectUiInterval": 3.0,
     "edgeWidth": 0.029999999329447746,
     "noiseColor": {

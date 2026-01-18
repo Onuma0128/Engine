@@ -60,8 +60,6 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "blood.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "numbers.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "titleUI.png");
-	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "gameClearUI.png");
-	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "gameOverUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "menuUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "Apple.dds");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "noiseTexture.png");
@@ -88,6 +86,8 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "ratioUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "catUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "rematchUI.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "gameClearUI.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture/select", "gameOverUI.png");
 
 	// ============================== Model ============================== //
 

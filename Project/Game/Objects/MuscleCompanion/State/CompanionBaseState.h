@@ -13,6 +13,7 @@ enum class CharacterState {
 	Knockback,		// ノックバック
 	ShieldKnockback,// 敵シールドのノックバック
 	Dead,			// 死亡
+	Clear,			// クリア
 };
 
 /// <summary>

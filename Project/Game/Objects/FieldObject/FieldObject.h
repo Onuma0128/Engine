@@ -98,6 +98,9 @@ private:
 	// オブジェクトの元の座標
 	Vector3 centerPosition_;
 
+	float alpha_ = 1.0f;
+	bool isGround_ = false;
+
 
 };
 

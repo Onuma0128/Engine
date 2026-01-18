@@ -17,5 +17,6 @@
     "objectScale": 1.100000023841858,
     "blinkingHP": 5,
     "blinkingColor": 0.30000001192092896,
-    "blinkingTimeScale": 2.0
+    "blinkingTimeScale": 2.0,
+    "clearStateTime": 3.0
 }

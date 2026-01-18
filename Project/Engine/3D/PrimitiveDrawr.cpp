@@ -120,7 +120,7 @@ void PrimitiveDrawr::SetSceneRenderer()
 {
 	renderOptions_ = {
 		.enabled = true,
-		.offscreen = true
+		.offscreen = false
 	};
 	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }

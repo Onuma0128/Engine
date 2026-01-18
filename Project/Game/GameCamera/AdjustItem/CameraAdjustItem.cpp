@@ -12,6 +12,14 @@ void CameraAdjustItem::LoadItems()
         cameraJson_.Set("mainRotate", Vector3{});
         cameraJson_.Set("mainPosition", Vector3{});
 
+        cameraData_.maxClearCameraPoint = 0;
+        cameraJson_.Set("maxClearCameraPoint", 0);
+        cameraJson_.Set("clearTime0", 0.0f);
+        cameraJson_.Set("clearRotate0", Vector3{});
+        cameraJson_.Set("clearPosition0", Vector3{});
+        cameraJson_.Set("clearShackIndex", 0);
+        cameraJson_.Set("clearShackPow", 0.0f);
+
         cameraJson_.Set("sabPosition", Vector3{});
         cameraJson_.Set("isSabRotate", false);
         cameraJson_.Set("sabRotateSpeed", 0.0f);
@@ -30,6 +38,16 @@ void CameraAdjustItem::LoadItems()
         cameraData_.mainPosition = cameraJson_.Get("mainPosition", cameraData_.mainPosition);
         cameraData_.mainRotate = cameraJson_.Get("mainRotate", cameraData_.mainRotate);
 
+        cameraData_.maxClearCameraPoint = cameraJson_.Get("maxClearCameraPoint", cameraData_.maxClearCameraPoint);
+        cameraData_.clearData.resize(cameraData_.maxClearCameraPoint);
+        for (int i = 0; i < cameraData_.maxClearCameraPoint; ++i) {
+            cameraData_.clearData[i].time = cameraJson_.Get("clearTime" + std::to_string(i), 0.0f);
+            cameraData_.clearData[i].rotate = cameraJson_.Get("clearRotate" + std::to_string(i), Vector3{});
+            cameraData_.clearData[i].position = cameraJson_.Get("clearPosition" + std::to_string(i), Vector3{});
+        }
+        cameraData_.clearShackIndex = cameraJson_.Get("clearShackIndex", cameraData_.clearShackIndex);
+        cameraData_.clearShackPow = cameraJson_.Get("clearShackPow", cameraData_.clearShackPow);
+
         cameraData_.sabPosition = cameraJson_.Get("sabPosition", cameraData_.sabPosition);
         cameraData_.isSabRotate = cameraJson_.Get("isSabRotate", cameraData_.isSabRotate);
         cameraData_.sabRotateSpeed = cameraJson_.Get("sabRotateSpeed", cameraData_.sabRotateSpeed);
@@ -44,6 +62,7 @@ void CameraAdjustItem::LoadItems()
         cameraData_.bossEndRotate = cameraJson_.Get("bossEndRotate", cameraData_.bossEndRotate);
         cameraData_.bossEndPosition = cameraJson_.Get("bossEndPosition", cameraData_.bossEndPosition);
     }
+    savedSpawnCount_ = cameraData_.maxClearCameraPoint;
 }
 
 void CameraAdjustItem::Editor()
@@ -66,6 +85,42 @@ void CameraAdjustItem::Editor()
 
         ImGui::DragFloat3("mainPosition", &cameraData_.mainPosition.x, 0.05f);
         ImGui::DragFloat3("mainRotate", &cameraData_.mainRotate.x, 0.05f);
+
+        ImGui::Spacing();
+        ImGui::SeparatorText("Clear Camera");
+
+        ImGui::DragInt("clearShackIndex", &cameraData_.clearShackIndex, 1, 0, cameraData_.maxClearCameraPoint - 1);
+        ImGui::DragFloat("clearShackPow", &cameraData_.clearShackPow, 0.01f);
+
+        ImGui::Text("maxPoint: %d", cameraData_.maxClearCameraPoint);
+        ImGui::SameLine();
+        if (ImGui::Button("-")) {
+            if (cameraData_.maxClearCameraPoint > 0) {
+                cameraData_.maxClearCameraPoint--;
+                if ((int)cameraData_.clearData.size() > cameraData_.maxClearCameraPoint) {
+                    cameraData_.clearData.resize(cameraData_.maxClearCameraPoint);
+                }
+            }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("+")) {
+            cameraData_.maxClearCameraPoint++;
+            if ((int)cameraData_.clearData.size() < cameraData_.maxClearCameraPoint) {
+                cameraData_.clearData.resize(cameraData_.maxClearCameraPoint, ClearCameraData{});
+            }
+        }
+
+        ImGui::Separator();
+
+        for (int i = 0; i < cameraData_.maxClearCameraPoint; ++i) {
+            std::string time = "clearTime" + std::to_string(i);
+            std::string rotate = "clearRotate" + std::to_string(i);
+            std::string pos = "clearPosition" + std::to_string(i);
+            ImGui::DragFloat(time.c_str(), &cameraData_.clearData[i].time, 0.1f);
+            ImGui::DragFloat3(rotate.c_str(), &cameraData_.clearData[i].rotate.x, 0.1f);
+            ImGui::DragFloat3(pos.c_str(), &cameraData_.clearData[i].position.x, 0.1f);
+            ImGui::Separator();
+        }
 
         ImGui::Spacing();
         ImGui::SeparatorText("Sab Camera");
@@ -95,6 +150,23 @@ void CameraAdjustItem::Editor()
             // cameraData_ -> cameraJson_ に書き戻してから保存
             cameraJson_.Set("mainRotate", cameraData_.mainRotate);
             cameraJson_.Set("mainPosition", cameraData_.mainPosition);
+
+            cameraJson_.Set("maxClearCameraPoint", cameraData_.maxClearCameraPoint);
+            const int writeCount = (savedSpawnCount_ > cameraData_.maxClearCameraPoint)
+                ? savedSpawnCount_
+                : cameraData_.maxClearCameraPoint;
+
+            for (int i = 0; i < writeCount; ++i) {
+                float time = (i < cameraData_.maxClearCameraPoint) ? cameraData_.clearData[i].time : 0.0f;
+                Vector3 rotate = (i < cameraData_.maxClearCameraPoint) ? cameraData_.clearData[i].rotate : Vector3{};
+                Vector3 pos = (i < cameraData_.maxClearCameraPoint) ? cameraData_.clearData[i].position : Vector3{};
+                cameraJson_.Set("clearTime" + std::to_string(i), time);
+                cameraJson_.Set("clearRotate" + std::to_string(i), rotate);
+                cameraJson_.Set("clearPosition" + std::to_string(i), pos);
+            }
+            savedSpawnCount_ = cameraData_.maxClearCameraPoint;
+            cameraJson_.Set("clearShackIndex", cameraData_.clearShackIndex);
+            cameraJson_.Set("clearShackPow", cameraData_.clearShackPow);
 
             cameraJson_.Set("sabPosition", cameraData_.sabPosition);
             cameraJson_.Set("isSabRotate", cameraData_.isSabRotate);

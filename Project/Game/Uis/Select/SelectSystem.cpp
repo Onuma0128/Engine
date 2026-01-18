@@ -19,22 +19,21 @@ void SelectSystem::Init()
 	selectUIs_[0]->Init("SelectBackWidth");
 	selectUIs_[1] = std::make_unique<SelectUI>();
 	selectUIs_[1]->Init("SelectBackHeight");
-	// 背景の上のUISprite(キルのUI)
-	selectUIs_[2] = std::make_unique<SelectUI>();
-	selectUIs_[2]->Init("KillCountUI");
 	// セレクト表示後の選択ボタンUI(タイトルともう一度)
+	selectUIs_[2] = std::make_unique<SelectUI>();
+	selectUIs_[2]->Init("SelectTitleUI");
+	selectUIs_[2]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
 	selectUIs_[3] = std::make_unique<SelectUI>();
-	selectUIs_[3]->Init("SelectTitleUI");
+	selectUIs_[3]->Init("SelectOnceAgainUI");
 	selectUIs_[3]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
 	selectUIs_[4] = std::make_unique<SelectUI>();
-	selectUIs_[4]->Init("SelectOnceAgainUI");
+	selectUIs_[4]->Init("SelectRematchUI");
 	selectUIs_[4]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
-	selectUIs_[5] = std::make_unique<SelectUI>();
-	selectUIs_[5]->Init("SelectRematchUI");
-	selectUIs_[5]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
 	// 背景の上のUISprite(キルのUI)
+	selectUIs_[5] = std::make_unique<SelectUI>();
+	selectUIs_[5]->Init("GameOverUI");
 	selectUIs_[6] = std::make_unique<SelectUI>();
-	selectUIs_[6]->Init("CountUI");
+	selectUIs_[6]->Init("GameClearUI");
 
 	// キル数の表示UI
 	killCountUI_ = std::make_unique<NumberCountUI>();
@@ -55,12 +54,16 @@ void SelectSystem::Update()
 #endif // ENABLE_EDITOR
 
 	// プレイヤーが死んだかクリアをしたらセレクトUIを表示する
-	if ((!player_->GetIsAlive() || boss_->GetBossState() == BossState::Dead) && !isFadeIn_) {
-		SelectUIFadeIn();
+	if (!isFadeIn_) {
+		if (!player_->GetIsAlive()) {
+			this->SelectUIFadeIn(false);
+		} else if (camera_->GetClearEnd()) {
+			this->SelectUIFadeIn(true);
+		}
 	}
 
 	// ターゲットされているボタンを更新する
-	const uint32_t kAddIndex = 3u;
+	const uint32_t kAddIndex = 2u;
 	uint32_t index = targetIndex_ + kAddIndex;
 	selectUIs_[index]->Blinking();
 
@@ -79,14 +82,17 @@ void SelectSystem::Draw()
 		for (auto& back : selectUIs_) {
 			back->Draw();
 		}
-		killCountUI_->Draw();
+		// キル数を描画する
+		// killCountUI_->Draw();
 	}
 }
 
-void SelectSystem::SelectUIFadeIn()
+void SelectSystem::SelectUIFadeIn(bool isClear)
 {
-	for (auto& back : selectUIs_) {
-		back->FadeIn();
+	for (size_t i = 0; i < kSelectUiSize_; ++i) {
+		if (isClear && i == 5) { continue; }
+		if (!isClear && i == 6) { continue; }
+		selectUIs_[i]->FadeIn();
 	}
 	isFadeIn_ = true;
 }
@@ -146,14 +152,14 @@ void SelectSystem::SelectInput()
 	// ターゲットしていないUIはAlphaを下げる
 	const Vector4 setColor = Vector4{ 1.0f,1.0f,1.0f,0.1f };
 	if (targetIndex_ == 0u) {
+		selectUIs_[3]->GetSprite()->SetColor(setColor);
 		selectUIs_[4]->GetSprite()->SetColor(setColor);
-		selectUIs_[5]->GetSprite()->SetColor(setColor);
 	} else if (targetIndex_ == 1u) {
-		selectUIs_[3]->GetSprite()->SetColor(setColor);
-		selectUIs_[5]->GetSprite()->SetColor(setColor);
-	} else {
-		selectUIs_[3]->GetSprite()->SetColor(setColor);
+		selectUIs_[2]->GetSprite()->SetColor(setColor);
 		selectUIs_[4]->GetSprite()->SetColor(setColor);
+	} else {
+		selectUIs_[2]->GetSprite()->SetColor(setColor);
+		selectUIs_[3]->GetSprite()->SetColor(setColor);
 	}
 
 	// ボタンを押したらシーン遷移する
@@ -248,4 +254,7 @@ void SelectSystem::Reset()
 	countUiOrder_ = CountUiOrder::First;
 	selectUiInterval_ = 0.0f;
 	clearCountUiTimer_ = 0.0f;
+	for (auto& back : selectUIs_) {
+		back->FadeOut();
+	}
 }

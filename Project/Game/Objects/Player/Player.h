@@ -14,6 +14,9 @@
 #include "objects/player/adjustItem/PlayerAdjustItem.h"
 #include "objects/player/bullet/PlayerShot.h"
 
+// 前方宣言
+class BossEnemy;
+
 /// <summary>
 /// プレイヤー
 /// </summary>
@@ -70,7 +73,9 @@ public:
 	PlayerEffect* GetEffect()const { return effect_.get(); }
 	PlayerReticle* GetReticle()const { return reticle_.get(); }
 	PlayerAdjustItem* GetItem() const { return items_.get(); }
+	BossEnemy* GetBoss()const { return boss_; }
 	void SetLoader(SceneJsonLoader* loader) { loader_ = loader; }
+	void SetBoss(BossEnemy* boss) { boss_ = boss; }
 
 	const WorldTransform& GetTransform() const { return transform_; }
 	bool GetIsAlive()const { return isAlive_; }
@@ -83,6 +88,9 @@ public:
 	void SetAvoidCoolTimer(float time) { avoidCoolTimer_ = time; }
 
 private:
+
+	// ボスのポインタ
+	BossEnemy* boss_ = nullptr;
 
 	// 状態遷移
 	std::unique_ptr<PlayerBaseState> state_ = nullptr;

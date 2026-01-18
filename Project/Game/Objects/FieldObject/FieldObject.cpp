@@ -2,6 +2,7 @@
 
 #include <numbers>
 
+#include "ModelInstanceRenderer.h"
 #include "DeltaTimer.h"
 #include "Easing.h"
 
@@ -15,6 +16,8 @@ void FieldObject::Init(SceneObject object)
 	if (object.tag != "ground") {
 		Object3d::GetMaterial().outlineMask = true;
 		Object3d::GetMaterial().outlineColor = Vector3::ExprZero;
+	} else {
+		isGround_ = true;
 	}
 	transform_ = object.transform;
 	centerPosition_ = transform_.translation_;
@@ -46,6 +49,21 @@ void FieldObject::Update()
 	UpdateBreak();
 
 	effect_->Update();
+
+	// カメラとの距離が近ければアルファを下げる
+	if (gameCamera_ && !isGround_) {
+		float distance = Vector3::Distance(gameCamera_->GetCamera()->GetTranslation(), transform_.translation_);
+		if (distance < items_->GetMainData().cameraDistance) {
+			ModelInstanceRenderer::GetInstance()->AddLateDrawModelName(Object3d::GetModel()->GetModelData().filePath);
+			Object3d::GetMaterial().outlineMask = false;
+			alpha_ -= DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
+		} else {
+			Object3d::GetMaterial().outlineMask = true;
+			alpha_ += DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
+		}
+		alpha_ = std::clamp(alpha_, 0.0f, 1.0f);
+		Object3d::SetColor(Vector4{ 1.0f,1.0f,1.0f,alpha_ });
+	}
 
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;

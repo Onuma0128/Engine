@@ -6,8 +6,9 @@
 #include "DeltaTimer.h"
 #include "Camera.h"
 
-#include "objects/player/Player.h"
-#include "objects/player/bullet/PlayerShot.h"
+#include "Objects/Boss/Base/BossEnemy.h"
+#include "Objects/Player/Player.h"
+#include "Objects/Player/Bullet/PlayerShot.h"
 #include "PlayerAvoidState.h"
 #include "PlayerSpecialMoveState.h"
 
@@ -62,6 +63,10 @@ void PlayerMoveState::Finalize()
 
 void PlayerMoveState::Update()
 {
+	if (player_->GetBoss()->GetBossState() == BossState::Dead) {
+		return;
+	}
+
 	// Inputを取得
 	Input* input = Input::GetInstance();
 

@@ -22,6 +22,7 @@ void CompanionAdjustItem::LoadItems()
 		mainJson_.Set("distanceToAlly", 0.0f);
 		mainJson_.Set("followerColliderSize", 0.0f);
 		mainJson_.Set("debugSpline", false);
+		mainJson_.Set("clearStateTime", 0.0f);
 	} else {
 		mainData_.maxHP = mainJson_.Get("maxHP", mainData_.maxHP);
 		mainData_.speed = mainJson_.Get("speed", mainData_.speed);
@@ -39,6 +40,7 @@ void CompanionAdjustItem::LoadItems()
 		mainData_.distanceToAlly = mainJson_.Get("distanceToAlly", mainData_.distanceToAlly);
 		mainData_.followerColliderSize = mainJson_.Get("followerColliderSize", mainData_.followerColliderSize);
 		mainData_.debugSpline = mainJson_.Get("debugSpline", mainData_.debugSpline);
+		mainData_.clearStateTime = mainJson_.Get("clearStateTime", mainData_.clearStateTime);
 	}
 	mainData_.debugSpline = false;
 
@@ -159,6 +161,7 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("followerColliderSize", &mainData_.followerColliderSize, 0.01f, 0.0f, 10.0f);
 			ImGui::DragFloat("searchUpdateTime", &mainData_.searchUpdateTime, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("searchCancelDistance", &mainData_.searchCancelDistance, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("clearStateTime", &mainData_.clearStateTime, 0.01f, 0.0f, 100.0f);
 			ImGui::Checkbox("debugSpline", &mainData_.debugSpline);
 			// セーブボタン
 			if (ImGui::Button("Save")) {
@@ -175,6 +178,7 @@ void CompanionAdjustItem::Editor()
 				mainJson_.Set("followerColliderSize", mainData_.followerColliderSize);
 				mainJson_.Set("searchUpdateTime", mainData_.searchUpdateTime);
 				mainJson_.Set("searchCancelDistance", mainData_.searchCancelDistance);
+				mainJson_.Set("clearStateTime", mainData_.clearStateTime);
 				mainJson_.Save();
 			}
 			ImGui::TreePop();

@@ -41,5 +41,85 @@
         "z": -12.0
     },
     "bossStartupTime": 1.0,
-    "bossRecoverTime": 4.400000095367432
+    "bossRecoverTime": 4.400000095367432,
+    "maxClearCameraPoint": 7,
+    "clearTime0": 2.0,
+    "clearRotate0": {
+        "x": 0.8299999833106995,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "clearPosition0": {
+        "x": 0.0,
+        "y": 20.0,
+        "z": -18.0
+    },
+    "clearTime1": 0.0,
+    "clearRotate1": {
+        "x": 0.8299999833106995,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "clearPosition1": {
+        "x": 0.0,
+        "y": 20.0,
+        "z": -18.0
+    },
+    "clearTime2": 1.0,
+    "clearRotate2": {
+        "x": 0.8299999833106995,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "clearPosition2": {
+        "x": 0.0,
+        "y": 10.0,
+        "z": -9.0
+    },
+    "clearTime3": 0.5,
+    "clearRotate3": {
+        "x": 0.30000001192092896,
+        "y": 0.20000000298023224,
+        "z": 0.0
+    },
+    "clearPosition3": {
+        "x": -1.0,
+        "y": 2.0,
+        "z": -5.0
+    },
+    "clearTime4": 0.4000000059604645,
+    "clearRotate4": {
+        "x": -0.10000000149011612,
+        "y": -0.7900000214576721,
+        "z": 0.0
+    },
+    "clearPosition4": {
+        "x": 8.75,
+        "y": 1.0,
+        "z": -8.75
+    },
+    "clearTime5": 0.5,
+    "clearRotate5": {
+        "x": -0.10000000149011612,
+        "y": -0.7900000214576721,
+        "z": 0.0
+    },
+    "clearPosition5": {
+        "x": 3.5,
+        "y": 1.2000000476837158,
+        "z": -3.5
+    },
+    "clearTime6": 1.0,
+    "clearRotate6": {
+        "x": -0.10000000149011612,
+        "y": -0.7900000214576721,
+        "z": 0.0
+    },
+    "clearPosition6": {
+        "x": 3.5,
+        "y": 1.2000000476837158,
+        "z": -3.5
+    },
+    "clearShackIndex": 5,
+    "clearShackPow": 2.5
 }

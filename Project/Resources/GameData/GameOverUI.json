@@ -5,12 +5,46 @@
         "y": 0.5
     },
     "Size": {
-        "x": 900.0,
-        "y": 384.0
+        "x": 640.0,
+        "y": 128.0
     },
     "Rotate": 0.0,
     "Position": {
         "x": 640.0,
-        "y": 460.0
-    }
+        "y": 375.0
+    },
+    "NoiseTexture": "noiseTexture.png",
+    "EdgeWidth": 0.07500000298023224,
+    "NoiseColor": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "Anima_Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "IsAnimation": true,
+    "AnimationTime": 0.5,
+    "Anima_Size": {
+        "x": 640.0,
+        "y": 128.0
+    },
+    "Anima_Rotate": 0.0,
+    "Anima_Position": {
+        "x": 640.0,
+        "y": 375.0
+    },
+    "InEasingType": 0,
+    "OutEasingType": 0,
+    "FadeInInterval": 3.5,
+    "FadeOutInterval": 0.0
 }

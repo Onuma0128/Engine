@@ -21,6 +21,7 @@ void GamePlayScene::Initialize()
 	skyBox_->TypeInit(PrimitiveType::kSkybox);
 	skyBox_->GetTransform().scale = Vector3::ExprUnitXYZ * 1024.0f;
 	skyBox_->SetSceneRenderer();
+	skyBox_->GetRenderOptions().offscreen = true;
 
 	// プレイヤーの初期化
 	player_ = std::make_unique<Player>();
@@ -38,6 +39,7 @@ void GamePlayScene::Initialize()
 	companionManager_->SetMapData(mapCollision_.get());
 	companionManager_->SetCamera(gameCamera_.get());
 	companionManager_->Initialize();
+	gameCamera_->SetCompanionManager(companionManager_.get());
 
 	// フィールド上のオブジェクトの初期化と生成
 	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
@@ -60,7 +62,9 @@ void GamePlayScene::Initialize()
 	bossEnemy_->SetEnemySpawnerFactory(enemySpawnerFactory_.get());
 	bossEnemy_->SetCamera(gameCamera_.get());
 	bossEnemy_->Initialize();
+	player_->SetBoss(bossEnemy_.get());
 	gameCamera_->SetBossEnemy(bossEnemy_.get());
+	companionManager_->SetBossEnemy(bossEnemy_.get());
 
 	// ゲームシーン全体のUIを初期化
 	gameSceneUis_ = std::make_unique<GameSceneUIs>();

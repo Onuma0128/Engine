@@ -3,11 +3,25 @@
 #include "JsonFunction.h"
 
 /// <summary>
+/// クリアカメラのデータ
+/// </summary>
+struct ClearCameraData {
+	float time;
+	Vector3 rotate;
+	Vector3 position;
+};
+
+/// <summary>
 /// ゲームカメラのデータ
 /// </summary>
 struct GameCameraData {
 	Vector3 mainRotate;				// メインカメラの回転
 	Vector3 mainPosition;			// メインカメラの座標
+
+	int maxClearCameraPoint;				// クリア後のカメラポイントの最大数
+	std::vector<ClearCameraData> clearData;	// クリアカメラのデータ
+	int clearShackIndex;					// クリアのシェイクさせるインデックス番号
+	float clearShackPow;					// シェイクの強さ
 
 	Vector3 sabPosition;			// サブカメラの座標
 	bool isSabRotate;				// サブカメラが回転するか
@@ -53,6 +67,7 @@ private:
 
 
 	GameCameraData cameraData_;
+	int savedSpawnCount_ = 0;
 
 };
 

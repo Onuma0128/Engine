@@ -7,6 +7,11 @@ using Microsoft::WRL::ComPtr;
 #include <unordered_map>
 #include <vector>
 
+// ===== 追加：LateDraw 制御用 =====
+#include <string>
+#include <unordered_set>
+#include <algorithm>
+
 #include "ModelStruct.h"
 
 class WorldTransform;
@@ -34,18 +39,18 @@ public:
     // シングルトンインスタンスの取得
     static ModelInstanceRenderer* GetInstance();
 
-	// インスタンスデータ構造体
+    // インスタンスデータ構造体
     struct InstanceData
     {
         Matrix4x4 WVP;
         Matrix4x4 World;
         Matrix4x4 WorldInvT;
     };
-	// ジョイント数構造体
-    struct JointCount 
+    // ジョイント数構造体
+    struct JointCount
     {
         uint32_t jointCount;
-		int padding[3];
+        int padding[3];
     };
 
     //初期化
@@ -53,7 +58,7 @@ public:
 
     /* ========================= Object3d ========================= */
 
-	// インスタンス登録・削除
+    // インスタンス登録・削除
     void Push(Object3d* obj);
     void Remove(Object3d* obj);
 
@@ -63,8 +68,8 @@ public:
     void Push(Animation* animation);
     void Remove(Animation* animation);
 
-	// 終了処理
-    void Finalize() { 
+    // 終了処理
+    void Finalize() {
         for (auto& obj : objBatches_) {
             obj.second.objects.clear();
             obj.second.count = 0;
@@ -73,29 +78,65 @@ public:
             anima.second.animations.clear();
             anima.second.count = 0;
         }
+
+        // LateDraw
+        lateDrawModelNames_.clear();
+        objDrawOrder_.clear();
+        objLateDrawOrder_.clear();
+        animDrawOrder_.clear();
+        animLateDrawOrder_.clear();
+
         instance_ = nullptr;
     }
 
-	// 全てのシャドウマップ深度パス描画
-	void AllDrawShadowDepth();
-	// 全てのアウトラインマスク描画
+    // 全てのシャドウマップ深度パス描画
+    void AllDrawShadowDepth();
+    // 全てのアウトラインマスク描画
     void AllDrawOutlineMask();
     // 全ての描画
     void AllDraw();
+
+    /* ========================= LateDraw ========================= */
+
+    // 指定したモデル名を「最後に描画」する対象に追加
+    void AddLateDrawModelName(const std::string& modelName);
+    // 指定したモデル名を「最後に描画」対象から削除
+    void RemoveLateDrawModelName(const std::string& modelName);
+    // 「最後に描画」対象を全削除
+    void ClearLateDrawModelNames();
 
 private:
 
     /* ========================= Object3d ========================= */
 
-	// インスタンスバッチ確保・更新
+    // インスタンスバッチ確保・更新
     void ObjReserveBatch(Object3d* object, uint32_t maxInstance = 128);
     void ObjUpdate();
 
     /* ========================= Animation ========================= */
 
-	// インスタンスバッチ確保・更新
+    // インスタンスバッチ確保・更新
     void AnimationReserveBatch(Animation* animation, uint32_t maxInstance = 128);
     void AnimationUpdate();
+
+private:
+
+    /* ========================= LateDraw ========================= */
+
+    // どのモデルが Late 対象か（名前で指定）
+    std::unordered_set<std::string> lateDrawModelNames_;
+
+    // 描画順（unordered_map を回さず、必ずこの順で描画する）
+    std::vector<Model*> objDrawOrder_;
+    std::vector<Model*> objLateDrawOrder_;
+    std::vector<Model*> animDrawOrder_;
+    std::vector<Model*> animLateDrawOrder_;
+
+    // Model が Late 対象か
+    bool IsLateDrawModel(Model* model) const;
+    // 既に確保済みのモデルを「末尾（Late）」へ移動
+    void MoveObjModelToLate(Model* model);
+    void MoveAnimModelToLate(Model* model);
 
 private:
 
@@ -108,11 +149,11 @@ private:
         Matrix4x4 lightVP;
     };
     ComPtr<ID3D12Resource> lightVpBuffer_;
-	LightData* lightData_ = nullptr;
+    LightData* lightData_ = nullptr;
 
     /* ========================= Object3d ========================= */
 
-	// インスタンスバッチ構造体
+    // インスタンスバッチ構造体
     struct ObjectBatch
     {
         Model* model;                               // キー
@@ -135,7 +176,7 @@ private:
 
     /* ========================= Animation ========================= */
 
-	// インスタンスバッチ構造体
+    // インスタンスバッチ構造体
     struct AnimationBatch
     {
         Model* model;                               // キー

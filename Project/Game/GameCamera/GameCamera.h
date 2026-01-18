@@ -12,6 +12,7 @@
 class Player;
 class BossEnemy;
 class EnemySpawnerFactory;
+class MuscleCompanionManager;
 
 /// <summary>
 /// ゲーム上のカメラを持つ
@@ -29,6 +30,7 @@ public:
 	/// カメラの更新処理
 	/// </summary>
 	void Update();
+	void mainUpdate(const Vector3& shakeOffset);
 	void SabUpdate(const Vector3& shakeOffset);
 	void BossUpdate(const Vector3& shakeOffset);
 
@@ -51,19 +53,21 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 	void SetBossEnemy(BossEnemy* boss) { boss_ = boss; }
 	void SetSpawner(EnemySpawnerFactory* spawner) { spawner_ = spawner; }
+	void SetCompanionManager(MuscleCompanionManager* companionManager) { companionManager_ = companionManager; }
 	Camera* GetCamera() { return mainCamera_.get(); }
+	const bool GetClearEnd()const { return isClearCameraEnd_; }
 
 private:
 
 	// プレイヤーのポインタ
 	Player* player_ = nullptr;
 	bool playerIsAlive_ = true;
-
 	// ボスのポインタ
 	BossEnemy* boss_ = nullptr;
-
 	// 敵スポナーファクトリー
 	EnemySpawnerFactory* spawner_ = nullptr;
+	// 仲間管理クラスのポインタ
+	MuscleCompanionManager* companionManager_ = nullptr;
 
 	// カメラの調整項目
 	std::unique_ptr<CameraAdjustItem> items_ = nullptr;
@@ -100,5 +104,11 @@ private:
 	float bossCameraTime_ = -1.0f;
 	// 前のカメラ座標
 	Vector3 preBossCameraPosition_{};
+
+	// クリア時のカメラタイマーとカメラの動きが終わったかのフラグ
+	float clearCameraTime_ = -1.0f;
+	bool isClearCameraEnd_ = false;
+	// クリアカメラのデータインデックス
+	size_t clearDataIndex_ = 0;
 
 };

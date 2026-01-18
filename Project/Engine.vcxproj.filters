@@ -1321,6 +1321,7 @@
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionShieldKnockbackState.cpp" />
     <ClCompile Include="Game\Objects\Enemy\Effect\EnemyBulletPredictionEffect.cpp" />
     <ClCompile Include="Game\Objects\Boss\Collider\BossDashPrediction.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionClearState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1362,5 +1363,6 @@
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionShieldKnockbackState.h" />
     <ClInclude Include="Game\Objects\Enemy\Effect\EnemyBulletPredictionEffect.h" />
     <ClInclude Include="Game\Objects\Boss\Collider\BossDashPrediction.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionClearState.h" />
   </ItemGroup>
 </Project>

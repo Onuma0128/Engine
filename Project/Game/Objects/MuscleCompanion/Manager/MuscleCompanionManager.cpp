@@ -1,8 +1,12 @@
 #include "MuscleCompanionManager.h"
 
+#include "DeltaTimer.h"
+
 #include "Objects/Player/Player.h"
 #include "GameCamera/GameCamera.h"
-#include "Objects/MuscleCompanion/State/CompanionDashState.h"
+#include "Objects/Boss/Base/BossEnemy.h"
+#include "Objects/MuscleCompanion/State/CompanionMoveState.h"
+#include "Objects/MuscleCompanion/State/CompanionClearState.h"
 
 void MuscleCompanionManager::Initialize()
 {
@@ -55,6 +59,9 @@ void MuscleCompanionManager::Update()
 	for (auto& companion : companions_) {
 		companion->Update();
 	}
+
+	// クリア時の強制集合
+	ClearGatherCompanions();
 
 	// エフェクトの更新
 	UpdateEffect();
@@ -110,6 +117,31 @@ void MuscleCompanionManager::GatherCompanions()
 		}
 		player_->GetShot()->SetIsCanAttack(true);
 		player_->GetShot()->SetGatherRequested(false);
+	}
+}
+
+void MuscleCompanionManager::ClearGatherCompanions()
+{
+	// 死んでいる仲間以外クリアステートに遷移させる
+	if (boss_->GetBossState() == BossState::Dead && !isClear_) {
+		for (auto& companion : companions_) {
+			if (companion->GetState() != CharacterState::Dead) {
+				companion->SetGatherRequested(true);
+				companion->ChangeState(std::make_unique<CompanionMoveState>(companion.get()));
+			}
+		}
+		audio_->SoundPlayWave("MattyoSet.wav", items_->GetSeVolumeData().set);
+		isClear_ = true;
+	}
+	if (isClear_) {
+		clearStateTime_ += DeltaTimer::GetDeltaTime();
+	}
+	if (clearStateTime_ > items_->GetMainData().clearStateTime) {
+		for (auto& companion : companions_) {
+			if (companion->GetState() != CharacterState::Clear) {
+				companion->ChangeState(std::make_unique<CompanionClearState>(companion.get()));
+			}
+		}
 	}
 }
 
@@ -204,8 +236,28 @@ void MuscleCompanionManager::UpdateEffect()
 	predictionObjects_->SetDraw(isDraw);
 }
 
+const Vector3 MuscleCompanionManager::CompanionCenterPosition()
+{
+	// プレイヤーに近い仲間の座標を足し合わせて、足し合わせた仲間分で割る
+	Vector3 result = Vector3::ExprZero;
+	uint32_t count = 0;
+	for (auto& companion : companions_) {
+		float distance = Vector3::Distance(companion->GetTransform().translation_, player_->GetTransform().translation_);
+		if (distance < 5.0f) {
+			result += companion->GetTransform().translation_;
+			++count;
+		}
+	}
+	if (count == 0) {
+		return Vector3::ExprZero;
+	}
+	return result * (1.0f / static_cast<float>(count));
+}
+
 void MuscleCompanionManager::Reset()
 {
+	isClear_ = false;
+	clearStateTime_ = 0.0f;
 	uint32_t count = 0;
 	for (auto& companion : companions_) {
 		companion->Reset();

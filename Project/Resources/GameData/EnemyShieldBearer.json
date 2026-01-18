@@ -25,13 +25,13 @@
         "y": 1.2000000476837158,
         "z": 1.2000000476837158
     },
-    "speed": 4.0,
+    "speed": 2.5,
     "attackDistance": 2.359999895095825,
     "attackStartupTime": 0.30000001192092896,
     "attackActiveTime": 1.2999999523162842,
     "attackRecoveryTime": 0.5,
     "attackCoolTime": 1.0,
     "lerpSpeed": 2.5,
-    "maxHp": 3,
+    "maxHp": 1,
     "modelScale": 1.399999976158142
 }

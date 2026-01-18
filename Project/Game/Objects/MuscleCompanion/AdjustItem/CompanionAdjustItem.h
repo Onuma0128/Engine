@@ -21,6 +21,8 @@ struct CompanionMainData {
 	float searchUpdateTime;			// 仲間の探索を更新する時間
 	float searchCancelDistance;		// 仲間の探索をやめる距離
 	bool debugSpline;				// 仲間の探索経路デバッグ用
+
+	float clearStateTime;			// 仲間がクリアステートになる時間
 };
 
 // 仲間のダッシュの調整項目

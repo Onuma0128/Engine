@@ -7,5 +7,7 @@
     },
     "breakTimer": 0.5,
     "breakEmitTimer": 0.699999988079071,
-    "cameraShakePower": 5.0
+    "cameraShakePower": 5.0,
+    "cameraDistance": 7.0,
+    "alphaTime": 0.5
 }

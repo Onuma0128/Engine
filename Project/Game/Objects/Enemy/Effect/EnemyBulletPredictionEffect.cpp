@@ -8,7 +8,7 @@ void EnemyBulletPredictionEffect::Init()
 	Collider::AddCollider();
 	Collider::myType_ = ColliderType::kSegment;
 	Collider::colliderName_ = "EnemyBulletRay";
-	Collider::isActive_ = false;
+	Collider::isActive_ = true;
 	Collider::targetColliderName_ = {
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","MuscleCompanion",
 	};
@@ -29,7 +29,6 @@ void EnemyBulletPredictionEffect::Update()
 	// コライダーを設定する
 	Collider::origin_ = enemyPosition_ + Vector3::ExprUnitY;
 	Collider::diff_ = (plane_->GetTransform().translation - enemyPosition_) * 2.0f;
-	Collider::isActive_ = plane_->GetRenderOptions().enabled;
 
 	if (isHit_) {
 		plane_->GetTransform().scale.y = hitDistance_ * 0.5f;
