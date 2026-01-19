@@ -90,7 +90,7 @@ void SelectSystem::Draw()
 void SelectSystem::SelectUIFadeIn(bool isClear)
 {
 	for (size_t i = 0; i < kSelectUiSize_; ++i) {
-		if (isClear && i == 5) { continue; }
+		if (isClear && (i == 1 || i == 5)) { continue; }
 		if (!isClear && i == 6) { continue; }
 		selectUIs_[i]->FadeIn();
 	}
@@ -104,22 +104,26 @@ void SelectSystem::SelectInput()
 		if (targetIndex_ == 0u) {
 			SceneManager::GetInstance()->ChangeScene("Title");
 		} else {
+			player_->Reset();
+			spawner_->Reset();
+			companionManager_->Reset();
+			this->Reset();
+			gameSceneUis_->GameSceneUIFadeOut();
 			if (targetIndex_ == 1u) {
 				boss_->Reset();
 				spawner_->CountReset();
 				gameSceneUis_->BossFadeReset();
 				camera_->BossCameraReset();
 				gameSceneUis_->SetDrawGameUIs(true);
+				const float kBGMVolume = 0.08f;
+				audio_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
 			} else {
 				boss_->StartBossEnemy();
 				camera_->BossCameraEnd();
 				gameSceneUis_->SetDrawGameUIs(false);
+				const float kBGMVolume = 0.08f;
+				audio_->SoundPlayWave("BossBGM.wav", kBGMVolume, true);
 			}
-			player_->Reset();
-			spawner_->Reset();
-			companionManager_->Reset();
-			this->Reset();
-			gameSceneUis_->GameSceneUIFadeOut();
 		}
 	}
 	// セレクトUIが表示されていなければ処理しない
@@ -257,4 +261,24 @@ void SelectSystem::Reset()
 	for (auto& back : selectUIs_) {
 		back->FadeOut();
 	}
+
+	audio_->StopAudio("GameSceneBGM.wav");
+	audio_->StopAudio("GameClearBGM.wav");
+	audio_->StopAudio("BossBGM.wav");
+}
+
+void SelectSystem::BossStart()
+{
+	boss_->StartBossEnemy();
+	camera_->BossCameraEnd();
+	gameSceneUis_->SetDrawGameUIs(false);
+	player_->Reset();
+	spawner_->Reset();
+	spawner_->SetSpawnCount(30);
+	companionManager_->Reset();
+	this->Reset();
+	gameSceneUis_->GameSceneUIFadeOut();
+
+	const float kBGMVolume = 0.08f;
+	audio_->SoundPlayWave("BossBGM.wav", kBGMVolume, true);
 }

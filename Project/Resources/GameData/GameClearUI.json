@@ -11,7 +11,7 @@
     "Rotate": 0.0,
     "Position": {
         "x": 640.0,
-        "y": 375.0
+        "y": 100.0
     },
     "NoiseTexture": "gradationTexture.png",
     "EdgeWidth": 0.15000000596046448,
@@ -41,7 +41,7 @@
     "Anima_Rotate": 0.0,
     "Anima_Position": {
         "x": 640.0,
-        "y": 375.0
+        "y": 100.0
     },
     "InEasingType": 0,
     "OutEasingType": 0,

@@ -5,6 +5,7 @@
 #include <random>
 
 #include "BaseUI.h"
+#include "Audio.h"
 
 #include "Uis/Player/NumberCountUI.h"
 #include "SelectUI.h"
@@ -62,6 +63,8 @@ public:
 	/// </summary>
 	void Reset();
 
+	void BossStart();
+
 	/// <summary>
 	/// アクセッサ
 	/// </summary>
@@ -71,6 +74,7 @@ public:
 	void SetBossEnemy(BossEnemy* boss) { boss_ = boss; }
 	void SetCamera(GameCamera* camera) { camera_ = camera; }
 	void SetCompanionManager(MuscleCompanionManager* manager) { companionManager_ = manager; }
+	void SetAudio(Audio* audio) { audio_ = audio; }
 
 private:
 
@@ -101,6 +105,8 @@ private:
 	MuscleCompanionManager* companionManager_ = nullptr;
 	// ゲームカメラのポインタ
 	GameCamera* camera_ = nullptr;
+	// BGM
+	Audio* audio_ = nullptr;
 	// ゲームシーンのUIポインタ
 	GameSceneUIs* gameSceneUis_ = nullptr;
 

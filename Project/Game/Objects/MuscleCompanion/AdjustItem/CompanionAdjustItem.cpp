@@ -127,6 +127,9 @@ void CompanionAdjustItem::LoadItems()
 		seVolumeJson_.Set("giveDamage", 1.0f);
 		seVolumeJson_.Set("set", 0.0f);
 		seVolumeJson_.Set("shot", 1.0f);
+		seVolumeJson_.Set("clear", 1.0f);
+		seVolumeJson_.Set("shield", 0.0f);
+		seVolumeJson_.Set("powerUp", 1.0f);
 	} else {
 		seVolumeData_.dashHit = seVolumeJson_.Get("dashHit", seVolumeData_.dashHit);
 		seVolumeData_.footsteps = seVolumeJson_.Get("footsteps", seVolumeData_.footsteps);
@@ -134,6 +137,9 @@ void CompanionAdjustItem::LoadItems()
 		seVolumeData_.giveDamage = seVolumeJson_.Get("giveDamage", seVolumeData_.giveDamage);
 		seVolumeData_.set = seVolumeJson_.Get("set", seVolumeData_.set);
 		seVolumeData_.shot = seVolumeJson_.Get("shot", seVolumeData_.shot);
+		seVolumeData_.clear = seVolumeJson_.Get("clear", seVolumeData_.clear);
+		seVolumeData_.shield = seVolumeJson_.Get("shield", seVolumeData_.shield);
+		seVolumeData_.powerUp = seVolumeJson_.Get("powerUp", seVolumeData_.powerUp);
 	}
 }
 
@@ -278,6 +284,9 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("giveDamage", &seVolumeData_.giveDamage, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat("set", &seVolumeData_.set, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("shot", &seVolumeData_.shot, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat("clear", &seVolumeData_.clear, 0.01f, 0.1f, 10.0f);
+			ImGui::DragFloat("shield", &seVolumeData_.shield, 0.01f, 0.0f, 100.0f);
+			ImGui::DragFloat("powerUp", &seVolumeData_.powerUp, 0.01f, 0.1f, 10.0f);
 			// セーブボタン
 			if (ImGui::Button("Save")) {
 				seVolumeJson_.Set("dashHit", seVolumeData_.dashHit);
@@ -286,6 +295,9 @@ void CompanionAdjustItem::Editor()
 				seVolumeJson_.Set("giveDamage", seVolumeData_.giveDamage);
 				seVolumeJson_.Set("set", seVolumeData_.set);
 				seVolumeJson_.Set("shot", seVolumeData_.shot);
+				seVolumeJson_.Set("clear", seVolumeData_.clear);
+				seVolumeJson_.Set("shield", seVolumeData_.shield);
+				seVolumeJson_.Set("powerUp", seVolumeData_.powerUp);
 				seVolumeJson_.Save();
 			}
 			ImGui::TreePop();

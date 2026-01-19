@@ -45,5 +45,7 @@ private:
 
 	float pushUpTime_ = 0.0f;
 
+	bool isPowerUp_ = false;
+
 };
 

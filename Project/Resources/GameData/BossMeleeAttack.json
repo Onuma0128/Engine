@@ -5,10 +5,10 @@
         "y": 0.18000000715255737,
         "z": 0.0
     },
-    "attackStartupTime": 0.5899999737739563,
+    "attackStartupTime": 0.8399999737739563,
     "attackTime": 0.0,
     "attackRecoveryTime": 1.0,
-    "jumpVelocityY": 8.260000228881836,
+    "jumpVelocityY": 11.0,
     "jumpAccelerY": -24.399999618530273,
     "attackEffectSize": 3.0,
     "attackEffectOffset": {

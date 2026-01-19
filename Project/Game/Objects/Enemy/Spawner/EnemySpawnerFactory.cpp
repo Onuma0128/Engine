@@ -31,7 +31,7 @@ void EnemySpawnerFactory::Init(SceneJsonLoader loader)
 	InitTypeEnemy(EnemyType::kShieldBearer, enemyShieldBearers_, strongSize);
 	InitTypeEnemy(EnemyType::kRangedElite, enemyRnagedElites_, strongSize);
 
-	spawnInterval_ = 1.0f;
+	spawnInterval_ = 5.0f;
 }
 
 void EnemySpawnerFactory::Update()

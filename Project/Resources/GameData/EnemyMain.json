@@ -7,7 +7,7 @@
     },
     "margin": 2.0,
     "maxSpawn": 10,
-    "nextWaveKillCount": 10,
+    "nextWaveKillCount": 15,
     "searchUpdateTime": 0.699999988079071,
     "maxDeadTimer": 5.0,
     "kNockbackTimer": 1.0,

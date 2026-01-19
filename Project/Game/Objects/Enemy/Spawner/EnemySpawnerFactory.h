@@ -58,6 +58,7 @@ public:
 	/// <param name="type"></湧かせたい敵のタイプ>
 	/// <param name="position"></湧かせたい座標>
 	void SetSpawnEnemy(EnemyType type, const Vector3& position);
+	void SetSpawnCount(uint32_t count) { spawnCount_ = count; }
 
 	/// <summary>
 	/// 敵のキル数を取得する

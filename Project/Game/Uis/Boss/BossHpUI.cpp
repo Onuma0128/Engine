@@ -14,7 +14,7 @@ void BossHpBarUI::Update(const Vector2& position)
 {
 	// データを取得する
 	const auto& data = boss_->GetItems()->GetMainData();
-	uint32_t maxHp = data.maxHP;
+	uint32_t maxHp = boss_->GetMaxHP();
 	uint32_t currentHp = boss_->GetCurrentHp();
 	float scale = static_cast<float>(currentHp) / static_cast<float>(maxHp);
 	// ボスのHPに応じて色を変える

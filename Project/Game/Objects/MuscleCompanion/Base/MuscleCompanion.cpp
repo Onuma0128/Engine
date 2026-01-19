@@ -139,6 +139,8 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	}
 	// 敵のシールドに当たったら
 	if (other->GetColliderName() == "EnemyShield") {
+		const auto& volume = items_->GetSeVolumeData();
+		audio_->SoundPlayWave("MattyoShield.wav", volume.shield);
 		knockbackRotate_ = other->GetRotate();
 		knockbackPosition_ = other->GetCenterPosition();
 		ChangeState(std::make_unique<CompanionShieldKnockbackState>(this));
@@ -148,7 +150,7 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 void MuscleCompanion::OnCollisionStay(Collider* other)
 {
 	// 死亡状態なら何もしない
-	if (state_->GetState() == CharacterState::Dead || state_->GetState() == CharacterState::Dead) {
+	if (state_->GetState() == CharacterState::Dead) {
 		return;
 	}
 

@@ -7,6 +7,8 @@
 #include "SceneJsonLoader.h"
 #include "PostEffectManager.h"
 
+bool TitleScene::isBossStart = false;
+
 void TitleScene::Initialize()
 {
 	// カメラの初期化
@@ -73,6 +75,9 @@ void TitleScene::Update()
 	}
 	// フェードが終わったらシーン遷移する
 	if (isFade_ && !sceneFade_->IsPlayAnimation()) {
+		if (input->GetGamepadLeftTrigger() > 0.0f && input->GetGamepadRightTrigger() > 0.0f) {
+			TitleScene::isBossStart = true;
+		}
 		SceneManager::GetInstance()->ChangeScene("Game");
 	}
 }

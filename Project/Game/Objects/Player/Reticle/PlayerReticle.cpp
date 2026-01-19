@@ -1,5 +1,7 @@
 #include "PlayerReticle.h"
 
+#include <numbers>
+
 #include "WinApp.h"
 #include "Input.h"
 #include "CameraManager.h"
@@ -7,7 +9,7 @@
 
 #include "Camera.h"
 #include "DeltaTimer.h"
-
+#include "Easing.h"
 
 void PlayerReticle::Init()
 {
@@ -141,6 +143,10 @@ void PlayerRayReticle::SetRaticleAlpha(bool flag)
 	if (flag) { alphaTimer_ += DeltaTimer::GetDeltaTime() * 5.0f; }
 	else { alphaTimer_ -= DeltaTimer::GetDeltaTime() * 5.0f; }
 	alphaTimer_ = std::clamp(alphaTimer_, 0.0f, 1.0f);
+	float t = std::sinf(alphaTimer_ * std::numbers::pi_v<float>);
+
+	transform_.size = Vector2{ 64.0f,64.0f } + Vector2{ 32.0f,32.0f } * t;
+	transform_.rotate = std::numbers::pi_v<float> * Easing::EaseInBack(alphaTimer_);
 
 	Vector4 color = { alphaTimer_,0.0f,0.0f,alphaTimer_ };
 	Sprite::SetColor(color);

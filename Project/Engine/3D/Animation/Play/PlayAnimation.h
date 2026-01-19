@@ -62,6 +62,11 @@ public:
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// 予約をクリアする
+	/// </summary>
+	void ClearPending();
+
 	// 再生するアニメーションを選択
 
 	/// <summary>

@@ -53,6 +53,11 @@ public:
 	void Draw();
 
 	/// <summary>
+	/// 予約をリセットする
+	/// </summary>
+	void ClearPending() { playAnim_.ClearPending(); }
+
+	/// <summary>
 	/// 再生するアニメーションを選択
 	/// </summary>
 	/// <param name="idx"></アニメーションさせるIndex>

@@ -86,6 +86,8 @@ public:
 	const Player* GetPlayer()const { return player_; }
 	const BossAdjustItem* GetItems() const { return items_.get(); }
 	const BossState GetBossState()const { return state_->GetState(); }
+	const uint32_t GetMaxHP() const { return maxHp_; }
+	const uint32_t GetRetryCount() const { return retryCount_; }
 	BossStateEvaluator* GetStateEvaluator() { return stateEvaluator_.get(); }
 	EnemySpawnerFactory* GetSpawnerFactory() { return spawnerFactory_; }
 	GameCamera* GetGameCamera() { return camera_; }
@@ -123,6 +125,9 @@ private:
 	uint32_t maxHp_ = 1;
 	// ボスの現在のHP
 	uint32_t currentHp_ = 1;
+	// 何回戦ったかのカウント
+	uint32_t retryCount_ = 0;
+
 
 };
 

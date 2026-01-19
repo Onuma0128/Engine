@@ -123,7 +123,8 @@ void Framework::LoadFiles()
 	// ============================== Audio ============================== //
 
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "GameSceneBGM.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio", "mokugyo.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "GameClearBGM.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "BossBGM.wav");
 
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoDashHit.wav");
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoFootsteps.wav");
@@ -131,6 +132,9 @@ void Framework::LoadFiles()
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoGiveDamage.wav");
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoSet.wav");
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoShot.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoClear.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoShield.wav");
+	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoPowerUp.wav");
 
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossAttackCaveat.wav");
 	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossAttackDash.wav");

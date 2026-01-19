@@ -39,6 +39,8 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	static bool isBossStart;
+
 private:
 
 	std::shared_ptr<Camera> camera_ = nullptr;

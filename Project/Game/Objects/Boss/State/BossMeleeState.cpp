@@ -28,6 +28,9 @@ void BossMeleeState::Finalize()
 {
 	boss_->GetAttackCollider()->SetActive(false);
 	boss_->GetEffect()->AttackEffectReset();
+	Vector3 translate = boss_->GetTransform().translation_;
+	translate.y = startY_;
+	boss_->SetTransformTranslation(translate);
 }
 
 void BossMeleeState::Update()

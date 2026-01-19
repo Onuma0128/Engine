@@ -39,6 +39,10 @@ public:
 	/// <param name="transform"></撃つ敵のTransformを入れる>
 	void Attack(const WorldTransform& transform);
 
+	/// <summary>
+	/// 弾が何かしらに当たっているなら呼び出す
+	/// </summary>
+	void IsCollision();
 
 	/// <summary>
 	/// アクセッサ
@@ -52,11 +56,6 @@ public:
 	void SetItem(EnemyAdjustItem* item) { item_ = item; }
 
 private:
-
-	/// <summary>
-	/// 弾が何かしらに当たっているなら呼び出す
-	/// </summary>
-	void IsCollision();
 
 	/// <summary>
 	/// 敵のタイプによって弾の速度を変化させ取得する

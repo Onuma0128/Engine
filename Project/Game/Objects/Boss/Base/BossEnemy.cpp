@@ -221,11 +221,14 @@ void BossEnemy::StartBossEnemy()
 	ChangeState(std::make_unique<BossAppearState>(this));
 
 	// HPの初期化
-	maxHp_ = items_->GetMainData().maxHP;
+	uint32_t retryHp = retryCount_ * 5;
+	maxHp_ = items_->GetMainData().maxHP - retryHp;
+	maxHp_ = std::clamp(maxHp_, 30u, 1000u);
 	currentHp_ = maxHp_;
 
 	// スコアの初期化
 	stateEvaluator_->ScoreReset();
+	++retryCount_;
 }
 
 void BossEnemy::Reset()
@@ -243,4 +246,6 @@ void BossEnemy::Reset()
 
 	// ステートの初期化
 	ChangeState(std::make_unique<BossIdleState>(this));
+
+	retryCount_ = 0;
 }

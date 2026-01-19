@@ -77,6 +77,9 @@ struct CompanionSeVolumeData {
 	float giveDamage;				// ダメージを与えた時
 	float set;						// 集合
 	float shot;						// 発射
+	float clear;					// クリア時
+	float shield;					// シールドのノックバック時
+	float powerUp;					// 攻撃力アップ
 };
 
 /// <summary>

@@ -5,6 +5,7 @@
 #include "ParticleManager.h"
 #include "SceneManager.h"
 #include "SceneJsonLoader.h"
+#include "TitleScene/TitleScene.h"
 
 void GamePlayScene::Initialize()
 {
@@ -84,9 +85,16 @@ void GamePlayScene::Initialize()
 	selectSystem_->Init();
 
 	// BGMを流す
-	const float kBGMVolume = 0.04f;
+	const float kBGMVolume = 0.08f;
 	bgm_ = std::make_unique<Audio>();
-	bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
+	selectSystem_->SetAudio(bgm_.get());
+
+	if (TitleScene::isBossStart) {
+		TitleScene::isBossStart = false;
+		selectSystem_->BossStart();
+	} else {
+		bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
+	}
 }
 
 void GamePlayScene::Finalize()
@@ -99,6 +107,20 @@ void GamePlayScene::Update()
 		gameSceneUis_->Update();
 		selectSystem_->Update();
 		return;
+	}
+	if (bossEnemy_->GetBossState() == BossState::Dead) {
+		if (bgm_->IsPlaying("BossBGM.wav")) {
+			bgm_->StopAudio("BossBGM.wav");
+			const float kBGMVolume = 0.08f;
+			bgm_->SoundPlayWave("GameClearBGM.wav", kBGMVolume, true);
+		}
+	}
+	if (bossEnemy_->GetBossState() == BossState::Appear) {
+		if (bgm_->IsPlaying("GameSceneBGM.wav")) {
+			bgm_->StopAudio("GameSceneBGM.wav");
+			const float kBGMVolume = 0.08f;
+			bgm_->SoundPlayWave("BossBGM.wav", kBGMVolume, true);
+		}
 	}
 
 	// マップの判定を更新

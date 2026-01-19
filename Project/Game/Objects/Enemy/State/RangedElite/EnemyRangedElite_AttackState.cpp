@@ -26,6 +26,9 @@ void EnemyRangedElite_AttackState::Init()
 void EnemyRangedElite_AttackState::Finalize()
 {
 	enemy_->GetEffect()->SetBulletPredictionEffect(false);
+	for (auto& bullet : enemy_->GetBullets()) {
+		bullet->IsCollision();
+	}
 }
 
 void EnemyRangedElite_AttackState::Update()

@@ -93,6 +93,12 @@ void PlayAnimation::Reset()
 	nameToIx_.clear();
 }
 
+void PlayAnimation::ClearPending()
+{
+	pendingIx_.reset();      // 予約を消す
+	requestCooldown_ = 0.0f; // クールダウンもリセットする
+}
+
 void PlayAnimation::Play(size_t idx, float fadeTime)
 {
 	if (idx >= animationDatas_.size()) { return; }
@@ -148,6 +154,8 @@ bool PlayAnimation::PlayByName(const std::string& clipName, float fadeTime)
 void PlayAnimation::ForcePlay(size_t idx, float startTime, bool keepPhase)
 {
 	if (idx >= animationDatas_.size()) { return; }
+
+	ClearPending();
 
 	// ブレンドを即時キャンセル
 	blend_.active = false;

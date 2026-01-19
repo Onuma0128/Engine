@@ -230,7 +230,8 @@ void MuscleCompanionManager::UpdateEffect()
 	} else {
 		isDraw = false;
 	}
-
+	// クリアしているならエフェクトを消す
+	if (isClear_) { isDraw = false; }
 	arrowEffect_->SetDraw(isDraw);
 	arrowEffect_->Update(position);
 	predictionObjects_->SetDraw(isDraw);

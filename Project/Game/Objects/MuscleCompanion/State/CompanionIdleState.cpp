@@ -48,6 +48,11 @@ void CompanionIdleState::Update()
 			pushUpTime_ += DeltaTimer::GetDeltaTime();
 			if (pushUpTime_ > data.pushUpTime) {
 				companion_->GetEffect()->DamageUpEffect(true);
+				if (!isPowerUp_) {
+					isPowerUp_ = true;
+					const auto& volume = companion_->GetItems()->GetSeVolumeData();
+					companion_->GetAudio()->SoundPlayWave("MattyoPowerUp.wav", volume.powerUp);
+				}
 			}
 		}
 		return;
