@@ -52,6 +52,8 @@ public:
 	/// </summary>
 	void Reset();
 
+	const bool IsAliveCompanion() const;
+
 private:
 
 	/// <summary>

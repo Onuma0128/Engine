@@ -7,8 +7,6 @@
 #include "SceneJsonLoader.h"
 #include "PostEffectManager.h"
 
-bool TitleScene::isBossStart = false;
-
 void TitleScene::Initialize()
 {
 	// カメラの初期化
@@ -39,9 +37,9 @@ void TitleScene::Initialize()
 	fieldObjectFactory_->Init(loader);
 	PostEffectManager::GetInstance()->CreatePostEffect(PostEffectType::kOutLine);
 
-	test = std::make_unique<ParticleEmitter>("companionDamageUp");
+	test = std::make_unique<ParticleEmitter>("test");
 	particleManager->CreateParticleGroup(test);
-	test->SetIsCreate(false);
+	//test->SetIsCreate(false);
 
 	// BGMを流す
 	const float kBGMVolume = 0.04f;
@@ -75,9 +73,6 @@ void TitleScene::Update()
 	}
 	// フェードが終わったらシーン遷移する
 	if (isFade_ && !sceneFade_->IsPlayAnimation()) {
-		if (input->GetGamepadLeftTrigger() > 0.0f && input->GetGamepadRightTrigger() > 0.0f) {
-			TitleScene::isBossStart = true;
-		}
 		SceneManager::GetInstance()->ChangeScene("Game");
 	}
 }

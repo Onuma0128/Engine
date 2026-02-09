@@ -81,18 +81,6 @@ private:
 	// インプット系を更新する
 	void SelectInput();
 
-	// キル数や命中率のUIを更新する
-	void CounterUiUpdate();
-
-	// キル数や命中率を表示する時の順番
-	enum CountUiOrder{
-		Interval	= 0,	// 始まるまでの間隔
-		First		= 1,	// 一つ目
-		Second		= 2,	// 二つ目
-		Third		= 3,	// 三つ目
-		End			= 4		// 終了
-	};
-
 private:
 
 	// プレイヤーのポインタ
@@ -117,21 +105,16 @@ private:
 	// タイトルともう一度のUI
 	static const size_t kSelectUiSize_ = 7;
 	std::array<std::unique_ptr<SelectUI>, kSelectUiSize_> selectUIs_;
-	// 倒した数を表示する
-	std::unique_ptr<NumberCountUI> killCountUI_ = nullptr;
 
 	// タイトルかもう一度かどちらを選んでいるかのIndex
 	uint32_t targetIndex_ = 0u;
 	float targetTime_ = 0.0f;
 	// セレクトに移行したか
 	bool isSceneFadeIn_ = false;
-	// 位ごとに描画する
-	CountUiOrder countUiOrder_ = CountUiOrder::First;
-	float selectUiInterval_ = 0.0f;
-	float clearCountUiTimer_ = 0.0f;
 	// 描画するか決める
 	bool isFadeIn_ = false;
 	bool updateSelectUI_ = false;
+	float clearCountUiTimer_ = 0.0f;
 
 	// ランダムデバイス
 	std::random_device seedGenerator_;

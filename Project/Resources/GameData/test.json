@@ -1,0 +1,105 @@
+{
+    "Texture": "circle.png",
+    "UvFlipX": false,
+    "UvFlipY": false,
+    "Model": 0,
+    "BlendMode": 2,
+    "Move": true,
+    "EmitCount": 64,
+    "FrequencyTime": 0.10000000149011612,
+    "LifeTime": 5.0,
+    "Acceleration": {
+        "x": 0.0,
+        "y": -1.8200000524520874,
+        "z": 0.0
+    },
+    "AcceleField": true,
+    "MinAcceleField": {
+        "x": -1.0,
+        "y": -1.0,
+        "z": -1.0
+    },
+    "MaxAcceleField": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "Reflect": false,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 0.20000000298023224,
+        "y": 0.20000000298023224,
+        "z": 1.0
+    },
+    "MaxScale": {
+        "x": 0.20000000298023224,
+        "y": 0.20000000298023224,
+        "z": 1.0
+    },
+    "ChangeScale": false,
+    "EndScale": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+    },
+    "MinVelocity": {
+        "x": -3.0,
+        "y": -5.0,
+        "z": -3.0
+    },
+    "MaxVelocity": {
+        "x": 3.0,
+        "y": -1.0,
+        "z": 3.0
+    },
+    "LockDirectionXY": false,
+    "LockDirectionXZ": false,
+    "DirectionSpeed": 0.0,
+    "Billboard": true,
+    "MinRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotate": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinSize": {
+        "x": -50.0,
+        "y": -1.0,
+        "z": -50.0
+    },
+    "MaxSize": {
+        "x": 50.0,
+        "y": 1.0,
+        "z": 50.0
+    },
+    "Position": {
+        "x": 0.0,
+        "y": 25.0,
+        "z": 0.0
+    },
+    "Look": false
+}

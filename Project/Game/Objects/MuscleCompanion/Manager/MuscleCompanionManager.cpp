@@ -266,3 +266,13 @@ void MuscleCompanionManager::Reset()
 		count++;
 	}
 }
+
+const bool MuscleCompanionManager::IsAliveCompanion() const
+{
+	for (auto& companion : companions_) {
+		if (companion->GetState() != CharacterState::Dead) {
+			return true;
+		}
+	}
+	return false;
+}

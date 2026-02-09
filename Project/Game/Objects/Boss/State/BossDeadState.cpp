@@ -7,9 +7,9 @@ BossDeadState::BossDeadState(BossEnemy* boss) : BossBaseState(boss) {}
 
 void BossDeadState::Init()
 {
-	boss_->PlayByName("Death");
-	boss_->GetTimeStop() = true;
+	boss_->ForcePlayByName("Death", 0.0f);
 	boss_->SetAnimationTime(0.0f);
+	boss_->GetTimeStop() = true;
 	boss_->GetSpawnerFactory()->Reset();
 }
 
@@ -19,6 +19,7 @@ void BossDeadState::Finalize()
 
 void BossDeadState::Update()
 {
+	boss_->GetTimeStop() = true;
 }
 
 void BossDeadState::Draw()

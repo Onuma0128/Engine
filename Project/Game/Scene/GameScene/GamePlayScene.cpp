@@ -87,14 +87,8 @@ void GamePlayScene::Initialize()
 	// BGMを流す
 	const float kBGMVolume = 0.08f;
 	bgm_ = std::make_unique<Audio>();
+	bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);	
 	selectSystem_->SetAudio(bgm_.get());
-
-	if (TitleScene::isBossStart) {
-		TitleScene::isBossStart = false;
-		selectSystem_->BossStart();
-	} else {
-		bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
-	}
 }
 
 void GamePlayScene::Finalize()
