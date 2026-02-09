@@ -190,7 +190,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         // いずれのテクスチャも見つからなければデフォルトのwhite1x1.pngを割り当てる
         } else {
             materialData.directoryPath = "resources";
-            materialData.filePath = "white1x1.png";
+            materialData.filePath = "white1x1.dds";
             if (material->Get(AI_MATKEY_COLOR_DIFFUSE, kd) == AI_SUCCESS) {
                 kdColor = { kd.r, kd.g, kd.b, 1.0f };
             }
@@ -293,7 +293,7 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
     }
     std::string materialTexture = materialData.directoryPath + materialData.filePath;
     if (materialTexture.empty()) {
-        std::string textureFilename = "white1x1.png";
+        std::string textureFilename = "white1x1.dds";
         materialData.directoryPath = directoryPath + "/";
         materialData.filePath = textureFilename;
     }

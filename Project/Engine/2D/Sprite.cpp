@@ -17,7 +17,7 @@ void Sprite::Initialize(std::string textureFilePath, bool isNoiseTexture)
 	if(isNoiseTexture) {
 		spriteBase_->NoiseInitialize();
 		isUseNoiseTexture_ = true;
-		noiseTextureFilePath_ = "white1x1.png";
+		noiseTextureFilePath_ = "white1x1.dds";
 		noiseTextureIndex_ = TextureManager::GetInstance()->GetSrvIndex(noiseTextureFilePath_);
 		DissolveDataInitialize();
 	} else {

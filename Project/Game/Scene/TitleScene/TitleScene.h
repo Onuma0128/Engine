@@ -43,20 +43,10 @@ private:
 
 	std::shared_ptr<Camera> camera_ = nullptr;
 
-	std::unique_ptr<BaseUI> sceneFade_ = nullptr;
-	bool isFade_ = false;
-
-	std::unique_ptr<TitleUI> titleUI_ = nullptr;
-
-	// フィールド場のオブジェクト
-	std::unique_ptr<FieldObjectFactory> fieldObjectFactory_ = nullptr;
-
 	// パーティクルを管理する
 	ParticleManager* particleManager = ParticleManager::GetInstance();
 
 	// エフェクト
 	std::shared_ptr<ParticleEmitter> test = nullptr;
-
-	std::unique_ptr<Audio> bgm_;
 
 };

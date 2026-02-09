@@ -13,8 +13,8 @@ void ParticleEditor::Initialize(std::string filePath)
 		/* ==================== Particle全体の固定値 ==================== */
 
 		// Texture
-		parameters_.Set("Texture", "white1x1.png");
-		baseEmitter_.texture = "white1x1.png";
+		parameters_.Set("Texture", "white1x1.dds");
+		baseEmitter_.texture = "white1x1.dds";
 		// 選択できるテクスチャ
 		auto items = TextureManager::GetInstance()->GetTextures();
 		// テクスチャを検索
@@ -84,7 +84,7 @@ void ParticleEditor::Initialize(std::string filePath)
 		/* ==================== Particle全体の固定値 ==================== */
 
 		// Texture
-		baseEmitter_.texture = parameters_.Get<std::string>("Texture", "white1x1.png");
+		baseEmitter_.texture = parameters_.Get<std::string>("Texture", "white1x1.dds");
 		// 選択できるテクスチャ
 		auto items = TextureManager::GetInstance()->GetTextures();
 		// テクスチャを検索

@@ -18,11 +18,11 @@ void BaseUI::Init(const std::string uiName, const std::string biginName, bool is
 	// ロードするファイルが無ければ
 	if (!json_.Load()) {
 		// Texture
-		json_.Set("Texture", "white1x1.png");
-		parameters_.texture = "white1x1.png";
+		json_.Set("Texture", "white1x1.dds");
+		parameters_.texture = "white1x1.dds";
 		if (isNoiseTexture) {
-			json_.Set("NoiseTexture", "white1x1.png");
-			parameters_.noiseTexture = "white1x1.png";
+			json_.Set("NoiseTexture", "white1x1.dds");
+			parameters_.noiseTexture = "white1x1.dds";
 			// EdgeWidth,NoiseColor
 			json_.Set("EdgeWidth", 0.0f);
 			parameters_.edgeWidth = 0.0f;
@@ -62,9 +62,9 @@ void BaseUI::Init(const std::string uiName, const std::string biginName, bool is
 	// ロードするファイルが有れば
 	} else {
 		// Texture
-		parameters_.texture = json_.Get<std::string>("Texture", "white1x1.png");
+		parameters_.texture = json_.Get<std::string>("Texture", "white1x1.dds");
 		if (isNoiseTexture_) {
-			parameters_.noiseTexture = json_.Get<std::string>("NoiseTexture", "white1x1.png");
+			parameters_.noiseTexture = json_.Get<std::string>("NoiseTexture", "white1x1.dds");
 			// EdgeWidth,NoiseColor
 			parameters_.edgeWidth = json_.Get<float>("EdgeWidth", 0.0f);
 			parameters_.noiseColor = json_.Get<Vector3>("NoiseColor", Vector3{ 1.0f,1.0f,1.0f });

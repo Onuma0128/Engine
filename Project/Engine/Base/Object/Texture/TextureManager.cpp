@@ -46,29 +46,12 @@ void TextureManager::LoadTexture(const std::string& directoryPath, const std::st
 	}
 	assert(SUCCEEDED(hr));
 
-	// ミップマップの作成
+	// リソース作成
 	const DirectX::TexMetadata& metadata = image.GetMetadata();
 	TextureData& textureData = textureDatas_[filePath];
-	if (metadata.width <= 1 && metadata.height <= 1) {
-		// テクスチャデータを追加
-		textureData.metadata = image.GetMetadata();
-		textureData.resource = CreateTextureResource(textureData.metadata);
-		UploadTextureData(textureData.resource, image);
-	}
-	else {
-		DirectX::ScratchImage mipImages{};
-		if (DirectX::IsCompressed(image.GetMetadata().format)) {
-			mipImages = std::move(image);
-		} else {
-			hr = DirectX::GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), DirectX::TEX_FILTER_SRGB, 4, mipImages);
-		}
-		assert(SUCCEEDED(hr));
-
-		// テクスチャデータを追加
-		textureData.metadata = mipImages.GetMetadata();
-		textureData.resource = CreateTextureResource(textureData.metadata);
-		UploadTextureData(textureData.resource, mipImages);
-	}
+	textureData.metadata = metadata;
+	textureData.resource = CreateTextureResource(textureData.metadata);
+	UploadTextureData(textureData.resource, image);
 
 	// テクスチャデータの要素数番号
 	textureData.srvIndex = SrvManager::GetInstance()->Allocate() + kSRVIndexTop;
@@ -161,32 +144,6 @@ D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::CreateGPUDescriptorHandle(uint32_t i
 	handleGPU.ptr += (descriptorSize * index);
 	return handleGPU;
 }
-
-//uint32_t TextureManager::GetTextureIndexByFilePath(const std::string& filePath)
-//{
-//	auto it = std::find_if(
-//		textureDatas_.begin(),
-//		textureDatas_.end(),
-//		[&](TextureData& textureData) {return textureData.filePath == filePath; }
-//	);
-//	if (it != textureDatas_.end()) {
-//		// 読み込み済みなら要素番号を返す
-//		uint32_t textureIndex = static_cast<uint32_t>(std::distance(textureDatas_.begin(), it));
-//		return textureIndex;
-//	}
-//
-//	assert(0);
-//	return 0;
-//}
-//
-//D3D12_GPU_DESCRIPTOR_HANDLE TextureManager::GetSrvHandleGPU(uint32_t textureIndex)
-//{
-//	// 範囲外指定違反チェック
-//	assert(textureIndex < textureDatas_.size());
-//
-//	TextureData& textureData = textureDatas_[textureIndex];
-//	return textureData.srvHandleGPU;
-//}
 
 // メタデータを取得
 const DirectX::TexMetadata& TextureManager::GetMetaData(const std::string& filePath) {
