@@ -39,7 +39,7 @@ void TitleScene::Initialize()
 
 	test = std::make_unique<ParticleEmitter>("test");
 	particleManager->CreateParticleGroup(test);
-	//test->SetIsCreate(false);
+	test->SetIsCreate(false);
 
 	// BGMを流す
 	const float kBGMVolume = 0.04f;

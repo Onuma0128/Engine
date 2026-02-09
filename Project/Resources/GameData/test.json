@@ -1,30 +1,30 @@
 {
-    "Texture": "circle.png",
+    "Texture": "Apple.dds",
     "UvFlipX": false,
     "UvFlipY": false,
     "Model": 0,
     "BlendMode": 2,
     "Move": true,
-    "EmitCount": 64,
-    "FrequencyTime": 0.10000000149011612,
+    "EmitCount": 1,
+    "FrequencyTime": 0.05000000074505806,
     "LifeTime": 5.0,
     "Acceleration": {
         "x": 0.0,
-        "y": -1.8200000524520874,
+        "y": -12.0,
         "z": 0.0
     },
     "AcceleField": true,
     "MinAcceleField": {
-        "x": -1.0,
-        "y": -1.0,
-        "z": -1.0
+        "x": -10.0,
+        "y": -10.0,
+        "z": -10.0
     },
     "MaxAcceleField": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
+        "x": 10.0,
+        "y": 2.0,
+        "z": 10.0
     },
-    "Reflect": false,
+    "Reflect": true,
     "ReflectY": 0.0,
     "Color": {
         "x": 1.0,
@@ -53,18 +53,18 @@
         "z": 1.0
     },
     "MinVelocity": {
-        "x": -3.0,
-        "y": -5.0,
-        "z": -3.0
+        "x": -1.0,
+        "y": 2.0,
+        "z": -0.10000000149011612
     },
     "MaxVelocity": {
-        "x": 3.0,
-        "y": -1.0,
-        "z": 3.0
+        "x": 1.0,
+        "y": 4.0,
+        "z": 0.10000000149011612
     },
     "LockDirectionXY": false,
     "LockDirectionXZ": false,
-    "DirectionSpeed": 0.0,
+    "DirectionSpeed": -5.239999771118164,
     "Billboard": true,
     "MinRotate": {
         "x": 0.0,
@@ -87,19 +87,19 @@
         "z": 0.0
     },
     "MinSize": {
-        "x": -50.0,
-        "y": -1.0,
-        "z": -50.0
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
     },
     "MaxSize": {
-        "x": 50.0,
-        "y": 1.0,
-        "z": 50.0
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
     },
     "Position": {
-        "x": 0.0,
-        "y": 25.0,
-        "z": 0.0
+        "x": -0.4000000059604645,
+        "y": 4.070000171661377,
+        "z": -3.380000114440918
     },
     "Look": false
 }
