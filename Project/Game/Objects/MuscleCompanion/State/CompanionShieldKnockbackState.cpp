@@ -5,7 +5,7 @@
 
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 #include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
-#include "Objects/MuscleCompanion/State/CompanionIdleState.h"
+#include "Objects/MuscleCompanion/State/CompanionPushUpIdleState.h"
 
 CompanionShieldKnockbackState::CompanionShieldKnockbackState(MuscleCompanion* companion) :CompanionBaseState(companion) {}
 
@@ -56,7 +56,7 @@ void CompanionShieldKnockbackState::Update()
 	companion_->SetTransformTranslation(position);
 
 	if (timer_ >= maxTime_) {
-		companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
+		companion_->ChangeState(std::make_unique<CompanionPushUpIdleState>(companion_));
 	}
 }
 

@@ -107,7 +107,7 @@ void MuscleCompanionManager::GatherCompanions()
 	// プレイヤーから集合要求が来ていたら
 	if (player_->GetShot()->GetGatherRequested()) {
 		for (auto& companion : companions_) {
-			if (companion->GetState() == CharacterState::Idle) {
+			if (companion->GetState() == CharacterState::PushUpIdle) {
 				companion->SetGatherRequested(true);
 			}
 			if (!companion->GetReturnOriginal() && !audio_->IsPlaying("MattyoSet.wav") &&
@@ -211,7 +211,6 @@ void MuscleCompanionManager::UpdateEffect()
 	}
 	// ポインタがあるなら矢印を描画する
 	if (target) {
-		target->SetOutLineColor(Vector3::ExprUnitX);
 		position = target->GetTransform().translation_;
 		isDraw = true;
 

@@ -3,7 +3,7 @@
 #include "DeltaTimer.h"
 
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
-#include "Objects/MuscleCompanion/State/CompanionIdleState.h"
+#include "Objects/MuscleCompanion/State/CompanionPushUpIdleState.h"
 #include "Objects/MuscleCompanion/Collider/CompanionAttackCollider.h"
 #include "GameCamera/GameCamera.h"
 
@@ -92,7 +92,7 @@ void CompanionAttackState::Update()
 		// nullポインタチェック
 		if (companion_->GetAttackCollider()->GetHitColliders().empty()) {
 			companion_->GetAttackCollider()->ResetHitColliders();
-			companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
+			companion_->ChangeState(std::make_unique<CompanionPushUpIdleState>(companion_));
 			return;
 		}
 
@@ -105,7 +105,7 @@ void CompanionAttackState::Update()
 			}
 		}
 		companion_->GetAttackCollider()->ResetHitColliders();
-		companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
+		companion_->ChangeState(std::make_unique<CompanionPushUpIdleState>(companion_));
 		return;
 
 	}

@@ -6,6 +6,7 @@ class MuscleCompanion;
 // キャラクターステートの列挙型
 enum class CharacterState {
 	Idle,			// 待機
+	PushUpIdle,		// 腕立ての待機
 	Move,			// 移動
 	Dash,			// ダッシュ
 	SearchDash,		// ダッシュ移動

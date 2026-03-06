@@ -13,22 +13,11 @@ CompanionIdleState::CompanionIdleState(MuscleCompanion* companion) : CompanionBa
 
 void CompanionIdleState::Init()
 {
-	if (!companion_->GetGatherRequested()) {
-		companion_->PlayByName("Training");
-	} else {
-		companion_->PlayByName("Wait");
-	}
+	companion_->PlayByName("Wait");
 }
 
 void CompanionIdleState::Finalize()
 {
-	// データを取得する
-	const auto& data = companion_->GetItems()->GetDashData();
-
-	// タイムが過ぎていれば攻撃力を上げるコライダーを設定する
-	if (pushUpTime_ > data.pushUpTime) {
-		companion_->SetColliderName("BlowDashMuscleCompanion");
-	}
 }
 
 void CompanionIdleState::Update()
@@ -44,16 +33,6 @@ void CompanionIdleState::Update()
 			companion_->SetReturnOriginal(true);
 			companion_->GetEffect()->DamageUpEffect(false);
 			companion_->ChangeState(std::make_unique<CompanionIdleState>(companion_));
-		} else {
-			pushUpTime_ += DeltaTimer::GetDeltaTime();
-			if (pushUpTime_ > data.pushUpTime) {
-				companion_->GetEffect()->DamageUpEffect(true);
-				if (!isPowerUp_) {
-					isPowerUp_ = true;
-					const auto& volume = companion_->GetItems()->GetSeVolumeData();
-					companion_->GetAudio()->SoundPlayWave("MattyoPowerUp.wav", volume.powerUp);
-				}
-			}
 		}
 		return;
 	}

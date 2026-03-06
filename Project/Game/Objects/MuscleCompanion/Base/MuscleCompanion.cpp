@@ -8,7 +8,7 @@
 #include "Objects/Player/Player.h"
 #include "SearchAlgorithm/Collision/MapCollision.h"
 
-#include "Objects/MuscleCompanion/State/CompanionIdleState.h"
+#include "Objects/MuscleCompanion/State/CompanionPushUpIdleState.h"
 #include "Objects/MuscleCompanion/State/CompanionMoveState.h"
 #include "Objects/MuscleCompanion/State/CompanionAttackState.h"
 #include "Objects/MuscleCompanion/State/CompanionDeadState.h"
@@ -103,7 +103,7 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 
 	// 建物に当たったら待機状態へ
 	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) && isDash) {
-		ChangeState(std::make_unique<CompanionIdleState>(this));
+		ChangeState(std::make_unique<CompanionPushUpIdleState>(this));
 	// 敵に当たったら攻撃状態へ
 	} else if (other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") {
 		if (Collider::radius_ > 0.6f && (isDash || isSearchDash)) {
@@ -178,7 +178,7 @@ void MuscleCompanion::OnCollisionStay(Collider* other)
 
 	if (isKnockback) {
 		if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
-			ChangeState(std::make_unique<CompanionIdleState>(this));
+			ChangeState(std::make_unique<CompanionPushUpIdleState>(this));
 		}
 	}
 }
