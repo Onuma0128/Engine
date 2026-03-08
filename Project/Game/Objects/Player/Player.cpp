@@ -165,4 +165,8 @@ void Player::Reset()
 void Player::PlayDemo()
 {
 	ChangeState(std::make_unique<PlayerDemoMoveState>(this));
+
+	searchCollider_ = std::make_unique<EnemySearchCollider>();
+	searchCollider_->SetPlayer(this);
+	searchCollider_->Initialize();
 }

@@ -5,6 +5,7 @@
 
 #include "PlayerBaseState.h"
 
+#include "Collider.h"
 #include "Vector3.h"
 
 /// <summary>
@@ -65,6 +66,9 @@ private:
 
 	// 今向かっているポイント
 	Vector3 nowCheckPoint_;
+
+	// ターゲットした時のコライダー
+	Collider* targetCollider_ = nullptr;
 
 };
 

@@ -1318,6 +1318,7 @@
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionClearState.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.cpp" />
     <ClCompile Include="Game\Objects\Player\State\PlayerDemoMoveState.cpp" />
+    <ClCompile Include="Game\Objects\Player\Collider\EnemySearchCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1362,5 +1363,6 @@
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionClearState.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.h" />
     <ClInclude Include="Game\Objects\Player\State\PlayerDemoMoveState.h" />
+    <ClInclude Include="Game\Objects\Player\Collider\EnemySearchCollider.h" />
   </ItemGroup>
 </Project>

@@ -28,6 +28,7 @@ struct PlayerData {
 	Vector3 needMachoVarianceScale;	// マッチョ不足のエフェクト変動スケール
 	Vector3 needMachoVariancePos;	// マッチョ不足のエフェクト変動座標
 
+	float searchRadius;			// 敵を探す半径
 	float checkPointDistance;	// タイトルのプレイヤー移動のヒットする距離
 };
 

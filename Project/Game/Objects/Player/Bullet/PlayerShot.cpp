@@ -61,6 +61,28 @@ void PlayerShot::OnCollisionStay(Collider* other)
 
 void PlayerShot::RayUpdate()
 {
+	if (player_->GetPlayerState() == PlayerState::DemoMove) { 
+		const auto& itemData = player_->GetItem()->GetPreObjectData();
+		const auto rotateMatrix = Quaternion::MakeRotateMatrix(player_->GetTransform().rotation_);
+		auto centerPosition = player_->GetTransform().translation_ + itemData.rayColliderPosition.Transform(rotateMatrix);
+
+		// コライダーの更新
+		Collider::size_ = itemData.rayColliderSize;
+		Collider::rotate_ = player_->GetTransform().rotation_;
+		Collider::centerPosition_ = centerPosition;
+		Collider::Update();
+
+		rayReticle_->SetRaticleAlpha(isRayHit_);
+		if (rayHitCollider_) {
+			rayReticle_->SetPosition(rayHitCollider_->GetCenterPosition());
+		}
+		rayReticle_->Update();
+
+		ResetRayHit();
+
+		return;
+	}
+
 	// 右スティックの入力を取得
 	Vector3 rotateVelocity{};
 	Input::GetInstance()->SetGamepadStickDeadzoneScale(0.5f);

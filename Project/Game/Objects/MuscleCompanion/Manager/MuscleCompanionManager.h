@@ -75,6 +75,7 @@ private:
 	/// 仲間の集合要求
 	/// </summary>
 	void GatherCompanions();
+	void DemoGatherCompanions();
 
 	/// <summary>
 	/// クリア時の強制集合

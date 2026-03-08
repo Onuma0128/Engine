@@ -42,7 +42,7 @@ void BaseEnemy::Initialize()
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
 		"Player","MuscleCompanionAttack","FollowerMuscleCompanion","BlowDashMuscleCompanion",
-		"Enemy" ,"PlayerShotRay","MuscleCompanion","SearchDashMuscleCompanion",
+		"Enemy" ,"PlayerShotRay","MuscleCompanion","SearchDashMuscleCompanion","EnemySearch",
 	};
 	Collider::DrawCollider();
 

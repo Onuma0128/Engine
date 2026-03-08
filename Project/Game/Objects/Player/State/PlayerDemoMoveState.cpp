@@ -36,6 +36,7 @@ void PlayerDemoMoveState::Update()
 	// 方向を計算
 	const float speed = player_->GetItem()->GetPlayerData().speed;
 	auto& pathFinder = player_->GetPathFinder();
+	auto searchCollider = player_->GetSearchCollider();
 
 	// 探索の更新
 	ResetSearch();
@@ -47,13 +48,30 @@ void PlayerDemoMoveState::Update()
 
 	// 回転処理
 	if (velocity.Length() != 0.0f) {
-		Quaternion yRotation = pathFinder.GetRotation();
-		yRotation = Quaternion::Slerp(player_->GetTransform().rotation_, yRotation, 0.2f);
-		player_->SetTransformRotation(yRotation);
+		if (searchCollider->GetIsHit()) {
+			Quaternion targetRotation = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, searchCollider->GetTargetPosition() - player_->GetTransform().translation_, 1.0f);
+			targetRotation = Quaternion::Slerp(player_->GetTransform().rotation_, targetRotation, 0.2f);
+			player_->SetTransformRotation(targetRotation);
+		} else {
+			Quaternion yRotation = pathFinder.GetRotation();
+			yRotation = Quaternion::Slerp(player_->GetTransform().rotation_, yRotation, 0.2f);
+			player_->SetTransformRotation(yRotation);
+		}
 	}
 	// 移動処理
 	Vector3 position = player_->GetTransform().translation_;
 	player_->SetTransformTranslation(position + velocity * speed * DeltaTimer::GetDeltaTime());
+
+	// 攻撃処理
+	if (targetCollider_ != searchCollider->GetTargetCollider() && player_->GetShot()->GetIsRayHit()) {
+		targetCollider_ = searchCollider->GetTargetCollider();
+		if (targetCollider_ && searchCollider->GetTargetCollider()) {
+			player_->GetShot()->AttackBullet();
+		}
+	}
+
+	// 探索コライダーの更新
+	searchCollider->Update();
 }
 
 void PlayerDemoMoveState::Draw()

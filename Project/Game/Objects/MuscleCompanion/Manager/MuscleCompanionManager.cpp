@@ -51,6 +51,7 @@ void MuscleCompanionManager::Update()
 
 	// 集合要求関数
 	GatherCompanions();
+	DemoGatherCompanions();
 
 	// 仲間同士の後続判定
 	FollowerDistanceCollision();
@@ -118,6 +119,25 @@ void MuscleCompanionManager::GatherCompanions()
 		player_->GetShot()->SetIsCanAttack(true);
 		player_->GetShot()->SetGatherRequested(false);
 	}
+}
+
+void MuscleCompanionManager::DemoGatherCompanions()
+{
+	// デモシーンかつ発射できなければ早期リターン
+	if (state_ != CompanionManagerState::Demo) { return; }
+	if (IsShotCompanion()) { return; }
+	// 仲間を強制集合する
+	for (auto& companion : companions_) {
+		if (companion->GetState() == CharacterState::PushUpIdle) {
+			companion->SetGatherRequested(true);
+		}
+		if (!companion->GetReturnOriginal() && !audio_->IsPlaying("MattyoSet.wav") &&
+			companion->GetState() != CharacterState::Dead) {
+			audio_->SoundPlayWave("MattyoSet.wav", items_->GetSeVolumeData().set);
+		}
+	}
+	player_->GetShot()->SetIsCanAttack(true);
+	player_->GetShot()->SetGatherRequested(false);
 }
 
 void MuscleCompanionManager::ClearGatherCompanions()

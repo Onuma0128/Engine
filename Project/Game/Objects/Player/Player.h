@@ -8,11 +8,13 @@
 #include "JsonFunction.h"
 
 #include "Objects/Character/BaseCharacter.h"
-#include "objects/player/state/PlayerBaseState.h"
-#include "objects/player/effect/PlayerEffect.h"
-#include "objects/player/reticle/PlayerReticle.h"
-#include "objects/player/adjustItem/PlayerAdjustItem.h"
-#include "objects/player/bullet/PlayerShot.h"
+#include "Objects/Player/State/PlayerBaseState.h"
+#include "Objects/Player/Effect/PlayerEffect.h"
+#include "Objects/Player/Reticle/PlayerReticle.h"
+#include "Objects/Player/AdjustItem/PlayerAdjustItem.h"
+#include "Objects/Player/Bullet/PlayerShot.h"
+#include "Objects/Player/Collider/EnemySearchCollider.h"
+
 #include "SearchAlgorithm/Navigation/PathFinder.h"
 
 // 前方宣言
@@ -80,12 +82,14 @@ public:
 	PlayerReticle* GetReticle()const { return reticle_.get(); }
 	PlayerAdjustItem* GetItem() const { return items_.get(); }
 	BossEnemy* GetBoss()const { return boss_; }
-	PathFinder& GetPathFinder() { return pathFinder_; }
 	SceneJsonLoader* GetSceneJsonLoader()const { return loader_; }
+	EnemySearchCollider* GetSearchCollider()const { return searchCollider_.get(); }
+	PathFinder& GetPathFinder() { return pathFinder_; }
 	void SetLoader(SceneJsonLoader* loader) { loader_ = loader; }
 	void SetBoss(BossEnemy* boss) { boss_ = boss; }
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
 
+	const PlayerState GetPlayerState()const { return state_->GetState(); }
 	const WorldTransform& GetTransform() const { return transform_; }
 	bool GetIsAlive()const { return isAlive_; }
 	bool GetIsPlayingMouse()const { return isPlayingMouse_; }
@@ -112,7 +116,9 @@ private:
 	// 必殺技時にロックオンするためのレティクル
 	std::unique_ptr<PlayerReticle> reticle_ = nullptr;
 	// 調整項目
-	std::unique_ptr<PlayerAdjustItem> items_;
+	std::unique_ptr<PlayerAdjustItem> items_ = nullptr;
+	// 敵探索用コライダー
+	std::unique_ptr<EnemySearchCollider> searchCollider_ = nullptr;
 	WorldTransform startTransform_{};
 	// ローダーのポインタ
 	SceneJsonLoader* loader_ = nullptr;

@@ -156,6 +156,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Objects\Player\Collider\EnemySearchCollider.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionClearState.cpp" />
     <ClCompile Include="Game\Objects\Boss\Collider\BossDashPrediction.cpp" />
@@ -345,6 +346,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\Player\State\PlayerDemoMoveState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Objects\Player\Collider\EnemySearchCollider.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionClearState.h" />
     <ClInclude Include="Game\Objects\Boss\Collider\BossDashPrediction.h" />

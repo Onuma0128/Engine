@@ -29,6 +29,7 @@ void PlayerAdjustItem::LoadItems()
 		playerJson_.Set("needMachoVarianceScale", Vector3{});
 		playerJson_.Set("needMachoVariancePos", Vector3{});
 
+		playerJson_.Set("searchRadius", 1.0f);
 		playerJson_.Set("checkPointDistance", 1.0f);
 	} else {
 		playerData_.isInvincible = false;
@@ -53,6 +54,7 @@ void PlayerAdjustItem::LoadItems()
 		playerData_.needMachoVarianceScale = playerJson_.Get("needMachoVarianceScale", playerData_.needMachoVarianceScale);
 		playerData_.needMachoVariancePos = playerJson_.Get("needMachoVariancePos", playerData_.needMachoVariancePos);
 		
+		playerData_.searchRadius = playerJson_.Get("searchRadius", playerData_.searchRadius);
 		playerData_.checkPointDistance = playerJson_.Get("checkPointDistance", playerData_.checkPointDistance);
 	}
 
@@ -145,6 +147,7 @@ void PlayerAdjustItem::Editor()
 			ImGui::DragFloat3("needMachoVarianceScale", &playerData_.needMachoVarianceScale.x, 0.1f, -10.0f, 10.0f);
 			ImGui::DragFloat3("needMachoVariancePos", &playerData_.needMachoVariancePos.x, 0.1f, -10.0f, 10.0f);
 			ImGui::Separator();
+			ImGui::DragFloat("searchRadius", &playerData_.searchRadius, 0.01f);
 			ImGui::DragFloat("checkPointDistance", &playerData_.checkPointDistance, 0.01f);
 
 			if (ImGui::Button("Save")) {
@@ -167,6 +170,7 @@ void PlayerAdjustItem::Editor()
 				playerJson_.Set("needMachoPos", playerData_.needMachoPos);
 				playerJson_.Set("needMachoVarianceScale", playerData_.needMachoVarianceScale);
 				playerJson_.Set("needMachoVariancePos", playerData_.needMachoVariancePos);
+				playerJson_.Set("searchRadius", playerData_.searchRadius);
 				playerJson_.Set("checkPointDistance", playerData_.checkPointDistance);
 
 				playerJson_.Save();

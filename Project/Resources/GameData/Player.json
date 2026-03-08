@@ -48,5 +48,6 @@
         "y": 0.0,
         "z": 0.0
     },
-    "checkPointDistance": 3.5
+    "checkPointDistance": 3.5,
+    "searchRadius": 8.0
 }
