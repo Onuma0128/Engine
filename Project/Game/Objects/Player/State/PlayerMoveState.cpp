@@ -10,7 +10,6 @@
 #include "Objects/Player/Player.h"
 #include "Objects/Player/Bullet/PlayerShot.h"
 #include "PlayerAvoidState.h"
-#include "PlayerSpecialMoveState.h"
 
 PlayerMoveState::PlayerMoveState(Player* player) :PlayerBaseState(player) {}
 
@@ -166,19 +165,13 @@ void PlayerMoveState::SomeAction()
 	// 弾を発射する(弾を発射するとリロードが止まる)
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_RIGHT_SHOULDER) ||
 		(input->TriggerMouseButton(0) && player_->GetIsPlayingMouse())) {
-		isReloadBullet_ = false;
-		reloadBulletTime_ = 0.0f;
-		reloadStartTime_ = 0.0f;
 		player_->GetShot()->AttackBullet();
 	}
 	// 弾のリロードを開始する
 	if (input->TriggerGamepadButton(XINPUT_GAMEPAD_LEFT_SHOULDER) ||
 		(input->TriggerMouseButton(1) && player_->GetIsPlayingMouse())) {
-		isReloadBullet_ = true;
 		player_->GetShot()->ReloadBullet();
 	}
-	// リロードをする関数
-	ReloadBullet();
 
 	// 避けの状態に遷移
 	if (player_->GetAvoidCoolTimer() > 0.0f) {
@@ -192,45 +185,6 @@ void PlayerMoveState::SomeAction()
 			player_->GetReversePlay() = false;
 			player_->ChangeState(std::make_unique<PlayerAvoidState>(player_));
 			return;
-		}
-	}
-
-	// 必殺技の状態に遷移
-	if ((input->TriggerGamepadButton(XINPUT_GAMEPAD_A) ||
-		(input->TriggerKey(DIK_SPACE) && player_->GetIsPlayingMouse())) &&
-		!player_->GetEffect()->GetIsSpecialMove()) {
-		if (player_->GetShot()->GetChargeCount() > static_cast<uint32_t>(player_->GetItem()->GetBulletData().maxChargeCount_sp)) {
-			player_->GetEffect()->SetIsSpecialMove(true);
-			player_->ChangeState(std::make_unique<PlayerSpecialMoveState>(player_));
-			player_->GetShot()->ResetChargeCount();
-			return;
-		}
-	}
-}
-
-void PlayerMoveState::ReloadBullet()
-{
-	if (player_->GetShot()->IsReloadBullet()) {
-		isReloadBullet_ = false;
-		return;
-	}
-
-	if (isReloadBullet_) {
-
-		// リロード開始時間を過ぎているかチェック
-		reloadStartTime_ += DeltaTimer::GetDeltaTime();
-		if (reloadStartTime_ < player_->GetItem()->GetBulletData().reloadStartTime) { return; }
-
-		// 前の時間を取得
-		int32_t previousTime = static_cast<int32_t>(reloadBulletTime_);
-
-		// 今の時間を更新
-		reloadBulletTime_ += DeltaTimer::GetDeltaTime() / player_->GetItem()->GetBulletData().reloadTime;
-		int32_t currentTime = static_cast<int32_t>(reloadBulletTime_);
-
-		// 1秒立ったらリロードをする
-		if (previousTime != currentTime) {
-			player_->GetShot()->ReloadBullet();
 		}
 	}
 }

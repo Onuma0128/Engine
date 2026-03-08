@@ -21,6 +21,7 @@ void GameCamera::Init()
 	const auto& data = items_->GetCameraData();
 
 	// カメラの初期化
+	CameraManager::GetInstance()->Clear();
 	mainCamera_ = std::make_shared<Camera>();
 	mainCamera_->Initialize();
 	mainCamera_->SetRotation(data.mainRotate);
@@ -95,14 +96,14 @@ void GameCamera::mainUpdate(const Vector3& shakeOffset)
 		}
 		clearCameraTime_ += DeltaTimer::GetDeltaTime();
 	// ボスが死んだら
-	} else if (boss_->GetBossState() == BossState::Dead) {
+	} else if (boss_ && boss_->GetBossState() == BossState::Dead) {
 		clearCameraTime_ = 0.0f;
 		clearDataIndex_ = 0;
 	}
 
 	// ボスが死んだらカメラ操作をする
 	bool isDataSize = data.clearData.size() > clearDataIndex_ + 1;
-	if (boss_->GetBossState() == BossState::Dead) {
+	if (boss_ && boss_->GetBossState() == BossState::Dead) {
 		if (isDataSize) {
 			// 現在のインデックス
 			int idx = static_cast<int>(clearDataIndex_);

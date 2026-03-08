@@ -123,7 +123,7 @@ void MuscleCompanionManager::GatherCompanions()
 void MuscleCompanionManager::ClearGatherCompanions()
 {
 	// 死んでいる仲間以外クリアステートに遷移させる
-	if (boss_->GetBossState() == BossState::Dead && !isClear_) {
+	if (boss_ && boss_->GetBossState() == BossState::Dead && state_ != CompanionManagerState::Clear) {
 		for (auto& companion : companions_) {
 			if (companion->GetState() != CharacterState::Dead) {
 				companion->SetGatherRequested(true);
@@ -131,9 +131,9 @@ void MuscleCompanionManager::ClearGatherCompanions()
 			}
 		}
 		audio_->SoundPlayWave("MattyoSet.wav", items_->GetSeVolumeData().set);
-		isClear_ = true;
+		state_ = CompanionManagerState::Clear;
 	}
-	if (isClear_) {
+	if (state_ == CompanionManagerState::Clear) {
 		clearStateTime_ += DeltaTimer::GetDeltaTime();
 	}
 	if (clearStateTime_ > items_->GetMainData().clearStateTime) {
@@ -230,7 +230,7 @@ void MuscleCompanionManager::UpdateEffect()
 		isDraw = false;
 	}
 	// クリアしているならエフェクトを消す
-	if (isClear_) { isDraw = false; }
+	if (state_ == CompanionManagerState::Clear) { isDraw = false; }
 	arrowEffect_->SetDraw(isDraw);
 	arrowEffect_->Update(position);
 	predictionObjects_->SetDraw(isDraw);
@@ -256,13 +256,21 @@ const Vector3 MuscleCompanionManager::CompanionCenterPosition()
 
 void MuscleCompanionManager::Reset()
 {
-	isClear_ = false;
+	state_ = CompanionManagerState::Playing;
 	clearStateTime_ = 0.0f;
 	uint32_t count = 0;
 	for (auto& companion : companions_) {
 		companion->Reset();
 		companion->SetTransformTranslation(Vector3::ExprUnitZ * static_cast<float>(count));
 		count++;
+	}
+}
+
+void MuscleCompanionManager::PlayDemo()
+{
+	state_ = CompanionManagerState::Demo;
+	for (auto& companion : companions_) {
+		companion->SetInvincible(true);
 	}
 }
 

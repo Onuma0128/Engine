@@ -2,6 +2,13 @@
 
 class Player;
 
+enum class PlayerState {
+	Move,		// 移動
+	Avoid,		// 避け
+	Dead,		// 死亡
+	DemoMove,	// デモシーンでの移動
+};
+
 /// <summary>
 /// プレイヤーの基底ステートクラス
 /// </summary>
@@ -19,6 +26,12 @@ public:
 	/// </summary>
 	/// <param name="player"></param>
 	PlayerBaseState(Player* player);
+	
+	/// <summary>
+	/// 現在のステートを取得する
+	/// </summary>
+	/// <returns></returns>
+	virtual PlayerState GetState() const = 0;
 
 	/// <summary>
 	/// 初期化

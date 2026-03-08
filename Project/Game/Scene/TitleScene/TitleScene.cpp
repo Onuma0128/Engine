@@ -9,16 +9,6 @@
 
 void TitleScene::Initialize()
 {
-	// カメラの初期化
-	camera_ = std::make_unique<Camera>();
-	camera_->Initialize();
-	camera_->SetRotation(Vector3{ 0.55f,0.0f,0.0f });
-	camera_->SetTranslation(Vector3{ -0.4f,10.0f,-15.0f });
-	CameraManager::GetInstance()->Clear();
-	CameraManager::GetInstance()->SetCamera(camera_);
-	CameraManager::GetInstance()->SetActiveCamera(0);
-	camera_->Update();
-
 	sceneFade_ = std::make_unique<BaseUI>();
 	sceneFade_->Init("TitleFade", "GameData", true);
 	sceneFade_->GetSprite()->SetColor(Vector4{ 0.0f,0.0f,0.0f,1.0f });
@@ -32,14 +22,45 @@ void TitleScene::Initialize()
 	SceneJsonLoader loader;
 	loader.Load("sceneObject");
 
+	// マップの初期化
+	mapCollision_ = std::make_unique<MapCollision>();
+	mapCollision_->Init(loader);
+
+	// プレイヤーの初期化
+	player_ = std::make_unique<Player>();
+	player_->SetLoader(&loader);
+	player_->SetMapData(mapCollision_.get());
+	player_->Initialize();
+	player_->PlayDemo();
+
+	// ゲームカメラの初期化
+	gameCamera_ = std::make_unique<GameCamera>();
+	gameCamera_->SetPlayer(player_.get());
+	gameCamera_->Init();
+
+	// 仲間管理クラスの初期化
+	companionManager_ = std::make_unique<MuscleCompanionManager>();
+	companionManager_->SetPlayer(player_.get());
+	companionManager_->SetMapData(mapCollision_.get());
+	companionManager_->SetCamera(gameCamera_.get());
+	companionManager_->Initialize();
+	companionManager_->PlayDemo();
+	gameCamera_->SetCompanionManager(companionManager_.get());
+
 	// フィールド上のオブジェクトの初期化と生成
 	fieldObjectFactory_ = std::make_unique<FieldObjectFactory>();
+	fieldObjectFactory_->SetMapCollision(mapCollision_.get());
+	fieldObjectFactory_->SetGameCamera(gameCamera_.get());
 	fieldObjectFactory_->Init(loader);
-	PostEffectManager::GetInstance()->CreatePostEffect(PostEffectType::kOutLine);
 
-	test = std::make_unique<ParticleEmitter>("test");
-	particleManager->CreateParticleGroup(test);
-	test->SetIsCreate(false);
+	// 敵スポナーの初期化と生成
+	enemySpawnerFactory_ = std::make_unique<EnemySpawnerFactory>();
+	enemySpawnerFactory_->SetPlayer(player_.get());
+	enemySpawnerFactory_->SetGameCamera(gameCamera_.get());
+	enemySpawnerFactory_->SetMapData(mapCollision_.get());
+	enemySpawnerFactory_->Init(loader);
+	enemySpawnerFactory_->PlayDemo();
+	gameCamera_->SetSpawner(enemySpawnerFactory_.get());
 
 	// BGMを流す
 	const float kBGMVolume = 0.04f;
@@ -53,19 +74,30 @@ void TitleScene::Finalize()
 
 void TitleScene::Update()
 {
-	Input* input = Input::GetInstance();
-
-	camera_->Update();
-
 	titleUI_->Update();
 
 	sceneFade_->DrawImGui();
 	sceneFade_->Update();
 
+	// マップの判定を更新
+	mapCollision_->Update();
+
+	// プレイヤーの更新
+	player_->Update();
+
+	// 仲間管理クラスの更新
+	companionManager_->Update();
+
+	// 敵スポナーと敵の更新
+	enemySpawnerFactory_->Update();
+
+	// フィールド上のオブジェクトの更新
 	fieldObjectFactory_->Update();
 
-	particleManager->Update();
+	// ゲームカメラの更新
+	gameCamera_->Update();
 
+	Input* input = Input::GetInstance();
     if ((input->TriggerGamepadButton(XINPUT_GAMEPAD_A) || input->TriggerKey(DIK_SPACE)) && !isFade_) {
 		isFade_ = true;
 		sceneFade_->FadeIn();
@@ -75,10 +107,21 @@ void TitleScene::Update()
 	if (isFade_ && !sceneFade_->IsPlayAnimation()) {
 		SceneManager::GetInstance()->ChangeScene("Game");
 	}
+
+	// パーティクルの更新
+	ParticleManager::GetInstance()->Update();
 }
 
 void TitleScene::Draw()
 {
+	player_->EffectDraw();
+
+	companionManager_->Draw();
+
+	enemySpawnerFactory_->Draw();
+
+	player_->Draw();
+
 	titleUI_->Draw();
 
 	sceneFade_->Draw();

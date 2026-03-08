@@ -19,6 +19,12 @@ public:
 	PlayerMoveState(Player* player);
 
 	/// <summary>
+	/// 現在のステートを取得する
+	/// </summary>
+	/// <returns></returns>
+	PlayerState GetState()const override { return PlayerState::Move; }
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Init()override;
@@ -46,11 +52,6 @@ private:
 	void SomeAction();
 
 	/// <summary>
-	/// 弾をリロードする
-	/// </summary>
-	void ReloadBullet();
-
-	/// <summary>
 	/// 移動時の速度ベクトルを生成する
 	/// </summary>
 	/// <returns></returns>
@@ -63,13 +64,6 @@ private:
 	const Vector3 CreateRotateVelocity();
 
 private:
-
-	// 今弾をリロードしているか
-	bool isReloadBullet_ = false;
-	// リロードをはじめる時間
-	float reloadStartTime_ = 0.0f;
-	// 一つの弾をリロードする時間
-	float reloadBulletTime_;
 
 	// 最後に向けたRightStickを保存する
 	Vector3 rightStickVelocity_{};

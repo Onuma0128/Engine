@@ -306,7 +306,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Base\DxEngine\Pipeline\RootSignature\RootSignatureFactory.cpp" />
     <ClCompile Include="Engine\Base\DxEngine\DescriptorHeap\RtvManager.cpp" />
     <ClCompile Include="Engine\Base\Effect\PostEffectManager.cpp" />
-    <ClCompile Include="Game\Objects\Player\State\PlayerSpecialMoveState.cpp" />
     <ClCompile Include="Game\Objects\Player\Reticle\PlayerReticle.cpp" />
     <ClCompile Include="Game\Objects\Player\Effect\PlayerBulletEffect.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\PredictionObject\PredictionObjects.cpp" />
@@ -343,6 +342,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.cpp" />
+    <ClCompile Include="Game\Objects\Player\State\PlayerDemoMoveState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.h" />
@@ -517,7 +517,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\RootSignature\RootSignatureFactory.h" />
     <ClInclude Include="Engine\Base\DxEngine\DescriptorHeap\RtvManager.h" />
     <ClInclude Include="Engine\Base\Effect\PostEffectManager.h" />
-    <ClInclude Include="Game\Objects\Player\State\PlayerSpecialMoveState.h" />
     <ClInclude Include="Game\Objects\Player\Reticle\PlayerReticle.h" />
     <ClInclude Include="Game\Objects\Player\Effect\PlayerBulletEffect.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\PredictionObject\PredictionObjects.h" />
@@ -554,6 +553,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.h" />
+    <ClInclude Include="Game\Objects\Player\State\PlayerDemoMoveState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli">

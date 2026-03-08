@@ -2334,6 +2334,174 @@
         },
         {
             "type": "MESH",
+            "name": "Cube.011",
+            "transform": {
+                "translation": [
+                    2.641441822052002,
+                    -3.7873342037200928,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.30000001192092896
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "DemoPoint",
+            "group_name": "PlayerDemoPoint"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.012",
+            "transform": {
+                "translation": [
+                    17.06773567199707,
+                    10.271580696105957,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.30000001192092896
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "DemoPoint",
+            "group_name": "PlayerDemoPoint"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.013",
+            "transform": {
+                "translation": [
+                    2.8387451171875,
+                    -17.70842742919922,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.30000001192092896
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "DemoPoint",
+            "group_name": "PlayerDemoPoint"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.014",
+            "transform": {
+                "translation": [
+                    -13.99731731414795,
+                    14.742583274841309,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.30000001192092896
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "DemoPoint",
+            "group_name": "PlayerDemoPoint"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.015",
+            "transform": {
+                "translation": [
+                    -16.52126693725586,
+                    -1.7629988193511963,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.30000001192092896
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "DemoPoint",
+            "group_name": "PlayerDemoPoint"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.016",
+            "transform": {
+                "translation": [
+                    -0.14141565561294556,
+                    20.30675506591797,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.30000001192092896
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "DemoPoint",
+            "group_name": "PlayerDemoPoint"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.017",
+            "transform": {
+                "translation": [
+                    17.379487991333008,
+                    -6.726685047149658,
+                    1.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    0.30000001192092896,
+                    0.30000001192092896,
+                    0.30000001192092896
+                ]
+            },
+            "file_name": "Box.obj",
+            "tag_name": "DemoPoint",
+            "group_name": "PlayerDemoPoint"
+        },
+        {
+            "type": "MESH",
             "name": "Cube.001",
             "transform": {
                 "translation": [

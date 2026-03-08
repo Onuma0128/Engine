@@ -16,6 +16,12 @@ public:
 	PlayerDeadState(Player* player);
 
 	/// <summary>
+	/// 現在のステートを取得する
+	/// </summary>
+	/// <returns></returns>
+	PlayerState GetState()const override { return PlayerState::Dead; }
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Init()override;

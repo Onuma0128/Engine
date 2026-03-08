@@ -5,6 +5,7 @@
 #include "DeltaTimer.h"
 #include "Collision/CollisionFilter.h"
 #include "Objects/Player/State/PlayerMoveState.h"
+#include "Objects/Player/State/PlayerDemoMoveState.h"
 #include "Objects/Player/State/PlayerDeadState.h"
 
 void Player::Initialize()
@@ -75,7 +76,6 @@ void Player::Update()
 
 	// 弾の更新
 	shot_->Update();
-	shot_->UpdateUI();
 
 	// コライダーの更新
 	Collider::rotate_ = transform_.rotation_;
@@ -109,6 +109,7 @@ void Player::ChangeState(std::unique_ptr<PlayerBaseState> newState)
 
 void Player::OnCollisionEnter(Collider* other)
 {
+	if (state_->GetState() == PlayerState::DemoMove) { return; }
 	if (CollisionFilter::CheckColliderNameEnemy(other->GetColliderName())) {
 		if (!isAvoid_ && !items_->GetPlayerData().isInvincible && isAlive_) {
 			isAlive_ = false;
@@ -159,4 +160,9 @@ void Player::Reset()
 	avoidCoolTimer_ = 0.0f;
 	isPushMove_ = false;
 	isPlayingMouse_ = false;
+}
+
+void Player::PlayDemo()
+{
+	ChangeState(std::make_unique<PlayerDemoMoveState>(this));
 }

@@ -1119,12 +1119,6 @@
     <ClInclude Include="Game\Objects\Player\State\PlayerMoveState.h">
       <Filter>Game\Objects\Player\State</Filter>
     </ClInclude>
-    <ClCompile Include="Game\Objects\Player\State\PlayerSpecialMoveState.cpp">
-      <Filter>Game\Objects\Player\State</Filter>
-    </ClCompile>
-    <ClInclude Include="Game\Objects\Player\State\PlayerSpecialMoveState.h">
-      <Filter>Game\Objects\Player\State</Filter>
-    </ClInclude>
     <ClCompile Include="Game\Objects\Player\Player.cpp">
       <Filter>Game\Objects\Player</Filter>
     </ClCompile>
@@ -1323,6 +1317,7 @@
     <ClCompile Include="Game\Objects\Boss\Collider\BossDashPrediction.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionClearState.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.cpp" />
+    <ClCompile Include="Game\Objects\Player\State\PlayerDemoMoveState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\MuscleCompanion\Base\MuscleCompanion.h" />
@@ -1366,5 +1361,6 @@
     <ClInclude Include="Game\Objects\Boss\Collider\BossDashPrediction.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionClearState.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.h" />
+    <ClInclude Include="Game\Objects\Player\State\PlayerDemoMoveState.h" />
   </ItemGroup>
 </Project>

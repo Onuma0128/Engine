@@ -72,6 +72,11 @@ public:
 	void Reset();
 	void CountReset();
 
+	/// <summary>
+	/// デモを行う
+	/// </summary>
+	void PlayDemo();
+
 private:
 
 	/// <summary>
@@ -146,5 +151,7 @@ private:
 	// スポーンの間隔とスポーンする時間
 	float spawnInterval_ = 0.0f;
 	float spawnTime_ = 0.0f;
+	// デモスポーンを行うか
+	bool isDemoSpawn_ = false;
 
 };

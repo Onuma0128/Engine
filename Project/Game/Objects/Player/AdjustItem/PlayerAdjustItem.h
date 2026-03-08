@@ -27,6 +27,8 @@ struct PlayerData {
 	Vector3 needMachoPos;			// マッチョ不足のエフェクト座標
 	Vector3 needMachoVarianceScale;	// マッチョ不足のエフェクト変動スケール
 	Vector3 needMachoVariancePos;	// マッチョ不足のエフェクト変動座標
+
+	float checkPointDistance;	// タイトルのプレイヤー移動のヒットする距離
 };
 
 // 弾の項目
@@ -48,7 +50,7 @@ struct PreObjectData {
 	float interval;				// オブジェクトごとの間隔
 	Vector3 startPosition;		// 最初のZ座標
 
-	Vector3 rayColliderSize;		// レイコライダーのサイズ
+	Vector3 rayColliderSize;	// レイコライダーのサイズ
 	Vector3 rayColliderPosition;// レイコライダーの座標
 };
 

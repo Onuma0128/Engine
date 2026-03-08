@@ -125,7 +125,7 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	}
 	// 敵の攻撃に当たったら体力を1減らす
 	if (CollisionFilter::CheckColliderNameEnemy(other->GetColliderName())) {
-		--currentHp_;
+		if (!isInvincible_) { --currentHp_; }
 		effect_->OnceHitEffect();
 		const auto& volume = items_->GetSeVolumeData();
 		audio_->SoundPlayWave("MattyoGetDamage.wav", volume.getDamage);

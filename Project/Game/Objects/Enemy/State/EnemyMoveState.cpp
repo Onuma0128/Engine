@@ -22,7 +22,6 @@ void EnemyMoveState::Init()
 	isIdleAnima_ = false;
 
 	enemy_->ResetSearch();
-	//enemy_->GetEnemyRay()->SetActive(true);
 	enemy_->GetEnemyRay()->Reset();
 }
 
@@ -30,8 +29,6 @@ void EnemyMoveState::Finalize()
 {
 	auto& pathFinder = enemy_->GetPathFinder();
 	pathFinder.DebugSpline(false);
-
-	//enemy_->GetEnemyRay()->SetActive(false);
 }
 
 void EnemyMoveState::Update()

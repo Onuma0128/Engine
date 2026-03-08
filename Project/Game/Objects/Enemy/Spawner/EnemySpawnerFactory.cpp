@@ -45,7 +45,7 @@ void EnemySpawnerFactory::Update()
 	knockdownCount_ = 0;
 	for (auto& spawner : enemySpawners_) {
 		spawner->Update();
-		knockdownCount_ += spawner->GetNockdownCount();
+		if (!isDemoSpawn_) { knockdownCount_ += spawner->GetNockdownCount(); }
 	}
 
 	// スポーンしていない敵の更新処理
@@ -145,6 +145,11 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 	spawnTime_ += DeltaTimer::GetDeltaTime();
 	// 敵をスポーンさせる
 	if (spawnTime_ > spawnInterval_) {
+		// デモスポーンならカウントをリセットする
+		if (isDemoSpawn_) {
+			kNockdownCount = 0;
+			spawnCount_ = 0;
+		}
 		// ランダムで敵のタイプを決める
 		std::mt19937 randomEngine_(seedGenerator_());
 		// 何処のスポナーに湧くか
@@ -207,4 +212,9 @@ void EnemySpawnerFactory::CountReset()
 	spawnCount_ = 0;
 	spawnInterval_ = 1.0f;
 	spawnTime_ = 0.0f;
+}
+
+void EnemySpawnerFactory::PlayDemo()
+{
+	isDemoSpawn_ = true;
 }

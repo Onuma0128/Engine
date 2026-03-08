@@ -90,6 +90,7 @@ public:
 	void SetReturnOriginal(bool flag) { isReturnOriginal_ = flag; }
 	void SetDashAttack(bool flag) { isDashAttack_ = flag; }
 	void SetFirstDashAttack(bool flag) { isFirstDashAttack_ = flag; }
+	void SetInvincible(bool flag) { isInvincible_ = flag; }
 	void SetColliderName(const std::string& name) { Collider::colliderName_ = name; }
 	void SetOutLineColor(const Vector3& color) { Animation::GetMaterial().outlineColor = color; }
 	// ゲッター
@@ -134,6 +135,8 @@ private:
 	uint32_t maxHp_ = 1;
 	// 仲間の現在のHP
 	uint32_t currentHp_ = 1;
+	// 無敵フラグ
+	bool isInvincible_ = false;
 	// 点滅タイマー
 	float blinkingTime_ = 0.0f;
 	// コライダーのスケール

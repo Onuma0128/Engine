@@ -8,9 +8,15 @@
 #include "Camera.h"
 #include "Audio.h"
 
+#include "Objects/Player/Player.h"
+#include "Objects/Enemy/Spawner/EnemySpawnerFactory.h"
+#include "Objects/FieldObject/Factory/FieldObjectFactory.h"
+#include "Objects/MuscleCompanion/Manager/MuscleCompanionManager.h"
+
+#include "GameCamera/GameCamera.h"
+#include "SearchAlgorithm/Collision/MapCollision.h"
 #include "Scene/SceneFade/SceneFade.h"
 #include "Uis/TitleUI/TitleUI.h"
-#include "Objects/FieldObject/Factory/FieldObjectFactory.h"
 
 /// <summary>
 /// タイトルシーン
@@ -41,21 +47,31 @@ public:
 
 private:
 
-	std::shared_ptr<Camera> camera_ = nullptr;
-
+	// フェード
 	std::unique_ptr<BaseUI> sceneFade_ = nullptr;
 	bool isFade_ = false;
 
+	// タイトル用UI
 	std::unique_ptr<TitleUI> titleUI_ = nullptr;
+
+	// プレイヤーの生成
+	std::unique_ptr<Player> player_ = nullptr;
+
+	// プレイヤーの仲間管理クラスを生成
+	std::unique_ptr<MuscleCompanionManager> companionManager_ = nullptr;
+
+	// 敵の生成
+	std::unique_ptr<EnemySpawnerFactory> enemySpawnerFactory_ = nullptr;
 
 	// フィールド場のオブジェクト
 	std::unique_ptr<FieldObjectFactory> fieldObjectFactory_ = nullptr;
 
-	// パーティクルを管理する
-	ParticleManager* particleManager = ParticleManager::GetInstance();
+	// ゲームカメラの生成
+	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
 
-	// エフェクト
-	std::shared_ptr<ParticleEmitter> test = nullptr;
+	// 探索アルゴリズムの判定
+	std::unique_ptr<MapCollision> mapCollision_ = nullptr;
+
 
 	std::unique_ptr<Audio> bgm_;
 

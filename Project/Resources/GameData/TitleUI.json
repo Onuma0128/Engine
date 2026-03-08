@@ -5,8 +5,8 @@
         "y": 0.5
     },
     "Size": {
-        "x": 770.0,
-        "y": 336.0
+        "x": 660.0,
+        "y": 288.0
     },
     "Rotate": 0.0,
     "Position": {
@@ -14,7 +14,7 @@
         "y": 460.0
     },
     "IsAnimation": true,
-    "AnimationTime": 2.0,
+    "AnimationTime": 1.0,
     "Anima_Size": {
         "x": 880.0,
         "y": 384.0
@@ -38,10 +38,10 @@
         "z": 1.0,
         "w": 1.0
     },
-    "FadeInInterval": 0.800000011920929,
+    "FadeInInterval": 2.0999999046325684,
     "FadeOutInterval": 0.0,
     "NoiseTexture": "noiseTexture.png",
-    "EdgeWidth": 0.10000000149011612,
+    "EdgeWidth": 0.07999999821186066,
     "NoiseColor": {
         "x": 1.0,
         "y": 0.0,

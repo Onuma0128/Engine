@@ -13,6 +13,12 @@
 // 前方宣言
 class BossEnemy;
 
+enum class CompanionManagerState {
+	Playing,
+	Clear,
+	Demo,
+};
+
 /// <summary>
 /// プレイヤーの仲間を管理するクラス
 /// </summary>
@@ -52,6 +58,15 @@ public:
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// デモを行う
+	/// </summary>
+	void PlayDemo();
+
+	/// <summary>
+	/// マッチョが生きているか
+	/// </summary>
+	/// <returns></returns>
 	const bool IsAliveCompanion() const;
 
 private:
@@ -105,7 +120,7 @@ private:
 	std::unique_ptr<Audio> audio_ = nullptr;
 
 	// 仲間がクリアステートに入る
-	bool isClear_ = false;
+	CompanionManagerState state_ = CompanionManagerState::Playing;
 	float clearStateTime_ = 0.0f;
 
 };

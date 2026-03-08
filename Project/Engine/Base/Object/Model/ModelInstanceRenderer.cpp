@@ -72,6 +72,64 @@ void ModelInstanceRenderer::Initialize()
     lightData_->lightVP = Matrix4x4::Identity();
 }
 
+void ModelInstanceRenderer::Finalize()
+{
+    auto* srvManager = SrvManager::GetInstance();
+
+    // ObjectBatch が持っている SRV を返却
+    for (auto& objPair : objBatches_) {
+        ObjectBatch& batch = objPair.second;
+
+        srvManager->Free(batch.instSrvIndex);
+        srvManager->Free(batch.materialSrvIndex);
+
+        batch.objects.clear();
+        batch.count = 0;
+
+        batch.instanceData = nullptr;
+        batch.materialData = nullptr;
+
+        batch.worldMatrixBuffer.Reset();
+        batch.materialBuffer.Reset();
+    }
+    objBatches_.clear();
+
+    // AnimationBatch が持っている SRV を返却
+    for (auto& animaPair : animationBatches_) {
+        AnimationBatch& batch = animaPair.second;
+
+        srvManager->Free(batch.instSrvIndex);
+        srvManager->Free(batch.materialSrvIndex);
+        srvManager->Free(batch.paletteSrvIndex);
+
+        batch.animations.clear();
+        batch.count = 0;
+
+        batch.instanceData = nullptr;
+        batch.materialData = nullptr;
+        batch.jointData = nullptr;
+        batch.paletteData = nullptr;
+
+        batch.worldMatrixBuffer.Reset();
+        batch.materialBuffer.Reset();
+        batch.jointBuffer.Reset();
+        batch.paletteBuffer.Reset();
+    }
+    animationBatches_.clear();
+
+    // LateDraw
+    lateDrawModelNames_.clear();
+    objDrawOrder_.clear();
+    objLateDrawOrder_.clear();
+    animDrawOrder_.clear();
+    animLateDrawOrder_.clear();
+
+    lightVpBuffer_.Reset();
+    lightData_ = nullptr;
+
+    instance_ = nullptr;
+}
+
 /// =====================================================================
 ///                             LateDraw
 /// =====================================================================

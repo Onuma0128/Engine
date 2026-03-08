@@ -5,6 +5,8 @@
 
 #include <memory>
 #include <chrono>
+#include <queue>
+#include <vector>
 
 #include "PostEffectType.h"
 
@@ -61,6 +63,8 @@ public:
 	void CreateSRVforDepth(uint32_t srvIndex, ID3D12Resource* pResource, DXGI_FORMAT Format);
 	// 自動割当
 	uint32_t Allocate();
+	// 解放
+	void Free(uint32_t srvIndex);
 	// SRV割り当てチェック
 	bool CheckAllocate();
 
@@ -75,4 +79,10 @@ private:
 
 	// 次に使用するSRVインデックス
 	uint32_t useIndex_ = 0;
+
+	// 解放済みindexの再利用
+	std::queue<uint32_t> freeIndices_;
+
+	// 二重解放防止用
+	std::vector<bool> isAllocated_;
 };

@@ -5,10 +5,11 @@
 
 #include "BaseUI.h"
 
+#include "Uis/GameSceneUIs/AdjustItem/GameUiAdjustItem.h"
 #include "Uis/GameSceneUIs/PlayerControlUI.h"
+#include "Uis/TitleUI/TitleUI.h"
 #include "Uis/Select/SelectSystem.h"
 #include "Uis/Player/NumberCountUI.h"
-#include "Uis/GameSceneUIs/AdjustItem/GameUiAdjustItem.h"
 #include "Uis/Boss/BossHpUI.h"
 
 // 前方宣言

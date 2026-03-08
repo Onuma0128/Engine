@@ -69,25 +69,7 @@ public:
     void Remove(Animation* animation);
 
     // 終了処理
-    void Finalize() {
-        for (auto& obj : objBatches_) {
-            obj.second.objects.clear();
-            obj.second.count = 0;
-        }
-        for (auto& anima : animationBatches_) {
-            anima.second.animations.clear();
-            anima.second.count = 0;
-        }
-
-        // LateDraw
-        lateDrawModelNames_.clear();
-        objDrawOrder_.clear();
-        objLateDrawOrder_.clear();
-        animDrawOrder_.clear();
-        animLateDrawOrder_.clear();
-
-        instance_ = nullptr;
-    }
+    void Finalize();
 
     // 全てのシャドウマップ深度パス描画
     void AllDrawShadowDepth();

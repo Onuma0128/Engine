@@ -13,6 +13,7 @@
 #include "objects/player/reticle/PlayerReticle.h"
 #include "objects/player/adjustItem/PlayerAdjustItem.h"
 #include "objects/player/bullet/PlayerShot.h"
+#include "SearchAlgorithm/Navigation/PathFinder.h"
 
 // 前方宣言
 class BossEnemy;
@@ -55,6 +56,11 @@ public:
 	/// </summary>
 	void Reset();
 
+	/// <summary>
+	/// デモシーンでの移動をする
+	/// </summary>
+	void PlayDemo();
+
 private:
 
 	/// <summary>
@@ -74,8 +80,11 @@ public:
 	PlayerReticle* GetReticle()const { return reticle_.get(); }
 	PlayerAdjustItem* GetItem() const { return items_.get(); }
 	BossEnemy* GetBoss()const { return boss_; }
+	PathFinder& GetPathFinder() { return pathFinder_; }
+	SceneJsonLoader* GetSceneJsonLoader()const { return loader_; }
 	void SetLoader(SceneJsonLoader* loader) { loader_ = loader; }
 	void SetBoss(BossEnemy* boss) { boss_ = boss; }
+	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
 
 	const WorldTransform& GetTransform() const { return transform_; }
 	bool GetIsAlive()const { return isAlive_; }
@@ -91,6 +100,8 @@ private:
 
 	// ボスのポインタ
 	BossEnemy* boss_ = nullptr;
+	// 探索アルゴリズム
+	PathFinder pathFinder_;
 
 	// 状態遷移
 	std::unique_ptr<PlayerBaseState> state_ = nullptr;

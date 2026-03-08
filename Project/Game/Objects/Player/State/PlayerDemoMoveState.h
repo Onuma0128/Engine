@@ -1,14 +1,16 @@
 #pragma once
 
+#include <vector>
+#include <random>
+
 #include "PlayerBaseState.h"
 
 #include "Vector3.h"
-#include "Quaternion.h"
 
 /// <summary>
-/// プレイヤーの回避状態
+/// プレイヤーのデモ移動
 /// </summary>
-class PlayerAvoidState :public PlayerBaseState
+class PlayerDemoMoveState : public PlayerBaseState
 {
 public:
 
@@ -16,13 +18,13 @@ public:
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="player"></param>
-	PlayerAvoidState(Player* player);
+	PlayerDemoMoveState(Player* player);
 
 	/// <summary>
 	/// 現在のステートを取得する
 	/// </summary>
 	/// <returns></returns>
-	PlayerState GetState()const override { return PlayerState::Avoid; }
+	PlayerState GetState()const override { return PlayerState::DemoMove; }
 
 	/// <summary>
 	/// 初期化
@@ -44,22 +46,25 @@ public:
 	/// </summary>
 	void Draw()override;
 
-private:
-
-	/// <summary>
-	/// 回避時の移動ベクトルを生成する
-	/// </summary>
-	/// <returns></returns>
-	const Vector3 CreateVelocity();
 
 private:
 
-	float avoidTime_ = 0.0f;
+	// 探索の初期化
+	void InitSearch();
 
-	Vector3 velocity_ = {};
-	float velocityY_ = 0.0f;
-	float acceleration_ = 0.0f;
-	Quaternion rotateY_ = Quaternion::IdentityQuaternion();
+	// 探索をリセットする
+	void ResetSearch();
+
+private:
+
+	// 乱数生成器の初期化
+	std::random_device seedGenerator_;
+
+	// プレイヤーが動くポイント
+	std::vector<Vector3> checkPoints_;
+
+	// 今向かっているポイント
+	Vector3 nowCheckPoint_;
 
 };
 
