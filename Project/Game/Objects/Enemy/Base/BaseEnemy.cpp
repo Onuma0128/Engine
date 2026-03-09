@@ -159,7 +159,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 	// プレイヤーの仲間と当たっているなら
 	if (CollisionFilter::CheckColliderNameCompanion(other->GetColliderName())) {
 		// 小さな当たり判定は無視する
-		if (other->GetRadius() < 0.6f) {
+		if (other->GetRadius() < 0.72f) {
 			return;
 		}
 		// 初回ヒット時はヒットジャンプステートに遷移
@@ -179,6 +179,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 			currentHp_ = 0;
 		} else {
 			--currentHp_;
+			if (other->GetRadius() > 1.5f && currentHp_ > 0) { --currentHp_; }
 		}
 		// エフェクトを描画
 		WorldTransform transform;

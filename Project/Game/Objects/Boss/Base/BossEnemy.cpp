@@ -127,7 +127,7 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 
 	if (isCompanion || isCompanionAttack || isSearchDashCompanion || isBlowDashCompanion) {
 		// 小さな当たり判定は無視する
-		if (other->GetRadius() < 0.6f) {
+		if (other->GetRadius() < 0.72f) {
 			return;
 		}
 		// ダメージ処理
@@ -139,6 +139,7 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 			}
 		} else {
 			--currentHp_;
+			if (other->GetRadius() > 1.5f && currentHp_ > 0) { --currentHp_; }
 		}
 		if (isSearchDashCompanion) {
 			effect_->OnceHitExplosionBlueEffect();

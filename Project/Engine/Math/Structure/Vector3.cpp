@@ -289,6 +289,11 @@ bool Vector3::operator==(const Vector3& v)
     return (x == v.x && y == v.y && z == v.z);
 }
 
+bool Vector3::operator!=(const Vector3& v)
+{
+    return (x != v.x || y != v.y || z != v.z);
+}
+
 // フレンド関数：スカラー倍の演算子オーバーロード
 Vector3 operator*(float scalar, const Vector3& v) {
     return v * scalar;

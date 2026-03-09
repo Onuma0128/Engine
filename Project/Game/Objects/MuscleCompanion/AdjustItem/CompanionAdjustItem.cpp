@@ -46,17 +46,21 @@ void CompanionAdjustItem::LoadItems()
 
 	/* ============================== Dash ============================== */
 	dashJson_.Init("CompanionDash");
-	if(!dashJson_.Load()) {
+	if (!dashJson_.Load()) {
 		dashJson_.Set("dashSpeed", 0.0f);
 		dashJson_.Set("dashTargetDistance", 0.0f);
 		dashJson_.Set("dashColliderScale", 1.0f);
 		dashJson_.Set("searchDashColliderScale", 1.0f);
+		dashJson_.Set("pushUpScale", 1.0f);
+		dashJson_.Set("pushUpMaxScale", 1.0f);
 		dashJson_.Set("pushUpTime", 1.0f);
 	} else {
 		dashData_.dashSpeed = dashJson_.Get("dashSpeed", dashData_.dashSpeed);
 		dashData_.dashTargetDistance = dashJson_.Get("dashTargetDistance", dashData_.dashTargetDistance);
 		dashData_.dashColliderScale = dashJson_.Get("dashColliderScale", dashData_.dashColliderScale);
-		dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale); dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale);
+		dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale);
+		dashData_.pushUpScale = dashJson_.Get("pushUpScale", dashData_.pushUpScale);
+		dashData_.pushUpMaxScale = dashJson_.Get("pushUpMaxScale", dashData_.pushUpMaxScale);
 		dashData_.pushUpTime = dashJson_.Get("pushUpTime", dashData_.pushUpTime);
 	}
 
@@ -88,7 +92,7 @@ void CompanionAdjustItem::LoadItems()
 		knockbackJson_.Set("knockbackSpeed", 0.0f);
 		knockbackJson_.Set("knockbackTime", 1.0f);
 
-		knockbackJson_.Set("shieldKnockbackDire", 0.0f);
+		knockbackJson_.Set("shieldKnockbackDire", Vector3{});
 		knockbackJson_.Set("shieldKnockbackSpeed", 0.0f);
 		knockbackJson_.Set("shieldKnockbackTime", 1.0f);
 	} else {
@@ -100,14 +104,50 @@ void CompanionAdjustItem::LoadItems()
 		knockbackData_.shieldKnockbackTime = knockbackJson_.Get("shieldKnockbackTime", knockbackData_.shieldKnockbackTime);
 	}
 
+	/* ============================== PushUp ============================== */
+	pushUpJson_.Init("CompanionPushUp");
+
+	if (!pushUpJson_.Load()) {
+		pushUpData_.maxLevel = 4;
+		pushUpJson_.Set("maxLevel", pushUpData_.maxLevel);
+		pushUpJson_.Set("effectTime", pushUpData_.effectTime);
+
+		for (int i = 0; i < pushUpData_.maxLevel; ++i) {
+			pushUpData_.levelUpExperience[i] = 10.0f * static_cast<float>(i);
+			pushUpData_.objectScale[i] = 1.0f + (0.25f * static_cast<float>(i));
+
+			pushUpJson_.Set("levelUpExperience" + std::to_string(i), pushUpData_.levelUpExperience[i]);
+			pushUpJson_.Set("objectScale" + std::to_string(i), pushUpData_.objectScale[i]);
+		}
+	} else {
+		pushUpData_.maxLevel = pushUpJson_.Get("maxLevel", pushUpData_.maxLevel);
+		pushUpData_.effectTime = pushUpJson_.Get("effectTime", pushUpData_.effectTime);
+
+		// 念のため固定配列の範囲内に収める
+		if (pushUpData_.maxLevel < 0) {
+			pushUpData_.maxLevel = 0;
+		}
+		if (pushUpData_.maxLevel > 4) {
+			pushUpData_.maxLevel = 4;
+		}
+
+		for (int i = 0; i < pushUpData_.maxLevel; ++i) {
+			pushUpData_.levelUpExperience[i] =
+				pushUpJson_.Get("levelUpExperience" + std::to_string(i), 0.0f);
+
+			pushUpData_.objectScale[i] =
+				pushUpJson_.Get("objectScale" + std::to_string(i), 1.0f);
+		}
+	}
+
 	/* ============================== Effect ============================== */
 	effectJson_.Init("CompanionEffect");
 	if (!effectJson_.Load()) {
 		effectJson_.Set("nextArrowAnimaTime", 0.0f);
-		effectJson_.Set("nextArrowScale", 1.0f);
-		effectJson_.Set("nextArrowPosition", 1.0f);
-		effectJson_.Set("nextArrowVarianceScale", 1.0f);
-		effectJson_.Set("nextArrowVariancePosition", 1.0f);
+		effectJson_.Set("nextArrowScale", Vector3{ 1.0f,1.0f,1.0f });
+		effectJson_.Set("nextArrowPosition", Vector3{ 1.0f,1.0f,1.0f });
+		effectJson_.Set("nextArrowVarianceScale", Vector3{ 1.0f,1.0f,1.0f });
+		effectJson_.Set("nextArrowVariancePosition", Vector3{ 1.0f,1.0f,1.0f });
 		effectJson_.Set("lerpSpeed", 1.0f);
 	} else {
 		effectData_.nextArrowAnimaTime = effectJson_.Get("nextArrowAnimaTime", effectData_.nextArrowAnimaTime);
@@ -169,7 +209,7 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("searchCancelDistance", &mainData_.searchCancelDistance, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("clearStateTime", &mainData_.clearStateTime, 0.01f, 0.0f, 100.0f);
 			ImGui::Checkbox("debugSpline", &mainData_.debugSpline);
-			// セーブボタン
+
 			if (ImGui::Button("Save")) {
 				mainJson_.Set("maxHP", mainData_.maxHP);
 				mainJson_.Set("speed", mainData_.speed);
@@ -189,7 +229,9 @@ void CompanionAdjustItem::Editor()
 			}
 			ImGui::TreePop();
 		}
+
 		ImGui::Separator();
+
 		// ノックバック項目
 		if (ImGui::TreeNode("Knockback")) {
 			ImGui::DragFloat("knockbackSpeed", &knockbackData_.knockbackSpeed, 0.01f, 0.0f, 100.0f);
@@ -197,7 +239,7 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat3("shieldKnockbackDire", &knockbackData_.shieldKnockbackDire.x, 0.01f, -100.0f, 100.0f);
 			ImGui::DragFloat("shieldKnockbackSpeed", &knockbackData_.shieldKnockbackSpeed, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("shieldKnockbackTime", &knockbackData_.shieldKnockbackTime, 0.01f, 0.1f, 10.0f);
-			// セーブボタン
+
 			if (ImGui::Button("Save")) {
 				knockbackJson_.Set("knockbackSpeed", knockbackData_.knockbackSpeed);
 				knockbackJson_.Set("knockbackTime", knockbackData_.knockbackTime);
@@ -210,25 +252,64 @@ void CompanionAdjustItem::Editor()
 		}
 
 		ImGui::Separator();
+
 		// ダッシュ項目
 		if (ImGui::TreeNode("Dash")) {
 			ImGui::DragFloat("dashSpeed", &dashData_.dashSpeed, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("dashTargetDistance", &dashData_.dashTargetDistance, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("dashColliderScale", &dashData_.dashColliderScale, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat("searchDashColliderScale", &dashData_.searchDashColliderScale, 0.01f, 0.1f, 10.0f);
-			ImGui::DragFloat("pushUpTime", &dashData_.pushUpTime, 0.01f, 0.1f, 10.0f);
-			// セーブボタン
-			if(ImGui::Button("Save")) {
+			ImGui::DragFloat("pushUpScale", &dashData_.pushUpScale, 0.01f, 0.01f, 10.0f);
+			ImGui::DragFloat("pushUpMaxScale", &dashData_.pushUpMaxScale, 0.01f, 0.01f, 10.0f);
+			ImGui::DragFloat("pushUpTime", &dashData_.pushUpTime, 0.01f, 0.01f, 10.0f);
+
+			if (ImGui::Button("Save")) {
 				dashJson_.Set("dashSpeed", dashData_.dashSpeed);
 				dashJson_.Set("dashTargetDistance", dashData_.dashTargetDistance);
 				dashJson_.Set("dashColliderScale", dashData_.dashColliderScale);
 				dashJson_.Set("searchDashColliderScale", dashData_.searchDashColliderScale);
+				dashJson_.Set("pushUpScale", dashData_.pushUpScale);
+				dashJson_.Set("pushUpMaxScale", dashData_.pushUpMaxScale);
 				dashJson_.Set("pushUpTime", dashData_.pushUpTime);
 				dashJson_.Save();
 			}
 			ImGui::TreePop();
 		}
+
 		ImGui::Separator();
+
+		// レベルアップ項目
+		if (ImGui::TreeNode("PushUp")) {
+			ImGui::TextUnformatted("Level / Required EXP / Object Scale");
+			ImGui::Separator();
+
+			for (int i = 0; i < pushUpData_.maxLevel; ++i) {
+				ImGui::PushID(i);
+				std::string levelLabel = "Level " + std::to_string(i + 1);
+				if (ImGui::TreeNode(levelLabel.c_str())) {
+					ImGui::DragFloat("RequiredExperience", &pushUpData_.levelUpExperience[i], 0.1f, 0.0f, 99999.0f);
+					ImGui::DragFloat("ObjectScale", &pushUpData_.objectScale[i], 0.01f, 0.01f, 100.0f);
+					ImGui::TreePop();
+				}
+				ImGui::PopID();
+			}
+			ImGui::DragFloat("EffectTime", &pushUpData_.effectTime, 0.01f, 0.0f, 100.0f);
+
+			ImGui::Separator();
+			if (ImGui::Button("Save")) {
+				pushUpJson_.Set("maxLevel", pushUpData_.maxLevel);
+				pushUpJson_.Set("effectTime", pushUpData_.effectTime);
+				for (int i = 0; i < pushUpData_.maxLevel; ++i) {
+					pushUpJson_.Set("levelUpExperience" + std::to_string(i), pushUpData_.levelUpExperience[i]);
+					pushUpJson_.Set("objectScale" + std::to_string(i), pushUpData_.objectScale[i]);
+				}
+				pushUpJson_.Save();
+			}
+			ImGui::TreePop();
+		}
+
+		ImGui::Separator();
+
 		// 攻撃項目
 		if (ImGui::TreeNode("Attack")) {
 			ImGui::DragFloat("shakePowerHigh", &attackData_.shakePowerHigh, 0.01f, 0.0f, 100.0f);
@@ -239,7 +320,7 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("attackStartupTime", &attackData_.attackStartupTime, 0.01f, 0.0f, 10.0f);
 			ImGui::DragFloat("attackActiveTime", &attackData_.attackActiveTime, 0.01f, 0.0f, 10.0f);
 			ImGui::DragFloat("attackRecoveryTime", &attackData_.attackRecoveryTime, 0.01f, 0.0f, 10.0f);
-			// セーブボタン
+
 			if (ImGui::Button("Save")) {
 				attackJson_.Set("shakePowerHigh", attackData_.shakePowerHigh);
 				attackJson_.Set("shakePowerLow", attackData_.shakePowerLow);
@@ -253,7 +334,9 @@ void CompanionAdjustItem::Editor()
 			}
 			ImGui::TreePop();
 		}
+
 		ImGui::Separator();
+
 		// エフェクトの項目
 		if (ImGui::TreeNode("Effect")) {
 			ImGui::DragFloat("nextArrowAnimaTime", &effectData_.nextArrowAnimaTime, 0.01f, 0.0f, 100.0f);
@@ -262,7 +345,7 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat3("nextArrowVarianceScale", &effectData_.nextArrowVarianceScale.x, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat3("nextArrowVariancePosition", &effectData_.nextArrowVariancePosition.x, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat("lerpSpeed", &effectData_.lerpSpeed, 0.01f, 0.0f, 100.0f);
-			// セーブボタン
+
 			if (ImGui::Button("Save")) {
 				effectJson_.Set("nextArrowAnimaTime", effectData_.nextArrowAnimaTime);
 				effectJson_.Set("nextArrowScale", effectData_.nextArrowScale);
@@ -276,6 +359,7 @@ void CompanionAdjustItem::Editor()
 		}
 
 		ImGui::Separator();
+
 		// 効果音の項目
 		if (ImGui::TreeNode("SeVolume")) {
 			ImGui::DragFloat("dashHit", &seVolumeData_.dashHit, 0.01f, 0.0f, 100.0f);
@@ -287,7 +371,7 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("clear", &seVolumeData_.clear, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat("shield", &seVolumeData_.shield, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("powerUp", &seVolumeData_.powerUp, 0.01f, 0.1f, 10.0f);
-			// セーブボタン
+
 			if (ImGui::Button("Save")) {
 				seVolumeJson_.Set("dashHit", seVolumeData_.dashHit);
 				seVolumeJson_.Set("footsteps", seVolumeData_.footsteps);

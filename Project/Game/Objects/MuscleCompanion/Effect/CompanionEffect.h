@@ -55,6 +55,13 @@ public:
 	/// <param name="isCreate"></param>
 	void DamageUpEffect(bool isCreate);
 
+	/// <summary>
+	/// レベルアップのエフェクトを呼び出す
+	/// </summary>
+	/// <param name="isCreate"></param>
+	void LevelUpEffect(bool isCreate);
+	void OnceLevelUpRingEffect();
+
 private:
 
 	// 仲間のポインタ
@@ -73,10 +80,14 @@ private:
 	std::shared_ptr<ParticleEmitter> dashEmitter_ = nullptr;
 	std::shared_ptr<ParticleEmitter> searchDashEmitter_ = nullptr;
 
-
 	/* ==================== 仲間のダメージアップエフェクト ==================== */
 
 	std::shared_ptr<ParticleEmitter> damageUpEmitter_ = nullptr;
+
+	/* ==================== 仲間のレベルアップエフェクト ==================== */
+
+	std::shared_ptr<ParticleEmitter> levelUpEmitter_ = nullptr;
+	std::shared_ptr<ParticleEmitter> levelUpRingEmitter_ = nullptr;
 
 	/* ==================== 仲間がダメージ時のエフェクト ==================== */
 

@@ -20,6 +20,13 @@ void CompanionEffect::Init()
 	particleManager_->CreateParticleGroup(damageUpEmitter_);
 	damageUpEmitter_->SetIsCreate(false);
 
+	levelUpEmitter_ = std::make_unique<ParticleEmitter>("companionLevelUp");
+	particleManager_->CreateParticleGroup(levelUpEmitter_);
+	levelUpEmitter_->SetIsCreate(false);
+	levelUpRingEmitter_ = std::make_unique<ParticleEmitter>("companionLevelUpRing");
+	particleManager_->CreateParticleGroup(levelUpRingEmitter_);
+	levelUpRingEmitter_->SetIsCreate(false);
+
 	// ヒット時のエフェクト
 	hitEmitter_ = std::make_unique<ParticleEmitter>("hitDamage");
 	particleManager_->CreateParticleGroup(hitEmitter_);
@@ -35,6 +42,9 @@ void CompanionEffect::Update()
 
 	damageUpEmitter_->SetRotation(rotate);
 	damageUpEmitter_->SetPosition(position);
+
+	levelUpEmitter_->SetRotation(rotate);
+	levelUpEmitter_->SetPosition(position);
 }
 
 void CompanionEffect::Draw()
@@ -86,4 +96,21 @@ void CompanionEffect::OnceHitEffect()
 void CompanionEffect::DamageUpEffect(bool isCreate)
 {
 	damageUpEmitter_->SetIsCreate(isCreate);
+}
+
+void CompanionEffect::LevelUpEffect(bool isCreate)
+{
+	levelUpEmitter_->SetIsCreate(isCreate);
+}
+
+void CompanionEffect::OnceLevelUpRingEffect()
+{
+	levelUpRingEmitter_->onceEmit();
+
+	// パーティクルの座標を設定
+	Quaternion rotate = companion_->GetTransform().rotation_;
+	Vector3 position = companion_->GetTransform().translation_;
+
+	levelUpRingEmitter_->SetRotation(rotate);
+	levelUpRingEmitter_->SetPosition(position);
 }

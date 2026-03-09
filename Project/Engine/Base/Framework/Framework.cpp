@@ -49,6 +49,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "star.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "gradationWhite.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "downLine.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "levelUpLine.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "smoke.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "circle.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "circleWhite.png");

@@ -21,6 +21,7 @@ void MuscleCompanion::Initialize()
 	Animation::Initialize("Mattyo.gltf");
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Wait");
+	Animation::SetTransformScale(Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
 
@@ -70,15 +71,18 @@ void MuscleCompanion::Update()
 	// カラーを点滅させる
 	BlinkingColor();
 
+	// レベルアップの処理
+	LevelUp();
+
 	// コライダーの更新
 	attackCollider_->Update();
 	followerCollider_->Update();
-	Collider::radius_ = items_->GetMainData().colliderSize * colliderScale_;
+	Collider::radius_ = transform_.scale_.x * items_->GetMainData().colliderSize * colliderScale_;
 	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
 	Collider::Update();
 
 	// アニメーションの更新
-	Animation::SetTransformScale(Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
+	ApplyScaleByLevel();
 	Animation::Update();
 }
 
@@ -206,6 +210,36 @@ void MuscleCompanion::BlinkingColor()
 	}
 }
 
+void MuscleCompanion::ApplyScaleByLevel()
+{
+	const auto& data = items_->GetPushUpData();
+	level_ = std::clamp(static_cast<int>(level_), 0, data.maxLevel - 1);
+	float scale = data.objectScale[level_];
+	Animation::SetTransformScale(Vector3::ExprUnitXYZ * scale);
+}
+
+void MuscleCompanion::LevelUp()
+{
+	if (level_ != prevLevel_) { 
+		levelUpEffectTime_ = 0.0f;
+		effect_->OnceLevelUpRingEffect();
+	}
+
+	if (level_ != prevLevel_ || levelUpEffectTime_ > 0.0f) {
+		const auto& data = items_->GetPushUpData();
+		float effectTime = data.effectTime;
+		levelUpEffectTime_ += DeltaTimer::GetDeltaTime();
+		effect_->LevelUpEffect(true);
+		if (levelUpEffectTime_ > effectTime) {
+			effect_->LevelUpEffect(false);
+			levelUpEffectTime_ = 0.0f;
+		}
+	}
+
+	// レベルを保存する
+	prevLevel_ = level_;
+}
+
 void MuscleCompanion::ChangeState(std::unique_ptr<CompanionBaseState> newState)
 {
 	if (state_ != nullptr) {
@@ -244,6 +278,11 @@ void MuscleCompanion::Reset()
 	// HPの初期化
 	maxHp_ = items_->GetMainData().maxHP;
 	currentHp_ = maxHp_;
+	// 経験値
+	level_ = 0;
+	experience_ = 0.0f;
+	// スケールの初期化
+	Animation::SetTransformScale(Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
 
 	// ステートの初期化
 	ChangeState(std::make_unique<CompanionMoveState>(this));

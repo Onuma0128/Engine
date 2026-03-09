@@ -24,7 +24,9 @@ void CompanionMoveState::Init()
 		if (companion_->GetColliderName() == "MuscleCompanion") {
 			companion_->SetColliderName("SearchDashMuscleCompanion");
 		}
-		companion_->SetColliderScale(companion_->GetItems()->GetDashData().searchDashColliderScale);
+		companion_->SetColliderScale(
+			companion_->GetItems()->GetDashData().searchDashColliderScale * companion_->GetTransform().scale_.x
+		);
 	}
 }
 
@@ -52,7 +54,9 @@ void CompanionMoveState::Update()
 
 	// スピードを取得
 	float speed = data.speed;
-	if (!companion_->GetReturnOriginal()) { speed = companion_->GetItems()->GetDashData().dashSpeed; }
+	if (!companion_->GetReturnOriginal()) { 
+		speed = companion_->GetItems()->GetDashData().dashSpeed * companion_->GetTransform().scale_.x;
+	}
 	// 経路探索の更新
 	companion_->GetPathFinder().Update(speed);
 	companion_->GetPathFinder().DebugSpline(data.debugSpline);

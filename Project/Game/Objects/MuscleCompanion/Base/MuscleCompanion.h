@@ -54,6 +54,16 @@ private:
 	/// </summary>
 	void BlinkingColor();
 
+	/// <summary>
+	/// レベルに応じてスケールを変化させる
+	/// </summary>
+	void ApplyScaleByLevel();
+
+	/// <summary>
+	/// レベルアップの処理
+	/// </summary>
+	void LevelUp();
+
 public:
 
 	/// <summary>
@@ -86,6 +96,8 @@ public:
 	void SetAudio(Audio* audio) { audio_ = audio; }
 	void SetColliderIsActive(bool flag) { isActive_ = flag; }
 	void SetColliderScale(float scale) { colliderScale_ = scale; }
+	void SetExperience(float exp) { experience_ = exp; }
+	void SetLevel(uint32_t level) { level_ = level; }
 	void SetGatherRequested(bool flag) { isGatherRequested_ = flag; }
 	void SetReturnOriginal(bool flag) { isReturnOriginal_ = flag; }
 	void SetDashAttack(bool flag) { isDashAttack_ = flag; }
@@ -103,6 +115,8 @@ public:
 	GameCamera* GetCamera() { return camera_; }
 	Audio* GetAudio() { return audio_; }
 	PathFinder& GetPathFinder() { return pathFinder_; }
+	const float GetExperience()const { return experience_; }
+	const uint32_t GetLevel()const { return level_; }
 	bool GetGatherRequested() const { return isGatherRequested_; }
 	bool GetReturnOriginal() const { return isReturnOriginal_; }
 	bool GetDashAttack()const { return isDashAttack_; }
@@ -135,6 +149,12 @@ private:
 	uint32_t maxHp_ = 1;
 	// 仲間の現在のHP
 	uint32_t currentHp_ = 1;
+	// レベル
+	uint32_t level_ = 0;
+	uint32_t prevLevel_ = 0;
+	float levelUpEffectTime_ = 0.0f;
+	// 経験値
+	float experience_ = 0.0f;
 	// 無敵フラグ
 	bool isInvincible_ = false;
 	// 点滅タイマー

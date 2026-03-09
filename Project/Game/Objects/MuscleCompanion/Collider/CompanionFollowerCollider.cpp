@@ -16,7 +16,7 @@ void CompanionFollowerCollider::Initialize()
 
 void CompanionFollowerCollider::Update()
 {
-	Collider::radius_ = companion_->GetItems()->GetMainData().followerColliderSize;
+	Collider::radius_ = companion_->GetItems()->GetMainData().followerColliderSize * companion_->GetTransform().scale_.x;
 	Collider::centerPosition_ = companion_->GetTransform().translation_ + companion_->GetItems()->GetMainData().colliderOffset;
 	Collider::Update();
 }

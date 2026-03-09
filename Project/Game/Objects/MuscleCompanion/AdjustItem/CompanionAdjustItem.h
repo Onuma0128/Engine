@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "JsonFunction.h"
 
 // 仲間全体の調整項目
@@ -32,6 +34,8 @@ struct CompanionDashData {
 	float dashColliderScale;		// 攻撃時のコライダースケール倍率
 	float searchDashColliderScale;	// 集合の戻り時の攻撃コライダースケール倍率
 
+	float pushUpScale;				// 待ち時間の変化するスケール倍率
+	float pushUpMaxScale;			// 待ち時間の最大スケール
 	float pushUpTime;				// 待ち時間の後の攻撃力アップする時間
 };
 
@@ -56,6 +60,13 @@ struct CompanionKnockbackData {
 	Vector3 shieldKnockbackDire;	// ノックバックする方向
 	float shieldKnockbackSpeed;		// ノックバックスピード
 	float shieldKnockbackTime;		// ノックバックしている時間
+};
+
+struct CompanionPushUpData {
+	int maxLevel = 4;							// レベルアップ数
+	std::array<float, 4> levelUpExperience;		// レベルアップに必要な経験値
+	std::array<float, 4> objectScale;			// レベルに応じたオブジェクトスケール
+	float effectTime;							// レベルアップのエフェクトの時間	
 };
 
 // 仲間のエフェクトの調整項目
@@ -106,6 +117,7 @@ public:
 	const CompanionDashData& GetDashData() const { return dashData_; }
 	const CompanionAttackData& GetAttackData() const { return attackData_; }
 	const CompanionKnockbackData& GetKnockbackData() const { return knockbackData_; }
+	const CompanionPushUpData& GetPushUpData() const { return pushUpData_; }
 	const CompanionEffectData& GetEffectData() const { return effectData_; }
 	const CompanionSeVolumeData& GetSeVolumeData() const { return seVolumeData_; }
 
@@ -116,6 +128,7 @@ private:
 	JsonFunction dashJson_;
 	JsonFunction attackJson_;
 	JsonFunction knockbackJson_;
+	JsonFunction pushUpJson_;
 	JsonFunction effectJson_;
 	JsonFunction seVolumeJson_;
 
@@ -127,10 +140,10 @@ private:
 	CompanionAttackData attackData_;
 	// 仲間のノックバックの項目
 	CompanionKnockbackData knockbackData_;
+	// 仲間のレベルアップの項目
+	CompanionPushUpData pushUpData_;
 	// 仲間のエフェクトの項目
 	CompanionEffectData effectData_;
 	// 仲間の効果音の項目
 	CompanionSeVolumeData seVolumeData_;
-
 };
-

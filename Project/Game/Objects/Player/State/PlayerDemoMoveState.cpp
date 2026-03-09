@@ -63,11 +63,13 @@ void PlayerDemoMoveState::Update()
 	player_->SetTransformTranslation(position + velocity * speed * DeltaTimer::GetDeltaTime());
 
 	// 攻撃処理
-	if (targetCollider_ != searchCollider->GetTargetCollider() && player_->GetShot()->GetIsRayHit()) {
+	bool check = targetCollider_ != searchCollider->GetTargetCollider();
+	if (check && searchCollider->GetIsHit() && player_->GetShot()->GetIsRayHit()) {
 		targetCollider_ = searchCollider->GetTargetCollider();
-		if (targetCollider_ && searchCollider->GetTargetCollider()) {
-			player_->GetShot()->AttackBullet();
-		}
+		player_->GetShot()->AttackBullet();                
+	}
+	if (!player_->GetShot()->GetIsRayHit()) {
+		targetCollider_ = nullptr;
 	}
 
 	// 探索コライダーの更新

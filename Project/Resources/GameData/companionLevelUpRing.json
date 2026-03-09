@@ -1,0 +1,105 @@
+{
+    "Texture": "levelUpLine.png",
+    "UvFlipX": false,
+    "UvFlipY": true,
+    "Model": 1,
+    "BlendMode": 2,
+    "Move": true,
+    "EmitCount": 4,
+    "FrequencyTime": 1.5499999523162842,
+    "LifeTime": 0.75,
+    "Acceleration": {
+        "x": 0.0,
+        "y": 5.0,
+        "z": 0.0
+    },
+    "AcceleField": true,
+    "MinAcceleField": {
+        "x": -1.0,
+        "y": -1.0,
+        "z": -1.0
+    },
+    "MaxAcceleField": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "Reflect": false,
+    "ReflectY": 0.0,
+    "Color": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.4411764144897461
+    },
+    "uvTranslation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MinScale": {
+        "x": 1.100000023841858,
+        "y": 1.100000023841858,
+        "z": 1.5
+    },
+    "MaxScale": {
+        "x": 1.100000023841858,
+        "y": 1.100000023841858,
+        "z": 1.5
+    },
+    "ChangeScale": true,
+    "EndScale": {
+        "x": 1.7999999523162842,
+        "y": 1.7999999523162842,
+        "z": 0.0
+    },
+    "MinVelocity": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0
+    },
+    "MaxVelocity": {
+        "x": 0.0,
+        "y": 2.0,
+        "z": 0.0
+    },
+    "LockDirectionXY": false,
+    "LockDirectionXZ": false,
+    "DirectionSpeed": 0.0,
+    "Billboard": false,
+    "MinRotate": {
+        "x": 1.5700000524520874,
+        "y": -3.140000104904175,
+        "z": 0.0
+    },
+    "MaxRotate": {
+        "x": 1.5700000524520874,
+        "y": 3.140000104904175,
+        "z": 0.0
+    },
+    "MinRotateSpeed": {
+        "x": 0.0,
+        "y": 10.0,
+        "z": 0.0
+    },
+    "MaxRotateSpeed": {
+        "x": 0.0,
+        "y": 10.0,
+        "z": 0.0
+    },
+    "MinSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "MaxSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Position": {
+        "x": 0.0,
+        "y": 0.25,
+        "z": 0.0
+    },
+    "Look": true
+}

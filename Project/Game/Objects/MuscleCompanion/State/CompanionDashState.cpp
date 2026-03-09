@@ -18,7 +18,9 @@ void CompanionDashState::Init()
 	// 元の場所に戻ったフラグをfalseにする
 	companion_->SetReturnOriginal(false);
 	// ダッシュ用のコライダースケールを設定する
-	companion_->SetColliderScale(companion_->GetItems()->GetDashData().dashColliderScale);
+	companion_->SetColliderScale(
+		companion_->GetItems()->GetDashData().dashColliderScale * companion_->GetTransform().scale_.x
+	);
 
 	// 向きをプレイヤーと同じにする
 	const auto& player = companion_->GetPlayer();
@@ -53,7 +55,7 @@ void CompanionDashState::Finalize()
 void CompanionDashState::Update()
 {
 	// スピードを取得
-	const float speed = companion_->GetItems()->GetDashData().dashSpeed;;
+	const float speed = companion_->GetItems()->GetDashData().dashSpeed * companion_->GetTransform().scale_.x;
 
 	if (targetCollider_) {
 		// データを取得する
