@@ -274,13 +274,13 @@ const Vector3 MuscleCompanionManager::CompanionCenterPosition()
 	return result * (1.0f / static_cast<float>(count));
 }
 
-void MuscleCompanionManager::Reset()
+void MuscleCompanionManager::Reset(bool levelReset)
 {
 	state_ = CompanionManagerState::Playing;
 	clearStateTime_ = 0.0f;
 	uint32_t count = 0;
 	for (auto& companion : companions_) {
-		companion->Reset();
+		companion->Reset(levelReset);
 		companion->SetTransformTranslation(Vector3::ExprUnitZ * static_cast<float>(count));
 		count++;
 	}

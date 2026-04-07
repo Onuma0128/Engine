@@ -14,12 +14,16 @@ CompanionPushUpIdleState::CompanionPushUpIdleState(MuscleCompanion* companion) :
 void CompanionPushUpIdleState::Init()
 {
 	companion_->PlayByName("Training");
+
+	companion_->SetColliderName("PushUpMuscleCompanion");
 }
 
 void CompanionPushUpIdleState::Finalize()
 {
 	// データを取得する
 	const auto& data = companion_->GetItems()->GetDashData();
+
+	companion_->SetColliderName("MuscleCompanion");
 
 	// タイムが過ぎていれば攻撃力を上げるコライダーを設定する
 	if (pushUpTime_ > data.pushUpTime) {

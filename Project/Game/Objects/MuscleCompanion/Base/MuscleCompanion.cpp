@@ -36,7 +36,7 @@ void MuscleCompanion::Initialize()
 		"MuscleCompanion","Enemy","BossEnemy" ,"EnemyRay","BossAttack",
 		"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
-		"SearchDashMuscleCompanion","EnemyShield","EnemyBulletRay",
+		"SearchDashMuscleCompanion","PushUpMuscleCompanion","EnemyShield","EnemyBulletRay",
 	};
 	Collider::DrawCollider();
 
@@ -105,8 +105,17 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	bool isSearchDash = state_->GetState() == CharacterState::SearchDash;
 	bool isMove = state_->GetState() == CharacterState::Move;
 
+	// 進行ベクトルを取り背面の建物を判定する
+	const auto& data = items_->GetDashData();
+	Vector3 toTarget = other->GetCenterPosition() - transform_.translation_;
+	float dot = Vector3::Dot(dashDirection_.Normalize(), toTarget.Normalize());
+	dot = std::clamp(dot, -1.0f, 1.0f);
+	// 角度を計算して、背面に建物があるか判定する
+	std::string name = other->GetColliderName();
+	float angle = std::acos(dot) * 180.0f / std::numbers::pi_v<float>;
+	bool isBack = angle >= data.dashMinBackAngle && angle <= data.dashMaxBackAngle;
 	// 建物に当たったら待機状態へ
-	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) && isDash) {
+	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) && isDash && !isBack) {
 		ChangeState(std::make_unique<CompanionPushUpIdleState>(this));
 	// 敵に当たったら攻撃状態へ
 	} else if (other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") {
@@ -158,7 +167,10 @@ void MuscleCompanion::OnCollisionStay(Collider* other)
 		return;
 	}
 
-	bool isCompanion = other->GetColliderName() == "MuscleCompanion" || other->GetColliderName() == "SearchDashMuscleCompanion";
+	bool isCompanion = 
+		other->GetColliderName() == "MuscleCompanion" || 
+		other->GetColliderName() == "SearchDashMuscleCompanion" ||
+		other->GetColliderName() == "PushUpMuscleCompanion";
 	bool isKnockback = state_->GetState() == CharacterState::ShieldKnockback;
 
 	// 仲間と当たっているなら
@@ -262,7 +274,7 @@ bool MuscleCompanion::SearchDistance()
 	return false;
 }
 
-void MuscleCompanion::Reset()
+void MuscleCompanion::Reset(bool levelReset)
 {
 	// コライダーの初期化
 	Collider::colliderName_ = "MuscleCompanion";
@@ -279,8 +291,10 @@ void MuscleCompanion::Reset()
 	maxHp_ = items_->GetMainData().maxHP;
 	currentHp_ = maxHp_;
 	// 経験値
-	level_ = 0;
-	experience_ = 0.0f;
+	if (levelReset) {
+		level_ = 0;
+		experience_ = 0.0f;
+	}
 	// スケールの初期化
 	Animation::SetTransformScale(Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
 

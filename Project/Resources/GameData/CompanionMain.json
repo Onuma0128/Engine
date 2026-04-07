@@ -1,7 +1,7 @@
 {
     "speed": 4.0,
     "searchUpdateTime": 0.30000001192092896,
-    "searchCancelDistance": 2.5,
+    "searchCancelDistance": 2.75,
     "colliderSize": 0.44999998807907104,
     "colliderOffset": {
         "x": 0.0,

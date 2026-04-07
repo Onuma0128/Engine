@@ -311,6 +311,10 @@ void EnemyAdjustItem::SetJsonParameter(JsonFunction json)
 	json.Set("maxHp", 0);
 	json.Set("speed", 0.0f);
 	json.Set("modelScale", 0.0f);
+
+	json.Set("usuallyDamage", 0);
+	json.Set("powerUpDamage", 0);
+	
 	json.Set("attackDistance", 0.0f);
 	json.Set("attackStartupTime", 0.0f);
 	json.Set("attackActiveTime", 0.0f);
@@ -324,6 +328,10 @@ EnemyTemplate EnemyAdjustItem::GetTemplateData(JsonFunction json)
 	data.maxHp = json.Get("maxHp", data.maxHp);
 	data.speed = json.Get("speed", data.speed);
 	data.modelScale = json.Get("modelScale", data.modelScale);
+
+	data.usuallyDamage = json.Get("usuallyDamage", data.usuallyDamage);
+	data.powerUpDamage = json.Get("powerUpDamage", data.powerUpDamage);
+	
 	data.attackDistance = json.Get("attackDistance", data.attackDistance);
 	data.attackStartupTime = json.Get("attackStartupTime", data.attackStartupTime);
 	data.attackActiveTime = json.Get("attackActiveTime", data.attackActiveTime);
@@ -338,6 +346,8 @@ void EnemyAdjustItem::SetImGuiData(JsonFunction& json, EnemyTemplate& tempData)
 	ImGui::DragInt("maxHp", &tempData.maxHp);
 	ImGui::DragFloat("speed", &tempData.speed, 0.01f, 0.0f, 100.0f);
 	ImGui::DragFloat("modelScale", &tempData.modelScale, 0.01f, 0.0f, 100.0f);
+	ImGui::DragInt("usuallyDamage", &tempData.usuallyDamage);
+	ImGui::DragInt("powerUpDamage", &tempData.powerUpDamage);
 	ImGui::DragFloat("attackDistance", &tempData.attackDistance, 0.01f);
 	ImGui::DragFloat("attackStartupTime", &tempData.attackStartupTime, 0.01f);
 	ImGui::DragFloat("attackActiveTime", &tempData.attackActiveTime, 0.01f);
@@ -350,6 +360,8 @@ void EnemyAdjustItem::SetTemplateData(JsonFunction& json, EnemyTemplate& tempDat
 	json.Set("maxHp", tempData.maxHp);
 	json.Set("speed", tempData.speed);
 	json.Set("modelScale", tempData.modelScale);
+	json.Set("usuallyDamage", tempData.usuallyDamage);
+	json.Set("powerUpDamage", tempData.powerUpDamage);
 	json.Set("attackDistance", tempData.attackDistance);
 	json.Set("attackStartupTime", tempData.attackStartupTime);
 	json.Set("attackActiveTime", tempData.attackActiveTime);

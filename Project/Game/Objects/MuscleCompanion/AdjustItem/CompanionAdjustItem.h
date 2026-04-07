@@ -34,8 +34,9 @@ struct CompanionDashData {
 	float dashColliderScale;		// 攻撃時のコライダースケール倍率
 	float searchDashColliderScale;	// 集合の戻り時の攻撃コライダースケール倍率
 
-	float pushUpScale;				// 待ち時間の変化するスケール倍率
-	float pushUpMaxScale;			// 待ち時間の最大スケール
+	float dashMinBackAngle;			// ダッシュ時の最小背面角度
+	float dashMaxBackAngle;			// ダッシュ時の最大背面角度
+
 	float pushUpTime;				// 待ち時間の後の攻撃力アップする時間
 };
 

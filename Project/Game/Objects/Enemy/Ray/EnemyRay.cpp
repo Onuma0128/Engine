@@ -12,7 +12,8 @@ void EnemyRay::Init()
 	Collider::colliderName_ = "EnemyRay";
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
-		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","MuscleCompanion",
+		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
+		"MuscleCompanion","PushUpMuscleCompanion",
 	};
 	Collider::DrawCollider();
 
@@ -73,7 +74,7 @@ void EnemyRay::OnCollisionStay(Collider* other)
 			}
 		}
 	}
-	if (name == "Player" || name == "MuscleCompanion") {
+	if (name == "Player" || name == "MuscleCompanion" || "PushUpMuscleCompanion") {
 		if (Collision3D::SphereSegment(other, this, &hit)) {
 			float length = (hit.point - start_).Length();
 			if (hitPointLength_ < length) { return; }
@@ -87,7 +88,7 @@ void EnemyRay::OnCollisionExit(Collider* other)
 {
 	const auto& name = other->GetColliderName();
 
-	if (name == "Player" || name == "MuscleCompanion") {
+	if (name == "Player" || name == "MuscleCompanion" || "PushUpMuscleCompanion") {
 		isLooking_ = false;
 	}
 }

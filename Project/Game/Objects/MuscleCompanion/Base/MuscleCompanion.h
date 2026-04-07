@@ -65,7 +65,7 @@ private:
 	void LevelUp();
 
 public:
-
+	
 	/// <summary>
 	/// ステートを変える
 	/// </summary>
@@ -86,7 +86,7 @@ public:
 	/// <summary>
 	/// 仲間のデータを初期化する
 	/// </summary>
-	void Reset();
+	void Reset(bool levelReset = true);
 
 	// セッター
 	void SetPlayer(Player* player) { player_ = player; }
@@ -103,6 +103,7 @@ public:
 	void SetDashAttack(bool flag) { isDashAttack_ = flag; }
 	void SetFirstDashAttack(bool flag) { isFirstDashAttack_ = flag; }
 	void SetInvincible(bool flag) { isInvincible_ = flag; }
+	void SetDashDirection(const Vector3& direction) { dashDirection_ = direction; }
 	void SetColliderName(const std::string& name) { Collider::colliderName_ = name; }
 	void SetOutLineColor(const Vector3& color) { Animation::GetMaterial().outlineColor = color; }
 	// ゲッター
@@ -169,6 +170,8 @@ private:
 	bool isDashAttack_ = false;
 	// ダッシュ時の一回目の攻撃かどうか
 	bool isFirstDashAttack_ = true;
+	// ダッシュ方向を取得する
+	Vector3 dashDirection_ = {};
 	// ノックバック方向
 	Vector3 knockbackPosition_ = {};
 	Quaternion knockbackRotate_ = {};

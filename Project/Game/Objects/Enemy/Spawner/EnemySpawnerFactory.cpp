@@ -120,13 +120,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 	if (mainData.nowSpawn) {
 		// タイプごとに敵を生成
 		EnemyType type = static_cast<EnemyType>(mainData.spawnIndex);
-		switch (type) {
-		case EnemyType::kMelee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[0]); break;
-		case EnemyType::kRanged:		ResetTypeEnemy(enemyRnageds_, enemySpawners_[0]); break;
-		case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[0]); break;
-		case EnemyType::kRangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[0]); break;
-		default: break;
-		}
+		SpawnTypeEnemy(type, 0);
 	}
 	if (!mainData.debugIsSpawn) { return; }
 #endif // ENABLE_EDITOR
@@ -154,7 +148,7 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 		std::mt19937 randomEngine_(seedGenerator_());
 		// 何処のスポナーに湧くか
 		std::uniform_int_distribution<int> spawner(0, static_cast<int>(enemySpawners_.size() - 1));
-		int spownNumber = (spawner(randomEngine_));
+		int spawnNumber = (spawner(randomEngine_));
 		// 何の敵が湧くか
 		EnemyType type = EnemyType::kMelee;
 		// 倒した数が超えていないなら
@@ -167,12 +161,17 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 			type = static_cast<EnemyType>(randomType);
 		}
 		// タイプごとに敵を生成
-		switch (type) {
-		case EnemyType::kMelee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[spownNumber]); break;
-		case EnemyType::kRanged:		ResetTypeEnemy(enemyRnageds_, enemySpawners_[spownNumber]); break;
-		case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[spownNumber]); break;
-		case EnemyType::kRangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[spownNumber]); break;
-		default: break;
+		SpawnTypeEnemy(type, spawnNumber);
+
+		// もう一度スポーンを行う
+		if (kNockdownCount > static_cast<uint32_t>(mainData.nextWaveKillCount)) {
+			std::uniform_int_distribution<int> enemyType(0, 3);
+			type = static_cast<EnemyType>(enemyType(randomEngine_));
+			// 次のスポナーから出す
+			if (static_cast<size_t>(spawnNumber) == enemySpawners_.size() - 1) {spawnNumber = 0;} 
+			else { ++spawnNumber; }
+			// タイプごとに敵を生成
+			SpawnTypeEnemy(type, spawnNumber);
 		}
 		
 		// スポーン時間を初期化
@@ -184,6 +183,17 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 			spawnInterval_ = static_cast<float>(interval(randomEngine_)) * 1.0f;
 		}
 		spawnTime_ = 0.0f;
+	}
+}
+
+void EnemySpawnerFactory::SpawnTypeEnemy(EnemyType type, uint32_t spawnNumber)
+{
+	switch (type) {
+	case EnemyType::kMelee:			ResetTypeEnemy(enemyMelees_, enemySpawners_[spawnNumber]); break;
+	case EnemyType::kRanged:		ResetTypeEnemy(enemyRnageds_, enemySpawners_[spawnNumber]); break;
+	case EnemyType::kShieldBearer:	ResetTypeEnemy(enemyShieldBearers_, enemySpawners_[spawnNumber]); break;
+	case EnemyType::kRangedElite:	ResetTypeEnemy(enemyRnagedElites_, enemySpawners_[spawnNumber]); break;
+	default: break;
 	}
 }
 

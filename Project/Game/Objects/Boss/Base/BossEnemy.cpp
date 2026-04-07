@@ -127,7 +127,7 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 
 	if (isCompanion || isCompanionAttack || isSearchDashCompanion || isBlowDashCompanion) {
 		// 小さな当たり判定は無視する
-		if (other->GetRadius() < 0.72f) {
+		if (other->GetRadius() < 0.5f) {
 			return;
 		}
 		// ダメージ処理

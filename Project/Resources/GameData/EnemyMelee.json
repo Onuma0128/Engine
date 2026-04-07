@@ -12,5 +12,7 @@
     },
     "attackCoolTime": 1.0,
     "maxHp": 3,
-    "modelScale": 1.399999976158142
+    "modelScale": 1.399999976158142,
+    "usuallyDamage": 1,
+    "powerUpDamage": 1
 }

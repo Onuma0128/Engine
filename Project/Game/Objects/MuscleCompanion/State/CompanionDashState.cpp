@@ -5,6 +5,7 @@
 #include "Objects/Player/Player.h"
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 #include "Objects/MuscleCompanion/State/CompanionMoveState.h"
+#include "Objects/MuscleCompanion/State/CompanionPushUpIdleState.h"
 
 CompanionDashState::CompanionDashState(MuscleCompanion* companion) : CompanionBaseState(companion) {}
 
@@ -44,6 +45,7 @@ void CompanionDashState::Init()
 	yRotation_ = Quaternion::DirectionToQuaternion(
 		companion_->GetTransform().rotation_, velocity_, 1.0f);
 	companion_->SetTransformRotation(yRotation_);
+	companion_->SetDashDirection(velocity_);
 }
 
 void CompanionDashState::Finalize()
@@ -90,9 +92,16 @@ void CompanionDashState::Update()
 	}
 
 	// 移動を更新
-	companion_->SetTransformTranslation(
-		companion_->GetTransform().translation_ +
-		velocity_ * speed * DeltaTimer::GetDeltaTime());
+	Vector3 position = companion_->GetTransform().translation_ + velocity_ * speed * DeltaTimer::GetDeltaTime();
+	Vector2 min = companion_->GetPlayer()->GetItem()->GetPlayerData().minPlayerClamp;
+	Vector2 max = companion_->GetPlayer()->GetItem()->GetPlayerData().maxPlayerClamp;
+	position.x = std::clamp(position.x, min.x, max.x);
+	position.z = std::clamp(position.z, min.y, max.y);
+	if(position.x == min.x || position.x == max.x || position.z == min.y || position.z == max.y){
+		companion_->ChangeState(std::make_unique<CompanionPushUpIdleState>(companion_));
+		return;
+	}
+	companion_->SetTransformTranslation(position);
 	// エフェクトを追加する
 	companion_->GetEffect()->OnceMoveEffect();
 	companion_->GetEffect()->OnceDashEffect(false);

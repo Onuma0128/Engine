@@ -56,7 +56,7 @@ public:
 	/// <summary>
 	/// 仲間のデータをリセットする
 	/// </summary>
-	void Reset();
+	void Reset(bool levelReset = true);
 
 	/// <summary>
 	/// デモを行う

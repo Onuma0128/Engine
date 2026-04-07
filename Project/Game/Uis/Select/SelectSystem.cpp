@@ -107,11 +107,11 @@ void SelectSystem::SelectInput()
 		} else {
 			player_->Reset();
 			spawner_->Reset();
-			companionManager_->Reset();
 			this->Reset();
 			gameSceneUis_->GameSceneUIFadeOut();
 			if (targetIndex_ == 1u) {
 				boss_->Reset();
+				companionManager_->Reset();
 				spawner_->CountReset();
 				gameSceneUis_->BossFadeReset();
 				camera_->BossCameraReset();
@@ -120,6 +120,7 @@ void SelectSystem::SelectInput()
 				audio_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
 			} else {
 				boss_->StartBossEnemy();
+				companionManager_->Reset(false);
 				camera_->BossCameraEnd();
 				gameSceneUis_->SetDrawGameUIs(false);
 				const float kBGMVolume = 0.08f;
@@ -196,7 +197,7 @@ void SelectSystem::BossStart()
 	player_->Reset();
 	spawner_->Reset();
 	spawner_->SetSpawnCount(30);
-	companionManager_->Reset();
+	companionManager_->Reset(false);
 	this->Reset();
 	gameSceneUis_->GameSceneUIFadeOut();
 

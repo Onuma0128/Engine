@@ -109,6 +109,7 @@ private:
 	/// </summary>
 	/// <param name="enemys"></敵のリスト>
 	/// <param name="spawner"></スポナーを決める>
+	void SpawnTypeEnemy(EnemyType type, uint32_t spawnNumber);
 	void ResetTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& enemys, std::unique_ptr<EnemySpawner>& spawner);
 
 	const std::list<std::unique_ptr<BaseEnemy>>& GetEnemys(EnemyType type) {

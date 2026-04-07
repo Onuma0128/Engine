@@ -105,6 +105,13 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const float GetTypeAttackDistance();
+	
+	/// <summary>
+	/// タイプごとの通常攻撃と強化攻撃のダメージを取得する
+	/// </summary>
+	/// <returns></returns>
+	const uint32_t GetTypeUsuallyDamage();
+	const uint32_t GetTypePowerUpDamage();
 
 	/// <summary>
 	/// 当たった判定が無効になったときの処理

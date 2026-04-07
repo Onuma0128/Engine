@@ -51,16 +51,18 @@ void CompanionAdjustItem::LoadItems()
 		dashJson_.Set("dashTargetDistance", 0.0f);
 		dashJson_.Set("dashColliderScale", 1.0f);
 		dashJson_.Set("searchDashColliderScale", 1.0f);
-		dashJson_.Set("pushUpScale", 1.0f);
-		dashJson_.Set("pushUpMaxScale", 1.0f);
+		dashJson_.Set("dashMinBackAngle", 0.0f);
+		dashJson_.Set("dashMaxBackAngle", 180.0f);
+
 		dashJson_.Set("pushUpTime", 1.0f);
 	} else {
 		dashData_.dashSpeed = dashJson_.Get("dashSpeed", dashData_.dashSpeed);
 		dashData_.dashTargetDistance = dashJson_.Get("dashTargetDistance", dashData_.dashTargetDistance);
 		dashData_.dashColliderScale = dashJson_.Get("dashColliderScale", dashData_.dashColliderScale);
 		dashData_.searchDashColliderScale = dashJson_.Get("searchDashColliderScale", dashData_.searchDashColliderScale);
-		dashData_.pushUpScale = dashJson_.Get("pushUpScale", dashData_.pushUpScale);
-		dashData_.pushUpMaxScale = dashJson_.Get("pushUpMaxScale", dashData_.pushUpMaxScale);
+		dashData_.dashMinBackAngle = dashJson_.Get("dashMinBackAngle", dashData_.dashMinBackAngle);
+		dashData_.dashMaxBackAngle = dashJson_.Get("dashMaxBackAngle", dashData_.dashMaxBackAngle);
+
 		dashData_.pushUpTime = dashJson_.Get("pushUpTime", dashData_.pushUpTime);
 	}
 
@@ -259,8 +261,9 @@ void CompanionAdjustItem::Editor()
 			ImGui::DragFloat("dashTargetDistance", &dashData_.dashTargetDistance, 0.01f, 0.0f, 100.0f);
 			ImGui::DragFloat("dashColliderScale", &dashData_.dashColliderScale, 0.01f, 0.1f, 10.0f);
 			ImGui::DragFloat("searchDashColliderScale", &dashData_.searchDashColliderScale, 0.01f, 0.1f, 10.0f);
-			ImGui::DragFloat("pushUpScale", &dashData_.pushUpScale, 0.01f, 0.01f, 10.0f);
-			ImGui::DragFloat("pushUpMaxScale", &dashData_.pushUpMaxScale, 0.01f, 0.01f, 10.0f);
+			ImGui::DragFloat("dashMinBackAngle", &dashData_.dashMinBackAngle, 1.0f, 0.0f, 360.0f);
+			ImGui::DragFloat("dashMaxBackAngle", &dashData_.dashMaxBackAngle, 1.0f, 0.0f, 360.0f);
+
 			ImGui::DragFloat("pushUpTime", &dashData_.pushUpTime, 0.01f, 0.01f, 10.0f);
 
 			if (ImGui::Button("Save")) {
@@ -268,8 +271,9 @@ void CompanionAdjustItem::Editor()
 				dashJson_.Set("dashTargetDistance", dashData_.dashTargetDistance);
 				dashJson_.Set("dashColliderScale", dashData_.dashColliderScale);
 				dashJson_.Set("searchDashColliderScale", dashData_.searchDashColliderScale);
-				dashJson_.Set("pushUpScale", dashData_.pushUpScale);
-				dashJson_.Set("pushUpMaxScale", dashData_.pushUpMaxScale);
+				dashJson_.Set("dashMinBackAngle", dashData_.dashMinBackAngle);
+				dashJson_.Set("dashMaxBackAngle", dashData_.dashMaxBackAngle);
+
 				dashJson_.Set("pushUpTime", dashData_.pushUpTime);
 				dashJson_.Save();
 			}

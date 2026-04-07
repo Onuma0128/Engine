@@ -41,7 +41,6 @@ void PlayerDemoMoveState::Update()
 	// 探索の更新
 	ResetSearch();
 	pathFinder.Update(speed);
-	pathFinder.DebugSpline(true);
 	Vector3 velocity = pathFinder.GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }

@@ -42,6 +42,7 @@ void BaseEnemy::Initialize()
 	Collider::isActive_ = false;
 	Collider::targetColliderName_ = {
 		"Player","MuscleCompanionAttack","FollowerMuscleCompanion","BlowDashMuscleCompanion",
+		"PushUpMuscleCompanion",
 		"Enemy" ,"PlayerShotRay","MuscleCompanion","SearchDashMuscleCompanion","EnemySearch",
 	};
 	Collider::DrawCollider();
@@ -151,6 +152,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 {
 	// 判定用フラグ
 	bool isCompanion = other->GetColliderName() == "MuscleCompanion";
+	bool isPushUpCompanion = other->GetColliderName() == "PushUpMuscleCompanion";
 	bool isCompanionAttack = other->GetColliderName() == "MuscleCompanionAttack";
 	bool isSearchDashCompanion = other->GetColliderName() == "SearchDashMuscleCompanion";
 	bool isFollowerCompanion = other->GetColliderName() == "FollowerMuscleCompanion";
@@ -159,11 +161,11 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 	// プレイヤーの仲間と当たっているなら
 	if (CollisionFilter::CheckColliderNameCompanion(other->GetColliderName())) {
 		// 小さな当たり判定は無視する
-		if (other->GetRadius() < 0.72f) {
+		if (other->GetRadius() < 0.5f || isPushUpCompanion || transform_.translation_.y >= 0.2f) {
 			return;
 		}
 		// 初回ヒット時はヒットジャンプステートに遷移
-		if (isCompanion && other->GetRadius() > 0.75f && !stateParam_.isJumping_) {
+		if (isCompanion && other->GetRadius() > 0.5f && !stateParam_.isJumping_) {
 			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
 			stateParam_.isJumping_ = true;
 			ChangeState(std::make_unique<EnemyHitJumpState>(this));
@@ -178,8 +180,20 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		if (isBlowDashCompanion) {
 			currentHp_ = 0;
 		} else {
-			--currentHp_;
-			if (other->GetRadius() > 1.5f && currentHp_ > 0) { --currentHp_; }
+			if (currentHp_ > 0) {
+				if (currentHp_ >= GetTypeUsuallyDamage()) {
+					currentHp_ -= GetTypeUsuallyDamage();
+				} else {
+					currentHp_ = 0;
+				}
+				if (other->GetRadius() > 1.5f && currentHp_ > 0) { 
+					if (currentHp_ >= GetTypePowerUpDamage()) {
+						currentHp_ -= GetTypePowerUpDamage();
+					} else {
+						currentHp_ = 0;
+					}
+				}
+			}
 		}
 		// エフェクトを描画
 		WorldTransform transform;
@@ -252,6 +266,30 @@ const float BaseEnemy::GetTypeAttackDistance()
 	default:break;
 	}
 	return 0.0f;
+}
+
+const uint32_t BaseEnemy::GetTypeUsuallyDamage()
+{
+	switch (type_) {
+	case EnemyType::kMelee:			return static_cast<uint32_t>(items_->GetMeleeData().tempData.usuallyDamage);
+	case EnemyType::kRanged:		return static_cast<uint32_t>(items_->GetRangedData().tempData.usuallyDamage);
+	case EnemyType::kShieldBearer:	return static_cast<uint32_t>(items_->GetShieldBearerData().tempData.usuallyDamage);
+	case EnemyType::kRangedElite:	return static_cast<uint32_t>(items_->GetRangedEliteData().tempData.usuallyDamage);
+	default:break;
+	}
+	return 0u;
+}
+
+const uint32_t BaseEnemy::GetTypePowerUpDamage()
+{
+	switch (type_) {
+	case EnemyType::kMelee:			return static_cast<uint32_t>(items_->GetMeleeData().tempData.powerUpDamage);
+	case EnemyType::kRanged:		return static_cast<uint32_t>(items_->GetRangedData().tempData.powerUpDamage);
+	case EnemyType::kShieldBearer:	return static_cast<uint32_t>(items_->GetShieldBearerData().tempData.powerUpDamage);
+	case EnemyType::kRangedElite:	return static_cast<uint32_t>(items_->GetRangedEliteData().tempData.powerUpDamage);
+	default:break;
+	}
+	return 0u;
 }
 
 void BaseEnemy::HitColliderNotActive()

@@ -10,6 +10,9 @@ struct EnemyTemplate {
 	float speed;				// 移動速度
 	float modelScale;			// モデルのスケール倍率
 
+	int usuallyDamage;			// 通常攻撃のダメージ量
+	int powerUpDamage;			// 強化攻撃のダメージ量
+
 	float attackDistance;		// 攻撃が始まる距離
 	float attackStartupTime;	// 攻撃を開始する硬直時間
 	float attackActiveTime;		// 攻撃を行っている硬直時間
