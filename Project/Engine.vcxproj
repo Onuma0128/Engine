@@ -344,6 +344,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.cpp" />
     <ClCompile Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.cpp" />
     <ClCompile Include="Game\Objects\Player\State\PlayerDemoMoveState.cpp" />
+    <ClCompile Include="Game\Objects\MuscleCompanion\Effect\MuscleCountEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\Objects\Player\Collider\EnemySearchCollider.h" />
@@ -556,6 +557,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Game\Objects\MuscleCompanion\Manager\MuscleCompanionManager.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Effect\NextArrowEffect.h" />
     <ClInclude Include="Game\Objects\Player\State\PlayerDemoMoveState.h" />
+    <ClInclude Include="Game\Objects\MuscleCompanion\Effect\MuscleCountEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli">

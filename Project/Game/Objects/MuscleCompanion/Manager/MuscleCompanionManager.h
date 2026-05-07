@@ -7,6 +7,7 @@
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 #include "Objects/MuscleCompanion/Effect/CompanionEffect.h"
 #include "Objects/MuscleCompanion/Effect/NextArrowEffect.h"
+#include "Objects/MuscleCompanion/Effect/MuscleCountEffect.h"
 #include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
 #include "Objects/MuscleCompanion/PredictionObject/PredictionObjects.h"
 
@@ -117,6 +118,8 @@ private:
 	std::unique_ptr<PredictionObjects> predictionObjects_ = nullptr;
 	// 次発射の仲間エフェクト
 	std::unique_ptr<NextArrowEffect> arrowEffect_ = nullptr;
+	// 仲間の数エフェクト
+	std::unique_ptr<MuscleCountEffect> muscleCountEffect_ = nullptr;
 	// オーディオ
 	std::unique_ptr<Audio> audio_ = nullptr;
 

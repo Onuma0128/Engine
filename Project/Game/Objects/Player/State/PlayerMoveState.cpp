@@ -63,6 +63,7 @@ void PlayerMoveState::Finalize()
 void PlayerMoveState::Update()
 {
 	if (player_->GetBoss()->GetBossState() == BossState::Dead) {
+		player_->PlayByName("Idle");
 		return;
 	}
 

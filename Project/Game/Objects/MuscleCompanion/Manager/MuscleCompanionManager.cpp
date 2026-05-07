@@ -41,6 +41,10 @@ void MuscleCompanionManager::Initialize()
 	arrowEffect_ = std::make_unique<NextArrowEffect>();
 	arrowEffect_->SetItems(items_.get());
 	arrowEffect_->Init();
+
+	// 仲間の数エフェクトの初期化
+	muscleCountEffect_ = std::make_unique<MuscleCountEffect>();
+	muscleCountEffect_->Init();
 }
 
 void MuscleCompanionManager::Update()
@@ -72,6 +76,7 @@ void MuscleCompanionManager::Draw()
 {
 	// エフェクトの描画
 	arrowEffect_->Draw();
+	muscleCountEffect_->Draw();
 }
 
 void MuscleCompanionManager::GatherCompanions()
@@ -79,6 +84,13 @@ void MuscleCompanionManager::GatherCompanions()
 	// プレイヤーが仲間を発射させたら
 	if (player_->GetShot()->GetIsShot()) {
 		player_->GetShot()->SetIsShot(IsShotCompanion());
+		uint32_t count = 0;
+		for (auto& companion : companions_) {
+			if (companion->GetGatherRequested() && companion->GetState() != CharacterState::Dead) {
+				count++;
+			}
+		}
+		muscleCountEffect_->SetEffect(static_cast<uint32_t>(companions_.size()), count);
 	}
 	player_->GetShot()->SetIsCanAttack(IsShotCompanion());
 	// 仲間の中から発射できて近い仲間を発射する
@@ -211,6 +223,7 @@ void MuscleCompanionManager::UpdateEffect()
 {
 	// エフェクト用の座標を取得する
 	MuscleCompanion* target = nullptr;
+	float scale = 1.0f;
 	Vector3 position = {};
 	Vector3 playerPosition = player_->GetTransform().translation_;
 	float preDistance = 1000.0f;
@@ -231,8 +244,10 @@ void MuscleCompanionManager::UpdateEffect()
 	}
 	// ポインタがあるなら矢印を描画する
 	if (target) {
+		scale = target->GetTransform().scale_.y;
 		position = target->GetTransform().translation_;
 		isDraw = true;
+		target->SetOutLineColor(Vector3::ExprUnitX);
 
 		// 向きをプレイヤーと同じにする
 		const float distance = target->GetItems()->GetDashData().dashTargetDistance;
@@ -252,7 +267,8 @@ void MuscleCompanionManager::UpdateEffect()
 	// クリアしているならエフェクトを消す
 	if (state_ == CompanionManagerState::Clear) { isDraw = false; }
 	arrowEffect_->SetDraw(isDraw);
-	arrowEffect_->Update(position);
+	arrowEffect_->Update(position + Vector3::ExprUnitY * scale);
+	muscleCountEffect_->Update(player_->GetTransform().translation_);
 	predictionObjects_->SetDraw(isDraw);
 }
 
