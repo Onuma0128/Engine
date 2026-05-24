@@ -125,7 +125,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <PreprocessorDefinitions>NDEBUG;_ITERATOR_DEBUG_LEVEL=0;ENABLE_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\animation;$(ProjectDir)Engine\audio;$(ProjectDir)Engine\base\audio;$(ProjectDir)Engine\base\collider;$(ProjectDir)Engine\base\dxEngine;$(ProjectDir)Engine\base\dxEngine\descriptorHeap;$(ProjectDir)Engine\base\dxEngine\pipeline;$(ProjectDir)Engine\base\dxEngine\pipeline\rootSignature;$(ProjectDir)Engine\base\dxEngine\pipeline\inputLayout;$(ProjectDir)Engine\base\dxEngine\pipeline\blendState;$(ProjectDir)Engine\base\dxEngine\pipeline\rasterizerState;$(ProjectDir)Engine\base\dxEngine\pipeline\compileShader;$(ProjectDir)Engine\base\dxEngine\pipeline\depthStencilState;$(ProjectDir)Engine\base\dxEngine\renderTexture;$(ProjectDir)Engine\base\effect;$(ProjectDir)Engine\base\framework;$(ProjectDir)Engine\base\imgui;$(ProjectDir)Engine\base\scene;$(ProjectDir)Engine\base\scene\sceneFactory;$(ProjectDir)Engine\base\object;$(ProjectDir)Engine\base\object\camera;$(ProjectDir)Engine\base\object\light;$(ProjectDir)Engine\base\object\model;$(ProjectDir)Engine\base\object\particle;$(ProjectDir)Engine\base\object\shadowMap;$(ProjectDir)Engine\base\object\sprite;$(ProjectDir)Engine\base\object\texture;$(ProjectDir)Engine\input;$(ProjectDir)Engine\math;$(ProjectDir)Engine\math\structure;$(ProjectDir)Engine\jsonFunction;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\assimp\include;$(ProjectDir)game;$(ProjectDir)game\scene;$(ProjectDir)externals\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Engine\2d;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\3d\animation;$(ProjectDir)Engine\audio;$(ProjectDir)Engine\base\audio;$(ProjectDir)Engine\base\collider;$(ProjectDir)Engine\base\dxEngine;$(ProjectDir)Engine\base\dxEngine\descriptorHeap;$(ProjectDir)Engine\base\dxEngine\pipeline;$(ProjectDir)Engine\base\dxEngine\pipeline\rootSignature;$(ProjectDir)Engine\base\dxEngine\pipeline\inputLayout;$(ProjectDir)Engine\base\dxEngine\pipeline\blendState;$(ProjectDir)Engine\base\dxEngine\pipeline\rasterizerState;$(ProjectDir)Engine\base\dxEngine\pipeline\compileShader;$(ProjectDir)Engine\base\dxEngine\pipeline\depthStencilState;$(ProjectDir)Engine\base\dxEngine\renderTexture;$(ProjectDir)Engine\base\effect;$(ProjectDir)Engine\base\framework;$(ProjectDir)Engine\base\imgui;$(ProjectDir)Engine\base\scene;$(ProjectDir)Engine\base\scene\sceneFactory;$(ProjectDir)Engine\base\object;$(ProjectDir)Engine\base\object\camera;$(ProjectDir)Engine\base\object\light;$(ProjectDir)Engine\base\object\model;$(ProjectDir)Engine\base\object\particle;$(ProjectDir)Engine\base\object\shadowMap;$(ProjectDir)Engine\base\object\sprite;$(ProjectDir)Engine\base\object\texture;$(ProjectDir)Engine\input;$(ProjectDir)Engine\math;$(ProjectDir)Engine\math\structure;$(ProjectDir)Engine\jsonFunction;$(ProjectDir)externals\imgui;$(ProjectDir)externals\DirectXTex;$(ProjectDir)externals\assimp\include;$(ProjectDir)game;$(ProjectDir)game\scene;$(ProjectDir)externals\nlohmann;$(ProjectDir)externals\curl\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -139,12 +139,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalLibraryDirectories>$(ProjectDir)externals\assimp\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc143-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)externals\assimp\lib\Release;Externals\curl\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc143-md.lib;libcurl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxcompiler.dll" "$(TargetDir)dxcompiler.dll"
-copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"</Command>
+copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dxil.dll"
+copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -219,6 +220,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Engine\Math\Structure\Quaternion.cpp" />
     <ClCompile Include="Engine\Math\Structure\Vector3.cpp" />
     <ClCompile Include="Engine\Math\Structure\Vector4.cpp" />
+    <ClCompile Include="Game\BackEnd\httpClient.cpp" />
     <ClCompile Include="Game\Scene\GameScene\GamePlayScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Base\Object\Light\Type\PointLight.cpp" />
@@ -328,6 +330,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Engine\Math\Structure\Vector2.h" />
     <ClInclude Include="Engine\Math\Structure\Vector3.h" />
     <ClInclude Include="Engine\Math\Structure\Vector4.h" />
+    <ClInclude Include="Game\BackEnd\httpClient.h" />
+    <ClInclude Include="Game\BackEnd\WriteUtf8.h" />
     <ClInclude Include="Game\Scene\GameScene\GamePlayScene.h" />
     <ClInclude Include="Engine\Base\Object\Light\Type\PointLight.h" />
     <ClInclude Include="Engine\Base\Object\Light\Type\SpotLight.h" />

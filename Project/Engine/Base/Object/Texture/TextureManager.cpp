@@ -37,7 +37,7 @@ void TextureManager::LoadTexture(const std::string& directoryPath, const std::st
 
 	// テクスチャファイルを読んでプログラムで抑えるようにする
 	DirectX::ScratchImage image{};
-	std::wstring filePathW = ConvertString(directoryPath + "/" + filePath);
+	std::wstring filePathW = ConvertStringToTexture(directoryPath + "/" + filePath);
 	HRESULT hr;
 	if (filePathW.ends_with(L".dds")) {
 		hr = DirectX::LoadFromDDSFile(filePathW.c_str(), DirectX::DDS_FLAGS_NONE, nullptr, image);

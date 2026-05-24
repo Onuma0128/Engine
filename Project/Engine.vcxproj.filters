@@ -913,5 +913,10 @@
       <Filter>Resources\Shaders</Filter>
     </FxCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Game\BackEnd\httpClient.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game\BackEnd\httpClient.h" />
+    <ClInclude Include="Game\BackEnd\WriteUtf8.h" />
   </ItemGroup>
 </Project>

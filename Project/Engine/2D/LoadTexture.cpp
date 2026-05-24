@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <assert.h>
 
-std::wstring ConvertString(const std::string& str) {
+std::wstring ConvertStringToTexture(const std::string& str) {
 	if (str.empty()) {
 		return std::wstring();
 	}
@@ -20,7 +20,7 @@ DirectX::ScratchImage LoadTexture(const std::string& filePath)
 {
 	//テクスチャファイルを読んでプログラムで抑えるようにする
 	DirectX::ScratchImage image{};
-	std::wstring filePathW = ConvertString(filePath);
+	std::wstring filePathW = ConvertStringToTexture(filePath);
 	HRESULT hr = DirectX::LoadFromWICFile(filePathW.c_str(), DirectX::WIC_FLAGS_FORCE_SRGB, nullptr, image);
 	assert(SUCCEEDED(hr));
 
