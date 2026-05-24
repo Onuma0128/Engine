@@ -171,8 +171,10 @@ void GamePlayScene::BuildRankingTextFromJson(const std::string& jsonText)
 		std::vector<int32_t> scores;
 		scores.reserve(data.size());
 		for (const auto& item : data) {
-			if (item.contains("name") && item["name"].is_string()) {
-				scores.push_back(std::stoi(item["name"].get<std::string>()));
+			if (item.contains("score") && item["score"].is_number_integer()) {
+				scores.push_back(item["score"].get<int32_t>());
+			} else if (item.contains("scoer") && item["scoer"].is_number_integer()) {
+				scores.push_back(item["scoer"].get<int32_t>());
 			}
 		}
 
@@ -192,4 +194,5 @@ void GamePlayScene::BuildRankingTextFromJson(const std::string& jsonText)
 	catch (const std::exception& e) {
 		errorText_ = std::string("ランキング解析失敗: ") + e.what();
 	}
+
 }
