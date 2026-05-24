@@ -20,7 +20,7 @@ std::future<std::string> GetAllFacultiesAsync()
 		if (!curl) return "CURL初期化エラー";
 
 		std::string response;
-		curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:3000/faculties");
+		curl_easy_setopt(curl, CURLOPT_URL, serverURL);
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
@@ -43,7 +43,7 @@ std::future<std::string> GEtFacultyByIdAsync(int id)
 
 		std::string response;
 		std::stringstream url;
-		url << "http://localhost:3000/faculties/" << id;
+		url << serverURL << id;
 
 		curl_easy_setopt(curl, CURLOPT_URL, url.str().c_str());
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
@@ -78,7 +78,7 @@ std::future<std::string> PostFacultyAsync(const std::string& name)
 			"Content-Type: application/json");
 
 		std::string response;
-		curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:3000/faculties");
+		curl_easy_setopt(curl, CURLOPT_URL, serverURL);
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		curl_easy_setopt(curl, CURLOPT_POST, 1L);
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, bodyStr.c_str());
@@ -104,7 +104,7 @@ std::future<std::string> PatchFacultyAsync(int id, const std::string& newName)
 
 		std::string response;
 		std::stringstream url;
-		url << "http://localhost:3000/faculties/" << id;
+		url << serverURL << id;
 
 		// JSONデータ構築
 		json requestBody = {
@@ -143,7 +143,7 @@ std::future<std::string> DeleteFacultyAsync(int id)
 
 		std::string response;
 		std::stringstream url;
-		url << "http://localhost:3000/faculties/" << id;
+		url << serverURL << id;
 
 		curl_easy_setopt(curl, CURLOPT_URL, url.str().c_str());
 		curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");

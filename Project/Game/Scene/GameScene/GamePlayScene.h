@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+#include <future>
+#include <string>
 
 #include "BaseScene.h"
 
@@ -31,6 +33,12 @@ public:
 	void Draw() override;
 
 private:
+
+	std::future<std::string> postFuture_;
+	std::string postResult_;
+	std::string facultiesJson_;
+	bool isRequesting_ = false;
+	bool isLoaded_ = false;
 
 };
 
