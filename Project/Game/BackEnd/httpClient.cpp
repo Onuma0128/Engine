@@ -20,7 +20,7 @@ std::future<std::string> GetAllFacultiesAsync()
 		if (!curl) return "CURL初期化エラー";
 
 		std::string response;
-		curl_easy_setopt(curl, CURLOPT_URL, serverURL);
+		curl_easy_setopt(curl, CURLOPT_URL, serverURL.c_str());
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
@@ -35,7 +35,7 @@ std::future<std::string> GetAllFacultiesAsync()
 		});
 }
 
-std::future<std::string> GEtFacultyByIdAsync(int id)
+std::future<std::string> GetFacultyByIdAsync(int id)
 {
 	return std::async(std::launch::async, [id]()->std::string {
 		CURL* curl = curl_easy_init();
@@ -43,7 +43,7 @@ std::future<std::string> GEtFacultyByIdAsync(int id)
 
 		std::string response;
 		std::stringstream url;
-		url << serverURL << id;
+		url << serverURL + "/" << id;
 
 		curl_easy_setopt(curl, CURLOPT_URL, url.str().c_str());
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
@@ -60,15 +60,15 @@ std::future<std::string> GEtFacultyByIdAsync(int id)
 		});
 }
 
-std::future<std::string> PostFacultyAsync(const std::string& name)
+std::future<std::string> PostFacultyAsync(int score)
 {
-	return std::async(std::launch::async, [name]()->std::string {
+	return std::async(std::launch::async, [score]()->std::string {
 		CURL* curl = curl_easy_init();
 		if (!curl) return "CURL初期化エラー";
 
 		// 送信するJSONボディの作成
 		json body = {
-			{"name", name}
+			{"score", score}
 		};
 		std::string bodyStr = body.dump();
 
@@ -78,7 +78,7 @@ std::future<std::string> PostFacultyAsync(const std::string& name)
 			"Content-Type: application/json");
 
 		std::string response;
-		curl_easy_setopt(curl, CURLOPT_URL, serverURL);
+		curl_easy_setopt(curl, CURLOPT_URL, serverURL.c_str());
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		curl_easy_setopt(curl, CURLOPT_POST, 1L);
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, bodyStr.c_str());
@@ -96,19 +96,19 @@ std::future<std::string> PostFacultyAsync(const std::string& name)
 		});
 }
 
-std::future<std::string> PatchFacultyAsync(int id, const std::string& newName)
+std::future<std::string> PatchFacultyAsync(int id, int score)
 {
-	return std::async(std::launch::async, [id, newName]()->std::string {
+	return std::async(std::launch::async, [id, score]()->std::string {
 		CURL* curl = curl_easy_init();
 		if (!curl) return "CURL初期化エラー";
 
 		std::string response;
 		std::stringstream url;
-		url << serverURL << id;
+		url << serverURL + "/" << id;
 
 		// JSONデータ構築
 		json requestBody = {
-			{"name", newName}
+			{"score", score}
 		};
 		std::string requestStr = requestBody.dump();
 
@@ -119,7 +119,7 @@ std::future<std::string> PatchFacultyAsync(int id, const std::string& newName)
 
 		curl_easy_setopt(curl, CURLOPT_URL, url.str().c_str());
 		curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
-		curl_easy_setopt(curl, CURLOPT_HTTPGET, headers);
+		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, requestStr.c_str());
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
@@ -143,7 +143,7 @@ std::future<std::string> DeleteFacultyAsync(int id)
 
 		std::string response;
 		std::stringstream url;
-		url << serverURL << id;
+		url << serverURL + "/" << id;
 
 		curl_easy_setopt(curl, CURLOPT_URL, url.str().c_str());
 		curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");

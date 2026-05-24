@@ -8,7 +8,7 @@
 void GamePlayScene::Initialize()
 {
 	// POST送信
-	postFuture_ = PostFacultyAsync("100");
+	postFuture_ = PostFacultyAsync(100);
 	isRequesting_ = true;
 }
 

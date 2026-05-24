@@ -24,6 +24,13 @@ void ImGuiManager::Initialize(DirectXEngine* dxEngine, WinApp* winApp)
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+	io.Fonts->AddFontFromFileTTF(
+		"C:/Windows/Fonts/meiryo.ttc",
+		18.0f,
+		nullptr,
+		io.Fonts->GetGlyphRangesJapanese()
+	);
 	ImGui::StyleColorsDark();
 	ImGui_ImplWin32_Init(winApp_->GetHwnd());
 	ImGui_ImplDX12_Init(
