@@ -1,198 +1,431 @@
 #include "GamePlayScene.h"
 
 #include "imgui.h"
-#include <algorithm>
-#include <chrono>
 
-#include "BackEnd/httpClient.h"
-#include "BackEnd/WriteUtf8.h"
-#include "json.hpp"
-using json = nlohmann::json;
+#include <Windows.h>
+#include <cmath>
+#include <string>
 
 void GamePlayScene::Initialize()
 {
-	state_ = State::WaitStart;
-	elapsedSeconds_ = 0.0f;
-	currentScore_ = 0;
-	isTimerRunning_ = false;
-	isPosting_ = false;
-	isFetchingRanking_ = false;
-	errorText_.clear();
-	postResult_.clear();
-	rankingText_.clear();
-	rankingRawJson_.clear();
+    // COM4を開く
+    isSerialConnected_ =
+        serialPort_.Open(
+            serialPortName_,
+            CBR_115200
+        );
+
+    if (isSerialConnected_)
+    {
+        OutputDebugStringA(
+            "COM4 opened successfully.\n"
+        );
+    } else
+    {
+        OutputDebugStringA(
+            "Failed to open COM4.\n"
+        );
+    }
+
+    mpuData_ = {};
+
+    lastReceivedLine_.clear();
+
+    parseSucceeded_ = false;
+    receivedNewSensorData_ = false;
+
+    dumbbellPoseCounter_.ResetCalibration();
+
+    previousDumbbellCount_ = 0;
+
+    accelerationMagnitude_ = 0.0f;
 }
 
 void GamePlayScene::Finalize()
 {
+    serialPort_.Close();
+
+    isSerialConnected_ = false;
 }
 
 void GamePlayScene::Update()
 {
-	if (state_ == State::Running && isTimerRunning_) {
-		auto now = std::chrono::steady_clock::now();
-		elapsedSeconds_ = std::chrono::duration<float>(now - startTime_).count();
-	}
+    dumbbellPoseCounter_.SetPoseToleranceDegrees(
+        poseToleranceDegrees_
+    );
 
-	if (ImGui::IsKeyPressed(ImGuiKey_Space)) {
-		if (state_ == State::WaitStart) {
-			StartTimer();
-		} else if (state_ == State::Running) {
-			StopTimer();
-		} else if (state_ == State::Ranking && !isFetchingRanking_ && !isPosting_) {
-			state_ = State::WaitStart;
-			elapsedSeconds_ = 0.0f;
-			currentScore_ = 0;
-			errorText_.clear();
-		}
-	}
+    dumbbellPoseCounter_.SetPoseHoldTime(
+        poseHoldTime_
+    );
 
+    dumbbellPoseCounter_.SetMotionThreshold(
+        stableGyroThreshold_
+    );
 
+    receivedNewSensorData_ = UpdateSensorData();
 
-	if (ImGui::IsKeyPressed(ImGuiKey_Enter) && state_ == State::Result && !isPosting_ && !isFetchingRanking_) {
-		BeginPostScore();
-	}
+    accelerationMagnitude_ = std::sqrt(
+        mpuData_.acceleration.x * mpuData_.acceleration.x +
+        mpuData_.acceleration.y * mpuData_.acceleration.y +
+        mpuData_.acceleration.z * mpuData_.acceleration.z
+    );
 
-	UpdateNetwork();
+    const int currentCount =
+        dumbbellPoseCounter_.GetCount();
 
-	ImGui::Begin("StopWatchGame");
-	ImGui::Text("State: %s",
-		state_ == State::WaitStart ? "WAIT_START" :
-		state_ == State::Running ? "RUNNING" :
-		state_ == State::Result ? "RESULT" : "RANKING");
-	ImGui::Separator();
+    if (currentCount > previousDumbbellCount_)
+    {
+        OutputDebugStringA(
+            "Dumbbell Count +1\n"
+        );
 
-	if (state_ == State::WaitStart) {
-		ImGui::Text("SPACEで開始");
-	} else if (state_ == State::Running) {
-		if (elapsedSeconds_ <= 7.0f) {
-			ImGui::Text("sec: %.6f", elapsedSeconds_);
-		} else {
-			ImGui::Text("sec: ???");
-		}
-		ImGui::Text("SPACEで停止");
-	} else if (state_ == State::Result) {
-		ImGui::Text("停止時間: %.6f", elapsedSeconds_);
-		ImGui::Text("Score: %d", currentScore_);
-		ImGui::Text("ENTERでスコア送信");
-	} else {
-		if (isPosting_ || isFetchingRanking_) {
-			ImGui::Text("通信中...");
-		}
-		if (!errorText_.empty()) {
-			ImGui::TextWrapped("Error: %s", errorText_.c_str());
-		}
-		if (!rankingText_.empty()) {
-			ImGui::Text("Top 5 Ranking");
-			ImGui::Separator();
-			ImGui::TextWrapped("%s", rankingText_.c_str());
-		}
-		ImGui::Text("SPACEでリスタート");
-	}
-	ImGui::End();
+        previousDumbbellCount_ =
+            currentCount;
+    }
+
+    DrawImGui();
 }
 
 void GamePlayScene::Draw()
 {
-	
+    // 通常のDirectX12描画処理をここへ書く
 }
 
-void GamePlayScene::StartTimer()
+bool GamePlayScene::UpdateSensorData()
 {
-	startTime_ = std::chrono::steady_clock::now();
-	elapsedSeconds_ = 0.0f;
-	isTimerRunning_ = true;
-	state_ = State::Running;
+    if (!serialPort_.IsOpen())
+    {
+        isSerialConnected_ = false;
+        return false;
+    }
+
+    isSerialConnected_ = true;
+
+    std::string line;
+    bool receivedNewData = false;
+
+    while (serialPort_.ReadLine(line))
+    {
+        lastReceivedLine_ = line;
+
+        Mpu6050Data newData{};
+
+        if (ParseMpuData(line, newData))
+        {
+            mpuData_ = newData;
+
+            parseSucceeded_ = true;
+            receivedNewData = true;
+
+            // 受信した1サンプルごとに判定する
+            dumbbellPoseCounter_.Update(
+                newData,
+                sensorDeltaTime_
+            );
+        } else
+        {
+            parseSucceeded_ = false;
+        }
+    }
+
+    return receivedNewData;
 }
 
-void GamePlayScene::StopTimer()
+void GamePlayScene::DrawImGui()
 {
-	auto now = std::chrono::steady_clock::now();
-	elapsedSeconds_ = std::chrono::duration<float>(now - startTime_).count();
-	isTimerRunning_ = false;
-	currentScore_ = CalculateScore(elapsedSeconds_);
-	state_ = State::Result;
+    if (!showSensorWindow_)
+    {
+        return;
+    }
+
+    ImGui::Begin(
+        "MPU6050 Dumbbell Monitor",
+        &showSensorWindow_
+    );
+
+    // ====================================
+    // 接続状態
+    // ====================================
+
+    ImGui::SeparatorText("Connection");
+
+    ImGui::Text(
+        "Serial Port: %s",
+        serialPortName_.c_str()
+    );
+
+    ImGui::Text(
+        "Connection: %s",
+        isSerialConnected_
+        ? "Connected"
+        : "Disconnected"
+    );
+
+    ImGui::Text(
+        "Parse: %s",
+        parseSucceeded_
+        ? "Success"
+        : "Failed"
+    );
+
+    ImGui::Text(
+        "New Data: %s",
+        receivedNewSensorData_
+        ? "Yes"
+        : "No"
+    );
+
+    // ====================================
+    // 加速度
+    // ====================================
+
+    ImGui::SeparatorText("Acceleration");
+
+    ImGui::Text(
+        "X: %.3f g",
+        mpuData_.acceleration.x
+    );
+
+    ImGui::Text(
+        "Y: %.3f g",
+        mpuData_.acceleration.y
+    );
+
+    ImGui::Text(
+        "Z: %.3f g",
+        mpuData_.acceleration.z
+    );
+
+    ImGui::Text(
+        "Magnitude: %.3f g",
+        accelerationMagnitude_
+    );
+
+    // ====================================
+    // ジャイロ
+    // ====================================
+
+    ImGui::SeparatorText("Gyroscope");
+
+    ImGui::Text(
+        "X: %.3f deg/s",
+        mpuData_.gyro.x
+    );
+
+    ImGui::Text(
+        "Y: %.3f deg/s",
+        mpuData_.gyro.y
+    );
+
+    ImGui::Text(
+        "Z: %.3f deg/s",
+        mpuData_.gyro.z
+    );
+
+    // ====================================
+    // 姿勢登録
+    // ====================================
+
+    ImGui::SeparatorText("Pose Calibration");
+
+    ImGui::Text(
+        "Extended Pose: %s",
+        dumbbellPoseCounter_.HasExtendedPose()
+        ? "Recorded"
+        : "Not Recorded"
+    );
+
+    ImGui::Text(
+        "Bent Pose: %s",
+        dumbbellPoseCounter_.HasBentPose()
+        ? "Recorded"
+        : "Not Recorded"
+    );
+
+    ImGui::Text(
+        "Calibration: %s",
+        dumbbellPoseCounter_.IsCalibrationComplete()
+        ? "Complete"
+        : "Incomplete"
+    );
+
+    ImGui::TextWrapped(
+        "Keep your arm still in the desired position, "
+        "then press the corresponding record button."
+    );
+
+    if (ImGui::Button("Record Extended Pose"))
+    {
+        const bool recorded =
+            dumbbellPoseCounter_.RecordExtendedPose(
+                mpuData_
+            );
+
+        if (recorded)
+        {
+            OutputDebugStringA(
+                "Extended pose recorded.\n"
+            );
+        } else
+        {
+            OutputDebugStringA(
+                "Failed to record extended pose.\n"
+            );
+        }
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Record Bent Pose"))
+    {
+        const bool recorded =
+            dumbbellPoseCounter_.RecordBentPose(
+                mpuData_
+            );
+
+        if (recorded)
+        {
+            OutputDebugStringA(
+                "Bent pose recorded.\n"
+            );
+        } else
+        {
+            OutputDebugStringA(
+                "Failed to record bent pose.\n"
+            );
+        }
+    }
+
+    if (ImGui::Button("Reset Calibration"))
+    {
+        dumbbellPoseCounter_.ResetCalibration();
+
+        previousDumbbellCount_ = 0;
+    }
+
+    // ====================================
+    // カウント判定
+    // ====================================
+
+    ImGui::SeparatorText("Dumbbell Counter");
+
+    ImGui::Text(
+        "Count: %d",
+        dumbbellPoseCounter_.GetCount()
+    );
+
+    ImGui::Text(
+        "State: %s",
+        GetPoseStateName(
+            dumbbellPoseCounter_.GetState()
+        )
+    );
+
+    ImGui::Text(
+        "Extended Angle: %.2f deg",
+        dumbbellPoseCounter_.GetExtendedAngle()
+    );
+
+    ImGui::Text(
+        "Bent Angle: %.2f deg",
+        dumbbellPoseCounter_.GetBentAngle()
+    );
+
+    if (ImGui::Button("Reset Count"))
+    {
+        dumbbellPoseCounter_.ResetCount();
+
+        previousDumbbellCount_ = 0;
+    }
+
+    // ====================================
+    // 判定設定
+    // ====================================
+
+    ImGui::SeparatorText("Detection Settings");
+
+    ImGui::DragFloat(
+        "Pose Tolerance",
+        &poseToleranceDegrees_,
+        0.5f,
+        5.0f,
+        60.0f,
+        "%.1f deg"
+    );
+
+    ImGui::DragFloat(
+        "Pose Hold Time",
+        &poseHoldTime_,
+        0.01f,
+        0.05f,
+        1.0f,
+        "%.2f sec"
+    );
+
+    ImGui::DragFloat(
+        "Stable Gyro Threshold",
+        &stableGyroThreshold_,
+        1.0f,
+        5.0f,
+        150.0f,
+        "%.1f deg/s"
+    );
+
+    ImGui::DragFloat(
+        "Sensor Delta Time",
+        &sensorDeltaTime_,
+        0.001f,
+        0.005f,
+        0.1f,
+        "%.3f sec"
+    );
+
+    ImGui::TextWrapped(
+        "If detection is too strict, increase Pose Tolerance. "
+        "If poses are detected too easily, increase Pose Hold Time."
+    );
+
+    // ====================================
+    // 生データ
+    // ====================================
+
+    ImGui::SeparatorText("Raw Serial Data");
+
+    if (lastReceivedLine_.empty())
+    {
+        ImGui::TextDisabled(
+            "No serial data received."
+        );
+    } else
+    {
+        ImGui::TextWrapped(
+            "%s",
+            lastReceivedLine_.c_str()
+        );
+    }
+
+    ImGui::End();
 }
 
-int32_t GamePlayScene::CalculateScore(float elapsedSeconds) const
+const char* GamePlayScene::GetPoseStateName(
+    DumbbellPoseCounter::State state) const
 {
-	if (elapsedSeconds > 10.0f) {
-		return 0;
-	}
-	const float diff = std::abs(elapsedSeconds - 10.0f);
-	const int32_t score = static_cast<int32_t>(1000.0f - diff * 1000.0f);
-	return std::max(0, score);
-}
+    switch (state)
+    {
+    case DumbbellPoseCounter::State::WaitingForExtended:
 
-void GamePlayScene::BeginPostScore()
-{
-	errorText_.clear();
-	rankingText_.clear();
-	rankingRawJson_.clear();
-	postFuture_ = PostFacultyAsync(currentScore_);
-	isPosting_ = true;
-}
+        return "Waiting For Extended";
 
-void GamePlayScene::BeginFetchRanking()
-{
-	rankingFuture_ = GetAllFacultiesAsync();
-	isFetchingRanking_ = true;
-}
+    case DumbbellPoseCounter::State::WaitingForBent:
 
-void GamePlayScene::UpdateNetwork()
-{
-	if (isPosting_ && postFuture_.valid() &&
-		postFuture_.wait_for(std::chrono::milliseconds(0)) == std::future_status::ready) {
-		postResult_ = postFuture_.get();
-		WriteUtf8("POST結果:" + postResult_ + "\n");
-		isPosting_ = false;
-		BeginFetchRanking();
-	}
+        return "Waiting For Bent";
 
-	if (isFetchingRanking_ && rankingFuture_.valid() &&
-		rankingFuture_.wait_for(std::chrono::milliseconds(0)) == std::future_status::ready) {
-		rankingRawJson_ = rankingFuture_.get();
-		WriteUtf8("ランキング取得:\n" + rankingRawJson_ + "\n");
-		isFetchingRanking_ = false;
-		BuildRankingTextFromJson(rankingRawJson_);
-		state_ = State::Ranking;
-	}
-}
+    case DumbbellPoseCounter::State::WaitingForReturn:
 
-void GamePlayScene::BuildRankingTextFromJson(const std::string& jsonText)
-{
-	try {
-		auto data = json::parse(jsonText);
-		if (!data.is_array()) {
-			errorText_ = "JSONが配列ではありません";
-			return;
-		}
+        return "Waiting For Return";
 
-		std::vector<int32_t> scores;
-		scores.reserve(data.size());
-		for (const auto& item : data) {
-			if (item.contains("score") && item["score"].is_number_integer()) {
-				scores.push_back(item["score"].get<int32_t>());
-			} else if (item.contains("scoer") && item["scoer"].is_number_integer()) {
-				scores.push_back(item["scoer"].get<int32_t>());
-			}
-		}
+    default:
 
-		std::sort(scores.begin(), scores.end(), std::greater<int32_t>());
-		if (scores.size() > 5) {
-			scores.resize(5);
-		}
-
-		rankingText_.clear();
-		for (size_t i = 0; i < scores.size(); ++i) {
-			rankingText_ += std::to_string(i + 1) + "位 : " + std::to_string(scores[i]) + "\n";
-		}
-		if (rankingText_.empty()) {
-			rankingText_ = "ランキングデータなし";
-		}
-	}
-	catch (const std::exception& e) {
-		errorText_ = std::string("ランキング解析失敗: ") + e.what();
-	}
-
+        return "Unknown";
+    }
 }

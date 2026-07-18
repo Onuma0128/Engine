@@ -914,9 +914,15 @@
     </FxCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Game\BackEnd\httpClient.cpp" />
+    <ClCompile Include="Engine\Input\SerialPort.cpp" />
+    <ClCompile Include="Engine\Input\Mpu6050Data.cpp" />
+    <ClCompile Include="Game\DumbbellCounter\DumbbellPoseCounter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\BackEnd\httpClient.h" />
     <ClInclude Include="Game\BackEnd\WriteUtf8.h" />
+    <ClInclude Include="Engine\Input\SerialPort.h" />
+    <ClInclude Include="Engine\Input\Mpu6050Data.h" />
+    <ClInclude Include="Game\DumbbellCounter\DumbbellPoseCounter.h" />
   </ItemGroup>
 </Project>

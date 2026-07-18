@@ -157,6 +157,7 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\DumbbellCounter\DumbbellPoseCounter.cpp" />
     <ClCompile Include="Engine\2D\BaseUI.cpp" />
     <ClCompile Include="Engine\3D\Animation\Play\PlayAnimation.cpp" />
     <ClCompile Include="Engine\3D\Animation\DebugBone\DebugBone.cpp" />
@@ -164,6 +165,7 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     <ClCompile Include="Engine\Base\Collider\Collider.cpp" />
     <ClCompile Include="Engine\Base\Collider\CollisionManager.cpp" />
     <ClCompile Include="Engine\Base\Object\SceneRenderer.cpp" />
+    <ClCompile Include="Engine\Input\Mpu6050Data.cpp" />
     <ClCompile Include="Engine\Math\Structure\Vector2.cpp" />
     <ClCompile Include="Engine\Base\DxEngine\DescriptorHeap\DsvManager.cpp" />
     <ClCompile Include="Engine\Base\DxEngine\Pipeline\DepthStencilState\DepthStencilStateBase.cpp" />
@@ -243,8 +245,10 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     <ClCompile Include="Engine\3D\Animation\SkinCluster\SkinCluster.cpp" />
     <ClCompile Include="Engine\Base\Object\Model\LineInstanceRenderer.cpp" />
     <ClCompile Include="Engine\Base\Object\ShadowMap\ShadowMap.cpp" />
+    <ClCompile Include="Engine\Input\SerialPort.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\DumbbellCounter\DumbbellPoseCounter.h" />
     <ClInclude Include="Engine\2D\BaseUI.h" />
     <ClInclude Include="Engine\3D\Animation\Play\PlayAnimation.h" />
     <ClInclude Include="Engine\3D\Animation\DebugBone\DebugBone.h" />
@@ -258,6 +262,7 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     <ClInclude Include="Engine\Base\Collider\Collider.h" />
     <ClInclude Include="Engine\Base\Collider\CollisionManager.h" />
     <ClInclude Include="Engine\Base\Object\SceneRenderer.h" />
+    <ClInclude Include="Engine\Input\Mpu6050Data.h" />
     <ClInclude Include="Engine\Math\Structure\Easing.h" />
     <ClInclude Include="Engine\Base\DxEngine\DescriptorHeap\DsvManager.h" />
     <ClInclude Include="Engine\Base\DxEngine\Pipeline\DepthStencilState\DepthStencilStateBase.h" />
@@ -353,6 +358,7 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     <ClInclude Include="Engine\3D\Animation\SkinCluster\SkinCluster.h" />
     <ClInclude Include="Engine\Base\Object\Model\LineInstanceRenderer.h" />
     <ClInclude Include="Engine\Base\Object\ShadowMap\ShadowMap.h" />
+    <ClInclude Include="Engine\Input\SerialPort.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli">
