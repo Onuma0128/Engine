@@ -917,6 +917,7 @@
     <ClCompile Include="Engine\Input\SerialPort.cpp" />
     <ClCompile Include="Engine\Input\Mpu6050Data.cpp" />
     <ClCompile Include="Game\DumbbellCounter\DumbbellPoseCounter.cpp" />
+    <ClCompile Include="Game\DumbbellCounter\DumbbellSensorController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\BackEnd\httpClient.h" />
@@ -924,5 +925,6 @@
     <ClInclude Include="Engine\Input\SerialPort.h" />
     <ClInclude Include="Engine\Input\Mpu6050Data.h" />
     <ClInclude Include="Game\DumbbellCounter\DumbbellPoseCounter.h" />
+    <ClInclude Include="Game\DumbbellCounter\DumbbellSensorController.h" />
   </ItemGroup>
 </Project>

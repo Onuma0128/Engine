@@ -157,6 +157,7 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\DumbbellCounter\DumbbellSensorController.cpp" />
     <ClCompile Include="Game\DumbbellCounter\DumbbellPoseCounter.cpp" />
     <ClCompile Include="Engine\2D\BaseUI.cpp" />
     <ClCompile Include="Engine\3D\Animation\Play\PlayAnimation.cpp" />
@@ -248,6 +249,7 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     <ClCompile Include="Engine\Input\SerialPort.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\DumbbellCounter\DumbbellSensorController.h" />
     <ClInclude Include="Game\DumbbellCounter\DumbbellPoseCounter.h" />
     <ClInclude Include="Engine\2D\BaseUI.h" />
     <ClInclude Include="Engine\3D\Animation\Play\PlayAnimation.h" />
