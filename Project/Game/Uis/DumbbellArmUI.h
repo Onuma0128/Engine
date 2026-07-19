@@ -54,9 +54,9 @@ private:
     std::unique_ptr<Sprite> forearmSprite_ = nullptr;
 
     Vector2 upperArmPosition_ = { 640.0f, 50.0f };
-    Vector2 foreArmPosition_ = { 19.0f, -2.5f };
+    Vector2 foreArmPosition_ = { 16.0f, -39.0f };
     Vector4 color_ = { 1.0f, 0.72f, 0.48f, 1.0f };
-	Vector2 anchorPoint_ = { 0.15f, 0.3f };
+	Vector2 anchorPoint_ = { 0.1f, 0.35f };
 
     float upperArmLength_ = 228.0f;
     float forearmLength_ = 252.0f;

@@ -9,9 +9,9 @@
 void DumbbellArmUI::Initialize()
 {
     upperArmPosition_ = { 640.0f, 50.0f };
-    foreArmPosition_ = { 19.0f, -2.5f };
+    foreArmPosition_ = { 16.0f, -39.0f };
     color_ = { 1.0f, 0.72f, 0.48f, 1.0f };
-    anchorPoint_ = { 0.15f, 0.3f };
+    anchorPoint_ = { 0.1f, 0.35f };
 
     upperArmLength_ = 228.0f;
     forearmLength_ = 252.0f;
@@ -51,6 +51,11 @@ void DumbbellArmUI::Finalize()
 
 void DumbbellArmUI::Update(float angleDegrees)
 {
+    ImGui::Begin("Dumbbell Arm UI");
+	ImGui::DragFloat3("Fore Arm Position", &foreArmPosition_.x, 0.5f, -1280.0f, 1280.0f);
+	ImGui::DragFloat2("Anchor Point", &anchorPoint_.x, 0.01f, 0.0f, 1.0f);
+    ImGui::End();
+
     if (upperArmSprite_ == nullptr || forearmSprite_ == nullptr)
     {
         return;

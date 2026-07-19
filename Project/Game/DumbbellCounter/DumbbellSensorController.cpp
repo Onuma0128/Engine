@@ -6,6 +6,8 @@
 #include <cmath>
 #include <string>
 
+#include "Input.h"
+
 void DumbbellSensorController::Initialize()
 {
     // COM4を開く
@@ -64,6 +66,60 @@ void DumbbellSensorController::Update()
 
     receivedNewSensorData_ = UpdateSensorData();
 
+    Input* input = Input::GetInstance();
+
+    if (input->TriggerKey(DIK_DOWN))
+    {
+        const bool recorded =
+            dumbbellPoseCounter_.RecordExtendedPose(
+                mpuData_
+            );
+
+        if (recorded)
+        {
+            OutputDebugStringA(
+                "Extended pose recorded by Up key.\n"
+            );
+        } else
+        {
+            OutputDebugStringA(
+                "Failed to record extended pose by Up key.\n"
+            );
+        }
+    }
+
+    if (input->TriggerKey(DIK_UP))
+    {
+        const bool recorded =
+            dumbbellPoseCounter_.RecordBentPose(
+                mpuData_
+            );
+
+        if (recorded)
+        {
+            OutputDebugStringA(
+                "Bent pose recorded by Down key.\n"
+            );
+        } else
+        {
+            OutputDebugStringA(
+                "Failed to record bent pose by Down key.\n"
+            );
+        }
+    }
+
+    if (input->TriggerKey(DIK_RETURN))
+    {
+        dumbbellPoseCounter_.ResetCalibration();
+        dumbbellPoseCounter_.ResetCount();
+
+        previousDumbbellCount_ = 0;
+
+        OutputDebugStringA(
+            "Dumbbell pose calibration and count reset by Enter key.\n"
+        );
+    }
+
     accelerationMagnitude_ = std::sqrt(
         mpuData_.acceleration.x * mpuData_.acceleration.x +
         mpuData_.acceleration.y * mpuData_.acceleration.y +
@@ -83,7 +139,7 @@ void DumbbellSensorController::Update()
             currentCount;
     }
 
-    DrawImGui();
+    //DrawImGui();
 }
 
 
