@@ -444,3 +444,8 @@ int DumbbellSensorController::GetDumbbellCount() const
 {
     return dumbbellPoseCounter_.GetCount();
 }
+
+DumbbellPoseCounter::State DumbbellSensorController::GetDumbbellState() const
+{
+	return dumbbellPoseCounter_.GetState();
+}

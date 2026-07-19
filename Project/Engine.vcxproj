@@ -157,6 +157,8 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\Uis\CheerForUI.cpp" />
+    <ClCompile Include="Game\Uis\DumbbellArmUI.cpp" />
     <ClCompile Include="Game\DumbbellCounter\DumbbellSensorController.cpp" />
     <ClCompile Include="Game\DumbbellCounter\DumbbellPoseCounter.cpp" />
     <ClCompile Include="Engine\2D\BaseUI.cpp" />
@@ -247,8 +249,13 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     <ClCompile Include="Engine\Base\Object\Model\LineInstanceRenderer.cpp" />
     <ClCompile Include="Engine\Base\Object\ShadowMap\ShadowMap.cpp" />
     <ClCompile Include="Engine\Input\SerialPort.cpp" />
+    <ClCompile Include="Game\Uis\NumbersUI.cpp" />
+    <ClCompile Include="Game\Scene\ClearScene\ClearScene.cpp" />
+    <ClCompile Include="Game\Scene\TitleScene\TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\Uis\CheerForUI.h" />
+    <ClInclude Include="Game\Uis\DumbbellArmUI.h" />
     <ClInclude Include="Game\DumbbellCounter\DumbbellSensorController.h" />
     <ClInclude Include="Game\DumbbellCounter\DumbbellPoseCounter.h" />
     <ClInclude Include="Engine\2D\BaseUI.h" />
@@ -361,6 +368,9 @@ copy "$(ProjectDir)Externals\curl\bin\libcurl.dll" "$(OutDir)"</Command>
     <ClInclude Include="Engine\Base\Object\Model\LineInstanceRenderer.h" />
     <ClInclude Include="Engine\Base\Object\ShadowMap\ShadowMap.h" />
     <ClInclude Include="Engine\Input\SerialPort.h" />
+    <ClInclude Include="Game\Uis\NumbersUI.h" />
+    <ClInclude Include="Game\Scene\ClearScene\ClearScene.h" />
+    <ClInclude Include="Game\Scene\TitleScene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Fullscreen.hlsli">

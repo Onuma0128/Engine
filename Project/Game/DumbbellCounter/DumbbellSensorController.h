@@ -18,6 +18,7 @@ public:
     float GetExtendedAngle() const;
     float GetBentAngle() const;
     int GetDumbbellCount() const;
+	DumbbellPoseCounter::State GetDumbbellState() const;
 
 private:
     bool UpdateSensorData();
@@ -63,7 +64,7 @@ private:
     int previousDumbbellCount_ = 0;
 
     // 記録姿勢からの許容角度
-    float poseToleranceDegrees_ = 25.0f;
+    float poseToleranceDegrees_ = 35.0f;
 
     // 姿勢範囲内に留まる必要がある時間
     float poseHoldTime_ = 0.10f;

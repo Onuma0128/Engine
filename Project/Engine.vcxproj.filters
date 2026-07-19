@@ -918,6 +918,11 @@
     <ClCompile Include="Engine\Input\Mpu6050Data.cpp" />
     <ClCompile Include="Game\DumbbellCounter\DumbbellPoseCounter.cpp" />
     <ClCompile Include="Game\DumbbellCounter\DumbbellSensorController.cpp" />
+    <ClCompile Include="Game\Uis\NumbersUI.cpp" />
+    <ClCompile Include="Game\Uis\DumbbellArmUI.cpp" />
+    <ClCompile Include="Game\Scene\TitleScene\TitleScene.cpp" />
+    <ClCompile Include="Game\Scene\ClearScene\ClearScene.cpp" />
+    <ClCompile Include="Game\Uis\CheerForUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game\BackEnd\httpClient.h" />
@@ -926,5 +931,10 @@
     <ClInclude Include="Engine\Input\Mpu6050Data.h" />
     <ClInclude Include="Game\DumbbellCounter\DumbbellPoseCounter.h" />
     <ClInclude Include="Game\DumbbellCounter\DumbbellSensorController.h" />
+    <ClInclude Include="Game\Uis\NumbersUI.h" />
+    <ClInclude Include="Game\Uis\DumbbellArmUI.h" />
+    <ClInclude Include="Game\Scene\TitleScene\TitleScene.h" />
+    <ClInclude Include="Game\Scene\ClearScene\ClearScene.h" />
+    <ClInclude Include="Game\Uis\CheerForUI.h" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "BaseScene.h"
+
 #include "DumbbellCounter/DumbbellSensorController.h"
+#include "Uis/NumbersUI.h"
+#include "Uis/DumbbellArmUI.h"
+#include "Uis/CheerForUI.h"
 
 /// <summary>
 /// ゲームプレイシーン
@@ -44,6 +50,10 @@ private:
 
 private:
 
-    DumbbellSensorController dumbbellSensorController_;
+    std::unique_ptr<DumbbellSensorController> dumbbellSensorController_;
     
+    std::unique_ptr<NumbersUI> numbersUI_;
+	std::unique_ptr<DumbbellArmUI> dumbbellArmUI_;
+	std::unique_ptr<CheerForUI> cheerForUI_;
+
 };

@@ -73,8 +73,8 @@ private:
 
     int count_ = 0;
 
-    float extendedAngle_ = 180.0f;
-    float bentAngle_ = 180.0f;
+    float extendedAngle_ = 0.0f;
+    float bentAngle_ = 0.0f;
 
     // 記録姿勢から何度までずれてよいか
     float poseToleranceDegrees_ = 18.0f;
