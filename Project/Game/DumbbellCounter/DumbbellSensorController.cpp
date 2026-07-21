@@ -631,6 +631,11 @@ int DumbbellSensorController::GetDumbbellCount() const
     return dumbbellPoseCounter_.GetCount();
 }
 
+bool DumbbellSensorController::IsCalibrationComplete() const
+{
+    return dumbbellPoseCounter_.IsCalibrationComplete();
+}
+
 DumbbellPoseCounter::State DumbbellSensorController::GetDumbbellState() const
 {
 	return dumbbellPoseCounter_.GetState();

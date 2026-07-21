@@ -20,6 +20,7 @@ public:
     float GetExtendedAngle() const;
     float GetBentAngle() const;
     int GetDumbbellCount() const;
+    bool IsCalibrationComplete() const;
 	DumbbellPoseCounter::State GetDumbbellState() const;
 
 private:
@@ -118,8 +119,8 @@ private:
     std::unique_ptr<Sprite> extendedPoseRecordStateSprite_;
     std::unique_ptr<Sprite> bentPoseRecordStateSprite_;
 
-    Vector2 extendedPoseRecordStateSpritePosition_ = { 150.0f, 328.0f };
-    Vector2 bentPoseRecordStateSpritePosition_ = { 150.0f, 392.0f };
+    Vector2 extendedPoseRecordStateSpritePosition_ = { 150.0f, 392.0f };
+    Vector2 bentPoseRecordStateSpritePosition_ = { 150.0f,328.0f };
     Vector2 poseRecordStateSpriteSize_ = { 128.0f, 64.0f };
 
     static constexpr float kPoseRecordStateNoTextureLeft = 0.0f;

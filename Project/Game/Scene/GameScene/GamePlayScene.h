@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#define NOMINMAX
 #include "BaseScene.h"
 #include "BaseUI.h"
 
@@ -39,6 +40,16 @@ public:
 
 private:
 
+    enum class GameStartState
+    {
+        WaitingForPoseCalibration,
+        Countdown,
+        Playing,
+        Finished
+    };
+
+private:
+
     /// <summary>
     /// センサー判定で使用している伸ばした姿勢との角度を取得する
     /// </summary>
@@ -49,6 +60,22 @@ private:
     /// </summary>
     float GetSensorBentAngle() const;
 
+    /// <summary>
+    /// Spaceキーで開始できるかを取得する
+    /// </summary>
+    bool CanStartGame() const;
+
+    /// <summary>
+    /// 3,2,1カウントダウンを開始する
+    /// </summary>
+    void StartCountdown();
+
+    /// <summary>
+    /// 開始カウントダウンと制限時間を更新する
+    /// </summary>
+    void UpdateGameStartFlow();
+
+
 private:
 
 	// ダンベルセンサーの制御クラス
@@ -56,6 +83,12 @@ private:
     
     // アームカールのカウント用UI
     std::unique_ptr<NumbersUI> numbersUI_;
+
+    // スタート時の3,2,1表示用UI
+    std::unique_ptr<NumbersUI> startCountdownUI_;
+
+    // ゲーム中の残り時間表示用UI
+    std::unique_ptr<NumbersUI> gameTimerUI_;
 
 	// 曲げ伸ばしをする腕
 	std::unique_ptr<DumbbellArmUI> dumbbellArm_;
@@ -66,5 +99,12 @@ private:
 	// 腕の曲げ伸ばしの設定用UI
     std::unique_ptr<BaseUI> armSettingUI_ = nullptr;
     std::unique_ptr<BaseUI> settingStartUI_ = nullptr;
+
+    GameStartState gameStartState_ = GameStartState::WaitingForPoseCalibration;
+    float startCountdownTimer_ = 0.0f;
+    float gameTimer_ = 0.0f;
+
+    static constexpr float kStartCountdownSeconds = 3.0f;
+    static constexpr float kGameTimerSeconds = 15.0f;
 
 };

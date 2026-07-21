@@ -9,7 +9,7 @@ void CheerForUI::Initialize()
 	cheerForSprite_->Initialize("cheerForUI.png");
 	cheerForSprite_->SetAnchorPoint({ 0.5f, 0.5f });
 	cheerForSprite_->GetTransform().size = { 512.0f, 128.0f };
-	cheerForSprite_->GetTransform().position = { 640.0f, 550.0f };
+	cheerForSprite_->GetTransform().position = { 681.0f, 650.0f };
 	cheerForSprite_->SetTextureSize({ kSourceDigitWidth, kSourceDigitHeight });
 	cheerForSprite_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
 	cheerForSprite_->SetSceneRenderer();
@@ -42,6 +42,10 @@ void CheerForUI::Update(DumbbellPoseCounter::State state)
 	default:
 		break;
 	}
+
+	ImGui::Begin("CheerForUI");
+	ImGui::DragFloat2("CheerFor Position", &cheerForSprite_->GetTransform().position.x, 1.0f, 0.0f, 1280.0f);
+	ImGui::End();
 
 	cheerForSprite_->Update();
 }

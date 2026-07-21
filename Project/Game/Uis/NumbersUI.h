@@ -50,6 +50,11 @@ public:
     /// </summary>
     void SetColor(const Vector4& color) { color_ = color; }
 
+    /// <summary>
+    /// 表示/非表示を設定
+    /// </summary>
+    void SetVisible(bool isVisible);
+
 private:
     void ApplyDigitSprite(Sprite* sprite, int digit, int index);
 
