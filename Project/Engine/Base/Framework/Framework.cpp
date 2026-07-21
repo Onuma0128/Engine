@@ -50,6 +50,7 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "uvChecker.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "numbers.png");
 
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "titleUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "foreArm.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "upperArm.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "muscleTexture.png");
@@ -57,6 +58,8 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "settingSwitchUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "settingUpdownUI.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "settingStartUI.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "door.png");
+
 
 }
 

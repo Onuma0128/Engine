@@ -9,3 +9,6 @@ std::future<std::string> GetFacultyByIdAsync(int id);
 std::future<std::string> PostFacultyAsync(int score);
 std::future<std::string> PatchFacultyAsync(int id, int score);
 std::future<std::string> DeleteFacultyAsync(int id);
+
+std::future<std::string> GetWorkoutRankingAsync();
+bool PostWorkout(int count);

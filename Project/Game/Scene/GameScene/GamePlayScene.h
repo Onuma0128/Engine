@@ -100,6 +100,10 @@ private:
     std::unique_ptr<BaseUI> armSettingUI_ = nullptr;
     std::unique_ptr<BaseUI> settingStartUI_ = nullptr;
 
+    // シーン遷移用フェード
+    std::unique_ptr<BaseUI> sceneFade_ = nullptr;
+    bool isFade_ = false;
+
     GameStartState gameStartState_ = GameStartState::WaitingForPoseCalibration;
     float startCountdownTimer_ = 0.0f;
     float gameTimer_ = 0.0f;

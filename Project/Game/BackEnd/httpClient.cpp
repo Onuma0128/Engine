@@ -159,3 +159,183 @@ std::future<std::string> DeleteFacultyAsync(int id)
 		return response;
 		});
 }
+
+std::future<std::string> GetWorkoutRankingAsync()
+{
+	return std::async(
+		std::launch::async,
+		[]() -> std::string
+		{
+			CURL* curl = curl_easy_init();
+
+			if (curl == nullptr)
+			{
+				return "CURL初期化エラー";
+			}
+
+			const std::string url =
+				"http://localhost:3000/ranking";
+
+			std::string response;
+
+			curl_easy_setopt(
+				curl,
+				CURLOPT_URL,
+				url.c_str()
+			);
+
+			curl_easy_setopt(
+				curl,
+				CURLOPT_HTTPGET,
+				1L
+			);
+
+			curl_easy_setopt(
+				curl,
+				CURLOPT_WRITEFUNCTION,
+				WriteCallback
+			);
+
+			curl_easy_setopt(
+				curl,
+				CURLOPT_WRITEDATA,
+				&response
+			);
+
+			// 接続が長時間止まらないようにする
+			curl_easy_setopt(
+				curl,
+				CURLOPT_CONNECTTIMEOUT,
+				5L
+			);
+
+			curl_easy_setopt(
+				curl,
+				CURLOPT_TIMEOUT,
+				10L
+			);
+
+			const CURLcode result =
+				curl_easy_perform(curl);
+
+			if (result != CURLE_OK)
+			{
+				const std::string errorMessage =
+					std::string("ランキング取得エラー: ") +
+					curl_easy_strerror(result);
+
+				curl_easy_cleanup(curl);
+
+				return errorMessage;
+			}
+
+			long statusCode = 0;
+
+			curl_easy_getinfo(
+				curl,
+				CURLINFO_RESPONSE_CODE,
+				&statusCode
+			);
+
+			curl_easy_cleanup(curl);
+
+			if (statusCode < 200 || statusCode >= 300)
+			{
+				return
+					"ランキングHTTPエラー: " +
+					std::to_string(statusCode);
+			}
+
+			return response;
+		}
+	);
+}
+
+bool PostWorkout(int count)
+{
+	CURL* curl = curl_easy_init();
+
+	if (curl == nullptr)
+	{
+		std::cerr << "curlの初期化に失敗しました\n";
+		return false;
+	}
+
+	const std::string url =
+		"http://localhost:3000/workouts";
+
+	const std::string jsonData =
+		"{\"count\":" + std::to_string(count) + "}";
+
+	curl_slist* headers = nullptr;
+
+	headers = curl_slist_append(
+		headers,
+		"Content-Type: application/json"
+	);
+
+	curl_easy_setopt(
+		curl,
+		CURLOPT_URL,
+		url.c_str()
+	);
+
+	curl_easy_setopt(
+		curl,
+		CURLOPT_POST,
+		1L
+	);
+
+	curl_easy_setopt(
+		curl,
+		CURLOPT_HTTPHEADER,
+		headers
+	);
+
+	curl_easy_setopt(
+		curl,
+		CURLOPT_POSTFIELDS,
+		jsonData.c_str()
+	);
+
+	const CURLcode result =
+		curl_easy_perform(curl);
+
+	bool success = false;
+
+	if (result == CURLE_OK)
+	{
+		long statusCode = 0;
+
+		curl_easy_getinfo(
+			curl,
+			CURLINFO_RESPONSE_CODE,
+			&statusCode
+		);
+
+		if (statusCode >= 200 && statusCode < 300)
+		{
+			std::cout
+				<< "ダンベル回数の送信に成功しました\n";
+
+			success = true;
+		} else
+		{
+			std::cerr
+				<< "HTTPエラー: "
+				<< statusCode
+				<< '\n';
+		}
+	} else
+	{
+		std::cerr
+			<< "通信エラー: "
+			<< curl_easy_strerror(result)
+			<< '\n';
+	}
+
+	curl_slist_free_all(headers);
+	curl_easy_cleanup(curl);
+
+	return success;
+}

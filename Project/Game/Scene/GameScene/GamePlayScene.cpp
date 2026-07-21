@@ -1,10 +1,12 @@
 #include "GamePlayScene.h"
 
-#include "DeltaTimer.h"
-#include "Input.h"
-
 #include <algorithm>
 #include <cmath>
+
+#include "DeltaTimer.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "BackEnd/httpClient.h"
 
 void GamePlayScene::Initialize()
 {
@@ -46,6 +48,11 @@ void GamePlayScene::Initialize()
     gameTimerUI_->SetDigitSpacing(-24.0f);
     gameTimerUI_->SetVisible(false);
     gameTimerUI_->Update(0);
+
+    sceneFade_ = std::make_unique<BaseUI>();
+    sceneFade_->Init("TitleFade", "GameData", true);
+    sceneFade_->GetSprite()->SetColor(Vector4{ 0.0f,0.0f,0.0f,1.0f });
+    sceneFade_->FadeOut();
 }
 
 void GamePlayScene::Finalize()
@@ -67,15 +74,22 @@ void GamePlayScene::Update()
     dumbbellArm_->Update(dumbbellSensorController_->GetExtendedAngle());
     cheerForUI_->Update(dumbbellSensorController_->GetDumbbellState());
 
-    settingStartUI_->DrawImGui();
     settingStartUI_->Update();
     armSettingUI_->Update();
+    sceneFade_->Update();
+
+    if (isFade_ && !sceneFade_->IsPlayAnimation())
+    {
+        SceneManager::GetInstance()->ChangeScene("Clear");
+    }
 }
 
 void GamePlayScene::Draw()
 {
     settingStartUI_->Draw();
     armSettingUI_->Draw();
+
+    sceneFade_->Draw();
 }
 
 float GamePlayScene::GetSensorExtendedAngle() const
@@ -150,15 +164,17 @@ void GamePlayScene::UpdateGameStartFlow()
         {
             gameStartState_ = GameStartState::Finished;
             gameTimerUI_->Update(0);
+            isFade_ = true;
+            sceneFade_->FadeIn();
+            auto count = dumbbellSensorController_->GetDumbbellCount();
+            if (count > 0) {
+                PostWorkout(count);
+            }
         }
         break;
     }
 
     case GameStartState::Finished:
-        if (CanStartGame() && input->TriggerKey(DIK_SPACE))
-        {
-            StartCountdown();
-        }
         break;
     }
 }
