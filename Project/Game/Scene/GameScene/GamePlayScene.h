@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "BaseScene.h"
+#include "BaseUI.h"
 
 #include "DumbbellCounter/DumbbellSensorController.h"
 #include "Uis/NumbersUI.h"
@@ -50,10 +51,19 @@ private:
 
 private:
 
+	// ダンベルセンサーの制御クラス
     std::unique_ptr<DumbbellSensorController> dumbbellSensorController_;
     
+    // アームカールのカウント用UI
     std::unique_ptr<NumbersUI> numbersUI_;
-	std::unique_ptr<DumbbellArmUI> dumbbellArmUI_;
+
+	// 曲げ伸ばしをする腕
+	std::unique_ptr<DumbbellArmUI> dumbbellArm_;
+
+	// 腕の曲げ伸ばしのUI
 	std::unique_ptr<CheerForUI> cheerForUI_;
+
+	// 腕の曲げ伸ばしの設定用UI
+    std::unique_ptr<BaseUI> armSettingUI_ = nullptr;
 
 };

@@ -54,6 +54,8 @@ void Framework::LoadFiles()
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "upperArm.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "muscleTexture.png");
 	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "cheerForUI.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "settingSwitchUI.png");
+	TextureManager::GetInstance()->LoadTexture("Resources/Texture", "settingUpdownUI.png");
 }
 
 void Framework::Run()

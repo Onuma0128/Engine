@@ -6,6 +6,7 @@
 #include <cmath>
 #include <string>
 
+#include "DirectXEngine.h"
 #include "Input.h"
 
 void DumbbellSensorController::Initialize()
@@ -41,10 +42,30 @@ void DumbbellSensorController::Initialize()
     previousDumbbellCount_ = 0;
 
     accelerationMagnitude_ = 0.0f;
+
+    framesSinceLastSensorData_ = communicationTimeoutFrames_;
+
+    connectionStateSprite_ = std::make_unique<Sprite>();
+    connectionStateSprite_->Initialize("white1x1.png");
+    connectionStateSprite_->SetAnchorPoint({ 0.5f, 0.5f });
+    connectionStateSprite_->GetTransform().position = connectionStateSpritePosition_;
+    connectionStateSprite_->GetTransform().size = connectionStateSpriteSize_;
+    UpdateConnectionSprite();
+    connectionStateSprite_->SetSceneRenderer();
 }
 
 void DumbbellSensorController::Finalize()
 {
+    if (DirectXEngine::GetSceneRenderer() != nullptr &&
+        connectionStateSprite_ != nullptr)
+    {
+        DirectXEngine::GetSceneRenderer()->SetRemoveList(
+            connectionStateSprite_.get()
+        );
+    }
+
+    connectionStateSprite_.reset();
+
     serialPort_.Close();
 
     isSerialConnected_ = false;
@@ -65,6 +86,15 @@ void DumbbellSensorController::Update()
     );
 
     receivedNewSensorData_ = UpdateSensorData();
+
+    if (receivedNewSensorData_)
+    {
+        framesSinceLastSensorData_ = 0;
+    } else if (framesSinceLastSensorData_ < communicationTimeoutFrames_)
+    {
+        ++framesSinceLastSensorData_;
+    }
+    UpdateConnectionSprite();
 
     Input* input = Input::GetInstance();
 
@@ -181,6 +211,34 @@ bool DumbbellSensorController::UpdateSensorData()
     }
 
     return receivedNewData;
+}
+
+void DumbbellSensorController::UpdateConnectionSprite()
+{
+    if (connectionStateSprite_ == nullptr)
+    {
+        return;
+    }
+
+    connectionStateSprite_->GetTransform().position =
+        connectionStateSpritePosition_;
+    connectionStateSprite_->GetTransform().size =
+        connectionStateSpriteSize_;
+
+    connectionStateSprite_->SetColor(
+        IsSensorCommunicating()
+        ? Vector4{ 1.0f, 1.0f, 1.0f, 1.0f }
+        : Vector4{ 1.0f, 0.0f, 0.0f, 1.0f }
+    );
+
+    connectionStateSprite_->Update();
+}
+
+bool DumbbellSensorController::IsSensorCommunicating() const
+{
+    return isSerialConnected_ &&
+        parseSucceeded_ &&
+        framesSinceLastSensorData_ < communicationTimeoutFrames_;
 }
 
 void DumbbellSensorController::DrawImGui()

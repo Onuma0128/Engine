@@ -1,0 +1,43 @@
+{
+    "Texture": "settingUpdownUI.png",
+    "AnchorPoint": {
+        "x": 0.5,
+        "y": 0.5
+    },
+    "Size": {
+        "x": 96.0,
+        "y": 192.0
+    },
+    "Rotate": 0.0,
+    "Position": {
+        "x": 64.0,
+        "y": 360.0
+    },
+    "Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "IsAnimation": false,
+    "AnimationTime": 1.0,
+    "Anima_Size": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "Anima_Rotate": 0.0,
+    "Anima_Position": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "Anima_Color": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "InEasingType": 0,
+    "OutEasingType": 0,
+    "FadeInInterval": 0.0,
+    "FadeOutInterval": 0.0
+}

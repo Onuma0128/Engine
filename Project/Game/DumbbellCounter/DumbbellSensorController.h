@@ -3,7 +3,9 @@
 #include "DumbbellCounter/DumbbellPoseCounter.h"
 #include "Mpu6050Data.h"
 #include "SerialPort.h"
+#include "Sprite.h"
 
+#include <memory>
 #include <string>
 
 class DumbbellSensorController
@@ -22,6 +24,8 @@ public:
 
 private:
     bool UpdateSensorData();
+    void UpdateConnectionSprite();
+    bool IsSensorCommunicating() const;
 
     const char* GetPoseStateName(
         DumbbellPoseCounter::State state
@@ -47,6 +51,12 @@ private:
 
     // 今フレームでセンサー値を受信したか
     bool receivedNewSensorData_ = false;
+
+    // センサー値を最後に受信してからのフレーム数
+    int framesSinceLastSensorData_ = 0;
+
+    // このフレーム数以内に受信していれば通信中とみなす
+    int communicationTimeoutFrames_ = 30;
 
     // ==============================
     // MPU6050
@@ -82,4 +92,13 @@ private:
     bool showSensorWindow_ = true;
 
     float accelerationMagnitude_ = 0.0f;
+
+    // ==============================
+    // 通信状態表示
+    // ==============================
+
+    std::unique_ptr<Sprite> connectionStateSprite_;
+
+    Vector2 connectionStateSpritePosition_ = { 16.0f, 704.0f };
+    Vector2 connectionStateSpriteSize_ = { 32.0f, 32.0f };
 };
