@@ -52,6 +52,16 @@ void DumbbellSensorController::Initialize()
     connectionStateSprite_->GetTransform().size = connectionStateSpriteSize_;
     UpdateConnectionSprite();
     connectionStateSprite_->SetSceneRenderer();
+
+    InitializePoseRecordStateSprite(
+        extendedPoseRecordStateSprite_,
+        extendedPoseRecordStateSpritePosition_
+    );
+    InitializePoseRecordStateSprite(
+        bentPoseRecordStateSprite_,
+        bentPoseRecordStateSpritePosition_
+    );
+    UpdatePoseRecordStateSprites();
 }
 
 void DumbbellSensorController::Finalize()
@@ -64,7 +74,25 @@ void DumbbellSensorController::Finalize()
         );
     }
 
+    if (DirectXEngine::GetSceneRenderer() != nullptr &&
+        extendedPoseRecordStateSprite_ != nullptr)
+    {
+        DirectXEngine::GetSceneRenderer()->SetRemoveList(
+            extendedPoseRecordStateSprite_.get()
+        );
+    }
+
+    if (DirectXEngine::GetSceneRenderer() != nullptr &&
+        bentPoseRecordStateSprite_ != nullptr)
+    {
+        DirectXEngine::GetSceneRenderer()->SetRemoveList(
+            bentPoseRecordStateSprite_.get()
+        );
+    }
+
     connectionStateSprite_.reset();
+    extendedPoseRecordStateSprite_.reset();
+    bentPoseRecordStateSprite_.reset();
 
     serialPort_.Close();
 
@@ -94,48 +122,35 @@ void DumbbellSensorController::Update()
     {
         ++framesSinceLastSensorData_;
     }
+
     UpdateConnectionSprite();
 
     Input* input = Input::GetInstance();
 
+    // 腕を伸ばした状態を記録
     if (input->TriggerKey(DIK_DOWN))
     {
         const bool recorded =
-            dumbbellPoseCounter_.RecordExtendedPose(
-                mpuData_
-            );
+            dumbbellPoseCounter_.RecordExtendedPose(mpuData_);
 
-        if (recorded)
-        {
-            OutputDebugStringA(
-                "Extended pose recorded by Up key.\n"
-            );
-        } else
-        {
-            OutputDebugStringA(
-                "Failed to record extended pose by Up key.\n"
-            );
-        }
+        OutputDebugStringA(
+            recorded
+            ? "Extended pose recorded.\n"
+            : "Failed to record extended pose.\n"
+        );
     }
 
+    // 腕を曲げた状態を記録
     if (input->TriggerKey(DIK_UP))
     {
         const bool recorded =
-            dumbbellPoseCounter_.RecordBentPose(
-                mpuData_
-            );
+            dumbbellPoseCounter_.RecordBentPose(mpuData_);
 
-        if (recorded)
-        {
-            OutputDebugStringA(
-                "Bent pose recorded by Down key.\n"
-            );
-        } else
-        {
-            OutputDebugStringA(
-                "Failed to record bent pose by Down key.\n"
-            );
-        }
+        OutputDebugStringA(
+            recorded
+            ? "Bent pose recorded.\n"
+            : "Failed to record bent pose.\n"
+        );
     }
 
     if (input->TriggerKey(DIK_RETURN))
@@ -144,11 +159,10 @@ void DumbbellSensorController::Update()
         dumbbellPoseCounter_.ResetCount();
 
         previousDumbbellCount_ = 0;
-
-        OutputDebugStringA(
-            "Dumbbell pose calibration and count reset by Enter key.\n"
-        );
     }
+
+    // 入力による記録・リセット後に更新する
+    UpdatePoseRecordStateSprites();
 
     accelerationMagnitude_ = std::sqrt(
         mpuData_.acceleration.x * mpuData_.acceleration.x +
@@ -161,17 +175,10 @@ void DumbbellSensorController::Update()
 
     if (currentCount > previousDumbbellCount_)
     {
-        OutputDebugStringA(
-            "Dumbbell Count +1\n"
-        );
-
-        previousDumbbellCount_ =
-            currentCount;
+        OutputDebugStringA("Dumbbell Count +1\n");
+        previousDumbbellCount_ = currentCount;
     }
-
-    //DrawImGui();
 }
-
 
 bool DumbbellSensorController::UpdateSensorData()
 {
@@ -232,6 +239,71 @@ void DumbbellSensorController::UpdateConnectionSprite()
     );
 
     connectionStateSprite_->Update();
+}
+
+void DumbbellSensorController::InitializePoseRecordStateSprite(
+    std::unique_ptr<Sprite>& sprite,
+    const Vector2& position)
+{
+    sprite = std::make_unique<Sprite>();
+    sprite->Initialize("settingSwitchUI.png");
+
+    sprite->SetAnchorPoint({ 0.5f, 0.5f });
+
+    sprite->GetTransform().position = position;
+    sprite->GetTransform().size = poseRecordStateSpriteSize_;
+
+    // 切り出す1コマのサイズ
+    sprite->SetTextureSize({
+        kPoseRecordStateTextureWidth,
+        kPoseRecordStateTextureHeight
+        });
+
+    // 最初はNOを表示
+    sprite->SetTextureLeftTop({
+        kPoseRecordStateNoTextureLeft,
+        0.0f
+        });
+
+    // 初期状態を反映
+    sprite->Update();
+    sprite->SetSceneRenderer();
+}
+
+void DumbbellSensorController::UpdatePoseRecordStateSprite(
+    Sprite* sprite,
+    bool isRecorded) const
+{
+    if (sprite == nullptr)
+    {
+        return;
+    }
+
+    const float textureLeft =
+        isRecorded
+        ? kPoseRecordStateOkTextureLeft
+        : kPoseRecordStateNoTextureLeft;
+
+    sprite->SetTextureLeftTop({
+        textureLeft,
+        0.0f
+        });
+
+    // SetTextureLeftTopの変更を描画へ反映する
+    sprite->Update();
+}
+
+void DumbbellSensorController::UpdatePoseRecordStateSprites()
+{
+    UpdatePoseRecordStateSprite(
+        extendedPoseRecordStateSprite_.get(),
+        dumbbellPoseCounter_.HasExtendedPose()
+    );
+
+    UpdatePoseRecordStateSprite(
+        bentPoseRecordStateSprite_.get(),
+        dumbbellPoseCounter_.HasBentPose()
+    );
 }
 
 bool DumbbellSensorController::IsSensorCommunicating() const

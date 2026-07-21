@@ -25,6 +25,15 @@ public:
 private:
     bool UpdateSensorData();
     void UpdateConnectionSprite();
+    void InitializePoseRecordStateSprite(
+        std::unique_ptr<Sprite>& sprite,
+        const Vector2& position
+    );
+    void UpdatePoseRecordStateSprite(
+        Sprite* sprite,
+        bool isRecorded
+    ) const;
+    void UpdatePoseRecordStateSprites();
     bool IsSensorCommunicating() const;
 
     const char* GetPoseStateName(
@@ -101,4 +110,20 @@ private:
 
     Vector2 connectionStateSpritePosition_ = { 16.0f, 704.0f };
     Vector2 connectionStateSpriteSize_ = { 32.0f, 32.0f };
+
+    // ==============================
+   // 姿勢記録状態表示
+   // ==============================
+
+    std::unique_ptr<Sprite> extendedPoseRecordStateSprite_;
+    std::unique_ptr<Sprite> bentPoseRecordStateSprite_;
+
+    Vector2 extendedPoseRecordStateSpritePosition_ = { 150.0f, 328.0f };
+    Vector2 bentPoseRecordStateSpritePosition_ = { 150.0f, 392.0f };
+    Vector2 poseRecordStateSpriteSize_ = { 128.0f, 64.0f };
+
+    static constexpr float kPoseRecordStateNoTextureLeft = 0.0f;
+    static constexpr float kPoseRecordStateOkTextureLeft = 128.0f;
+    static constexpr float kPoseRecordStateTextureWidth = 128.0f;
+    static constexpr float kPoseRecordStateTextureHeight = 64.0f;
 };

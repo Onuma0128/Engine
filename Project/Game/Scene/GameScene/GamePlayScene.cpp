@@ -16,7 +16,9 @@ void GamePlayScene::Initialize()
 
 	armSettingUI_ = std::make_unique<BaseUI>();
 	armSettingUI_->Init("ArmSettingUI", "GameData");
-	//armSettingUI_->FadeOut();
+
+	settingStartUI_ = std::make_unique<BaseUI>();
+	settingStartUI_->Init("SettingStartUI", "GameData");
 }
 
 void GamePlayScene::Finalize()
@@ -34,12 +36,14 @@ void GamePlayScene::Update()
 	dumbbellArm_->Update(dumbbellSensorController_->GetExtendedAngle());
 	cheerForUI_->Update(dumbbellSensorController_->GetDumbbellState());
 
-	armSettingUI_->DrawImGui();
+	settingStartUI_->DrawImGui();
+	settingStartUI_->Update();
 	armSettingUI_->Update();
 }
 
 void GamePlayScene::Draw()
 {
+	settingStartUI_->Draw();
 	armSettingUI_->Draw();
 }
 

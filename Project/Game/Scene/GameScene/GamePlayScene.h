@@ -65,5 +65,6 @@ private:
 
 	// 腕の曲げ伸ばしの設定用UI
     std::unique_ptr<BaseUI> armSettingUI_ = nullptr;
+    std::unique_ptr<BaseUI> settingStartUI_ = nullptr;
 
 };

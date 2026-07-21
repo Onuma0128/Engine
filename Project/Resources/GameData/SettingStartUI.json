@@ -1,17 +1,17 @@
 {
-    "Texture": "settingUpdownUI.png",
+    "Texture": "settingStartUI.png",
     "AnchorPoint": {
         "x": 0.5,
         "y": 0.5
     },
     "Size": {
-        "x": 64.0,
-        "y": 128.0
+        "x": 192.0,
+        "y": 32.0
     },
     "Rotate": 0.0,
     "Position": {
-        "x": 64.0,
-        "y": 360.0
+        "x": 115.0,
+        "y": 448.0
     },
     "Color": {
         "x": 1.0,
