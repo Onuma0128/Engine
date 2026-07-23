@@ -84,13 +84,13 @@ private:
     int previousDumbbellCount_ = 0;
 
     // 記録姿勢からの許容角度
-    float poseToleranceDegrees_ = 35.0f;
+    float poseToleranceDegrees_ = 40.0f;
 
     // 姿勢範囲内に留まる必要がある時間
-    float poseHoldTime_ = 0.10f;
+    float poseHoldTime_ = 0.01f;
 
     // この角速度以下なら静止とみなす
-    float stableGyroThreshold_ = 35.0f;
+    float stableGyroThreshold_ = 40.0f;
 
     // ESP32が約50Hz、20ms間隔で送信する前提
     float sensorDeltaTime_ = 0.02f;

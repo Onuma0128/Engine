@@ -17,6 +17,7 @@ void GamePlayScene::Initialize()
     numbersUI_->Initialize();
     numbersUI_->SetPosition({ 115.0f, 64.0f });
     numbersUI_->SetDigitSize({ 128.0f, 128.0f });
+    numbersUI_->SetDigitSpacing(-38.0f);
 
     dumbbellArm_ = std::make_unique<DumbbellArmUI>();
     dumbbellArm_->Initialize();
