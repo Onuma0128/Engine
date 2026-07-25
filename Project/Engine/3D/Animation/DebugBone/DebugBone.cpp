@@ -1,8 +1,8 @@
-﻿#include "DebugBone.h"
+#include "DebugBone.h"
 
 #include "animation/joint/Joint.h"
 
-void DebugBone::Init(std::vector<NumaEngine::Vector3> positions)
+void DebugBone::Init(const std::vector<NumaEngine::Vector3>& positions)
 {
 	bone_ = std::make_unique<Line3d>();
 	bone_->Initialize(positions);

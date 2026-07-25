@@ -1,4 +1,4 @@
-﻿#include "BaseUI.h"
+#include "BaseUI.h"
 
 #include <numbers>
 
@@ -8,7 +8,7 @@
 #include "DeltaTimer.h"
 #include "Easing.h"
 
-void BaseUI::Init(const std::string uiName, const std::string biginName, bool isNoiseTexture)
+void BaseUI::Init(const std::string& uiName, const std::string& biginName, bool isNoiseTexture)
 {
 	isNoiseTexture_ = isNoiseTexture;
 	parameters_.filename = uiName;

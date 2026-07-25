@@ -4,6 +4,9 @@
 
 #include <array>
 
+/// <summary>
+/// 入力レイアウトの基底クラス	
+/// </summary>
 class InputLayoutBase
 {
 public:

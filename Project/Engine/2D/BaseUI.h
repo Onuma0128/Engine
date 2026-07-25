@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 #include <string>
@@ -48,7 +48,7 @@ public:
 	/// </summary>
 	/// <param name="uiName"></このUIの名前を設定する>
 	/// <param name="biginName"></ImGuiで描画するBiginNameを設定する>
-	void Init(const std::string uiName, const std::string biginName, bool isNoiseTexture = false);
+    void Init(const std::string& uiName, const std::string& biginName, bool isNoiseTexture = false);
 
 	/// <summary>
 	/// 更新

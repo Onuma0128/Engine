@@ -2,6 +2,9 @@
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 
+/// <summary>
+/// デプスステンシルステートの基底クラス
+/// </summary>
 class DepthStencilStateBase
 {
 public:

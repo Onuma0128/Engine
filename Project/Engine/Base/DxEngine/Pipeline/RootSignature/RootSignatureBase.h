@@ -7,6 +7,9 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// ルートシグネチャの基底クラス
+/// </summary>
 class RootSignatureBase
 {
 public:
