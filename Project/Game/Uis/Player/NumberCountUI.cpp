@@ -1,4 +1,4 @@
-#include "NumberCountUI.h"
+﻿#include "NumberCountUI.h"
 
 #include <algorithm> 
 
@@ -13,7 +13,7 @@ void NumberCountUI::Init(bool isNoiseTexture)
 
 	for (uint32_t i = 0; i < numbers_.size(); ++i) {
 		numbers_[i] = std::make_unique<NumbersUI>();
-		Vector2 position = { static_cast<float>(600 + (i * interval_)),50.0f };
+        NumaEngine::Vector2 position = { static_cast<float>(600 + (i * interval_)),50.0f };
 		numbers_[i]->Init(position, isNoiseTexture);
 	}
 }
@@ -52,7 +52,7 @@ void NumberCountUI::MochiPuniScale(const uint32_t killCount, const float mochiPu
 
 	mochiPuniTime_ += DeltaTimer::GetDeltaTime() * 3.0f;
 	mochiPuniTime_ = std::clamp(mochiPuniTime_, 0.0f, 1.0f);
-	Vector2 scale = Vector2::MochiPuniScaleNormalized(mochiPuniTime_);
+    NumaEngine::Vector2 scale = NumaEngine::Vector2::MochiPuniScaleNormalized(mochiPuniTime_);
 	for (size_t i = 0; i < numbers_.size(); ++i) {
 		numbers_[i]->GetTransform().size = scale * mochiPuniScale;
 	}
@@ -67,19 +67,19 @@ void NumberCountUI::Draw()
 	}
 }
 
-void NumberCountUI::SetSize(const Vector2& size)
+void NumberCountUI::SetSize(const NumaEngine::Vector2& size)
 {
 	for (auto& number : numbers_) {
 		number->SetSize(size);
 	}
 }
 
-void NumberCountUI::SetPosition(const Vector2& position)
+void NumberCountUI::SetPosition(const NumaEngine::Vector2& position)
 {
 	int count = -1;
 	for (auto& number : numbers_) {
 		float posX = static_cast<float>(count) * interval_;
-		number->SetPosition(position + Vector2{ posX ,0.0f });
+        number->SetPosition(position + NumaEngine::Vector2{ posX ,0.0f });
 		++count;
 	}
 }
@@ -92,11 +92,11 @@ void NumberCountUI::SetInterval(const float interval)
 void NumberCountUI::SetAlpha(const float alpha)
 {
 	for (auto& number : numbers_) {
-		number->SetColor(Vector4{ 1.0f,1.0f,1.0f,alpha });
+    number->SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,alpha });
 	}
 }
 
-void NumberCountUI::SetDissolvePrames(const float threshold, const float edgeWidth, const Vector3& edgeColor)
+void NumberCountUI::SetDissolvePrames(const float threshold, const float edgeWidth, const NumaEngine::Vector3& edgeColor)
 {
 	for (auto& number : numbers_) {
 		number->SetDissolveThreshold(threshold);
@@ -106,7 +106,7 @@ void NumberCountUI::SetDissolvePrames(const float threshold, const float edgeWid
 }
 
 
-void NumbersUI::Init(const Vector2& position, bool isNoiseTexture)
+void NumbersUI::Init(const NumaEngine::Vector2& position, bool isNoiseTexture)
 {
 	Sprite::Initialize("numbers.png", isNoiseTexture);
 	if(isNoiseTexture) {
@@ -132,3 +132,4 @@ void NumbersUI::Draw()
 {
 	Sprite::Draw();
 }
+

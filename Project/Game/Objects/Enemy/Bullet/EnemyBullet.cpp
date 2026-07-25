@@ -1,4 +1,4 @@
-#include "EnemyBullet.h"
+﻿#include "EnemyBullet.h"
 
 #include "DeltaTimer.h"
 
@@ -81,12 +81,12 @@ void EnemyBullet::OnCollisionEnter(Collider* other)
 void EnemyBullet::Attack(const WorldTransform& transform)
 {
 	// 回転と座標を取得
-	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform.rotation_);
+	Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform.rotation_);
 	transform_.rotation_ = transform.rotation_;
-	transform_.translation_ = transform.translation_ + Vector3::ExprUnitY;
+	transform_.translation_ = transform.translation_ + NumaEngine::Vector3::ExprUnitY;
 
 	// 速度(向き)を取得
-	velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix);
+	velocity_ = NumaEngine::Vector3::ExprUnitZ.Transform(rotateMatrix);
 
 	activeFrame_ = 0.0f; 
 	isActive_ = true;
@@ -120,3 +120,4 @@ const float EnemyBullet::GetTypeBulletSpeed()
 	}
 	return 0.0f;
 }
+

@@ -1,4 +1,4 @@
-#include "RangedEliteEnemy.h"
+﻿#include "RangedEliteEnemy.h"
 
 #include "Objects/Enemy/AdjustItem/EnemyAdjustItem.h"
 #include "Objects/Enemy/State/EnemyMoveState.h"
@@ -52,7 +52,7 @@ void RangedEliteEnemy::Dead()
 	BaseEnemy::Dead();
 }
 
-void RangedEliteEnemy::Reset(const Vector3& position)
+void RangedEliteEnemy::Reset(const NumaEngine::Vector3& position)
 {
 	// 基底クラスのリセット処理
 	BaseEnemy::Reset(position);
@@ -62,8 +62,9 @@ void RangedEliteEnemy::Reset(const Vector3& position)
 	maxHp_ = data.maxHp;
 	currentHp_ = maxHp_;
 	// Animationの再生を初期化
-	transform_.scale_ = Vector3::ExprUnitXYZ * data.modelScale;
+	transform_.scale_ = NumaEngine::Vector3::ExprUnitXYZ * data.modelScale;
 	Animation::ForcePlayByName("Run");
 	// ステートを初期化
 	ChangeState(std::make_unique<EnemyMoveState>(this));
 }
+

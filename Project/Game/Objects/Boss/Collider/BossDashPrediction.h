@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Collider.h"
 #include "PrimitiveDrawr.h"
@@ -24,8 +24,8 @@ public:
 	/// セッター
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetBossPosition(const Vector3& position) { bossPosition_ = position; }
-	void SetBossRotate(const Quaternion& rotate) { bossRotate_ = rotate; }
+    void SetBossPosition(const NumaEngine::Vector3& position) { bossPosition_ = position; }
+	void SetBossRotate(const NumaEngine::Quaternion& rotate) { bossRotate_ = rotate; }
 
 private:
 
@@ -43,18 +43,20 @@ private:
 public:
 
 	// ボスの回転
-	Quaternion bossRotate_ = {};
+    NumaEngine::Quaternion bossRotate_ = {};
 	// ボスの座標
-	Vector3 bossPosition_ = {};
+    NumaEngine::Vector3 bossPosition_ = {};
 
 	float scaleX_ = 0.0f;
 
 	float hitDistance_ = 100.0f;
 	float newHitDistance_ = 0.0f;
-	Vector3 hitPosition_ = {};
-	Vector3 newHitPosition_ = {};
+    NumaEngine::Vector3 hitPosition_ = {};
+	NumaEngine::Vector3 newHitPosition_ = {};
 	bool isHit_ = false;
 	float time_ = 0.0f;
 
 };
+
+
 

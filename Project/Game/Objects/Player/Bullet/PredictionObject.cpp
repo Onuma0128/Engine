@@ -1,4 +1,4 @@
-#include "PredictionObject.h"
+﻿#include "PredictionObject.h"
 
 #include "objects/player/Player.h"
 
@@ -13,11 +13,12 @@ void PredictionObject::Init()
 	transform_.scale_ = { 0.1f,0.1f,0.1f };
 }
 
-void PredictionObject::Update(const Vector3& offset)
+void PredictionObject::Update(const NumaEngine::Vector3& offset)
 {
-	Matrix4x4 rotateMat = Quaternion::MakeRotateMatrix(player_->GetShot()->GetRightStickQua());
-	Vector3 position = offset.Transform(rotateMat);
+	Matrix4x4 rotateMat = NumaEngine::Quaternion::MakeRotateMatrix(player_->GetShot()->GetRightStickQua());
+	NumaEngine::Vector3 position = offset.Transform(rotateMat);
 	transform_.translation_ = player_->GetTransform().translation_ + position;
 
 	Object3d::Update();
 }
+

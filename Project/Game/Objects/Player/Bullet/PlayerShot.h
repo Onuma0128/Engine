@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <vector>
 #include <array>
@@ -65,13 +65,13 @@ public:
 	/// 弾を撃つ方向の回転を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Quaternion& GetRightStickQua()const { return rightStickQuaternion_; }
+	const NumaEngine::Quaternion& GetRightStickQua()const { return rightStickQuaternion_; }
 
 	/// <summary>
 	/// 弾を撃つ方向の回転を設定する
 	/// </summary>
 	/// <param name="q"></param>
-	void SetRightStickQua(const Quaternion& q) { rightStickQuaternion_ = q; }
+	void SetRightStickQua(const NumaEngine::Quaternion& q) { rightStickQuaternion_ = q; }
 
 	/// <summary>
 	/// Rayが当たったかどうかを取得する
@@ -149,14 +149,14 @@ private:
 
 	// Rayのスプライト
 	std::unique_ptr<PlayerRayReticle> rayReticle_ = nullptr;
-	Vector3 rayDirection_ = Vector3::ExprUnitZ;
+    NumaEngine::Vector3 rayDirection_ = NumaEngine::Vector3::ExprUnitZ;
 	// Rayが当たったかどうか
 	bool isRayHit_ = false;
 	// Rayが当たった座標
 	Collider* rayHitCollider_ = nullptr;
 
 	// 弾を撃つ方向の回転
-	Quaternion rightStickQuaternion_{};
+    NumaEngine::Quaternion rightStickQuaternion_{};
 
 	uint32_t kNockdownCount_ = 0;
 	uint32_t kChargeCount_ = 0;
@@ -165,4 +165,6 @@ private:
 	uint32_t kHitRate_ = 0;
 
 };
+
+
 

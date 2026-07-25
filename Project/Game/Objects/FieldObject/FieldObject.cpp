@@ -1,4 +1,4 @@
-#include "FieldObject.h"
+﻿#include "FieldObject.h"
 
 #include <numbers>
 
@@ -15,7 +15,7 @@ void FieldObject::Init(SceneObject object)
 	Object3d::SetSceneRenderer();
 	if (object.tag != "ground") {
 		Object3d::GetMaterial().outlineMask = true;
-		Object3d::GetMaterial().outlineColor = Vector3::ExprZero;
+		Object3d::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 	} else {
 		isGround_ = true;
 	}
@@ -52,7 +52,7 @@ void FieldObject::Update()
 
 	// カメラとの距離が近ければアルファを下げる
 	if (gameCamera_ && !isGround_) {
-		float distance = Vector3::Distance(gameCamera_->GetCamera()->GetTranslation(), transform_.translation_);
+		float distance = NumaEngine::Vector3::Distance(gameCamera_->GetCamera()->GetTranslation(), transform_.translation_);
 		if (distance < items_->GetMainData().cameraDistance) {
 			ModelInstanceRenderer::GetInstance()->AddLateDrawModelName(Object3d::GetModel()->GetModelData().filePath);
 			Object3d::GetMaterial().outlineMask = false;
@@ -62,7 +62,7 @@ void FieldObject::Update()
 			alpha_ += DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
 		}
 		alpha_ = std::clamp(alpha_, 0.0f, 1.0f);
-		Object3d::SetColor(Vector4{ 1.0f,1.0f,1.0f,alpha_ });
+		Object3d::SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,alpha_ });
 	}
 
 	Collider::rotate_ = transform_.rotation_;
@@ -80,29 +80,29 @@ void FieldObject::OnCollisionEnter(Collider* other)
 		shake_ = items_->GetMainData().shakeOffset;
 		if (Collider::colliderName_ == "DeadTree" || Collider::colliderName_ == "fence") {
 			// 弾が飛んできた方向を取得
-			Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
-			Vector3 velocity = Vector3::ExprUnitZ.Transform(rotate);
+			Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(other->GetRotate());
+			NumaEngine::Vector3 velocity = NumaEngine::Vector3::ExprUnitZ.Transform(rotate);
 			// エフェクトを描画
 			WorldTransform transform;
-			transform.rotation_ = Quaternion::IdentityQuaternion();
+			transform.rotation_ = NumaEngine::Quaternion::IdentityQuaternion();
 			transform.translation_ = other->GetCenterPosition() + (velocity * 0.2f);
 			effect_->OnceHitEffect(transform);
 			if (Collider::colliderName_ == "DeadTree" && !isBreak_) {
 				// 木の回転を計算する
 				const float angle = std::numbers::pi_v<float> / 2.1f;
-				breakRotate_ = other->GetRotate() * Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, angle);
+				breakRotate_ = other->GetRotate() * NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitX, angle);
 				prevRotate_ = other->GetRotate();
 				transform_.rotation_ = other->GetRotate();
 				isBreak_ = true;
 				// マップの衝突判定を更新する
-				float prevRotate = Quaternion::ToEuler(Collider::GetRotate()).y;
-				float currentRotate = Quaternion::ToEuler(other->GetRotate()).y;
+				float prevRotate = NumaEngine::Quaternion::ToEuler(Collider::GetRotate()).y;
+				float currentRotate = NumaEngine::Quaternion::ToEuler(other->GetRotate()).y;
 				OBB_2D prevOBB{
 					.center = { Collider::centerPosition_.x,Collider::centerPosition_.z },
 					.rotate = prevRotate,
 					.size = { Collider::size_.x,Collider::size_.z }
 				};
-				Vector3 offset = Collider::offsetPosition_.Transform(Quaternion::MakeRotateMatrix(breakRotate_));
+				NumaEngine::Vector3 offset = Collider::offsetPosition_.Transform(NumaEngine::Quaternion::MakeRotateMatrix(breakRotate_));
 				OBB_2D currentOBB{
 					.center = { Collider::centerPosition_.x + offset.x,Collider::centerPosition_.z + offset.z },
 					.rotate = currentRotate,
@@ -133,11 +133,11 @@ float FieldObject::RandomRange(float value)
 	return value;
 }
 
-void FieldObject::UpdateShake(Vector3& shake)
+void FieldObject::UpdateShake(NumaEngine::Vector3& shake)
 {
 	if (shake.Length() <= 0.01f) { return; }
 
-	Vector3 offset{
+	NumaEngine::Vector3 offset{
 		RandomRange(shake.x),
 		0.0f,
 		RandomRange(shake.z),
@@ -154,10 +154,11 @@ void FieldObject::UpdateBreak()
 		breakTimer_ += DeltaTimer::GetDeltaTime() / data.breakTimer;
 		breakTimer_ = std::clamp(breakTimer_, 0.0f, 1.0f);
 		float t = Easing::EaseOutBounce(breakTimer_);
-		transform_.rotation_ = Quaternion::Slerp(prevRotate_, breakRotate_,t);
+		transform_.rotation_ = NumaEngine::Quaternion::Slerp(prevRotate_, breakRotate_,t);
 		centerPosition_.y = breakTimer_ * 0.75f;
 		if (t > data.breakEmitTimer) {
 			effect_->OnceBreakEffect(transform_);
 		}
 	}
 }
+

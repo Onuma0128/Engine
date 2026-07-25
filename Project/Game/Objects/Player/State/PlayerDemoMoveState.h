@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include <random>
@@ -62,13 +62,15 @@ private:
 	std::random_device seedGenerator_;
 
 	// プレイヤーが動くポイント
-	std::vector<Vector3> checkPoints_;
+	std::vector<NumaEngine::Vector3> checkPoints_;
 
 	// 今向かっているポイント
-	Vector3 nowCheckPoint_;
+	NumaEngine::Vector3 nowCheckPoint_;
 
 	// ターゲットした時のコライダー
 	Collider* targetCollider_ = nullptr;
 
 };
+
+
 

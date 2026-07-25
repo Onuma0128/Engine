@@ -1,4 +1,4 @@
-#include "EnemyShield.h"
+﻿#include "EnemyShield.h"
 
 #include "DeltaTimer.h"
 
@@ -20,7 +20,7 @@ void EnemyShield::Init(ColliderType type, const std::string& name)
 	Object3d::SetSceneRenderer();
 	Object3d::GetMaterial().outlineMask = true;
 	Object3d::GetMaterial().outlineSceneColor = true;
-	Object3d::GetMaterial().outlineColor = Vector3::ExprZero;
+	Object3d::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 
 	Collider::AddCollider();
 	Collider::myType_ = type;
@@ -30,7 +30,7 @@ void EnemyShield::Init(ColliderType type, const std::string& name)
 	};
 	Collider::DrawCollider();
 
-	rotateY_ = Quaternion::IdentityQuaternion();
+	rotateY_ = NumaEngine::Quaternion::IdentityQuaternion();
 	rotateMatrix_ = Matrix4x4::Identity();
 }
 
@@ -38,12 +38,12 @@ void EnemyShield::Update()
 {
 	ShieldBearerData data = enemy_->GetItem()->GetShieldBearerData();
 
-	Vector3 direction = (enemy_->GetPlayer()->GetTransform().translation_ - enemy_->GetTransform().translation_);
+	NumaEngine::Vector3 direction = (enemy_->GetPlayer()->GetTransform().translation_ - enemy_->GetTransform().translation_);
 	direction.y = 0.0f;
 	if (direction.Length() != 0.0f) {
 		direction = direction.Normalize();
-		rotateY_ = Quaternion::DirectionToQuaternion(rotateY_, direction, data.lerpSpeed * DeltaTimer::GetDeltaTime());
-		rotateMatrix_ = Quaternion::MakeRotateMatrix(rotateY_);
+		rotateY_ = NumaEngine::Quaternion::DirectionToQuaternion(rotateY_, direction, data.lerpSpeed * DeltaTimer::GetDeltaTime());
+		rotateMatrix_ = NumaEngine::Quaternion::MakeRotateMatrix(rotateY_);
 	}
 	Collider::size_ = data.shieldColliderSize;
 	Collider::rotate_ = rotateY_;
@@ -78,3 +78,4 @@ bool EnemyShield::GetIsActive()
 {
 	return Collider::isActive_;
 }
+

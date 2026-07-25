@@ -1,4 +1,4 @@
-#include "ParticleManager.h"
+﻿#include "ParticleManager.h"
 
 #include <numbers>
 #include "imgui.h"
@@ -215,7 +215,7 @@ void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitt
     for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
         group.instancingData[i].WVP = Matrix4x4::Identity();
         group.instancingData[i].World = Matrix4x4::Identity();
-        group.instancingData[i].color = Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
+        group.instancingData[i].color = NumaEngine::Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
     }
     group.emitters.push_back(emitter);
     emitter->SetId(group.nextEmitterId++);
@@ -402,7 +402,7 @@ void ParticleManager::CreateMatrialResource(ParticleGroup& group)
     // 書き込むためのアドレスを取得
     group.materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&group.materialData_));
     // 今回は白を書き込んでいく
-    group.materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    group.materialData_->color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
     group.materialData_->enableLighting = false;
     group.materialData_->uvTransform = Matrix4x4::Identity();
 }
@@ -428,7 +428,7 @@ void ParticleManager::EnsureInstanceCapacity(ParticleGroup& group, uint32_t requ
     for (uint32_t i = 0; i < newCap; ++i) {
         group.instancingData[i].WVP = Matrix4x4::Identity();
         group.instancingData[i].World = Matrix4x4::Identity();
-        group.instancingData[i].color = Vector4{ 1,1,1,1 };
+        group.instancingData[i].color = NumaEngine::Vector4{ 1,1,1,1 };
     }
 
     group.maxInstance = newCap;
@@ -441,4 +441,5 @@ void ParticleManager::EnsureInstanceCapacity(ParticleGroup& group, uint32_t requ
         sizeof(ParticleForGPU)
     );
 }
+
 

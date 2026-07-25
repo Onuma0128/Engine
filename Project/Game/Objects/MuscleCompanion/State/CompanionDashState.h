@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Objects/MuscleCompanion/State/CompanionBaseState.h"
 
@@ -51,14 +51,17 @@ private:
 
 	float searchTimer_ = 0.0f;
 
-	// 攻撃の速度ベクトル
-	Vector3 velocity_ = Vector3::ExprZero;
+    // 攻撃の速度ベクトル
+	NumaEngine::Vector3 velocity_ = NumaEngine::Vector3::ExprZero;
 
 
-	Quaternion yRotation_ = Quaternion::IdentityQuaternion();
+	NumaEngine::Quaternion yRotation_ = NumaEngine::Quaternion::IdentityQuaternion();
 
 
 	Collider* targetCollider_ = nullptr;
 
 };
+
+
+
 

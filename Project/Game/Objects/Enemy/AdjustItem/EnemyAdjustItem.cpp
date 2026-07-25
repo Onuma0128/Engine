@@ -1,4 +1,4 @@
-#include "EnemyAdjustItem.h"
+﻿#include "EnemyAdjustItem.h"
 
 #include "imgui.h"
 
@@ -12,10 +12,10 @@ void EnemyAdjustItem::LoadItems()
 		mainJson_.Set("maxSpawn", 0);
 		mainJson_.Set("maxSpawnCount", 0);
 		mainJson_.Set("nextWaveKillCount", 0);
-		mainJson_.Set("startPosition", Vector3{});
+		mainJson_.Set("startPosition", NumaEngine::Vector3{});
 		mainJson_.Set("colliderSize", 0.0f);
-		mainJson_.Set("colliderOffset", Vector3{});
-		mainJson_.Set("rayOffset", Vector3{});
+		mainJson_.Set("colliderOffset", NumaEngine::Vector3{});
+		mainJson_.Set("rayOffset", NumaEngine::Vector3{});
 		mainJson_.Set("margin", 1.0f);
 		mainJson_.Set("searchUpdateTime", 1.0f);
 		mainJson_.Set("hitJumpVelocityY", 1.0f);
@@ -59,7 +59,7 @@ void EnemyAdjustItem::LoadItems()
 	if (!meleeJson_.Load()) {
 		SetJsonParameter(meleeJson_);
 		meleeJson_.Set("colliderSize", 0.0f);
-		meleeJson_.Set("colliderOffset", Vector3{});
+		meleeJson_.Set("colliderOffset", NumaEngine::Vector3{});
 	} else {
 		meleeData_.tempData = GetTemplateData(meleeJson_);
 		meleeData_.colliderSize = meleeJson_.Get("colliderSize", meleeData_.colliderSize);
@@ -72,10 +72,10 @@ void EnemyAdjustItem::LoadItems()
 	if (!rangedJson_.Load()) {
 		SetJsonParameter(rangedJson_);
 		rangedJson_.Set("bulletSpeed", 0.0f);
-		rangedJson_.Set("colliderSize", Vector3{});
-		rangedJson_.Set("colliderOffset", Vector3{});
-		rangedJson_.Set("planeSize", Vector3{});
-		rangedJson_.Set("planeOffset", Vector3{});
+		rangedJson_.Set("colliderSize", NumaEngine::Vector3{});
+		rangedJson_.Set("colliderOffset", NumaEngine::Vector3{});
+		rangedJson_.Set("planeSize", NumaEngine::Vector3{});
+		rangedJson_.Set("planeOffset", NumaEngine::Vector3{});
 	} else {
 		rangedData_.tempData = GetTemplateData(rangedJson_);
 		rangedData_.bulletSpeed = rangedJson_.Get("bulletSpeed", rangedData_.bulletSpeed);
@@ -91,12 +91,12 @@ void EnemyAdjustItem::LoadItems()
 	if (!shieldBearerJson_.Load()) {
 		SetJsonParameter(shieldBearerJson_);
 		shieldBearerJson_.Set("attackColliderSize", 0.0f);
-		shieldBearerJson_.Set("attackColliderOffset", Vector3{});
+		shieldBearerJson_.Set("attackColliderOffset", NumaEngine::Vector3{});
 		shieldBearerJson_.Set("lerpSpeed", 0.0f);
-		shieldBearerJson_.Set("shieldSize", Vector3{});
-		shieldBearerJson_.Set("shieldOffset", Vector3{});
-		shieldBearerJson_.Set("shieldColliderSize", Vector3{});
-		shieldBearerJson_.Set("shieldColliderOffset", Vector3{});
+		shieldBearerJson_.Set("shieldSize", NumaEngine::Vector3{});
+		shieldBearerJson_.Set("shieldOffset", NumaEngine::Vector3{});
+		shieldBearerJson_.Set("shieldColliderSize", NumaEngine::Vector3{});
+		shieldBearerJson_.Set("shieldColliderOffset", NumaEngine::Vector3{});
 	} else {
 		shieldBearerData_.tempData = GetTemplateData(shieldBearerJson_);
 		shieldBearerData_.attackColliderSize = shieldBearerJson_.Get("attackColliderSize", shieldBearerData_.attackColliderSize);
@@ -116,8 +116,8 @@ void EnemyAdjustItem::LoadItems()
 		rangedEliteJson_.Set("bulletSpeed", 0.0f);
 		rangedEliteJson_.Set("bulletRadSpace", 0.0f);
 		for (size_t i = 0; i < rangedEliteData_.planeSize.size(); ++i) {
-			rangedEliteJson_.Set("planeSize" + std::to_string(i), Vector3{});
-			rangedEliteJson_.Set("planeOffset" + std::to_string(i), Vector3{});
+			rangedEliteJson_.Set("planeSize" + std::to_string(i), NumaEngine::Vector3{});
+			rangedEliteJson_.Set("planeOffset" + std::to_string(i), NumaEngine::Vector3{});
 		}
 	} else {
 		rangedEliteData_.tempData = GetTemplateData(rangedEliteJson_);
@@ -368,3 +368,4 @@ void EnemyAdjustItem::SetTemplateData(JsonFunction& json, EnemyTemplate& tempDat
 	json.Set("attackRecoveryTime", tempData.attackRecoveryTime);
 	json.Set("attackCoolTime", tempData.attackCoolTime);
 }
+

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
@@ -47,12 +47,12 @@ public:
 
 public:
 
-	// ローカルスケール
-	Vector3 scale_ = { 1, 1, 1 };
+    // ローカルスケール
+	NumaEngine::Vector3 scale_ = { 1, 1, 1 };
 	// ローカル回転角
-	Quaternion rotation_ = Quaternion::IdentityQuaternion();
+	NumaEngine::Quaternion rotation_ = NumaEngine::Quaternion::IdentityQuaternion();
 	// ローカル座標
-	Vector3 translation_ = { 0, 0, 0 };
+	NumaEngine::Vector3 translation_ = { 0, 0, 0 };
 	// ローカル → ワールド変換行列
 	Matrix4x4 matWorld_ = Matrix4x4::Identity();
 	// 親となるワールド変換へのポインタ
@@ -64,3 +64,5 @@ public:
 private:
 
 };
+
+

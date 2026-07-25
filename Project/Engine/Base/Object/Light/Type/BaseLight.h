@@ -1,9 +1,10 @@
-#pragma once
+﻿#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
 
 #include "Vector3.h"
+#include "Matrix4x4.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -30,8 +31,8 @@ public:
 
 	// ライト用の行列作成
 	virtual void BuildMatricesCoverAll(
-		const Vector3& sceneMin,
-		const Vector3& sceneMax,
+		const NumaEngine::Vector3& sceneMin,
+		const NumaEngine::Vector3& sceneMax,
 		uint32_t shadowW, uint32_t shadowH) = 0;
 
 	// バッファリソースの取得
@@ -59,3 +60,4 @@ protected:
 	LightMatrix lightMatrixs_{};
 
 };
+

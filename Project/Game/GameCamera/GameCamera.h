@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 
@@ -30,9 +30,9 @@ public:
 	/// カメラの更新処理
 	/// </summary>
 	void Update();
-	void mainUpdate(const Vector3& shakeOffset);
-	void SabUpdate(const Vector3& shakeOffset);
-	void BossUpdate(const Vector3& shakeOffset);
+    void mainUpdate(const NumaEngine::Vector3& shakeOffset);
+	void SabUpdate(const NumaEngine::Vector3& shakeOffset);
+	void BossUpdate(const NumaEngine::Vector3& shakeOffset);
 
 	/// <summary>
 	/// カメラシェイクさせるセッター
@@ -77,13 +77,13 @@ private:
 	std::shared_ptr<Camera> sabCamera_ = nullptr;
 	std::shared_ptr<Camera> bossCamera_ = nullptr;
 
-	Vector3 mainCameraAddPos_ = {};
+    NumaEngine::Vector3 mainCameraAddPos_ = {};
 	float shakeStrength_ = 0.0f;
 	float shakeDecay_ = 0.9f;
 
 	// サブカメラのアニメーション用
 	struct SabCameraAnimation {
-		Vector3 sabCameraOffset = {};
+        NumaEngine::Vector3 sabCameraOffset = {};
 		bool isRotate = false;
 		float rotateTimer = 0.0f;
 		float rotateSpeed = 1.0f;
@@ -103,7 +103,7 @@ private:
 	// ボスカメラのタイム
 	float bossCameraTime_ = -1.0f;
 	// 前のカメラ座標
-	Vector3 preBossCameraPosition_{};
+    NumaEngine::Vector3 preBossCameraPosition_{};
 
 	// クリア時のカメラタイマーとカメラの動きが終わったかのフラグ
 	float clearCameraTime_ = -1.0f;
@@ -112,3 +112,5 @@ private:
 	size_t clearDataIndex_ = 0;
 
 };
+
+

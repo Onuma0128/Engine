@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "JsonFunction.h"
 
@@ -6,15 +6,15 @@
 struct GameUiData {
 
 	float killNumberUiInterval;			// キル数の間隔
-	Vector2 killNumberUiSize;			// キル数のサイズ
-	Vector2 killNumberUiPos;			// キル数の座標
+  NumaEngine::Vector2 killNumberUiSize;			// キル数のサイズ
+	NumaEngine::Vector2 killNumberUiPos;			// キル数の座標
 
 	int maxKillCount;
 	float maxKillNumberUiInterval;		// キル数の間隔
-	Vector2 maxKillNumberUiSize;		// キル数のサイズ
-	Vector2 maxKillNumberUiPos;			// キル数の座標
+  NumaEngine::Vector2 maxKillNumberUiSize;		// キル数のサイズ
+	NumaEngine::Vector2 maxKillNumberUiPos;			// キル数の座標
 
-	Vector2 bossHpBarPos;				// ボスのHPバーの座標
+   NumaEngine::Vector2 bossHpBarPos;				// ボスのHPバーの座標
 
 	float startInTime;					// カメラ切り替え前のフェードイン
 	float startOutTime;					// カメラ切り替え後のフェードアウト
@@ -60,4 +60,6 @@ private:
 	GameUiData data_;
 
 };
+
+
 

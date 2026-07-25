@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 
@@ -20,7 +20,7 @@ class MuscleCountEffect
 	/// 更新
 	/// </summary>
 	/// <param name="position"></param>
-	void Update(const Vector3& position);
+	void Update(const NumaEngine::Vector3& position);
 
 	/// <summary>
 	/// 描画
@@ -45,4 +45,6 @@ private:
 
 	float timer_ = 0.0f;
 };
+
+
 

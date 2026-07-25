@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "BossBaseState.h"
 
@@ -66,8 +66,11 @@ private:
 	// 攻撃ステート
 	DashAttackState dashAttackState_ = DashAttackState::StartupTime;
 
-	// 速度
-	Vector3 velocity_ = Vector3::ExprUnitZ;
+    // 速度
+	NumaEngine::Vector3 velocity_ = NumaEngine::Vector3::ExprUnitZ;
 
 };
+
+
+
 

@@ -1,4 +1,4 @@
-#include "DrawGrid.h"
+﻿#include "DrawGrid.h"
 
 #include <array>
 
@@ -44,7 +44,7 @@ void DrawGrid::HitGridInit()
 	// 当たっているグリッドの初期化
 	hitGrid_ = std::make_unique<Line3d>();
 	hitGrid_->Initialize(hitGridPositions_);
-	hitGrid_->SetColor(Vector3::ExprUnitX);
+	hitGrid_->SetColor(NumaEngine::Vector3::ExprUnitX);
 #endif // ENABLE_EDITOR
 }
 
@@ -81,7 +81,7 @@ void DrawGrid::RebuildHitGridPositions()
 
 	const float kPosY = 0.15f;
 	for (const auto& aabb : hitAABBs_) {
-		std::array<Vector3, 4> positions;
+		std::array<NumaEngine::Vector3, 4> positions;
 		positions[0] = { aabb.min.x, kPosY, aabb.min.y };
 		positions[1] = { aabb.max.x, kPosY, aabb.min.y };
 		positions[2] = { aabb.max.x, kPosY, aabb.max.y };
@@ -98,3 +98,4 @@ void DrawGrid::RebuildHitGridPositions()
 		hitGrid_->SetPositions(hitGridPositions_);
 	}
 }
+

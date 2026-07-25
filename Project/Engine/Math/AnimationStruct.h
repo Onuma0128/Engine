@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <map>
 #include <vector>
@@ -26,8 +26,8 @@ struct KeyFrame {
 	tValue value;		// キーフレームの値
 	float time;			// キーフレームの時刻
 };
-using KeyFrameVector3 = KeyFrame<Vector3>;
-using KeyFrameQuaternion = KeyFrame<Quaternion>;
+using KeyFrameVector3 = KeyFrame<NumaEngine::Vector3>;
+using KeyFrameQuaternion = KeyFrame<NumaEngine::Quaternion>;
 
 /// <summary>
 /// NodeのAnimation用構造体
@@ -41,9 +41,9 @@ struct AnimationCurve {
 /// ノードのアニメーションを表す構造体
 /// </summary>
 struct NodeAnimation {
-	AnimationCurve<Vector3> scale;
-	AnimationCurve<Quaternion> rotate;
-	AnimationCurve<Vector3> translate;
+    AnimationCurve<NumaEngine::Vector3> scale;
+	AnimationCurve<NumaEngine::Quaternion> rotate;
+	AnimationCurve<NumaEngine::Vector3> translate;
 };
 
 /// <summary>
@@ -62,3 +62,5 @@ struct WellForGPU {
 	Matrix4x4 skeletonSpaceMatrix;
 	Matrix4x4 skeletonSpaceInverseTransposeMatrix;
 };
+
+

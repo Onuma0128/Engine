@@ -1,4 +1,4 @@
-#include "PlayerBullet.h"
+﻿#include "PlayerBullet.h"
 
 #include "DeltaTimer.h"
 #include "Input.h"
@@ -69,7 +69,7 @@ void PlayerBullet::Update()
 	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed_;
 
 	effect_->OnceBulletTrailEffect(transform_);
-	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform_.rotation_);
+	Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation_);
 	Collider::size_ = transform_.scale_ + data.colliderSize;
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_ + data.colliderPosition.Transform(rotateMatrix);
@@ -114,13 +114,13 @@ void PlayerBullet::Reload(const WorldTransform& transform, bool isEmit)
 void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 {
 	// 回転と座標を取得
-	Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(transform.rotation_);
+	Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform.rotation_);
 	transform_.rotation_ = transform.rotation_;
 	transform_.translation_ = transform.translation_ + item_->GetBulletData().position.Transform(rotateMatrix);
 
 	// 速度(向き)を取得
 	speed_ = speed;
-	velocity_ = Vector3::ExprUnitZ.Transform(rotateMatrix);
+	velocity_ = NumaEngine::Vector3::ExprUnitZ.Transform(rotateMatrix);
 
 	activeTime_ = 0.0f;
 	isReload_ = false;
@@ -144,3 +144,4 @@ void PlayerBullet::SetOnDeactivateCallback(const std::function<void()>& callback
 {
 	onDeactivatedCallback_ = callback;
 }
+

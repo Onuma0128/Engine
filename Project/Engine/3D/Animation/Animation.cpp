@@ -1,4 +1,4 @@
-#include "Animation.h"
+﻿#include "Animation.h"
 
 #include <execution>
 #include <numeric>
@@ -131,7 +131,7 @@ const std::vector<WellForGPU>& Animation::GetWellForGPU()const
 
 void Animation::MakeMaterialData()
 {
-	materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	materialData_.color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData_.enableDraw = true;
 	materialData_.enableLighting = true;
 	materialData_.outlineMask = false;
@@ -141,3 +141,4 @@ void Animation::MakeMaterialData()
 	materialData_.environmentCoefficient = 0;
 	materialData_.shadowMap = true;
 }
+

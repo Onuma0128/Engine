@@ -1,4 +1,4 @@
-#include "GamePlayScene.h"
+﻿#include "GamePlayScene.h"
 
 #include "imgui.h"
 #include "Input.h"
@@ -20,7 +20,7 @@ void GamePlayScene::Initialize()
 	// スカイボックスの初期化
 	skyBox_ = std::make_unique<PrimitiveDrawr>();
 	skyBox_->TypeInit(PrimitiveType::kSkybox);
-	skyBox_->GetTransform().scale = Vector3::ExprUnitXYZ * 1024.0f;
+	skyBox_->GetTransform().scale = NumaEngine::Vector3::ExprUnitXYZ * 1024.0f;
 	skyBox_->SetSceneRenderer();
 	skyBox_->GetRenderOptions().offscreen = true;
 

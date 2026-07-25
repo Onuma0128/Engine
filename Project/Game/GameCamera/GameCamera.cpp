@@ -1,4 +1,4 @@
-#include "GameCamera.h"
+﻿#include "GameCamera.h"
 
 #include <numbers>
 #include "imgui.h"
@@ -25,7 +25,7 @@ void GameCamera::Init()
 	mainCamera_ = std::make_shared<Camera>();
 	mainCamera_->Initialize();
 	mainCamera_->SetRotation(data.mainRotate);
-	Vector3 translation = data.mainPosition;
+    NumaEngine::Vector3 translation = data.mainPosition;
 	mainCamera_->SetTranslation(translation + player_->GetTransform().translation_);
 	CameraManager::GetInstance()->SetCamera(mainCamera_);
 	CameraManager::GetInstance()->SetActiveCamera(0);
@@ -60,7 +60,7 @@ void GameCamera::Update()
 	}
 
 	// シェイクオフセット（ランダムな微小ノイズ）
-    Vector3 shakeOffset{};
+    NumaEngine::Vector3 shakeOffset{};
     if (shakeStrength_ > 0.01f) {
         shakeOffset = {
             (static_cast<float>(rand()) / RAND_MAX - 0.5f) * 2.0f * shakeStrength_,
@@ -82,7 +82,7 @@ void GameCamera::Update()
 	playerIsAlive_ = player_->GetIsAlive();
 }
 
-void GameCamera::mainUpdate(const Vector3& shakeOffset)
+void GameCamera::mainUpdate(const NumaEngine::Vector3& shakeOffset)
 {
 	// データを取得する
 	const auto& data = items_->GetCameraData();
@@ -137,48 +137,48 @@ void GameCamera::mainUpdate(const Vector3& shakeOffset)
 				++clearDataIndex_;
 			}
 
-			Vector3 centerPos = companionManager_->CompanionCenterPosition();
+            NumaEngine::Vector3 centerPos = companionManager_->CompanionCenterPosition();
 
 			// 回転の補間
-			Vector3 clearRotate = Vector3::CatmullRomInterpolation(
+            NumaEngine::Vector3 clearRotate = NumaEngine::Vector3::CatmullRomInterpolation(
 				p0.rotate, p1.rotate, p2.rotate, p3.rotate, t
 			);
 			// 位置の補間
-			Vector3 localPos = Vector3::CatmullRomInterpolation(
+            NumaEngine::Vector3 localPos = NumaEngine::Vector3::CatmullRomInterpolation(
 				p0.position, p1.position, p2.position, p3.position, t
 			);
-			Vector3 clearPos = localPos + centerPos;
-			Vector3 prePos = mainCamera_->GetTranslation();
+			NumaEngine::Vector3 clearPos = localPos + centerPos;
+			NumaEngine::Vector3 prePos = mainCamera_->GetTranslation();
 			mainCamera_->SetRotation(clearRotate);
-			mainCamera_->SetTranslation(Vector3::Lerp(prePos, clearPos + shakeOffset, 0.1f));
+			mainCamera_->SetTranslation(NumaEngine::Vector3::Lerp(prePos, clearPos + shakeOffset, 0.1f));
 		} else {
 			isClearCameraEnd_ = true;
 		}
 		return;
 	}
 	// オフセットの回転角
-	const Vector3 offsetRotation = data.mainRotate;
+    const NumaEngine::Vector3 offsetRotation = data.mainRotate;
 	// 回転を更新
 	mainCamera_->SetRotation(offsetRotation);
 	// カメラの回転に合わせた座標を更新
 	Input* input = Input::GetInstance();
-	Vector2 R_StickDire = { input->GetGamepadRightStickX(),input->GetGamepadRightStickY() };
-	Vector3 translation = data.mainPosition + Vector3{ R_StickDire.x,0.0f,R_StickDire.y };
-	Vector3 previous = mainCamera_->GetTranslation();
-	Vector3 current = player_->GetTransform().translation_ + translation + mainCameraAddPos_;
+    NumaEngine::Vector2 R_StickDire = { input->GetGamepadRightStickX(),input->GetGamepadRightStickY() };
+    NumaEngine::Vector3 translation = data.mainPosition + NumaEngine::Vector3{ R_StickDire.x,0.0f,R_StickDire.y };
+	NumaEngine::Vector3 previous = mainCamera_->GetTranslation();
+	NumaEngine::Vector3 current = player_->GetTransform().translation_ + translation + mainCameraAddPos_;
 
-	previous = Vector3::Lerp(previous, current + shakeOffset, 0.1f);
+	previous = NumaEngine::Vector3::Lerp(previous, current + shakeOffset, 0.1f);
 	mainCamera_->SetTranslation(previous);
 }
 
-void GameCamera::SabUpdate(const Vector3& shakeOffset)
+void GameCamera::SabUpdate(const NumaEngine::Vector3& shakeOffset)
 {
 	// データを取得する
 	const auto& data = items_->GetCameraData();
 
 	// プレイヤーの位置と回転
-	Vector3 playerPos = player_->GetTransform().translation_;
-	Quaternion playerRot = Quaternion::IdentityQuaternion();
+    NumaEngine::Vector3 playerPos = player_->GetTransform().translation_;
+	NumaEngine::Quaternion playerRot = NumaEngine::Quaternion::IdentityQuaternion();
 	sabAnima_.isRotate = data.isSabRotate;
 	sabAnima_.rotateSpeed = data.sabRotateSpeed;
 	sabAnima_.radius = data.sabRadius;
@@ -200,12 +200,12 @@ void GameCamera::SabUpdate(const Vector3& shakeOffset)
 	}
 
 	// プレイヤーの回転を適用したオフセット
-	Matrix4x4 rotMat = Quaternion::MakeRotateMatrix(playerRot);
-	Vector3 rotatedOffset = Vector3::TransformNormal(sabAnima_.sabCameraOffset, rotMat);
+    Matrix4x4 rotMat = NumaEngine::Quaternion::MakeRotateMatrix(playerRot);
+	NumaEngine::Vector3 rotatedOffset = NumaEngine::Vector3::TransformNormal(sabAnima_.sabCameraOffset, rotMat);
 
 	// カメラの位置は、プレイヤー位置 + 回転されたオフセット
-	Vector3 cameraPos = playerPos + rotatedOffset;
-	cameraPos = Vector3::Lerp(cameraPos, cameraPos + shakeOffset, 0.1f);
+    NumaEngine::Vector3 cameraPos = playerPos + rotatedOffset;
+	cameraPos = NumaEngine::Vector3::Lerp(cameraPos, cameraPos + shakeOffset, 0.1f);
 	sabCamera_->SetTranslation(cameraPos);
 
 	// プレイヤーを見つめる
@@ -213,7 +213,7 @@ void GameCamera::SabUpdate(const Vector3& shakeOffset)
 
 }
 
-void GameCamera::BossUpdate(const Vector3& shakeOffset)
+void GameCamera::BossUpdate(const NumaEngine::Vector3& shakeOffset)
 {
 	// データを取得
 	const auto& data = items_->GetCameraData();
@@ -245,11 +245,11 @@ void GameCamera::BossUpdate(const Vector3& shakeOffset)
 	{
 		float t = bossCameraTime_ / data.bossActiveTime;
 		t = Easing::EaseInQuint(std::clamp(t, 0.0f, 1.0f));
-		Vector3 rotation = Vector3::Lerp(data.bossStartRotate, data.bossEndRotate, t);
-		Vector3 translate = Vector3::Lerp(data.bossStartPosition, data.bossEndPosition, t);
-		Vector3 bossPos = { boss_->GetTransform().translation_ };
-		translate += Vector3{ bossPos.x,0.0f,bossPos.z };
-		translate = Vector3::Lerp(translate, translate + shakeOffset, 0.1f);
+        NumaEngine::Vector3 rotation = NumaEngine::Vector3::Lerp(data.bossStartRotate, data.bossEndRotate, t);
+		NumaEngine::Vector3 translate = NumaEngine::Vector3::Lerp(data.bossStartPosition, data.bossEndPosition, t);
+		NumaEngine::Vector3 bossPos = { boss_->GetTransform().translation_ };
+		translate += NumaEngine::Vector3{ bossPos.x,0.0f,bossPos.z };
+		translate = NumaEngine::Vector3::Lerp(translate, translate + shakeOffset, 0.1f);
 		// 回転と座標を更新
 		bossCamera_->SetRotation(rotation);
 		bossCamera_->SetTranslation(translate);
@@ -263,8 +263,8 @@ void GameCamera::BossUpdate(const Vector3& shakeOffset)
 		break;
 	case GameCamera::BossCameraState::Recover:
 	{
-		Vector3 translate = preBossCameraPosition_;
-		translate = Vector3::Lerp(translate, translate + shakeOffset, 0.1f);
+		NumaEngine::Vector3 translate = preBossCameraPosition_;
+		translate = NumaEngine::Vector3::Lerp(translate, translate + shakeOffset, 0.1f);
 		// 座標を更新
 		bossCamera_->SetTranslation(translate);
 
@@ -300,3 +300,5 @@ void GameCamera::BossCameraEnd()
 	bossCameraState_ = BossCameraState::End;
 	CameraManager::GetInstance()->SetActiveCamera(0);
 }
+
+

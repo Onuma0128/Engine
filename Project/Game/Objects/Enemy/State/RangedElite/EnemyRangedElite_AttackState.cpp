@@ -1,4 +1,4 @@
-#include "EnemyRangedElite_AttackState.h"
+﻿#include "EnemyRangedElite_AttackState.h"
 
 #include <memory>
 #include <numbers>
@@ -55,21 +55,21 @@ void EnemyRangedElite_AttackState::Update()
 		}
 	} else {
 		// 時間ギリギリまで追従する
-		Vector3 velocity = Vector3(enemy_->GetPlayer()->GetTransform().translation_ - enemy_->GetTransform().translation_);
+		NumaEngine::Vector3 velocity = NumaEngine::Vector3(enemy_->GetPlayer()->GetTransform().translation_ - enemy_->GetTransform().translation_);
 		velocity.y = 0.0f;
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 		enemy_->SetVelocity(velocity);
 
 		// 移動時の回転の処理
 		if (velocity.Length() != 0.0f) {
-			Vector3 foward = Vector3::ExprUnitZ;
-			Vector3 targetDir = Vector3{ -velocity.x,0.0f,velocity.z };
+			NumaEngine::Vector3 foward = NumaEngine::Vector3::ExprUnitZ;
+			NumaEngine::Vector3 targetDir = NumaEngine::Vector3{ -velocity.x,0.0f,velocity.z };
 
 			// velocityから回転を求める
 			Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
-			Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
-			Quaternion currentRotation = enemy_->GetTransform().rotation_;
-			Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, 0.5f);
+			NumaEngine::Quaternion targetRotation = NumaEngine::Quaternion::FormRotationMatrix(targetMatrix);
+			NumaEngine::Quaternion currentRotation = enemy_->GetTransform().rotation_;
+			NumaEngine::Quaternion result = NumaEngine::Quaternion::Slerp(currentRotation, targetRotation, 0.5f);
 
 			// 回転を適応
 			enemy_->SetTransformRotation(result);
@@ -92,7 +92,7 @@ void EnemyRangedElite_AttackState::Attack()
 	float pi = std::numbers::pi_v<float> / 4.0f;
 	for (auto& bullet : enemy_->GetBullets()) {
 		WorldTransform transform = enemy_->GetTransform();
-		Quaternion quaternion = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, pi * rad);
+		NumaEngine::Quaternion quaternion = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, pi * rad);
 		transform.rotation_ = transform.rotation_ * quaternion;
 		bullet->Attack(transform);
 		rad += data.bulletRadSpace;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 
@@ -70,7 +70,7 @@ private:
 	/// シェイクの更新
 	/// </summary>
 	/// <param name="shake"></param>
-	void UpdateShake(Vector3& shake);
+    void UpdateShake(NumaEngine::Vector3& shake);
 
 	/// <summary>
 	/// Objectが倒れる処理
@@ -91,16 +91,18 @@ private:
 	// そのObjectが倒れたか
 	bool isBreak_ = false;
 	float breakTimer_ = 0.0f;
-	Quaternion prevRotate_ = Quaternion::IdentityQuaternion();
-	Quaternion breakRotate_ = Quaternion::IdentityQuaternion();
+    NumaEngine::Quaternion prevRotate_ = NumaEngine::Quaternion::IdentityQuaternion();
+	NumaEngine::Quaternion breakRotate_ = NumaEngine::Quaternion::IdentityQuaternion();
 	// シェイクしている時値が入っている
-	Vector3 shake_;
+    NumaEngine::Vector3 shake_;
 	// オブジェクトの元の座標
-	Vector3 centerPosition_;
+    NumaEngine::Vector3 centerPosition_;
 
 	float alpha_ = 1.0f;
 	bool isGround_ = false;
 
 
 };
+
+
 

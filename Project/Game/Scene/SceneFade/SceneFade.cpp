@@ -1,11 +1,11 @@
-#include "SceneFade.h"
+﻿#include "SceneFade.h"
 
 #include "DeltaTimer.h"
 
 void SceneFade::Init()
 {
 	Sprite::Initialize("white1x1.png");
-	Sprite::SetColor(Vector4{ 0.0f,0.0f,0.0f,1.0f });
+	Sprite::SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,1.0f });
 	
 	transform_.size = { 1280.0f,720.0f };
 }
@@ -30,7 +30,7 @@ void SceneFade::Update()
 		if (time == 1.0f) { isFade_ = false; }
 	}
 
-	Sprite::SetColor(Vector4{ 0.0f,0.0f,0.0f,time });
+	Sprite::SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,time });
 	Sprite::Update();
 }
 
@@ -54,3 +54,4 @@ void SceneFade::FadeOut(const float fadeTime)
 	isFade_out_ = true;
 	fadeTime_ = fadeTime;
 }
+

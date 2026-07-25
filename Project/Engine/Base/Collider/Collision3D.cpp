@@ -1,7 +1,8 @@
-#include "Collision3D.h"
+﻿#include "Collision3D.h"
 
 #include <algorithm>
 
+#include "Collision3D.h"
 #include "Collider.h"
 
 bool Collision3D::SphereSphere(const Collider* a, const Collider* b)
@@ -17,27 +18,27 @@ bool Collision3D::SphereSphere(const Collider* a, const Collider* b)
 	}
 }
 
-Vector3 Collision3D::GetSphereSpherePushVector(const Collider* a, const Collider* b) {
+NumaEngine::Vector3 Collision3D::GetSphereSpherePushVector(const Collider* a, const Collider* b) {
 	Sphere sA = ChangeSphere(a);
 	Sphere sB = ChangeSphere(b);
 
-	Vector3 dir = sB.center - sA.center;
+	NumaEngine::Vector3 dir = sB.center - sA.center;
 	float dist = dir.Length();
 	float penetration = sA.radius + sB.radius - dist;
 
 	// 重なっていない or ちょうど接触している
-	if (penetration <= 0.0f) {
-		return Vector3{ 0, 0, 0 };
+    if (penetration <= 0.0f) {
+		return NumaEngine::Vector3{ 0, 0, 0 };
 	}
 
 	if (dist < 1e-5f) {
 		// 完全に重なってる → 適当な方向に押し出す
-		dir = Vector3{ 0, 1, 0 };
+        dir = NumaEngine::Vector3{ 0, 1, 0 };
 		dist = 1.0f;
 	}
 
 	// A を B から押し出すベクトル
-	Vector3 pushDir = dir.Normalize();
+    NumaEngine::Vector3 pushDir = dir.Normalize();
 	return pushDir * penetration;
 }
 
@@ -45,7 +46,7 @@ Vector3 Collision3D::GetSphereSpherePushVector(const Collider* a, const Collider
 bool Collision3D::AABBSphere(const AABB aabb, const Sphere sphere)
 {
 	//最近接点を求める
-	Vector3 closestPoint{
+    NumaEngine::Vector3 closestPoint{
 		std::clamp(sphere.center.x,aabb.min.x,aabb.max.x),
 		std::clamp(sphere.center.y,aabb.min.y,aabb.max.y),
 		std::clamp(sphere.center.z,aabb.min.z,aabb.max.z)
@@ -106,7 +107,7 @@ bool Collision3D::OBBSphere(const Collider* a, const Collider* b)
 	worldInverse.m[3][3] = 1.0f;
 
 	// SphereをOBBローカル空間に入れる
-	Vector3 centerInOBBLocalSpace = Vector3::Transform(sphere.center, Matrix4x4::Inverse(worldInverse));
+    NumaEngine::Vector3 centerInOBBLocalSpace = NumaEngine::Vector3::Transform(sphere.center, Matrix4x4::Inverse(worldInverse));
 
 	// OBBローカルのAABBとOBBローカルのSphereを作成
 	AABB aabb_OBBLocal = {
@@ -126,7 +127,7 @@ bool Collision3D::OBBSphere(const Collider* a, const Collider* b)
 	}
 }
 
-Vector3 Collision3D::GetOBBSpherePushVector(const Collider* a, const Collider* b) {
+NumaEngine::Vector3 Collision3D::GetOBBSpherePushVector(const Collider* a, const Collider* b) {
 	OBB obb = ChangeOBB(a);
 	Sphere sphere = ChangeSphere(b);
 
@@ -142,25 +143,25 @@ Vector3 Collision3D::GetOBBSpherePushVector(const Collider* a, const Collider* b
 	worldToLocal.m[3][2] = obb.center.z;
 	worldToLocal.m[3][3] = 1.0f;
 
-	Matrix4x4 localToWorld = Matrix4x4::Inverse(worldToLocal);
-	Vector3 sphereLocal = Vector3::Transform(sphere.center, localToWorld);
+    Matrix4x4 localToWorld = Matrix4x4::Inverse(worldToLocal);
+	NumaEngine::Vector3 sphereLocal = NumaEngine::Vector3::Transform(sphere.center, localToWorld);
 
 	AABB aabb = { -obb.size, obb.size };
-	Vector3 closest = {
+    NumaEngine::Vector3 closest = {
 		std::clamp(sphereLocal.x, aabb.min.x, aabb.max.x),
 		std::clamp(sphereLocal.y, aabb.min.y, aabb.max.y),
 		std::clamp(sphereLocal.z, aabb.min.z, aabb.max.z)
 	};
 
-	Vector3 pushLocal = sphereLocal - closest;
+    NumaEngine::Vector3 pushLocal = sphereLocal - closest;
 	float len = pushLocal.Length();
 
 	// ① 通常の押し出し（外部から接触）
 	if (len > 1e-5f) {
 		float penetration = sphere.radius - len;
 		if (penetration > 0.0f) {
-			Vector3 push = pushLocal.Normalize() * penetration;
-			return Vector3::TransformNormal(push, obb.rotateMatrix);
+            NumaEngine::Vector3 push = pushLocal.Normalize() * penetration;
+			return NumaEngine::Vector3::TransformNormal(push, obb.rotateMatrix);
 		}
 	}
 
@@ -172,19 +173,19 @@ Vector3 Collision3D::GetOBBSpherePushVector(const Collider* a, const Collider* b
 
 	if (isInsideOBB) {
 		// 中心間ベクトルを使った押し出し
-		Vector3 dir = sphere.center - obb.center;
+        NumaEngine::Vector3 dir = sphere.center - obb.center;
 		float dist = dir.Length();
 		if (dist < 1e-5f) {
-			dir = Vector3{ 0, 1, 0 }; // ゼロ距離回避
+            dir = NumaEngine::Vector3{ 0, 1, 0 }; // ゼロ距離回避
 			dist = 1.0f;
 		}
 		float penetration = sphere.radius;
-		Vector3 push = dir.Normalize() * penetration;
+        NumaEngine::Vector3 push = dir.Normalize() * penetration;
 		return push;
 	}
 
 	// 押し出し不要
-	return Vector3{};
+    return NumaEngine::Vector3{};
 }
 
 bool Collision3D::SphereSegment(const Collider* sphereCol,
@@ -193,10 +194,10 @@ bool Collision3D::SphereSegment(const Collider* sphereCol,
 	Sphere   s = ChangeSphere(sphereCol);
 	Segment  seg = ChangeSegment(segCol);
 
-	const Vector3  p0 = seg.origin;				// 始点
-	const Vector3  p1 = seg.origin + seg.diff;	// 終点
-	const Vector3  d = seg.diff;				// 方向ベクトル（長さ＝区間長）
-	const float    len2 = Vector3::Dot(d, d);	// |d|²  ※ゼロ除算対策に使う
+	const NumaEngine::Vector3  p0 = seg.origin;				// 始点
+	const NumaEngine::Vector3  p1 = seg.origin + seg.diff;	// 終点
+	const NumaEngine::Vector3  d = seg.diff;				// 方向ベクトル（長さ＝区間長）
+	const float    len2 = NumaEngine::Vector3::Dot(d, d);	// |d|²  ※ゼロ除算対策に使う
 
 	// デジェネレート（長さ０）の場合は点との距離で判定
 	if (len2 < 1e-6f) {
@@ -204,9 +205,9 @@ bool Collision3D::SphereSegment(const Collider* sphereCol,
 	}
 
 	// 球中心から線分への最近接点を求める
-	float t = Vector3::Dot(s.center - p0, d) / len2;
+    float t = NumaEngine::Vector3::Dot(s.center - p0, d) / len2;
 	t = std::clamp(t, 0.0f, 1.0f);				// 線分内にクランプ
-	Vector3 closest = p0 + d * t;
+    NumaEngine::Vector3 closest = p0 + d * t;
 
 	// 最近接点と球中心の距離で判定
 	return (closest - s.center).Length() <= s.radius;
@@ -220,9 +221,9 @@ bool Collision3D::SphereSegment(const Collider* sphereCol,
 
 	Sphere   s = ChangeSphere(sphereCol);
 	Segment  seg = ChangeSegment(segCol);
-	Vector3  p0 = seg.origin;
-	Vector3  d = seg.diff;
-	float    len2 = Vector3::Dot(d, d);
+    NumaEngine::Vector3  p0 = seg.origin;
+	NumaEngine::Vector3  d = seg.diff;
+	float    len2 = NumaEngine::Vector3::Dot(d, d);
 
 	// ① 距離０の線分（＝点）の特別扱い
 	if (len2 < 1e-6f) {
@@ -236,9 +237,9 @@ bool Collision3D::SphereSegment(const Collider* sphereCol,
 	}
 
 	// ② 二次方程式で t（線分パラメータ）を解く
-	Vector3 m = p0 - s.center;
-	float   b = Vector3::Dot(m, d);
-	float   c = Vector3::Dot(m, m) - s.radius;
+    NumaEngine::Vector3 m = p0 - s.center;
+	float   b = NumaEngine::Vector3::Dot(m, d);
+	float   c = NumaEngine::Vector3::Dot(m, m) - s.radius;
 	float   discr = b * b - len2 * c;
 
 	if (discr < 0.0f) { return false; }               // 交差なし
@@ -278,9 +279,9 @@ bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
 	worldInverse.m[3][3] = 1.0f;
 
 	// SegmentをOBBローカル空間に入れる
-	Vector3 originInOBBLocalSpace = Vector3::Transform(segment.origin, Matrix4x4::Inverse(worldInverse));
+    NumaEngine::Vector3 originInOBBLocalSpace = NumaEngine::Vector3::Transform(segment.origin, Matrix4x4::Inverse(worldInverse));
 	// TransformNormaleにする
-	Vector3 diffInOBBLocalSpace = Vector3::TransformNormal(segment.diff, Matrix4x4::Inverse(worldInverse));
+	NumaEngine::Vector3 diffInOBBLocalSpace = NumaEngine::Vector3::TransformNormal(segment.diff, Matrix4x4::Inverse(worldInverse));
 
 	// OBBローカルのAABBとOBBローカルのSegmentを作成
 	AABB aabb_OBBLocal = {
@@ -309,12 +310,12 @@ bool Collision3D::OBBSegment(const Collider* obbCol, const Collider* segCol, Ray
 	worldM.m[3][3] = 1.0f;
 	Matrix4x4 invM = Matrix4x4::Inverse(worldM);
 
-	Segment segL{
-		Vector3::Transform(segW.origin, invM),
-		Vector3::TransformNormal(segW.diff,  invM)
+    Segment segL{
+		NumaEngine::Vector3::Transform(segW.origin, invM),
+		NumaEngine::Vector3::TransformNormal(segW.diff,  invM)
 	};
 
-	const Vector3 min = -obb.size, max = obb.size;
+    const NumaEngine::Vector3 min = -obb.size, max = obb.size;
 
 	float tNear = 0.0f, tFar = 1.0f;
 	int   axisNear = -1, signNear = 0;
@@ -354,14 +355,14 @@ bool Collision3D::OBBSegment(const Collider* obbCol, const Collider* segCol, Ray
 	int     signHit = (tNear >= 0.0f) ? signNear : signFar;
 	tHit = std::clamp(tHit, 0.0f, 1.0f);
 
-	Vector3 pL = segL.origin + segL.diff * tHit;
-	Vector3 nL{ 0,0,0 };
+    NumaEngine::Vector3 pL = segL.origin + segL.diff * tHit;
+	NumaEngine::Vector3 nL{ 0,0,0 };
 	if (axisHit >= 0) nL[axisHit] = static_cast<float>(signHit);
 
 	// 3) ワールドへ戻す（法線は回転のみ）
-	hit->point = Vector3::Transform(pL, obb.rotateMatrix) + obb.center;
+    hit->point = NumaEngine::Vector3::Transform(pL, obb.rotateMatrix) + obb.center;
 	if (nL.Length() != 0.0f) {
-		hit->normal = Vector3::TransformNormal(nL, obb.rotateMatrix).Normalize();
+		hit->normal = NumaEngine::Vector3::TransformNormal(nL, obb.rotateMatrix).Normalize();
 	}
 	hit->t = tHit;
 	return true;
@@ -373,14 +374,14 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 	OBB obb1 = ChangeOBB(a);
 	OBB obb2 = ChangeOBB(b);
 
-	const Vector3 e1 = obb1.size;   // half-extent
-	const Vector3 e2 = obb2.size;
+    const NumaEngine::Vector3 e1 = obb1.size;   // half-extent
+	const NumaEngine::Vector3 e2 = obb2.size;
 
 	// ② 各 OBB のローカル軸（列ベクトルを抽出）
-	Vector3 u1[3], u2[3];
+    NumaEngine::Vector3 u1[3], u2[3];
 	for (int i = 0; i < 3; ++i) {
-		u1[i] = { obb1.rotateMatrix.m[i][0], obb1.rotateMatrix.m[i][1], obb1.rotateMatrix.m[i][2] };
-		u2[i] = { obb2.rotateMatrix.m[i][0], obb2.rotateMatrix.m[i][1], obb2.rotateMatrix.m[i][2] };
+		u1[i] = NumaEngine::Vector3{ obb1.rotateMatrix.m[i][0], obb1.rotateMatrix.m[i][1], obb1.rotateMatrix.m[i][2] };
+		u2[i] = NumaEngine::Vector3{ obb2.rotateMatrix.m[i][0], obb2.rotateMatrix.m[i][1], obb2.rotateMatrix.m[i][2] };
 	}
 
 	// ③ 回転行列 R と |R|
@@ -388,34 +389,34 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 	constexpr float kEps = 1e-5f;
 	for (int i = 0; i < 3; ++i) {
 		for (int j = 0; j < 3; ++j) {
-			R[i][j] = Vector3::Dot(u1[i], u2[j]);
+            R[i][j] = NumaEngine::Vector3::Dot(u1[i], u2[j]);
 			AbsR[i][j] = std::abs(R[i][j]) + kEps;
 		}
 	}
 
 	// ④ 中心間ベクトルを u1 基底に変換
-	const Vector3 tWorld = obb2.center - obb1.center;
-	const Vector3 Tvec = {
-		Vector3::Dot(tWorld, u1[0]),
-		Vector3::Dot(tWorld, u1[1]),
-		Vector3::Dot(tWorld, u1[2])
+    const NumaEngine::Vector3 tWorld = obb2.center - obb1.center;
+	const NumaEngine::Vector3 Tvec = {
+		NumaEngine::Vector3::Dot(tWorld, u1[0]),
+		NumaEngine::Vector3::Dot(tWorld, u1[1]),
+		NumaEngine::Vector3::Dot(tWorld, u1[2])
 	};
 
 	// ⑤ 分離軸テスト
 	// (A の 3 軸)
 	for (int i = 0; i < 3; ++i) {
-		const float ra = Vector3::AxisComponent(e1, i);
+            const float ra = NumaEngine::Vector3::AxisComponent(e1, i);
 		const float rb =
 			e2.x * AbsR[i][0] + e2.y * AbsR[i][1] + e2.z * AbsR[i][2];
-		if (std::abs(Vector3::AxisComponent(Tvec, i)) > ra + rb) { return false; }
+		if (std::abs(NumaEngine::Vector3::AxisComponent(Tvec, i)) > ra + rb) { return false; }
 	}
 
 	// (B の 3 軸)
 	for (int j = 0; j < 3; ++j) {
 		const float ra =
 			e1.x * AbsR[0][j] + e1.y * AbsR[1][j] + e1.z * AbsR[2][j];
-		const float rb = Vector3::AxisComponent(e2, j);
-		const float proj = std::abs(Vector3::Dot(tWorld, u2[j]));
+            const float rb = NumaEngine::Vector3::AxisComponent(e2, j);
+			const float proj = std::abs(NumaEngine::Vector3::Dot(tWorld, u2[j]));
 		if (proj > ra + rb) { return false; }
 	}
 
@@ -425,16 +426,16 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 			const int i1 = (i + 1) % 3, i2 = (i + 2) % 3;
 			const int j1 = (j + 1) % 3, j2 = (j + 2) % 3;
 
-			const float ra =
-				Vector3::AxisComponent(e1, i1) * AbsR[i2][j] +
-				Vector3::AxisComponent(e1, i2) * AbsR[i1][j];
+            const float ra =
+				NumaEngine::Vector3::AxisComponent(e1, i1) * AbsR[i2][j] +
+				NumaEngine::Vector3::AxisComponent(e1, i2) * AbsR[i1][j];
 			const float rb =
-				Vector3::AxisComponent(e2, j1) * AbsR[i][j2] +
-				Vector3::AxisComponent(e2, j2) * AbsR[i][j1];
+				NumaEngine::Vector3::AxisComponent(e2, j1) * AbsR[i][j2] +
+				NumaEngine::Vector3::AxisComponent(e2, j2) * AbsR[i][j1];
 
-			const float Tij = std::abs(
-				Vector3::AxisComponent(Tvec, i2) * R[i1][j] -
-				Vector3::AxisComponent(Tvec, i1) * R[i2][j]);
+            const float Tij = std::abs(
+				NumaEngine::Vector3::AxisComponent(Tvec, i2) * R[i1][j] -
+				NumaEngine::Vector3::AxisComponent(Tvec, i1) * R[i2][j]);
 
 			if (Tij > ra + rb) { return false; }
 		}
@@ -447,39 +448,39 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 AABB Collision3D::ComputeBroadphaseAABB(const Collider* c) {
 	switch (c->GetMyColliderType()) {
 	case ColliderType::kSphere: {
-		Sphere s = ChangeSphere(c);
-		Vector3 r{ s.radius, s.radius, s.radius };
+        Sphere s = ChangeSphere(c);
+		NumaEngine::Vector3 r{ s.radius, s.radius, s.radius };
 		return { s.center - r, s.center + r };
 	}
 	case ColliderType::kSegment: {
-		Segment seg = ChangeSegment(c);
-		Vector3 p0 = seg.origin;
-		Vector3 p1 = seg.origin + seg.diff;
-		Vector3 mn{ std::min(p0.x, p1.x), std::min(p0.y, p1.y), std::min(p0.z, p1.z) };
-		Vector3 mx{ std::max(p0.x, p1.x), std::max(p0.y, p1.y), std::max(p0.z, p1.z) };
+        Segment seg = ChangeSegment(c);
+		NumaEngine::Vector3 p0 = seg.origin;
+		NumaEngine::Vector3 p1 = seg.origin + seg.diff;
+		NumaEngine::Vector3 mn{ std::min(p0.x, p1.x), std::min(p0.y, p1.y), std::min(p0.z, p1.z) };
+		NumaEngine::Vector3 mx{ std::max(p0.x, p1.x), std::max(p0.y, p1.y), std::max(p0.z, p1.z) };
 		return { mn, mx };
 	}
 	case ColliderType::kOBB: {
 		OBB obb = ChangeOBB(c);
-		Vector3 ex = obb.size;
-		Vector3 ax{
+        NumaEngine::Vector3 ex = obb.size;
+		NumaEngine::Vector3 ax{
 			obb.rotateMatrix.m[0][0], obb.rotateMatrix.m[1][0], obb.rotateMatrix.m[2][0]
 		};
-		Vector3 ay{
+		NumaEngine::Vector3 ay{
 			obb.rotateMatrix.m[0][1], obb.rotateMatrix.m[1][1], obb.rotateMatrix.m[2][1]
 		};
-		Vector3 az{
+		NumaEngine::Vector3 az{
 			obb.rotateMatrix.m[0][2], obb.rotateMatrix.m[1][2], obb.rotateMatrix.m[2][2]
 		};
-		Vector3 absAx{ std::abs(ax.x), std::abs(ax.y), std::abs(ax.z) };
-		Vector3 absAy{ std::abs(ay.x), std::abs(ay.y), std::abs(ay.z) };
-		Vector3 absAz{ std::abs(az.x), std::abs(az.y), std::abs(az.z) };
-		Vector3 radius = absAx * ex.x + absAy * ex.y + absAz * ex.z;
+		NumaEngine::Vector3 absAx{ std::abs(ax.x), std::abs(ax.y), std::abs(ax.z) };
+		NumaEngine::Vector3 absAy{ std::abs(ay.x), std::abs(ay.y), std::abs(ay.z) };
+		NumaEngine::Vector3 absAz{ std::abs(az.x), std::abs(az.y), std::abs(az.z) };
+		NumaEngine::Vector3 radius = absAx * ex.x + absAy * ex.y + absAz * ex.z;
 		return { obb.center - radius, obb.center + radius };
 	}
 	default:
 
-		Vector3 p = c->GetCenterPosition() + c->GetOffsetPosition();
+        NumaEngine::Vector3 p = c->GetCenterPosition() + c->GetOffsetPosition();
 		return { p, p };
 	}
 }
@@ -510,10 +511,12 @@ AABB Collision3D::ChangeAABB(const Collider* collider)
 
 OBB Collision3D::ChangeOBB(const Collider* collider)
 {
-	auto rotateMatrix = Quaternion::MakeRotateMatrix(collider->GetRotate());
+	auto rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(collider->GetRotate());
 	return {
 		.center = collider->GetCenterPosition() + collider->GetOffsetPosition().Transform(rotateMatrix),
 		.rotateMatrix = rotateMatrix,
 		.size = collider->GetSize()
 	};
 }
+
+

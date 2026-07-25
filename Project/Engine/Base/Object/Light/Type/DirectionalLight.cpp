@@ -1,4 +1,4 @@
-#include "DirectionalLight.h"
+﻿#include "DirectionalLight.h"
 
 #include <DirectXMath.h>
 
@@ -19,8 +19,8 @@ void DirectionalLight::Update()
 {
 	lightData_->direction = lightData_->direction.Normalize();
 
-    const Vector3 sceneMin = { -30.0f, -5.0f, -30.0f };
-    const Vector3 sceneMax = { +30.0f, +15.0f, +30.0f };
+    const NumaEngine::Vector3 sceneMin = { -30.0f, -5.0f, -30.0f };
+    const NumaEngine::Vector3 sceneMax = { +30.0f, +15.0f, +30.0f };
     const uint32_t shadowW = 2048;
     const uint32_t shadowH = 2048;
     BuildMatricesCoverAll(sceneMin, sceneMax, shadowW, shadowH);
@@ -55,8 +55,8 @@ void DirectionalLight::MakeLightData()
 
 // マップ全体を覆う AABB を与える前提（sceneMin/sceneMax）
 void DirectionalLight::BuildMatricesCoverAll(
-    const Vector3& sceneMin,
-    const Vector3& sceneMax,
+    const NumaEngine::Vector3& sceneMin,
+    const NumaEngine::Vector3& sceneMax,
     uint32_t shadowW, uint32_t shadowH)
 {
 	DirectX::XMMATRIX dxProjectionMatrix = DirectX::XMMatrixOrthographicLH(
@@ -81,3 +81,4 @@ void DirectionalLight::BuildMatricesCoverAll(
 
 	lightMatrixs_.lightVP = lightMatrixs_.lightView * lightMatrixs_.lightProj;
 }
+

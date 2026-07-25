@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "BaseLight.h"
 
@@ -14,10 +14,10 @@ public:
 
 	// スポットライト用のデータ構造体
 	struct SpotLightData {
-		Vector4 color;
-		Vector3 position;
+		NumaEngine::Vector4 color;
+		NumaEngine::Vector3 position;
 		float intensity;
-		Vector3 direction;
+		NumaEngine::Vector3 direction;
 		float distance;
 		float decay;
 		float cosAngle;
@@ -39,8 +39,8 @@ public:
 
 	// ライト用の行列作成
 	void BuildMatricesCoverAll(
-		const Vector3& sceneMin,
-		const Vector3& sceneMax,
+		const NumaEngine::Vector3& sceneMin,
+		const NumaEngine::Vector3& sceneMax,
 		uint32_t shadowW, uint32_t shadowH) override {};
 
 private:
@@ -48,3 +48,4 @@ private:
 	SpotLightData* lightData_ = nullptr;
 
 };
+

@@ -1,4 +1,4 @@
-#include "PathFinder.h"
+﻿#include "PathFinder.h"
 
 #include <queue>
 #include <array>
@@ -16,14 +16,14 @@ void PathFinder::Update(const float speed, float lookAt_t)
     splineMover_.Update(speed, lookAt_t);
 }
 
-void PathFinder::Search(const Vector3& startW, const Vector3& goalW)
+void PathFinder::Search(const NumaEngine::Vector3& startW, const NumaEngine::Vector3& goalW)
 {
     if (mapColl_->GetMapData().empty()) return;
 
     const uint32_t hSize = static_cast<uint32_t>(mapColl_->GetMapData().size());
     const uint32_t vSize = static_cast<uint32_t>(mapColl_->GetMapData()[0].size());
 
-    auto toIndex = [&](const Vector3& w) -> GridPos {
+    auto toIndex = [&](const NumaEngine::Vector3& w) -> GridPos {
         // MapCollisionと同じ計算をローカルで行う
         float half = mapColl_->GetHalf();
         float cell = mapColl_->GetCell();
@@ -77,7 +77,7 @@ void PathFinder::Search(const Vector3& startW, const Vector3& goalW)
             // スプラインを初期化
             splineMover_.ClearSplinePositions();
             // 経路復元
-            Vector3 lastPos{};
+            NumaEngine::Vector3 lastPos{};
             for (A_StarNode* n = cur; n; n = n->parent) {
                 splineMover_.PushSplinePositions(mapColl_->GetMapData()[n->pos.z][n->pos.x].center);
                 lastPos = mapColl_->GetMapData()[n->pos.z][n->pos.x].center;
@@ -118,3 +118,4 @@ void PathFinder::Search(const Vector3& startW, const Vector3& goalW)
     }
     return;   // ゴールに到達できなかった
 }
+

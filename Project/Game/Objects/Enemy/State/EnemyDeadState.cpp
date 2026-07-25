@@ -1,4 +1,4 @@
-#include "EnemyDeadState.h"
+﻿#include "EnemyDeadState.h"
 
 #include <numbers>
 
@@ -67,7 +67,7 @@ void EnemyDeadState::Update()
 	if (deadTimer_ > (maxDeadTimer_ - data.kNockbackScaleTimer)) {
 		float t = std::clamp(((maxDeadTimer_ - deadTimer_) / data.kNockbackScaleTimer), 0.0f, 1.0f);
 		float changeScale = std::sin(t * std::numbers::pi_v<float>) * kNockbackScale_;
-		enemy_->SetTransformScale(Vector3::ExprUnitXYZ + (Vector3::ExprUnitXYZ * changeScale));
+		enemy_->SetTransformScale(NumaEngine::Vector3::ExprUnitXYZ + (NumaEngine::Vector3::ExprUnitXYZ * changeScale));
 	} else {
 		float t = ((deadTimer_ - data.kNockbackScaleTimer) / (maxDeadTimer_ - data.kNockbackScaleTimer));
 		enemy_->SetTransformScale(defaultScale_ * t);
@@ -76,16 +76,16 @@ void EnemyDeadState::Update()
 	// 最初の1秒はヒットバック
 	if (deadTimer_ > (maxDeadTimer_ - knockbackTimer_)) {
 		float t = std::clamp(1.0f - (deadTimer_ - 4.0f), 0.0f, 1.0f);
-		Vector3 enemyPosition = enemy_->GetTransform().translation_;
+		NumaEngine::Vector3 enemyPosition = enemy_->GetTransform().translation_;
 		if (enemy_->GetTransform().translation_.y > 0.5f) {
 			enemyPosition.y += velocity_.y * DeltaTimer::GetDeltaTime();
 			target_.y += velocity_.y * DeltaTimer::GetDeltaTime();
 		}
-		Vector3 target = Vector3::Lerp(enemyPosition, target_, t);
+		NumaEngine::Vector3 target = NumaEngine::Vector3::Lerp(enemyPosition, target_, t);
 		enemy_->SetTransformTranslation(target);
 		velocity_.y -= accelerationY_ * DeltaTimer::GetDeltaTime();
 		// 回転をスラープさせる
-		defaultRotate_ = Quaternion::Slerp(defaultRotate_, targetRotate_, 0.2f);
+		defaultRotate_ = NumaEngine::Quaternion::Slerp(defaultRotate_, targetRotate_, 0.2f);
 		enemy_->SetTransformRotation(defaultRotate_);
 
 	// それ以降に死亡時パーティクルを出す
@@ -113,8 +113,8 @@ void EnemyDeadState::ResultTargetOffset()
 	// ノックバックする回転
 	// 敵のローカル空間で弾の座標が左か右にいるか計算
 	isLeft_ = false;
-	Vector3 localPosition = Vector3(enemy_->GetPlayerBullet()).Transform(Matrix4x4::Inverse(enemy_->GetTransform().matWorld_));
-	Quaternion rotateY = Quaternion::IdentityQuaternion();
+	NumaEngine::Vector3 localPosition = NumaEngine::Vector3(enemy_->GetPlayerBullet()).Transform(Matrix4x4::Inverse(enemy_->GetTransform().matWorld_));
+	NumaEngine::Quaternion rotateY = NumaEngine::Quaternion::IdentityQuaternion();
 	std::mt19937 randomEngine_(seedGenerator_());
 	// 弾が敵の左にあるか判定
 	if (0.0f > localPosition.x) {
@@ -123,11 +123,11 @@ void EnemyDeadState::ResultTargetOffset()
 	// 左なら
 	if (isLeft_) {
 		std::uniform_real_distribution<float> RotateY(-std::numbers::pi_v<float> / 2.0f, 0.0f);
-		rotateY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, RotateY(randomEngine_));
+		rotateY = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, RotateY(randomEngine_));
 	// 右なら
 	} else {
 		std::uniform_real_distribution<float> RotateY(0.0f, std::numbers::pi_v<float> / 2.0f);
-		rotateY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, RotateY(randomEngine_));
+		rotateY = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, RotateY(randomEngine_));
 	}
 	defaultRotate_ = enemy_->GetTransform().rotation_;
 	targetRotate_ = enemy_->GetTransform().rotation_ * rotateY;
@@ -135,3 +135,4 @@ void EnemyDeadState::ResultTargetOffset()
 	// デフォルトのScaleを取得
 	defaultScale_ = enemy_->GetTransform().scale_;
 }
+

@@ -1,4 +1,4 @@
-#include "FieldObjectAdjustItem.h"
+﻿#include "FieldObjectAdjustItem.h"
 
 #include "imgui.h"
 
@@ -8,7 +8,7 @@ void FieldObjectAdjustItem::LoadItems()
 	mainJson_.Init("FieldObjectMain");
 	if (!mainJson_.Load()) {
 		mainJson_.Set("shakePower", 0.0f);
-		mainJson_.Set("shakeOffset", Vector3{});
+		mainJson_.Set("shakeOffset", NumaEngine::Vector3{});
 		mainJson_.Set("cameraShakePower", 0.0f);
 
 		mainJson_.Set("cameraDistance", 0.0f);

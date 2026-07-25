@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <vector>
@@ -52,7 +52,7 @@ public:
 	/// 仲間同士の中心座標を返す
 	/// </summary>
 	/// <returns></returns>
-	const Vector3 CompanionCenterPosition();
+	const NumaEngine::Vector3 CompanionCenterPosition();
 
 	/// <summary>
 	/// 仲間のデータをリセットする
@@ -128,4 +128,5 @@ private:
 	float clearStateTime_ = 0.0f;
 
 };
+
 

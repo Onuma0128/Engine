@@ -1,4 +1,4 @@
-#include "NextArrowEffect.h"
+﻿#include "NextArrowEffect.h"
 
 #include <numbers>
 
@@ -15,7 +15,7 @@ void NextArrowEffect::Init()
 	arrow_->SetIsBillboard(true);
 }
 
-void NextArrowEffect::Update(const Vector3& position)
+void NextArrowEffect::Update(const NumaEngine::Vector3& position)
 {
 	// データを取得
 	const auto& data = items_->GetEffectData();
@@ -27,10 +27,10 @@ void NextArrowEffect::Update(const Vector3& position)
 
 	// スケールと座標を設定
 	arrow_->GetTransform().scale = data.nextArrowScale + data.nextArrowVarianceScale * t;
-	Vector3 offset = data.nextArrowPosition + data.nextArrowVariancePosition * t;
-	Vector3 prePosition = arrow_->GetTransform().translation;
-	Vector3 newPosition = offset + position;
-	arrow_->GetTransform().translation = Vector3::Lerp(prePosition, newPosition, data.lerpSpeed);
+	NumaEngine::Vector3 offset = data.nextArrowPosition + data.nextArrowVariancePosition * t;
+	NumaEngine::Vector3 prePosition = arrow_->GetTransform().translation;
+	NumaEngine::Vector3 newPosition = offset + position;
+	arrow_->GetTransform().translation = NumaEngine::Vector3::Lerp(prePosition, newPosition, data.lerpSpeed);
 
 	// 更新
 	arrow_->Update();

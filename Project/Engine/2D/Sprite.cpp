@@ -1,4 +1,4 @@
-#include "Sprite.h"
+﻿#include "Sprite.h"
 
 #include "DirectXEngine.h"
 
@@ -117,7 +117,7 @@ void Sprite::MaterialDataInitialize()
 	
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
-	materialData_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    materialData_->color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData_->uvTransform = Matrix4x4::Identity();
 }
 
@@ -128,7 +128,7 @@ void Sprite::DissolveDataInitialize()
 
 	dissolveData_->threshold = 0.5f;
 	dissolveData_->edgeWidth = 0.1f;
-	dissolveData_->edgeColor = Vector3(1.0f, 1.0f, 1.0f);
+    dissolveData_->edgeColor = NumaEngine::Vector3(1.0f, 1.0f, 1.0f);
 }
 
 void Sprite::TransformationMatrixDataInitialize()
@@ -180,10 +180,10 @@ void Sprite::AccessorUpdate()
 
 void Sprite::UpdateMatrix()
 {
-	Matrix4x4 worldMatrix = Matrix4x4::Affine(
-		Vector3{ transform_.size.x,transform_.size.y,1.0f },
-		Vector3{ 0.0f,0.0f,transform_.rotate },
-		Vector3{ transform_.position.x,transform_.position.y,0.0f }
+    Matrix4x4 worldMatrix = Matrix4x4::Affine(
+		NumaEngine::Vector3{ transform_.size.x,transform_.size.y,1.0f },
+		NumaEngine::Vector3{ 0.0f,0.0f,transform_.rotate },
+		NumaEngine::Vector3{ transform_.position.x,transform_.position.y,0.0f }
 	);
 	Matrix4x4 viewMatrix = Matrix4x4::Identity();
 	Matrix4x4 projectionMatrix = Matrix4x4::Orthographic(0.0f, float(WinApp::kClientWidth), float(WinApp::kClientHeight), 0.0f, 0.0f, 100.0f);
@@ -203,3 +203,5 @@ void Sprite::AdjustTextureSize()
 	};
 	transform_.size = textureSize_;
 }
+
+

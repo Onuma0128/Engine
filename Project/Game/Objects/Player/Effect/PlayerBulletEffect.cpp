@@ -1,4 +1,4 @@
-#include "PlayerBulletEffect.h"
+﻿#include "PlayerBulletEffect.h"
 
 void PlayerBulletEffect::Init()
 {
@@ -39,8 +39,8 @@ void PlayerBulletEffect::OnceBulletTrailEffect(const WorldTransform& transform)
 	bulletTrailEmitter_->SetIsCreate(true);
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	bulletTrailEmitter_->SetRotation(rotate);
 	bulletTrailEmitter_->SetPosition(position);
@@ -51,8 +51,8 @@ void PlayerBulletEffect::OnceBulletDeleteEffect(const WorldTransform& transform)
 	bulletDeleteEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	bulletDeleteEmitter_->SetRotation(rotate);
 	bulletDeleteEmitter_->SetPosition(position);
@@ -66,8 +66,8 @@ void PlayerBulletEffect::OnceBulletEffect(const WorldTransform& transform)
 	bulletSmokeEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	// 爆発
 	bulletExplosionEmitter_->SetPosition(position);
@@ -86,11 +86,12 @@ void PlayerBulletEffect::OnceBulletReloadEffect(const WorldTransform& transform)
 	bulletCartridgeEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	// 薬莢
 	bulletCartridgeEmitter_->SetPosition(position);
 	bulletCartridgeEmitter_->SetRotation(rotate);
 }
+
 

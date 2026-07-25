@@ -1,4 +1,4 @@
-#include "EnemyHitJumpState.h"
+﻿#include "EnemyHitJumpState.h"
 
 #include "DeltaTimer.h"
 
@@ -34,7 +34,7 @@ void EnemyHitJumpState::Update()
     translateY += hitJumpVelocityY_ * DeltaTimer::GetDeltaTime();
 
 	// ノックバック方向の計算
-	Vector3 veloctiy = Vector3::ExprUnitZ.Transform(Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_));
+	NumaEngine::Vector3 veloctiy = NumaEngine::Vector3::ExprUnitZ.Transform(NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_));
 	veloctiy = veloctiy.Normalize() * hitJumpNockbackScale_ * DeltaTimer::GetDeltaTime();
 
     // 座標を更新する
@@ -56,10 +56,11 @@ void EnemyHitJumpState::Draw()
 {
 }
 
-void EnemyHitJumpState::SetTranslate(float y, const Vector3& velocity)
+void EnemyHitJumpState::SetTranslate(float y, const NumaEngine::Vector3& velocity)
 {
-    Vector3 translation = enemy_->GetTransform().translation_ + velocity;
+    NumaEngine::Vector3 translation = enemy_->GetTransform().translation_ + velocity;
     translation.y = y;
     enemy_->SetTransformTranslation(translation);
 }
+
 

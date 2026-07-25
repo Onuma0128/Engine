@@ -1,4 +1,4 @@
-#include "EnemyEffect.h"
+﻿#include "EnemyEffect.h"
 
 #include "DeltaTimer.h"
 #include "Easing.h"
@@ -69,8 +69,8 @@ void EnemyEffect::OnceMoveEffect(const WorldTransform& transform)
 	moveDustEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	moveDustEmitter_->SetRotation(rotate);
 	moveDustEmitter_->SetPosition(position);
@@ -84,8 +84,8 @@ void EnemyEffect::OnceBulletEffect(const WorldTransform& transform)
 	bulletSmokeEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	// 爆発
 	bulletExplosionEmitter_->SetPosition(position);
@@ -103,8 +103,8 @@ void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
 	hitEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	hitEmitter_->SetRotation(rotate);
 	hitEmitter_->SetPosition(position);
@@ -116,8 +116,8 @@ void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
 	hitRingEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	hitExplosionEmitter_->SetRotation(rotate);
 	hitExplosionEmitter_->SetPosition(position);
@@ -131,8 +131,8 @@ void EnemyEffect::OnceBulletHitExplosionBlueEffect(const WorldTransform& transfo
 	hitRingBlueEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	hitExplosionBlueEmitter_->SetRotation(rotate);
 	hitExplosionBlueEmitter_->SetPosition(position);
@@ -143,8 +143,8 @@ void EnemyEffect::OnceBulletHitExplosionBlueEffect(const WorldTransform& transfo
 void EnemyEffect::SetMeleeAttackEffect(const WorldTransform& transform)
 {
 	// パーティクルの座標を設定
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	enemyMeleeAttack_->SetRotation(rotate);
 	enemyMeleeAttack_->SetPosition(position);
@@ -162,7 +162,7 @@ void EnemyEffect::HitReticleInit()
 	hitReticleEffect_.cylinder_ = std::make_unique<PrimitiveDrawr>();
 	hitReticleEffect_.cylinder_->TypeInit(PrimitiveType::kCylinder, 32);
 	hitReticleEffect_.cylinder_->GetTransform().scale = {};
-	hitReticleEffect_.cylinder_->SetColor(Vector3::ExprUnitX + Vector3::ExprUnitY);
+	hitReticleEffect_.cylinder_->SetColor(NumaEngine::Vector3::ExprUnitX + NumaEngine::Vector3::ExprUnitY);
 	hitReticleEffect_.cylinder_->SetBlendMode(BlendMode::kBlendModeAdd);
 	hitReticleEffect_.cylinder_->GetRenderOptions().enabled = false;
 	hitReticleEffect_.cylinder_->GetRenderOptions().offscreen = false;
@@ -231,8 +231,8 @@ void EnemyEffect::HitReticleUpdate()
 		hitReticleEffect_.cylinder_->GetTransform().scale = { scale,scale,scale };
 		hitReticleEffect_.axis_ += 0.1f;
 		hitReticleEffect_.cylinder_->GetTransform().rotation =
-			Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, hitReticleEffect_.axis_);
-		Vector3 offset = { 0.0f,-0.5f,0.0f };
+			NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, hitReticleEffect_.axis_);
+		NumaEngine::Vector3 offset = { 0.0f,-0.5f,0.0f };
 		hitReticleEffect_.cylinder_->GetTransform().translation = enemy_->GetTransform().translation_ + offset;
 		hitReticleEffect_.cylinder_->Update();
 	}
@@ -250,23 +250,23 @@ void EnemyEffect::BulletPredictionUpdate()
 		// サイズを更新
 		effect->SetScale(data.planeSize);
 		// 座標を計算
-		Quaternion quaternionY = Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
-		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(quaternionY);
-		Vector3 offset = data.planeOffset.Transform(rotateMatrix) + enemy_->GetTransform().translation_;
+		NumaEngine::Quaternion quaternionY = NumaEngine::Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
+		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(quaternionY);
+		NumaEngine::Vector3 offset = data.planeOffset.Transform(rotateMatrix) + enemy_->GetTransform().translation_;
 		effect->SetTranslate(offset);
 		// 回転を更新
-		Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, -std::numbers::pi_v<float> / 2.0f);
-		Vector3 direction = (offset - enemy_->GetTransform().translation_);
+		NumaEngine::Quaternion rotateX = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitX, -std::numbers::pi_v<float> / 2.0f);
+		NumaEngine::Vector3 direction = (offset - enemy_->GetTransform().translation_);
 		direction.y = 0.0f;
 		if (direction.Length() != 0.0f) {
 			direction = direction.Normalize();
-			Quaternion rotateY = Quaternion::DirectionToQuaternion(enemy_->GetTransform().rotation_, direction, 0.1f);
+			NumaEngine::Quaternion rotateY = NumaEngine::Quaternion::DirectionToQuaternion(enemy_->GetTransform().rotation_, direction, 0.1f);
 			effect->SetRotate(rotateY * rotateX);
 		} else {
 			effect->SetRotate(rotateX);
 		}
 		// 更新
-		effect->SetAddUvPosition(Vector2{ 0.1f,0.0f });
+		effect->SetAddUvPosition(NumaEngine::Vector2{ 0.1f,0.0f });
 		effect->SetEnemyPosition(enemy_->GetTransform().translation_);
 		effect->Update();
 	}
@@ -283,24 +283,24 @@ void EnemyEffect::BulletPredictionUpdate()
 			// サイズを更新
 			effect->SetScale(data.planeSize[i]);
 			// 座標を計算
-			Quaternion quaternionY = Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
-			Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(quaternionY);
-			Vector3 offset = data.planeOffset[i].Transform(rotateMatrix) + enemy_->GetTransform().translation_;
+			NumaEngine::Quaternion quaternionY = NumaEngine::Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
+			Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(quaternionY);
+			NumaEngine::Vector3 offset = data.planeOffset[i].Transform(rotateMatrix) + enemy_->GetTransform().translation_;
 			effect->SetTranslate(offset);
 			// 回転を更新
-			Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, std::numbers::pi_v<float> / 2.0f);
-			Vector3 direction = (offset - enemy_->GetTransform().translation_);
+			NumaEngine::Quaternion rotateX = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitX, std::numbers::pi_v<float> / 2.0f);
+			NumaEngine::Vector3 direction = (offset - enemy_->GetTransform().translation_);
 			direction.y = 0.0f;
 			if (direction.Length() != 0.0f) {
 				direction = direction.Normalize();
-				quaternionY = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, pi * rad);
-				Quaternion rotateY = Quaternion::DirectionToQuaternion(enemy_->GetTransform().rotation_, direction, 0.1f) * quaternionY;
+				quaternionY = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, pi * rad);
+				NumaEngine::Quaternion rotateY = NumaEngine::Quaternion::DirectionToQuaternion(enemy_->GetTransform().rotation_, direction, 0.1f) * quaternionY;
 				effect->SetRotate(rotateY * rotateX);
 			} else {
 				effect->SetRotate(rotateX);
 			}
 			// 更新
-			effect->SetAddUvPosition(Vector2{ 0.1f,0.0f });
+			effect->SetAddUvPosition(NumaEngine::Vector2{ 0.1f,0.0f });
 			effect->SetEnemyPosition(enemy_->GetTransform().translation_);
 			effect->Update();
 			rad += data.bulletRadSpace;
@@ -311,3 +311,4 @@ void EnemyEffect::BulletPredictionUpdate()
 		break;
 	}
 }
+

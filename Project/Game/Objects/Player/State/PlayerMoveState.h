@@ -1,75 +1,32 @@
+
 #pragma once
 
 #include "PlayerBaseState.h"
-
 #include "Vector3.h"
 #include "Quaternion.h"
 
-/// <summary>
-/// プレイヤーの移動状態
-/// </summary>
-class PlayerMoveState : public PlayerBaseState
-{
+class Player;
+
+class PlayerMoveState : public PlayerBaseState {
 public:
+    PlayerMoveState(Player* player);
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	/// <param name="player"></param>
-	PlayerMoveState(Player* player);
-
-	/// <summary>
-	/// 現在のステートを取得する
-	/// </summary>
-	/// <returns></returns>
-	PlayerState GetState()const override { return PlayerState::Move; }
-
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Init()override;
-
-	/// <summary>
-	/// 終了
-	/// </summary>
-	void Finalize()override;
-
-	/// <summary>
-	/// 更新
-	/// </summary>
-	void Update()override;
-
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw()override;
+    PlayerState GetState() const override { return PlayerState::Move; }
+    void Init() override;
+    void Finalize() override;
+    void Update() override;
+    void Draw() override;
 
 private:
-
-	/// <summary>
-	/// 一定のアクションを実行する
-	/// </summary>
-	void SomeAction();
-
-	/// <summary>
-	/// 移動時の速度ベクトルを生成する
-	/// </summary>
-	/// <returns></returns>
-	const Vector3 CreateMoveVelocity();
-
-	/// <summary>
-	/// 回転時の速度ベクトルを生成する
-	/// </summary>
-	/// <returns></returns>
-	const Vector3 CreateRotateVelocity();
+    void SomeAction();
+    const NumaEngine::Vector3 CreateMoveVelocity();
+    const NumaEngine::Vector3 CreateRotateVelocity();
 
 private:
+    bool isReversePlay_ = false;
+    bool chengeAniamtion_ = false; // original code has typo
 
-	// 最後に向けたRightStickを保存する
-	Vector3 rightStickVelocity_{};
-	Quaternion rightStickQuaternion_{};
-	bool chengeAniamtion_ = false;
-	bool isReversePlay_ = false;
-
+    NumaEngine::Quaternion rightStickQuaternion_{};
+    NumaEngine::Vector3 rightStickVelocity_{};
 };
 

@@ -1,4 +1,4 @@
-#include "CompanionEffect.h"
+﻿#include "CompanionEffect.h"
 
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 
@@ -37,8 +37,8 @@ void CompanionEffect::Init()
 void CompanionEffect::Update()
 {
 	// パーティクルの座標を設定
-	Quaternion rotate = companion_->GetTransform().rotation_;
-	Vector3 position = companion_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = companion_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = companion_->GetTransform().translation_;
 
 	damageUpEmitter_->SetRotation(rotate);
 	damageUpEmitter_->SetPosition(position);
@@ -57,8 +57,8 @@ void CompanionEffect::OnceMoveEffect()
 	moveDustEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = companion_->GetTransform().rotation_;
-	Vector3 position = companion_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = companion_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = companion_->GetTransform().translation_;
 
 	moveDustEmitter_->SetRotation(rotate);
 	moveDustEmitter_->SetPosition(position);
@@ -67,8 +67,8 @@ void CompanionEffect::OnceMoveEffect()
 void CompanionEffect::OnceDashEffect(bool isSearch)
 {
 	// パーティクルの座標を設定
-	Quaternion rotate = companion_->GetTransform().rotation_;
-	Vector3 position = companion_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = companion_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = companion_->GetTransform().translation_;
 
 	if (isSearch) {
 		searchDashEmitter_->onceEmit();
@@ -86,8 +86,8 @@ void CompanionEffect::OnceHitEffect()
 	hitEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = companion_->GetTransform().rotation_;
-	Vector3 position = companion_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = companion_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = companion_->GetTransform().translation_;
 
 	hitEmitter_->SetRotation(rotate);
 	hitEmitter_->SetPosition(position);
@@ -108,9 +108,10 @@ void CompanionEffect::OnceLevelUpRingEffect()
 	levelUpRingEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = companion_->GetTransform().rotation_;
-	Vector3 position = companion_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = companion_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = companion_->GetTransform().translation_;
 
 	levelUpRingEmitter_->SetRotation(rotate);
 	levelUpRingEmitter_->SetPosition(position);
 }
+

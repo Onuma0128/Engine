@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Collider.h"
 #include "Vector3.h"
@@ -26,7 +26,7 @@ public:
 	// セッター
 	void SetBossEnemy(BossEnemy* boss) { boss_ = boss; }
 	void SetColliderSize(float size) { colliderSize_ = size; }
-	void SetColliderOffset(const Vector3& offset) { colliderOffset_ = offset; }
+    void SetColliderOffset(const NumaEngine::Vector3& offset) { colliderOffset_ = offset; }
 	void SetActive(bool flag) { Collider::isActive_ = flag; }
 	void SetRadius(float radius) { Collider::radius_ = radius; }
 
@@ -47,7 +47,10 @@ private:
 
 	// コライダーのサイズと座標
 	float colliderSize_ = 0.0f;
-	Vector3 colliderOffset_ = {};
+    NumaEngine::Vector3 colliderOffset_ = {};
 
 };
+
+
+
 

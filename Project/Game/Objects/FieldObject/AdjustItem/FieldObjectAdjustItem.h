@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #include "JsonFunction.h"
 
 // フィールドオブジェクト全体の項目
 struct FieldObjectMainData {
 	float shakePower;		// シェイクの強さ
-	Vector3 shakeOffset;	// シェイクのオフセット
+	NumaEngine::Vector3 shakeOffset;	// シェイクのオフセット
 	float cameraShakePower;	// カメラシェイクの強さ
 
 	float cameraDistance;	// カメラの距離
@@ -46,4 +46,5 @@ private:
 	FieldObjectMainData mainData_;
 
 };
+
 

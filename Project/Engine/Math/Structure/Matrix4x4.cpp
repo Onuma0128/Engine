@@ -1,4 +1,4 @@
-#include "Matrix4x4.h"
+﻿#include "Matrix4x4.h"
 
 #include <cmath>
 #include <numbers>
@@ -78,7 +78,7 @@ Matrix4x4 Matrix4x4::Multiply(const Matrix4x4& m1, const Matrix4x4& m2)
 }
 
 // 拡縮行列の生成
-Matrix4x4 Matrix4x4::Scale(const Vector3& scale) {
+Matrix4x4 Matrix4x4::Scale(const NumaEngine::Vector3& scale) {
     Matrix4x4 result = Identity();
     result.m[0][0] = scale.x;
     result.m[1][1] = scale.y;
@@ -123,12 +123,12 @@ Matrix4x4 Matrix4x4::RotateZ(float radian) {
 }
 
 // 3軸の回転を合成した回転行列
-Matrix4x4 Matrix4x4::Rotate(const Vector3& rotate) {
+Matrix4x4 Matrix4x4::Rotate(const NumaEngine::Vector3& rotate) {
     return RotateX(rotate.x) * RotateY(rotate.y) * RotateZ(rotate.z);
 }
 
 // 移動行列の生成
-Matrix4x4 Matrix4x4::Translate(const Vector3& translate) {
+Matrix4x4 Matrix4x4::Translate(const NumaEngine::Vector3& translate) {
     Matrix4x4 result = Identity();
     result.m[3][0] = translate.x;
     result.m[3][1] = translate.y;
@@ -139,9 +139,9 @@ Matrix4x4 Matrix4x4::Translate(const Vector3& translate) {
 Matrix4x4 Matrix4x4::NormalizeRotation(const Matrix4x4& matrix)
 {
     Matrix4x4 result = matrix;
-    result.m[0][0] = Vector3(matrix.m[0][0], matrix.m[1][0], matrix.m[2][0]).Length();
-    result.m[1][1] = Vector3(matrix.m[0][1], matrix.m[1][1], matrix.m[2][1]).Length();
-    result.m[2][2] = Vector3(matrix.m[0][2], matrix.m[1][2], matrix.m[2][2]).Length();
+    result.m[0][0] = NumaEngine::Vector3(matrix.m[0][0], matrix.m[1][0], matrix.m[2][0]).Length();
+    result.m[1][1] = NumaEngine::Vector3(matrix.m[0][1], matrix.m[1][1], matrix.m[2][1]).Length();
+    result.m[2][2] = NumaEngine::Vector3(matrix.m[0][2], matrix.m[1][2], matrix.m[2][2]).Length();
     return result;
 }
 
@@ -160,23 +160,23 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
 }
 
 // LookAt行列の生成
-Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vector3& up) {
-    Vector3 z = (target - eye).Normalize();          // 視線（左手系: eye→target）
-    Vector3 x = Vector3::Cross(up, z).Normalize();   // 右
-    Vector3 y = Vector3::Cross(z, x);                // 上
+Matrix4x4 Matrix4x4::LookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3& target, const NumaEngine::Vector3& up) {
+    NumaEngine::Vector3 z = (target - eye).Normalize();          // 視線（左手系: eye→target）
+    NumaEngine::Vector3 x = NumaEngine::Vector3::Cross(up, z).Normalize();   // 右
+    NumaEngine::Vector3 y = NumaEngine::Vector3::Cross(z, x);                // 上
 
     Matrix4x4 m = Matrix4x4::Identity();
     // 行ベクトル × 行列 前提
-    m.m[0][0] = x.x;  m.m[0][1] = x.y;  m.m[0][2] = x.z;  m.m[0][3] = -Vector3::Dot(x, eye);
-    m.m[1][0] = y.x;  m.m[1][1] = y.y;  m.m[1][2] = y.z;  m.m[1][3] = -Vector3::Dot(y, eye);
-    m.m[2][0] = z.x;  m.m[2][1] = z.y;  m.m[2][2] = z.z;  m.m[2][3] = -Vector3::Dot(z, eye);
+    m.m[0][0] = x.x;  m.m[0][1] = x.y;  m.m[0][2] = x.z;  m.m[0][3] = -NumaEngine::Vector3::Dot(x, eye);
+    m.m[1][0] = y.x;  m.m[1][1] = y.y;  m.m[1][2] = y.z;  m.m[1][3] = -NumaEngine::Vector3::Dot(y, eye);
+    m.m[2][0] = z.x;  m.m[2][1] = z.y;  m.m[2][2] = z.z;  m.m[2][3] = -NumaEngine::Vector3::Dot(z, eye);
     m.m[3][0] = 0.0f; m.m[3][1] = 0.0f; m.m[3][2] = 0.0f; m.m[3][3] = 1.0f;
     return m;
 }
 
-Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)
+NumaEngine::Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)
 {
-    Vector3 euler{};
+    NumaEngine::Vector3 euler{};
 
     // Y軸（ピッチ）を中心とした回転を考慮した XYZ 回転順の抽出
     if (std::abs(m.m[2][0]) < 1.0f) {
@@ -197,13 +197,13 @@ Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)
 }
 
 // アフィン変換行列の生成
-Matrix4x4 Matrix4x4::Affine(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
+Matrix4x4 Matrix4x4::Affine(const NumaEngine::Vector3& scale, const NumaEngine::Vector3& rotate, const NumaEngine::Vector3& translate) {
     return  Scale(scale) * Rotate(rotate) * Translate(translate);
 }
 
-Matrix4x4 Matrix4x4::Affine(const Vector3& scale, const Quaternion& rotate, const Vector3& translate)
+Matrix4x4 Matrix4x4::Affine(const NumaEngine::Vector3& scale, const NumaEngine::Quaternion& rotate, const NumaEngine::Vector3& translate)
 {
-    return Scale(scale) * Quaternion::MakeRotateMatrix(rotate) * Translate(translate);
+    return Scale(scale) * NumaEngine::Quaternion::MakeRotateMatrix(rotate) * Translate(translate);
 }
 
 // 逆行列の生成
@@ -282,10 +282,10 @@ Matrix4x4 Matrix4x4::Orthographic(float left, float right, float bottom, float t
     return result;
 }
 
-Matrix4x4 Matrix4x4::MakeRotateAxisAngle(const Vector3& axis, float angle)
+Matrix4x4 Matrix4x4::MakeRotateAxisAngle(const NumaEngine::Vector3& axis, float angle)
 {
     // 回転軸を正規化
-    Vector3 normalizeAxis = axis.Normalize();
+    NumaEngine::Vector3 normalizeAxis = axis.Normalize();
     float x = normalizeAxis.x, y = normalizeAxis.y, z = normalizeAxis.z;
 
     // 角度の三角関数
@@ -318,31 +318,34 @@ Matrix4x4 Matrix4x4::MakeRotateAxisAngle(const Vector3& axis, float angle)
     return rotation;
 }
 
-Matrix4x4 Matrix4x4::DirectionToDirection(const Vector3& from, const Vector3& to)
+Matrix4x4 Matrix4x4::DirectionToDirection(const NumaEngine::Vector3& from, const NumaEngine::Vector3& to)
 {
     // 入力ベクトルの正規化
-    Vector3 fromNorm = from.Normalize();
-    Vector3 toNorm = to.Normalize();
+    NumaEngine::Vector3 fromNorm = from.Normalize();
+    NumaEngine::Vector3 toNorm = to.Normalize();
 
     // 回転軸を計算し、正規化
-    Vector3 axis = Vector3::Cross(fromNorm, toNorm);
+    NumaEngine::Vector3 axis = NumaEngine::Vector3::Cross(fromNorm, toNorm);
 
     // from と to が同じ方向の場合、単位行列を返す
     if (axis.Length() < 1e-6f) {
         // 同方向: 単位行列
-        if (Vector3::Dot(fromNorm, toNorm) > 0.9999f) {
+        if (NumaEngine::Vector3::Dot(fromNorm, toNorm) > 0.9999f) {
             return Matrix4x4::Identity();
         }
 
         // 逆方向: 任意の軸で180度回転
-        Vector3 arbitraryAxis = (std::abs(fromNorm.x) < 0.1f) ? Vector3(1.0f, 0.0f, 0.0f) : Vector3(0.0f, 1.0f, 0.0f);
-        axis = Vector3::Cross(fromNorm, arbitraryAxis).Normalize();
+        NumaEngine::Vector3 arbitraryAxis = (std::abs(fromNorm.x) < 0.1f) ? NumaEngine::Vector3(1.0f, 0.0f, 0.0f) : NumaEngine::Vector3(0.0f, 1.0f, 0.0f);
+        axis = NumaEngine::Vector3::Cross(fromNorm, arbitraryAxis).Normalize();
         return MakeRotateAxisAngle(axis, std::numbers::pi_v<float>);
     }
 
     axis = axis.Normalize();
-    float cosTheta = Vector3::Dot(fromNorm, toNorm);
+    float cosTheta = NumaEngine::Vector3::Dot(fromNorm, toNorm);
 
     // 回転行列を返す
     return MakeRotateAxisAngle(axis, std::acos(cosTheta));
 }
+
+
+

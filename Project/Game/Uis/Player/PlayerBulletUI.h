@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Sprite.h"
 
@@ -13,14 +13,14 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="position"></param>
-	void Init(const Vector2& position);
+	void Init(const NumaEngine::Vector2& position);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
 	/// <param name="size"></param>
 	/// <param name="position"></param>
-	void Update(const Vector2& size, const Vector2& position);
+	void Update(const NumaEngine::Vector2& size, const NumaEngine::Vector2& position);
 
 	/// <summary>
 	/// 描画
@@ -30,4 +30,5 @@ public:
 private:
 
 };
+
 

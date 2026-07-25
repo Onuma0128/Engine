@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Object3d.h"
 
@@ -20,7 +20,7 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="offset"></param>
-	void Update(const Vector3& offset);
+	void Update(const NumaEngine::Vector3& offset);
 
 	/// <summary>
 	/// プレイヤーを設定する
@@ -33,3 +33,4 @@ private:
 	Player* player_ = nullptr;
 	
 };
+

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <vector>
@@ -36,19 +36,19 @@ public:
 	/// 現在のスプライン上の速度を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Vector3& GetVelocity() { return velocity_; }
+	const NumaEngine::Vector3& GetVelocity() { return velocity_; }
 
 	/// <summary>
 	/// 現在のスプライン上の座標を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Vector3& GetPosition() { return position_; }
+	const NumaEngine::Vector3& GetPosition() { return position_; }
 
 	/// <summary>
 	/// 現在のスプライン上のy回転のクォータニオンを取得する
 	/// </summary>
 	/// <returns></returns>
-	const Quaternion& GetRotation() { return yRotation_; }
+	const NumaEngine::Quaternion& GetRotation() { return yRotation_; }
 
 	/// <summary>
 	/// スプラインのデバッグ描画を有効/無効にする
@@ -72,7 +72,7 @@ public:
 	/// スプラインの座標を追加する
 	/// </summary>
 	/// <param name="position"></param>
-	void PushSplinePositions(const Vector3& position) {
+	void PushSplinePositions(const NumaEngine::Vector3& position) {
 		splinePositions_.push_back(position);
 	}
 
@@ -103,12 +103,12 @@ private:
 	/// <param name="linePositions"></ラインの配列を取得する>
 	/// <param name="start"></座標のスタート>
 	/// <param name="end"></座標の終了>
-	void SetLinePosition(std::vector<Vector3>& linePositions, const Vector3& start, const Vector3& end);
+	void SetLinePosition(std::vector<NumaEngine::Vector3>& linePositions, const NumaEngine::Vector3& start, const NumaEngine::Vector3& end);
 
 private:
 
 	// アルゴリズムで出た座標を格納
-	std::vector<Vector3> splinePositions_;
+	std::vector<NumaEngine::Vector3> splinePositions_;
 	std::unique_ptr<Line3d> splines_;
 	// 累積距離
 	std::vector<float> arcLengths_;
@@ -117,11 +117,13 @@ private:
 	float currentDistance_;
 
 	// 今の座標と次の座標
-	Vector3 position_;
-	Vector3 lookAtPosition_;
-	Vector3 velocity_;
+	NumaEngine::Vector3 position_;
+	NumaEngine::Vector3 lookAtPosition_;
+	NumaEngine::Vector3 velocity_;
 	// 今の座標から見た回転
-	Quaternion yRotation_;
+	NumaEngine::Quaternion yRotation_;
 
 };
+
+
 

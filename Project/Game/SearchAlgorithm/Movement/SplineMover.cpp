@@ -1,4 +1,4 @@
-#include "SplineMover.h"
+﻿#include "SplineMover.h"
 
 #include "DeltaTimer.h"
 
@@ -22,17 +22,17 @@ void SplineMover::Update(const float speed, float lookAt_t)
 	currentDistance_ += speed * DeltaTimer::GetDeltaTime();
 	float t = GetArcLengthParam(currentDistance_);
 
-	if (splinePositions_.empty()) { return; }
-	position_ = Vector3::CatmullRomPosition(splinePositions_, t);
-	lookAtPosition_ = Vector3::CatmullRomPosition(splinePositions_, t + lookAt_t);
+    if (splinePositions_.empty()) { return; }
+	position_ = NumaEngine::Vector3::CatmullRomPosition(splinePositions_, t);
+	lookAtPosition_ = NumaEngine::Vector3::CatmullRomPosition(splinePositions_, t + lookAt_t);
 
 	if (t < 1.0f) {
 		// ベクトルの方向に回転
-		velocity_ = { lookAtPosition_ - position_ };
-		Vector3 targetDirection = { -velocity_.x, 0.0f, velocity_.z };
-		Vector3 currentDirection = Vector3::ExprUnitZ;
+        velocity_ = { lookAtPosition_ - position_ };
+		NumaEngine::Vector3 targetDirection = { -velocity_.x, 0.0f, velocity_.z };
+		NumaEngine::Vector3 currentDirection = NumaEngine::Vector3::ExprUnitZ;
 		Matrix4x4 rotationMatrix = Matrix4x4::DirectionToDirection(currentDirection, targetDirection);
-		yRotation_ = Quaternion::FormRotationMatrix(rotationMatrix);
+		yRotation_ = NumaEngine::Quaternion::FormRotationMatrix(rotationMatrix);
 	}
 
 
@@ -45,18 +45,18 @@ void SplineMover::ComputeArcLengths()
 		splinePositions_.clear();
 		return;
 	}
-	std::vector<Vector3> linePositions;
+    std::vector<NumaEngine::Vector3> linePositions;
 
 	arcLengths_.clear();
 	float totalLength = 0.0f;
 	arcLengths_.push_back(0.0f); // 始点
 
-	Vector3 prevPos = Vector3::CatmullRomPosition(splinePositions_, 0.0f);
+    NumaEngine::Vector3 prevPos = NumaEngine::Vector3::CatmullRomPosition(splinePositions_, 0.0f);
 	const int kNumSamples = 100; // サンプリング数
 
 	for (int i = 1; i <= kNumSamples; i++) {
 		float t = static_cast<float>(i) / kNumSamples;
-		Vector3 currentPos = Vector3::CatmullRomPosition(splinePositions_, t);
+        NumaEngine::Vector3 currentPos = NumaEngine::Vector3::CatmullRomPosition(splinePositions_, t);
 		totalLength += (currentPos - prevPos).Length(); // 距離を積算
 		arcLengths_.push_back(totalLength);
 #ifdef ENABLE_EDITOR
@@ -67,10 +67,10 @@ void SplineMover::ComputeArcLengths()
 
 #ifdef ENABLE_EDITOR
 	// ラインの初期化
-	if (splines_ == nullptr) {
+        if (splines_ == nullptr) {
 		splines_ = std::make_unique<Line3d>();
 		splines_->Initialize(linePositions);
-		splines_->SetColor(Vector3::ExprUnitZ);
+        splines_->SetColor(NumaEngine::Vector3::ExprUnitZ);
 	} else {
 		splines_->SetPositions(linePositions);
 		splines_->Update();
@@ -92,10 +92,12 @@ float SplineMover::GetArcLengthParam(float targetDistance)
 	return 1.0f; // 終点
 }
 
-void SplineMover::SetLinePosition(std::vector<Vector3>& linePositions, const Vector3& start, const Vector3& end)
+void SplineMover::SetLinePosition(std::vector<NumaEngine::Vector3>& linePositions, const NumaEngine::Vector3& start, const NumaEngine::Vector3& end)
 {
 	const float kY = 0.25f;
 
-	linePositions.push_back(Vector3{ start.x,kY,start.z });
-	linePositions.push_back(Vector3{ end.x,kY,end.z });
+	linePositions.push_back(NumaEngine::Vector3{ start.x,kY,start.z });
+	linePositions.push_back(NumaEngine::Vector3{ end.x,kY,end.z });
 }
+
+

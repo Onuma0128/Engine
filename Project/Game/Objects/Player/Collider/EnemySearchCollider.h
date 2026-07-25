@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Collider.h"
 
@@ -28,7 +28,7 @@ public:
 	/// 一番近い敵の座標を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Vector3& GetTargetPosition()const { return targetPosition_; }
+	const NumaEngine::Vector3& GetTargetPosition()const { return targetPosition_; }
 
 	// アクセッサ
 	void SetPlayer(Player* player) { player_ = player; }
@@ -61,7 +61,7 @@ private:
 	Collider* targetCollider_ = nullptr;
 
 	// 一番近い敵の座標
-	Vector3 targetPosition_;
+	NumaEngine::Vector3 targetPosition_;
 
 	// 一番近い敵との距離
 	float targetDistance_;
@@ -69,4 +69,6 @@ private:
 	// 敵と当たっているか
 	bool isHit_ = false;
 };
+
+
 

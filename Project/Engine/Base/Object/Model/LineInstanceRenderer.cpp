@@ -1,4 +1,4 @@
-#include "LineInstanceRenderer.h"
+﻿#include "LineInstanceRenderer.h"
 
 #include "DirectXEngine.h"
 #include "SrvManager.h"
@@ -72,7 +72,7 @@ void LineInstanceRenderer::CreateSB()
     sbPS_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material) * maxInstance);
     sbPS_->Map(0, nullptr, reinterpret_cast<void**>(&materialDatas_));
     for (uint32_t i = 0; i < maxInstance; ++i) {
-        materialDatas_[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        materialDatas_[i].color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         materialDatas_[i].enableDraw = true;
         materialDatas_[i].enableLighting = true;
         materialDatas_[i].outlineMask = false;
@@ -135,7 +135,7 @@ uint32_t LineInstanceRenderer::GetLineID(Line3d* owner)
     return entries_[owner].lineID;
 }
 
-void LineInstanceRenderer::SetLineInstances(Line3d* owner, const std::vector<Vector3>& positions)
+void LineInstanceRenderer::SetLineInstances(Line3d* owner, const std::vector<NumaEngine::Vector3>& positions)
 {
     if (!owner) return;
     // 未登録なら登録
@@ -224,3 +224,4 @@ void LineInstanceRenderer::Draws()
 
     DirectXEngine::GetCommandList()->DrawInstanced(2, totalInstances_, 0, 0);
 }
+

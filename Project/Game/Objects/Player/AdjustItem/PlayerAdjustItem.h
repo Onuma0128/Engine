@@ -1,13 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include "JsonFunction.h"
 
 // プレイヤーの項目
 struct PlayerData {
-	bool isInvincible;			// 無敵(デバッグ用)
+    bool isInvincible;			// 無敵(デバッグ用)
 	int clearKill;				// クリアに遷移するキル数
-	Vector2 minPlayerClamp;		// プレイヤーが行動できる最小範囲
-	Vector2 maxPlayerClamp;		// プレイヤーが行動できる最大範囲
+	NumaEngine::Vector2 minPlayerClamp;		// プレイヤーが行動できる最小範囲
+	NumaEngine::Vector2 maxPlayerClamp;		// プレイヤーが行動できる最大範囲
 
 	float speed;				// 移動速度
 	float backSpeed;			// 後ろ歩きの移動速度
@@ -18,15 +18,15 @@ struct PlayerData {
 	float avoid_velocityY;		// 避けのジャンプ高さ
 	float avoid_acceleration;	// 避けの加速度
 	float avoid_coolTime;		// 避けの待機時間
-	Vector3 avoidEffectScale;	// 避けのエフェクトの大きさ
-	Vector3 avoidEffectPos;		// 避けのエフェクトの座標
+	NumaEngine::Vector3 avoidEffectScale;	// 避けのエフェクトの大きさ
+	NumaEngine::Vector3 avoidEffectPos;		// 避けのエフェクトの座標
 	float avoidEffectAlpha;		// 避けのエフェクトのアルファ値
 
 	float needMachoEffectTime;		// マッチョ不足のエフェクトアニメーションタイム
-	Vector3 needMachoScale;			// マッチョ不足のエフェクトスケール
-	Vector3 needMachoPos;			// マッチョ不足のエフェクト座標
-	Vector3 needMachoVarianceScale;	// マッチョ不足のエフェクト変動スケール
-	Vector3 needMachoVariancePos;	// マッチョ不足のエフェクト変動座標
+	NumaEngine::Vector3 needMachoScale;			// マッチョ不足のエフェクトスケール
+	NumaEngine::Vector3 needMachoPos;			// マッチョ不足のエフェクト座標
+	NumaEngine::Vector3 needMachoVarianceScale;	// マッチョ不足のエフェクト変動スケール
+	NumaEngine::Vector3 needMachoVariancePos;	// マッチョ不足のエフェクト変動座標
 
 	float searchRadius;			// 敵を探す半径
 	float checkPointDistance;	// タイトルのプレイヤー移動のヒットする距離
@@ -36,29 +36,29 @@ struct PlayerData {
 struct BulletData {
 	float speed;				// 弾の速度
 	float speed_sp;				// 必殺技の弾の速度
-	Vector3 position;			// 弾が出てくる座標
+ NumaEngine::Vector3 position;			// 弾が出てくる座標
 	int maxChargeCount_sp;		// 必殺技の最大チャージ数
 
 	float reloadStartTime;		// 弾のリロードを開始する時間
 	float reloadTime;			// 弾をリロードする時間
 
-	Vector3 colliderSize;		// コライダーのサイズ
-	Vector3 colliderPosition;	// コライダーの中心座標
+    NumaEngine::Vector3 colliderSize;		// コライダーのサイズ
+	NumaEngine::Vector3 colliderPosition;	// コライダーの中心座標
 };
 
 // 弾の予測オブジェクトの項目
 struct PreObjectData {
 	float interval;				// オブジェクトごとの間隔
-	Vector3 startPosition;		// 最初のZ座標
+   NumaEngine::Vector3 startPosition;		// 最初のZ座標
 
-	Vector3 rayColliderSize;	// レイコライダーのサイズ
-	Vector3 rayColliderPosition;// レイコライダーの座標
+  NumaEngine::Vector3 rayColliderSize;	// レイコライダーのサイズ
+	NumaEngine::Vector3 rayColliderPosition;// レイコライダーの座標
 };
 
 // 弾UIの項目
 struct BulletUIData {
-	Vector2 size;				// UIのサイズ
-	Vector2 position;			// 座標(一つ一つの間隔的な)
+	NumaEngine::Vector2 size;				// UIのサイズ
+    NumaEngine::Vector2 position;			// 座標(一つ一つの間隔的な)
 	float startPosition;		// 最初の座標
 };
 
@@ -110,4 +110,6 @@ private:
 	BulletUIData bulletUIData_;
 
 };
+
+
 

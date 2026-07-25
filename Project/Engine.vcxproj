@@ -347,6 +347,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Game\Objects\MuscleCompanion\Effect\MuscleCountEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\3d\Sprite.h" />
     <ClInclude Include="Game\Objects\Player\Collider\EnemySearchCollider.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionClearState.h" />
@@ -572,6 +573,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <None Include="Resources\Shaders\PrimitiveDrawr.hlsli" />
     <None Include="Resources\Shaders\Skybox.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli" />
+    <None Include="scripts\fix_double_namespace.ps1" />
+    <None Include="scripts\fix_includes.ps1" />
+    <None Include="scripts\qualify_types.ps1" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\SpriteDissolve.PS.hlsl">

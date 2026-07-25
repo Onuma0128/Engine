@@ -1,4 +1,4 @@
-#include "CompanionClearState.h"
+﻿#include "CompanionClearState.h"
 
 #include <numbers>
 
@@ -24,13 +24,14 @@ void CompanionClearState::Finalize()
 void CompanionClearState::Update()
 {
 	// 回転をしてカメラ方向に向ける
-	Quaternion preRotate = companion_->GetTransform().rotation_;
-	Quaternion postRotate = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, std::numbers::pi_v<float>);
+	NumaEngine::Quaternion preRotate = companion_->GetTransform().rotation_;
+	NumaEngine::Quaternion postRotate = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, std::numbers::pi_v<float>);
 
-	companion_->SetTransformRotation(Quaternion::Lerp(preRotate, postRotate, 0.2f));
+	companion_->SetTransformRotation(NumaEngine::Quaternion::Lerp(preRotate, postRotate, 0.2f));
 }
 
 void CompanionClearState::Draw()
 {
 }
+
 

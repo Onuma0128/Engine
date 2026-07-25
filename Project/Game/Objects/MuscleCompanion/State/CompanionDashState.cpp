@@ -1,4 +1,4 @@
-#include "CompanionDashState.h"
+﻿#include "CompanionDashState.h"
 
 #include "DeltaTimer.h"
 
@@ -13,7 +13,7 @@ void CompanionDashState::Init()
 {
 	// アニメーションを変更
 	companion_->PlayByName("Run");
-	companion_->GetMaterial().outlineColor = Vector3::ExprZero;
+	companion_->GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 	// 集合要求フラグをfalseにする
 	companion_->SetGatherRequested(false);
 	// 元の場所に戻ったフラグをfalseにする
@@ -25,12 +25,12 @@ void CompanionDashState::Init()
 
 	// 向きをプレイヤーと同じにする
 	const auto& player = companion_->GetPlayer();
-	Vector3 targetPosition = player->GetTransform().translation_;
+	NumaEngine::Vector3 targetPosition = player->GetTransform().translation_;
 	const float distance = companion_->GetItems()->GetDashData().dashTargetDistance;
 
 	if (!player->GetShot()->GetTargetCollider()) {
-		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(player->GetTransform().rotation_);
-		targetPosition += (Vector3::ExprUnitZ * distance).Transform(rotate);
+		Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(player->GetTransform().rotation_);
+		targetPosition += (NumaEngine::Vector3::ExprUnitZ * distance).Transform(rotate);
 	} else {
 		targetCollider_ = player->GetShot()->GetTargetCollider();
 		// 探索を更新する
@@ -42,7 +42,7 @@ void CompanionDashState::Init()
 	velocity_.y = 0.0f;
 	velocity_ = velocity_.Normalize();
 	// 攻撃時の回転を設定する
-	yRotation_ = Quaternion::DirectionToQuaternion(
+	yRotation_ = NumaEngine::Quaternion::DirectionToQuaternion(
 		companion_->GetTransform().rotation_, velocity_, 1.0f);
 	companion_->SetTransformRotation(yRotation_);
 	companion_->SetDashDirection(velocity_);
@@ -81,8 +81,8 @@ void CompanionDashState::Update()
 
 		// 移動時の回転の更新
 		if (velocity_.Length() != 0.0f) {
-			Quaternion yRotation = companion_->GetPathFinder().GetRotation();
-			companion_->SetTransformRotation(Quaternion::Slerp(companion_->GetTransform().rotation_, yRotation, 0.2f));
+			NumaEngine::Quaternion yRotation = companion_->GetPathFinder().GetRotation();
+			companion_->SetTransformRotation(NumaEngine::Quaternion::Slerp(companion_->GetTransform().rotation_, yRotation, 0.2f));
 		}
 		if (!targetCollider_->GetActive()) {
 			companion_->SetGatherRequested(true);
@@ -92,9 +92,9 @@ void CompanionDashState::Update()
 	}
 
 	// 移動を更新
-	Vector3 position = companion_->GetTransform().translation_ + velocity_ * speed * DeltaTimer::GetDeltaTime();
-	Vector2 min = companion_->GetPlayer()->GetItem()->GetPlayerData().minPlayerClamp;
-	Vector2 max = companion_->GetPlayer()->GetItem()->GetPlayerData().maxPlayerClamp;
+	NumaEngine::Vector3 position = companion_->GetTransform().translation_ + velocity_ * speed * DeltaTimer::GetDeltaTime();
+	NumaEngine::Vector2 min = companion_->GetPlayer()->GetItem()->GetPlayerData().minPlayerClamp;
+	NumaEngine::Vector2 max = companion_->GetPlayer()->GetItem()->GetPlayerData().maxPlayerClamp;
 	position.x = std::clamp(position.x, min.x, max.x);
 	position.z = std::clamp(position.z, min.y, max.y);
 	if(position.x == min.x || position.x == max.x || position.z == min.y || position.z == max.y){
@@ -110,3 +110,4 @@ void CompanionDashState::Update()
 void CompanionDashState::Draw()
 {
 }
+

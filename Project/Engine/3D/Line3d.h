@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define NOMINMAX
 #include <d3d12.h>
@@ -26,7 +26,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="positions"></座標のリストを入れる>
-	void Initialize(const std::vector<Vector3>& positions);
+    void Initialize(const std::vector<NumaEngine::Vector3>& positions);
 
 	/// <summary>
 	/// 更新
@@ -50,18 +50,18 @@ public:
 	Material& GetMaterial() { return materialData_; }
 
 	// 座標設定
-	void SetPositions(const std::vector<Vector3>& positions);
+    void SetPositions(const std::vector<NumaEngine::Vector3>& positions);
 	// 色設定
-	void SetColor(const Vector3& color);
+	void SetColor(const NumaEngine::Vector3& color);
 
 	// ボックスを作成
-	std::vector<Vector3> CreateBox(const Vector3& min, const Vector3& max);
+    std::vector<NumaEngine::Vector3> CreateBox(const NumaEngine::Vector3& min, const NumaEngine::Vector3& max);
 	// 球を作成
-	std::vector<Vector3> CreateSphere(float radius);
+    std::vector<NumaEngine::Vector3> CreateSphere(float radius);
 	// セグメントを作成
-	std::vector<Vector3> CreateSegment(const Vector3& start, const Vector3& direction);
+    std::vector<NumaEngine::Vector3> CreateSegment(const NumaEngine::Vector3& start, const NumaEngine::Vector3& direction);
 	// グリッドを作成
-	std::vector<Vector3> CreateGrid(float cell, float size, float y = 0.0f);
+    std::vector<NumaEngine::Vector3> CreateGrid(float cell, float size, float y = 0.0f);
 
 private:
 
@@ -72,4 +72,7 @@ private:
 	uint32_t lineIndex_ = 0;
 
 };
+
+
+
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 
@@ -50,7 +50,7 @@ public:
 	/// <summary>
 	/// 経路探索をリセットする
 	/// </summary>
-	void ResetSearch(const Vector3& goalPosition);
+	void ResetSearch(const NumaEngine::Vector3& goalPosition);
 
 	/// <summary>
 	/// ボスがスタートする
@@ -127,4 +127,5 @@ private:
 
 
 };
+
 

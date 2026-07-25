@@ -1,4 +1,4 @@
-#include "MapCollision.h"
+﻿#include "MapCollision.h"
 
 #include "imgui.h"
 
@@ -12,7 +12,7 @@ void MapCollision::Init(SceneJsonLoader loader)
 			auto& object = it->second;
 			if (object.collider.active) {
 				if (object.collider.type == ColliderType::kOBB) {
-					Vector2 center = Vector2::Rotate(
+					NumaEngine::Vector2 center = NumaEngine::Vector2::Rotate(
 						{ object.collider.center.x,object.collider.center.z },
 						-object.collider.rotate
 					);
@@ -109,7 +109,7 @@ void MapCollision::CreateMap()
 			float minY = -half_ + i * cell_;
 			map.aabb.min = { minX, minY };
 			map.aabb.max = { minX + cell_, minY + cell_ };
-			Vector2 center = (map.aabb.min + map.aabb.max) * kHalfValue_;
+			NumaEngine::Vector2 center = (map.aabb.min + map.aabb.max) * kHalfValue_;
 			map.center = { center.x,0.0f,center.y };
 			map.isEnable = true;
 			mapDatas_[i][j] = map;
@@ -156,3 +156,4 @@ void MapCollision::ReloadMap()
 	CreateMapCollision();
 	grid_->SetHitAABBPositions();
 }
+

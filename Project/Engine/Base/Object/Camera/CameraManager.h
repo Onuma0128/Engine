@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -26,7 +26,7 @@ private:
 
 	// GPU用カメラデータ構造体
 	struct CameraForGPU {
-		Vector3 worldPosition;
+		NumaEngine::Vector3 worldPosition;
 	};
 
 public:
@@ -90,4 +90,6 @@ private:
 	CameraForGPU* cameraData_ = nullptr;
 
 };
+
+
 

@@ -1,4 +1,4 @@
-#include "CameraAdjustItem.h"
+﻿#include "CameraAdjustItem.h"
 
 #include "imgui.h"
 
@@ -9,18 +9,18 @@ void CameraAdjustItem::LoadItems()
     /* ============================== GameCamera ============================== */
     cameraJson_.Init("GameCamera");
     if (!cameraJson_.Load()) {
-        cameraJson_.Set("mainRotate", Vector3{});
-        cameraJson_.Set("mainPosition", Vector3{});
+        cameraJson_.Set("mainRotate", NumaEngine::Vector3{});
+        cameraJson_.Set("mainPosition", NumaEngine::Vector3{});
 
         cameraData_.maxClearCameraPoint = 0;
         cameraJson_.Set("maxClearCameraPoint", 0);
         cameraJson_.Set("clearTime0", 0.0f);
-        cameraJson_.Set("clearRotate0", Vector3{});
-        cameraJson_.Set("clearPosition0", Vector3{});
+        cameraJson_.Set("clearRotate0", NumaEngine::Vector3{});
+        cameraJson_.Set("clearPosition0", NumaEngine::Vector3{});
         cameraJson_.Set("clearShackIndex", 0);
         cameraJson_.Set("clearShackPow", 0.0f);
 
-        cameraJson_.Set("sabPosition", Vector3{});
+        cameraJson_.Set("sabPosition", NumaEngine::Vector3{});
         cameraJson_.Set("isSabRotate", false);
         cameraJson_.Set("sabRotateSpeed", 0.0f);
         cameraJson_.Set("sabRadius", 0.0f);
@@ -29,10 +29,10 @@ void CameraAdjustItem::LoadItems()
         cameraJson_.Set("bossStartupTime", 0.0f);
         cameraJson_.Set("bossActiveTime", 0.0f);
         cameraJson_.Set("bossRecoverTime", 0.0f);
-        cameraJson_.Set("bossStartRotate", Vector3{});
-        cameraJson_.Set("bossStartPosition", Vector3{});
-        cameraJson_.Set("bossEndRotate", Vector3{});
-        cameraJson_.Set("bossEndPosition", Vector3{});
+        cameraJson_.Set("bossStartRotate", NumaEngine::Vector3{});
+        cameraJson_.Set("bossStartPosition", NumaEngine::Vector3{});
+        cameraJson_.Set("bossEndRotate", NumaEngine::Vector3{});
+        cameraJson_.Set("bossEndPosition", NumaEngine::Vector3{});
 
     } else {
         cameraData_.mainPosition = cameraJson_.Get("mainPosition", cameraData_.mainPosition);
@@ -42,8 +42,8 @@ void CameraAdjustItem::LoadItems()
         cameraData_.clearData.resize(cameraData_.maxClearCameraPoint);
         for (int i = 0; i < cameraData_.maxClearCameraPoint; ++i) {
             cameraData_.clearData[i].time = cameraJson_.Get("clearTime" + std::to_string(i), 0.0f);
-            cameraData_.clearData[i].rotate = cameraJson_.Get("clearRotate" + std::to_string(i), Vector3{});
-            cameraData_.clearData[i].position = cameraJson_.Get("clearPosition" + std::to_string(i), Vector3{});
+            cameraData_.clearData[i].rotate = cameraJson_.Get("clearRotate" + std::to_string(i), NumaEngine::Vector3{});
+            cameraData_.clearData[i].position = cameraJson_.Get("clearPosition" + std::to_string(i), NumaEngine::Vector3{});
         }
         cameraData_.clearShackIndex = cameraJson_.Get("clearShackIndex", cameraData_.clearShackIndex);
         cameraData_.clearShackPow = cameraJson_.Get("clearShackPow", cameraData_.clearShackPow);
@@ -158,8 +158,8 @@ void CameraAdjustItem::Editor()
 
             for (int i = 0; i < writeCount; ++i) {
                 float time = (i < cameraData_.maxClearCameraPoint) ? cameraData_.clearData[i].time : 0.0f;
-                Vector3 rotate = (i < cameraData_.maxClearCameraPoint) ? cameraData_.clearData[i].rotate : Vector3{};
-                Vector3 pos = (i < cameraData_.maxClearCameraPoint) ? cameraData_.clearData[i].position : Vector3{};
+                NumaEngine::Vector3 rotate = (i < cameraData_.maxClearCameraPoint) ? cameraData_.clearData[i].rotate : NumaEngine::Vector3{};
+                NumaEngine::Vector3 pos = (i < cameraData_.maxClearCameraPoint) ? cameraData_.clearData[i].position : NumaEngine::Vector3{};
                 cameraJson_.Set("clearTime" + std::to_string(i), time);
                 cameraJson_.Set("clearRotate" + std::to_string(i), rotate);
                 cameraJson_.Set("clearPosition" + std::to_string(i), pos);
@@ -193,3 +193,4 @@ void CameraAdjustItem::Editor()
 
     ImGui::End();
 }
+

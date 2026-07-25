@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -42,15 +42,15 @@ public:
 	
 	// setter
 	// RT部分
-	void SetRotation(const Vector3& rotate) { transform_.rotation = rotate; }
-	void SetTranslation(const Vector3& translate) { transform_.translation = translate; }
+	void SetRotation(const NumaEngine::Vector3& rotate) { transform_.rotation = rotate; }
+	void SetTranslation(const NumaEngine::Vector3& translate) { transform_.translation = translate; }
 
 	// カメラの設定
 	void SetFovY(const float fovY) { fovY_ = fovY; }
 	void SetAspectRatio(const float aspectRatio) { aspectRatio_ = aspectRatio; }
 	void SetNearClip(const float nearClip) { nearClip_ = nearClip; }
 	void SetFarClip(const float farClip) { farClip_ = farClip; }
-	void SetLookAt(const Vector3& eye, const Vector3& target);
+	void SetLookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3& target);
 
 	// getter
 	const Matrix4x4& GetWorldMatrix()const { return worldMatrix_; }
@@ -66,8 +66,8 @@ public:
 		return viewportMatrix_;
 	}
 
-	const Vector3& GetRotation()const { return transform_.rotation; }
-	const Vector3& GetTranslation()const { return transform_.translation; }
+	const NumaEngine::Vector3& GetRotation()const { return transform_.rotation; }
+	const NumaEngine::Vector3& GetTranslation()const { return transform_.translation; }
 	const bool GetIsDebug()const { return isDebug_; }
 
 	const float GetNearClip()const { return nearClip_; }

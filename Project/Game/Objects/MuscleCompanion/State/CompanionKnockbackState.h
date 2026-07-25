@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Objects/MuscleCompanion/State/CompanionBaseState.h"
 
@@ -49,9 +49,12 @@ private:
 	float timer_ = 0.0f;
 	float maxTime_ = 0.0f;
 
-	// ノックバックされる座標
-	Vector3 prePos_ = {};
-	Vector3 target_ = {};
+    // ノックバックされる座標
+	NumaEngine::Vector3 prePos_ = {};
+	NumaEngine::Vector3 target_ = {};
 
 };
+
+
+
 

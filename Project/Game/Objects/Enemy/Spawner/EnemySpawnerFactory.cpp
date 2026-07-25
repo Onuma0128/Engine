@@ -1,4 +1,4 @@
-#include "EnemySpawnerFactory.h"
+﻿#include "EnemySpawnerFactory.h"
 
 #include "DeltaTimer.h"
 
@@ -63,14 +63,14 @@ void EnemySpawnerFactory::Draw()
 
 }
 
-void EnemySpawnerFactory::SetSpawnEnemy(EnemyType type, const Vector3& position)
+void EnemySpawnerFactory::SetSpawnEnemy(EnemyType type, const NumaEngine::Vector3& position)
 {
 	const auto& enemys = GetEnemys(type);
 
 	for (const auto& enemy : enemyMelees_) {
 		if (!enemy->GetEnableMove()) {
-			Vector3 pos = position;
-			enemy->Reset(Vector3{ pos.x,0.0f,pos.z });
+			NumaEngine::Vector3 pos = position;
+			enemy->Reset(NumaEngine::Vector3{ pos.x,0.0f,pos.z });
 			enemySpawners_[0]->GetEnemyList().push_back(enemy.get());
 			break;
 		}
@@ -202,8 +202,8 @@ void EnemySpawnerFactory::ResetTypeEnemy(std::list<std::unique_ptr<BaseEnemy>>& 
 	for (auto& enemy : enemys) {
 		if (!enemy->GetEnableMove()) {
 			++spawnCount_;
-			Vector3 pos = spawner->GetTransform().translation_;
-			enemy->Reset(Vector3{ pos.x,0.0f,pos.z });
+			NumaEngine::Vector3 pos = spawner->GetTransform().translation_;
+			enemy->Reset(NumaEngine::Vector3{ pos.x,0.0f,pos.z });
 			spawner->GetEnemyList().push_back(enemy.get());
 			break;
 		}

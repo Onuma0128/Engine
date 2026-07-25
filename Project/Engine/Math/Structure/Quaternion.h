@@ -1,82 +1,89 @@
 #pragma once
-
 #include <string>
 
-class Vector3;
 class Matrix4x4;
 
-/// <summary>
-/// クォータニオンを表す構造体
-/// </summary>
-class Quaternion
-{
-public:
-	float x, y, z, w;
+namespace NumaEngine {
+    class Vector3;
 
-    // コンストラクタ
-    Quaternion(float x = 0, float y = 0, float z = 0, float w = 1);
+    /// <summary>
+    /// クォータニオンを表す構造体
+    /// </summary>
+    class Quaternion
+    {
+    public:
+        float x, y, z, w;
 
-    // QuaternionのImGui表示
-    void ImGuiQuaternion(const std::string& imguiName) const;
+        // コンストラクタ
+        Quaternion(float x = 0, float y = 0, float z = 0, float w = 1);
 
-    // 単位Quaternion
-    static Quaternion IdentityQuaternion();
+        // QuaternionのImGui表示
+        void ImGuiQuaternion(const std::string& imguiName) const;
 
-    // Quaternionの加算
-    void AddRotation(const Quaternion& deltaRotation);
+        // 単位Quaternion
+        static Quaternion IdentityQuaternion();
 
-    // 共役Quaternion
-    static Quaternion Conjugate(const Quaternion& quaternion);
+        // Quaternionの加算
+        void AddRotation(const Quaternion& deltaRotation);
 
-    // ノルムQuaternion
-    static float Norm(const Quaternion& quaternion);
+        // 共役Quaternion
+        static Quaternion Conjugate(const Quaternion& quaternion);
 
-    // 内積Quaternion
-    static float Dot(const Quaternion& q0, const Quaternion& q1);
+        // ノルムQuaternion
+        static float Norm(const Quaternion& quaternion);
 
-    // 正規化Quaternion
-    static Quaternion Normalize(const Quaternion& quaternion);
+        // 内積Quaternion
+        static float Dot(const Quaternion& q0, const Quaternion& q1);
 
-    // 逆Quaternion
-    static Quaternion Inverse(const Quaternion& quaternion);
+        // 正規化Quaternion
+        static Quaternion Normalize(const Quaternion& quaternion);
 
-    // 任意軸回転を表すQuaternion
-    static Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle);
+        // 逆Quaternion
+        static Quaternion Inverse(const Quaternion& quaternion);
 
-    // VelocityからQuaternionを計算
-    static Quaternion DirectionToQuaternion(const Quaternion& quaternion, const Vector3& direction, const float lerp);
-    static Quaternion DirectionToQuaternion(const Quaternion& quaternion, const Vector3 addFoward, const Vector3& direction, const float lerp);
+        // 任意軸回転を表すQuaternion
+        static Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle);
 
-    // Vector3をQuaternionで回転させた結果のVector3を求める
-    static Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
+        // VelocityからQuaternionを計算
+        static Quaternion DirectionToQuaternion(const Quaternion& quaternion, const Vector3& direction, const float lerp);
+        static Quaternion DirectionToQuaternion(const Quaternion& quaternion, const Vector3 addFoward, const Vector3& direction, const float lerp);
 
-    // Quaternionから回転行列を求める
-    static Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
+        // Vector3をQuaternionで回転させた結果のVector3を求める
+        static Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 
-    // 回転行列からQuaternionを求める
-    static Quaternion FormRotationMatrix(const Matrix4x4& matrix);
+        // Quaternionから回転行列を求める
+        static ::Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 
-    // QuaternionのY回転だけを取得
-    static Quaternion ExtractYawQuaternion(const Quaternion& quaternion);
+        // 回転行列からQuaternionを求める
+        static Quaternion FormRotationMatrix(const ::Matrix4x4& matrix);
 
-    static Vector3 ToEuler(const Quaternion& q);
+        // QuaternionのY回転だけを取得
+        static Quaternion ExtractYawQuaternion(const Quaternion& quaternion);
 
-    // 球面線形補間
-    void Slerp(const Quaternion& q1, float t);
-    static Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t);
-    static Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
+        static Vector3 ToEuler(const Quaternion& q);
+
+        // 球面線形補間
+        void Slerp(const Quaternion& q1, float t);
+        static Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t);
+        static Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
 
 
-    // 単項演算子オーバーロード
-    Quaternion operator-() const;
+        // 単項演算子オーバーロード
+        Quaternion operator-() const;
 
-    // 二項演算子オーバーロード
-    Quaternion operator+(const Quaternion& q) const;
-    Quaternion operator*(const Quaternion& q) const;
-    Quaternion operator*(float scalar) const;
+        // 二項演算子オーバーロード
+        Quaternion operator+(const Quaternion& q) const;
+        Quaternion operator*(const Quaternion& q) const;
+        Quaternion operator*(float scalar) const;
 
-    // 複合代入演算子オーバーロード
-    Quaternion& operator+=(const Quaternion& q);
-    Quaternion& operator*=(const Quaternion& q);
-    Quaternion& operator*=(float scalar);
-};
+        // 複合代入演算子オーバーロード
+        Quaternion& operator+=(const Quaternion& q);
+        Quaternion& operator*=(const Quaternion& q);
+        Quaternion& operator*=(float scalar);
+    };
+}
+
+// No global alias: prefer fully-qualified NumaEngine::Quaternion
+
+
+

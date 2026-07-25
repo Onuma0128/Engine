@@ -1,65 +1,53 @@
-#pragma once
-#include "wrl.h"
-#include <d3d12.h>
-#pragma comment(lib,"d3d12.lib")
-#include <stdint.h>
 
-#include "PostEffectType.h"
-#include "Vector4.h"
+#pragma once
+#include <d3d12.h>
+#include "wrl.h"
+#include <cstdint>
+
+#include "../../../Math/Structure/Vector4.h"
+#include "Matrix4x4.h"
 
 using Microsoft::WRL::ComPtr;
 
 class RenderTexture
 {
 public:
+    // static helper to create a texture resource
+    static ComPtr<ID3D12Resource> CreateResource(ComPtr<ID3D12Device> device, uint32_t width, uint32_t height, DXGI_FORMAT format, const NumaEngine::Vector4& clearColor);
 
-	// RenderTextureのResourceを作成
-	static ComPtr<ID3D12Resource> CreateResource(
-		ComPtr<ID3D12Device> device,
-		uint32_t width,
-		uint32_t height,
-		DXGI_FORMAT format,
-		const Vector4& clearColor
-	);
-	// RenderTextureのSRVを作成
-	uint32_t GetRenderTextureSRVIndex() const { return renderTextureSRVIndex_; }
-	//  FinalSrvIndexの取得と設定
-	uint32_t GetFinalSrvIndex() const { return finalSrvIndex_; }
-	void SetFinalSrvIndex(uint32_t index) { finalSrvIndex_ = index; }
+    // initialize internal resources
+    void Initialize();
 
-	// 深度ステンシルバッファのResourceとDSVハンドルを取得
-	ID3D12Resource* GetDSVResource()const;
-	D3D12_CPU_DESCRIPTOR_HANDLE GetDSVHandle() const;
-	const uint32_t GetDSVHandleIndex()const { return depthIndex_; }
+    // barriers and draw
+    void StartBarrier();
+    void EndBarrier();
+    void PreDraw();
+    void Draw();
 
-	// 初期化
-	void Initialize();
+    // accessors
+    ID3D12Resource* GetDSVResource() const;
+    D3D12_CPU_DESCRIPTOR_HANDLE GetDSVHandle() const;
 
-	// BarrierのStartとEnd
-	void StartBarrier();
-	void EndBarrier();
-
-	// 描画前の処理と描画
-	void PreDraw();
-	void Draw();
+    uint32_t GetFinalSrvIndex() const { return finalSrvIndex_; }
+    void SetFinalSrvIndex(uint32_t idx) { finalSrvIndex_ = idx; }
 
 private:
+    // resources
+    ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
+    uint32_t depthIndex_ = 0;
 
-	// レンダーテクスチャを生成する
-	ComPtr<ID3D12Resource> renderTextureResource_ = nullptr;
-	D3D12_CPU_DESCRIPTOR_HANDLE renderTextureHandle_{};
-	uint32_t renderTextureSRVIndex_;
-	uint32_t finalSrvIndex_;
+    ComPtr<ID3D12Resource> renderTextureResource_ = nullptr;
+    D3D12_CPU_DESCRIPTOR_HANDLE renderTextureHandle_{};
+    uint32_t renderTextureSRVIndex_ = 0;
 
-	// 深度バッファの生成
-	ComPtr<ID3D12Resource> depthStencilResource_ = nullptr;
-	uint32_t depthIndex_ = 0;
+    // pipeline
+    ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
+    ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
 
-	// TransitionBarrierの生成
-	D3D12_RESOURCE_BARRIER barrier_{};
+    // barrier
+    D3D12_RESOURCE_BARRIER barrier_{};
 
-	// ルートシグネチャ,パイプラインステート
-	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
-	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
-
+    // last final SRV index
+    uint32_t finalSrvIndex_ = 0;
 };
+

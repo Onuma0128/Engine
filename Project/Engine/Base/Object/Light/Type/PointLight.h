@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "BaseLight.h"
@@ -6,43 +7,31 @@
 #include "Vector4.h"
 
 /// <summary>
-/// ポイントライトクラス
+/// 点光源クラス
 /// </summary>
 class PointLight : public BaseLight
 {
 public:
+    struct PointLightData {
+        NumaEngine::Vector4 color;
+        NumaEngine::Vector3 position;
+        float intensity;
+        float radius;
+        float decay;
+        float padding;
+    };
 
-	// ポイントライト用のデータ構造体
-	struct PointLightData {
-		Vector4 color;
-		Vector3 position;
-		float intensity;
-		float radius;
-		float decay;
-		float padding[2];
-	};
+    void Initialize(DirectXEngine* dxEngine) override;
+    void Update() override;
+    void Debug_ImGui() override;
+    void MakeLightData() override;
 
-	// 初期化
-	void Initialize(DirectXEngine* dxEngine) override;
-
-	// 更新
-	void Update() override;
-
-	// デバッグ用のImGui表示
-	void Debug_ImGui() override;
-
-	// ライト用のデータ作成
-	void MakeLightData() override;
-
-	// ライト用の行列作成
-	void BuildMatricesCoverAll(
-		const Vector3& sceneMin,
-		const Vector3& sceneMax,
-		uint32_t shadowW, uint32_t shadowH) override {};
+    void BuildMatricesCoverAll(
+        const NumaEngine::Vector3& sceneMin,
+        const NumaEngine::Vector3& sceneMax,
+        uint32_t shadowW, uint32_t shadowH) override {}
 
 private:
-
-	PointLightData* lightData_ = nullptr;
-
+    PointLightData* lightData_ = nullptr;
 };
 

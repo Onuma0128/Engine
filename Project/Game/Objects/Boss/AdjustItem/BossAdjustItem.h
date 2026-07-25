@@ -1,21 +1,23 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 
 #include "JsonFunction.h"
+#include "Vector2.h"
+#include "Vector3.h"
 
 // ボス全体の調整項目
 struct BossMainData {
-	Vector3 startPosition;			// ボスの最初の座標
-	Vector3 sabStartPosition;		// ボスのもう1つの最初の座標
+ NumaEngine::Vector3 startPosition;			// ボスの最初の座標
+	NumaEngine::Vector3 sabStartPosition;		// ボスのもう1つの最初の座標
 	float modelScale;				// ボスモデルのサイズ
 	int maxHP = 20;					// ボスの最大体力
 	float speed = 2.0f;				// ボスの移動速度
 	float rayDistance;				// ボスの視線距離
-	Vector3 rayOffset;				// ボスの視線座標
+  NumaEngine::Vector3 rayOffset;				// ボスの視線座標
 
 	float colliderSize;				// ボスのコライダーサイズ
-	Vector3 colliderOffset;			// ボスのコライダー座標
+   NumaEngine::Vector3 colliderOffset;			// ボスのコライダー座標
 
 	float searchUpdateTime;			// ボスの探索を更新する時間
 	bool debugSpline = false;		// ボスの経路探索のデバッグ表示
@@ -30,7 +32,7 @@ struct BossDownData {
 // ボスの敵スポーン時の調整項目
 struct BossEnemySpawnData {
 	int maxSpawnCount;				// ボスの敵をスポーンさせる最大数
-	std::vector<Vector3> positions;	// ボスの敵をスポーンさせる座標
+	std::vector<NumaEngine::Vector3> positions;	// ボスの敵をスポーンさせる座標
 };
 
 // ボスの近接攻撃の調整項目
@@ -40,14 +42,14 @@ struct BossMeleeData {
 	float jumpAccelerY;				// ジャンプの加速度
 
 	float attackColliderSize;		// 攻撃時のコライダーサイズ
-	Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
+	NumaEngine::Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
 
 	float attackStartupTime;		// 攻撃を開始する硬直時間
 	float attackTime;				// 攻撃している時間
 	float attackRecoveryTime;		// 攻撃が終わってから硬直時間
 
 	float attackEffectSize;			// 攻撃のエフェクトサイズ
-	Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
+	NumaEngine::Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
 	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
@@ -59,7 +61,7 @@ struct BossJumpAttackData {
 	float jumpAccelerY;				// ジャンプの加速度
 
 	float attackColliderSize;		// 攻撃時のコライダーサイズ
-	Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
+	NumaEngine::Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
 
 	float attackStartupTime;		// 攻撃を開始する硬直時間
 	float JumpUpTime;				// ジャンプをする時間
@@ -68,7 +70,7 @@ struct BossJumpAttackData {
 	float attackRecoveryTime;		// 攻撃が終わってから硬直時間
 
 	float attackEffectSize;			// 攻撃のエフェクトサイズ
-	Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
+	NumaEngine::Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
 	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
@@ -76,14 +78,14 @@ struct BossJumpAttackData {
 struct BossDashAttackData {
 	float dashSpeed;				// ダッシュ時のスピード
 	float attackColliderSize;		// 攻撃時のコライダーサイズ
-	Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
+	NumaEngine::Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
 
 	float attackStartupTime;		// 攻撃を開始する硬直時間
 	float dashTime;					// ダッシュをしている時間
 	float attackRecoveryTime;		// 攻撃が終わってから硬直時間
 
-	Vector2 attackEffectSize;		// 攻撃のエフェクトサイズ
-	Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
+	NumaEngine::Vector2 attackEffectSize;		// 攻撃のエフェクトサイズ
+	NumaEngine::Vector3 attackEffectOffset;		// 攻撃のエフェクト座標
 	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
@@ -192,4 +194,7 @@ private:
 	int savedSpawnCount_ = 0;
 
 };
+
+
+
 

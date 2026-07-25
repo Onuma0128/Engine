@@ -1,4 +1,4 @@
-#include "BossAdjustItem.h"
+﻿#include "BossAdjustItem.h"
 
 #include "imgui.h"
 
@@ -7,15 +7,15 @@ void BossAdjustItem::LoadItems()
 	/* ============================== Main ============================== */
 	mainJson_.Init("BossMain");
 	if (!mainJson_.Load()) {
-        mainJson_.Set("startPosition", Vector3{});
-        mainJson_.Set("sabStartPosition", Vector3{});
+        mainJson_.Set("startPosition", NumaEngine::Vector3{});
+        mainJson_.Set("sabStartPosition", NumaEngine::Vector3{});
         mainJson_.Set("modelScale", 0.0f);
 		mainJson_.Set("maxHP", 20);
 		mainJson_.Set("speed", 2.0f);
         mainJson_.Set("rayDistance", 2.0f);
-        mainJson_.Set("rayOffset", Vector3{});
+        mainJson_.Set("rayOffset", NumaEngine::Vector3{});
         mainJson_.Set("colliderSize", 0.0f);
-        mainJson_.Set("colliderOffset", Vector3{});
+        mainJson_.Set("colliderOffset", NumaEngine::Vector3{});
 		mainJson_.Set("searchUpdateTime", 0.0f);
 	} else {
         mainData_.startPosition = mainJson_.Get("startPosition", mainData_.startPosition);
@@ -48,12 +48,12 @@ void BossAdjustItem::LoadItems()
 	if (!spawnJson_.Load()) {
 		spawnData_.maxSpawnCount = 0;
 		spawnJson_.Set("maxSpawnCount", spawnData_.maxSpawnCount);
-		spawnJson_.Set("position0", Vector3{});
+		spawnJson_.Set("position0", NumaEngine::Vector3{});
 	} else {
 		spawnData_.maxSpawnCount = spawnJson_.Get("maxSpawnCount", spawnData_.maxSpawnCount);
 		spawnData_.positions.resize(spawnData_.maxSpawnCount);
 		for (int i = 0; i < spawnData_.maxSpawnCount; ++i) {
-			spawnData_.positions[i] = spawnJson_.Get("position" + std::to_string(i), Vector3{});
+			spawnData_.positions[i] = spawnJson_.Get("position" + std::to_string(i), NumaEngine::Vector3{});
 		}
 	}
 
@@ -101,14 +101,14 @@ void BossAdjustItem::LoadItems()
         jumpAttackJson_.Set("jumpAccelerY", 0.0f);
         jumpAttackJson_.Set("airHoldTime", 0.0f);
         jumpAttackJson_.Set("attackColliderSize", 0.0f);
-        jumpAttackJson_.Set("attackColliderOffset", Vector3{});
+        jumpAttackJson_.Set("attackColliderOffset", NumaEngine::Vector3{});
         jumpAttackJson_.Set("attackStartupTime", 0.0f);
         jumpAttackJson_.Set("jumpUpTime", 0.0f);
         jumpAttackJson_.Set("airHoldTime", 0.0f);
         jumpAttackJson_.Set("fallDownTime", 0.0f);
         jumpAttackJson_.Set("attackRecoveryTime", 0.0f);
         jumpAttackJson_.Set("attackEffectSize", 0.0f);
-        jumpAttackJson_.Set("attackEffectOffset", Vector3{});
+        jumpAttackJson_.Set("attackEffectOffset", NumaEngine::Vector3{});
         jumpAttackJson_.Set("attackEffectAppearTime", 0.0f);
     } else {
         jumpAttackData_.airSpeed = jumpAttackJson_.Get("airSpeed", jumpAttackData_.airSpeed);
@@ -321,7 +321,7 @@ void BossAdjustItem::Editor()
             if (ImGui::Button("+")) {
                 spawnData_.maxSpawnCount++;
                 if ((int)spawnData_.positions.size() < spawnData_.maxSpawnCount) {
-                    spawnData_.positions.resize(spawnData_.maxSpawnCount, Vector3{});
+                    spawnData_.positions.resize(spawnData_.maxSpawnCount, NumaEngine::Vector3{});
                 }
             }
 
@@ -340,7 +340,7 @@ void BossAdjustItem::Editor()
                     : spawnData_.maxSpawnCount;
 
                 for (int i = 0; i < writeCount; ++i) {
-                    Vector3 p = (i < spawnData_.maxSpawnCount) ? spawnData_.positions[i] : Vector3{};
+                    NumaEngine::Vector3 p = (i < spawnData_.maxSpawnCount) ? spawnData_.positions[i] : NumaEngine::Vector3{};
                     spawnJson_.Set("position" + std::to_string(i), p);
                 }
                 spawnJson_.Save();

@@ -1,4 +1,4 @@
-#include "MuscleCountEffect.h"
+﻿#include "MuscleCountEffect.h"
 
 #include <numbers>
 
@@ -24,7 +24,7 @@ void MuscleCountEffect::Init()
 	catEffect_->GetRenderOptions().enabled = true;
 }
 
-void MuscleCountEffect::Update(const Vector3& position)
+void MuscleCountEffect::Update(const NumaEngine::Vector3& position)
 {
 	// タイム加算
 	timer_ -= DeltaTimer::GetDeltaTime();
@@ -36,7 +36,7 @@ void MuscleCountEffect::Update(const Vector3& position)
 	catEffect_->SetAlpha(t);
 
 	// サイズ設定
-	Vector3 scale = Vector3::ExprUnitXYZ * 0.33f;
+	NumaEngine::Vector3 scale = NumaEngine::Vector3::ExprUnitXYZ * 0.33f;
 	nowCountEffect_->GetTransform().scale = scale;
 	maxCountEffect_->GetTransform().scale = scale;
 	catEffect_->GetTransform().scale = scale;
@@ -51,11 +51,11 @@ void MuscleCountEffect::Update(const Vector3& position)
 	maxCountEffect_->SetUVTransform(uv);
 	// 座標設定
 	catEffect_->GetTransform().translation =
-		position + Vector3::ExprUnitY * 2.0f;
+		position + NumaEngine::Vector3::ExprUnitY * 2.0f;
 	nowCountEffect_->GetTransform().translation =
-		position + Vector3::ExprUnitY * 2.0f - Vector3::ExprUnitX * 0.4f;
+		position + NumaEngine::Vector3::ExprUnitY * 2.0f - NumaEngine::Vector3::ExprUnitX * 0.4f;
 	maxCountEffect_->GetTransform().translation =
-		position + Vector3::ExprUnitY * 2.0f + Vector3::ExprUnitX * 0.4f;
+		position + NumaEngine::Vector3::ExprUnitY * 2.0f + NumaEngine::Vector3::ExprUnitX * 0.4f;
 
 	// 更新
 	maxCountEffect_->Update();

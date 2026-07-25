@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -17,6 +17,8 @@
 
 using Microsoft::WRL::ComPtr;
 
+// Use fully-qualified math types (NumaEngine::VectorX) throughout project
+
 /// <summary>
 /// スプライトクラス
 /// </summary>
@@ -27,17 +29,17 @@ public:
 	/// <summary>
 	/// 頂点データ構造体
 	/// </summary>
-	struct VertexData {
-		Vector4 position;
-		Vector2 texcoord;
-		Vector3 normal;
+    struct VertexData {
+		NumaEngine::Vector4 position;
+		NumaEngine::Vector2 texcoord;
+		NumaEngine::Vector3 normal;
 	};
 
 	/// <summary>
 	/// マテリアルデータ構造体
 	/// </summary>
-	struct Material {
-		Vector4 color;
+    struct Material {
+		NumaEngine::Vector4 color;
 		Matrix4x4 uvTransform;
 	};
 
@@ -48,7 +50,7 @@ public:
 		float threshold; 
 		float edgeWidth; 
 		float pad0[2];
-		Vector3 edgeColor;
+        NumaEngine::Vector3 edgeColor;
 		float pad1;
 	};
 
@@ -94,18 +96,18 @@ public:
 	void SetNoiseTexture(const std::string& fileName);
 
 	// カラー
-	const Vector4& GetColor()const { return materialData_->color; }
-	void SetColor(const Vector4& color) { materialData_->color = color; }
+    const NumaEngine::Vector4& GetColor()const { return materialData_->color; }
+	void SetColor(const NumaEngine::Vector4& color) { materialData_->color = color; }
 
 	// アルファ値
 	const float GetDissolveThreshold()const { return dissolveData_->threshold; }
 	void SetDissolveThreshold(const float threshold) { dissolveData_->threshold = threshold; }
 	void SetDissolveEdgeWidth(const float edgeWidth) { dissolveData_->edgeWidth = edgeWidth; }
-	void SetDissolveEdgeColor(const Vector3& edgeColor) { dissolveData_->edgeColor = edgeColor; }
+    void SetDissolveEdgeColor(const NumaEngine::Vector3& edgeColor) { dissolveData_->edgeColor = edgeColor; }
 
 	// アンカーポイント
-	const Vector2& GetAnchorPoint()const { return anchorPoint_; }
-	void SetAnchorPoint(const Vector2& anchorPoint) { this->anchorPoint_ = anchorPoint; }
+    const NumaEngine::Vector2& GetAnchorPoint()const { return anchorPoint_; }
+	void SetAnchorPoint(const NumaEngine::Vector2& anchorPoint) { this->anchorPoint_ = anchorPoint; }
 
 	// 左右フリップ
 	const bool& GetFlipX()const { return isFlipX_; }
@@ -115,11 +117,11 @@ public:
 	void SetFlipY(const bool& isFlipY) { this->isFlipY_ = isFlipY; }
 
 	// テクスチャ左上座標
-	const Vector2& GetTextureLeftTop()const { return textureLeftTop_; }
-	void SetTextureLeftTop(const Vector2& leftTop) { textureLeftTop_ = leftTop; }
+    const NumaEngine::Vector2& GetTextureLeftTop()const { return textureLeftTop_; }
+	void SetTextureLeftTop(const NumaEngine::Vector2& leftTop) { textureLeftTop_ = leftTop; }
 	// テクスチャ切り出しサイズ
-	const Vector2& GetTextureSize()const { return textureSize_; }
-	void SetTextureSize(const Vector2& size) { textureSize_ = size; }
+    const NumaEngine::Vector2& GetTextureSize()const { return textureSize_; }
+	void SetTextureSize(const NumaEngine::Vector2& size) { textureSize_ = size; }
 	// 描画するか
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
 
@@ -183,17 +185,20 @@ protected:
 	// トランスフォーム
 	Transform2D transform_{ {1.0f,1.0f},0.0f,{0.0f,0.0f} };
 	// アンカーポイント
-	Vector2 anchorPoint_ = { 0.0f,0.0f };
+    NumaEngine::Vector2 anchorPoint_ = { 0.0f,0.0f };
 	// 左右フリップ
 	bool isFlipX_ = false;
 	// 上下フリップ
 	bool isFlipY_ = false;
 	// テクスチャ左上座標
-	Vector2 textureLeftTop_ = { 0.0f,0.0f };
+    NumaEngine::Vector2 textureLeftTop_ = { 0.0f,0.0f };
 	// テクスチャ切り出しサイズ
-	Vector2 textureSize_ = { 64.0f,64.0f };
+    NumaEngine::Vector2 textureSize_ = { 64.0f,64.0f };
 	// noiseテクスチャを使うか
 	bool isUseNoiseTexture_ = false;
 
 };
+
+
+
 

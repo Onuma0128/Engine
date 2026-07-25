@@ -1,4 +1,4 @@
-#include "EnemyMoveState.h"
+﻿#include "EnemyMoveState.h"
 
 #include <memory>
 
@@ -51,15 +51,15 @@ void EnemyMoveState::Update()
 	// 探索の更新
 	pathFinder.Update(speed);
 	pathFinder.DebugSpline(mainData.debugSpline);
-	Vector3 velocity = pathFinder.GetVelocity();
+	NumaEngine::Vector3 velocity = pathFinder.GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 	enemy_->SetVelocity(velocity);
 
 	// 移動時の回転の処理
 	if (velocity.Length() != 0.0f) {
-		Quaternion yRotation = pathFinder.GetRotation();
-		enemy_->SetTransformRotation(Quaternion::Slerp(enemy_->GetTransform().rotation_, yRotation, 0.2f));
+		NumaEngine::Quaternion yRotation = pathFinder.GetRotation();
+		enemy_->SetTransformRotation(NumaEngine::Quaternion::Slerp(enemy_->GetTransform().rotation_, yRotation, 0.2f));
 	}
 
 	// 攻撃のクールタイムを縮める
@@ -67,10 +67,10 @@ void EnemyMoveState::Update()
 	attackCoolTime_ = std::clamp(attackCoolTime_, 0.0f, 100.0f);
 
 	// 攻撃のクールタイムが0になっているなら攻撃ステートに遷移
-	Vector3 playerPos = enemy_->GetPlayer()->GetTransform().translation_;
+	NumaEngine::Vector3 playerPos = enemy_->GetPlayer()->GetTransform().translation_;
 	if (enemy_->GetHitCollider()) { playerPos = enemy_->GetHitCollider()->GetCenterPosition(); }
-	Vector3 enemyPos = enemy_->GetTransform().translation_ + (velocity * speed * DeltaTimer::GetDeltaTime());
-	const float dist = Vector3::Distance(enemyPos, playerPos);
+	NumaEngine::Vector3 enemyPos = enemy_->GetTransform().translation_ + (velocity * speed * DeltaTimer::GetDeltaTime());
+	const float dist = NumaEngine::Vector3::Distance(enemyPos, playerPos);
 	// 入り判定、出判定
 	const float attackIn = enemy_->GetTypeAttackDistance();
 	const float margin = mainData.margin;
@@ -124,13 +124,13 @@ const float EnemyMoveState::GetTypeAttackCoolTime()
 	return 0.0f;
 }
 
-void EnemyMoveState::MoveAction(const Vector3& velocity, const float speed)
+void EnemyMoveState::MoveAction(const NumaEngine::Vector3& velocity, const float speed)
 {
 	// 移動時アニメーションにする
 	MoveAnimation();
 	enemy_->GetEffect()->OnceMoveEffect(enemy_->GetTransform());
 	// 距離があれば移動処理をする
-	Vector3 position = enemy_->GetTransform().translation_;
+	NumaEngine::Vector3 position = enemy_->GetTransform().translation_;
 	enemy_->SetTransformTranslation(position + velocity * speed * DeltaTimer::GetDeltaTime());
 	enemy_->GetEnemyRay()->Reset();
 }
@@ -170,3 +170,4 @@ void EnemyMoveState::AttackCoolTimeAnimation()
 		isMoveAnima_ = false;
 	}
 }
+

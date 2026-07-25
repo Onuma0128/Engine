@@ -1,4 +1,4 @@
-#include "BaseEnemy.h"
+﻿#include "BaseEnemy.h"
 
 #include "DeltaTimer.h"
 
@@ -31,7 +31,7 @@ void BaseEnemy::Initialize()
 	effect_->Init();
 
 	// 探索アルゴリズムの初期化
-	pathFinder_.Search(transform_.translation_, Vector3{});
+	pathFinder_.Search(transform_.translation_, NumaEngine::Vector3{});
 
 	// コライダーを設定
 	Collider::AddCollider();
@@ -52,7 +52,7 @@ void BaseEnemy::Initialize()
 	Animation::SetSceneRenderer();
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = Vector3::ExprUnitX;
+	Animation::GetMaterial().outlineColor = NumaEngine::Vector3::ExprUnitX;
 	Animation::GetMaterial().shadowMap = false;
 	Animation::GetTimeStop() = true;
 }
@@ -61,7 +61,7 @@ void BaseEnemy::Update()
 {
 	// レイの更新
 	const float attackIn = GetTypeAttackDistance();
-	Vector3 direction = Vector3::ExprUnitZ.Transform(Quaternion::MakeRotateMatrix(transform_.rotation_));
+	NumaEngine::Vector3 direction = NumaEngine::Vector3::ExprUnitZ.Transform(NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation_));
 	ray_->Update(transform_.translation_ + items_->GetMainData().rayOffset, direction * attackIn);
 
 	// ステートの更新
@@ -108,13 +108,13 @@ void BaseEnemy::Dead()
 	Animation::GetTimeStop() = true;
 	Collider::isActive_ = false;
 	ray_->SetActive(false);
-	ray_->Update(Vector3::ExprZero, Vector3::ExprUnitZ);
+	ray_->Update(NumaEngine::Vector3::ExprZero, NumaEngine::Vector3::ExprUnitZ);
 	// 影の描画も切る
 	Animation::GetMaterial().shadowMap = false;
 	stateParam_.enableMove_ = false;
 }
 
-void BaseEnemy::Reset(const Vector3& position)
+void BaseEnemy::Reset(const NumaEngine::Vector3& position)
 {
 	// ステートを初期化
 	ChangeState(std::make_unique<EnemyMoveState>(this));
@@ -124,7 +124,7 @@ void BaseEnemy::Reset(const Vector3& position)
 	// 影を描画する
 	Animation::GetMaterial().shadowMap = true;
 	// 座標と回転を初期化する
-	transform_.rotation_ = Quaternion::IdentityQuaternion();
+	transform_.rotation_ = NumaEngine::Quaternion::IdentityQuaternion();
 	transform_.translation_ = position;
 	Animation::TransformUpdate();
 	// ColliderをActiveに戻す
@@ -170,7 +170,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 			stateParam_.isJumping_ = true;
 			ChangeState(std::make_unique<EnemyHitJumpState>(this));
 		} else if (isFollowerCompanion || isSearchDashCompanion) {
-			velocity_ = Vector3{ transform_.translation_ - player_->GetTransform().translation_}.Normalize();
+			velocity_ = NumaEngine::Vector3{ transform_.translation_ - player_->GetTransform().translation_}.Normalize();
 			ChangeState(std::make_unique<EnemyKnockbackState>(this));
 		}
 		if (!hitCollider_ && (isCompanion || isCompanionAttack)) {
@@ -214,8 +214,8 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 			ray_->SetActive(false);
 			stateParam_.isAlive_ = false;
 			// 敵がノックバックする方向を取得
-			Matrix4x4 rotate = Quaternion::MakeRotateMatrix(other->GetRotate());
-			velocity_ = Vector3::ExprUnitZ.Transform(rotate);
+			Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(other->GetRotate());
+			velocity_ = NumaEngine::Vector3::ExprUnitZ.Transform(rotate);
 			playerBulletPosition_ = other->GetCenterPosition();
 			// 死亡時のステートに遷移
 			ChangeState(std::make_unique<EnemyDeadState>(this));
@@ -234,7 +234,7 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 	// 敵と当たっているなら
 	if (other->GetColliderName() == "Enemy") {
 		const float speed = 1.0f;
-		Vector3 velocity = transform_.translation_ - other->GetCenterPosition();
+		NumaEngine::Vector3 velocity = transform_.translation_ - other->GetCenterPosition();
 		velocity.y = 0.0f;
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
@@ -298,3 +298,4 @@ void BaseEnemy::HitColliderNotActive()
 		hitCollider_ = nullptr;
 	}
 }
+

@@ -1,4 +1,4 @@
-#include "PlayerDemoMoveState.h"
+﻿#include "PlayerDemoMoveState.h"
 
 #include "SceneJsonLoader.h"
 #include "DeltaTimer.h"
@@ -41,24 +41,24 @@ void PlayerDemoMoveState::Update()
 	// 探索の更新
 	ResetSearch();
 	pathFinder.Update(speed);
-	Vector3 velocity = pathFinder.GetVelocity();
+	NumaEngine::Vector3 velocity = pathFinder.GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 
 	// 回転処理
 	if (velocity.Length() != 0.0f) {
 		if (searchCollider->GetIsHit()) {
-			Quaternion targetRotation = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, searchCollider->GetTargetPosition() - player_->GetTransform().translation_, 1.0f);
-			targetRotation = Quaternion::Slerp(player_->GetTransform().rotation_, targetRotation, 0.2f);
+			NumaEngine::Quaternion targetRotation = NumaEngine::Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, searchCollider->GetTargetPosition() - player_->GetTransform().translation_, 1.0f);
+			targetRotation = NumaEngine::Quaternion::Slerp(player_->GetTransform().rotation_, targetRotation, 0.2f);
 			player_->SetTransformRotation(targetRotation);
 		} else {
-			Quaternion yRotation = pathFinder.GetRotation();
-			yRotation = Quaternion::Slerp(player_->GetTransform().rotation_, yRotation, 0.2f);
+			NumaEngine::Quaternion yRotation = pathFinder.GetRotation();
+			yRotation = NumaEngine::Quaternion::Slerp(player_->GetTransform().rotation_, yRotation, 0.2f);
 			player_->SetTransformRotation(yRotation);
 		}
 	}
 	// 移動処理
-	Vector3 position = player_->GetTransform().translation_;
+	NumaEngine::Vector3 position = player_->GetTransform().translation_;
 	player_->SetTransformTranslation(position + velocity * speed * DeltaTimer::GetDeltaTime());
 
 	// 攻撃処理
@@ -95,7 +95,7 @@ void PlayerDemoMoveState::InitSearch()
 void PlayerDemoMoveState::ResetSearch()
 {
 	// チェックポイントに到達していなければ即リターン
-	float distance = Vector3::Distance(nowCheckPoint_, player_->GetTransform().translation_);
+	float distance = NumaEngine::Vector3::Distance(nowCheckPoint_, player_->GetTransform().translation_);
 	if (distance > player_->GetItem()->GetPlayerData().checkPointDistance) { return; }
 
 	// 探索を初期化する

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <string>
@@ -23,16 +23,16 @@ private:
 		std::string texture;			// テクスチャ名
 		std::string noiseTexture;		// ノイズテクスチャ名
 
-		Vector2 anchorPoint;			// アンカーポイント
+     NumaEngine::Vector2 anchorPoint;			// アンカーポイント
 		Transform2D transform;			// トランスフォーム
-		Vector4 color;					// カラー
+      NumaEngine::Vector4 color;					// カラー
 		float edgeWidth;				// エッジ幅	
-		Vector3 noiseColor;				// ノイズカラー
+       NumaEngine::Vector3 noiseColor;				// ノイズカラー
 
 		bool isAnimation;				// アニメーションを適応するか
 		float animationTime;			// アニメーション時間
 		Transform2D animaTransform;		// アニメーション後のトランスフォーム
-		Vector4 animaColor;				// アニメーション後のカラー
+     NumaEngine::Vector4 animaColor;				// アニメーション後のカラー
 
 		int inEasingType = 0;			// FadeInのEasingType
 		int outEasingType = 0;			// FadeOutのEasingType
@@ -130,4 +130,6 @@ private:
 	float blinkingTime_ = 2.0f;
 
 };
+
+
 

@@ -1,4 +1,4 @@
-#include "BossDashAttackState.h"
+﻿#include "BossDashAttackState.h"
 
 #include <memory>
 
@@ -45,19 +45,19 @@ void BossDashAttackState::Update()
 	case DashAttackState::StartupTime:
 	{
 		// プレイヤーの方向に回転をする
-		Vector3 translate = boss_->GetTransform().translation_;
-		Vector3 target = boss_->GetPlayer()->GetTransform().translation_;
+		NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
+		NumaEngine::Vector3 target = boss_->GetPlayer()->GetTransform().translation_;
 		target.y = translate.y;
-		float distance = Vector3::Distance(target, translate);
-		Vector3 velocity = (target - translate);
+		float distance = NumaEngine::Vector3::Distance(target, translate);
+		NumaEngine::Vector3 velocity = (target - translate);
 		velocity.y = 0.0f;
 
 		boss_->GetEffect()->SetAttackEffect(BossAttackEffect::DashAttack);
 
 		// 回転の更新
 		if (distance > 0.1f) {
-			Quaternion yRotation = Quaternion::DirectionToQuaternion(Quaternion::IdentityQuaternion(), velocity, 1.0f);
-			boss_->SetTransformRotation(Quaternion::Slerp(boss_->GetTransform().rotation_, yRotation, 0.2f));
+			NumaEngine::Quaternion yRotation = NumaEngine::Quaternion::DirectionToQuaternion(NumaEngine::Quaternion::IdentityQuaternion(), velocity, 1.0f);
+			boss_->SetTransformRotation(NumaEngine::Quaternion::Slerp(boss_->GetTransform().rotation_, yRotation, 0.2f));
 		}
 
 		if (timer_ >= data.attackStartupTime) {
@@ -73,7 +73,7 @@ void BossDashAttackState::Update()
 	case DashAttackState::DashAttack:
 	{
 		// 移動の更新
-		Vector3 translate = boss_->GetTransform().translation_;
+		NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 		translate += velocity_ * data.dashSpeed * DeltaTimer::GetDeltaTime();
 		boss_->SetTransformTranslation(translate);
 		boss_->GetAttackCollider()->SetColliderSize(data.attackColliderSize);
@@ -115,10 +115,10 @@ void BossDashAttackState::ChangeAttackState(DashAttackState newState)
 
 void BossDashAttackState::CreateVelocity() 
 {
-	Vector3 translate = boss_->GetTransform().translation_;
-	Vector3 target = boss_->GetPlayer()->GetTransform().translation_;
+	NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
+	NumaEngine::Vector3 target = boss_->GetPlayer()->GetTransform().translation_;
 	velocity_ = (target - translate);
 	velocity_.y = 0.0f;
 	if (velocity_.Length() != 0.0f) { velocity_ = velocity_.Normalize(); }
-	else { velocity_ = -Vector3::ExprUnitZ; }
+	else { velocity_ = -NumaEngine::Vector3::ExprUnitZ; }
 }

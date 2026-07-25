@@ -1,4 +1,4 @@
-#include "Line3d.h"
+﻿#include "Line3d.h"
 
 #include <numbers>
 
@@ -8,7 +8,7 @@
 #include "CameraManager.h"
 #include "CreateBufferResource.h"
 
-void Line3d::Initialize(const std::vector<Vector3>& positions)
+void Line3d::Initialize(const std::vector<NumaEngine::Vector3>& positions)
 {
 	assert((positions.size() & 1u) == 0 && "偶数個の座標が必要です");
 	
@@ -25,7 +25,7 @@ void Line3d::Update()
 
 void Line3d::MakeMaterialData()
 {
-	materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    materialData_.color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData_.enableDraw = true;
 	materialData_.enableLighting = true;
 	materialData_.outlineMask = false;
@@ -35,21 +35,21 @@ void Line3d::MakeMaterialData()
 	materialData_.environmentCoefficient = 0;
 }
 
-void Line3d::SetPositions(const std::vector<Vector3>& positions)
+void Line3d::SetPositions(const std::vector<NumaEngine::Vector3>& positions)
 {
 	assert((positions.size() & 1u) == 0 && "偶数個の座標が必要です");
 
 	LineInstanceRenderer::GetInstance()->SetLineInstances(this, positions);
 }
 
-void Line3d::SetColor(const Vector3& color)
+void Line3d::SetColor(const NumaEngine::Vector3& color)
 {
 	materialData_.color = { color.x,color.y,color.z,1.0f };
 }
 
-std::vector<Vector3> Line3d::CreateBox(const Vector3& min, const Vector3& max)
+std::vector<NumaEngine::Vector3> Line3d::CreateBox(const NumaEngine::Vector3& min, const NumaEngine::Vector3& max)
 {
-	std::vector<Vector3> linePosition = {
+    std::vector<NumaEngine::Vector3> linePosition = {
 		min,
 		{ max.x, min.y, min.z },
 
@@ -90,12 +90,12 @@ std::vector<Vector3> Line3d::CreateBox(const Vector3& min, const Vector3& max)
 	return linePosition;
 }
 
-std::vector<Vector3> Line3d::CreateSphere(float radius)
+std::vector<NumaEngine::Vector3> Line3d::CreateSphere(float radius)
 {
 	const int latitudeLines = 6;   // 緯線の分割数
 	const int longitudeLines = 12;  // 経線の分割数
 
-	std::vector<Vector3> linePosition;
+	std::vector<NumaEngine::Vector3> linePosition;
 
 	// 緯線（Z軸まわりのX-Y平面）
 	for (int i = 0; i < latitudeLines; ++i) {
@@ -105,13 +105,13 @@ std::vector<Vector3> Line3d::CreateSphere(float radius)
 		for (int j = 0; j < longitudeLines; ++j) {
 			float phi = (float)j / longitudeLines * (std::numbers::pi_v<float> * 2.0f);
 
-			Vector3 p1 = {
+            NumaEngine::Vector3 p1 = {
 				radius * std::sin(theta1) * std::cos(phi),
 				radius * std::cos(theta1),
 				radius * std::sin(theta1) * std::sin(phi)
 			};
 
-			Vector3 p2 = {
+            NumaEngine::Vector3 p2 = {
 				radius * std::sin(theta2) * std::cos(phi),
 				radius * std::cos(theta2),
 				radius * std::sin(theta2) * std::sin(phi)
@@ -130,13 +130,13 @@ std::vector<Vector3> Line3d::CreateSphere(float radius)
 		for (int j = 0; j < latitudeLines; ++j) {
 			float theta = (float)j / latitudeLines * std::numbers::pi_v<float>;
 
-			Vector3 p1 = {
+            NumaEngine::Vector3 p1 = {
 				radius * std::sin(theta) * std::cos(phi1),
 				radius * std::cos(theta),
 				radius * std::sin(theta) * std::sin(phi1)
 			};
 
-			Vector3 p2 = {
+            NumaEngine::Vector3 p2 = {
 				radius * std::sin(theta) * std::cos(phi2),
 				radius * std::cos(theta),
 				radius * std::sin(theta) * std::sin(phi2)
@@ -150,9 +150,9 @@ std::vector<Vector3> Line3d::CreateSphere(float radius)
 	return linePosition;
 }
 
-std::vector<Vector3> Line3d::CreateSegment(const Vector3& start, const Vector3& direction)
+std::vector<NumaEngine::Vector3> Line3d::CreateSegment(const NumaEngine::Vector3& start, const NumaEngine::Vector3& direction)
 {
-	std::vector<Vector3> linePosition;
+	std::vector<NumaEngine::Vector3> linePosition;
 
 	linePosition.push_back(start);
 	linePosition.push_back(start + direction);
@@ -160,7 +160,7 @@ std::vector<Vector3> Line3d::CreateSegment(const Vector3& start, const Vector3& 
 	return linePosition;
 }
 
-std::vector<Vector3> Line3d::CreateGrid(float cell, float size, float y)
+std::vector<NumaEngine::Vector3> Line3d::CreateGrid(float cell, float size, float y)
 {
 	assert(cell > 0.0f && size > 0.0f && "cell と size は正の値で");
 
@@ -170,7 +170,7 @@ std::vector<Vector3> Line3d::CreateGrid(float cell, float size, float y)
 	// 端を含めて何本引くか
 	const int lineCount = static_cast<int>(std::floor(size / cell)) + 1;
 
-	std::vector<Vector3> pos;
+    std::vector<NumaEngine::Vector3> pos;
 	pos.reserve(lineCount * 4);     // “横線 + 縦線” で 4 頂点/本
 
 	// Z 方向の横線（X 軸と平行）
@@ -190,3 +190,5 @@ std::vector<Vector3> Line3d::CreateGrid(float cell, float size, float y)
 	}
 	return pos;
 }
+
+

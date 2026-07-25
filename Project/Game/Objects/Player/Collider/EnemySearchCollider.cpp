@@ -1,4 +1,4 @@
-#include "EnemySearchCollider.h"
+﻿#include "EnemySearchCollider.h"
 
 #include "Objects/Player/Player.h"
 #include "Objects/Player/AdjustItem/PlayerAdjustItem.h"
@@ -30,7 +30,7 @@ void EnemySearchCollider::OnCollisionEnter(Collider* other)
 void EnemySearchCollider::OnCollisionStay(Collider* other)
 {
 	// 距離を計算する
-	float distance = Vector3::Distance(Collider::centerPosition_, other->GetCenterPosition());
+	float distance = NumaEngine::Vector3::Distance(Collider::centerPosition_, other->GetCenterPosition());
 
 	// 一番近い敵の座標を更新する
 	if(distance < targetDistance_) {
@@ -49,6 +49,7 @@ void EnemySearchCollider::OnCollisionExit(Collider* other)
 void EnemySearchCollider::ResetTarget()
 {
 	targetDistance_ = FLT_MAX;
-	targetPosition_ = Vector3::ExprZero;
+	targetPosition_ = NumaEngine::Vector3::ExprZero;
 	targetCollider_ = nullptr;
 }
+

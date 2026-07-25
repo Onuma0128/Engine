@@ -1,24 +1,32 @@
-#pragma once
+﻿#pragma once
 
 #include "Vector2.h"
 #include "Vector3.h"
 
+// Ensure Windows min/max macros don't break member names like 'min' and 'max'
+#ifdef min
+#undef min
+#endif
+#ifdef max
+#undef max
+#endif
+
 // 円
 struct Circle {
-	Vector2 center;
+	NumaEngine::Vector2 center;
 	float radius;
 };
 // 回転無しボックス
 struct AABB_2D {
-	Vector2 min;
-	Vector2 max;
+	NumaEngine::Vector2 min;
+	NumaEngine::Vector2 max;
 };
 // 回転有りボックス
 struct OBB_2D {
-	Vector2 center;
+	NumaEngine::Vector2 center;
 	float rotate;
-	Vector2 size;
-	Vector3 worldPosition;
+	NumaEngine::Vector2 size;
+	NumaEngine::Vector3 worldPosition;
 };
 
 /// <summary>
@@ -45,4 +53,7 @@ public:
 	static bool OBBAABB(const OBB_2D& obb, const AABB_2D& aabb);
 
 };
+
+
+
 

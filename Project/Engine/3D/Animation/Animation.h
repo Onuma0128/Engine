@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <vector>
 
@@ -94,9 +94,9 @@ public:
 	// ワールド変換行列の設定
 	void SetTransform(const WorldTransform& transform) { transform_ = transform; }
 	void SetTransformParent(const WorldTransform* parent) { transform_.parent_ = parent; }
-	void SetTransformScale(const Vector3& scale) { transform_.scale_ = scale; }
-	void SetTransformRotation(const Quaternion& rotation) { transform_.rotation_ = rotation; }
-	void SetTransformTranslation(const Vector3& translation) { transform_.translation_ = translation; }
+	void SetTransformScale(const NumaEngine::Vector3& scale) { transform_.scale_ = scale; }
+	void SetTransformRotation(const NumaEngine::Quaternion& rotation) { transform_.rotation_ = rotation; }
+	void SetTransformTranslation(const NumaEngine::Vector3& translation) { transform_.translation_ = translation; }
 	
 	// 取得中のスケルトン
 	bool& GetTimeStop() { return playAnim_.GetTimeStop(); }

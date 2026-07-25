@@ -1,4 +1,4 @@
-#include "BossStateEvaluator.h"
+﻿#include "BossStateEvaluator.h"
 
 #include "imgui.h"
 
@@ -49,7 +49,7 @@ void BossStateEvaluator::UpdateScore()
 	// データを取得する
 	const auto& data = boss_->GetItems()->GetStateScoreData();
 	// プレイヤーとの距離を計算
-	float distance = Vector3::Distance(
+	float distance = NumaEngine::Vector3::Distance(
 		boss_->GetTransform().translation_, boss_->GetPlayer()->GetTransform().translation_);
 	// プレイヤーとの距離でスコアを加算する
 	DistanceScore(data, BossState::EnemySpawn, distance);
@@ -198,3 +198,4 @@ void BossStateEvaluator::ScoreChangeToState()
 		newBossStates_.pop_front();
 	}
 }
+

@@ -1,5 +1,9 @@
 #include "Collider.h"
 
+// Ensure correct project Vector/Quaternion types are visible
+#include "../../Math/Structure/Vector3.h"
+#include "../../Math/Structure/Quaternion.h"
+
 #include "DirectXEngine.h"
 #include "CollisionManager.h"
 
@@ -40,8 +44,8 @@ void Collider::Update()
 
 	linePositions_ = CreateLinePositions();
 	for (auto& linePos : linePositions_) {
-		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(rotate_);
-		Vector3 translate = centerPosition_ + offsetPosition_.Transform(rotateMatrix);
+    Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rotate_);
+	NumaEngine::Vector3 translate = centerPosition_ + offsetPosition_.Transform(rotateMatrix);
 		linePos = linePos.Transform(rotateMatrix) + translate;
 	}
 	line_->SetPositions(linePositions_);
@@ -67,7 +71,7 @@ void Collider::LineUpdate()
 	line_->Update();
 }
 
-void Collider::SetColor(const Vector3& color)
+void Collider::SetColor(const NumaEngine::Vector3& color)
 {
 	if (line_ == nullptr) { return; }
 	line_->SetColor(color);
@@ -78,20 +82,20 @@ void Collider::SetDebugDrawEnable(bool flag)
 	debugDrawEnable_ = flag;
 }
 
-std::vector<Vector3> Collider::CreateLinePositions()
+std::vector<NumaEngine::Vector3> Collider::CreateLinePositions()
 {
 	// Line用の座標を作成
-	std::vector<Vector3> linePositions;
+    std::vector<NumaEngine::Vector3> linePositions;
 	switch (myType_)
 	{
 	case ColliderType::kSphere:
 		linePositions = line_->CreateSphere(radius_);
 		break;
 	case ColliderType::kSegment:
-		linePositions = line_->CreateSegment(origin_, diff_);
+        linePositions = line_->CreateSegment(origin_, diff_);
 		break;
 	case ColliderType::kOBB:
-		linePositions = line_->CreateBox(-size_, size_);
+        linePositions = line_->CreateBox(-size_, size_);
 		break;
 	default:
 		break;
@@ -99,3 +103,4 @@ std::vector<Vector3> Collider::CreateLinePositions()
 
 	return linePositions;
 }
+

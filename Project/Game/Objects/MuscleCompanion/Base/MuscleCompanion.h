@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 
@@ -75,7 +75,7 @@ public:
 	/// <summary>
 	/// 経路探索をリセットする
 	/// </summary>
-	void ResetSearch(const Vector3& goalPosition);
+	void ResetSearch(const NumaEngine::Vector3& goalPosition);
 
 	/// <summary>
 	/// プレイヤーとの距離を測りフラグを返す
@@ -103,9 +103,9 @@ public:
 	void SetDashAttack(bool flag) { isDashAttack_ = flag; }
 	void SetFirstDashAttack(bool flag) { isFirstDashAttack_ = flag; }
 	void SetInvincible(bool flag) { isInvincible_ = flag; }
-	void SetDashDirection(const Vector3& direction) { dashDirection_ = direction; }
+	void SetDashDirection(const NumaEngine::Vector3& direction) { dashDirection_ = direction; }
 	void SetColliderName(const std::string& name) { Collider::colliderName_ = name; }
-	void SetOutLineColor(const Vector3& color) { Animation::GetMaterial().outlineColor = color; }
+	void SetOutLineColor(const NumaEngine::Vector3& color) { Animation::GetMaterial().outlineColor = color; }
 	// ゲッター
 	const CompanionAdjustItem* GetItems()const { return items_; }
 	const Player* GetPlayer()const { return player_; }
@@ -122,8 +122,8 @@ public:
 	bool GetReturnOriginal() const { return isReturnOriginal_; }
 	bool GetDashAttack()const { return isDashAttack_; }
 	bool GetFirstDashAttack() const { return isFirstDashAttack_; }
-	const Vector3& GetKnockbackPos()const { return knockbackPosition_; }
-	const Quaternion& GetKnockbackRotate()const { return knockbackRotate_; }
+	const NumaEngine::Vector3& GetKnockbackPos()const { return knockbackPosition_; }
+	const NumaEngine::Quaternion& GetKnockbackRotate()const { return knockbackRotate_; }
 
 private:
 
@@ -171,9 +171,10 @@ private:
 	// ダッシュ時の一回目の攻撃かどうか
 	bool isFirstDashAttack_ = true;
 	// ダッシュ方向を取得する
-	Vector3 dashDirection_ = {};
+	NumaEngine::Vector3 dashDirection_ = {};
 	// ノックバック方向
-	Vector3 knockbackPosition_ = {};
-	Quaternion knockbackRotate_ = {};
+	NumaEngine::Vector3 knockbackPosition_ = {};
+	NumaEngine::Quaternion knockbackRotate_ = {};
 };
+
 

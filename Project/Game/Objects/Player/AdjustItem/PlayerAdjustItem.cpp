@@ -1,4 +1,4 @@
-#include "PlayerAdjustItem.h"
+﻿#include "PlayerAdjustItem.h"
 
 #include "imgui.h"
 
@@ -9,8 +9,8 @@ void PlayerAdjustItem::LoadItems()
 	playerJson_.Init("Player");
 	if (!playerJson_.Load()) {
 		playerJson_.Set("clearKill", 1);
-		playerJson_.Set("minPlayerClamp", Vector2{ -1.0f,-1.0f });
-		playerJson_.Set("maxPlayerClamp", Vector2{ 1.0f,1.0f });
+		playerJson_.Set("minPlayerClamp", NumaEngine::Vector2{ -1.0f,-1.0f });
+		playerJson_.Set("maxPlayerClamp", NumaEngine::Vector2{ 1.0f,1.0f });
 		playerJson_.Set("speed", 1.0f);
 		playerJson_.Set("backSpeed", 1.0f);
 		playerJson_.Set("pushSpeed", 1.0f);
@@ -19,15 +19,15 @@ void PlayerAdjustItem::LoadItems()
 		playerJson_.Set("avoid_velocityY", 1.0f);
 		playerJson_.Set("avoid_acceleration", 1.0f);
 		playerJson_.Set("avoid_coolTime", 1.0f);
-		playerJson_.Set("avoidEffectScale", Vector3{});
-		playerJson_.Set("avoidEffectPos", Vector3{});
+		playerJson_.Set("avoidEffectScale", NumaEngine::Vector3{});
+		playerJson_.Set("avoidEffectPos", NumaEngine::Vector3{});
 		playerJson_.Set("avoidEffectAlpha", 1.0f);
 
 		playerJson_.Set("needMachoEffectTime", 1.0f);
-		playerJson_.Set("needMachoScale", Vector3{});
-		playerJson_.Set("needMachoPos", Vector3{});
-		playerJson_.Set("needMachoVarianceScale", Vector3{});
-		playerJson_.Set("needMachoVariancePos", Vector3{});
+		playerJson_.Set("needMachoScale", NumaEngine::Vector3{});
+		playerJson_.Set("needMachoPos", NumaEngine::Vector3{});
+		playerJson_.Set("needMachoVarianceScale", NumaEngine::Vector3{});
+		playerJson_.Set("needMachoVariancePos", NumaEngine::Vector3{});
 
 		playerJson_.Set("searchRadius", 1.0f);
 		playerJson_.Set("checkPointDistance", 1.0f);
@@ -64,12 +64,12 @@ void PlayerAdjustItem::LoadItems()
 	if (!bulletJson_.Load()) {
 		bulletJson_.Set("speed", 1.0f);
 		bulletJson_.Set("speed_sp", 1.0f);
-		bulletJson_.Set("position", Vector3{});
+		bulletJson_.Set("position", NumaEngine::Vector3{});
 		bulletJson_.Set("maxChargeCount_sp", 3);
 		bulletJson_.Set("reloadStartTime", 1.0f);
 		bulletJson_.Set("reloadTime", 1.0f);
-		bulletJson_.Set("colliderSize", Vector3{});
-		bulletJson_.Set("colliderCenterPosition", Vector3{});
+		bulletJson_.Set("colliderSize", NumaEngine::Vector3{});
+		bulletJson_.Set("colliderCenterPosition", NumaEngine::Vector3{});
 	} else {
 		bulletData_.speed = bulletJson_.Get("speed", bulletData_.speed);
 		bulletData_.speed_sp = bulletJson_.Get("speed_sp", bulletData_.speed_sp);
@@ -86,9 +86,9 @@ void PlayerAdjustItem::LoadItems()
 	preObjectJson_.Init("PlayerPredictionObject");
 	if (!preObjectJson_.Load()) {
 		preObjectJson_.Set("interval", 1.0f);
-		preObjectJson_.Set("startPosition", Vector3{});
-		preObjectJson_.Set("rayColliderSize", Vector3{});
-		preObjectJson_.Set("rayColliderPosition", Vector3{});
+		preObjectJson_.Set("startPosition", NumaEngine::Vector3{});
+		preObjectJson_.Set("rayColliderSize", NumaEngine::Vector3{});
+		preObjectJson_.Set("rayColliderPosition", NumaEngine::Vector3{});
 	} else {
 		preObjectData_.interval = preObjectJson_.Get("interval", preObjectData_.interval);
 		preObjectData_.startPosition = preObjectJson_.Get("startPosition", preObjectData_.startPosition);
@@ -100,8 +100,8 @@ void PlayerAdjustItem::LoadItems()
 
 	bulletUIJson_.Init("PlayerBulletUI");
 	if (!bulletUIJson_.Load()) {
-		bulletUIJson_.Set("size", Vector2{});
-		bulletUIJson_.Set("position", Vector2{});
+		bulletUIJson_.Set("size", NumaEngine::Vector2{});
+		bulletUIJson_.Set("position", NumaEngine::Vector2{});
 		bulletUIJson_.Set("startPosition", 0.0f);
 	} else {
 		bulletUIData_.size = bulletUIJson_.Get("size", bulletUIData_.size);
@@ -246,3 +246,4 @@ void PlayerAdjustItem::Editor()
 
 	ImGui::End();
 }
+

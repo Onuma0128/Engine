@@ -1,4 +1,4 @@
-#include "CompanionAdjustItem.h"
+﻿#include "CompanionAdjustItem.h"
 
 #include "imgui.h"
 
@@ -14,7 +14,7 @@ void CompanionAdjustItem::LoadItems()
 		mainJson_.Set("searchUpdateTime", 0.0f);
 		mainJson_.Set("searchCancelDistance", 0.0f);
 		mainJson_.Set("colliderSize", 0.0f);
-		mainJson_.Set("colliderOffset", Vector3{});
+		mainJson_.Set("colliderOffset", NumaEngine::Vector3{});
 
 		mainJson_.Set("blinkingHP", 0);
 		mainJson_.Set("blinkingColor", 0.0f);
@@ -72,7 +72,7 @@ void CompanionAdjustItem::LoadItems()
 		attackJson_.Set("shakePowerHigh", 0.0f);
 		attackJson_.Set("shakePowerLow", 0.0f);
 		attackJson_.Set("attackColliderSize", 0.0f);
-		attackJson_.Set("attackColliderOffset", Vector3{});
+		attackJson_.Set("attackColliderOffset", NumaEngine::Vector3{});
 		attackJson_.Set("firstDashTime", 0.0f);
 		attackJson_.Set("attackStartupTime", 0.0f);
 		attackJson_.Set("attackActiveTime", 0.0f);
@@ -94,7 +94,7 @@ void CompanionAdjustItem::LoadItems()
 		knockbackJson_.Set("knockbackSpeed", 0.0f);
 		knockbackJson_.Set("knockbackTime", 1.0f);
 
-		knockbackJson_.Set("shieldKnockbackDire", Vector3{});
+		knockbackJson_.Set("shieldKnockbackDire", NumaEngine::Vector3{});
 		knockbackJson_.Set("shieldKnockbackSpeed", 0.0f);
 		knockbackJson_.Set("shieldKnockbackTime", 1.0f);
 	} else {
@@ -146,10 +146,10 @@ void CompanionAdjustItem::LoadItems()
 	effectJson_.Init("CompanionEffect");
 	if (!effectJson_.Load()) {
 		effectJson_.Set("nextArrowAnimaTime", 0.0f);
-		effectJson_.Set("nextArrowScale", Vector3{ 1.0f,1.0f,1.0f });
-		effectJson_.Set("nextArrowPosition", Vector3{ 1.0f,1.0f,1.0f });
-		effectJson_.Set("nextArrowVarianceScale", Vector3{ 1.0f,1.0f,1.0f });
-		effectJson_.Set("nextArrowVariancePosition", Vector3{ 1.0f,1.0f,1.0f });
+		effectJson_.Set("nextArrowScale", NumaEngine::Vector3{ 1.0f,1.0f,1.0f });
+		effectJson_.Set("nextArrowPosition", NumaEngine::Vector3{ 1.0f,1.0f,1.0f });
+		effectJson_.Set("nextArrowVarianceScale", NumaEngine::Vector3{ 1.0f,1.0f,1.0f });
+		effectJson_.Set("nextArrowVariancePosition", NumaEngine::Vector3{ 1.0f,1.0f,1.0f });
 		effectJson_.Set("lerpSpeed", 1.0f);
 	} else {
 		effectData_.nextArrowAnimaTime = effectJson_.Get("nextArrowAnimaTime", effectData_.nextArrowAnimaTime);

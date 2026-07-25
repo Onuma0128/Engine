@@ -1,4 +1,4 @@
-#include "BossDashPrediction.h"
+﻿#include "BossDashPrediction.h"
 
 #include "Collision3D.h"
 
@@ -18,7 +18,7 @@ void BossDashPrediction::Init()
 void BossDashPrediction::Update(PrimitiveDrawr* plane, PrimitiveDrawr* timePlane)
 {
 	// コライダーを設定する
-	Collider::origin_ = bossPosition_ + Vector3::ExprUnitY;
+	Collider::origin_ = bossPosition_ + NumaEngine::Vector3::ExprUnitY;
 	Collider::diff_ = (plane->GetTransform().translation - bossPosition_) * 2.0f;
 	Collider::isActive_ = plane->GetRenderOptions().enabled;
 
@@ -49,7 +49,7 @@ void BossDashPrediction::OnCollisionStay(Collider* other)
 
 	if (type == ColliderType::kOBB) {
 		if (Collision3D::OBBSegment(other, this, &hit)) {
-			float distance = Vector3::Distance(hit.point, bossPosition_);
+			float distance = NumaEngine::Vector3::Distance(hit.point, bossPosition_);
 			if (hitDistance_ < distance) { return; }
 			hitDistance_ = distance;
 			hitPosition_ = hit.point;
@@ -57,7 +57,7 @@ void BossDashPrediction::OnCollisionStay(Collider* other)
 		}
 	} else {
 		if (Collision3D::SphereSegment(other, this, &hit)) {
-			float distance = Vector3::Distance(hit.point, bossPosition_);
+			float distance = NumaEngine::Vector3::Distance(hit.point, bossPosition_);
 			if (hitDistance_ < distance) { return; }
 			hitDistance_ = distance;
 			hitPosition_ = hit.point;

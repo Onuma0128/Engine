@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 
@@ -37,7 +37,7 @@ public:
 	/// リセット時呼び出し
 	/// </summary>
 	/// <param name="position"></スポーンする座標を入れる>
-	void Reset(const Vector3& position) override;
+	void Reset(const NumaEngine::Vector3& position) override;
 
 	/// <summary>
 	/// ウエポンのゲッター
@@ -50,4 +50,5 @@ private:
 	std::unique_ptr<EnemyWeaponBase> weapon_ = nullptr;
 
 };
+
 

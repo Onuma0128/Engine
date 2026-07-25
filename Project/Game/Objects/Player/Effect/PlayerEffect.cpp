@@ -1,4 +1,4 @@
-#include "PlayerEffect.h"
+﻿#include "PlayerEffect.h"
 
 #include "DeltaTimer.h"
 #include "Input.h"
@@ -106,8 +106,8 @@ void PlayerEffect::OnceMoveEffect()
 	moveDustEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = player_->GetTransform().rotation_;
-	Vector3 position = player_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = player_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = player_->GetTransform().translation_;
 	
 	moveDustEmitter_->SetRotation(rotate);
 	moveDustEmitter_->SetPosition(position);
@@ -118,8 +118,8 @@ void PlayerEffect::OnceAvoidEffect()
 	avoidDustEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = player_->GetTransform().rotation_;
-	Vector3 position = player_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = player_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = player_->GetTransform().translation_;
 
 	avoidDustEmitter_->SetPosition(position);
 	avoidDustEmitter_->SetRotation(rotate);
@@ -130,8 +130,8 @@ void PlayerEffect::OnceHitEffect()
 	playerHit_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = player_->GetTransform().rotation_;
-	Vector3 position = player_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = player_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = player_->GetTransform().translation_;
 
 	playerHit_->SetPosition(position);
 	//playerHit_->SetRotation(rotate);
@@ -159,7 +159,7 @@ void PlayerEffect::UpdatePostEffect()
 			float scale = t * 20.0f;
 			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
 			float angle = t * std::numbers::pi_v<float>;
-			cylinder_->GetTransform().rotation = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, angle);
+			cylinder_->GetTransform().rotation = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, angle);
 
 			if (specialMoveFrame_ >= expandDuration) {
 				specialMoveFrame_ = 0.0f;
@@ -198,7 +198,7 @@ void PlayerEffect::UpdatePostEffect()
 			float scale = t * 20.0f;
 			cylinder_->GetTransform().scale = { scale ,scale / 2.0f ,scale };
 			float angle = t * std::numbers::pi_v<float>;
-			cylinder_->GetTransform().rotation = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, angle);
+			cylinder_->GetTransform().rotation = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, angle);
 
 			if (specialMoveFrame_ >= shrinkDuration) {
 				specialMoveFrame_ = 0.0f;
@@ -225,3 +225,4 @@ void PlayerEffect::UpdatePostEffect()
 		break;
 	}
 }
+

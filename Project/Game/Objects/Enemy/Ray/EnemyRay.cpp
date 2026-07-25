@@ -1,4 +1,4 @@
-#include "EnemyRay.h"
+﻿#include "EnemyRay.h"
 
 #include "Collision3D.h"
 
@@ -20,7 +20,7 @@ void EnemyRay::Init()
 	isLooking_ = false;
 }
 
-void EnemyRay::Update(const Vector3& start, const Vector3& end)
+void EnemyRay::Update(const NumaEngine::Vector3& start, const NumaEngine::Vector3& end)
 {
 	// 毎フレーム初期化する
 	hitPointLength_ = 1000.0f;
@@ -30,8 +30,8 @@ void EnemyRay::Update(const Vector3& start, const Vector3& end)
 	end_ = end;
 
 	// 反射処理のコライダーを設定
-	Collider::origin_ = start_;
-	Collider::diff_ = end_;
+    origin_ = start_;
+	diff_ = end_;
 	Collider::LineUpdate();
 }
 
@@ -92,3 +92,4 @@ void EnemyRay::OnCollisionExit(Collider* other)
 		isLooking_ = false;
 	}
 }
+

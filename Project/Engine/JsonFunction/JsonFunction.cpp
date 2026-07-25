@@ -1,4 +1,4 @@
-#include "JsonFunction.h"
+﻿#include "JsonFunction.h"
 
 #include "Imgui.h"
 
@@ -25,7 +25,7 @@ void JsonFunction::DrawImGui(float dragSpeed)
             if (ImGui::Checkbox(key.c_str(), &v))
                 val = v;
         }
-        // ---------- Vector / Quaternion ----------
+        // ---------- Vector / NumaEngine::Quaternion ----------
         else if (val.is_object())
         {
             // 必須キーを確認
@@ -34,21 +34,21 @@ void JsonFunction::DrawImGui(float dragSpeed)
             const bool hasZ = val.contains("z");
             const bool hasW = val.contains("w");
 
-            if (hasX && hasY && !hasZ && !hasW)            // Vector2
+            if (hasX && hasY && !hasZ && !hasW)            // NumaEngine::Vector2
             {
                 float v[2] = { val["x"], val["y"] };
                 if (ImGui::DragFloat2(key.c_str(), v, dragSpeed))
                 {
                     val["x"] = v[0]; val["y"] = v[1];
                 }
-            } else if (hasX && hasY && hasZ && !hasW)        // Vector3
+            } else if (hasX && hasY && hasZ && !hasW)        // NumaEngine::Vector3
             {
                 float v[3] = { val["x"], val["y"], val["z"] };
                 if (ImGui::DragFloat3(key.c_str(), v, dragSpeed))
                 {
                     val["x"] = v[0]; val["y"] = v[1]; val["z"] = v[2];
                 }
-            } else if (hasX && hasY && hasZ && hasW)         // Vector4 or Quaternion
+            } else if (hasX && hasY && hasZ && hasW)         // NumaEngine::Vector4 or NumaEngine::Quaternion
             {
                 float v[4] = { val["x"], val["y"], val["z"], val["w"] };
                 if (ImGui::DragFloat4(key.c_str(), v, dragSpeed))
@@ -95,3 +95,4 @@ bool JsonFunction::Deleta() const
     }
     return removed && !ec;
 }
+

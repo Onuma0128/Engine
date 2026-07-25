@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -47,7 +47,7 @@ public:
     uint32_t GetLineID(Line3d* owner);
 
 	// ラインのインスタンスデータ/マテリアル設定
-    void SetLineInstances(Line3d* owner, const std::vector<Vector3>& positions);
+    void SetLineInstances(Line3d* owner, const std::vector<NumaEngine::Vector3>& positions);
     void SetMaterial(Line3d* owner, const Material& material);
 
     // 全破棄
@@ -64,8 +64,8 @@ private:
 
     // InputLayoutFactory::Line3dInputLayout と一致
     struct Inst {
-        Vector3 startPos;
-        Vector3 endPos;
+        NumaEngine::Vector3 startPos;
+        NumaEngine::Vector3 endPos;
         uint32_t lineIndex; // Shader 側で Transform/Material のインデックスに使える
     };
 
@@ -112,4 +112,6 @@ private:
     uint32_t totalInstances_ = 0;
     uint32_t capacity_ = 0;
 };
+
+
 

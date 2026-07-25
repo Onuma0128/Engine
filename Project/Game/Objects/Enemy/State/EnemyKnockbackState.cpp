@@ -1,4 +1,4 @@
-#include "EnemyKnockbackState.h"
+﻿#include "EnemyKnockbackState.h"
 
 #include "Easing.h"
 #include "DeltaTimer.h"
@@ -12,7 +12,7 @@ void EnemyKnockbackState::Init()
 {
 	const float knockbackTime = 0.5f;
 	const float knockbackSpeed = 3.0f;
-	Vector3 velocity = enemy_->GetVelocity() * knockbackSpeed * knockbackTime;
+	NumaEngine::Vector3 velocity = enemy_->GetVelocity() * knockbackSpeed * knockbackTime;
 	velocity.y = 0.0f;
 
 	// 最初と最後の座標を作成する
@@ -33,7 +33,7 @@ void EnemyKnockbackState::Update()
 	t = std::clamp(t, 0.0f, 1.0f);
 	t = Easing::EaseOutQuint(t);
 
-	Vector3 translate = Vector3::Lerp(startPosition_, endPosition_, t);
+	NumaEngine::Vector3 translate = NumaEngine::Vector3::Lerp(startPosition_, endPosition_, t);
 	enemy_->SetTransformTranslation(translate);
 
 	if (t >= 1.0f) {
@@ -44,5 +44,6 @@ void EnemyKnockbackState::Update()
 void EnemyKnockbackState::Draw()
 {
 }
+
 
 

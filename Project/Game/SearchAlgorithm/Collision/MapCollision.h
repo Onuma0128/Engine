@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <vector>
 #include <list>
@@ -13,7 +13,7 @@
 /// </summary>
 struct Maptip {
 	AABB_2D aabb;		// 座標格納
-	Vector3 center;		// 中心座標
+	NumaEngine::Vector3 center;		// 中心座標
 	bool isEnable;		// 有効かどうか
 };
 
@@ -96,4 +96,5 @@ private:
 	bool debugLine_ = false;
 
 };
+
 

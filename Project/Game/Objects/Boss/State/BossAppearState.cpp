@@ -1,4 +1,4 @@
-#include "BossAppearState.h"
+﻿#include "BossAppearState.h"
 
 #include <numbers>
 
@@ -18,8 +18,8 @@ void BossAppearState::Init()
 	const auto& appearData = boss_->GetItems()->GetAppearData();
 
 	// プレイヤーとの距離を測る
-	float dist = Vector3::Distance(mainData.startPosition, boss_->GetPlayer()->GetTransform().translation_);
-	float distSab = Vector3::Distance(mainData.sabStartPosition, boss_->GetPlayer()->GetTransform().translation_);
+	float dist = NumaEngine::Vector3::Distance(mainData.startPosition, boss_->GetPlayer()->GetTransform().translation_);
+	float distSab = NumaEngine::Vector3::Distance(mainData.sabStartPosition, boss_->GetPlayer()->GetTransform().translation_);
 	
 	// プレイヤーが遠い方にする
 	if (dist > distSab) {
@@ -27,7 +27,7 @@ void BossAppearState::Init()
 	} else {
 		boss_->SetTransformTranslation(mainData.sabStartPosition);
 	}
-	boss_->SetTransformRotation(Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, std::numbers::pi_v<float>));
+	boss_->SetTransformRotation(NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, std::numbers::pi_v<float>));
 
 	// ジャンプ関連のパラメーター取得
 	jumpVelocityY_ = appearData.jumpVelocityY;
@@ -67,7 +67,7 @@ void BossAppearState::Update()
 		UpdateJump();
 
 		if (timer_ >= data.fallDownTime && boss_->GetTransform().translation_.y <= startY_) {
-			Vector3 translate = boss_->GetTransform().translation_;
+			NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 			translate.y = startY_;
 			boss_->SetTransformTranslation(translate);
 			boss_->GetEffect()->OnceJumpEffect();
@@ -110,7 +110,7 @@ void BossAppearState::UpdateJump()
 	jumpVelocityY_ += jumpAccelerY_ * DeltaTimer::GetDeltaTime();
 
 	// 位置更新（Y方向）
-	Vector3 translate = boss_->GetTransform().translation_;
+	NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 	translate.y += jumpVelocityY_ * DeltaTimer::GetDeltaTime();
 	boss_->SetTransformTranslation(translate);
 }

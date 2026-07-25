@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <iostream>
 #include <random>
@@ -22,9 +22,9 @@ class ParticleEmitter
 public:
 
 	// フィールドのAABB
-	struct AABB {
-		Vector3 min;
-		Vector3 max;
+    struct AABB {
+		NumaEngine::Vector3 min;
+		NumaEngine::Vector3 max;
 	};
 
 	// エミッタの項目
@@ -34,7 +34,7 @@ public:
 
 		std::string name;			// 何のParticleを保持しているかのname
 		uint16_t id;				// Particleのコピーが出来た時のid
-		Vector3 setPosition;		// Emitterを固定する座標
+		NumaEngine::Vector3 setPosition;		// Emitterを固定する座標
 		Transform3D transform;		// EmitterのTransform
 		AABB emitterSize;			// Emitterのsize
 
@@ -43,31 +43,31 @@ public:
 		std::string texture;		// ParticleのTexture
 		uint32_t model_;			// ParticleのModel
 		uint32_t blendMode_;		// ParticleのBlendModeを設定
-		Vector3 minScale;			// Particle発生時の最小size
-		Vector3 maxScale;			// Particle発生時の最大size
-		Vector3 endScale;			// Particleが消える時のsize
+		NumaEngine::Vector3 minScale;			// Particle発生時の最小size
+		NumaEngine::Vector3 maxScale;			// Particle発生時の最大size
+		NumaEngine::Vector3 endScale;			// Particleが消える時のsize
 
-		Vector3 minVelocity;		// Particle発生時の最小velocity
-		Vector3 maxVelocity;		// Particle発生時の最大velocity
+		NumaEngine::Vector3 minVelocity;		// Particle発生時の最小velocity
+		NumaEngine::Vector3 maxVelocity;		// Particle発生時の最大velocity
 		float directionSpeed;		// Particle発生時のSpeed
 
-		Vector3 acceleration;		// Particleの全体の加速度
-		Vector3 minAccelerField;	// 加速度が掛かるフィールドの最小size
-		Vector3 maxAccelerField;	// 加速度が掛かるフィールドの最大size
+		NumaEngine::Vector3 acceleration;		// Particleの全体の加速度
+		NumaEngine::Vector3 minAccelerField;	// 加速度が掛かるフィールドの最小size
+		NumaEngine::Vector3 maxAccelerField;	// 加速度が掛かるフィールドの最大size
 
-		Vector3 minRotate;			// Particle発生時の最小rotate
-		Vector3 maxRotate;			// Particle発生時の最大rotate
-		Vector3 minRotateSpeed;		// Particle発生時の最小rotateSpeed
-		Vector3 maxRotateSpeed;		// Particle発生時の最大rotateSpeed
+		NumaEngine::Vector3 minRotate;			// Particle発生時の最小rotate
+		NumaEngine::Vector3 maxRotate;			// Particle発生時の最大rotate
+		NumaEngine::Vector3 minRotateSpeed;		// Particle発生時の最小rotateSpeed
+		NumaEngine::Vector3 maxRotateSpeed;		// Particle発生時の最大rotateSpeed
 		float reflectY;				// Particleが反射するY軸を設定
 
-		Vector3 uvTranslation;		// ParticleのUVをスクロールする
+		NumaEngine::Vector3 uvTranslation;		// ParticleのUVをスクロールする
 
 		uint32_t count;				// Particle発生時に何個出すか
 		float lifeTime;				// Particle発生時から生きている時間
 		float frequency;			// Particle発生するまでの時間
 		float frequencyTime;		// Particle発生するまでカウントするTime
-		Vector3 color;
+        NumaEngine::Vector3 color;
 
 		bool isLock;				// Emitterを固定するか
 		bool isMoveStart;			// Particleを動かすか
@@ -82,8 +82,8 @@ public:
 	};
 
 	// 加速度フィールド
-	struct AccelerationField {
-		Vector3 acceleration;
+    struct AccelerationField {
+		NumaEngine::Vector3 acceleration;
 		AABB area;
 	};
 
@@ -113,14 +113,14 @@ public:
 
 	void SetEmitter(const Emitter& emitter) { editorEmitter_ = emitter; }
 
-	void SetRotation(const Quaternion& rotation) { emitter_.transform.rotation = rotation; }
+    void SetRotation(const NumaEngine::Quaternion& rotation) { emitter_.transform.rotation = rotation; }
 
-	void SetPosition(const Vector3& position) { 
+    void SetPosition(const NumaEngine::Vector3& position) { 
 		emitter_.setPosition = position;
 		needResetPrev_ = true;
 	}
 
-	void SetAcceleration(const Vector3& acceleration) { accelerationField_.acceleration = acceleration; }
+    void SetAcceleration(const NumaEngine::Vector3& acceleration) { accelerationField_.acceleration = acceleration; }
 
 	void SetIsCreate(bool isCreate) { isCreate_ = isCreate; }
 
@@ -141,10 +141,10 @@ private:
 	static ParticleManager::Particle MakeNewParticle(std::mt19937& randomEngine, const Emitter& emitter);
 
 	// AABBのラインボックスを作成
-	std::vector<Vector3> CreateLineBox(AABB aabb);
+    std::vector<NumaEngine::Vector3> CreateLineBox(AABB aabb);
 
 	// AABBと点の衝突判定
-	bool IsCollision(const AABB& aabb, const Vector3& point);
+	bool IsCollision(const AABB& aabb, const NumaEngine::Vector3& point);
 
 private:
 
@@ -154,7 +154,7 @@ private:
 	std::random_device seedGenerator_;
 
 	// エミッタの範囲を可視化
-	std::vector<Vector3> linePosition_;
+    std::vector<NumaEngine::Vector3> linePosition_;
 	std::unique_ptr<Line3d> line_;
 
 	// Transform変数を作る
@@ -164,8 +164,10 @@ private:
 	// emitterの前の座標を保存する
 	bool hasPrevPos_ = false;
 	bool needResetPrev_ = false;
-	Vector3 prevPosition_;
+    NumaEngine::Vector3 prevPosition_;
 
 	bool isCreate_ = true;    
 	bool onceEmit_ = false;
 };
+
+

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 
@@ -56,7 +56,7 @@ private:
 	/// <summary>
 	/// 移動処理を行う
 	/// </summary>
-	void MoveAction(const Vector3& velocity, const float speed);
+	void MoveAction(const NumaEngine::Vector3& velocity, const float speed);
 
 	/// <summary>
 	/// 移動アニメーションを再生する
@@ -81,4 +81,6 @@ private:
 	bool inAttackRange_ = false;
 
 };
+
+
 

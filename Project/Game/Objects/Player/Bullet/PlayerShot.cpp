@@ -1,4 +1,4 @@
-#include "PlayerShot.h"
+﻿#include "PlayerShot.h"
 
 #include "Input.h"
 
@@ -9,7 +9,7 @@ void PlayerShot::Init(Player* player)
 {
 	player_ = player;
 
-	rightStickQuaternion_ = Quaternion::IdentityQuaternion();
+	rightStickQuaternion_ = NumaEngine::Quaternion::IdentityQuaternion();
 
 	// プレイヤーの目線のコライダーを初期化
 	Collider::AddCollider();
@@ -51,8 +51,8 @@ void PlayerShot::OnCollisionStay(Collider* other)
 	if (!rayHitCollider_) {
 		rayHitCollider_ = other;
 	} else {
-		float distanceNow = Vector3::Distance(player_->GetTransform().translation_, rayHitCollider_->GetCenterPosition());
-		float distanceOther = Vector3::Distance(player_->GetTransform().translation_, other->GetCenterPosition());
+		float distanceNow = NumaEngine::Vector3::Distance(player_->GetTransform().translation_, rayHitCollider_->GetCenterPosition());
+		float distanceOther = NumaEngine::Vector3::Distance(player_->GetTransform().translation_, other->GetCenterPosition());
 		if (distanceOther < distanceNow) {
 			rayHitCollider_ = other;
 		}
@@ -63,7 +63,7 @@ void PlayerShot::RayUpdate()
 {
 	if (player_->GetPlayerState() == PlayerState::DemoMove) { 
 		const auto& itemData = player_->GetItem()->GetPreObjectData();
-		const auto rotateMatrix = Quaternion::MakeRotateMatrix(player_->GetTransform().rotation_);
+		const auto rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(player_->GetTransform().rotation_);
 		auto centerPosition = player_->GetTransform().translation_ + itemData.rayColliderPosition.Transform(rotateMatrix);
 
 		// コライダーの更新
@@ -84,23 +84,23 @@ void PlayerShot::RayUpdate()
 	}
 
 	// 右スティックの入力を取得
-	Vector3 rotateVelocity{};
+	NumaEngine::Vector3 rotateVelocity{};
 	Input::GetInstance()->SetGamepadStickDeadzoneScale(0.5f);
 	rotateVelocity.x = Input::GetInstance()->GetGamepadRightStickX();
 	rotateVelocity.z = Input::GetInstance()->GetGamepadRightStickY();
 	Input::GetInstance()->SetGamepadStickDeadzoneScale(1.0f);
 
 	// 右スティックの入力があるならその方向にRayを向ける
-	Quaternion rightQuaternion = Quaternion::IdentityQuaternion();
+	NumaEngine::Quaternion rightQuaternion = NumaEngine::Quaternion::IdentityQuaternion();
 	if (rotateVelocity.Length() > 0.01f) {
 		rayDirection_ = rotateVelocity;
 		Collider::isActive_ = true;
 	} else {
 		Collider::isActive_ = false;
 	}
-	rightQuaternion = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rayDirection_, 0.3f);
+	rightQuaternion = NumaEngine::Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rayDirection_, 0.3f);
 	const auto& itemData = player_->GetItem()->GetPreObjectData();
-	const auto rotateMatrix = Quaternion::MakeRotateMatrix(rightQuaternion);
+	const auto rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rightQuaternion);
 	auto centerPosition = player_->GetTransform().translation_ + itemData.rayColliderPosition.Transform(rotateMatrix);
 
 	// コライダーの更新
@@ -117,3 +117,4 @@ void PlayerShot::RayUpdate()
 
 	ResetRayHit();
 }
+

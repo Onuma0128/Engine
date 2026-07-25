@@ -1,4 +1,4 @@
-#include "ParticleEmitter.h"
+﻿#include "ParticleEmitter.h"
 
 #include "DirectXEngine.h"
 
@@ -13,7 +13,7 @@ ParticleEmitter::ParticleEmitter(const std::string name)
 {
     emitter_.name = name;
     emitter_.setPosition = { 0.0f,0.0f,0.0f };
-    emitter_.transform = { {1.0f,1.0f,1.0f},Quaternion::IdentityQuaternion(),{0.0f,0.0f,0.0f} };
+    emitter_.transform = { {1.0f,1.0f,1.0f},NumaEngine::Quaternion::IdentityQuaternion(),{0.0f,0.0f,0.0f} };
     emitter_.frequency = 0.1f;
     emitter_.frequencyTime = 0.0f;
     accelerationField_.acceleration = { 0.0f,10.0f,0.0f };
@@ -60,8 +60,8 @@ void ParticleEmitter::Update()
     emitter_.transform.rotation = backup.transform.rotation;
 
     // 新たな数値を代入
-    Vector3 min = editorEmitter_.emitterSize.min;
-    Vector3 max = editorEmitter_.emitterSize.max;
+    NumaEngine::Vector3 min = editorEmitter_.emitterSize.min;
+    NumaEngine::Vector3 max = editorEmitter_.emitterSize.max;
     // min,maxが最大値を超えていないかclamp
     emitter_.emitterSize.min = {
         std::clamp(min.x,-256.0f,0.0f),std::clamp(min.y,-256.0f,0.0f),std::clamp(min.z,-256.0f,0.0f),
@@ -72,13 +72,13 @@ void ParticleEmitter::Update()
 
     accelerationField_.acceleration = editorEmitter_.acceleration;
 
-    Vector3 emitterPosition = editorEmitter_.transform.translation;
+    NumaEngine::Vector3 emitterPosition = editorEmitter_.transform.translation;
     if (!editorEmitter_.isLock) {
         emitter_.transform.translation = emitterPosition;
     } else {
-        Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
+        Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
         emitter_.transform.translation = emitter_.setPosition + (emitterPosition).Transform(rotateMatrix);
-        accelerationField_.acceleration = Vector3::Transform(accelerationField_.acceleration, rotateMatrix);
+        accelerationField_.acceleration = NumaEngine::Vector3::Transform(accelerationField_.acceleration, rotateMatrix);
     }
     // Emitterの範囲より少し大きめにFieldを作る
     accelerationField_.area = {
@@ -89,7 +89,7 @@ void ParticleEmitter::Update()
     // min,maxが最大値を超えていないかclamp
     min = editorEmitter_.minScale;
     max = editorEmitter_.maxScale;
-    Vector3 end = editorEmitter_.endScale;
+    NumaEngine::Vector3 end = editorEmitter_.endScale;
     emitter_.minScale = {
         std::clamp(min.x,-256.0f,max.x),std::clamp(min.y,-256.0f,max.y),std::clamp(min.z,-256.0f,max.z),
     };
@@ -132,8 +132,8 @@ void ParticleEmitter::Update()
 
     linePosition_ = CreateLineBox(emitter_.emitterSize);
     for (auto& linePos : linePosition_) {
-        Vector3 translate = emitter_.transform.translation;
-        Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
+        NumaEngine::Vector3 translate = emitter_.transform.translation;
+        Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
         linePos = linePos.Transform(rotateMatrix) + translate;
     }
     line_->SetPositions(linePosition_);
@@ -158,12 +158,12 @@ void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)
             }
             // 移動量が多いときその移動の補完をする
             float dist = (emitter_.transform.translation - prevPosition_).Length();
-            Vector3 span = emitter_.emitterSize.max - emitter_.emitterSize.min;
+            NumaEngine::Vector3 span = emitter_.emitterSize.max - emitter_.emitterSize.min;
             float  threshold = span.Length();
             int n = static_cast<int>(dist / threshold);
             for (int i = 1; i <= n; ++i) {
                 float t = static_cast<float>(i) / (n + 1);
-                Vector3 pos = Vector3::Lerp(prevPosition_, emitter_.transform.translation, t);
+                NumaEngine::Vector3 pos = NumaEngine::Vector3::Lerp(prevPosition_, emitter_.transform.translation, t);
 
                 Transform3D backup = emitter_.transform;          // 元を退避
                 emitter_.transform.translation = pos;             // 中間点に置き換える
@@ -258,8 +258,8 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
         particle.transform.rotation = { distRotateX(randomEngine),distRotateY(randomEngine),distRotateZ(randomEngine) };
         particle.rotateSpeed = { distRotateSpeedX(randomEngine),distRotateSpeedY(randomEngine),distRotateSpeedZ(randomEngine) };
     }
-    Vector3 randomTranslate = { distPosX(randomEngine),distPosY(randomEngine) ,distPosZ(randomEngine) };
-    Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(emitter.transform.rotation);
+    NumaEngine::Vector3 randomTranslate = { distPosX(randomEngine),distPosY(randomEngine) ,distPosZ(randomEngine) };
+    Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter.transform.rotation);
     particle.transform.translation = emitter.transform.translation + randomTranslate.Transform(rotateMatrix);
     
     if (!emitter.isLockDirectionXY && !emitter.isLockDirectionXZ) {
@@ -267,25 +267,25 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
         std::uniform_real_distribution<float> distVelocityY(emitter.minVelocity.y, emitter.maxVelocity.y);
         std::uniform_real_distribution<float> distVelocityZ(emitter.minVelocity.z, emitter.maxVelocity.z);
 
-        Vector3 velocity = { distVelocityX(randomEngine),distVelocityY(randomEngine),distVelocityZ(randomEngine) };
-        particle.velocity = velocity.Transform(Quaternion::MakeRotateMatrix(emitter.transform.rotation));
+        NumaEngine::Vector3 velocity = { distVelocityX(randomEngine),distVelocityY(randomEngine),distVelocityZ(randomEngine) };
+        particle.velocity = velocity.Transform(NumaEngine::Quaternion::MakeRotateMatrix(emitter.transform.rotation));
     } else {
         if (emitter.isLockDirectionXY) {
-            Vector3 d = emitter.transform.translation - particle.transform.translation;
+            NumaEngine::Vector3 d = emitter.transform.translation - particle.transform.translation;
             d.z = 0.0f; // XY平面に限定
             float len2 = d.x * d.x + d.y * d.y;
-            if (len2 < 1e-12f) { d = Vector3::ExprUnitY; } else { d = d * (1.0f / std::sqrt(len2)); }
+            if (len2 < 1e-12f) { d = NumaEngine::Vector3::ExprUnitY; } else { d = d * (1.0f / std::sqrt(len2)); }
             float roll = std::atan2(-d.x, d.y);
             particle.transform.rotation = { 0.0f, 0.0f, roll };
-            Vector3 forwardXY = { -std::sin(roll), std::cos(roll), 0.0f };
+            NumaEngine::Vector3 forwardXY = { -std::sin(roll), std::cos(roll), 0.0f };
             particle.velocity = forwardXY * emitter.directionSpeed;
         } else {
-            Vector3 d = emitter.transform.translation - particle.transform.translation;
+            NumaEngine::Vector3 d = emitter.transform.translation - particle.transform.translation;
             d.y = 0.0f; // XZ平面に限定
             float len2 = d.x * d.x + d.z * d.z;
-            if (len2 < 1e-12f) { d = Vector3::ExprUnitZ; } else { d *= (1.0f / std::sqrt(len2)); }
+            if (len2 < 1e-12f) { d = NumaEngine::Vector3::ExprUnitZ; } else { d *= (1.0f / std::sqrt(len2)); }
             float yaw = std::atan2(d.x, d.z);
-            Vector3 forwardXZ = { std::sin(yaw), 0.0f, std::cos(yaw) };
+            NumaEngine::Vector3 forwardXZ = { std::sin(yaw), 0.0f, std::cos(yaw) };
             particle.velocity = forwardXZ * emitter.directionSpeed;
         }
     }
@@ -297,9 +297,9 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     return particle;
 }
 
-std::vector<Vector3> ParticleEmitter::CreateLineBox(AABB aabb)
+std::vector<NumaEngine::Vector3> ParticleEmitter::CreateLineBox(AABB aabb)
 {
-    std::vector<Vector3> linePosition = {
+    std::vector<NumaEngine::Vector3> linePosition = {
         aabb.min,
         { aabb.max.x, aabb.min.y, aabb.min.z },
 
@@ -341,7 +341,7 @@ std::vector<Vector3> ParticleEmitter::CreateLineBox(AABB aabb)
 }
 
 
-bool ParticleEmitter::IsCollision(const AABB& aabb, const Vector3& point)
+bool ParticleEmitter::IsCollision(const AABB& aabb, const NumaEngine::Vector3& point)
 {
     if (aabb.min.x < point.x && aabb.max.x > point.x &&
         aabb.min.y < point.y && aabb.max.y > point.y &&

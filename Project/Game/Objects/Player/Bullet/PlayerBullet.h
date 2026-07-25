@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <functional>
 
 #include "Object3d.h"
@@ -99,11 +99,12 @@ private:
 
 	// 速度
 	float speed_ = 0.0f;
-	Vector3 velocity_;
+	NumaEngine::Vector3 velocity_;
 	// 動いている時間
 	float activeTime_ = 0.0f;
 	// リロードされているか
 	bool isReload_ = true;
 
 };
+
 

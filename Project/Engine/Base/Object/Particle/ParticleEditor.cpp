@@ -1,4 +1,4 @@
-#include "ParticleEditor.h"
+﻿#include "ParticleEditor.h"
 
 #include "imgui.h"
 
@@ -37,11 +37,11 @@ void ParticleEditor::Initialize(std::string filePath)
 		// 発生してから消えるまでの時間
 		parameters_.Set("LifeTime", 0.5f);
 		// 加速度
-		parameters_.Set("Acceleration", Vector3{});
+		parameters_.Set("Acceleration", NumaEngine::Vector3{});
 		// 加速度が掛かるフィールドのスケール
 		parameters_.Set("AcceleField", false);
-		parameters_.Set("MinAcceleField", Vector3{});
-		parameters_.Set("MaxAcceleField", Vector3{});
+		parameters_.Set("MinAcceleField", NumaEngine::Vector3{});
+		parameters_.Set("MaxAcceleField", NumaEngine::Vector3{});
 		// パーティクルが反射するY軸
 		parameters_.Set("Reflect", false);
 		parameters_.Set("ReflectY", 0.0f);
@@ -49,33 +49,33 @@ void ParticleEditor::Initialize(std::string filePath)
 		/* ==================== Particle1つのランダム値 ==================== */
 
 		// カラー
-		parameters_.Set("Color", Vector3{});
-		parameters_.Set("uvTranslation", Vector3{});
+		parameters_.Set("Color", NumaEngine::Vector3{});
+		parameters_.Set("uvTranslation", NumaEngine::Vector3{});
 		// スケール
-		parameters_.Set("MinScale", Vector3{});
-		parameters_.Set("MaxScale", Vector3{});
+		parameters_.Set("MinScale", NumaEngine::Vector3{});
+		parameters_.Set("MaxScale", NumaEngine::Vector3{});
 		parameters_.Set("ChangeScale", false);
-		parameters_.Set("EndScale", Vector3{});
+		parameters_.Set("EndScale", NumaEngine::Vector3{});
 		// 速度
-		parameters_.Set("MinVelocity", Vector3{});
-		parameters_.Set("MaxVelocity", Vector3{});
+		parameters_.Set("MinVelocity", NumaEngine::Vector3{});
+		parameters_.Set("MaxVelocity", NumaEngine::Vector3{});
 		parameters_.Set("LockDirectionXY", false);
 		parameters_.Set("LockDirectionXZ", false);
 		parameters_.Set("DirectionSpeed", 0.0f);
 		// 回転
 		parameters_.Set("Billboard", true);
-		parameters_.Set("MinRotate", Vector3{});
-		parameters_.Set("MaxRotate", Vector3{});
-		parameters_.Set("MinRotateSpeed", Vector3{});
-		parameters_.Set("MaxRotateSpeed", Vector3{});
+		parameters_.Set("MinRotate", NumaEngine::Vector3{});
+		parameters_.Set("MaxRotate", NumaEngine::Vector3{});
+		parameters_.Set("MinRotateSpeed", NumaEngine::Vector3{});
+		parameters_.Set("MaxRotateSpeed", NumaEngine::Vector3{});
 		
 		/* ==================== Emitterの固定値 ==================== */
 
 		// サイズ
-		parameters_.Set("MinSize", Vector3{});
-		parameters_.Set("MaxSize", Vector3{});
+		parameters_.Set("MinSize", NumaEngine::Vector3{});
+		parameters_.Set("MaxSize", NumaEngine::Vector3{});
 		// Transform
-		parameters_.Set("Position", Vector3{});
+		parameters_.Set("Position", NumaEngine::Vector3{});
 		// Rotate,Positionを固定するか
 		parameters_.Set("Look", false);
 
@@ -108,11 +108,11 @@ void ParticleEditor::Initialize(std::string filePath)
 		// 発生してから消えるまでの時間
 		baseEmitter_.lifeTime = parameters_.Get<float>("LifeTime", baseEmitter_.lifeTime);
 		// 加速度
-		baseEmitter_.acceleration = parameters_.Get<Vector3>("Acceleration", baseEmitter_.acceleration);
+		baseEmitter_.acceleration = parameters_.Get<NumaEngine::Vector3>("Acceleration", baseEmitter_.acceleration);
 		// 加速度が掛かるフィールドのスケール
 		baseEmitter_.isFieldStart = parameters_.Get<bool>("AcceleField", baseEmitter_.isFieldStart);
-		baseEmitter_.minAccelerField = parameters_.Get<Vector3>("MinAcceleField", baseEmitter_.minAccelerField);
-		baseEmitter_.maxAccelerField = parameters_.Get<Vector3>("MaxAcceleField", baseEmitter_.maxAccelerField);
+		baseEmitter_.minAccelerField = parameters_.Get<NumaEngine::Vector3>("MinAcceleField", baseEmitter_.minAccelerField);
+		baseEmitter_.maxAccelerField = parameters_.Get<NumaEngine::Vector3>("MaxAcceleField", baseEmitter_.maxAccelerField);
 		// パーティクルが反射するY軸
 		baseEmitter_.isReflect = parameters_.Get<bool>("Reflect", baseEmitter_.isReflect);
 		baseEmitter_.reflectY = parameters_.Get<float>("ReflectY", baseEmitter_.reflectY);
@@ -120,33 +120,33 @@ void ParticleEditor::Initialize(std::string filePath)
 		/* ==================== Particle1つのランダム値 ==================== */
 
 		// カラー
-		baseEmitter_.color = parameters_.Get<Vector3>("Color", baseEmitter_.color);
-		baseEmitter_.uvTranslation = parameters_.Get<Vector3>("uvTranslation", baseEmitter_.uvTranslation);
+		baseEmitter_.color = parameters_.Get<NumaEngine::Vector3>("Color", baseEmitter_.color);
+		baseEmitter_.uvTranslation = parameters_.Get<NumaEngine::Vector3>("uvTranslation", baseEmitter_.uvTranslation);
 		// スケール
-		baseEmitter_.minScale = parameters_.Get<Vector3>("MinScale", baseEmitter_.minScale);
-		baseEmitter_.maxScale = parameters_.Get<Vector3>("MaxScale", baseEmitter_.maxScale);
+		baseEmitter_.minScale = parameters_.Get<NumaEngine::Vector3>("MinScale", baseEmitter_.minScale);
+		baseEmitter_.maxScale = parameters_.Get<NumaEngine::Vector3>("MaxScale", baseEmitter_.maxScale);
 		baseEmitter_.isChangeScale = parameters_.Get<bool>("ChangeScale", baseEmitter_.isChangeScale);
-		baseEmitter_.endScale = parameters_.Get<Vector3>("EndScale", baseEmitter_.endScale);
+		baseEmitter_.endScale = parameters_.Get<NumaEngine::Vector3>("EndScale", baseEmitter_.endScale);
 		// 速度
-		baseEmitter_.minVelocity = parameters_.Get<Vector3>("MinVelocity", baseEmitter_.minVelocity);
-		baseEmitter_.maxVelocity = parameters_.Get<Vector3>("MaxVelocity", baseEmitter_.maxVelocity);
+		baseEmitter_.minVelocity = parameters_.Get<NumaEngine::Vector3>("MinVelocity", baseEmitter_.minVelocity);
+		baseEmitter_.maxVelocity = parameters_.Get<NumaEngine::Vector3>("MaxVelocity", baseEmitter_.maxVelocity);
 		baseEmitter_.directionSpeed = parameters_.Get<float>("DirectionSpeed", baseEmitter_.directionSpeed);
 		baseEmitter_.isLockDirectionXY = parameters_.Get<bool>("LockDirectionXY", baseEmitter_.isLockDirectionXY);
 		baseEmitter_.isLockDirectionXZ = parameters_.Get<bool>("LockDirectionXZ", baseEmitter_.isLockDirectionXZ);
 		// 回転
 		baseEmitter_.isBillboard = parameters_.Get<bool>("Billboard", baseEmitter_.isBillboard);
-		baseEmitter_.minRotate = parameters_.Get<Vector3>("MinRotate", baseEmitter_.minRotate);
-		baseEmitter_.maxRotate = parameters_.Get<Vector3>("MaxRotate", baseEmitter_.maxRotate);
-		baseEmitter_.minRotateSpeed = parameters_.Get<Vector3>("MinRotateSpeed", baseEmitter_.minRotateSpeed);
-		baseEmitter_.maxRotateSpeed = parameters_.Get<Vector3>("MaxRotateSpeed", baseEmitter_.maxRotateSpeed);
+		baseEmitter_.minRotate = parameters_.Get<NumaEngine::Vector3>("MinRotate", baseEmitter_.minRotate);
+		baseEmitter_.maxRotate = parameters_.Get<NumaEngine::Vector3>("MaxRotate", baseEmitter_.maxRotate);
+		baseEmitter_.minRotateSpeed = parameters_.Get<NumaEngine::Vector3>("MinRotateSpeed", baseEmitter_.minRotateSpeed);
+		baseEmitter_.maxRotateSpeed = parameters_.Get<NumaEngine::Vector3>("MaxRotateSpeed", baseEmitter_.maxRotateSpeed);
 
 		/* ==================== Emitterの固定値 ==================== */
 
 		// サイズ
-		baseEmitter_.emitterSize.min = parameters_.Get<Vector3>("MinSize", baseEmitter_.emitterSize.min);
-		baseEmitter_.emitterSize.max = parameters_.Get<Vector3>("MaxSize", baseEmitter_.emitterSize.max);
+		baseEmitter_.emitterSize.min = parameters_.Get<NumaEngine::Vector3>("MinSize", baseEmitter_.emitterSize.min);
+		baseEmitter_.emitterSize.max = parameters_.Get<NumaEngine::Vector3>("MaxSize", baseEmitter_.emitterSize.max);
 		// Transform
-		baseEmitter_.transform.translation = parameters_.Get<Vector3>("Position", baseEmitter_.transform.translation);
+		baseEmitter_.transform.translation = parameters_.Get<NumaEngine::Vector3>("Position", baseEmitter_.transform.translation);
 		// Rotate,Positionを固定するか
 		baseEmitter_.isLock = parameters_.Get<bool>("Look", baseEmitter_.isLock);
 	}
@@ -359,3 +359,4 @@ void ParticleEditor::Save()
 
 	parameters_.Save();
 }
+

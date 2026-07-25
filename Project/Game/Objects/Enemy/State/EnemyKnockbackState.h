@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "EnemyBaseState.h"
 
@@ -39,8 +39,10 @@ private:
 	float time_ = 0.0f;
 	float speed_ = 0.0f;
 
-	Vector3 startPosition_;
-	Vector3 endPosition_;
+	NumaEngine::Vector3 startPosition_;
+	NumaEngine::Vector3 endPosition_;
 
 };
+
+
 

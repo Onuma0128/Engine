@@ -1,4 +1,4 @@
-#include "Camera.h"
+﻿#include "Camera.h"
 
 #ifdef ENABLE_EDITOR
 #include "imgui.h"
@@ -37,13 +37,13 @@ void Camera::DebugCamera()
 {
 	const float moveSpeed = 0.25f;
 
-	Vector3 defaultForward = Vector3::ExprUnitZ;
+	NumaEngine::Vector3 defaultForward = NumaEngine::Vector3::ExprUnitZ;
 	Matrix4x4 rotationMatrix = Matrix4x4::RotateY(debugTransform_.rotation.y);
-	Vector3 forward = defaultForward.Transform(rotationMatrix);
+	NumaEngine::Vector3 forward = defaultForward.Transform(rotationMatrix);
 
 	// 右方向ベクトルを計算
-	Vector3 defaultRight = Vector3::ExprUnitX;
-	Vector3 right = defaultRight.Transform(rotationMatrix);
+	NumaEngine::Vector3 defaultRight = NumaEngine::Vector3::ExprUnitX;
+	NumaEngine::Vector3 right = defaultRight.Transform(rotationMatrix);
 
 	Input* input = Input::GetInstance();
 	if (input->PushKey(DIK_W)) {
@@ -85,13 +85,13 @@ void Camera::NormalCamera()
 	UpdateMatrix(transform_);
 }
 
-void Camera::SetLookAt(const Vector3& eye, const Vector3& target)
+void Camera::SetLookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3& target)
 {
 	// カメラの位置を設定
 	transform_.translation = eye;
 
 	// 方向ベクトル
-	Vector3 forward = target - eye;
+	NumaEngine::Vector3 forward = target - eye;
 	if (forward.Length() < 1e-6f) {
 		// 方向が0だと回転計算ができない
 		return;
@@ -99,11 +99,11 @@ void Camera::SetLookAt(const Vector3& eye, const Vector3& target)
 	forward = forward.Normalize();
 
 	// Y軸を上と仮定して右ベクトルを求める
-	Vector3 up = { 0.0f, 1.0f, 0.0f };
-	Vector3 right = Vector3::Cross(up, forward).Normalize();
+	NumaEngine::Vector3 up = { 0.0f, 1.0f, 0.0f };
+	NumaEngine::Vector3 right = NumaEngine::Vector3::Cross(up, forward).Normalize();
 
 	// 正確な up を再計算（直交性を保証）
-	up = Vector3::Cross(forward, right);
+	up = NumaEngine::Vector3::Cross(forward, right);
 
 	// 回転行列を構成（カメラのローカル座標系）
 	Matrix4x4 rotMat{};
@@ -152,8 +152,8 @@ void Camera::CameraImGui()
 	ImGui::Begin("Camera");
 	ImGui::Checkbox("debug", &isDebug_);
 
-	Vector3 rotation = transform_.rotation;
-	Vector3 translation = transform_.translation;
+	NumaEngine::Vector3 rotation = transform_.rotation;
+	NumaEngine::Vector3 translation = transform_.translation;
 	ImGui::DragFloat3("rotate", &rotation.x, 0.01f);
 	ImGui::DragFloat3("translate", &translation.x, 0.01f);
 	float fps = 1.0f / DeltaTimer::GetRawDeltaTime();

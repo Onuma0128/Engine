@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <array>
@@ -88,10 +88,10 @@ private:
 	/// 更新
 	/// </summary>
 	/// <param name="effect"></param>
+    void PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect,
+		const float time, const float size, const NumaEngine::Vector3& offset);
 	void PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect,
-		const float time, const float size, const Vector3& offset);
-	void PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect,
-		const float time, const Vector2& size, const Vector3& offset);
+		const float time, const NumaEngine::Vector2& size, const NumaEngine::Vector3& offset);
 
 private:
 
@@ -139,4 +139,6 @@ private:
 	std::shared_ptr<ParticleEmitter> hitRingBlueEmitter_;
 
 };
+
+
 

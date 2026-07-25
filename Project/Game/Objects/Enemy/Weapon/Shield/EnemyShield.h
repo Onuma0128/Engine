@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "objects/enemy/weapon/EnemyWeaponBase.h"
 
@@ -54,8 +54,9 @@ public:
 
 private:
 
-	Quaternion rotateY_;
+	NumaEngine::Quaternion rotateY_;
 	Matrix4x4 rotateMatrix_;
 
 };
+
 

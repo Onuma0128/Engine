@@ -1,34 +1,34 @@
-#pragma once
+﻿#pragma once
 
 #include "Vector3.h"
 #include "Matrix4x4.h"
 
 // 球
 struct Sphere {
-	Vector3 center;
+	NumaEngine::Vector3 center;
 	float radius;
 };
 // 線
 struct Segment {
-	Vector3 origin;
-	Vector3 diff;
+	NumaEngine::Vector3 origin;
+	NumaEngine::Vector3 diff;
 };
 // レイ
 struct RaycastHit {
-	Vector3 point;
-	Vector3 normal;
+	NumaEngine::Vector3 point;
+	NumaEngine::Vector3 normal;
 	float   t;
 };
 // 回転無しボックス
 struct AABB {
-	Vector3 min;
-	Vector3 max;
+	NumaEngine::Vector3 min;
+	NumaEngine::Vector3 max;
 };
 // 回転有りボックス
 struct OBB {
-	Vector3 center;
+	NumaEngine::Vector3 center;
 	Matrix4x4 rotateMatrix;
-	Vector3 size;
+	NumaEngine::Vector3 size;
 };
 
 class Collider;
@@ -53,7 +53,7 @@ public:
 	/// <param name="a"></球A>
 	/// <param name="b"></球B>
 	/// <returns></接触した座標>
-	static Vector3 GetSphereSpherePushVector(const Collider* a, const Collider* b);
+    static NumaEngine::Vector3 GetSphereSpherePushVector(const Collider* a, const Collider* b);
 
 	/// <summary>
 	/// AABBと球の衝突判定
@@ -85,7 +85,7 @@ public:
 	/// <param name="a"></球>
 	/// <param name="b"></回転ボックス>
 	/// <returns></接触した座標>
-	static Vector3 GetOBBSpherePushVector(const Collider* a, const Collider* b);
+    static NumaEngine::Vector3 GetOBBSpherePushVector(const Collider* a, const Collider* b);
 
 	/// <summary>
 	/// 球とSegmentの衝突判定
@@ -126,3 +126,6 @@ public:
 	static AABB ChangeAABB(const Collider* collider);
 	static OBB ChangeOBB(const Collider* collider);
 };
+
+
+

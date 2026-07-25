@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <json.hpp>
 #include <string>
 #include <fstream>
@@ -13,10 +13,10 @@
 // 保存するコライダーのデータ
 struct ColliderData {
     ColliderType type;
-    Vector3 center{};
-    Vector3 size{};
+    NumaEngine::Vector3 center{};
+    NumaEngine::Vector3 size{};
     float radius;
-    Vector2 defPosition;
+    NumaEngine::Vector2 defPosition;
     float rotate{};
     bool active;
 };
@@ -66,4 +66,7 @@ private:
     std::string filePath_ = "";
 
 };
+
+
+
 

@@ -1,4 +1,4 @@
-#include "CompanionKnockbackState.h"
+﻿#include "CompanionKnockbackState.h"
 
 #include "DeltaTimer.h"
 #include "Easing.h"
@@ -17,7 +17,7 @@ void CompanionKnockbackState::Init()
 	companion_->GetTimeStop() = true;
 
 	// ノックバック方向を取得する
-	Vector3 direction = companion_->GetTransform().translation_ - companion_->GetKnockbackPos();
+	NumaEngine::Vector3 direction = companion_->GetTransform().translation_ - companion_->GetKnockbackPos();
 	direction.y = 0.0f;
 	if (direction.Length() != 0.0f) { direction = direction.Normalize(); }
 
@@ -43,7 +43,7 @@ void CompanionKnockbackState::Update()
 	timer_ += DeltaTimer::GetDeltaTime();
 	timer_ = std::clamp(timer_, 0.0f, maxTime_);
 	float t = Easing::EaseOutQuint(timer_ / maxTime_);
-	Vector3 position = Vector3::Lerp(prePos_, target_, t);
+	NumaEngine::Vector3 position = NumaEngine::Vector3::Lerp(prePos_, target_, t);
 	companion_->SetTransformTranslation(position);
 
 	if (timer_ >= maxTime_) {
@@ -54,3 +54,4 @@ void CompanionKnockbackState::Update()
 void CompanionKnockbackState::Draw()
 {
 }
+

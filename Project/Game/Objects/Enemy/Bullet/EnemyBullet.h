@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <functional>
 
 #include "Object3d.h"
@@ -78,9 +78,10 @@ private:
 	std::function<void()> onDeactivatedCallback_;
 
 	// 速度
-	Vector3 velocity_;
+	NumaEngine::Vector3 velocity_;
 	// 動いている時間
 	float activeFrame_ = 0.0f;
 
 };
+
 

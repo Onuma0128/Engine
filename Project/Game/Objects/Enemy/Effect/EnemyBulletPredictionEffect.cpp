@@ -1,4 +1,4 @@
-#include "EnemyBulletPredictionEffect.h"
+﻿#include "EnemyBulletPredictionEffect.h"
 
 #include "Collision3D.h"
 
@@ -18,7 +18,7 @@ void EnemyBulletPredictionEffect::Init()
 	plane_ = std::make_unique<PrimitiveDrawr>();
 	plane_->TypeInit(PrimitiveType::kPlane);
 	plane_->SetBlendMode(BlendMode::kBlendModeAdd);
-	plane_->SetColor(Vector3::ExprUnitX);
+	plane_->SetColor(NumaEngine::Vector3::ExprUnitX);
 	plane_->SetAlpha(0.5f);
 	plane_->SetSceneRenderer();
 	plane_->GetRenderOptions().enabled = false;
@@ -27,7 +27,7 @@ void EnemyBulletPredictionEffect::Init()
 void EnemyBulletPredictionEffect::Update()
 {
 	// コライダーを設定する
-	Collider::origin_ = enemyPosition_ + Vector3::ExprUnitY;
+	Collider::origin_ = enemyPosition_ + NumaEngine::Vector3::ExprUnitY;
 	Collider::diff_ = (plane_->GetTransform().translation - enemyPosition_) * 2.0f;
 
 	if (isHit_) {
@@ -54,7 +54,7 @@ void EnemyBulletPredictionEffect::OnCollisionStay(Collider* other)
 
 	if (type == ColliderType::kOBB) {
 		if (Collision3D::OBBSegment(other, this, &hit)) {
-			float distance = Vector3::Distance(hit.point, enemyPosition_);
+			float distance = NumaEngine::Vector3::Distance(hit.point, enemyPosition_);
 			if (hitDistance_ < distance) { return; }
 			hitDistance_ = distance;
 			hitPosition_ = hit.point;
@@ -62,7 +62,7 @@ void EnemyBulletPredictionEffect::OnCollisionStay(Collider* other)
 		}
 	} else {
 		if (Collision3D::SphereSegment(other, this, &hit)) {
-			float distance = Vector3::Distance(hit.point, enemyPosition_);
+			float distance = NumaEngine::Vector3::Distance(hit.point, enemyPosition_);
 			if (hitDistance_ < distance) { return; }
 			hitDistance_ = distance;
 			hitPosition_ = hit.point;

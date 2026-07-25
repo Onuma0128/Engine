@@ -1366,5 +1366,11 @@
     <ClInclude Include="Game\Objects\Player\State\PlayerDemoMoveState.h" />
     <ClInclude Include="Game\Objects\Player\Collider\EnemySearchCollider.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\Effect\MuscleCountEffect.h" />
+    <ClInclude Include="Engine\3d\Sprite.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="scripts\qualify_types.ps1" />
+    <None Include="scripts\fix_includes.ps1" />
+    <None Include="scripts\fix_double_namespace.ps1" />
   </ItemGroup>
 </Project>

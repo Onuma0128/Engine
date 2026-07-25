@@ -1,4 +1,4 @@
-#include "BossJumpAttackState.h"
+﻿#include "BossJumpAttackState.h"
 
 #include "DeltaTimer.h"
 
@@ -28,7 +28,7 @@ void BossJumpAttackState::Finalize()
 {
 	boss_->GetAttackCollider()->SetActive(false);
 	boss_->GetEffect()->AttackEffectReset();
-	Vector3 translate = boss_->GetTransform().translation_;
+	NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 	translate.y = startY_;
 	boss_->SetTransformTranslation(translate);
 }
@@ -69,11 +69,11 @@ void BossJumpAttackState::Update()
 	case JumpAttackState::AirHold:
 	{
 		// プレイヤーに追従をする
-		Vector3 translate = boss_->GetTransform().translation_;
-		Vector3 target = boss_->GetPlayer()->GetTransform().translation_;
+		NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
+		NumaEngine::Vector3 target = boss_->GetPlayer()->GetTransform().translation_;
 		target.y = translate.y;
-		float distance = Vector3::Distance(target, translate);
-		Vector3 velocity = (target - translate);
+		float distance = NumaEngine::Vector3::Distance(target, translate);
+		NumaEngine::Vector3 velocity = (target - translate);
 		velocity.y = 0.0f;
 
 		// エフェクトの更新
@@ -83,8 +83,8 @@ void BossJumpAttackState::Update()
 		if (distance > 0.1f) {
 			translate += velocity.Normalize() * data.airSpeed * DeltaTimer::GetDeltaTime();
 			boss_->SetTransformTranslation(translate);
-			Quaternion yRotation = Quaternion::DirectionToQuaternion(Quaternion::IdentityQuaternion(),velocity, 1.0f);
-			boss_->SetTransformRotation(Quaternion::Slerp(boss_->GetTransform().rotation_, yRotation, 0.2f));
+			NumaEngine::Quaternion yRotation = NumaEngine::Quaternion::DirectionToQuaternion(NumaEngine::Quaternion::IdentityQuaternion(),velocity, 1.0f);
+			boss_->SetTransformRotation(NumaEngine::Quaternion::Slerp(boss_->GetTransform().rotation_, yRotation, 0.2f));
 		}
 
 		if (timer_ >= data.airHoldTime) {
@@ -101,7 +101,7 @@ void BossJumpAttackState::Update()
 		boss_->GetEffect()->SetAttackEffect(BossAttackEffect::JumpAttack);
 
 		if (timer_ >= data.fallDownTime && boss_->GetTransform().translation_.y <= startY_) {
-			Vector3 translate = boss_->GetTransform().translation_;
+			NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 			translate.y = startY_;
 			boss_->GetEffect()->AttackEffectReset();
 			boss_->GetEffect()->OnceJumpEffect();
@@ -142,7 +142,7 @@ void BossJumpAttackState::UpdateJump()
 	jumpVelocityY_ += jumpAccelerY_ * DeltaTimer::GetDeltaTime();
 
 	// 位置更新（Y方向）
-	Vector3 translate = boss_->GetTransform().translation_;
+	NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 	translate.y += jumpVelocityY_ * DeltaTimer::GetDeltaTime();
 	boss_->SetTransformTranslation(translate);
 }

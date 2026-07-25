@@ -1,4 +1,4 @@
-#include "BossEnemy.h"
+﻿#include "BossEnemy.h"
 
 #include "DeltaTimer.h"
 
@@ -29,7 +29,7 @@ void BossEnemy::Initialize()
 	Animation::PlayByName("Idle", 0.0f);
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetMaterial().outlineMask = false;
-	Animation::GetMaterial().outlineColor = Vector3::ExprUnitX;
+	Animation::GetMaterial().outlineColor = NumaEngine::Vector3::ExprUnitX;
 	Animation::SetTransformTranslation(items_->GetMainData().startPosition);
 
 	// コライダーを設定
@@ -86,7 +86,7 @@ void BossEnemy::Update()
 
 	// レイの更新
 	const float attackIn = items_->GetMainData().rayDistance;
-	Vector3 direction = Vector3(player_->GetTransform().translation_ - transform_.translation_).Normalize();
+	NumaEngine::Vector3 direction = NumaEngine::Vector3(player_->GetTransform().translation_ - transform_.translation_).Normalize();
 	ray_->Update(transform_.translation_ + items_->GetMainData().rayOffset, direction * attackIn);
 
 	// ステートの更新
@@ -103,7 +103,7 @@ void BossEnemy::Update()
 	attackCollider_->Update();
 	// アニメーションの更新
 	if (Animation::GetMaterial().enableDraw) {
-		Animation::SetTransformScale(Vector3::ExprUnitXYZ * data.modelScale);
+		Animation::SetTransformScale(NumaEngine::Vector3::ExprUnitXYZ * data.modelScale);
 		Animation::Update();
 	} else {
 		Animation::TransformUpdate();
@@ -180,7 +180,7 @@ void BossEnemy::OnCollisionStay(Collider* other)
 	// 建物系の押し出し判定(OBB,Sphere)、木の押し出し判定(OBB)
 	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) &&
 		state_->GetState() == BossState::DashAttack) {
-		Vector3 push{};
+		NumaEngine::Vector3 push{};
 		if (other->GetMyColliderType() == ColliderType::kOBB) {
 			push = Collision3D::GetOBBSpherePushVector(other, this);
 		} else if (other->GetMyColliderType() == ColliderType::kSphere) {
@@ -207,7 +207,7 @@ void BossEnemy::ChangeState(std::unique_ptr<BossBaseState> newState)
 	state_->Init();
 }
 
-void BossEnemy::ResetSearch(const Vector3& goalPosition)
+void BossEnemy::ResetSearch(const NumaEngine::Vector3& goalPosition)
 {
 	pathFinder_.Search(transform_.translation_, goalPosition);
 }
@@ -246,3 +246,4 @@ void BossEnemy::Reset()
 	// ステートの初期化
 	ChangeState(std::make_unique<BossIdleState>(this));
 }
+

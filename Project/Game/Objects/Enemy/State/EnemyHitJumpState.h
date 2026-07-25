@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "EnemyBaseState.h"
 
@@ -40,7 +40,7 @@ private:
 	/// Y座標設定
 	/// </summary>
 	/// <param name="y"></param>
-	void SetTranslate(float y, const Vector3& velocity);
+	void SetTranslate(float y, const NumaEngine::Vector3& velocity);
 
 private:
 
@@ -54,4 +54,6 @@ private:
 
 
 };
+
+
 

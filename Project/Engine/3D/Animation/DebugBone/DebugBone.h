@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <vector>
@@ -19,7 +19,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="positions"></param>
-	void Init(std::vector<Vector3> positions);
+	void Init(std::vector<NumaEngine::Vector3> positions);
 
 	/// <summary>
 	/// 更新
@@ -36,7 +36,7 @@ public:
 	/// ボーンの座標を設定する
 	/// </summary>
 	/// <param name="positions"></param>
-	void SetPositions(std::vector<Vector3> positions) { bone_->SetPositions(positions); }
+	void SetPositions(std::vector<NumaEngine::Vector3> positions) { bone_->SetPositions(positions); }
 
 	/// <summary>
 	/// ボーンの座標を取得する
@@ -44,7 +44,7 @@ public:
 	/// <param name="transform"></param>
 	/// <param name="joints"></param>
 	/// <returns></returns>
-	std::vector<Vector3> GetPositions(
+	std::vector<NumaEngine::Vector3> GetPositions(
 		const WorldTransform& transform,
 		const std::vector<Joint>& joints
 	);
@@ -54,4 +54,5 @@ private:
 	std::unique_ptr<Line3d> bone_ = nullptr;
 
 };
+
 

@@ -1,4 +1,4 @@
-#include "ModelInstanceRenderer.h"
+﻿#include "ModelInstanceRenderer.h"
 
 #include "DirectXEngine.h"
 #include "SrvManager.h"
@@ -235,7 +235,7 @@ void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstan
     // --- CPU 側から書き込むために永続 Material ---
     batch.materialBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.materialData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
-        batch.materialData[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        batch.materialData[i].color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         batch.materialData[i].enableDraw = true;
         batch.materialData[i].enableLighting = true;
         batch.materialData[i].outlineMask = false;
@@ -311,7 +311,7 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
     // --- CPU 側から書き込むために永続 Material ---
     batch.materialBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.materialData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
-        batch.materialData[i].color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        batch.materialData[i].color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
         batch.materialData[i].enableDraw = true;
         batch.materialData[i].enableLighting = true;
         batch.materialData[i].outlineMask = false;
@@ -722,3 +722,4 @@ void ModelInstanceRenderer::AllDraw()
     DrawAnimations(animLateDrawOrder_);
     DrawObjects(objLateDrawOrder_);
 }
+

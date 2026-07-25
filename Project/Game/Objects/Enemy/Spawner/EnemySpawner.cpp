@@ -1,4 +1,4 @@
-#include "EnemySpawner.h"
+﻿#include "EnemySpawner.h"
 
 #include "DeltaTimer.h"
 
@@ -52,7 +52,7 @@ void EnemySpawner::Draw()
 void EnemySpawner::EnemySpawn(BaseEnemy* enemy)
 {
 	// 敵を生成
-	Vector3 pos = transform_.translation_;
+	NumaEngine::Vector3 pos = transform_.translation_;
 	enemy->Reset(pos);
 	enemys_.push_back(enemy);
 }

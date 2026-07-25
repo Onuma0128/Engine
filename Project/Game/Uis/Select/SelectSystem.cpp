@@ -1,4 +1,4 @@
-#include "SelectSystem.h"
+﻿#include "SelectSystem.h"
 
 #include "Input.h"
 #include "DeltaTimer.h"
@@ -22,13 +22,13 @@ void SelectSystem::Init()
 	// セレクト表示後の選択ボタンUI(タイトルともう一度)
 	selectUIs_[2] = std::make_unique<SelectUI>();
 	selectUIs_[2]->Init("SelectTitleUI");
-	selectUIs_[2]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
+	selectUIs_[2]->GetSprite()->SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,0.1f });
 	selectUIs_[3] = std::make_unique<SelectUI>();
 	selectUIs_[3]->Init("SelectOnceAgainUI");
-	selectUIs_[3]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
+	selectUIs_[3]->GetSprite()->SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,0.1f });
 	selectUIs_[4] = std::make_unique<SelectUI>();
 	selectUIs_[4]->Init("SelectRematchUI");
-	selectUIs_[4]->GetSprite()->SetColor(Vector4{ 1.0f,1.0f,1.0f,0.1f });
+	selectUIs_[4]->GetSprite()->SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,0.1f });
 	// 背景の上のUISprite(キルのUI)
 	selectUIs_[5] = std::make_unique<SelectUI>();
 	selectUIs_[5]->Init("GameOverUI");
@@ -156,7 +156,7 @@ void SelectSystem::SelectInput()
 	}
 
 	// ターゲットしていないUIはAlphaを下げる
-	const Vector4 setColor = Vector4{ 1.0f,1.0f,1.0f,0.1f };
+	const NumaEngine::Vector4 setColor = NumaEngine::Vector4{ 1.0f,1.0f,1.0f,0.1f };
 	if (targetIndex_ == 0u) {
 		selectUIs_[3]->GetSprite()->SetColor(setColor);
 		selectUIs_[4]->GetSprite()->SetColor(setColor);
@@ -204,3 +204,4 @@ void SelectSystem::BossStart()
 	const float kBGMVolume = 0.08f;
 	audio_->SoundPlayWave("BossBGM.wav", kBGMVolume, true);
 }
+

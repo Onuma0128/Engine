@@ -1,4 +1,4 @@
-#include "CompanionAttackState.h"
+﻿#include "CompanionAttackState.h"
 
 #include "DeltaTimer.h"
 
@@ -24,8 +24,8 @@ void CompanionAttackState::Init()
 	const auto& colliders = companion_->GetAttackCollider()->GetHitColliders();
 	for (const auto& collider : colliders) {
 		if (collider->GetActive()) {
-			Vector3 velocity = collider->GetCenterPosition() - companion_->GetTransform().translation_;
-			Quaternion yRotation_ = Quaternion::DirectionToQuaternion(
+			NumaEngine::Vector3 velocity = collider->GetCenterPosition() - companion_->GetTransform().translation_;
+			NumaEngine::Quaternion yRotation_ = NumaEngine::Quaternion::DirectionToQuaternion(
 				companion_->GetTransform().rotation_, velocity.Normalize(), 1.0f);
 			companion_->SetTransformRotation(yRotation_);
 			break;
@@ -124,5 +124,6 @@ void CompanionAttackState::ChangeAttackState(AttackState newState)
 	attackState_ = newState;
 	timer_ = 0.0f;
 }
+
 
 

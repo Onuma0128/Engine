@@ -1,4 +1,4 @@
-#include "CompanionMoveState.h"
+﻿#include "CompanionMoveState.h"
 
 #include <memory>
 
@@ -62,10 +62,10 @@ void CompanionMoveState::Update()
 	companion_->GetPathFinder().DebugSpline(data.debugSpline);
 
 	// 移動の更新
-	Vector3 velocity = companion_->GetPathFinder().GetVelocity();
+	NumaEngine::Vector3 velocity = companion_->GetPathFinder().GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
-	Vector3 translate = companion_->GetTransform().translation_ +
+	NumaEngine::Vector3 translate = companion_->GetTransform().translation_ +
 		speed * velocity * DeltaTimer::GetDeltaTime();
 	companion_->SetTransformTranslation(translate);
 	// エフェクトを追加する
@@ -79,8 +79,8 @@ void CompanionMoveState::Update()
 
 	// 移動時の回転の更新
 	if (velocity.Length() != 0.0f) {
-		Quaternion yRotation = companion_->GetPathFinder().GetRotation();
-		companion_->SetTransformRotation(Quaternion::Slerp(companion_->GetTransform().rotation_, yRotation, 0.2f));
+		NumaEngine::Quaternion yRotation = companion_->GetPathFinder().GetRotation();
+		companion_->SetTransformRotation(NumaEngine::Quaternion::Slerp(companion_->GetTransform().rotation_, yRotation, 0.2f));
 	}
 
 	// 距離が近づいたら待機ステートに遷移する
@@ -105,3 +105,4 @@ void CompanionMoveState::Update()
 void CompanionMoveState::Draw()
 {
 }
+

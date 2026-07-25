@@ -1,4 +1,4 @@
-#include "BossEnemySpawnState.h"
+﻿#include "BossEnemySpawnState.h"
 
 #include "Objects/Boss/Base/BossEnemy.h"
 #include "Objects/Boss/State/BossJumpAttackState.h"
@@ -17,7 +17,7 @@ void BossEnemySpawnState::Init()
 	boss_->GetAudio()->SoundPlayWave("BossEnemySpawn.wav", volume.enemySpawn);
 
 	for (const auto& pos : data.positions) {
-		Vector3 position = pos.Transform(Quaternion::MakeRotateMatrix(boss_->GetTransform().rotation_));
+		NumaEngine::Vector3 position = pos.Transform(NumaEngine::Quaternion::MakeRotateMatrix(boss_->GetTransform().rotation_));
 		position += boss_->GetTransform().translation_;
 		boss_->GetSpawnerFactory()->SetSpawnEnemy(EnemyType::kMelee, position);
 	}
@@ -35,3 +35,4 @@ void BossEnemySpawnState::Update()
 void BossEnemySpawnState::Draw()
 {
 }
+

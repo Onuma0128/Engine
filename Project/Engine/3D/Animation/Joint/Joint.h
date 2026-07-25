@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <optional>
 
@@ -62,7 +62,7 @@ private:
 	/// <param name="time"></param>
 	/// <param name="clipDuration"></param>
 	/// <returns></returns>
-	Vector3 CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration);
+    NumaEngine::Vector3 CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration);
 	
 	/// <summary>
 	/// キーフレームからのQuaternion補間値を計算する
@@ -71,7 +71,7 @@ private:
 	/// <param name="time"></param>
 	/// <param name="clipDuration"></param>
 	/// <returns></returns>
-	Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration);
+    NumaEngine::Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration);
 
 private:
 
@@ -84,4 +84,6 @@ private:
 	std::optional<int32_t> parent_;
 
 };
+
+
 

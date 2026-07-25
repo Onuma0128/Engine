@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <array>
 #define NOMINMAX
@@ -18,8 +18,8 @@ public:
 
 	// 平行光源用データ構造体
 	struct DirectionalLightData {
-		Vector4 color;
-		Vector3 direction;
+		NumaEngine::Vector4 color;
+		NumaEngine::Vector3 direction;
 		float intensity;
 	};
 
@@ -37,15 +37,15 @@ public:
 
 	// ライト用の行列作成
 	void BuildMatricesCoverAll(
-		const Vector3& sceneMin,
-		const Vector3& sceneMax,
+		const NumaEngine::Vector3& sceneMin,
+		const NumaEngine::Vector3& sceneMax,
 		uint32_t shadowW, uint32_t shadowH) override;
 
 private:
 
-	void BuildViewByTargetEye(const Vector3& Ptarget, const Vector3& Peye, float lengthScale = 1.0f);
+	void BuildViewByTargetEye(const NumaEngine::Vector3& Ptarget, const NumaEngine::Vector3& Peye, float lengthScale = 1.0f);
 
-	void BuildViewByTargetLength(const Vector3& Ptarget, float L);
+	void BuildViewByTargetLength(const NumaEngine::Vector3& Ptarget, float L);
 
 private:
 
@@ -53,6 +53,7 @@ private:
 
 	float radius_ = 1.0f;
 	float radiusScale_ = 4.0f;
-	Vector3 center_ = Vector3::ExprZero;
+	NumaEngine::Vector3 center_ = NumaEngine::Vector3::ExprZero;
 
 };
+

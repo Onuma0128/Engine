@@ -1,4 +1,4 @@
-#include "GameSceneUIs.h"
+﻿#include "GameSceneUIs.h"
 
 #include "Input.h"
 #include "DeltaTimer.h"
@@ -23,7 +23,7 @@ void GameSceneUIs::Init()
 	// シーンフェードを初期化
 	sceneFade_ = std::make_unique<BaseUI>();
 	sceneFade_->Init("GameFade", "GameData", true);
-	sceneFade_->GetSprite()->SetColor(Vector4{ 0.0f,0.0f,0.0f,1.0f });
+	sceneFade_->GetSprite()->SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,1.0f });
 	sceneFade_->FadeOut();
 
 	bossFade_ = std::make_unique<BaseUI>();
@@ -194,3 +194,4 @@ void GameSceneUIs::ChangeFadeState(BossFadeState changeState)
 	bossFadeState_ = changeState;
 	bossFadeTime_ = 0.0f;
 }
+

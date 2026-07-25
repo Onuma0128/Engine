@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <vector>
 
@@ -28,7 +28,7 @@ public:
 	/// </summary>
 	/// <param name="startW"></スタートの座標>
 	/// <param name="goalW"></ゴールの座標>
-	void Search(const Vector3& startW, const Vector3& goalW);
+	void Search(const NumaEngine::Vector3& startW, const NumaEngine::Vector3& goalW);
 
 	/// <summary>
 	/// 時間を進めて座標を更新
@@ -43,19 +43,19 @@ public:
 	/// 現在のスプライン上の速度を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Vector3& GetVelocity() { return splineMover_.GetVelocity(); }
+	const NumaEngine::Vector3& GetVelocity() { return splineMover_.GetVelocity(); }
 
 	/// <summary>
 	/// 現在のスプライン上の座標を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Vector3& GetPosition() { return splineMover_.GetPosition(); }
+	const NumaEngine::Vector3& GetPosition() { return splineMover_.GetPosition(); }
 
 	/// <summary>
 	/// 現在のスプライン上のy回転のクォータニオンを取得する
 	/// </summary>
 	/// <returns></returns>
-	const Quaternion& GetRotation() { return splineMover_.GetRotation(); }
+	const NumaEngine::Quaternion& GetRotation() { return splineMover_.GetRotation(); }
 
 	/// <summary>
 	/// スプラインのデバッグ描画を有効/無効にする
@@ -89,4 +89,6 @@ private:
 	// スプライン上の動き
 	SplineMover splineMover_;
 };
+
+
 

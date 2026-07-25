@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "JsonFunction.h"
 
@@ -7,23 +7,23 @@
 /// </summary>
 struct ClearCameraData {
 	float time;
-	Vector3 rotate;
-	Vector3 position;
+	NumaEngine::Vector3 rotate;
+	NumaEngine::Vector3 position;
 };
 
 /// <summary>
 /// ゲームカメラのデータ
 /// </summary>
 struct GameCameraData {
-	Vector3 mainRotate;				// メインカメラの回転
-	Vector3 mainPosition;			// メインカメラの座標
+	NumaEngine::Vector3 mainRotate;				// メインカメラの回転
+	NumaEngine::Vector3 mainPosition;			// メインカメラの座標
 
 	int maxClearCameraPoint;				// クリア後のカメラポイントの最大数
 	std::vector<ClearCameraData> clearData;	// クリアカメラのデータ
 	int clearShackIndex;					// クリアのシェイクさせるインデックス番号
 	float clearShackPow;					// シェイクの強さ
 
-	Vector3 sabPosition;			// サブカメラの座標
+	NumaEngine::Vector3 sabPosition;			// サブカメラの座標
 	bool isSabRotate;				// サブカメラが回転するか
 	float sabRotateSpeed;			// サブカメラの回転スピード
 	float sabRadius;				// サブカメラの回転する半径
@@ -32,10 +32,10 @@ struct GameCameraData {
 	float bossStartupTime;			// ボスカメラに移行までの待機時間
 	float bossActiveTime;			// ボスカメラの動いている時間
 	float bossRecoverTime;			// ボスカメラの終了後の待機時間
-	Vector3 bossStartRotate;		// ボスカメラの最初の回転
-	Vector3 bossStartPosition;		// ボスカメラの最初の座標
-	Vector3 bossEndRotate;			// ボスカメラの最後の回転
-	Vector3 bossEndPosition;		// ボスカメラの最後の座標
+	NumaEngine::Vector3 bossStartRotate;		// ボスカメラの最初の回転
+	NumaEngine::Vector3 bossStartPosition;		// ボスカメラの最初の座標
+	NumaEngine::Vector3 bossEndRotate;			// ボスカメラの最後の回転
+	NumaEngine::Vector3 bossEndPosition;		// ボスカメラの最後の座標
 };
 
 /// <summary>
@@ -70,4 +70,5 @@ private:
 	int savedSpawnCount_ = 0;
 
 };
+
 

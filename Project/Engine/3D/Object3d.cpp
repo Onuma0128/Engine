@@ -1,4 +1,4 @@
-#include "Object3d.h"
+﻿#include "Object3d.h"
 
 #include "DirectXEngine.h"
 #include "ModelInstanceRenderer.h"
@@ -64,14 +64,14 @@ void Object3d::SetTexture_ENV(const std::string& directoryPath, const std::strin
     model_->SetTexture_ENV(directoryPath, filePath);
 }
 
-void Object3d::SetColor(const Vector4& color)
+void Object3d::SetColor(const NumaEngine::Vector4& color)
 {
     materialData_.color = color;
 }
 
 void Object3d::MakeMaterialData()
 {
-    materialData_.color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    materialData_.color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
     materialData_.enableDraw = true;
     materialData_.enableLighting = true;
     materialData_.outlineMask = false;
@@ -81,3 +81,4 @@ void Object3d::MakeMaterialData()
     materialData_.environmentCoefficient = 0;
     materialData_.shadowMap = true;
 }
+

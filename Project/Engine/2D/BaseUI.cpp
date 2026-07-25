@@ -1,4 +1,4 @@
-#include "BaseUI.h"
+﻿#include "BaseUI.h"
 
 #include <numbers>
 
@@ -26,30 +26,30 @@ void BaseUI::Init(const std::string uiName, const std::string biginName, bool is
 			// EdgeWidth,NoiseColor
 			json_.Set("EdgeWidth", 0.0f);
 			parameters_.edgeWidth = 0.0f;
-			json_.Set("NoiseColor", Vector3{ 1.0f,1.0f,1.0f });
-			parameters_.noiseColor = Vector3{ 1.0f,1.0f,1.0f };
+            json_.Set("NoiseColor", NumaEngine::Vector3{ 1.0f,1.0f,1.0f });
+			parameters_.noiseColor = NumaEngine::Vector3{ 1.0f,1.0f,1.0f };
 		}
 		// AnchorPoint
-		json_.Set("AnchorPoint", Vector2{ 0.0f,0.0f });
+        json_.Set("AnchorPoint", NumaEngine::Vector2{ 0.0f,0.0f });
 		// Transform
-		json_.Set("Size", Vector2{ 1.0f,1.0f });
+        json_.Set("Size", NumaEngine::Vector2{ 1.0f,1.0f });
 		json_.Set("Rotate", 0.0f);
-		json_.Set("Position", Vector2{ 0.0f,0.0f });
-		parameters_.transform.size = Vector2{ 1.0f,1.0f };
+        json_.Set("Position", NumaEngine::Vector2{ 0.0f,0.0f });
+		parameters_.transform.size = NumaEngine::Vector2{ 1.0f,1.0f };
 		// Color
-		json_.Set("Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
-		parameters_.color = Vector4{ 1.0f,1.0f,1.0f,1.0f };
+        json_.Set("Color", NumaEngine::Vector4{ 1.0f,1.0f,1.0f,1.0f });
+		parameters_.color = NumaEngine::Vector4{ 1.0f,1.0f,1.0f,1.0f };
 		// Animation
 		json_.Set("IsAnimation", false);
 		json_.Set("AnimationTime", 1.0f);
-		json_.Set("Anima_Size", Vector2{ 1.0f,1.0f });
+        json_.Set("Anima_Size", NumaEngine::Vector2{ 1.0f,1.0f });
 		json_.Set("Anima_Rotate", 0.0f);
-		json_.Set("Anima_Position", Vector2{ 0.0f,0.0f });
-		parameters_.animaTransform.size = Vector2{ 1.0f,1.0f };
+        json_.Set("Anima_Position", NumaEngine::Vector2{ 0.0f,0.0f });
+		parameters_.animaTransform.size = NumaEngine::Vector2{ 1.0f,1.0f };
 		parameters_.animationTime = 1.0f;
 		// Color
-		json_.Set("Anima_Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
-		parameters_.animaColor = Vector4{ 1.0f,1.0f,1.0f,1.0f };
+        json_.Set("Anima_Color", NumaEngine::Vector4{ 1.0f,1.0f,1.0f,1.0f });
+		parameters_.animaColor = NumaEngine::Vector4{ 1.0f,1.0f,1.0f,1.0f };
 		// Easing
 		json_.Set("InEasingType", 0);
 		json_.Set("OutEasingType", 0);
@@ -67,23 +67,23 @@ void BaseUI::Init(const std::string uiName, const std::string biginName, bool is
 			parameters_.noiseTexture = json_.Get<std::string>("NoiseTexture", "white1x1.png");
 			// EdgeWidth,NoiseColor
 			parameters_.edgeWidth = json_.Get<float>("EdgeWidth", 0.0f);
-			parameters_.noiseColor = json_.Get<Vector3>("NoiseColor", Vector3{ 1.0f,1.0f,1.0f });
+            parameters_.noiseColor = json_.Get<NumaEngine::Vector3>("NoiseColor", NumaEngine::Vector3{ 1.0f,1.0f,1.0f });
 		}
 		// AnchorPoint
-		parameters_.anchorPoint = json_.Get<Vector2>("AnchorPoint", Vector2{ 0.0f,0.0f });
+        parameters_.anchorPoint = json_.Get<NumaEngine::Vector2>("AnchorPoint", NumaEngine::Vector2{ 0.0f,0.0f });
 		// Transform
-		parameters_.transform.size = json_.Get<Vector2>("Size", Vector2{ 1.0f,1.0f });
+        parameters_.transform.size = json_.Get<NumaEngine::Vector2>("Size", NumaEngine::Vector2{ 1.0f,1.0f });
 		parameters_.transform.rotate = json_.Get<float>("Rotate", 0.0f);
-		parameters_.transform.position = json_.Get<Vector2>("Position", Vector2{ 0.0f,0.0f });
+        parameters_.transform.position = json_.Get<NumaEngine::Vector2>("Position", NumaEngine::Vector2{ 0.0f,0.0f });
 		// Color
-		parameters_.color = json_.Get<Vector4>("Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
-		parameters_.animaColor = json_.Get<Vector4>("Anima_Color", Vector4{ 1.0f,1.0f,1.0f,1.0f });
+        parameters_.color = json_.Get<NumaEngine::Vector4>("Color", NumaEngine::Vector4{ 1.0f,1.0f,1.0f,1.0f });
+		parameters_.animaColor = json_.Get<NumaEngine::Vector4>("Anima_Color", NumaEngine::Vector4{ 1.0f,1.0f,1.0f,1.0f });
 		// Animation
 		parameters_.isAnimation = json_.Get<bool>("IsAnimation", false);
 		parameters_.animationTime = json_.Get<float>("AnimationTime", 1.0f);
-		parameters_.animaTransform.size = json_.Get<Vector2>("Anima_Size", Vector2{ 1.0f,1.0f });
+        parameters_.animaTransform.size = json_.Get<NumaEngine::Vector2>("Anima_Size", NumaEngine::Vector2{ 1.0f,1.0f });
 		parameters_.animaTransform.rotate = json_.Get<float>("Anima_Rotate", 0.0f);
-		parameters_.animaTransform.position = json_.Get<Vector2>("Anima_Position", Vector2{ 0.0f,0.0f });
+        parameters_.animaTransform.position = json_.Get<NumaEngine::Vector2>("Anima_Position", NumaEngine::Vector2{ 0.0f,0.0f });
 		// Easing
 		parameters_.inEasingType = json_.Get<int>("InEasingType", 0);
 		parameters_.outEasingType = json_.Get<int>("OutEasingType", 0);
@@ -304,13 +304,13 @@ void BaseUI::Blinking()
 	// alphaを0.5～1.0でループさせる
 	float alpha = 0.75f + 0.25f * std::cos(blinkingTime_);
 	// カラーをセットする
-	ui_->SetColor(Vector4{ 1.0f, 1.0f, 1.0f, alpha });
+	ui_->SetColor(NumaEngine::Vector4{ 1.0f, 1.0f, 1.0f, alpha });
 }
 
 void BaseUI::Reset()
 {
 	blinkingTime_ = 0.0f;
-	ui_->SetColor(Vector4{ 1.0f,1.0f,1.0f,1.0f });
+	ui_->SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,1.0f });
 }
 
 void BaseUI::UI_Animation()
@@ -337,12 +337,14 @@ void BaseUI::UI_Animation()
 		}
 
 		// TransformをAnimationさせていく
-		ui_->GetTransform().size = Vector2::EaseLerp(parameters_.transform.size, parameters_.animaTransform.size, t);
+		ui_->GetTransform().size = NumaEngine::Vector2::EaseLerp(parameters_.transform.size, parameters_.animaTransform.size, t);
 		ui_->GetTransform().rotate = (1.0f - t) * parameters_.transform.rotate + t * parameters_.animaTransform.rotate;
-		ui_->GetTransform().position = Vector2::EaseLerp(parameters_.transform.position, parameters_.animaTransform.position, t);
-		ui_->SetColor(Vector4::Lerp(parameters_.color,parameters_.animaColor,t));
+		ui_->GetTransform().position = NumaEngine::Vector2::EaseLerp(parameters_.transform.position, parameters_.animaTransform.position, t);
+		ui_->SetColor(NumaEngine::Vector4::Lerp(parameters_.color,parameters_.animaColor,t));
 		if (isNoiseTexture_) {
 			ui_->SetDissolveThreshold(1.0f - t);
 		}
 	}
 }
+
+

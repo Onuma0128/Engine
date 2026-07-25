@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <random>
 
@@ -71,17 +71,20 @@ private:
 	float accelerationY_ = 0.0;
 	float kNockbackScale_ = 0.0f;
 
-	// ノックバックする方向
-	Vector3 velocity_{};
+    // ノックバックする方向
+	NumaEngine::Vector3 velocity_{};
 	// ノックバックした座標
-	Vector3 target_{};
-	Quaternion targetRotate_{};
+	NumaEngine::Vector3 target_{};
+	NumaEngine::Quaternion targetRotate_{};
 	// 死亡時のScaleを取得
-	Vector3 defaultScale_{};
+	NumaEngine::Vector3 defaultScale_{};
 	// 死亡時の回転を取得
-	Quaternion defaultRotate_ = Quaternion::IdentityQuaternion();
+	NumaEngine::Quaternion defaultRotate_ = NumaEngine::Quaternion::IdentityQuaternion();
 	// ランダムデバイス
 	std::random_device seedGenerator_;
 
 };
+
+
+
 

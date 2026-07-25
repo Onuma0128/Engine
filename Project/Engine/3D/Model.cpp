@@ -1,4 +1,4 @@
-#include "Model.h"
+﻿#include "Model.h"
 
 #include <iostream>
 #include <fstream>
@@ -158,9 +158,9 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
             aiQuaternion rotate;
             bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
             Matrix4x4 bindPoseMatrix = Matrix4x4::Affine(
-                Vector3{ scale.x,scale.y,scale.z },
-                Quaternion{ rotate.x,-rotate.y,-rotate.z,rotate.w },
-                Vector3{ -translate.x,translate.y,translate.z }
+                NumaEngine::Vector3{ scale.x,scale.y,scale.z },
+                NumaEngine::Quaternion{ rotate.x,-rotate.y,-rotate.z,rotate.w },
+                NumaEngine::Vector3{ -translate.x,translate.y,translate.z }
             );
             jointWeightData.inverseBindPosMatrix = Matrix4x4::Inverse(bindPoseMatrix);
             
@@ -180,7 +180,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
         MaterialData materialData{};
         aiString textureFilePath;
         aiColor3D kd(1, 1, 1);
-        Vector4 kdColor = { 1.0f,1.0f,1.0f,1.0f };
+        NumaEngine::Vector4 kdColor = { 1.0f,1.0f,1.0f,1.0f };
 
         // Diffuseテクスチャを確認
         if (material->GetTexture(aiTextureType_DIFFUSE, 0, &textureFilePath) == AI_SUCCESS) {
@@ -221,7 +221,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
                     aiVectorKey& keyAssimp = nodeAnimationAssimp->mPositionKeys[keyIndex];
                     KeyFrameVector3 keyframe;
                     keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
-                    keyframe.value = { -keyAssimp.mValue.x,keyAssimp.mValue.y,keyAssimp.mValue.z };
+                    keyframe.value = NumaEngine::Vector3{ -keyAssimp.mValue.x,keyAssimp.mValue.y,keyAssimp.mValue.z };
                     nodeAnimation.translate.keyframes.push_back(keyframe);
                 }
                 // 回転
@@ -229,7 +229,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
                     aiQuatKey& keyAssimp = nodeAnimationAssimp->mRotationKeys[keyIndex];
                     KeyFrameQuaternion keyframe;
                     keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
-                    keyframe.value = { keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
+                    keyframe.value = NumaEngine::Quaternion{ keyAssimp.mValue.x, -keyAssimp.mValue.y, -keyAssimp.mValue.z, keyAssimp.mValue.w };
                     nodeAnimation.rotate.keyframes.push_back(keyframe);
                 }
                 // スケール
@@ -237,7 +237,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
                     aiVectorKey& keyAssimp = nodeAnimationAssimp->mScalingKeys[keyIndex];
                     KeyFrameVector3 keyframe;
                     keyframe.time = float(keyAssimp.mTime / animationAssimp->mTicksPerSecond);
-                    keyframe.value = { keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
+                    keyframe.value = NumaEngine::Vector3{ keyAssimp.mValue.x, keyAssimp.mValue.y, keyAssimp.mValue.z };
                     nodeAnimation.scale.keyframes.push_back(keyframe);
                 }
             }
@@ -319,3 +319,4 @@ Node Model::ReadNode(aiNode* node)
     }
     return result;
 }
+

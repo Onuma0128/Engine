@@ -8,6 +8,13 @@
 #include "PrimitiveDrawr.h"
 #include "Animation.h"
 
+// Forward declarations to ensure pointer types are available even if includes fail
+class Object3d;
+class Sprite;
+class Line3d;
+class PrimitiveDrawr;
+class Animation;
+
 /// <summary>
 /// シーンの描画を管理するクラス
 /// </summary>
@@ -23,11 +30,23 @@ public:
 	// 全ての描画(offscreenが終わってから描画)
 	void OutAllDraw();
 
-	// Obejctをセットする
-	template<typename T>
-	void SetDrawList(T* object);
-	template<typename T>
-	void SetRemoveList(T* object);
+// Obejctをセットする
+template<typename T>
+void SetDrawList(T* object) { AddImpl(object); }
+template<typename T>
+void SetRemoveList(T* object) { RemoveImpl(object); }
+
+// Add/Remove implementations for supported types
+void AddImpl(Object3d* object) { objects_.push_back(object); }
+void RemoveImpl(Object3d* object) { objects_.remove(object); }
+void AddImpl(Sprite* sprite) { sprites_.push_back(sprite); }
+void RemoveImpl(Sprite* sprite) { sprites_.remove(sprite); }
+void AddImpl(Line3d* line) { lines_.push_back(line); }
+void RemoveImpl(Line3d* line) { lines_.remove(line); }
+void AddImpl(PrimitiveDrawr* primitive) { primitiveDrawrs_.push_back(primitive); }
+void RemoveImpl(PrimitiveDrawr* primitive) { primitiveDrawrs_.remove(primitive); }
+void AddImpl(Animation* animation) { animations_.push_back(animation); }
+void RemoveImpl(Animation* animation) { animations_.remove(animation); }
 
 private:
 
@@ -40,48 +59,3 @@ private:
 	std::list<Animation*>		animations_;
 
 };
-
-template<>
-inline void SceneRenderer::SetDrawList<Object3d>(Object3d* object) {
-	objects_.push_back(object);
-}
-template<>
-inline void SceneRenderer::SetRemoveList<Object3d>(Object3d* object) {
-	objects_.remove(object);
-}
-
-template<>
-inline void SceneRenderer::SetDrawList<Sprite>(Sprite* sprite) {
-	sprites_.push_back(sprite);
-}
-template<>
-inline void SceneRenderer::SetRemoveList<Sprite>(Sprite* sprite) {
-	sprites_.remove(sprite);
-}
-
-template<>
-inline void SceneRenderer::SetDrawList<Line3d>(Line3d* line) {
-	lines_.push_back(line);
-}
-template<>
-inline void SceneRenderer::SetRemoveList<Line3d>(Line3d* line) {
-	lines_.remove(line);
-}
-
-template<>
-inline void SceneRenderer::SetDrawList<PrimitiveDrawr>(PrimitiveDrawr* primitive) {
-	primitiveDrawrs_.push_back(primitive);
-}
-template<>
-inline void SceneRenderer::SetRemoveList<PrimitiveDrawr>(PrimitiveDrawr* primitive) {
-	primitiveDrawrs_.remove(primitive);
-}
-
-template<>
-inline void SceneRenderer::SetDrawList<Animation>(Animation* animation) {
-	animations_.push_back(animation);
-}
-template<>
-inline void SceneRenderer::SetRemoveList<Animation>(Animation* animation) {
-	animations_.remove(animation);
-}

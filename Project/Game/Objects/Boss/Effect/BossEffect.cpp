@@ -1,4 +1,4 @@
-#include "BossEffect.h"
+﻿#include "BossEffect.h"
 
 #include <numbers>
 
@@ -57,37 +57,37 @@ void BossEffect::PrimitiveInit(std::unique_ptr<PrimitiveDrawr>& effect)
 {
 	effect = std::make_unique<PrimitiveDrawr>();
 	effect->TypeInit(PrimitiveType::kPlane);
-	effect->SetColor(Vector3::ExprUnitX);
+    effect->SetColor(NumaEngine::Vector3::ExprUnitX);
 	effect->SetAlpha(0.6f);
 	effect->SetBlendMode(BlendMode::kBlendModeAdd);
 	effect->GetRenderOptions().enabled = false;
 	effect->GetTransform().scale = {};
 }
 
-void BossEffect::PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect, const float time, const float size, const Vector3& offset)
+void BossEffect::PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect, const float time, const float size, const NumaEngine::Vector3& offset)
 {
 	float scale = attackEffectTime_ / time;
 	scale = std::clamp(scale, 0.0f, 1.0f);
-	effect->GetTransform().scale = Vector3{ scale,scale,1.0f } * size;
+    effect->GetTransform().scale = NumaEngine::Vector3{ scale,scale,1.0f } * size;
 	const float halfPi = std::numbers::pi_v<float> / 2.0f;
-	Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, halfPi);
+    NumaEngine::Quaternion rotateX = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitX, halfPi);
 	effect->GetTransform().rotation = boss_->GetTransform().rotation_ * rotateX;
 	effect->GetTransform().translation = boss_->GetTransform().translation_ +
-		offset.Transform(Quaternion::MakeRotateMatrix(boss_->GetTransform().rotation_));
+        offset.Transform(NumaEngine::Quaternion::MakeRotateMatrix(boss_->GetTransform().rotation_));
 	effect->GetTransform().translation.y = offset.y;
 	effect->GetRenderOptions().enabled = true;
 }
 
-void BossEffect::PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect, const float time, const Vector2& size, const Vector3& offset)
+void BossEffect::PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect, const float time, const NumaEngine::Vector2& size, const NumaEngine::Vector3& offset)
 {
 	float scale = attackEffectTime_ / time;
 	scale = std::clamp(scale, 0.0f, 1.0f);
-	effect->GetTransform().scale = Vector3{ scale * size.x,size.y,1.0f };
+    effect->GetTransform().scale = NumaEngine::Vector3{ scale * size.x,size.y,1.0f };
 	const float halfPi = std::numbers::pi_v<float> / 2.0f;
-	Quaternion rotateX = Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitX, halfPi);
+	NumaEngine::Quaternion rotateX = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitX, halfPi);
 	effect->GetTransform().rotation = boss_->GetTransform().rotation_ * rotateX;
 	effect->GetTransform().translation = boss_->GetTransform().translation_ +
-		offset.Transform(Quaternion::MakeRotateMatrix(boss_->GetTransform().rotation_));
+        offset.Transform(NumaEngine::Quaternion::MakeRotateMatrix(boss_->GetTransform().rotation_));
 	effect->GetTransform().translation.y = offset.y;
 	effect->GetRenderOptions().enabled = true;
 }
@@ -192,8 +192,8 @@ void BossEffect::OnceJumpEffect()
 	jumpDustEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = boss_->GetTransform().rotation_;
-	Vector3 position = boss_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = boss_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = boss_->GetTransform().translation_;
 
 	jumpDustEmitter_->SetRotation(rotate);
 	jumpDustEmitter_->SetPosition(position);
@@ -204,8 +204,8 @@ void BossEffect::OnceDownEffect()
 	downLineEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = boss_->GetTransform().rotation_;
-	Vector3 position = boss_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = boss_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = boss_->GetTransform().translation_;
 
 	downLineEmitter_->SetRotation(rotate);
 	downLineEmitter_->SetPosition(position);
@@ -216,8 +216,8 @@ void BossEffect::EmitDownStar(bool flag)
 	downStarEmitter_->SetIsCreate(flag);
 
 	// パーティクルの座標を設定
-	Quaternion rotate = boss_->GetTransform().rotation_;
-	Vector3 position = boss_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = boss_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = boss_->GetTransform().translation_;
 
 	downStarEmitter_->SetRotation(rotate);
 	downStarEmitter_->SetPosition(position);
@@ -229,8 +229,8 @@ void BossEffect::OnceHitExplosionEffect()
 	hitRingEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = boss_->GetTransform().rotation_;
-	Vector3 position = boss_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = boss_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = boss_->GetTransform().translation_;
 
 	hitExplosionEmitter_->SetRotation(rotate);
 	hitExplosionEmitter_->SetPosition(position);
@@ -244,11 +244,13 @@ void BossEffect::OnceHitExplosionBlueEffect()
 	hitRingBlueEmitter_->onceEmit();
 
 	// パーティクルの座標を設定
-	Quaternion rotate = boss_->GetTransform().rotation_;
-	Vector3 position = boss_->GetTransform().translation_;
+	NumaEngine::Quaternion rotate = boss_->GetTransform().rotation_;
+	NumaEngine::Vector3 position = boss_->GetTransform().translation_;
 
 	hitExplosionBlueEmitter_->SetRotation(rotate);
 	hitExplosionBlueEmitter_->SetPosition(position);
 	hitRingBlueEmitter_->SetRotation(rotate);
 	hitRingBlueEmitter_->SetPosition(position);
 }
+
+

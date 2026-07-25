@@ -1,4 +1,4 @@
-#include "MuscleCompanion.h"
+﻿#include "MuscleCompanion.h"
 
 #include <numbers>
 #include "Input.h"
@@ -21,9 +21,9 @@ void MuscleCompanion::Initialize()
 	Animation::Initialize("Mattyo.gltf");
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Wait");
-	Animation::SetTransformScale(Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
+	Animation::SetTransformScale(NumaEngine::Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
 	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
+	Animation::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 
 	// コライダーを設定
 	Collider::AddCollider();
@@ -107,8 +107,8 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 
 	// 進行ベクトルを取り背面の建物を判定する
 	const auto& data = items_->GetDashData();
-	Vector3 toTarget = other->GetCenterPosition() - transform_.translation_;
-	float dot = Vector3::Dot(dashDirection_.Normalize(), toTarget.Normalize());
+	NumaEngine::Vector3 toTarget = other->GetCenterPosition() - transform_.translation_;
+	float dot = NumaEngine::Vector3::Dot(dashDirection_.Normalize(), toTarget.Normalize());
 	dot = std::clamp(dot, -1.0f, 1.0f);
 	// 角度を計算して、背面に建物があるか判定する
 	std::string name = other->GetColliderName();
@@ -122,8 +122,8 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 		if (Collider::radius_ > 0.6f && (isDash || isSearchDash)) {
 			isFirstDashAttack_ = true;
 			Input::GetInstance()->Vibrate(0.4f, 0.75f, 100);
-			Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
-			Quaternion yRotation_ = Quaternion::DirectionToQuaternion(
+			NumaEngine::Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
+			NumaEngine::Quaternion yRotation_ = NumaEngine::Quaternion::DirectionToQuaternion(
 				transform_.rotation_, velocity.Normalize(), 1.0f);
 			transform_.rotation_ = yRotation_;
 			ChangeState(std::make_unique<CompanionAttackState>(this));
@@ -176,9 +176,9 @@ void MuscleCompanion::OnCollisionStay(Collider* other)
 	// 仲間と当たっているなら
 	if (isCompanion) {
 		// プレイヤーとの距離を測る
-		const auto dist1 = Vector3::Distance(transform_.translation_, player_->GetTransform().translation_);
-		const auto dist2 = Vector3::Distance(other->GetCenterPosition(), player_->GetTransform().translation_);
-		Vector3 velocity = transform_.translation_ - other->GetCenterPosition();
+		const auto dist1 = NumaEngine::Vector3::Distance(transform_.translation_, player_->GetTransform().translation_);
+		const auto dist2 = NumaEngine::Vector3::Distance(other->GetCenterPosition(), player_->GetTransform().translation_);
+		NumaEngine::Vector3 velocity = transform_.translation_ - other->GetCenterPosition();
 		velocity.y = 0.0f;
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
 
@@ -218,7 +218,7 @@ void MuscleCompanion::BlinkingColor()
 			blinkingTime_ = 0.0f;
 		}
 	} else {
-		Animation::GetMaterial().color = Vector4::ExprUnitXYZW;
+		Animation::GetMaterial().color = NumaEngine::Vector4::ExprUnitXYZW;
 	}
 }
 
@@ -227,7 +227,7 @@ void MuscleCompanion::ApplyScaleByLevel()
 	const auto& data = items_->GetPushUpData();
 	level_ = std::clamp(static_cast<int>(level_), 0, data.maxLevel - 1);
 	float scale = data.objectScale[level_];
-	Animation::SetTransformScale(Vector3::ExprUnitXYZ * scale);
+	Animation::SetTransformScale(NumaEngine::Vector3::ExprUnitXYZ * scale);
 }
 
 void MuscleCompanion::LevelUp()
@@ -261,7 +261,7 @@ void MuscleCompanion::ChangeState(std::unique_ptr<CompanionBaseState> newState)
 	state_->Init();
 }
 
-void MuscleCompanion::ResetSearch(const Vector3& goalPosition)
+void MuscleCompanion::ResetSearch(const NumaEngine::Vector3& goalPosition)
 {
 	pathFinder_.Search(transform_.translation_, goalPosition);
 }
@@ -269,7 +269,7 @@ void MuscleCompanion::ResetSearch(const Vector3& goalPosition)
 bool MuscleCompanion::SearchDistance()
 {
 	// 距離が遠ければtrueを返す
-	const float dist = Vector3::Distance(transform_.translation_, player_->GetTransform().translation_);
+	const float dist = NumaEngine::Vector3::Distance(transform_.translation_, player_->GetTransform().translation_);
 	if (dist > items_->GetMainData().searchCancelDistance) { return true; }
 	return false;
 }
@@ -296,7 +296,7 @@ void MuscleCompanion::Reset(bool levelReset)
 		experience_ = 0.0f;
 	}
 	// スケールの初期化
-	Animation::SetTransformScale(Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
+	Animation::SetTransformScale(NumaEngine::Vector3::ExprUnitXYZ * items_->GetMainData().objectScale);
 
 	// ステートの初期化
 	ChangeState(std::make_unique<CompanionMoveState>(this));

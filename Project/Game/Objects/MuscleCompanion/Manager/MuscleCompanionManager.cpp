@@ -1,4 +1,4 @@
-#include "MuscleCompanionManager.h"
+﻿#include "MuscleCompanionManager.h"
 
 #include "DeltaTimer.h"
 
@@ -28,7 +28,7 @@ void MuscleCompanionManager::Initialize()
 		companion->SetCamera(camera_);
 		companion->SetAudio(audio_.get());
 		companion->Initialize();
-		companion->SetTransformTranslation(Vector3::ExprUnitZ * static_cast<float>(count));
+		companion->SetTransformTranslation(NumaEngine::Vector3::ExprUnitZ * static_cast<float>(count));
 		count++;
 	}
 
@@ -96,7 +96,7 @@ void MuscleCompanionManager::GatherCompanions()
 	// 仲間の中から発射できて近い仲間を発射する
 	if (player_->GetShot()->GetIsShot()) {
 		// データを取得する
-		Vector3 playerPosition = player_->GetTransform().translation_;
+		NumaEngine::Vector3 playerPosition = player_->GetTransform().translation_;
 		float preDistance = 1000.0f;
 		MuscleCompanion* target = nullptr;
 		// 一番近い仲間を発射する
@@ -106,7 +106,7 @@ void MuscleCompanionManager::GatherCompanions()
 				continue;
 			}
 			// プレイヤーとの距離を測る
-			float distance = Vector3::Distance(playerPosition, companion->GetTransform().translation_);
+			float distance = NumaEngine::Vector3::Distance(playerPosition, companion->GetTransform().translation_);
 			// 距離が短ければ距離を更新する
 			if (preDistance > distance) {
 				preDistance = distance;
@@ -191,7 +191,7 @@ void MuscleCompanionManager::FollowerDistanceCollision()
 				continue; 
 			}
 			// 距離を測る
-			float distance = Vector3::Distance(
+			float distance = NumaEngine::Vector3::Distance(
 				companions_[i]->GetTransform().translation_,
 				companions_[j]->GetTransform().translation_);
 			const auto& data = companions_[i]->GetItems()->GetMainData();
@@ -224,8 +224,8 @@ void MuscleCompanionManager::UpdateEffect()
 	// エフェクト用の座標を取得する
 	MuscleCompanion* target = nullptr;
 	float scale = 1.0f;
-	Vector3 position = {};
-	Vector3 playerPosition = player_->GetTransform().translation_;
+	NumaEngine::Vector3 position = {};
+	NumaEngine::Vector3 playerPosition = player_->GetTransform().translation_;
 	float preDistance = 1000.0f;
 	bool isDraw = false;
 
@@ -233,27 +233,27 @@ void MuscleCompanionManager::UpdateEffect()
 	for (auto& companion : companions_) {		
 		if (!isDraw && companion->GetGatherRequested() && companion->GetState() != CharacterState::Dead) {
 			// プレイヤーとの距離を測る
-			float distance = Vector3::Distance(playerPosition, companion->GetTransform().translation_);
+			float distance = NumaEngine::Vector3::Distance(playerPosition, companion->GetTransform().translation_);
 			// 距離が短ければ距離を更新する
 			if (preDistance > distance) {
 				preDistance = distance;
 				target = companion.get();
 			}
 		}
-		companion->SetOutLineColor(Vector3::ExprZero);
+		companion->SetOutLineColor(NumaEngine::Vector3::ExprZero);
 	}
 	// ポインタがあるなら矢印を描画する
 	if (target) {
 		scale = target->GetTransform().scale_.y;
 		position = target->GetTransform().translation_;
 		isDraw = true;
-		target->SetOutLineColor(Vector3::ExprUnitX);
+		target->SetOutLineColor(NumaEngine::Vector3::ExprUnitX);
 
 		// 向きをプレイヤーと同じにする
 		const float distance = target->GetItems()->GetDashData().dashTargetDistance;
-		Matrix4x4 rotate = Quaternion::MakeRotateMatrix(Quaternion::ExtractYawQuaternion(player_->GetTransform().rotation_));
-		Vector3 targetPosition = player_->GetTransform().translation_;
-		targetPosition += (Vector3::ExprUnitZ * distance).Transform(rotate);
+		Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(NumaEngine::Quaternion::ExtractYawQuaternion(player_->GetTransform().rotation_));
+		NumaEngine::Vector3 targetPosition = player_->GetTransform().translation_;
+		targetPosition += (NumaEngine::Vector3::ExprUnitZ * distance).Transform(rotate);
 
 		if (player_->GetShot()->GetTargetCollider()) {
 			const auto* targetCollider_ = player_->GetShot()->GetTargetCollider();
@@ -267,25 +267,25 @@ void MuscleCompanionManager::UpdateEffect()
 	// クリアしているならエフェクトを消す
 	if (state_ == CompanionManagerState::Clear) { isDraw = false; }
 	arrowEffect_->SetDraw(isDraw);
-	arrowEffect_->Update(position + Vector3::ExprUnitY * scale);
+	arrowEffect_->Update(position + NumaEngine::Vector3::ExprUnitY * scale);
 	muscleCountEffect_->Update(player_->GetTransform().translation_);
 	predictionObjects_->SetDraw(isDraw);
 }
 
-const Vector3 MuscleCompanionManager::CompanionCenterPosition()
+const NumaEngine::Vector3 MuscleCompanionManager::CompanionCenterPosition()
 {
 	// プレイヤーに近い仲間の座標を足し合わせて、足し合わせた仲間分で割る
-	Vector3 result = Vector3::ExprZero;
+	NumaEngine::Vector3 result = NumaEngine::Vector3::ExprZero;
 	uint32_t count = 0;
 	for (auto& companion : companions_) {
-		float distance = Vector3::Distance(companion->GetTransform().translation_, player_->GetTransform().translation_);
+		float distance = NumaEngine::Vector3::Distance(companion->GetTransform().translation_, player_->GetTransform().translation_);
 		if (distance < 5.0f) {
 			result += companion->GetTransform().translation_;
 			++count;
 		}
 	}
 	if (count == 0) {
-		return Vector3::ExprZero;
+		return NumaEngine::Vector3::ExprZero;
 	}
 	return result * (1.0f / static_cast<float>(count));
 }
@@ -297,7 +297,7 @@ void MuscleCompanionManager::Reset(bool levelReset)
 	uint32_t count = 0;
 	for (auto& companion : companions_) {
 		companion->Reset(levelReset);
-		companion->SetTransformTranslation(Vector3::ExprUnitZ * static_cast<float>(count));
+		companion->SetTransformTranslation(NumaEngine::Vector3::ExprUnitZ * static_cast<float>(count));
 		count++;
 	}
 }
@@ -319,3 +319,4 @@ const bool MuscleCompanionManager::IsAliveCompanion() const
 	}
 	return false;
 }
+

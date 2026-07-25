@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Vector3.h"
 #include "Matrix4x4.h"
@@ -22,7 +22,7 @@ enum class PostEffectType {
 /// </summary>
 struct GrayscaleData
 {
-    Vector3 color;
+    NumaEngine::Vector3 color;
     float t;
 };
 
@@ -43,3 +43,4 @@ struct OutlineData
 {
     Matrix4x4 projection;
 };
+

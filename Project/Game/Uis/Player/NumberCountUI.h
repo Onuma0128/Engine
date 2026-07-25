@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include <memory>
@@ -16,7 +16,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="position"></param>
-	void Init(const Vector2& position, bool isNoiseTexture = false);
+	void Init(const NumaEngine::Vector2& position, bool isNoiseTexture = false);
 
 	/// <summary>
 	/// 更新
@@ -33,13 +33,13 @@ public:
 	/// サイズを設定する
 	/// </summary>
 	/// <param name="size"></param>
-	void SetSize(const Vector2& size) { transform_.size = size; }
+	void SetSize(const NumaEngine::Vector2& size) { transform_.size = size; }
 
 	/// <summary>
 	/// 座標を設定する
 	/// </summary>
 	/// <param name="position"></param>
-	void SetPosition(const Vector2& position) { transform_.position = position; }
+	void SetPosition(const NumaEngine::Vector2& position) { transform_.position = position; }
 
 private:
 
@@ -77,13 +77,13 @@ public:
 	/// サイズを設定する
 	/// </summary>
 	/// <param name="size"></param>
-	void SetSize(const Vector2& size);
+	void SetSize(const NumaEngine::Vector2& size);
 
 	/// <summary>
 	/// 座標を設定する
 	/// </summary>
 	/// <param name="size"></param>
-	void SetPosition(const Vector2& position);
+	void SetPosition(const NumaEngine::Vector2& position);
 
 	/// <summary>
 	/// 数字の間隔を設定する
@@ -103,7 +103,7 @@ public:
 	/// <param name="threshold"></param>
 	/// <param name="edgeWidth"></param>
 	/// <param name="edgeColor"></param>
-	void SetDissolvePrames(const float threshold, const float edgeWidth, const Vector3& edgeColor);
+	void SetDissolvePrames(const float threshold, const float edgeWidth, const NumaEngine::Vector3& edgeColor);
 
 private:
 
@@ -118,4 +118,5 @@ private:
 	float mochiPuniTime_ = 0.0f;
 
 };
+
 

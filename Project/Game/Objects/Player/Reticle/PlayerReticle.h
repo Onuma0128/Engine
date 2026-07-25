@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <vector>
 #include <list>
@@ -118,7 +118,7 @@ class PlayerRayReticle : public Sprite
 	/// ワールド座標をスクリーン座標に変換して設定
 	/// </summary>
 	/// <param name="position"></param>
-	void SetPosition(const Vector3& position);
+	void SetPosition(const NumaEngine::Vector3& position);
 
 private:
 
@@ -126,4 +126,5 @@ private:
 	float alphaTimer_ = 0.0f;
 
 };
+
 

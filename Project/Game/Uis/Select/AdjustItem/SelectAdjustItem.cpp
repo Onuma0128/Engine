@@ -1,4 +1,4 @@
-#include "SelectAdjustItem.h"
+﻿#include "SelectAdjustItem.h"
 
 #include "imgui.h"
 
@@ -8,18 +8,18 @@ void SelectAdjustItem::LoadItems()
 	if (!json_.Load()) {
 
 		json_.Set("killNumberUiInterval", 0.0f);
-		json_.Set("killNumberUiSize", Vector2{});
-		json_.Set("killNumberUiPos", Vector2{});
+		json_.Set("killNumberUiSize", NumaEngine::Vector2{});
+		json_.Set("killNumberUiPos", NumaEngine::Vector2{});
 
 		json_.Set("hitRateNumberUiInterval", 0.0f);
-		json_.Set("hitRateNumberUiSize", Vector2{});
-		json_.Set("hitRateNumberUiPos", Vector2{});
+		json_.Set("hitRateNumberUiSize", NumaEngine::Vector2{});
+		json_.Set("hitRateNumberUiPos", NumaEngine::Vector2{});
 
 		json_.Set("selectUiInterval", 0.0f);
 		json_.Set("clearCountUiTimer", 0.0f);
 
 		json_.Set("edgeWidth", 1.0f);
-		json_.Set("noiseColor", Vector3{ 1.0f,1.0f,1.0f });
+		json_.Set("noiseColor", NumaEngine::Vector3{ 1.0f,1.0f,1.0f });
 
 	} else {
 

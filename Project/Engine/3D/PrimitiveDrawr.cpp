@@ -1,4 +1,4 @@
-#include "PrimitiveDrawr.h"
+﻿#include "PrimitiveDrawr.h"
 
 #include <numbers>
 
@@ -14,7 +14,7 @@ PrimitiveDrawr::~PrimitiveDrawr()
 	RemoveRenderer();
 }
 
-void PrimitiveDrawr::Init(std::vector<Vector3> pos)
+void PrimitiveDrawr::Init(std::vector<NumaEngine::Vector3> pos)
 {
 	primitiveDrawrBase_ = std::make_unique<PrimitiveDrawrBase>();
 	primitiveDrawrBase_->Initialize();
@@ -46,10 +46,10 @@ void PrimitiveDrawr::Update()
 
 	// パーティクルのビルボード化
 	Matrix4x4 billboardMatrix = Matrix4x4::Identity();
-	if (isBillboard_) {
-		billboardMatrix = Quaternion::MakeRotateMatrix(transform_.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
+    if (isBillboard_) {
+		billboardMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
 	} else {
-		billboardMatrix = Quaternion::MakeRotateMatrix(transform_.rotation);
+		billboardMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation);
 	}
 	billboardMatrix.m[3][0] = 0.0f;
 	billboardMatrix.m[3][1] = 0.0f;
@@ -79,9 +79,9 @@ void PrimitiveDrawr::Draw()
 void PrimitiveDrawr::UVTransformUpdate()
 {
 	// UVTransformの更新
-	Matrix4x4 scaleMatrix = Matrix4x4::Scale({ uvTransform_.size.x, uvTransform_.size.y, 0.0f });
+    Matrix4x4 scaleMatrix = Matrix4x4::Scale(NumaEngine::Vector3{ uvTransform_.size.x, uvTransform_.size.y, 0.0f });
 	Matrix4x4 rotateMatrix = Matrix4x4::RotateZ(uvTransform_.rotate);
-	Matrix4x4 translateMatrix = Matrix4x4::Translate({ uvTransform_.position.x, uvTransform_.position.y, 0.0f });
+    Matrix4x4 translateMatrix = Matrix4x4::Translate(NumaEngine::Vector3{ uvTransform_.position.x, uvTransform_.position.y, 0.0f });
 	Matrix4x4 uvTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
 
 	materialData_->uvTransform = uvTransformMatrix;
@@ -160,7 +160,7 @@ void PrimitiveDrawr::TypeDraw()
 	}
 }
 
-void PrimitiveDrawr::SetPosition(std::vector<Vector3> pos)
+void PrimitiveDrawr::SetPosition(std::vector<NumaEngine::Vector3> pos)
 {
 	vertexData_[0].position = { pos[0].x,pos[0].y,pos[0].z,1.0f };
 	vertexData_[1].position = { pos[1].x,pos[1].y,pos[1].z,1.0f };
@@ -597,3 +597,5 @@ void PrimitiveDrawr::CreateSkyboxVertexData(VertexData* vertexData)
 	vertexData[34].position = { 1.0f, -1.0f,  1.0f, 1.0f };
 	vertexData[35].position = { 1.0f, -1.0f, -1.0f, 1.0f };
 }
+
+

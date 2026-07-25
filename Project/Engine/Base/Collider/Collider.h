@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <string>
 #include <vector>
@@ -77,24 +77,24 @@ public:
 	// コライダーが有効か取得
 	virtual const bool& GetActive()const { return isActive_; }
 	// コライダーのサイズ、回転、中心座標、オフセット座標取得
-	virtual const Vector3& GetSize() const { return size_; }
-	virtual const Quaternion& GetRotate() const { return rotate_; }
-	virtual const Vector3& GetCenterPosition() const { return centerPosition_; }
-	virtual const Vector3& GetOffsetPosition() const { return offsetPosition_; }
+    virtual const NumaEngine::Vector3& GetSize() const { return size_; }
+	virtual const NumaEngine::Quaternion& GetRotate() const { return rotate_; }
+	virtual const NumaEngine::Vector3& GetCenterPosition() const { return centerPosition_; }
+	virtual const NumaEngine::Vector3& GetOffsetPosition() const { return offsetPosition_; }
 
 	// コライダーの名前取得
 	virtual const std::string& GetColliderName()const { return colliderName_; }
 	// 対象コライダーの名前取得
 	virtual const std::vector<std::string>& GetTargetColliderName()const { return targetColliderName_; }
 	// コライダーの半径取得
-	virtual const float& GetRadius()const { return radius_; }
+    virtual const float& GetRadius()const { return radius_; }
 	// セグメントの始点、方向ベクトル取得
-	virtual const Vector3& GetOrigin()const { return origin_; }
+    virtual const NumaEngine::Vector3& GetOrigin()const { return origin_; }
 	// セグメントの方向ベクトル取得
-	virtual const Vector3& GetDiff()const { return diff_; }
+	virtual const NumaEngine::Vector3& GetDiff()const { return diff_; }
 
 	// コライダーのカラー設定
-	void SetColor(const Vector3& color);
+    void SetColor(const NumaEngine::Vector3& color);
 	void SetDebugDrawEnable(bool flag);
 
 protected:
@@ -111,31 +111,33 @@ protected:
 	bool isActive_ = true;
 	bool debugDrawEnable_ = false;
 
-	// 中心座標
-	Vector3 centerPosition_;
+    // 中心座標
+    NumaEngine::Vector3 centerPosition_;
 	// 中心座標からどのくらいズレているか
-	Vector3 offsetPosition_;
-	
+    NumaEngine::Vector3 offsetPosition_;
+
 	// OBB用(サイズと回転)
-	Vector3 size_;
-	Quaternion rotate_;
+    NumaEngine::Vector3 size_;
+	NumaEngine::Quaternion rotate_;
 
 	// Sphere用(半径)
 	float radius_;
 
-	// Segment用
-	Vector3 origin_;
-	Vector3 diff_;
+    // Segment用
+    NumaEngine::Vector3 origin_;
+	NumaEngine::Vector3 diff_;
 
 private:
 
 	std::shared_ptr<Line3d> line_ = nullptr;
-	std::vector<Vector3> linePositions_;
+    std::vector<NumaEngine::Vector3> linePositions_;
 
 	/// <summary>
 	/// ラインの位置情報を生成する
 	/// </summary>
 	/// <returns></returns>
-	std::vector<Vector3> CreateLinePositions();
+    std::vector<NumaEngine::Vector3> CreateLinePositions();
 
 };
+
+

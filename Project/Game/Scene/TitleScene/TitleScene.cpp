@@ -1,4 +1,4 @@
-#include "TitleScene.h"
+﻿#include "TitleScene.h"
 
 #include "DirectXEngine.h"
 #include "SceneManager.h"
@@ -11,7 +11,7 @@ void TitleScene::Initialize()
 {
 	sceneFade_ = std::make_unique<BaseUI>();
 	sceneFade_->Init("TitleFade", "GameData", true);
-	sceneFade_->GetSprite()->SetColor(Vector4{ 0.0f,0.0f,0.0f,1.0f });
+	sceneFade_->GetSprite()->SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,1.0f });
 	sceneFade_->FadeOut();
 
 	titleUI_ = std::make_unique<TitleUI>();
@@ -126,3 +126,4 @@ void TitleScene::Draw()
 
 	sceneFade_->Draw();
 }
+

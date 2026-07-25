@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <list>
 #include <cmath>
 #include <unordered_map>
@@ -131,7 +131,7 @@ private:
     /// <summary>
     /// ワールド座標をセルのキーに変換する
     /// </summary>
-    CellKey ToCell(const Vector3& position, float cellSize) const noexcept {
+    CellKey ToCell(const NumaEngine::Vector3& position, float cellSize) const noexcept {
         return CellKey{
             static_cast<int>(std::floor(position.x / cellSize)),
             static_cast<int>(std::floor(position.y / cellSize)),

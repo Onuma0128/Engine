@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 
 #include "Collider.h"
@@ -25,12 +25,12 @@ public:
 	/// セッター
 	/// </summary>
 	/// <param name="scale"></param>
-	void SetScale(const Vector3& scale) { plane_->GetTransform().scale = scale; }
-	void SetRotate(const Quaternion& rotate) { plane_->GetTransform().rotation = rotate; }
-	void SetTranslate(const Vector3& translate) { plane_->GetTransform().translation = translate; }
-	void SetAddUvPosition(const Vector2& position) { plane_->GetUVTransform().position += position; }
+    void SetScale(const NumaEngine::Vector3& scale) { plane_->GetTransform().scale = scale; }
+	void SetRotate(const NumaEngine::Quaternion& rotate) { plane_->GetTransform().rotation = rotate; }
+	void SetTranslate(const NumaEngine::Vector3& translate) { plane_->GetTransform().translation = translate; }
+	void SetAddUvPosition(const NumaEngine::Vector2& position) { plane_->GetUVTransform().position += position; }
 	void SetEnabledDraw(bool flag) { plane_->GetRenderOptions().enabled = flag; }
-	void SetEnemyPosition(const Vector3& position) { enemyPosition_ = position; }
+	void SetEnemyPosition(const NumaEngine::Vector3& position) { enemyPosition_ = position; }
 
 private:
 
@@ -50,11 +50,13 @@ private:
 	// エフェクト
 	std::unique_ptr<PrimitiveDrawr> plane_ = nullptr;
 	float hitDistance_ = 100.0f;
-	Vector3 hitPosition_ = {};
+    NumaEngine::Vector3 hitPosition_ = {};
 	bool isHit_ = false;
 
 	// 敵の座標
-	Vector3 enemyPosition_ = {};
+    NumaEngine::Vector3 enemyPosition_ = {};
 
 };
+
+
 

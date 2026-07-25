@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "JsonFunction.h"
 
@@ -13,18 +13,18 @@ private:
 	struct SelectData {
 
 		float killNumberUiInterval;			// キル数の間隔
-		Vector2 killNumberUiSize;			// キル数のサイズ
-		Vector2 killNumberUiPos;			// キル数の座標
+      NumaEngine::Vector2 killNumberUiSize;			// キル数のサイズ
+		NumaEngine::Vector2 killNumberUiPos;			// キル数の座標
 		
 		float hitRateNumberUiInterval;		// 命中率の間隔
-		Vector2 hitRateNumberUiSize;		// 命中率のサイズ
-		Vector2 hitRateNumberUiPos;			// 命中率の座標
+      NumaEngine::Vector2 hitRateNumberUiSize;		// 命中率のサイズ
+		NumaEngine::Vector2 hitRateNumberUiPos;			// 命中率の座標
 
 		float selectUiInterval;				// セレクトのUIが出てくるまでの時間
 		float clearCountUiTimer_;			// 数字の出てくる時間
 
 		float edgeWidth;					// エッジ幅	
-		Vector3 noiseColor;					// ノイズカラー
+       NumaEngine::Vector3 noiseColor;					// ノイズカラー
 	};
 	SelectData data_;
 
@@ -58,4 +58,6 @@ private:
 	JsonFunction json_;
 
 };
+
+
 

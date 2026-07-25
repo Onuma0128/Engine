@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 
 #include "imgui.h"
 
@@ -27,7 +27,7 @@ void Player::Initialize()
 	Animation::SetSceneRenderer();
 	Animation::PlayByName("Idle", 0.0f);
 	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = Vector3::ExprZero;
+	Animation::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 	Animation::SetTransform(player.transform);
 	startTransform_ = player.transform;
 
@@ -123,7 +123,7 @@ void Player::OnCollisionStay(Collider* other)
 	// 建物系の押し出し判定(OBB,Sphere)、木の押し出し判定(OBB)
 	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		isPushMove_ = true;
-		Vector3 push{};
+		NumaEngine::Vector3 push{};
 		if (other->GetMyColliderType() == ColliderType::kOBB) {
 			push = Collision3D::GetOBBSpherePushVector(other, this);
 		} else if (other->GetMyColliderType() == ColliderType::kSphere) {
@@ -170,3 +170,4 @@ void Player::PlayDemo()
 	searchCollider_->SetPlayer(this);
 	searchCollider_->Initialize();
 }
+

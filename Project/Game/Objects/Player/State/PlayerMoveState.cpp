@@ -1,4 +1,4 @@
-#include "PlayerMoveState.h"
+﻿#include "PlayerMoveState.h"
 
 #include "WinApp.h"
 #include "CameraManager.h"
@@ -15,14 +15,14 @@ PlayerMoveState::PlayerMoveState(Player* player) :PlayerBaseState(player) {}
 
 void PlayerMoveState::Init()
 {
-	rightStickQuaternion_ = Quaternion::IdentityQuaternion();
+	rightStickQuaternion_ = NumaEngine::Quaternion::IdentityQuaternion();
 
-	Vector3 moveVelocity = CreateMoveVelocity();
+	NumaEngine::Vector3 moveVelocity = CreateMoveVelocity();
 
 	// Inputを取得
 	Input* input = Input::GetInstance();
 	// 右のスティックのvelocityを取得
-	Vector3 rotateVelocity{};
+	NumaEngine::Vector3 rotateVelocity{};
 	rotateVelocity.x = input->GetGamepadRightStickX();
 	rotateVelocity.z = input->GetGamepadRightStickY();
 	// 右のスティックの入力が無ければ
@@ -30,14 +30,14 @@ void PlayerMoveState::Init()
 		if (player_->GetIsPlayingMouse()) {
 			rotateVelocity = CreateRotateVelocity();
 		} else {
-			rotateVelocity = Vector3::ExprUnitZ;
+			rotateVelocity = NumaEngine::Vector3::ExprUnitZ;
 		}
 	}
 
 	// アニメーションを逆再生する
 	if (moveVelocity.Length() != 0.0f) {
 		// 向けている方向でアニメーションを決める
-		float dot = Vector3::Dot(moveVelocity, rotateVelocity);
+		float dot = NumaEngine::Vector3::Dot(moveVelocity, rotateVelocity);
 		if (dot <= 0.0f) {
 			isReversePlay_ = false;
 			chengeAniamtion_ = false;
@@ -76,12 +76,12 @@ void PlayerMoveState::Update()
 	else { speed = player_->GetItem()->GetPlayerData().speed; }
 
 	// 移動の処理
-	Vector3 moveVelocity = CreateMoveVelocity();
-	Vector3 position = player_->GetTransform().translation_;
+	NumaEngine::Vector3 moveVelocity = CreateMoveVelocity();
+	NumaEngine::Vector3 position = player_->GetTransform().translation_;
 	player_->SetTransformTranslation(position + moveVelocity * DeltaTimer::GetDeltaTime() * speed);
 
 	// 右のスティックのvelocityを取得
-	Vector3 rotateVelocity{};
+	NumaEngine::Vector3 rotateVelocity{};
 	rotateVelocity.x = input->GetGamepadRightStickX();
 	rotateVelocity.z = input->GetGamepadRightStickY();
 	// 右のスティックの入力があれば
@@ -108,8 +108,8 @@ void PlayerMoveState::Update()
 			rotateVelocity = (player_->GetShot()->GetRayHitCollider()->GetCenterPosition() - player_->GetTransform().translation_).Normalize();
 		}
 		rightStickVelocity_ = rotateVelocity;
-		rightStickQuaternion_ = Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rightStickVelocity_, 1.0f);
-		Quaternion target = Quaternion::Slerp(player_->GetShot()->GetRightStickQua(), rightStickQuaternion_, 0.3f);
+		rightStickQuaternion_ = NumaEngine::Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rightStickVelocity_, 1.0f);
+		NumaEngine::Quaternion target = NumaEngine::Quaternion::Slerp(player_->GetShot()->GetRightStickQua(), rightStickQuaternion_, 0.3f);
 		player_->GetShot()->SetRightStickQua(target);
 		// 回転を適応
 		player_->SetTransformRotation(target);
@@ -120,7 +120,7 @@ void PlayerMoveState::Update()
 		// エフェクトを出す
 		player_->GetEffect()->OnceMoveEffect();
 		// 向けている方向でアニメーションを決める
-		float dot = Vector3::Dot(moveVelocity, rightStickVelocity_);
+		float dot = NumaEngine::Vector3::Dot(moveVelocity, rightStickVelocity_);
 		if (dot <= -0.5f) {
 			if ((!isReversePlay_ || !chengeAniamtion_) && player_->PlayByName("Walk")) {
 				player_->GetReversePlay() = true;
@@ -144,8 +144,8 @@ void PlayerMoveState::Update()
 		}
 	}
 
-	Vector2 min = player_->GetItem()->GetPlayerData().minPlayerClamp;
-	Vector2 max = player_->GetItem()->GetPlayerData().maxPlayerClamp;
+	NumaEngine::Vector2 min = player_->GetItem()->GetPlayerData().minPlayerClamp;
+	NumaEngine::Vector2 max = player_->GetItem()->GetPlayerData().maxPlayerClamp;
 	position.x = std::clamp(player_->GetTransform().translation_.x, min.x, max.x);
 	position.z = std::clamp(player_->GetTransform().translation_.z, min.y, max.y);
 	player_->SetTransformTranslation(position);
@@ -190,11 +190,11 @@ void PlayerMoveState::SomeAction()
 	}
 }
 
-const Vector3 PlayerMoveState::CreateMoveVelocity()
+const NumaEngine::Vector3 PlayerMoveState::CreateMoveVelocity()
 {
 	// Inputを取得
 	Input* input = Input::GetInstance();
-	Vector3 velocity{};
+	NumaEngine::Vector3 velocity{};
 
 	velocity.x = input->GetGamepadLeftStickX();
 	velocity.z = input->GetGamepadLeftStickY();
@@ -218,28 +218,28 @@ const Vector3 PlayerMoveState::CreateMoveVelocity()
 	return velocity;
 }
 
-const Vector3 PlayerMoveState::CreateRotateVelocity()
+const NumaEngine::Vector3 PlayerMoveState::CreateRotateVelocity()
 {
 	// Inputを取得
 	Input* input = Input::GetInstance();
 
 	// マウス取得開始しているなら
-	Vector2 position = {};
+	NumaEngine::Vector2 position = {};
 	position.x = static_cast<float>(input->GetMousePosX());
 	position.y = static_cast<float>(input->GetMousePosY());
-	Vector3 ndc = {
+	NumaEngine::Vector3 ndc = {
 		(position.x / WinApp::kClientWidth) * 2.0f - 1.0f,
 		-((position.y / WinApp::kClientHeight) * 2.0f - 1.0f),
 		1.0f
 	};
 	// ワールド座標に変換
 	Matrix4x4 invVP = Matrix4x4::Inverse(CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix());
-	Vector3 nearPos = Vector3::Transform(Vector3(ndc.x, ndc.y, 0.0f), invVP);
-	Vector3 farPos = Vector3::Transform(Vector3(ndc.x, ndc.y, 1.0f), invVP);
+	NumaEngine::Vector3 nearPos = NumaEngine::Vector3::Transform(NumaEngine::Vector3(ndc.x, ndc.y, 0.0f), invVP);
+	NumaEngine::Vector3 farPos = NumaEngine::Vector3::Transform(NumaEngine::Vector3(ndc.x, ndc.y, 1.0f), invVP);
 	// y軸が0の座標の位置を求める
-	Vector3 dir = farPos - nearPos;
+	NumaEngine::Vector3 dir = farPos - nearPos;
 	float denom = dir.y;
-	Vector3 hitPos = {};
+	NumaEngine::Vector3 hitPos = {};
 
 	// 地面と平行か計算
 	const float EPS = 1e-6f;
@@ -251,9 +251,10 @@ const Vector3 PlayerMoveState::CreateRotateVelocity()
 		}
 	}
 	// ベクトルを算出
-	Vector3 rotateVelocity{};
+	NumaEngine::Vector3 rotateVelocity{};
 	rotateVelocity = hitPos - player_->GetTransform().translation_;
 	rotateVelocity.y = 0.0f;
 	if (rotateVelocity.Length() != 0.0f) { return rotateVelocity.Normalize(); }
 	return rotateVelocity;
 }
+

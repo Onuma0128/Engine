@@ -1,4 +1,4 @@
-#include "Skeleton.h"
+﻿#include "Skeleton.h"
 
 #include <execution>
 #include <numeric>
@@ -77,9 +77,9 @@ void Skeleton::LerpTransformUpdate(const size_t index, const float alpha, const 
 	const auto& a = poseA.GetItem().joints[index];
 	const auto& b = poseB.GetItem().joints[index];
 
-	dst.GetTransform().translation = Vector3::Lerp(a.GetTransform().translation, b.GetTransform().translation, alpha);
-	dst.GetTransform().scale = Vector3::Lerp(a.GetTransform().scale, b.GetTransform().scale, alpha);
-	dst.GetTransform().rotation = Quaternion::Slerp(a.GetTransform().rotation, b.GetTransform().rotation, alpha);
+	dst.GetTransform().translation = NumaEngine::Vector3::Lerp(a.GetTransform().translation, b.GetTransform().translation, alpha);
+	dst.GetTransform().scale = NumaEngine::Vector3::Lerp(a.GetTransform().scale, b.GetTransform().scale, alpha);
+	dst.GetTransform().rotation = NumaEngine::Quaternion::Slerp(a.GetTransform().rotation, b.GetTransform().rotation, alpha);
 }
 
 void Skeleton::Reset()
@@ -125,3 +125,4 @@ const std::vector<const NodeAnimation*>& Skeleton::GetOrBuildTrackCacke(const An
 	auto [inserted, _] = animTracksCache_.emplace(key, std::move(table));
 	return inserted->second;
 }
+

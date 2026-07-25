@@ -1,4 +1,4 @@
-#include "BossMoveState.h"
+﻿#include "BossMoveState.h"
 
 #include "DeltaTimer.h"
 
@@ -41,17 +41,17 @@ void BossMoveState::Update()
 	boss_->GetPathFinder().DebugSpline(data.debugSpline);
 
 	// 移動の更新
-	Vector3 velocity = boss_->GetPathFinder().GetVelocity();
+	NumaEngine::Vector3 velocity = boss_->GetPathFinder().GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
-	Vector3 translate = boss_->GetTransform().translation_ +
+	NumaEngine::Vector3 translate = boss_->GetTransform().translation_ +
 		speed * velocity * DeltaTimer::GetDeltaTime();
 	boss_->SetTransformTranslation(translate);
 
 	// 移動時の回転の更新
 	if (velocity.Length() != 0.0f) {
-		Quaternion yRotation = boss_->GetPathFinder().GetRotation();
-		boss_->SetTransformRotation(Quaternion::Slerp(boss_->GetTransform().rotation_, yRotation, 0.2f));
+		NumaEngine::Quaternion yRotation = boss_->GetPathFinder().GetRotation();
+		boss_->SetTransformRotation(NumaEngine::Quaternion::Slerp(boss_->GetTransform().rotation_, yRotation, 0.2f));
 	}
 
 	// ステートを変更する
@@ -61,3 +61,4 @@ void BossMoveState::Update()
 void BossMoveState::Draw()
 {
 }
+

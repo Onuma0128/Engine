@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -60,21 +60,21 @@ public:
 	// 環境マップテクスチャの設定
 	void SetTexture_ENV(const std::string& directoryPath, const std::string& filePath);
 	// カラーの設定
-	void SetColor(const Vector4& color);
+    void SetColor(const NumaEngine::Vector4& color);
 	// ワールド変換行列の取得
 	const WorldTransform& GetTransform() { return transform_; }
 	// ワールド変換行列の設定
 	void SetTransform(const WorldTransform& transform) { transform_ = transform; }
 	void SetTransformParent(const WorldTransform* parent) { transform_.parent_ = parent; }
-	void SetTransformScale(const Vector3& scale) { transform_.scale_ = scale; }
-	void SetTransformRotation(const Quaternion& rotation) { transform_.rotation_ = rotation; }
-	void SetTransformTranslation(const Vector3& translation) { transform_.translation_ = translation; }
+    void SetTransformScale(const NumaEngine::Vector3& scale) { transform_.scale_ = scale; }
+	void SetTransformRotation(const NumaEngine::Quaternion& rotation) { transform_.rotation_ = rotation; }
+	void SetTransformTranslation(const NumaEngine::Vector3& translation) { transform_.translation_ = translation; }
 	// モデルの取得
 	Model* GetModel() { return model_; }
 	// マテリアルの取得
 	Material& GetMaterial() { return materialData_; }
 	// カラーの取得
-	Vector4& GetColor() { return materialData_.color; }
+    NumaEngine::Vector4& GetColor() { return materialData_.color; }
 
 private:
 
@@ -96,3 +96,5 @@ private:
 	Material materialData_;
 
 };
+
+

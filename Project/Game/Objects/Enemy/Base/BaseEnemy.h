@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <vector>
@@ -88,7 +88,7 @@ public:
 	/// リセット時呼び出し
 	/// </summary>
 	/// <param name="position"></スポーンする座標を入れる>
-	virtual void Reset(const Vector3& position);
+	virtual void Reset(const NumaEngine::Vector3& position);
 
 	/// <summary>
 	/// 経路探索をリセットする
@@ -123,10 +123,10 @@ public:
 	// 敵のタイプ
 	EnemyType GetType()const { return type_; }
 	// 当たったプレイヤーの弾座標
-	const Vector3& GetPlayerBullet() { return playerBulletPosition_; }
+	const NumaEngine::Vector3& GetPlayerBullet() { return playerBulletPosition_; }
 	// 速度
-	void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
-	const Vector3& GetVelocity() { return velocity_; }
+	void SetVelocity(const NumaEngine::Vector3& velocity) { velocity_ = velocity; }
+	const NumaEngine::Vector3& GetVelocity() { return velocity_; }
 
 	// 動けるのが有効か
 	bool GetEnableMove()const { return stateParam_.enableMove_; }
@@ -194,11 +194,12 @@ protected:
 	// 探索アルゴリズム
 	PathFinder pathFinder_;
 	// 速度
-	Vector3 velocity_{};
+	NumaEngine::Vector3 velocity_{};
 	// 当たったプレイヤーの弾の座標を保存
-	Vector3 playerBulletPosition_{};
+	NumaEngine::Vector3 playerBulletPosition_{};
 	// 当たってきたColliderを保存
 	Collider* hitCollider_ = nullptr;
 
 };
+
 

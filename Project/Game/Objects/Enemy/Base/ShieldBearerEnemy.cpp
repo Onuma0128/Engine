@@ -1,4 +1,4 @@
-#include "ShieldBearerEnemy.h"
+﻿#include "ShieldBearerEnemy.h"
 
 #include "DeltaTimer.h"
 
@@ -70,7 +70,7 @@ void ShieldBearerEnemy::Dead()
 	shieldWeapon_->SetIsActive(false);
 }
 
-void ShieldBearerEnemy::Reset(const Vector3& position)
+void ShieldBearerEnemy::Reset(const NumaEngine::Vector3& position)
 {
 	// 基底クラスのリセット処理
 	BaseEnemy::Reset(position);
@@ -82,8 +82,9 @@ void ShieldBearerEnemy::Reset(const Vector3& position)
 	// Activeを戻す
 	shieldWeapon_->SetIsActive(true);
 	// Animationの再生を初期化
-	transform_.scale_ = Vector3::ExprUnitXYZ * data.modelScale;
+	transform_.scale_ = NumaEngine::Vector3::ExprUnitXYZ * data.modelScale;
 	Animation::ForcePlayByName("Run_Arms");
 	// ステートを初期化
 	ChangeState(std::make_unique<EnemyMoveState>(this));
 }
+

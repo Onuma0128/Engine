@@ -1,4 +1,4 @@
-#include "PlayerReticle.h"
+﻿#include "PlayerReticle.h"
 
 #include <numbers>
 
@@ -36,8 +36,8 @@ void PlayerReticle::Update(bool isPlayingMouse)
 	Input* input = Input::GetInstance();
 
 	// 移動の処理
-	const float reticleSpeed = 10.0f;
-	Vector2 velocity{};
+    const float reticleSpeed = 10.0f;
+	NumaEngine::Vector2 velocity{};
 	if (!isPlayingMouse) {
 		velocity.x = input->GetGamepadRightStickX();
 		velocity.y = -input->GetGamepadRightStickY();
@@ -57,11 +57,11 @@ void PlayerReticle::Update(bool isPlayingMouse)
 	if (reticleColorTimer_ <= 1.0f) {
 		reticleColorTimer_ += 1.0f / 30.0f;
 		float color = std::clamp(reticleColorTimer_, 0.0f, 1.0f);
-		Sprite::SetColor(Vector4{ 1.0f,color,color,1.0f });
+		Sprite::SetColor(NumaEngine::Vector4{ 1.0f,color,color,1.0f });
 
 		if (reticleColorTimer_ <= 0.0f) {
 			float time = reticleColorTimer_ * -5.0f;
-			transform_.size = (Vector2::MochiPuniScaleNormalized(time) * 64.0f);
+			transform_.size = (NumaEngine::Vector2::MochiPuniScaleNormalized(time) * 64.0f);
 		}
 	}
 
@@ -103,15 +103,15 @@ void PlayerReticle::SegmentUpdate()
 	if (hitCount_ >= 6) { Collider::isActive_ = false; }
 	else { Collider::isActive_ = true; }
 
-	Vector2 position = transform_.position;
-	Vector3 ndc = {
+    NumaEngine::Vector2 position = transform_.position;
+	NumaEngine::Vector3 ndc = {
 		(position.x / static_cast<float>(WinApp::kClientWidth)) * 2.0f - 1.0f,
 		-((position.y / static_cast<float>(WinApp::kClientHeight)) * 2.0f - 1.0f),
 		1.0f
 	};
 	Matrix4x4 invVP = Matrix4x4::Inverse(CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix());
-	Vector3 nearPos = Vector3::Transform(Vector3(ndc.x, ndc.y, 0.0f), invVP);
-	Vector3 farPos = Vector3::Transform(Vector3(ndc.x, ndc.y, 1.0f), invVP);
+    NumaEngine::Vector3 nearPos = NumaEngine::Vector3::Transform(NumaEngine::Vector3(ndc.x, ndc.y, 0.0f), invVP);
+	NumaEngine::Vector3 farPos = NumaEngine::Vector3::Transform(NumaEngine::Vector3(ndc.x, ndc.y, 1.0f), invVP);
 
 	Collider::origin_ = nearPos;
 	Collider::diff_ = (farPos - nearPos);
@@ -145,29 +145,31 @@ void PlayerRayReticle::SetRaticleAlpha(bool flag)
 	alphaTimer_ = std::clamp(alphaTimer_, 0.0f, 1.0f);
 	float t = std::sinf(alphaTimer_ * std::numbers::pi_v<float>);
 
-	transform_.size = Vector2{ 64.0f,64.0f } + Vector2{ 32.0f,32.0f } * t;
+    transform_.size = NumaEngine::Vector2{ 64.0f,64.0f } + NumaEngine::Vector2{ 32.0f,32.0f } * t;
+	transform_.rotate = std::numbers::pi_v<float> * Easing::EaseInBack(alphaTimer_);
 	transform_.rotate = std::numbers::pi_v<float> * Easing::EaseInBack(alphaTimer_);
 
-	Vector4 color = { alphaTimer_,0.0f,0.0f,alphaTimer_ };
+	NumaEngine::Vector4 color = { alphaTimer_,0.0f,0.0f,alphaTimer_ };
 	Sprite::SetColor(color);
 }
 
-void PlayerRayReticle::SetPosition(const Vector3& position)
+void PlayerRayReticle::SetPosition(const NumaEngine::Vector3& position)
 {
 	// ワールドからスクリーン座標に変換
 	if (position.Length() < 0.01f) { return; }
-	Vector3 screenPos = Vector3::Transform(
+	NumaEngine::Vector3 screenPos = NumaEngine::Vector3::Transform(
 		position,
 		CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix()
 	);
-	Vector2 pos = {
+    NumaEngine::Vector2 pos = {
 		((screenPos.x + 1.0f) / 2.0f) * static_cast<float>(WinApp::kClientWidth),
 		((1.0f - screenPos.y) / 2.0f) * static_cast<float>(WinApp::kClientHeight)
 	};
 
-	if(Vector2::Distance(transform_.position, pos) > 320.0f){
+    if(NumaEngine::Vector2::Distance(transform_.position, pos) > 320.0f){
 		transform_.position = pos;
 	} else {
-		transform_.position = Vector2::Lerp(transform_.position, pos, 0.5f);
+        transform_.position = NumaEngine::Vector2::Lerp(transform_.position, pos, 0.5f);
 	}
 }
+

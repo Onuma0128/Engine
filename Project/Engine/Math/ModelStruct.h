@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include <string>
@@ -22,9 +22,9 @@ using Microsoft::WRL::ComPtr;
 /// 頂点データを表す構造体
 /// </summary>
 struct VertexData {
-	Vector4 position;
-	Vector2 texcoord;
-	Vector3 normal;
+	NumaEngine::Vector4 position;
+	NumaEngine::Vector2 texcoord;
+	NumaEngine::Vector3 normal;
 };
 
 /// <summary>
@@ -40,13 +40,13 @@ struct MeshData {
 /// マテリアルデータを表す構造体
 /// </summary>
 struct Material {
-	Vector4 color;
+    NumaEngine::Vector4 color;
 	Matrix4x4 uvTransform;
 	int32_t enableDraw;
 	int32_t enableLighting;
 	int32_t outlineMask;
 	int32_t outlineSceneColor;
-	Vector3 outlineColor;
+    NumaEngine::Vector3 outlineColor;
 	float shininess;
 	float environmentCoefficient;
 	int32_t shadowMap;
@@ -72,14 +72,14 @@ struct MaterialData {
 	uint32_t ENV_TextureIndex = 0;
 
 	ComPtr<ID3D12Resource> kdColorResource;
-	Vector4 kdColor;
+    NumaEngine::Vector4 kdColor;
 };
 
 /// <summary>
 /// キャンバス上の色を表す構造体
 /// </summary>
 struct KdColor {
-	Vector4 Color;
+	NumaEngine::Vector4 Color;
 };
 
 /// <summary>
@@ -131,3 +131,5 @@ struct RenderOptions {
 	bool enabled;		// 描画をするか
 	bool offscreen;		// オフスク描画をするか
 };
+
+

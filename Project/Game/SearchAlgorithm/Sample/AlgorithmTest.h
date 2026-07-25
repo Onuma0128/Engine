@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <vector>
@@ -26,7 +26,7 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="goal"></param>
-	void Update(const Vector3& goal);
+	void Update(const NumaEngine::Vector3& goal);
 
 	/// <summary>
 	/// マップコリジョンを設定する
@@ -40,7 +40,7 @@ private:
 	/// リセット
 	/// </summary>
 	/// <param name="goal"></param>
-	void Reset(const Vector3& goal);
+	void Reset(const NumaEngine::Vector3& goal);
 
 private:
 
@@ -54,4 +54,6 @@ private:
 	float lerpSpeed_;
 	bool drawSpline_ = false;
 };
+
+
 

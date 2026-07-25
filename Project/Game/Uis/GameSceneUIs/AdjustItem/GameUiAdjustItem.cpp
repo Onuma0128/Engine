@@ -1,4 +1,4 @@
-#include "GameUiAdjustItem.h"
+﻿#include "GameUiAdjustItem.h"
 
 #include "imgui.h"
 
@@ -8,15 +8,15 @@ void GameUiAdjustItem::LoadItems()
 	if (!json_.Load()) {
 
 		json_.Set("killNumberUiInterval", 0.0f);
-		json_.Set("killNumberUiSize", Vector2{});
-		json_.Set("killNumberUiPos", Vector2{});
+		json_.Set("killNumberUiSize", NumaEngine::Vector2{});
+		json_.Set("killNumberUiPos", NumaEngine::Vector2{});
 
 		json_.Set("maxKillCount", 0);
 		json_.Set("maxKillNumberUiInterval", 0.0f);
-		json_.Set("maxKillNumberUiSize", Vector2{});
-		json_.Set("maxKillNumberUiPos", Vector2{});
+		json_.Set("maxKillNumberUiSize", NumaEngine::Vector2{});
+		json_.Set("maxKillNumberUiPos", NumaEngine::Vector2{});
 
-		json_.Set("bossHpBarPos", Vector2{});
+		json_.Set("bossHpBarPos", NumaEngine::Vector2{});
 
 		json_.Set("startInTime", 0.0f);
 		json_.Set("startOutTime", 0.0f);

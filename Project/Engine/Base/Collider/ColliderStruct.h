@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 
@@ -7,7 +7,7 @@
 
 namespace {
     struct OctAABB {
-        Vector3 min, max;
+        NumaEngine::Vector3 min, max;
         bool Intersects(const OctAABB& o) const noexcept {
             return !(max.x < o.min.x || min.x > o.max.x ||
                 max.y < o.min.y || min.y > o.max.y ||
@@ -18,8 +18,8 @@ namespace {
                 min.y <= o.min.y && max.y >= o.max.y &&
                 min.z <= o.min.z && max.z >= o.max.z);
         }
-        Vector3 Center() const noexcept { return (min + max) * 0.5f; }
-        Vector3 Size() const noexcept { return (max - min); }
+        NumaEngine::Vector3 Center() const noexcept { return (min + max) * 0.5f; }
+        NumaEngine::Vector3 Size() const noexcept { return (max - min); }
     };
 
     // コライダーとそのAABBを束ねる
@@ -42,11 +42,11 @@ namespace {
         }
 
         void Subdivide() {
-            Vector3 c = bounds.Center();
-            Vector3 s = bounds.Size() * 0.5f;
+            NumaEngine::Vector3 c = bounds.Center();
+            NumaEngine::Vector3 s = bounds.Size() * 0.5f;
             // 8子ノードを作成（min/max を組み合わせ）
             for (int i = 0; i < 8; ++i) {
-                Vector3 offset{
+                NumaEngine::Vector3 offset{
                     (i & 1) ? s.x * 0.5f : -s.x * 0.5f,
                     (i & 2) ? s.y * 0.5f : -s.y * 0.5f,
                     (i & 4) ? s.z * 0.5f : -s.z * 0.5f
@@ -155,11 +155,13 @@ namespace {
             b.max.z = std::max(b.max.z, it.box.max.z);
         }
         // 立方体化（バランス良く分割するため）
-        Vector3 c = b.Center();
-        Vector3 s = b.Size();
+        NumaEngine::Vector3 c = b.Center();
+        NumaEngine::Vector3 s = b.Size();
         float m = std::max({ s.x, s.y, s.z }) * 0.5f;
         b.min = { c.x - m, c.y - m, c.z - m };
         b.max = { c.x + m, c.y + m, c.z + m };
         return b;
     }
 }
+
+

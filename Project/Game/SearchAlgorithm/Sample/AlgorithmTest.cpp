@@ -1,4 +1,4 @@
-#include "AlgorithmTest.h"
+﻿#include "AlgorithmTest.h"
 
 #include "imgui.h"
 #include "DeltaTimer.h"
@@ -13,7 +13,7 @@ void AlgorithmTest::Init()
 	Reset({});
 }
 
-void AlgorithmTest::Update(const Vector3& goal)
+void AlgorithmTest::Update(const NumaEngine::Vector3& goal)
 {
 	ImGui::Begin("A_star");
 	ImGui::DragFloat("speed", &speed_, 0.01f);
@@ -37,16 +37,16 @@ void AlgorithmTest::Update(const Vector3& goal)
 	pathFinder_.DebugSpline(drawSpline_);
 
 	// 移動をする
-	Vector3 position = pathFinder_.GetPosition();
+	NumaEngine::Vector3 position = pathFinder_.GetPosition();
 	Object3d::transform_.translation_ = position;
 	// 回転をする
-	Quaternion yRotation = pathFinder_.GetRotation();
-	Object3d::transform_.rotation_ = Quaternion::Slerp(Object3d::transform_.rotation_, yRotation, lerpSpeed_);
+	NumaEngine::Quaternion yRotation = pathFinder_.GetRotation();
+	Object3d::transform_.rotation_ = NumaEngine::Quaternion::Slerp(Object3d::transform_.rotation_, yRotation, lerpSpeed_);
 
 	Object3d::Update();
 }
 
-void AlgorithmTest::Reset(const Vector3& goal)
+void AlgorithmTest::Reset(const NumaEngine::Vector3& goal)
 {
 	pathFinder_.Search(Object3d::transform_.translation_, goal);
 }

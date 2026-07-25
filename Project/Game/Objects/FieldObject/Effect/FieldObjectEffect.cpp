@@ -1,4 +1,4 @@
-#include "FieldObjectEffect.h"
+﻿#include "FieldObjectEffect.h"
 
 void FieldObjectEffect::Init(const std::string& name)
 {
@@ -28,8 +28,8 @@ void FieldObjectEffect::OnceHitEffect(const WorldTransform& transform)
 {
 	hitEmitter_->onceEmit();
 
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	hitEmitter_->SetRotation(rotate);
 	hitEmitter_->SetPosition(position);
@@ -41,9 +41,10 @@ void FieldObjectEffect::OnceBreakEffect(const WorldTransform& transform)
 	isBreakEffectPlay_ = true;*/
 	breakEmitter_->onceEmit();
 
-	Quaternion rotate = transform.rotation_;
-	Vector3 position = transform.translation_;
+	NumaEngine::Quaternion rotate = transform.rotation_;
+	NumaEngine::Vector3 position = transform.translation_;
 
 	breakEmitter_->SetRotation(rotate);
 	breakEmitter_->SetPosition(position);
 }
+

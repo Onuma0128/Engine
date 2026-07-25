@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <memory>
 #include <array>
 
@@ -24,7 +24,7 @@ public:
 	/// 更新
 	/// </summary>
 	/// <param name="offset"></param>
-	void Update(const Vector3& start, const Vector3& goal);
+	void Update(const NumaEngine::Vector3& start, const NumaEngine::Vector3& goal);
 
 	/// <summary>
 	/// 描画するか決める
@@ -47,3 +47,4 @@ private:
 	std::array<std::unique_ptr<Object3d>, objSize_> predictionObjects_;
 	
 };
+

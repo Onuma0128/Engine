@@ -1,4 +1,4 @@
-#include "RenderTexture.h"
+﻿#include "RenderTexture.h"
 
 #include <cassert>
 
@@ -10,7 +10,7 @@
 
 #include "DepthStencilTexture.h"
 
-ComPtr<ID3D12Resource> RenderTexture::CreateResource(ComPtr<ID3D12Device> device, uint32_t width, uint32_t height, DXGI_FORMAT format, const Vector4& clearColor)
+ComPtr<ID3D12Resource> RenderTexture::CreateResource(ComPtr<ID3D12Device> device, uint32_t width, uint32_t height, DXGI_FORMAT format, const NumaEngine::Vector4& clearColor)
 {
 	// 生成するResourceの設定
 	D3D12_RESOURCE_DESC resourceDesc{};
@@ -71,7 +71,7 @@ void RenderTexture::Initialize()
 	DsvManager::GetInstance()->CreateDSV(depthIndex_, depthStencilResource_.Get());
 
 	// RenderTextureのRTVの設定
-	const Vector4 kRenderTargetClearValue = { 0.0f,0.0f,0.2f,1.0f };
+	const NumaEngine::Vector4 kRenderTargetClearValue = { 0.0f,0.0f,0.2f,1.0f };
 	renderTextureResource_ = RenderTexture::CreateResource(
 		DirectXEngine::GetDevice(),
 		WinApp::kClientWidth,
@@ -151,3 +151,4 @@ void RenderTexture::Draw()
 
 	finalSrvIndex_ = renderTextureSRVIndex_;
 }
+

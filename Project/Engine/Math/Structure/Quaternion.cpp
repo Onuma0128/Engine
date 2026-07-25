@@ -7,31 +7,31 @@
 #include "Vector3.h"
 #include "Matrix4x4.h"
 
-Quaternion::Quaternion(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+NumaEngine::Quaternion::Quaternion(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
-void Quaternion::ImGuiQuaternion(const std::string& imguiName) const
+void NumaEngine::Quaternion::ImGuiQuaternion(const std::string& imguiName) const
 {
 	ImGui::Text("%.3f, %.3f, %.3f, %.3f : ", x, y, z, w);
 	ImGui::SameLine();
 	ImGui::Text(imguiName.c_str());
 }
 
-Quaternion Quaternion::IdentityQuaternion()
+NumaEngine::Quaternion NumaEngine::Quaternion::IdentityQuaternion()
 {
 	return { 0.0f,0.0f,0.0f,1.0f };
 }
 
-void Quaternion::AddRotation(const Quaternion& deltaRotation)
+void NumaEngine::Quaternion::AddRotation(const NumaEngine::Quaternion& deltaRotation)
 {
 	*this = Normalize(*this * deltaRotation);
 }
 
-Quaternion Quaternion::Conjugate(const Quaternion& quaternion)
+NumaEngine::Quaternion NumaEngine::Quaternion::Conjugate(const NumaEngine::Quaternion& quaternion)
 {
 	return { -quaternion.x,-quaternion.y,-quaternion.z,quaternion.w };
 }
 
-float Quaternion::Norm(const Quaternion& quaternion)
+float NumaEngine::Quaternion::Norm(const NumaEngine::Quaternion& quaternion)
 {
 	return std::sqrt(
 		quaternion.x * quaternion.x + quaternion.y * quaternion.y + 
@@ -39,16 +39,16 @@ float Quaternion::Norm(const Quaternion& quaternion)
 	);
 }
 
-float Quaternion::Dot(const Quaternion& q0, const Quaternion& q1)
+float NumaEngine::Quaternion::Dot(const NumaEngine::Quaternion& q0, const NumaEngine::Quaternion& q1)
 {
 	return q0.x * q1.x + q0.y * q1.y + q0.z * q1.z + q0.w * q1.w;
 }
 
-Quaternion Quaternion::Normalize(const Quaternion& quaternion)
+NumaEngine::Quaternion NumaEngine::Quaternion::Normalize(const NumaEngine::Quaternion& quaternion)
 {
 	float norm = Norm(quaternion);
 
-	Quaternion result = quaternion;
+	NumaEngine::Quaternion result = quaternion;
 
 	if (norm > 0.0f)
 	{
@@ -61,11 +61,11 @@ Quaternion Quaternion::Normalize(const Quaternion& quaternion)
 	return result;
 }
 
-Quaternion Quaternion::Inverse(const Quaternion& quaternion)
+NumaEngine::Quaternion NumaEngine::Quaternion::Inverse(const NumaEngine::Quaternion& quaternion)
 {
 	float norm = Norm(quaternion) * Norm(quaternion);
 
-	Quaternion conjugate = Conjugate(quaternion);
+	NumaEngine::Quaternion conjugate = Conjugate(quaternion);
 
 	return {
 		conjugate.x / norm,
@@ -75,9 +75,9 @@ Quaternion Quaternion::Inverse(const Quaternion& quaternion)
 	};
 }
 
-Quaternion Quaternion::MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle)
+NumaEngine::Quaternion NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(const NumaEngine::Vector3& axis, float angle)
 {
-	Vector3 axisNormal = axis.Normalize();
+	NumaEngine::Vector3 axisNormal = axis.Normalize();
 
 	float halfAngle = angle / 2.0f;
 
@@ -92,48 +92,48 @@ Quaternion Quaternion::MakeRotateAxisAngleQuaternion(const Vector3& axis, float 
 	};
 }
 
-Quaternion Quaternion::DirectionToQuaternion(const Quaternion& quaternion,const Vector3& direction, const float lerp)
+NumaEngine::Quaternion NumaEngine::Quaternion::DirectionToQuaternion(const NumaEngine::Quaternion& quaternion,const NumaEngine::Vector3& direction, const float lerp)
 {
-	Vector3 foward = Vector3::ExprUnitZ;
-	Vector3 targetDir = Vector3{ -direction.x,0.0f,direction.z };
+	NumaEngine::Vector3 foward = NumaEngine::Vector3::ExprUnitZ;
+	NumaEngine::Vector3 targetDir = NumaEngine::Vector3{ -direction.x,0.0f,direction.z };
 
 	// directionから回転を求める
-	Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
-	Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
-	Quaternion currentRotation = quaternion;
-	Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, lerp);
+    ::Matrix4x4 targetMatrix = ::Matrix4x4::DirectionToDirection(foward, targetDir);
+	NumaEngine::Quaternion targetRotation = NumaEngine::Quaternion::FormRotationMatrix(targetMatrix);
+	NumaEngine::Quaternion currentRotation = quaternion;
+	NumaEngine::Quaternion result = NumaEngine::Quaternion::Slerp(currentRotation, targetRotation, lerp);
 
 	return result;
 }
 
-Quaternion Quaternion::DirectionToQuaternion(const Quaternion& quaternion, const Vector3 addFoward, const Vector3& direction, const float lerp)
+NumaEngine::Quaternion NumaEngine::Quaternion::DirectionToQuaternion(const NumaEngine::Quaternion& quaternion, const NumaEngine::Vector3 addFoward, const NumaEngine::Vector3& direction, const float lerp)
 {
-	Vector3 foward = Vector3::ExprUnitZ + addFoward;
-	Vector3 targetDir = Vector3{ -direction.x,0.0f,direction.z };
+	NumaEngine::Vector3 foward = NumaEngine::Vector3::ExprUnitZ + addFoward;
+	NumaEngine::Vector3 targetDir = NumaEngine::Vector3{ -direction.x,0.0f,direction.z };
 
 	// directionから回転を求める
-	Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
-	Quaternion targetRotation = Quaternion::FormRotationMatrix(targetMatrix);
-	Quaternion currentRotation = quaternion;
-	Quaternion result = Quaternion::Slerp(currentRotation, targetRotation, lerp);
+    ::Matrix4x4 targetMatrix = ::Matrix4x4::DirectionToDirection(foward, targetDir);
+	NumaEngine::Quaternion targetRotation = NumaEngine::Quaternion::FormRotationMatrix(targetMatrix);
+	NumaEngine::Quaternion currentRotation = quaternion;
+	NumaEngine::Quaternion result = NumaEngine::Quaternion::Slerp(currentRotation, targetRotation, lerp);
 
 	return result;
 }
 
-Vector3 Quaternion::RotateVector(const Vector3& vector, const Quaternion& quaternion)
+NumaEngine::Vector3 NumaEngine::Quaternion::RotateVector(const NumaEngine::Vector3& vector, const NumaEngine::Quaternion& quaternion)
 {
-	Quaternion conjugate = Conjugate(quaternion);
+	NumaEngine::Quaternion conjugate = Conjugate(quaternion);
 
-	Quaternion vectorQuat(vector.x, vector.y, vector.z, 0.0f);
+	NumaEngine::Quaternion vectorQuat(vector.x, vector.y, vector.z, 0.0f);
 
-	Quaternion rotatedQuat = quaternion * vectorQuat * conjugate;
+	NumaEngine::Quaternion rotatedQuat = quaternion * vectorQuat * conjugate;
 
 	return { rotatedQuat.x, rotatedQuat.y, rotatedQuat.z };
 }
 
-Matrix4x4 Quaternion::MakeRotateMatrix(const Quaternion& quaternion)
+Matrix4x4 NumaEngine::Quaternion::MakeRotateMatrix(const NumaEngine::Quaternion& quaternion)
 {
-	Quaternion q = quaternion;
+	NumaEngine::Quaternion q = quaternion;
 	Matrix4x4 result = Matrix4x4::Identity();
 
 	result.m[0][0] = q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z;
@@ -159,9 +159,9 @@ Matrix4x4 Quaternion::MakeRotateMatrix(const Quaternion& quaternion)
 	return result;
 }
 
-Quaternion Quaternion::FormRotationMatrix(const Matrix4x4& matrix)
+NumaEngine::Quaternion NumaEngine::Quaternion::FormRotationMatrix(const ::Matrix4x4& matrix)
 {
-	Quaternion result = IdentityQuaternion();
+	NumaEngine::Quaternion result = IdentityQuaternion();
 
 	float trace = matrix.m[0][0] + matrix.m[1][1] + matrix.m[2][2];
 
@@ -200,15 +200,15 @@ Quaternion Quaternion::FormRotationMatrix(const Matrix4x4& matrix)
 	return Normalize(result);
 }
 
-Quaternion Quaternion::ExtractYawQuaternion(const Quaternion& quaternion)
+NumaEngine::Quaternion NumaEngine::Quaternion::ExtractYawQuaternion(const NumaEngine::Quaternion& quaternion)
 {
-	Vector3 forward = Quaternion::RotateVector(Vector3::ExprUnitZ, quaternion);
+	NumaEngine::Vector3 forward = NumaEngine::Quaternion::RotateVector(NumaEngine::Vector3::ExprUnitZ, quaternion);
 	float yaw = atan2(forward.x, forward.z); // Y 軸の回転成分を取得
-	return Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, yaw);
+	return NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, yaw);
 }
 
-Vector3 Quaternion::ToEuler(const Quaternion& q) {
-	Vector3 euler;
+NumaEngine::Vector3 NumaEngine::Quaternion::ToEuler(const NumaEngine::Quaternion& q) {
+	NumaEngine::Vector3 euler;
 
 	// Pitch（X軸回転）
 	float sinp = 2.0f * (q.w * q.x + q.y * q.z);
@@ -228,7 +228,7 @@ Vector3 Quaternion::ToEuler(const Quaternion& q) {
 	return euler;
 }
 
-void Quaternion::Slerp(const Quaternion& q1, float t)
+void NumaEngine::Quaternion::Slerp(const NumaEngine::Quaternion& q1, float t)
 {
 	float dot = Dot(*this, q1);
 	if (dot < 0) {
@@ -249,10 +249,10 @@ void Quaternion::Slerp(const Quaternion& q1, float t)
 	*this = *this * scale0 + q1 * scale1;
 }
 
-Quaternion Quaternion::Lerp(const Quaternion& q0, const Quaternion& q1, float t)
+NumaEngine::Quaternion NumaEngine::Quaternion::Lerp(const NumaEngine::Quaternion& q0, const NumaEngine::Quaternion& q1, float t)
 {
 	t = std::clamp(t, 0.0f, 1.0f); // t を 0.0 ~ 1.0 に制限
-	Quaternion result(
+	NumaEngine::Quaternion result(
 		q0.x + (q1.x - q0.x) * t,
 		q0.y + (q1.y - q0.y) * t,
 		q0.z + (q1.z - q0.z) * t,
@@ -261,9 +261,9 @@ Quaternion Quaternion::Lerp(const Quaternion& q0, const Quaternion& q1, float t)
 	return Normalize(result);
 }
 
-Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, float t)
+NumaEngine::Quaternion NumaEngine::Quaternion::Slerp(const NumaEngine::Quaternion& q0, const NumaEngine::Quaternion& q1, float t)
 {
-	Quaternion copyQ0 = q0;
+	NumaEngine::Quaternion copyQ0 = q0;
 	float dot = Dot(q0, q1);
 	if (dot < 0) {
 		copyQ0 = -copyQ0;
@@ -283,17 +283,17 @@ Quaternion Quaternion::Slerp(const Quaternion& q0, const Quaternion& q1, float t
 	return copyQ0 * scale0 + q1 * scale1;
 }
 
-Quaternion Quaternion::operator-() const
+NumaEngine::Quaternion NumaEngine::Quaternion::operator-() const
 {
 	return { -x, -y, -z , -w };
 }
 
-Quaternion Quaternion::operator+(const Quaternion& q) const
+NumaEngine::Quaternion NumaEngine::Quaternion::operator+(const NumaEngine::Quaternion& q) const
 {
 	return { x + q.x,q.y + y,q.z + z,q.w + w };
 }
 
-Quaternion Quaternion::operator*(const Quaternion& q) const
+NumaEngine::Quaternion NumaEngine::Quaternion::operator*(const NumaEngine::Quaternion& q) const
 {
 	return {
 		y * q.z - z * q.y + q.w * x + w * q.x,
@@ -303,12 +303,12 @@ Quaternion Quaternion::operator*(const Quaternion& q) const
 	};
 }
 
-Quaternion Quaternion::operator*(float scalar) const
+NumaEngine::Quaternion NumaEngine::Quaternion::operator*(float scalar) const
 {
 	return { x * scalar,y * scalar,z * scalar,w * scalar };
 }
 
-Quaternion& Quaternion::operator+=(const Quaternion& q)
+NumaEngine::Quaternion& NumaEngine::Quaternion::operator+=(const NumaEngine::Quaternion& q)
 {
 	x += q.x;
 	y += q.y;
@@ -317,13 +317,13 @@ Quaternion& Quaternion::operator+=(const Quaternion& q)
 	return *this;
 }
 
-Quaternion& Quaternion::operator*=(const Quaternion& q)
+NumaEngine::Quaternion& NumaEngine::Quaternion::operator*=(const NumaEngine::Quaternion& q)
 {
 	*this = *this * q;
 	return *this;
 }
 
-Quaternion& Quaternion::operator*=(float scalar)
+NumaEngine::Quaternion& NumaEngine::Quaternion::operator*=(float scalar)
 {
 	x *= scalar;
 	y *= scalar;
@@ -331,3 +331,6 @@ Quaternion& Quaternion::operator*=(float scalar)
 	w *= scalar;
 	return *this;
 }
+
+
+

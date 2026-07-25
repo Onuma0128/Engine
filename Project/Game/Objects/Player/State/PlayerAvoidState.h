@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "PlayerBaseState.h"
 
@@ -50,16 +50,18 @@ private:
 	/// 回避時の移動ベクトルを生成する
 	/// </summary>
 	/// <returns></returns>
-	const Vector3 CreateVelocity();
+	const NumaEngine::Vector3 CreateVelocity();
 
 private:
 
 	float avoidTime_ = 0.0f;
 
-	Vector3 velocity_ = {};
+	NumaEngine::Vector3 velocity_ = {};
 	float velocityY_ = 0.0f;
 	float acceleration_ = 0.0f;
-	Quaternion rotateY_ = Quaternion::IdentityQuaternion();
+	NumaEngine::Quaternion rotateY_ = NumaEngine::Quaternion::IdentityQuaternion();
 
 };
+
+
 

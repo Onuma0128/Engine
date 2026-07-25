@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
@@ -17,6 +17,8 @@
 #include "Transform.h"
 
 using Microsoft::WRL::ComPtr;
+
+// Use fully-qualified math types (NumaEngine::VectorX) throughout project
 
 /// <summary>
 /// プリミティブの種類
@@ -40,9 +42,9 @@ public:
 	/// <summary>
 	/// 頂点データ
 	/// </summary>
-	struct VertexData {
-		Vector4 position;
-		Vector2 texcoord;
+    struct VertexData {
+		NumaEngine::Vector4 position;
+		NumaEngine::Vector2 texcoord;
 	};
 
 	/// <summary>
@@ -57,8 +59,8 @@ public:
 	/// <summary>
 	/// マテリアルデータ
 	/// </summary>
-	struct MaterialData {
-		Vector4 color;
+    struct MaterialData {
+		NumaEngine::Vector4 color;
 		Matrix4x4 uvTransform;
 		int32_t xTexcoord_alpha;
 		int32_t yTexcoord_alpha;
@@ -76,7 +78,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="pos"></4頂点の座標を入れる>
-	void Init(std::vector<Vector3> pos);
+    void Init(std::vector<NumaEngine::Vector3> pos);
 
 	/// <summary>
 	/// 更新
@@ -118,14 +120,14 @@ public:
 	/// 頂点の座標を設定
 	/// </summary>
 	/// <param name="pos"></param>
-	void SetPosition(std::vector<Vector3> pos);
+    void SetPosition(std::vector<NumaEngine::Vector3> pos);
 
 	/* =============== アクセッサ(全体) =============== */
 
 	Transform3D& GetTransform() { return transform_; }
 	Transform2D& GetUVTransform() { return uvTransform_; }
 	void SetBlendMode(BlendMode blendMode) { blendMode_ = blendMode; }
-	const Vector4& GetColor() { return materialData_->color; }
+    const NumaEngine::Vector4& GetColor() { return materialData_->color; }
 	PrimitiveType GetPrimitiveType()const { return type_; }
 	bool GetIsBillboard()const { return isBillboard_; }
 	RenderOptions& GetRenderOptions() { return renderOptions_; }
@@ -133,7 +135,7 @@ public:
 	void SetTransform(Transform3D transform) { transform_ = transform; }
 	void SetUVTransform(Transform2D transform) { uvTransform_ = transform; }
 	void SetTexture(const std::string& filePath);
-	void SetColor(const Vector3& color) {
+    void SetColor(const NumaEngine::Vector3& color) {
 		materialData_->color.x = color.x;
 		materialData_->color.y = color.y;
 		materialData_->color.z = color.z;
@@ -246,7 +248,7 @@ private:
 
 	/* =============== Trail =============== */
 
-	std::vector<Vector3> positions_;
+	std::vector<NumaEngine::Vector3> positions_;
 	
 	/* =============== Sphere =============== */
 
@@ -265,3 +267,5 @@ private:
 
 
 };
+
+

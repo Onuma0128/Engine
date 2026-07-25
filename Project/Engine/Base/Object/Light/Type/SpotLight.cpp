@@ -1,4 +1,4 @@
-#include "SpotLight.h"
+﻿#include "SpotLight.h"
 
 #include <numbers>
 
@@ -41,9 +41,10 @@ void SpotLight::MakeLightData()
 	lightData_->color = { 1.0f,1.0f,1.0f,1.0f };
 	lightData_->position = { -3.0f,0.0f,0.0f };
 	lightData_->distance = 7.0f;
-	lightData_->direction = (Vector3{ -1.0f,-1.0f,0.0f }.Normalize());
+	lightData_->direction = (NumaEngine::Vector3{ -1.0f,-1.0f,0.0f }.Normalize());
 	lightData_->intensity = 0.0f;
 	lightData_->decay = 2.0f;
 	lightData_->cosAngle = std::cos(std::numbers::pi_v<float> / 3.0f);
 	lightData_->cosFalloffStart = std::cos(std::numbers::pi_v<float> / 5.0f);
 }
+

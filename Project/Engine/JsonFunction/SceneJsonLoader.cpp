@@ -1,4 +1,4 @@
-#include "SceneJsonLoader.h"
+﻿#include "SceneJsonLoader.h"
 
 #include <assert.h>
 #include <numbers>
@@ -57,29 +57,29 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 		object.tag = json["tag_name"].get<std::string>();
 	}
 
-	Vector2 defPos{};
+    NumaEngine::Vector2 defPos{};
 	float defRotate = 0.0f;
 	if (json.contains("transform")) {
 		auto& transform = json["transform"];
 
-		Vector3 translation = {
+		NumaEngine::Vector3 translation = {
 			static_cast<float>(transform["translation"][0]),
 			static_cast<float>(transform["translation"][2]),
 			static_cast<float>(transform["translation"][1]),
 		};
-		Vector3 rotate = {
+        NumaEngine::Vector3 rotate = {
 			-static_cast<float>(transform["rotation"][0]),
 			-static_cast<float>(transform["rotation"][2]),
 			-static_cast<float>(transform["rotation"][1]),
 		};
-		Vector3 scaling = {
+        NumaEngine::Vector3 scaling = {
 			static_cast<float>(transform["scaling"][0]),
 			static_cast<float>(transform["scaling"][2]),
 			static_cast<float>(transform["scaling"][1]),
 		};
 
 		object.transform.translation_ = translation;
-		object.transform.rotation_ = Vector3::FromEuler(rotate);
+		object.transform.rotation_ = NumaEngine::Vector3::FromEuler(rotate);
 		object.transform.scale_ = scaling;
 		defPos = { translation.x,translation.z };
 		defRotate = rotate.y;
@@ -89,9 +89,9 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 		ColliderData col;
 		const auto& c = json["collider"];
 		std::string type = c["type"].get<std::string>();
-		if (type == "Box") { 
+        if (type == "Box") { 
 			col.type = ColliderType::kOBB;
-			Vector3 size = {
+            NumaEngine::Vector3 size = {
 			static_cast<float>(c["size"][0]),
 			static_cast<float>(c["size"][2]),
 			static_cast<float>(c["size"][1]),
@@ -104,7 +104,7 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 			col.radius = radius;
 		}
 
-		Vector3 center = {
+        NumaEngine::Vector3 center = {
 			static_cast<float>(c["center"][0]),
 			static_cast<float>(c["center"][2]),
 			static_cast<float>(c["center"][1]),
@@ -127,3 +127,5 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 		}
 	}
 }
+
+

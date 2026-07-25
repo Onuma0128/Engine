@@ -1,4 +1,4 @@
-#include "Joint.h"
+﻿#include "Joint.h"
 
 int32_t Joint::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
 {
@@ -25,7 +25,7 @@ void Joint::TransformUpdate(const NodeAnimation& track, float animationTime, flo
 	transform_.scale = CalculateValue(track.scale.keyframes, animationTime, duration);
 }
 
-Vector3 Joint::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)
+NumaEngine::Vector3 Joint::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)
 {
 	assert(!keys.empty());
 
@@ -36,7 +36,7 @@ Vector3 Joint::CalculateValue(const std::vector<KeyFrameVector3>& keys, float ti
 
 		float span = (clipDuration - last.time) + first.time;
 		float t = (time + clipDuration - last.time) / span;
-		return Vector3::Lerp(last.value, first.value, t);
+		return NumaEngine::Vector3::Lerp(last.value, first.value, t);
 	}
 
 	// 既存ロジック
@@ -45,13 +45,13 @@ Vector3 Joint::CalculateValue(const std::vector<KeyFrameVector3>& keys, float ti
 		size_t j = i + 1;
 		if (keys[i].time <= time && time <= keys[j].time) {
 			float t = (time - keys[i].time) / (keys[j].time - keys[i].time);
-			return Vector3::Lerp(keys[i].value, keys[j].value, t);
+			return NumaEngine::Vector3::Lerp(keys[i].value, keys[j].value, t);
 		}
 	}
 	return keys.back().value;
 }
 
-Quaternion Joint::CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration)
+NumaEngine::Quaternion Joint::CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration)
 {
 	assert(!keys.empty());
 
@@ -62,7 +62,7 @@ Quaternion Joint::CalculateValue(const std::vector<KeyFrameQuaternion>& keys, fl
 
 		float span = (clipDuration - last.time) + first.time;
 		float t = (time + clipDuration - last.time) / span;
-		return Quaternion::Slerp(last.value, first.value, t);
+		return NumaEngine::Quaternion::Slerp(last.value, first.value, t);
 	}
 
 	// 既存ロジック
@@ -71,7 +71,7 @@ Quaternion Joint::CalculateValue(const std::vector<KeyFrameQuaternion>& keys, fl
 		size_t j = i + 1;
 		if (keys[i].time <= time && time <= keys[j].time) {
 			float t = (time - keys[i].time) / (keys[j].time - keys[i].time);
-			return Quaternion::Slerp(keys[i].value, keys[j].value, t);
+			return NumaEngine::Quaternion::Slerp(keys[i].value, keys[j].value, t);
 		}
 	}
 	return keys.back().value;

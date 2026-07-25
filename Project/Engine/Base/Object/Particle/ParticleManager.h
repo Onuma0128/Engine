@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <memory>
 #include <list>
@@ -25,15 +25,15 @@ class ParticleManager
 {
 public:
 	// 頂点データ
-	struct VertexData {
-		Vector4 position;
-		Vector2 texcoord;
-		Vector3 normal;
+    struct VertexData {
+		NumaEngine::Vector4 position;
+		NumaEngine::Vector2 texcoord;
+		NumaEngine::Vector3 normal;
 	};
 
 	// マテリアルデータ 
-	struct Material {
-		Vector4 color;
+    struct Material {
+		NumaEngine::Vector4 color;
 		int32_t enableLighting;
 		float padding[3];
 		Matrix4x4 uvTransform;
@@ -44,23 +44,23 @@ public:
 	};
 
 	// パーティクルデータ
-	struct Particle {
+    struct Particle {
 		EulerTransform transform;
-		Vector3 offsetScale;
-		Vector3 uvTranslate;
-		Vector3 velocity;
-		Vector3 rotateSpeed;
-		Vector4 color;
+		NumaEngine::Vector3 offsetScale;
+		NumaEngine::Vector3 uvTranslate;
+		NumaEngine::Vector3 velocity;
+		NumaEngine::Vector3 rotateSpeed;
+		NumaEngine::Vector4 color;
 		float lifeTime;
 		float currentTime;
 		uint16_t emitterID;
 	};
 
 	// GPU用パーティクルデータ
-	struct ParticleForGPU {
+    struct ParticleForGPU {
 		Matrix4x4 WVP;
 		Matrix4x4 World;
-		Vector4 color;
+		NumaEngine::Vector4 color;
 	};
 
 	// パーティクルグループデータ
@@ -177,3 +177,4 @@ private:
 
 
 };
+

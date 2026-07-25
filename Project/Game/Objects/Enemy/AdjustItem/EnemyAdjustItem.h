@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <array>
 
 #include "JsonFunction.h"
@@ -30,10 +30,10 @@ struct EnemyMainData {
 	int nextWaveKillCount;		// 敵を何体倒したら強い敵が出てくるかカウント
 	int maxSpawnCount;			// 敵をスポーンさせる上限値
 
-	Vector3 startPosition;		// 敵のスポーン開始位置	
+	NumaEngine::Vector3 startPosition;		// 敵のスポーン開始位置	
 	float colliderSize;			// 敵本体のコライダーサイズ
-	Vector3 colliderOffset;		// 敵本体のコライダー座標
-	Vector3 rayOffset;			// 敵の視線レイの座標
+	NumaEngine::Vector3 colliderOffset;		// 敵本体のコライダー座標
+	NumaEngine::Vector3 rayOffset;			// 敵の視線レイの座標
 
 	float margin;				// 敵のアニメーションを判定しない余白距離
 
@@ -57,30 +57,30 @@ struct EnemyMainData {
 struct MeleeData {
 	EnemyTemplate tempData;
 	float colliderSize;			// コライダーのサイズ
-	Vector3 colliderOffset;		// コライダーの座標(敵ペアレント時の)
+	NumaEngine::Vector3 colliderOffset;		// コライダーの座標(敵ペアレント時の)
 };
 
 // 遠距離敵の項目
 struct RangedData {
 	EnemyTemplate tempData;
 	float bulletSpeed;			// 撃つ弾の速度
-	Vector3 colliderSize;		// コライダーのサイズ
-	Vector3 colliderOffset;		// コライダーの座標
-	Vector3 planeSize;			// プレーンエフェクトのサイズ
-	Vector3 planeOffset;		// プレーンエフェクトの座標
+	NumaEngine::Vector3 colliderSize;		// コライダーのサイズ
+	NumaEngine::Vector3 colliderOffset;		// コライダーの座標
+	NumaEngine::Vector3 planeSize;			// プレーンエフェクトのサイズ
+	NumaEngine::Vector3 planeOffset;		// プレーンエフェクトの座標
 };
 
 // 盾持ち敵の項目
 struct ShieldBearerData {
 	EnemyTemplate tempData;
 	float attackColliderSize;			// コライダーのサイズ
-	Vector3 attackColliderOffset;		// コライダーの座標(敵ペアレント時の)
+	NumaEngine::Vector3 attackColliderOffset;		// コライダーの座標(敵ペアレント時の)
 
 	float lerpSpeed;					// 盾が回転するラープ速度
-	Vector3 shieldSize;					// 盾のサイズ
-	Vector3 shieldOffset;				// 盾の座標(敵ペアレント時の)
-	Vector3 shieldColliderSize;			// 盾コライダーのサイズ
-	Vector3 shieldColliderOffset;		// 盾コライダーの座標(敵ペアレント時の)
+	NumaEngine::Vector3 shieldSize;					// 盾のサイズ
+	NumaEngine::Vector3 shieldOffset;				// 盾の座標(敵ペアレント時の)
+	NumaEngine::Vector3 shieldColliderSize;			// 盾コライダーのサイズ
+	NumaEngine::Vector3 shieldColliderOffset;		// 盾コライダーの座標(敵ペアレント時の)
 };
 
 // 遠距離敵(強化版)の項目
@@ -88,8 +88,8 @@ struct RangedEliteData {
 	EnemyTemplate tempData;
 	float bulletSpeed;					// 撃つ弾の速度
 	float bulletRadSpace;				// 弾同士の間隔の角度
-	std::array<Vector3, 3> planeSize;	// プレーンエフェクトのサイズ
-	std::array<Vector3, 3> planeOffset;	// プレーンエフェクトの座標
+	std::array<NumaEngine::Vector3, 3> planeSize;	// プレーンエフェクトのサイズ
+	std::array<NumaEngine::Vector3, 3> planeOffset;	// プレーンエフェクトの座標
 };
 
 /// <summary>
@@ -169,4 +169,5 @@ private:
 	RangedEliteData rangedEliteData_;
 
 };
+
 

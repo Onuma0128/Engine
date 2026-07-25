@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <array>
 
@@ -11,7 +11,7 @@ struct CompanionMainData {
 	float hitPushSpeed;				// 仲間同士の押し出しスピード
 	float objectScale;				// 仲間のオブジェクトスケール
 	float colliderSize;				// 仲間本体のコライダーサイズ
-	Vector3 colliderOffset;			// 仲間本体のコライダー座標
+	NumaEngine::Vector3 colliderOffset;			// 仲間本体のコライダー座標
 
 	int blinkingHP;					// 点滅し始める体力
 	float blinkingColor;			// 点滅する振れ幅
@@ -45,7 +45,7 @@ struct CompanionAttackData {
 	float shakePowerHigh;			// カメラシェイクの振動値
 	float shakePowerLow;			// カメラシェイクの振動値
 	float attackColliderSize;		// 攻撃時のコライダーサイズ
-	Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
+	NumaEngine::Vector3 attackColliderOffset;	// 攻撃時のコライダー座標
 
 	float firstDashTime;			// 最初のダッシュした後の硬直時間
 	float attackStartupTime;		// 攻撃を開始する硬直時間
@@ -58,7 +58,7 @@ struct CompanionKnockbackData {
 	float knockbackSpeed;			// ノックバックスピード
 	float knockbackTime;			// ノックバックしている時間
 
-	Vector3 shieldKnockbackDire;	// ノックバックする方向
+	NumaEngine::Vector3 shieldKnockbackDire;	// ノックバックする方向
 	float shieldKnockbackSpeed;		// ノックバックスピード
 	float shieldKnockbackTime;		// ノックバックしている時間
 };
@@ -72,11 +72,11 @@ struct CompanionPushUpData {
 
 // 仲間のエフェクトの調整項目
 struct CompanionEffectData {
-	Vector3 nextArrowScale;				// 次発射される矢印のスケール
-	Vector3 nextArrowPosition;			// 次発射される矢印の座標
+	NumaEngine::Vector3 nextArrowScale;				// 次発射される矢印のスケール
+	NumaEngine::Vector3 nextArrowPosition;			// 次発射される矢印の座標
 	float nextArrowAnimaTime;			// 矢印のアニメーション時間
-	Vector3 nextArrowVarianceScale;		// 次発射される矢印の変動スケール
-	Vector3 nextArrowVariancePosition;	// 次発射される矢印の変動座標
+	NumaEngine::Vector3 nextArrowVarianceScale;		// 次発射される矢印の変動スケール
+	NumaEngine::Vector3 nextArrowVariancePosition;	// 次発射される矢印の変動座標
 
 	float lerpSpeed;					// エフェクトのラープ移動スピード
 };

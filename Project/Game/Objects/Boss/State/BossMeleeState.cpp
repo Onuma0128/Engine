@@ -1,4 +1,4 @@
-#include "BossMeleeState.h"
+﻿#include "BossMeleeState.h"
 
 #include "DeltaTimer.h"
 
@@ -28,7 +28,7 @@ void BossMeleeState::Finalize()
 {
 	boss_->GetAttackCollider()->SetActive(false);
 	boss_->GetEffect()->AttackEffectReset();
-	Vector3 translate = boss_->GetTransform().translation_;
+	NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 	translate.y = startY_;
 	boss_->SetTransformTranslation(translate);
 }
@@ -69,7 +69,7 @@ void BossMeleeState::Update()
 			boss_->GetEffect()->OnceJumpEffect();
 			boss_->GetGameCamera()->SetShake(data.shakePower);
 			boss_->GetAudio()->SoundPlayWave("BossLanding.wav", volume.landing);
-			Vector3 translate = boss_->GetTransform().translation_;
+			NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 			translate.y = startY_;
 			boss_->SetTransformTranslation(translate);
 			boss_->GetAttackCollider()->SetActive(true);
@@ -108,7 +108,7 @@ void BossMeleeState::UpdateJump()
 	jumpVelocityY_ += jumpAccelerY_ * DeltaTimer::GetDeltaTime();
 
 	// 位置更新（Y方向）
-	Vector3 translate = boss_->GetTransform().translation_;
+	NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
 	translate.y += jumpVelocityY_ * DeltaTimer::GetDeltaTime();
 	boss_->SetTransformTranslation(translate);
 }
@@ -118,3 +118,4 @@ void BossMeleeState::ChangeAttackState(MeleeAttackState newState)
 	meleeAttackState_ = newState;
 	timer_ = 0.0f;
 }
+

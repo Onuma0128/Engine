@@ -1,4 +1,4 @@
-#include "GameClearScene.h"
+﻿#include "GameClearScene.h"
 
 #include "SceneManager.h"
 #include "CameraManager.h"
@@ -11,7 +11,7 @@ void GameClearScene::Initialize()
 	camera_->Initialize();
 	CameraManager::GetInstance()->SetCamera(camera_);
 	CameraManager::GetInstance()->SetActiveCamera(0);
-	camera_->SetTranslation(Vector3{ 0.0f,1.75f,-4.0f });
+	camera_->SetTranslation(NumaEngine::Vector3{ 0.0f,1.75f,-4.0f });
 	camera_->Update();
 
 	sceneFade_ = std::make_unique<SceneFade>();
@@ -22,7 +22,7 @@ void GameClearScene::Initialize()
 	enemy_->Initialize("Zombie_Basic.gltf");
 	enemy_->PlayByName("Yes");
 	enemy_->SetSceneRenderer();
-	enemy_->SetTransformRotation(Quaternion::MakeRotateAxisAngleQuaternion(Vector3::ExprUnitY, 3.14f));
+	enemy_->SetTransformRotation(NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, 3.14f));
 
 	gameClearUI_ = std::make_unique<GameClearUI>();
 	gameClearUI_->Init();
@@ -60,4 +60,5 @@ void GameClearScene::Draw()
 
 	sceneFade_->Draw();
 }
+
 

@@ -1,4 +1,4 @@
-#include "EnemyAxe.h"
+﻿#include "EnemyAxe.h"
 
 #include "objects/enemy/base/BaseEnemy.h"
 #include "objects/enemy/adjustItem/EnemyAdjustItem.h"
@@ -28,14 +28,14 @@ void EnemyAxe::Update()
 		MeleeData data = enemy_->GetItem()->GetMeleeData();
 
 		Collider::radius_ = data.colliderSize;
-		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
+		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
 		Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.colliderOffset.Transform(rotateMatrix);
 
 	} else {
 		ShieldBearerData data = enemy_->GetItem()->GetShieldBearerData();
 
 		Collider::radius_ = data.attackColliderSize;
-		Matrix4x4 rotateMatrix = Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
+		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
 		Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.attackColliderOffset.Transform(rotateMatrix);
 	}
 
@@ -63,3 +63,4 @@ bool EnemyAxe::GetIsActive()
 {
 	return Collider::isActive_;
 }
+
