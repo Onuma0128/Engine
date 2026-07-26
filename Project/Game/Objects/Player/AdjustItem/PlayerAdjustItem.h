@@ -1,8 +1,10 @@
-﻿#pragma once
+#pragma once
 
 #include "JsonFunction.h"
 
-// プレイヤーの項目
+/// <summary>
+/// プレイヤーのデータ構造体
+/// </summary>
 struct PlayerData {
     bool isInvincible;			// 無敵(デバッグ用)
 	int clearKill;				// クリアに遷移するキル数
@@ -32,7 +34,9 @@ struct PlayerData {
 	float checkPointDistance;	// タイトルのプレイヤー移動のヒットする距離
 };
 
-// 弾の項目
+/// <summary>
+/// 弾のデータ構造体
+/// </summary>
 struct BulletData {
 	float speed;				// 弾の速度
 	float speed_sp;				// 必殺技の弾の速度
@@ -46,7 +50,9 @@ struct BulletData {
 	NumaEngine::Vector3 colliderPosition;	// コライダーの中心座標
 };
 
-// 弾の予測オブジェクトの項目
+/// <summary>
+/// 弾の予測オブジェクトのデータ構造体
+/// </summary>
 struct PreObjectData {
 	float interval;				// オブジェクトごとの間隔
    NumaEngine::Vector3 startPosition;		// 最初のZ座標
@@ -55,7 +61,9 @@ struct PreObjectData {
 	NumaEngine::Vector3 rayColliderPosition;// レイコライダーの座標
 };
 
-// 弾UIの項目
+/// <summary>
+/// 弾UIのデータ構造体
+/// </summary>
 struct BulletUIData {
 	NumaEngine::Vector2 size;				// UIのサイズ
     NumaEngine::Vector2 position;			// 座標(一つ一つの間隔的な)

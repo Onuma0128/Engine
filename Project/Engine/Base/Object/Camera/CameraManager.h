@@ -24,7 +24,9 @@ private:
 	// シングルトンインスタンス
 	static std::unique_ptr<CameraManager> instance_;
 
-	// GPU用カメラデータ構造体
+	/// <summary>
+	/// GPU用カメラデータ構造体
+	/// </summary>
 	struct CameraForGPU {
 		NumaEngine::Vector3 worldPosition;
 	};

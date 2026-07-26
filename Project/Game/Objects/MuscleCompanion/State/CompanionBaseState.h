@@ -3,7 +3,9 @@
 // 前方宣言
 class MuscleCompanion;
 
-// キャラクターステートの列挙型
+/// <summary>
+/// 仲間の状態を表す列挙型
+/// </summary>
 enum class CharacterState {
 	Idle,			// 待機
 	PushUpIdle,		// 腕立ての待機

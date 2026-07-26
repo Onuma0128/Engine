@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 
@@ -6,6 +6,10 @@
 #include "Vector3.h"
 
 namespace {
+
+    /// <summary>
+	/// Box構造体
+    /// </summary>
     struct OctAABB {
         NumaEngine::Vector3 min, max;
         bool Intersects(const OctAABB& o) const noexcept {
@@ -28,6 +32,9 @@ namespace {
         OctAABB   box;
     };
 
+    /// <summary>
+    /// Octreeノード構造体
+    /// </summary>
     struct OctNode {
         OctAABB bounds;
         int depth = 0;

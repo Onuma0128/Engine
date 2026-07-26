@@ -1,9 +1,11 @@
-﻿#pragma once
+#pragma once
 #include <array>
 
 #include "JsonFunction.h"
 
-// 基本的な敵のデータ用構造体
+/// <summary>
+/// 敵のテンプレートデータ構造体
+/// </summary>
 struct EnemyTemplate {
 
 	int maxHp;					// 最大体力
@@ -20,7 +22,9 @@ struct EnemyTemplate {
 	float attackCoolTime;		// 攻撃が終了した後、次の攻撃までのクールタイム
 };
 
-// 敵全体の項目
+/// <summary>
+/// 敵のメインデータ構造体
+/// </summary>
 struct EnemyMainData {
 	bool debugIsSpawn;			// デバッグ中のみ使えるスポーンするかしないか
 	bool nowSpawn;				// 今スポーンをさせる
@@ -53,14 +57,18 @@ struct EnemyMainData {
 	float kNockbackAccelerY;	// 死亡時ノックバックのジャンプ加速度
 };
 
-// 近接敵の項目
+/// <summary>
+/// 近接敵の項目
+/// </summary>
 struct MeleeData {
 	EnemyTemplate tempData;
 	float colliderSize;			// コライダーのサイズ
 	NumaEngine::Vector3 colliderOffset;		// コライダーの座標(敵ペアレント時の)
 };
 
-// 遠距離敵の項目
+/// <summary>
+/// 遠距離敵の項目
+/// </summary>
 struct RangedData {
 	EnemyTemplate tempData;
 	float bulletSpeed;			// 撃つ弾の速度
@@ -70,7 +78,9 @@ struct RangedData {
 	NumaEngine::Vector3 planeOffset;		// プレーンエフェクトの座標
 };
 
-// 盾持ち敵の項目
+/// <summary>
+/// 盾持ち敵の項目
+/// </summary>
 struct ShieldBearerData {
 	EnemyTemplate tempData;
 	float attackColliderSize;			// コライダーのサイズ
@@ -83,7 +93,9 @@ struct ShieldBearerData {
 	NumaEngine::Vector3 shieldColliderOffset;		// 盾コライダーの座標(敵ペアレント時の)
 };
 
-// 遠距離敵(強化版)の項目
+/// <summary>
+/// 遠距離敵(強化版)の項目
+/// </summary>
 struct RangedEliteData {
 	EnemyTemplate tempData;
 	float bulletSpeed;					// 撃つ弾の速度

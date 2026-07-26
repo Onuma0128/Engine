@@ -22,7 +22,9 @@ private:
 	// シングルトンインスタンス
 	static std::unique_ptr<TextureManager> instance_;
 
-	// テクスチャ一枚分のデータ
+	/// <summary>
+	/// テクスチャ一枚分のデータ
+	/// </summary>
 	struct TextureData {
 		DirectX::TexMetadata metadata;
 		ComPtr<ID3D12Resource> resource;

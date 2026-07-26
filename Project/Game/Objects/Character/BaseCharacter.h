@@ -4,6 +4,9 @@
 #include "Collider.h"
 #include "SceneJsonLoader.h"
 
+/// <summary>
+/// ベースキャラクタークラス
+/// </summary>
 class BaseCharacter : public NumaEngine::Animation, public Collider
 {
 public:

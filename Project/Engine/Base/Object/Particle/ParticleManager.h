@@ -24,14 +24,19 @@ class SrvManager;
 class ParticleManager
 {
 public:
-	// 頂点データ
+	
+    /// <summary>
+    /// 頂点データ
+	/// </summary>
     struct VertexData {
 		NumaEngine::Vector4 position;
 		NumaEngine::Vector2 texcoord;
 		NumaEngine::Vector3 normal;
 	};
 
-	// マテリアルデータ 
+    /// <summary>
+    /// マテリアルデータ
+    /// </summary>
     struct Material {
 		NumaEngine::Vector4 color;
 		int32_t enableLighting;
@@ -43,7 +48,9 @@ public:
 		int32_t _pad1;
 	};
 
-	// パーティクルデータ
+    /// <summary>
+    /// パーティクルデータ
+    /// </summary>
     struct Particle {
 		EulerTransform transform;
 		NumaEngine::Vector3 offsetScale;
@@ -56,14 +63,18 @@ public:
 		uint16_t emitterID;
 	};
 
-	// GPU用パーティクルデータ
+    /// <summary>
+    /// GPU用パーティクルデータ構造体
+    /// </summary>
     struct ParticleForGPU {
 		Matrix4x4 WVP;
 		Matrix4x4 World;
 		NumaEngine::Vector4 color;
 	};
 
-	// パーティクルグループデータ
+	/// <summary>
+	/// パーティクルグループデータ
+	/// </summary>
 	struct ParticleGroup {
 		std::string textureFilePath;
 		uint32_t srvIndex;
@@ -152,6 +163,9 @@ private:
 
 	/* =============== 頂点 =============== */
 
+	/// <summary>
+	/// 頂点データ構造体
+	/// </summary>
 	struct VertexDatas {
 		D3D12_VERTEX_BUFFER_VIEW vertexBufferView{};
 		ComPtr<ID3D12Resource> vertexResource = nullptr;
@@ -162,6 +176,9 @@ private:
 
 	/* =============== index頂点 =============== */
 
+	/// <summary>
+	/// インデックスデータ構造体
+	/// </summary>
 	struct IndexDatas {
 		D3D12_INDEX_BUFFER_VIEW indexBufferView{};
 		ComPtr<ID3D12Resource> indexResource = nullptr;

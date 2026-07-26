@@ -38,6 +38,9 @@ public:
 	// バッファリソースの取得
 	ID3D12Resource* GetResource()const { return resource_.Get(); }
 
+	/// <summary>
+	/// ライト用の行列構造体
+	/// </summary>
 	struct LightMatrix {
 		Matrix4x4 lightView;
 		Matrix4x4 lightProj;

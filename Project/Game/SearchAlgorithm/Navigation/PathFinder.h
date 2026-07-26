@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <vector>
 
@@ -71,10 +71,14 @@ public:
 
 private:
 
-	// グリッドのIndex座標
+	/// <summary>
+	/// グリッドのIndex座標
+	/// </summary>
 	struct GridPos { uint32_t x, z; };
 
-	// 再帰ノード
+	/// <summary>
+	/// A*アルゴリズムのノード構造体
+	/// </summary>
 	struct A_StarNode {
 		GridPos pos;				// 座標(グリッドのIndex番号)
 		uint32_t actualCost;		// 実コスト

@@ -9,6 +9,9 @@
 
 using Microsoft::WRL::ComPtr;
 
+/// <summary>
+/// RenderTextureクラス
+/// </summary>
 class RenderTexture
 {
 public:

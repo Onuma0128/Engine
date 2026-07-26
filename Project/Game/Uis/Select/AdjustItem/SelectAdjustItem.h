@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "JsonFunction.h"
 
@@ -9,7 +9,9 @@ class SelectAdjustItem
 {
 private:
 
-	// セレクトの調整項目
+	/// <summary>
+	/// セレクトのデータ構造体
+	/// </summary>
 	struct SelectData {
 
 		float killNumberUiInterval;			// キル数の間隔

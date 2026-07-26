@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <iostream>
 #include <random>
@@ -21,13 +21,17 @@ class ParticleEmitter
 {
 public:
 
-	// フィールドのAABB
+    /// <summary>
+    /// フィールドのAABB
+    /// </summary>
     struct AABB {
 		NumaEngine::Vector3 min;
 		NumaEngine::Vector3 max;
 	};
 
-	// エミッタの項目
+	/// <summary>
+	/// エミッタの項目
+	/// </summary>
 	struct Emitter {
 
 		/* ==================== Emitter ==================== */
@@ -81,7 +85,9 @@ public:
 		bool isUvFlipY;				// UvFlipY
 	};
 
-	// 加速度フィールド
+    /// <summary>
+    /// 加速度フィールド
+    /// </summary>
     struct AccelerationField {
 		NumaEngine::Vector3 acceleration;
 		AABB area;

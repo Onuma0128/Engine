@@ -39,14 +39,18 @@ public:
     // シングルトンインスタンスの取得
     static ModelInstanceRenderer* GetInstance();
 
-    // インスタンスデータ構造体
+    /// <summary>
+    /// インスタンスデータ構造体
+    /// </summary>
     struct InstanceData
     {
         Matrix4x4 WVP;
         Matrix4x4 World;
         Matrix4x4 WorldInvT;
     };
-    // ジョイント数構造体
+    /// <summary>
+    /// ジョイント数構造体
+    /// </summary>
     struct JointCount
     {
         uint32_t jointCount;
@@ -135,7 +139,9 @@ private:
 
     /* ========================= Object3d ========================= */
 
-    // インスタンスバッチ構造体
+    /// <summary>
+    /// インスタンスバッチ構造体
+    /// </summary>
     struct ObjectBatch
     {
         Model* model;                               // キー
@@ -158,7 +164,9 @@ private:
 
     /* ========================= Animation ========================= */
 
-    // インスタンスバッチ構造体
+    /// <summary>
+    /// インスタンスバッチ構造体
+    /// </summary>
     struct AnimationBatch
     {
         Model* model;                               // キー

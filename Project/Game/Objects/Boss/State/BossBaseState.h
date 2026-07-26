@@ -3,7 +3,9 @@
 // 前方宣言
 class BossEnemy;
 
-// キャラクターステートの列挙型
+/// <summary>
+/// ボスの状態を表す列挙型
+/// </summary>
 enum class BossState {
 	Idle,				// 待機状態
 	Appear,				// 登場シーン

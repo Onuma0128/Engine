@@ -15,6 +15,9 @@ using Microsoft::WRL::ComPtr;
 namespace NumaEngine { class DirectXEngine; }
 class PipelineState;
 
+/// <summary>
+/// ポストエフェクト管理クラス
+/// </summary>
 class PostEffectManager
 {
 private:
@@ -86,12 +89,18 @@ private:
 
 private:
 
+    /// <summary>
+	/// ポストエフェクトパスの構造体
+    /// </summary>
     struct PostEffectPass {
         ComPtr<ID3D12Resource> renderTexture;
         uint32_t srvIndex = 0;
         uint32_t rtvIndex = 0;
         uint32_t depthSrvIndex = 0;
     };
+    /// <summary>
+	/// アウトラインマスクパスの構造体
+    /// </summary>
     struct OutLineMaskPass {
         ComPtr<ID3D12Resource> outlineMask;
         ComPtr<ID3D12Resource> objectID;
