@@ -108,7 +108,7 @@ void LineInstanceRenderer::GrowIfNeeded(uint32_t needInstances)
     mergedDirty_ = true;
 }
 
-void LineInstanceRenderer::RegisterLine(Line3d* owner)
+void LineInstanceRenderer::RegisterLine(NumaEngine::Line3d* owner)
 {
     if (!owner) return;
     if (entries_.find(owner) != entries_.end()) return;
@@ -119,7 +119,7 @@ void LineInstanceRenderer::RegisterLine(Line3d* owner)
     entries_.emplace(owner, std::move(e));
 }
 
-void LineInstanceRenderer::UnregisterLine(Line3d* owner)
+void LineInstanceRenderer::UnregisterLine(NumaEngine::Line3d* owner)
 {
     if (!owner) return;
     auto it = entries_.find(owner);
@@ -130,12 +130,12 @@ void LineInstanceRenderer::UnregisterLine(Line3d* owner)
     mergedDirty_ = true;
 }
 
-uint32_t LineInstanceRenderer::GetLineID(Line3d* owner)
+uint32_t LineInstanceRenderer::GetLineID(NumaEngine::Line3d* owner)
 {
     return entries_[owner].lineID;
 }
 
-void LineInstanceRenderer::SetLineInstances(Line3d* owner, const std::vector<NumaEngine::Vector3>& positions)
+void LineInstanceRenderer::SetLineInstances(NumaEngine::Line3d* owner, const std::vector<NumaEngine::Vector3>& positions)
 {
     if (!owner) return;
     // 未登録なら登録
@@ -156,7 +156,7 @@ void LineInstanceRenderer::SetLineInstances(Line3d* owner, const std::vector<Num
     mergedDirty_ = true;
 }
 
-void LineInstanceRenderer::SetMaterial(Line3d* owner, const Material& material)
+void LineInstanceRenderer::SetMaterial(NumaEngine::Line3d* owner, const Material& material)
 {
     uint32_t id = entries_[owner].lineID;
     materialDatas_[id] = material;

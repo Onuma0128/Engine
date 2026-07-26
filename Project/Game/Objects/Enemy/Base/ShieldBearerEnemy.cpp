@@ -1,4 +1,4 @@
-﻿#include "ShieldBearerEnemy.h"
+#include "ShieldBearerEnemy.h"
 
 #include "DeltaTimer.h"
 
@@ -17,12 +17,12 @@ void ShieldBearerEnemy::Initialize()
 	Animation::PlayByName("Idle");
 
 	// シールド用のコライダーを作成
-	shieldWeapon_ = std::make_unique<EnemyShield>(this);
-	shieldWeapon_->Init(ColliderType::kOBB, "EnemyShield");
+    shieldWeapon_ = std::make_unique<EnemyShield>(this);
+	shieldWeapon_->Init(NumaEngine::ColliderType::kOBB, "EnemyShield");
 	shieldWeapon_->SetIsActive(false);
 	// 攻撃コライダーを作成
-	weapon_ = std::make_unique<EnemyAxe>(this);
-	weapon_->Init(ColliderType::kSphere, "EnemyShieldBearer");
+    weapon_ = std::make_unique<EnemyAxe>(this);
+	weapon_->Init(NumaEngine::ColliderType::kSphere, "EnemyShieldBearer");
 
 	// 基底クラスの初期化
 	BaseEnemy::Initialize();

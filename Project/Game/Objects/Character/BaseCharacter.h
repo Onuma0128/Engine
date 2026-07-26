@@ -7,7 +7,7 @@
 /// <summary>
 /// ベースキャラクタークラス
 /// </summary>
-class BaseCharacter : public NumaEngine::Animation, public Collider
+class BaseCharacter : public NumaEngine::Animation, public NumaEngine::Collider
 {
 public:
 

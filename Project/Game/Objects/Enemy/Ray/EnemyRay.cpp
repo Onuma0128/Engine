@@ -1,4 +1,4 @@
-﻿#include "EnemyRay.h"
+#include "EnemyRay.h"
 
 #include "Collision3D.h"
 
@@ -6,16 +6,16 @@
 
 void EnemyRay::Init()
 {
-	// コライダーを設定
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kSegment;
-	Collider::colliderName_ = "EnemyRay";
-	Collider::isActive_ = false;
-	Collider::targetColliderName_ = {
+    // コライダーを設定
+	this->AddCollider();
+	this->myType_ = NumaEngine::ColliderType::kSegment;
+	this->colliderName_ = "EnemyRay";
+	this->isActive_ = false;
+	this->targetColliderName_ = {
 		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 		"MuscleCompanion","PushUpMuscleCompanion",
 	};
-	Collider::DrawCollider();
+    this->DrawCollider();
 
 	isLooking_ = false;
 }
@@ -29,16 +29,16 @@ void EnemyRay::Update(const NumaEngine::Vector3& start, const NumaEngine::Vector
 	start_ = start;
 	end_ = end;
 
-	// 反射処理のコライダーを設定
-    origin_ = start_;
+    // 反射処理のコライダーを設定
+	origin_ = start_;
 	diff_ = end_;
-	Collider::LineUpdate();
+	this->LineUpdate();
 }
 
 void EnemyRay::SetActive(const bool flag)
 {
-	Collider::isActive_ = flag;
-	Collider::LineUpdate();
+    this->isActive_ = flag;
+	this->LineUpdate();
 }
 
 void EnemyRay::Reset()
@@ -46,19 +46,19 @@ void EnemyRay::Reset()
 	isLooking_ = false;
 }
 
-void EnemyRay::OnCollisionEnter(Collider* other)
+void EnemyRay::OnCollisionEnter(NumaEngine::Collider* other)
 {
 }
 
-void EnemyRay::OnCollisionStay(Collider* other)
+void EnemyRay::OnCollisionStay(NumaEngine::Collider* other)
 {
 
 	const auto& name = other->GetColliderName();
 	const auto type = other->GetMyColliderType();
 
 	RaycastHit hit{};
-	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
-		if (type == ColliderType::kOBB) {
+    if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
+		if (type == NumaEngine::ColliderType::kOBB) {
 			if (Collision3D::OBBSegment(other, this, &hit)) {
 				float length = (hit.point - start_).Length();
 				if (hitPointLength_ < length) { return; }
@@ -84,7 +84,7 @@ void EnemyRay::OnCollisionStay(Collider* other)
 	}
 }
 
-void EnemyRay::OnCollisionExit(Collider* other)
+void EnemyRay::OnCollisionExit(NumaEngine::Collider* other)
 {
 	const auto& name = other->GetColliderName();
 

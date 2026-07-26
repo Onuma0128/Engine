@@ -1,4 +1,4 @@
-﻿#include "BossEnemy.h"
+#include "BossEnemy.h"
 
 #include "DeltaTimer.h"
 
@@ -32,12 +32,12 @@ void BossEnemy::Initialize()
 	Animation::GetMaterial().outlineColor = NumaEngine::Vector3::ExprUnitX;
 	Animation::SetTransformTranslation(items_->GetMainData().startPosition);
 
-	// コライダーを設定
-	Collider::AddCollider();
-	Collider::isActive_ = false;
-	Collider::colliderName_ = "BossEnemy";
-	Collider::myType_ = ColliderType::kSphere;
-	Collider::targetColliderName_ = {
+    // コライダーを設定
+	NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::isActive_ = false;
+	NumaEngine::Collider::colliderName_ = "BossEnemy";
+	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kSphere;
+	NumaEngine::Collider::targetColliderName_ = {
 		"Player","MuscleCompanion","PlayerShotRay","MuscleCompanionAttack","SearchDashMuscleCompanion",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","BlowDashMuscleCompanion",
 	};
@@ -97,9 +97,9 @@ void BossEnemy::Update()
 
 	// 敵コライダーの更新
 	const auto& data = items_->GetMainData();
-	Collider::radius_ = data.colliderSize;
-	Collider::centerPosition_ = transform_.translation_ + data.colliderOffset;
-	Collider::Update();
+    NumaEngine::Collider::radius_ = data.colliderSize;
+	NumaEngine::Collider::centerPosition_ = transform_.translation_ + data.colliderOffset;
+	NumaEngine::Collider::Update();
 	attackCollider_->Update();
 	// アニメーションの更新
 	if (Animation::GetMaterial().enableDraw) {
@@ -115,7 +115,7 @@ void BossEnemy::Draw()
 	effect_->Draw();
 }
 
-void BossEnemy::OnCollisionEnter(Collider* other)
+void BossEnemy::OnCollisionEnter(NumaEngine::Collider* other)
 {
 	if (state_->GetState() == BossState::Dead) { return; }
 
@@ -162,7 +162,7 @@ void BossEnemy::OnCollisionEnter(Collider* other)
 
 }
 
-void BossEnemy::OnCollisionStay(Collider* other)
+void BossEnemy::OnCollisionStay(NumaEngine::Collider* other)
 {
 	if (state_->GetState() == BossState::Dead) { return; }
 
@@ -181,20 +181,20 @@ void BossEnemy::OnCollisionStay(Collider* other)
 	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName()) &&
 		state_->GetState() == BossState::DashAttack) {
 		NumaEngine::Vector3 push{};
-		if (other->GetMyColliderType() == ColliderType::kOBB) {
+        if (other->GetMyColliderType() == NumaEngine::ColliderType::kOBB) {
 			push = Collision3D::GetOBBSpherePushVector(other, this);
-		} else if (other->GetMyColliderType() == ColliderType::kSphere) {
+        } else if (other->GetMyColliderType() == NumaEngine::ColliderType::kSphere) {
 			push = Collision3D::GetSphereSpherePushVector(other, this);
 		}
 		push.y = 0.0f;
 		transform_.translation_ += push * 100.0f * DeltaTimer::GetDeltaTime();
-		Collider::centerPosition_ = transform_.translation_;
-		Collider::Update();
+        NumaEngine::Collider::centerPosition_ = transform_.translation_;
+		NumaEngine::Collider::Update();
 		Animation::TransformUpdate();
 	}
 }
 
-void BossEnemy::OnCollisionExit(Collider* other)
+void BossEnemy::OnCollisionExit(NumaEngine::Collider* other)
 {
 }
 
@@ -217,7 +217,7 @@ void BossEnemy::StartBossEnemy()
 	Animation::PlayByName("Idle", 0.0f);
 	Animation::GetMaterial().enableDraw = true;
 	Animation::GetMaterial().outlineMask = true;
-	Collider::isActive_ = true;
+    NumaEngine::Collider::isActive_ = true;
 	ray_->SetActive(true);
 	ChangeState(std::make_unique<BossAppearState>(this));
 
@@ -240,8 +240,8 @@ void BossEnemy::Reset()
 	Animation::TransformUpdate();
 
 	// コライダーを設定
-	Collider::isActive_ = false;
-	Collider::Update();
+    NumaEngine::Collider::isActive_ = false;
+	NumaEngine::Collider::Update();
 
 	// ステートの初期化
 	ChangeState(std::make_unique<BossIdleState>(this));

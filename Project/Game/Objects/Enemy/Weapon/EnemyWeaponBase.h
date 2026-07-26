@@ -9,7 +9,7 @@ class BaseEnemy;
 /// <summary>
 /// 敵の武器の基底クラス
 /// </summary>
-class EnemyWeaponBase : public Object3d, public Collider
+class EnemyWeaponBase : public Object3d, public NumaEngine::Collider
 {
 public:
 
@@ -29,12 +29,12 @@ public:
 	/// </summary>
 	virtual void Finalize() = 0;
 
-	/// <summary>
+    /// <summary>
 	/// 初期化
 	/// </summary>
 	/// <param name="type"></コライダーのタイプ>
 	/// <param name="name"></コライダーの名前>
-	virtual void Init(ColliderType type, const std::string& name) = 0;
+	virtual void Init(NumaEngine::ColliderType type, const std::string& name) = 0;
 
 	/// <summary>
 	/// 更新
@@ -45,8 +45,8 @@ public:
 	/// 動かしたくない時の更新
 	/// </summary>
 	virtual void TransformUpdate() {
-		Object3d::Update();
-		Collider::Update();
+     Object3d::Update();
+		this->Update();
 	}
 
 	/// <summary>

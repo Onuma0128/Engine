@@ -1,4 +1,4 @@
-﻿#include "DrawGrid.h"
+#include "DrawGrid.h"
 
 #include <array>
 
@@ -6,7 +6,7 @@ void DrawGrid::Init(const float cell, const float size)
 {
 #ifdef ENABLE_EDITOR
 	// グリッドの初期化
-	grid_ = std::make_unique<Line3d>();
+	grid_ = std::make_unique<NumaEngine::Line3d>();
 	auto gridPos = grid_->CreateGrid(cell, size, 0.1f);
 	grid_->Initialize(gridPos);
 #endif // ENABLE_EDITOR
@@ -42,7 +42,7 @@ void DrawGrid::HitGridInit()
 {
 #ifdef ENABLE_EDITOR
 	// 当たっているグリッドの初期化
-	hitGrid_ = std::make_unique<Line3d>();
+	hitGrid_ = std::make_unique<NumaEngine::Line3d>();
 	hitGrid_->Initialize(hitGridPositions_);
 	hitGrid_->SetColor(NumaEngine::Vector3::ExprUnitX);
 #endif // ENABLE_EDITOR

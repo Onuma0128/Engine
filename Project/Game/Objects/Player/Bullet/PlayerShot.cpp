@@ -1,4 +1,4 @@
-﻿#include "PlayerShot.h"
+#include "PlayerShot.h"
 
 #include "Input.h"
 
@@ -11,13 +11,13 @@ void PlayerShot::Init(Player* player)
 
 	rightStickQuaternion_ = NumaEngine::Quaternion::IdentityQuaternion();
 
-	// プレイヤーの目線のコライダーを初期化
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kOBB;
-	Collider::colliderName_ = "PlayerShotRay";
-	Collider::isActive_ = true;
-	Collider::targetColliderName_ = { "Enemy","BossEnemy" };
-	Collider::DrawCollider();
+    // プレイヤーの目線のコライダーを初期化
+	NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kOBB;
+	NumaEngine::Collider::colliderName_ = "PlayerShotRay";
+	NumaEngine::Collider::isActive_ = true;
+	NumaEngine::Collider::targetColliderName_ = { "Enemy","BossEnemy" };
+	NumaEngine::Collider::DrawCollider();
 
 	rayReticle_ = std::make_unique<PlayerRayReticle>();
 	rayReticle_->Init();
@@ -44,7 +44,7 @@ void PlayerShot::AttackBullet()
 	isShot_ = true;
 }
 
-void PlayerShot::OnCollisionStay(Collider* other)
+void PlayerShot::OnCollisionStay(NumaEngine::Collider* other)
 {
 	isRayHit_ = true;
 
@@ -66,11 +66,11 @@ void PlayerShot::RayUpdate()
 		const auto rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(player_->GetTransform().rotation_);
 		auto centerPosition = player_->GetTransform().translation_ + itemData.rayColliderPosition.Transform(rotateMatrix);
 
-		// コライダーの更新
-		Collider::size_ = itemData.rayColliderSize;
-		Collider::rotate_ = player_->GetTransform().rotation_;
-		Collider::centerPosition_ = centerPosition;
-		Collider::Update();
+    // コライダーの更新
+	NumaEngine::Collider::size_ = itemData.rayColliderSize;
+	NumaEngine::Collider::rotate_ = player_->GetTransform().rotation_;
+	NumaEngine::Collider::centerPosition_ = centerPosition;
+	NumaEngine::Collider::Update();
 
 		rayReticle_->SetRaticleAlpha(isRayHit_);
 		if (rayHitCollider_) {
@@ -94,20 +94,20 @@ void PlayerShot::RayUpdate()
 	NumaEngine::Quaternion rightQuaternion = NumaEngine::Quaternion::IdentityQuaternion();
 	if (rotateVelocity.Length() > 0.01f) {
 		rayDirection_ = rotateVelocity;
-		Collider::isActive_ = true;
+		NumaEngine::Collider::isActive_ = true;
 	} else {
-		Collider::isActive_ = false;
+		NumaEngine::Collider::isActive_ = false;
 	}
 	rightQuaternion = NumaEngine::Quaternion::DirectionToQuaternion(player_->GetTransform().rotation_, rayDirection_, 0.3f);
 	const auto& itemData = player_->GetItem()->GetPreObjectData();
 	const auto rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rightQuaternion);
 	auto centerPosition = player_->GetTransform().translation_ + itemData.rayColliderPosition.Transform(rotateMatrix);
 
-	// コライダーの更新
-	Collider::size_ = itemData.rayColliderSize;
-	Collider::rotate_ = rightQuaternion;
-	Collider::centerPosition_ = centerPosition;
-	Collider::Update();
+    // コライダーの更新
+	NumaEngine::Collider::size_ = itemData.rayColliderSize;
+	NumaEngine::Collider::rotate_ = rightQuaternion;
+	NumaEngine::Collider::centerPosition_ = centerPosition;
+	NumaEngine::Collider::Update();
 
 	rayReticle_->SetRaticleAlpha(isRayHit_);
 	if (rayHitCollider_) {

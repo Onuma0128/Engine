@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Objects/MuscleCompanion/State/CompanionBaseState.h"
 
@@ -58,7 +58,7 @@ private:
 	NumaEngine::Quaternion yRotation_ = NumaEngine::Quaternion::IdentityQuaternion();
 
 
-	Collider* targetCollider_ = nullptr;
+	NumaEngine::Collider* targetCollider_ = nullptr;
 
 };
 

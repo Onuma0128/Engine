@@ -1,36 +1,36 @@
-﻿#include "EnemySearchCollider.h"
+#include "EnemySearchCollider.h"
 
 #include "Objects/Player/Player.h"
 #include "Objects/Player/AdjustItem/PlayerAdjustItem.h"
 
 void EnemySearchCollider::Initialize()
 {
-	Collider::AddCollider();
-	Collider::colliderName_ = "EnemySearch";
-	Collider::myType_ = ColliderType::kSphere;
-	Collider::targetColliderName_ = { "Enemy" };
-	Collider::DrawCollider();
+    NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::colliderName_ = "EnemySearch";
+	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kSphere;
+	NumaEngine::Collider::targetColliderName_ = { "Enemy" };
+	NumaEngine::Collider::DrawCollider();
 }
 
 void EnemySearchCollider::Update()
 {
 	ResetTarget();
 
-	Collider::radius_ = player_->GetItem()->GetPlayerData().searchRadius;
-	Collider::centerPosition_ = player_->GetTransform().translation_;
-	Collider::Update();
+	NumaEngine::Collider::radius_ = player_->GetItem()->GetPlayerData().searchRadius;
+	NumaEngine::Collider::centerPosition_ = player_->GetTransform().translation_;
+	NumaEngine::Collider::Update();
 
 	isHit_ = false;
 }
 
-void EnemySearchCollider::OnCollisionEnter(Collider* other)
+void EnemySearchCollider::OnCollisionEnter(NumaEngine::Collider* other)
 {
 }
 
-void EnemySearchCollider::OnCollisionStay(Collider* other)
+void EnemySearchCollider::OnCollisionStay(NumaEngine::Collider* other)
 {
-	// 距離を計算する
-	float distance = NumaEngine::Vector3::Distance(Collider::centerPosition_, other->GetCenterPosition());
+    // 距離を計算する
+	float distance = NumaEngine::Vector3::Distance(this->centerPosition_, other->GetCenterPosition());
 
 	// 一番近い敵の座標を更新する
 	if(distance < targetDistance_) {
@@ -42,7 +42,7 @@ void EnemySearchCollider::OnCollisionStay(Collider* other)
 	isHit_ = true;
 }
 
-void EnemySearchCollider::OnCollisionExit(Collider* other)
+void EnemySearchCollider::OnCollisionExit(NumaEngine::Collider* other)
 {
 }
 

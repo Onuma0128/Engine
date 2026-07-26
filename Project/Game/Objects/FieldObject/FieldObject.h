@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 
@@ -16,7 +16,7 @@ class GameCamera;
 /// <summary>
 /// フィールドオブジェクトのクラス
 /// </summary>
-class FieldObject : public Object3d,Collider
+class FieldObject : public Object3d, public NumaEngine::Collider
 {
 public:
 
@@ -55,9 +55,9 @@ private:
 	/// 当たり判定
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other) override;
-	void OnCollisionStay(Collider* other) override;
-	void OnCollisionExit(Collider* other) override;
+    void OnCollisionEnter(NumaEngine::Collider* other) override;
+	void OnCollisionStay(NumaEngine::Collider* other) override;
+	void OnCollisionExit(NumaEngine::Collider* other) override;
 
 	/// <summary>
 	/// 指定した範囲の乱数を取得する

@@ -1,4 +1,4 @@
-﻿#include "EnemyAxe.h"
+#include "EnemyAxe.h"
 
 #include "objects/enemy/base/BaseEnemy.h"
 #include "objects/enemy/adjustItem/EnemyAdjustItem.h"
@@ -10,57 +10,57 @@ void EnemyAxe::Finalize()
 	Collider::RemoveCollider();
 }
 
-void EnemyAxe::Init(ColliderType type, const std::string& name)
+void EnemyAxe::Init(NumaEngine::ColliderType type, const std::string& name)
 {
-	Collider::AddCollider();
-	Collider::myType_ = type;
-	Collider::colliderName_ = name;
-	Collider::isActive_ = false;
-	Collider::targetColliderName_ = {
+    NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::myType_ = type;
+	NumaEngine::Collider::colliderName_ = name;
+	NumaEngine::Collider::isActive_ = false;
+	NumaEngine::Collider::targetColliderName_ = {
 		"Player","MuscleCompanion"
 	};
-	Collider::DrawCollider();
+	NumaEngine::Collider::DrawCollider();
 }
 
 void EnemyAxe::Update()
 {
-	if ("EnemyMelee" == Collider::colliderName_) {
+    if ("EnemyMelee" == NumaEngine::Collider::colliderName_) {
 		MeleeData data = enemy_->GetItem()->GetMeleeData();
 
-		Collider::radius_ = data.colliderSize;
+        NumaEngine::Collider::radius_ = data.colliderSize;
 		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
-		Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.colliderOffset.Transform(rotateMatrix);
+        NumaEngine::Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.colliderOffset.Transform(rotateMatrix);
 
 	} else {
 		ShieldBearerData data = enemy_->GetItem()->GetShieldBearerData();
 
-		Collider::radius_ = data.attackColliderSize;
+        NumaEngine::Collider::radius_ = data.attackColliderSize;
 		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
-		Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.attackColliderOffset.Transform(rotateMatrix);
+        NumaEngine::Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.attackColliderOffset.Transform(rotateMatrix);
 	}
 
 	Collider::Update();
 }
 
-void EnemyAxe::OnCollisionEnter(Collider* other)
+void EnemyAxe::OnCollisionEnter(NumaEngine::Collider* other)
 {
 }
 
-void EnemyAxe::OnCollisionStay(Collider* other)
+void EnemyAxe::OnCollisionStay(NumaEngine::Collider* other)
 {
 }
 
-void EnemyAxe::OnCollisionExit(Collider* other)
+void EnemyAxe::OnCollisionExit(NumaEngine::Collider* other)
 {
 }
 
 void EnemyAxe::SetIsActive(bool flag)
 {
-	Collider::isActive_ = flag;
+	NumaEngine::Collider::isActive_ = flag;
 }
 
 bool EnemyAxe::GetIsActive()
 {
-	return Collider::isActive_;
+	return NumaEngine::Collider::isActive_;
 }
 

@@ -1,4 +1,4 @@
-﻿#include "CollisionManager.h"
+#include "CollisionManager.h"
 
 #include "Collision3D.h"
 
@@ -23,21 +23,21 @@ void CollisionManager::CheckAllCollisions()
     PairSet thisFrame;
 
     // すべての組み合わせを走査
-    std::list<Collider*>::iterator itrA = colliders_.begin();
+    std::list<NumaEngine::Collider*>::iterator itrA = colliders_.begin();
     for (; itrA != colliders_.end(); ++itrA) {
-        Collider* colliderA = *itrA;
+        NumaEngine::Collider* colliderA = *itrA;
 
-        std::list<Collider*>::iterator itrB = itrA;
+        std::list<NumaEngine::Collider*>::iterator itrB = itrA;
         itrB++;
         for (; itrB != colliders_.end(); ++itrB) {
-            Collider* colliderB = *itrB;
+            NumaEngine::Collider* colliderB = *itrB;
 
             CheckCollisionPair(colliderA, colliderB, thisFrame);
         }
     }
 
     // 前フレームにあって今フレームに無いペアを判定
-    std::vector<std::pair<Collider*, Collider*>> exited;
+    std::vector<std::pair<NumaEngine::Collider*, NumaEngine::Collider*>> exited;
     for (auto& pair : previousFrame_) {
         if (!thisFrame.contains(pair)) { exited.push_back(pair); }
     }
@@ -72,11 +72,11 @@ void CollisionManager::DebugImGui()
 #endif // ENABLE_EDITOR
 }
 
-bool CollisionManager::Dispatch(Collider* a, Collider* b)
+bool CollisionManager::Dispatch(NumaEngine::Collider* a, NumaEngine::Collider* b)
 {
     // お互いのTypeを取得
-    ColliderType typeA = a->GetMyColliderType();
-    ColliderType typeB = b->GetMyColliderType();
+    NumaEngine::ColliderType typeA = a->GetMyColliderType();
+    NumaEngine::ColliderType typeB = b->GetMyColliderType();
 
     // お互いのActiveがONなら判定を取る、どちらかがOFFなら判定を取らない
     if (!a->GetActive() || !b->GetActive()) {
@@ -106,25 +106,25 @@ bool CollisionManager::Dispatch(Collider* a, Collider* b)
     // お互いのTypeで判定を取る
     switch (typeA)
     {
-    case ColliderType::kSphere:
+    case NumaEngine::ColliderType::kSphere:
         switch (typeB) {
-        case ColliderType::kSphere:   return Collision3D::SphereSphere(a, b);
-        case ColliderType::kOBB:      return Collision3D::OBBSphere(b, a);
-        case ColliderType::kSegment:  return Collision3D::SphereSegment(a, b);
+        case NumaEngine::ColliderType::kSphere:   return Collision3D::SphereSphere(a, b);
+        case NumaEngine::ColliderType::kOBB:      return Collision3D::OBBSphere(b, a);
+        case NumaEngine::ColliderType::kSegment:  return Collision3D::SphereSegment(a, b);
         }
         break;
-    case ColliderType::kSegment:
+    case NumaEngine::ColliderType::kSegment:
         switch (typeB) {
-        case ColliderType::kSphere:   return Collision3D::SphereSegment(b,a);
-        case ColliderType::kOBB:      return Collision3D::OBBSegment(b, a);
-        case ColliderType::kSegment:  return false;
+        case NumaEngine::ColliderType::kSphere:   return Collision3D::SphereSegment(b,a);
+        case NumaEngine::ColliderType::kOBB:      return Collision3D::OBBSegment(b, a);
+        case NumaEngine::ColliderType::kSegment:  return false;
         }
         break;
-    case ColliderType::kOBB:
+    case NumaEngine::ColliderType::kOBB:
         switch (typeB) {
-        case ColliderType::kSphere:   return Collision3D::OBBSphere(a, b);
-        case ColliderType::kOBB:      return Collision3D::OBBOBB(a, b);
-        case ColliderType::kSegment:  return Collision3D::OBBSegment(a, b);
+        case NumaEngine::ColliderType::kSphere:   return Collision3D::OBBSphere(a, b);
+        case NumaEngine::ColliderType::kOBB:      return Collision3D::OBBOBB(a, b);
+        case NumaEngine::ColliderType::kSegment:  return Collision3D::OBBSegment(a, b);
         }
         break;
     default:
@@ -134,7 +134,7 @@ bool CollisionManager::Dispatch(Collider* a, Collider* b)
     return false;
 }
 
-void CollisionManager::CheckCollisionPair(Collider* a, Collider* b, PairSet& thisFrame)
+void CollisionManager::CheckCollisionPair(NumaEngine::Collider* a, NumaEngine::Collider* b, PairSet& thisFrame)
 {
     bool hit = false;
 

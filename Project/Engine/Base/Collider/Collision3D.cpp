@@ -1,11 +1,12 @@
-﻿#include "Collision3D.h"
+#include "Collision3D.h"
 
 #include <algorithm>
 
 #include "Collision3D.h"
 #include "Collider.h"
+#include "../../Math/Structure/Quaternion.h"
 
-bool Collision3D::SphereSphere(const Collider* a, const Collider* b)
+bool Collision3D::SphereSphere(const NumaEngine::Collider* a, const NumaEngine::Collider* b)
 {
 	Sphere sphere1 = ChangeSphere(a);
 	Sphere sphere2 = ChangeSphere(b);
@@ -18,7 +19,7 @@ bool Collision3D::SphereSphere(const Collider* a, const Collider* b)
 	}
 }
 
-NumaEngine::Vector3 Collision3D::GetSphereSpherePushVector(const Collider* a, const Collider* b) {
+NumaEngine::Vector3 Collision3D::GetSphereSpherePushVector(const NumaEngine::Collider* a, const NumaEngine::Collider* b) {
 	Sphere sA = ChangeSphere(a);
 	Sphere sB = ChangeSphere(b);
 
@@ -86,7 +87,7 @@ bool Collision3D::AABBSegment(const AABB aabb, const Segment segment)
 	return false;
 }
 
-bool Collision3D::OBBSphere(const Collider* a, const Collider* b)
+bool Collision3D::OBBSphere(const NumaEngine::Collider* a, const NumaEngine::Collider* b)
 {
 	OBB obb = ChangeOBB(a);
 	Sphere sphere = ChangeSphere(b);
@@ -127,7 +128,7 @@ bool Collision3D::OBBSphere(const Collider* a, const Collider* b)
 	}
 }
 
-NumaEngine::Vector3 Collision3D::GetOBBSpherePushVector(const Collider* a, const Collider* b) {
+NumaEngine::Vector3 Collision3D::GetOBBSpherePushVector(const NumaEngine::Collider* a, const NumaEngine::Collider* b) {
 	OBB obb = ChangeOBB(a);
 	Sphere sphere = ChangeSphere(b);
 
@@ -188,8 +189,8 @@ NumaEngine::Vector3 Collision3D::GetOBBSpherePushVector(const Collider* a, const
     return NumaEngine::Vector3{};
 }
 
-bool Collision3D::SphereSegment(const Collider* sphereCol,
-	const Collider* segCol)
+bool Collision3D::SphereSegment(const NumaEngine::Collider* sphereCol,
+	const NumaEngine::Collider* segCol)
 {
 	Sphere   s = ChangeSphere(sphereCol);
 	Segment  seg = ChangeSegment(segCol);
@@ -213,8 +214,8 @@ bool Collision3D::SphereSegment(const Collider* sphereCol,
 	return (closest - s.center).Length() <= s.radius;
 }
 
-bool Collision3D::SphereSegment(const Collider* sphereCol,
-	const Collider* segCol,
+bool Collision3D::SphereSegment(const NumaEngine::Collider* sphereCol,
+	const NumaEngine::Collider* segCol,
 	RaycastHit* hit)
 {
 	if (!hit) { return SphereSegment(sphereCol, segCol); }
@@ -258,7 +259,7 @@ bool Collision3D::SphereSegment(const Collider* sphereCol,
 	return true;
 }
 
-bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
+bool Collision3D::OBBSegment(const NumaEngine::Collider* a, const NumaEngine::Collider* b)
 {
 	OBB obb = ChangeOBB(a);
 	Segment segment = ChangeSegment(b);
@@ -297,7 +298,7 @@ bool Collision3D::OBBSegment(const Collider* a, const Collider* b)
 	return AABBSegment(aabb_OBBLocal, segment_OBBLocal);
 }
 
-bool Collision3D::OBBSegment(const Collider* obbCol, const Collider* segCol, RaycastHit* hit)
+bool Collision3D::OBBSegment(const NumaEngine::Collider* obbCol, const NumaEngine::Collider* segCol, RaycastHit* hit)
 {
 	OBB     obb = ChangeOBB(obbCol);
 	Segment segW = ChangeSegment(segCol);
@@ -368,7 +369,7 @@ bool Collision3D::OBBSegment(const Collider* obbCol, const Collider* segCol, Ray
 	return true;
 }
 
-bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
+bool Collision3D::OBBOBB(const NumaEngine::Collider* a, const NumaEngine::Collider* b)
 {
 	// ① OBB 情報取得
 	OBB obb1 = ChangeOBB(a);
@@ -445,14 +446,14 @@ bool Collision3D::OBBOBB(const Collider* a, const Collider* b)
 	return true;
 }
 
-AABB Collision3D::ComputeBroadphaseAABB(const Collider* c) {
+AABB Collision3D::ComputeBroadphaseAABB(const NumaEngine::Collider* c) {
 	switch (c->GetMyColliderType()) {
-	case ColliderType::kSphere: {
+	case NumaEngine::ColliderType::kSphere: {
         Sphere s = ChangeSphere(c);
 		NumaEngine::Vector3 r{ s.radius, s.radius, s.radius };
 		return { s.center - r, s.center + r };
 	}
-	case ColliderType::kSegment: {
+    case NumaEngine::ColliderType::kSegment: {
         Segment seg = ChangeSegment(c);
 		NumaEngine::Vector3 p0 = seg.origin;
 		NumaEngine::Vector3 p1 = seg.origin + seg.diff;
@@ -460,7 +461,7 @@ AABB Collision3D::ComputeBroadphaseAABB(const Collider* c) {
 		NumaEngine::Vector3 mx{ std::max(p0.x, p1.x), std::max(p0.y, p1.y), std::max(p0.z, p1.z) };
 		return { mn, mx };
 	}
-	case ColliderType::kOBB: {
+    case NumaEngine::ColliderType::kOBB: {
 		OBB obb = ChangeOBB(c);
         NumaEngine::Vector3 ex = obb.size;
 		NumaEngine::Vector3 ax{
@@ -478,14 +479,14 @@ AABB Collision3D::ComputeBroadphaseAABB(const Collider* c) {
 		NumaEngine::Vector3 radius = absAx * ex.x + absAy * ex.y + absAz * ex.z;
 		return { obb.center - radius, obb.center + radius };
 	}
-	default:
+    default:
 
-        NumaEngine::Vector3 p = c->GetCenterPosition() + c->GetOffsetPosition();
+		NumaEngine::Vector3 p = c->GetCenterPosition() + c->GetOffsetPosition();
 		return { p, p };
 	}
 }
 
-Sphere Collision3D::ChangeSphere(const Collider* collider)
+Sphere Collision3D::ChangeSphere(const NumaEngine::Collider* collider)
 {
 	return {
 		.center = collider->GetCenterPosition() + collider->GetOffsetPosition(),
@@ -493,7 +494,7 @@ Sphere Collision3D::ChangeSphere(const Collider* collider)
 	};
 }
 
-Segment Collision3D::ChangeSegment(const Collider* collider)
+Segment Collision3D::ChangeSegment(const NumaEngine::Collider* collider)
 {
 	return  {
 		.origin = collider->GetOrigin(),
@@ -501,7 +502,7 @@ Segment Collision3D::ChangeSegment(const Collider* collider)
 	};
 }
 
-AABB Collision3D::ChangeAABB(const Collider* collider)
+AABB Collision3D::ChangeAABB(const NumaEngine::Collider* collider)
 {
 	return {
 		.min = collider->GetCenterPosition() + collider->GetOffsetPosition() - (collider->GetSize() * 0.5f),
@@ -509,9 +510,9 @@ AABB Collision3D::ChangeAABB(const Collider* collider)
 	};
 }
 
-OBB Collision3D::ChangeOBB(const Collider* collider)
+OBB Collision3D::ChangeOBB(const NumaEngine::Collider* collider)
 {
-	auto rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(collider->GetRotate());
+    auto rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(collider->GetRotate());
 	return {
 		.center = collider->GetCenterPosition() + collider->GetOffsetPosition().Transform(rotateMatrix),
 		.rotateMatrix = rotateMatrix,

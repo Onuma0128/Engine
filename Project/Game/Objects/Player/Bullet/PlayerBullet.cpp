@@ -1,4 +1,4 @@
-﻿#include "PlayerBullet.h"
+#include "PlayerBullet.h"
 
 #include "DeltaTimer.h"
 #include "Input.h"
@@ -21,16 +21,16 @@ void PlayerBullet::Init(const std::string& colliderName)
 	effect_ = std::make_unique<PlayerBulletEffect>();
 	effect_->Init();
 
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kOBB;
-	Collider::colliderName_ = colliderName;
-	Collider::size_ = transform_.scale_;
-	Collider::isActive_ = false;
-	Collider::targetColliderName_ = {
+    NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kOBB;
+	NumaEngine::Collider::colliderName_ = colliderName;
+	NumaEngine::Collider::size_ = transform_.scale_;
+	this->isActive_ = false;
+	NumaEngine::Collider::targetColliderName_ = {
 			"Enemy","EnemyShield",
 			"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall"
 	};
-	Collider::DrawCollider();
+    NumaEngine::Collider::DrawCollider();
 }
 
 void PlayerBullet::Update()
@@ -43,7 +43,7 @@ void PlayerBullet::Update()
 		if (activeTime_ >= 1.0f) {
 			activeTime_ = 1.0f;
 			isActive_ = false;
-			Collider::isActive_ = false;
+            this->isActive_ = false;
 			Object3d::GetMaterial().enableDraw = false;
 		}
 	} 
@@ -59,7 +59,7 @@ void PlayerBullet::Update()
 
 	// Activeがfalseならこの先を更新しない
 	if (!isActive_) {
-		Collider::Update();
+        NumaEngine::Collider::Update();
 		Object3d::Update();
 		effect_->Update();
 		return;
@@ -70,14 +70,14 @@ void PlayerBullet::Update()
 
 	effect_->OnceBulletTrailEffect(transform_);
 	Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation_);
-	Collider::size_ = transform_.scale_ + data.colliderSize;
-	Collider::rotate_ = transform_.rotation_;
-	Collider::centerPosition_ = transform_.translation_ + data.colliderPosition.Transform(rotateMatrix);
-	Collider::Update();
+    NumaEngine::Collider::size_ = transform_.scale_ + data.colliderSize;
+	NumaEngine::Collider::rotate_ = transform_.rotation_;
+	NumaEngine::Collider::centerPosition_ = transform_.translation_ + data.colliderPosition.Transform(rotateMatrix);
+	NumaEngine::Collider::Update();
 	Object3d::Update();
 }
 
-void PlayerBullet::OnCollisionEnter(Collider* other)
+void PlayerBullet::OnCollisionEnter(NumaEngine::Collider* other)
 {
 	const auto& name = other->GetColliderName();
 
@@ -89,7 +89,7 @@ void PlayerBullet::OnCollisionEnter(Collider* other)
 		transform_.translation_.y = -2.0f;
 	}
 	if (name == "Enemy") {
-		if(Collider::GetColliderName() == "PlayerBullet"){
+        if(NumaEngine::Collider::GetColliderName() == "PlayerBullet"){
 			IsCollision();
 			effect_->OnceBulletDeleteEffect(transform_);
 			transform_.translation_.y = -2.0f;
@@ -124,8 +124,8 @@ void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 
 	activeTime_ = 0.0f;
 	isReload_ = false;
-	isActive_ = true;
-	Collider::isActive_ = true;
+    isActive_ = true;
+	NumaEngine::Collider::isActive_ = true;
 	Object3d::GetMaterial().enableDraw = true;
 
 	effect_->OnceBulletEffect(transform);
@@ -134,9 +134,9 @@ void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 void PlayerBullet::IsCollision()
 {
 	activeTime_ = 1.0f;
-	wasActive_ = false;
+    wasActive_ = false;
 	isActive_ = false;
-	Collider::isActive_ = false;
+	NumaEngine::Collider::isActive_ = false;
 	Object3d::GetMaterial().enableDraw = false;
 }
 

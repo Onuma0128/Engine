@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <functional>
 
 #include "Object3d.h"
@@ -11,7 +11,7 @@ class EnemyAdjustItem;
 /// <summary>
 /// 敵の弾クラス
 /// </summary>
-class EnemyBullet : public Object3d,Collider
+class EnemyBullet : public Object3d, public NumaEngine::Collider
 {
 public:
 
@@ -31,7 +31,7 @@ public:
 	/// 当たったタイミングで返す
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other)override;
+    void OnCollisionEnter(NumaEngine::Collider* other)override;
 
 	/// <summary>
 	/// 弾を撃つ関数

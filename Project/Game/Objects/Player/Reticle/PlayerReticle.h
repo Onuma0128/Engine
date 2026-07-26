@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <vector>
 #include <list>
@@ -10,7 +10,7 @@
 /// <summary>
 /// プレイヤーのレティクルを管理するクラス
 /// </summary>
-class PlayerReticle :public Sprite,Collider
+class PlayerReticle : public Sprite, public NumaEngine::Collider
 {
 public:
 
@@ -34,21 +34,21 @@ public:
 	/// 当たり判定
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other) override;
-	void OnCollisionStay(Collider* other) override;
-	void OnCollisionExit(Collider* other) override;
+    void OnCollisionEnter(NumaEngine::Collider* other) override;
+	void OnCollisionStay(NumaEngine::Collider* other) override;
+	void OnCollisionExit(NumaEngine::Collider* other) override;
 
 	/// <summary>
 	/// コライダーのアクティブ状態を設定する
 	/// </summary>
 	/// <param name="flag"></param>
-	void SetColliderActive(bool flag) { Collider::isActive_ = flag; }
+    void SetColliderActive(bool flag) { this->isActive_ = flag; }
 
 	/// <summary>
 	/// 敵のコライダーリストを取得する
 	/// </summary>
 	/// <returns></returns>
-	const std::list<Collider*>& GetEnemyColliders()const { return enemyColliders_; }
+    const std::list<NumaEngine::Collider*>& GetEnemyColliders()const { return enemyColliders_; }
 
 	/// <summary>
 	/// 敵のコライダーを消していく
@@ -63,9 +63,9 @@ public:
 	/// <summary>
 	/// ヒットカウントをリセットする
 	/// </summary>
-	void ResetHitCount() { 
+    void ResetHitCount() {
 		hitCount_ = 0;
-		Collider::isActive_ = false;
+		this->isActive_ = false;
 	}
 
 private:
@@ -77,8 +77,8 @@ private:
 
 private:
 
-	// 敵のColliderを取得用
-	std::list<Collider*> enemyColliders_;
+    // 敵のColliderを取得用
+	std::list<NumaEngine::Collider*> enemyColliders_;
 	// 何体敵と当たったかカウント用
 	uint32_t hitCount_ = 0;
 	// ヒット時のcolor値

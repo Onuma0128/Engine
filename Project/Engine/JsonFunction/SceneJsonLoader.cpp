@@ -1,4 +1,4 @@
-﻿#include "SceneJsonLoader.h"
+#include "SceneJsonLoader.h"
 
 #include <assert.h>
 #include <numbers>
@@ -90,7 +90,7 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 		const auto& c = json["collider"];
 		std::string type = c["type"].get<std::string>();
         if (type == "Box") { 
-			col.type = ColliderType::kOBB;
+			col.type = NumaEngine::ColliderType::kOBB;
             NumaEngine::Vector3 size = {
 			static_cast<float>(c["size"][0]),
 			static_cast<float>(c["size"][2]),
@@ -98,8 +98,8 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 			};
 			col.size = size;
 
-		} else if (type == "Sphere") { 
-			col.type = ColliderType::kSphere; 
+        } else if (type == "Sphere") { 
+			col.type = NumaEngine::ColliderType::kSphere; 
 			float radius = static_cast<float>(c["radius"]);
 			col.radius = radius;
 		}

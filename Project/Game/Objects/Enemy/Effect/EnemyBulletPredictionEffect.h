@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 
 #include "Collider.h"
@@ -7,7 +7,7 @@
 /// <summary>
 /// 敵の弾の攻撃予測エフェクト
 /// </summary>
-class EnemyBulletPredictionEffect : public Collider
+class EnemyBulletPredictionEffect : public NumaEngine::Collider
 {
 public:
 
@@ -38,9 +38,9 @@ private:
 	/// 当たり判定
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other) override;
-	void OnCollisionStay(Collider* other) override;
-	void OnCollisionExit(Collider* other) override;
+    void OnCollisionEnter(NumaEngine::Collider* other) override;
+	void OnCollisionStay(NumaEngine::Collider* other) override;
+	void OnCollisionExit(NumaEngine::Collider* other) override;
 
 	// リセット
 	void Reset();

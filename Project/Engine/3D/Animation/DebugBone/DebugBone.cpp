@@ -4,7 +4,7 @@
 
 void DebugBone::Init(const std::vector<NumaEngine::Vector3>& positions)
 {
-	bone_ = std::make_unique<Line3d>();
+    bone_ = std::make_unique<NumaEngine::Line3d>();
 	bone_->Initialize(positions);
 	bone_->GetMaterial().enableDraw = false;
 }

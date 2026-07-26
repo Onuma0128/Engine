@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Vector3.h"
 #include "Matrix4x4.h"
@@ -31,7 +31,7 @@ struct OBB {
 	NumaEngine::Vector3 size;
 };
 
-class Collider;
+namespace NumaEngine { class Collider; }
 
 /// <summary>
 /// 3D衝突判定クラス
@@ -46,14 +46,14 @@ public:
 	/// <param name="a"></球A>
 	/// <param name="b"></球B>
 	/// <returns></returns>
-	static bool SphereSphere(const Collider* a, const Collider* b);
+    static bool SphereSphere(const NumaEngine::Collider* a, const NumaEngine::Collider* b);
 	/// <summary>
 	/// 球と球の押し出し処理
 	/// </summary>
 	/// <param name="a"></球A>
 	/// <param name="b"></球B>
 	/// <returns></接触した座標>
-    static NumaEngine::Vector3 GetSphereSpherePushVector(const Collider* a, const Collider* b);
+    static NumaEngine::Vector3 GetSphereSpherePushVector(const NumaEngine::Collider* a, const NumaEngine::Collider* b);
 
 	/// <summary>
 	/// AABBと球の衝突判定
@@ -77,7 +77,7 @@ public:
 	/// <param name="a"></球>
 	/// <param name="b"></回転ボックス>
 	/// <returns></returns>
-	static bool OBBSphere(const Collider* a, const Collider* b);
+    static bool OBBSphere(const NumaEngine::Collider* a, const NumaEngine::Collider* b);
 	
 	/// <summary>
 	/// OBBと球の押し出し処理
@@ -85,7 +85,7 @@ public:
 	/// <param name="a"></球>
 	/// <param name="b"></回転ボックス>
 	/// <returns></接触した座標>
-    static NumaEngine::Vector3 GetOBBSpherePushVector(const Collider* a, const Collider* b);
+    static NumaEngine::Vector3 GetOBBSpherePushVector(const NumaEngine::Collider* a, const NumaEngine::Collider* b);
 
 	/// <summary>
 	/// 球とSegmentの衝突判定
@@ -93,8 +93,8 @@ public:
 	/// <param name="sphereCol"></球>
 	/// <param name="segCol"></線>
 	/// <returns></returns>
-	static bool SphereSegment(const Collider* sphereCol,const Collider* segCol);
-	static bool SphereSegment(const Collider* sphereCol, const Collider* segCol, RaycastHit* hit);
+    static bool SphereSegment(const NumaEngine::Collider* sphereCol,const NumaEngine::Collider* segCol);
+	static bool SphereSegment(const NumaEngine::Collider* sphereCol, const NumaEngine::Collider* segCol, RaycastHit* hit);
 
 	/// <summary>
 	/// OBBとSegmentの衝突判定
@@ -102,8 +102,8 @@ public:
 	/// <param name="a"></回転ボックス>
 	/// <param name="b"></線>
 	/// <returns></returns>
-	static bool OBBSegment(const Collider* a, const Collider* b);
-	static bool OBBSegment(const Collider* obbCol, const Collider* segCol, RaycastHit* hit);
+    static bool OBBSegment(const NumaEngine::Collider* a, const NumaEngine::Collider* b);
+	static bool OBBSegment(const NumaEngine::Collider* obbCol, const NumaEngine::Collider* segCol, RaycastHit* hit);
 
 	/// <summary>
 	/// OBBとOBBの衝突判定
@@ -111,20 +111,20 @@ public:
 	/// <param name="a"></回転ボックスA>
 	/// <param name="b"></回転ボックスB>
 	/// <returns></returns>
-	static bool OBBOBB(const Collider* a, const Collider* b);
+    static bool OBBOBB(const NumaEngine::Collider* a, const NumaEngine::Collider* b);
 
 	/// <summary>
 	/// ブロードフェーズAABBを計算する
 	/// </summary>
 	/// <param name="collider"></param>
 	/// <returns></returns>
-	static AABB ComputeBroadphaseAABB(const Collider* collider);
+    static AABB ComputeBroadphaseAABB(const NumaEngine::Collider* collider);
 
 	// コライダーから各形状に変換する
-	static Sphere ChangeSphere(const Collider* collider);
-	static Segment ChangeSegment(const Collider* collider);
-	static AABB ChangeAABB(const Collider* collider);
-	static OBB ChangeOBB(const Collider* collider);
+    static Sphere ChangeSphere(const NumaEngine::Collider* collider);
+	static Segment ChangeSegment(const NumaEngine::Collider* collider);
+	static AABB ChangeAABB(const NumaEngine::Collider* collider);
+	static OBB ChangeOBB(const NumaEngine::Collider* collider);
 };
 
 

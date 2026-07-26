@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "objects/enemy/weapon/EnemyWeaponBase.h"
 
@@ -25,7 +25,7 @@ public:
 	/// </summary>
 	/// <param name="type"></コライダーのタイプ>
 	/// <param name="name"></コライダーの名前>
-	void Init(ColliderType type, const std::string& name) override;
+    void Init(NumaEngine::ColliderType type, const std::string& name) override;
 
 	/// <summary>
 	/// 更新
@@ -36,9 +36,9 @@ public:
 	/// 当たり判定の処理
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタを取得する>
-	void OnCollisionEnter(Collider* other) override;
-	void OnCollisionStay(Collider* other) override;
-	void OnCollisionExit(Collider* other) override;
+    void OnCollisionEnter(NumaEngine::Collider* other) override;
+	void OnCollisionStay(NumaEngine::Collider* other) override;
+	void OnCollisionExit(NumaEngine::Collider* other) override;
 
 	/// <summary>
 	/// アクティブ状態を設定する

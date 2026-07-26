@@ -10,7 +10,7 @@
 /// <summary>
 /// 敵発生のスポナークラス
 /// </summary>
-class EnemySpawner : public Object3d,Collider
+class EnemySpawner : public Object3d, public NumaEngine::Collider
 {
 public:
 

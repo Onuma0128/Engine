@@ -1,4 +1,4 @@
-﻿#include "MuscleCompanion.h"
+#include "MuscleCompanion.h"
 
 #include <numbers>
 #include "Input.h"
@@ -25,20 +25,20 @@ void MuscleCompanion::Initialize()
 	Animation::GetMaterial().outlineMask = true;
 	Animation::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 
-	// コライダーを設定
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kSphere;
-	Collider::colliderName_ = "MuscleCompanion";
-	Collider::size_ = transform_.scale_;
-	Collider::radius_ = transform_.scale_.x;
-	Collider::isActive_ = true;
-	Collider::targetColliderName_ = { 
+    // コライダーを設定
+	NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kSphere;
+	NumaEngine::Collider::colliderName_ = "MuscleCompanion";
+	NumaEngine::Collider::size_ = transform_.scale_;
+	NumaEngine::Collider::radius_ = transform_.scale_.x;
+	NumaEngine::Collider::isActive_ = true;
+	NumaEngine::Collider::targetColliderName_ = { 
 		"MuscleCompanion","Enemy","BossEnemy" ,"EnemyRay","BossAttack",
 		"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite",
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 		"SearchDashMuscleCompanion","PushUpMuscleCompanion","EnemyShield","EnemyBulletRay",
 	};
-	Collider::DrawCollider();
+    NumaEngine::Collider::DrawCollider();
 
 	// ステートの初期化
 	ChangeState(std::make_unique<CompanionMoveState>(this));
@@ -75,11 +75,11 @@ void MuscleCompanion::Update()
 	LevelUp();
 
 	// コライダーの更新
-	attackCollider_->Update();
+    attackCollider_->Update();
 	followerCollider_->Update();
-	Collider::radius_ = transform_.scale_.x * items_->GetMainData().colliderSize * colliderScale_;
-	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
-	Collider::Update();
+    NumaEngine::Collider::radius_ = transform_.scale_.x * items_->GetMainData().colliderSize * colliderScale_;
+	NumaEngine::Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
+	NumaEngine::Collider::Update();
 
 	// アニメーションの更新
 	ApplyScaleByLevel();
@@ -119,7 +119,7 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 		ChangeState(std::make_unique<CompanionPushUpIdleState>(this));
 	// 敵に当たったら攻撃状態へ
 	} else if (other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") {
-		if (Collider::radius_ > 0.6f && (isDash || isSearchDash)) {
+        if (NumaEngine::Collider::radius_ > 0.6f && (isDash || isSearchDash)) {
 			isFirstDashAttack_ = true;
 			Input::GetInstance()->Vibrate(0.4f, 0.75f, 100);
 			NumaEngine::Vector3 velocity = other->GetCenterPosition() - transform_.translation_;
@@ -130,8 +130,8 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 		}
 	}
 	// 敵に当たったら効果音を鳴らす
-	if ((other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") && isMove) {
-		if (Collider::radius_ > 0.6f) {
+    if ((other->GetColliderName() == "Enemy" || other->GetColliderName() == "BossEnemy") && isMove) {
+        if (NumaEngine::Collider::radius_ > 0.6f) {
 			const auto& volume = items_->GetSeVolumeData();
 			audio_->SoundPlayWave("MattyoGiveDamage.wav", volume.giveDamage);
 		}

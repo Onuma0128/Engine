@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <list>
 #include <cmath>
 #include <unordered_map>
@@ -33,13 +33,13 @@ public:
     /// コライダーを追加する
     /// </summary>
     /// <param name="c"></追加したいコライダー>
-    void AddCollider(Collider* c) { colliders_.push_back(c); }
+    void AddCollider(NumaEngine::Collider* c) { colliders_.push_back(c); }
 
     /// <summary>
     /// コライダーを削除する
     /// </summary>
     /// <param name="c"></削除したいコライダー>
-    void RemoveCollider(Collider* c) {
+    void RemoveCollider(NumaEngine::Collider* c) {
         colliders_.remove(c);
         for (auto it = previousFrame_.begin(); it != previousFrame_.end(); )
         {
@@ -75,7 +75,7 @@ private:
     /// <summary>
     /// コライダーのペアを作成する
     /// </summary>
-    static std::pair<Collider*, Collider*> MakeKey(Collider* a, Collider* b) {
+    static std::pair<NumaEngine::Collider*, NumaEngine::Collider*> MakeKey(NumaEngine::Collider* a, NumaEngine::Collider* b) {
         return (a < b) ? std::make_pair(a, b) : std::make_pair(b, a);
     }
 
@@ -83,11 +83,11 @@ private:
     /// コライダーのペアをハッシュ化する
     /// </summary>
     struct PairHasher {
-        size_t operator()(const std::pair<Collider*, Collider*>& p) const noexcept {
-            return std::hash<Collider*>()(p.first) ^ (std::hash<Collider*>()(p.second) << 1);
+        size_t operator()(const std::pair<NumaEngine::Collider*, NumaEngine::Collider*>& p) const noexcept {
+            return std::hash<NumaEngine::Collider*>()(p.first) ^ (std::hash<NumaEngine::Collider*>()(p.second) << 1);
         }
     };
-    using PairSet = std::unordered_set<std::pair<Collider*, Collider*>, PairHasher>;
+    using PairSet = std::unordered_set<std::pair<NumaEngine::Collider*, NumaEngine::Collider*>, PairHasher>;
 
     /// <summary>
     /// コライダーのペアをディスパッチする
@@ -95,7 +95,7 @@ private:
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    bool Dispatch(Collider* a, Collider* b);
+    bool Dispatch(NumaEngine::Collider* a, NumaEngine::Collider* b);
 
     /// <summary>
     /// コライダーのペアをチェックする
@@ -103,7 +103,7 @@ private:
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <param name="thisFrame"></param>
-    void CheckCollisionPair(Collider* a, Collider* b, PairSet& thisFrame);
+    void CheckCollisionPair(NumaEngine::Collider* a, NumaEngine::Collider* b, PairSet& thisFrame);
 
     /// <summary>
     /// セルのキー
@@ -141,7 +141,7 @@ private:
 
 private:
 
-    std::list<Collider*> colliders_;
+    std::list<NumaEngine::Collider*> colliders_;
     PairSet previousFrame_;
     bool debugColliderEnable_ = false;
 };

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <vector>
 
@@ -73,11 +73,11 @@ private:
 
 private:
 
-	// グリッド
-	std::unique_ptr<Line3d> grid_ = nullptr;
+    // グリッド
+	std::unique_ptr<NumaEngine::Line3d> grid_ = nullptr;
 
 	// 判定が取れた所だけ赤くする
-	std::unique_ptr<Line3d> hitGrid_ = nullptr;
+	std::unique_ptr<NumaEngine::Line3d> hitGrid_ = nullptr;
 	std::vector<NumaEngine::Vector3> hitGridPositions_;
 
 	// ヒットしたAABBのリスト

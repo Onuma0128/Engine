@@ -1,11 +1,11 @@
-﻿#pragma once
+#pragma once
 
 #include "Collider.h"
 
 /// <summary>
 /// 敵の視線クラス
 /// </summary>
-class EnemyRay : public Collider
+class EnemyRay : public NumaEngine::Collider
 {
 public:
 
@@ -44,9 +44,9 @@ private:
 	/// コライダーに当たった時
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other) override;
-	void OnCollisionStay(Collider* other) override;
-	void OnCollisionExit(Collider* other) override;
+    void OnCollisionEnter(NumaEngine::Collider* other) override;
+	void OnCollisionStay(NumaEngine::Collider* other) override;
+	void OnCollisionExit(NumaEngine::Collider* other) override;
 
 private:
 

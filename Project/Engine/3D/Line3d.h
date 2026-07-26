@@ -18,6 +18,7 @@ using Microsoft::WRL::ComPtr;
 /// <summary>
 /// 3Dライン描画クラス
 /// </summary>
+namespace NumaEngine {
 class Line3d
 {
 public:
@@ -71,7 +72,11 @@ private:
 
 	uint32_t lineIndex_ = 0;
 
-};
+  };
+
+} // namespace NumaEngine
+
+// NOTE: no global alias to avoid conflicts with other forward declarations
 
 
 

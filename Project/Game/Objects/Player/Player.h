@@ -68,10 +68,10 @@ private:
 	/// <summary>
 	/// 当たり判定
 	/// </summary>
-	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other) override;
-	void OnCollisionStay(Collider* other) override;
-	void OnCollisionExit(Collider* other) override;
+    /// <param name="other"></当たったColliderのポインタが入る>
+	void OnCollisionEnter(NumaEngine::Collider* other) override;
+	void OnCollisionStay(NumaEngine::Collider* other) override;
+	void OnCollisionExit(NumaEngine::Collider* other) override;
 
 public:
 

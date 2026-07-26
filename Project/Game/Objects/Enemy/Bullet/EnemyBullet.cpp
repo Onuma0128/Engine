@@ -1,4 +1,4 @@
-﻿#include "EnemyBullet.h"
+#include "EnemyBullet.h"
 
 #include "DeltaTimer.h"
 
@@ -17,12 +17,12 @@ void EnemyBullet::Init(const std::string& colliderName, EnemyType type)
 	activeFrame_ = 0.0f;
 	type_ = type;
 
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kOBB;
-	Collider::colliderName_ = colliderName;
-	Collider::size_ = transform_.scale_;
-	Collider::isActive_ = false;
-	Collider::targetColliderName_ = {
+    NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kOBB;
+	NumaEngine::Collider::colliderName_ = colliderName;
+	NumaEngine::Collider::size_ = transform_.scale_;
+	NumaEngine::Collider::isActive_ = false;
+	NumaEngine::Collider::targetColliderName_ = {
 		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 		"MuscleCompanion","PushUpMuscleCompanion",
 	};
@@ -36,8 +36,8 @@ void EnemyBullet::Update()
 		activeFrame_ += DeltaTimer::GetDeltaTime() * 2.0f;
 		if (activeFrame_ >= 1.0f) {
 			activeFrame_ = 1.0f;
-			isActive_ = false;
-			Collider::isActive_ = false;
+            isActive_ = false;
+			NumaEngine::Collider::isActive_ = false;
 			Object3d::GetMaterial().enableDraw = false;
 			transform_.translation_ = item_->GetMainData().startPosition;		}
 	}
@@ -51,7 +51,7 @@ void EnemyBullet::Update()
 
 	// Activeがfalseならこの先を更新しない
 	if (!isActive_) {
-		Collider::Update();
+        NumaEngine::Collider::Update();
 		Object3d::Update();
 		return;
 	}
@@ -60,13 +60,13 @@ void EnemyBullet::Update()
 	float speed = GetTypeBulletSpeed();
 	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed;
 
-	Collider::rotate_ = transform_.rotation_;
-	Collider::centerPosition_ = transform_.translation_;
-	Collider::Update();
+    NumaEngine::Collider::rotate_ = transform_.rotation_;
+	NumaEngine::Collider::centerPosition_ = transform_.translation_;
+	NumaEngine::Collider::Update();
 	Object3d::Update();
 }
 
-void EnemyBullet::OnCollisionEnter(Collider* other)
+void EnemyBullet::OnCollisionEnter(NumaEngine::Collider* other)
 {
 	const auto& name = other->GetColliderName();
 
@@ -89,17 +89,17 @@ void EnemyBullet::Attack(const WorldTransform& transform)
 	velocity_ = NumaEngine::Vector3::ExprUnitZ.Transform(rotateMatrix);
 
 	activeFrame_ = 0.0f; 
-	isActive_ = true;
-	Collider::isActive_ = true;
+    isActive_ = true;
+	NumaEngine::Collider::isActive_ = true;
 	Object3d::GetMaterial().enableDraw = true;
 }
 
 void EnemyBullet::IsCollision()
 {
 	activeFrame_ = 1.0f;
-	wasActive_ = false;
+    wasActive_ = false;
 	isActive_ = false;
-	Collider::isActive_ = false;
+	NumaEngine::Collider::isActive_ = false;
 	transform_.translation_ = item_->GetMainData().startPosition;
 	Object3d::GetMaterial().enableDraw = false;
 }

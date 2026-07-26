@@ -1,8 +1,9 @@
-﻿#pragma once
+#pragma once
 
 #include "Collider.h"
 
 #include "Vector3.h"
+#include <cfloat>
 
 // 前方宣言
 class Player;
@@ -10,7 +11,7 @@ class Player;
 /// <summary>
 /// 敵探索用のコライダークラス
 /// </summary>
-class EnemySearchCollider : public Collider
+class EnemySearchCollider : public NumaEngine::Collider
 {
 public:
 
@@ -33,7 +34,7 @@ public:
 	// アクセッサ
 	void SetPlayer(Player* player) { player_ = player; }
 
-	Collider* GetTargetCollider() { return targetCollider_; }
+    NumaEngine::Collider* GetTargetCollider() { return targetCollider_; }
 	const bool GetIsHit()const { return isHit_ ; }
 
 private:
@@ -42,9 +43,9 @@ private:
 	/// 当たり判定
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other) override;
-	void OnCollisionStay(Collider* other) override;
-	void OnCollisionExit(Collider* other) override;
+    void OnCollisionEnter(NumaEngine::Collider* other) override;
+	void OnCollisionStay(NumaEngine::Collider* other) override;
+	void OnCollisionExit(NumaEngine::Collider* other) override;
 
 
 	/// <summary>
@@ -58,13 +59,13 @@ private:
 	Player* player_ = nullptr;
 
 	// ターゲットした時のコライダー
-	Collider* targetCollider_ = nullptr;
+    NumaEngine::Collider* targetCollider_ = nullptr;
 
 	// 一番近い敵の座標
 	NumaEngine::Vector3 targetPosition_;
 
-	// 一番近い敵との距離
-	float targetDistance_;
+    // 一番近い敵との距離
+	float targetDistance_ = FLT_MAX;
 
 	// 敵と当たっているか
 	bool isHit_ = false;

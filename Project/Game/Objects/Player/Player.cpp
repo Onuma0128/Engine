@@ -1,4 +1,4 @@
-﻿#include "Player.h"
+#include "Player.h"
 
 #include "imgui.h"
 
@@ -31,18 +31,18 @@ void Player::Initialize()
 	Animation::SetTransform(player.transform);
 	startTransform_ = player.transform;
 
-	if (player.collider.active) {
-		Collider::AddCollider();
-		Collider::colliderName_ = player.tag;
-		Collider::myType_ = player.collider.type;
-		Collider::offsetPosition_ = player.collider.center;
-		Collider::size_ = player.collider.size;
-		Collider::radius_ = player.collider.radius;
-		Collider::targetColliderName_ = {
+    if (player.collider.active) {
+		NumaEngine::Collider::AddCollider();
+		NumaEngine::Collider::colliderName_ = player.tag;
+		NumaEngine::Collider::myType_ = player.collider.type;
+		NumaEngine::Collider::offsetPosition_ = player.collider.center;
+		NumaEngine::Collider::size_ = player.collider.size;
+		NumaEngine::Collider::radius_ = player.collider.radius;
+		NumaEngine::Collider::targetColliderName_ = {
 			"EnemyMelee","EnemyShieldBearer","EnemyRanged","EnemyRangedElite","EnemyRay","BossRay",
 			"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","BossEnemy","BossAttack",
 		};
-		Collider::DrawCollider();
+        NumaEngine::Collider::DrawCollider();
 	}
 
 	// プレイヤーの初期化
@@ -77,10 +77,10 @@ void Player::Update()
 	// 弾の更新
 	shot_->Update();
 
-	// コライダーの更新
-	Collider::rotate_ = transform_.rotation_;
-	Collider::centerPosition_ = transform_.translation_;
-	Collider::Update();
+    // コライダーの更新
+	NumaEngine::Collider::rotate_ = transform_.rotation_;
+	NumaEngine::Collider::centerPosition_ = transform_.translation_;
+	NumaEngine::Collider::Update();
 	Animation::Update();
 }
 
@@ -107,7 +107,7 @@ void Player::ChangeState(std::unique_ptr<PlayerBaseState> newState)
 	state_->Init();
 }
 
-void Player::OnCollisionEnter(Collider* other)
+void Player::OnCollisionEnter(NumaEngine::Collider* other)
 {
 	if (state_->GetState() == PlayerState::DemoMove) { return; }
 	if (CollisionFilter::CheckColliderNameEnemy(other->GetColliderName())) {
@@ -118,26 +118,26 @@ void Player::OnCollisionEnter(Collider* other)
 	}
 }
 
-void Player::OnCollisionStay(Collider* other)
+void Player::OnCollisionStay(NumaEngine::Collider* other)
 {
 	// 建物系の押し出し判定(OBB,Sphere)、木の押し出し判定(OBB)
 	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		isPushMove_ = true;
 		NumaEngine::Vector3 push{};
-		if (other->GetMyColliderType() == ColliderType::kOBB) {
+        if (other->GetMyColliderType() == NumaEngine::ColliderType::kOBB) {
 			push = Collision3D::GetOBBSpherePushVector(other, this);
-		} else if (other->GetMyColliderType() == ColliderType::kSphere) {
+        } else if (other->GetMyColliderType() == NumaEngine::ColliderType::kSphere) {
 			push = Collision3D::GetSphereSpherePushVector(other, this);
 		}
 		push.y = 0.0f;
 		transform_.translation_ += push * items_->GetPlayerData().pushSpeed * DeltaTimer::GetDeltaTime();
-		Collider::centerPosition_ = transform_.translation_;
-		Collider::Update();
+        this->centerPosition_ = transform_.translation_;
+        NumaEngine::Collider::Update();
 		Animation::TransformUpdate();
 	}
 }
 
-void Player::OnCollisionExit(Collider* other)
+void Player::OnCollisionExit(NumaEngine::Collider* other)
 {
 	// 建物系の押し出し判定(OBB,Sphere)
 	// 木の押し出し判定(OBB)

@@ -58,8 +58,8 @@ ComPtr<IDxcBlob> CompileShaderFactory::CompileShader(
 {
 	//ここの中身をこの後書いて行く
 	// 1
-	//これからシェーダーをコンパイルする旨をログに出す
-	Logger::Log(StringUtility::ConvertString(std::format(L"Begin CompileShader, path:{}, profile:{}\n", filePath, profile)));
+    //これからシェーダーをコンパイルする旨をログに出す
+	NumaEngine::Logger::Log(StringUtility::ConvertString(std::format(L"Begin CompileShader, path:{}, profile:{}\n", filePath, profile)));
 	//hlslファイルを読む
 	IDxcBlobEncoding* shaderSource = nullptr;
 	HRESULT hr = dxcUtils->LoadFile(filePath.c_str(), nullptr, &shaderSource);
@@ -95,7 +95,7 @@ ComPtr<IDxcBlob> CompileShaderFactory::CompileShader(
 	IDxcBlobUtf8* shaderError = nullptr;
 	shaderResult->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&shaderError), nullptr);
 	if (shaderError != nullptr && shaderError->GetStringLength() != 0) {
-		Logger::Log(shaderError->GetStringPointer());
+        NumaEngine::Logger::Log(shaderError->GetStringPointer());
 		//警告・エラーダメ絶対
 		assert(false);
 	}
@@ -105,7 +105,7 @@ ComPtr<IDxcBlob> CompileShaderFactory::CompileShader(
 	hr = shaderResult->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shaderBlob), nullptr);
 	assert(SUCCEEDED(hr));
 	//成功したログを出す
-	Logger::Log(StringUtility::ConvertString(std::format(L"Compile Succeeded, path{}, profile:{}\n", filePath, profile)));
+    NumaEngine::Logger::Log(StringUtility::ConvertString(std::format(L"Compile Succeeded, path{}, profile:{}\n", filePath, profile)));
 	//もう使わないリソースを解放
 	shaderSource->Release();
 	shaderResult->Release();

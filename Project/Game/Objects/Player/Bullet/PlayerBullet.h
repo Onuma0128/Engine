@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <functional>
 
 #include "Object3d.h"
@@ -12,7 +12,7 @@ class PlayerShot;
 /// <summary>
 /// プレイヤーの弾を表すクラス
 /// </summary>
-class PlayerBullet : public Object3d,Collider
+class PlayerBullet : public Object3d, public NumaEngine::Collider
 {
 public:
 
@@ -31,7 +31,7 @@ public:
 	/// 当たり判定
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other)override;
+    void OnCollisionEnter(NumaEngine::Collider* other)override;
 
 	/// <summary>
 	/// リロードをする関数

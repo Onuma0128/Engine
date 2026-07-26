@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -16,7 +16,7 @@ using Microsoft::WRL::ComPtr;
 #include "Matrix4x4.h"
 #include "ModelStruct.h"
 
-class Line3d;
+namespace NumaEngine { class Line3d; }
 
 /// <summary>
 /// ラインのインスタンス、描画を管理するクラス
@@ -42,13 +42,13 @@ public:
     void Initialize(uint32_t capacity = 2048);
 
 	// ラインの登録/解除/ID取得
-    void RegisterLine(Line3d* owner);
-    void UnregisterLine(Line3d* owner);
-    uint32_t GetLineID(Line3d* owner);
+    void RegisterLine(NumaEngine::Line3d* owner);
+    void UnregisterLine(NumaEngine::Line3d* owner);
+    uint32_t GetLineID(NumaEngine::Line3d* owner);
 
 	// ラインのインスタンスデータ/マテリアル設定
-    void SetLineInstances(Line3d* owner, const std::vector<NumaEngine::Vector3>& positions);
-    void SetMaterial(Line3d* owner, const Material& material);
+    void SetLineInstances(NumaEngine::Line3d* owner, const std::vector<NumaEngine::Vector3>& positions);
+    void SetMaterial(NumaEngine::Line3d* owner, const Material& material);
 
     // 全破棄
     void Finalize(bool instanceDelete = false);
@@ -101,7 +101,7 @@ private:
     uint32_t materialSrvIndex_;            
 
     // 管理
-    std::unordered_map<Line3d*, Entry> entries_;
+    std::unordered_map<NumaEngine::Line3d*, Entry> entries_;
     uint32_t nextLineID_ = 0;
 
     // マージ後の大きなインスタンス配列（CPU 側）

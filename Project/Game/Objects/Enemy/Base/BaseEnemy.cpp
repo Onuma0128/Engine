@@ -33,19 +33,19 @@ void BaseEnemy::Initialize()
 	// 探索アルゴリズムの初期化
 	pathFinder_.Search(transform_.translation_, NumaEngine::Vector3{});
 
-	// コライダーを設定
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kSphere;
-	Collider::colliderName_ = "Enemy";
-	Collider::size_ = transform_.scale_;
-	Collider::radius_ = transform_.scale_.x;
-	Collider::isActive_ = false;
-	Collider::targetColliderName_ = {
+    // コライダーを設定
+	NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kSphere;
+	NumaEngine::Collider::colliderName_ = "Enemy";
+	NumaEngine::Collider::size_ = transform_.scale_;
+	NumaEngine::Collider::radius_ = transform_.scale_.x;
+	NumaEngine::Collider::isActive_ = false;
+	NumaEngine::Collider::targetColliderName_ = {
 		"Player","MuscleCompanionAttack","FollowerMuscleCompanion","BlowDashMuscleCompanion",
 		"PushUpMuscleCompanion",
 		"Enemy" ,"PlayerShotRay","MuscleCompanion","SearchDashMuscleCompanion","EnemySearch",
 	};
-	Collider::DrawCollider();
+    NumaEngine::Collider::DrawCollider();
 
 	// 基本的なアニメーションを設定
 	transform_.translation_ = items_->GetMainData().startPosition;
@@ -70,10 +70,10 @@ void BaseEnemy::Update()
 	// エフェクトの更新
 	effect_->Update();
 
-	// 敵コライダーの更新
-	Collider::radius_ = items_->GetMainData().colliderSize;
-	Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
-	Collider::Update();
+    // 敵コライダーの更新
+	NumaEngine::Collider::radius_ = items_->GetMainData().colliderSize;
+	NumaEngine::Collider::centerPosition_ = transform_.translation_ + items_->GetMainData().colliderOffset;
+	NumaEngine::Collider::Update();
 
 	// アニメーションの更新
 	Animation::Update();
@@ -82,9 +82,9 @@ void BaseEnemy::Update()
 void BaseEnemy::TransformUpdate()
 {
 	// 敵の行動許可が出ていなければ更新できない
-	if (!stateParam_.enableMove_) {
+    if (!stateParam_.enableMove_) {
 		// オブジェクトの更新
-		Collider::Update();
+		NumaEngine::Collider::Update();
 		Animation::TransformUpdate();
 	}
 }
@@ -106,7 +106,7 @@ void BaseEnemy::Dead()
 	transform_.translation_ = items_->GetMainData().startPosition;
 	Animation::GetMaterial().enableDraw = false;
 	Animation::GetTimeStop() = true;
-	Collider::isActive_ = false;
+    NumaEngine::Collider::isActive_ = false;
 	ray_->SetActive(false);
 	ray_->Update(NumaEngine::Vector3::ExprZero, NumaEngine::Vector3::ExprUnitZ);
 	// 影の描画も切る
@@ -209,8 +209,8 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		}
 		// 体力が0以下なら死亡処理へ
 		if (currentHp_ <= 0) {
-			// Colliderを無効化する
-			Collider::isActive_ = false;
+        // Colliderを無効化する
+		this->isActive_ = false;
 			ray_->SetActive(false);
 			stateParam_.isAlive_ = false;
 			// 敵がノックバックする方向を取得

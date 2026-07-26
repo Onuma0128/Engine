@@ -9,43 +9,43 @@
 
 #include "Line3d.h"
 
-Collider::~Collider()
+NumaEngine::Collider::~Collider()
 {
 	CollisionManager::GetInstance()->RemoveCollider(this);
 	if (line_ == nullptr) { return; }
-    NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
+	NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
-void Collider::AddCollider()
+void NumaEngine::Collider::AddCollider()
 {
 	CollisionManager::GetInstance()->AddCollider(this);
 }
 
-void Collider::RemoveCollider()
+void NumaEngine::Collider::RemoveCollider()
 {
 	CollisionManager::GetInstance()->RemoveCollider(this);
 	if (line_ == nullptr) { return; }
-    NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
+	NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
-void Collider::DrawCollider()
+void NumaEngine::Collider::DrawCollider()
 {
 #ifdef ENABLE_EDITOR
 	// Lineの初期化
-	line_ = std::make_unique<Line3d>();
+	line_ = std::make_unique<NumaEngine::Line3d>();
 	linePositions_ = CreateLinePositions();
 	line_->Initialize(linePositions_);
-#endif // ENABLE_EDITOR	
+#endif // ENABLE_EDITOR    
 }
 
-void Collider::Update()
+void NumaEngine::Collider::Update()
 {
 	if (line_ == nullptr) { return; }
 
 	linePositions_ = CreateLinePositions();
 	for (auto& linePos : linePositions_) {
-    Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rotate_);
-	NumaEngine::Vector3 translate = centerPosition_ + offsetPosition_.Transform(rotateMatrix);
+		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rotate_);
+		NumaEngine::Vector3 translate = centerPosition_ + offsetPosition_.Transform(rotateMatrix);
 		linePos = linePos.Transform(rotateMatrix) + translate;
 	}
 	line_->SetPositions(linePositions_);
@@ -57,7 +57,7 @@ void Collider::Update()
 	line_->Update();
 }
 
-void Collider::LineUpdate()
+void NumaEngine::Collider::LineUpdate()
 {
 	if (line_ == nullptr) { return; }
 
@@ -71,31 +71,31 @@ void Collider::LineUpdate()
 	line_->Update();
 }
 
-void Collider::SetColor(const NumaEngine::Vector3& color)
+void NumaEngine::Collider::SetColor(const NumaEngine::Vector3& color)
 {
 	if (line_ == nullptr) { return; }
 	line_->SetColor(color);
 }
 
-void Collider::SetDebugDrawEnable(bool flag)
+void NumaEngine::Collider::SetDebugDrawEnable(bool flag)
 {
 	debugDrawEnable_ = flag;
 }
 
-std::vector<NumaEngine::Vector3> Collider::CreateLinePositions()
+std::vector<NumaEngine::Vector3> NumaEngine::Collider::CreateLinePositions()
 {
 	// Line用の座標を作成
-    std::vector<NumaEngine::Vector3> linePositions;
-	switch (myType_)
+	std::vector<NumaEngine::Vector3> linePositions;
+    switch (myType_)
 	{
-	case ColliderType::kSphere:
+	case NumaEngine::ColliderType::kSphere:
 		linePositions = line_->CreateSphere(radius_);
 		break;
-	case ColliderType::kSegment:
-        linePositions = line_->CreateSegment(origin_, diff_);
+	case NumaEngine::ColliderType::kSegment:
+		linePositions = line_->CreateSegment(origin_, diff_);
 		break;
-	case ColliderType::kOBB:
-        linePositions = line_->CreateBox(-size_, size_);
+	case NumaEngine::ColliderType::kOBB:
+		linePositions = line_->CreateBox(-size_, size_);
 		break;
 	default:
 		break;

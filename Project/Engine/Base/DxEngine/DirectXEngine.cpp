@@ -153,8 +153,8 @@ void NumaEngine::DirectXEngine::DeviceInitialize()
 		assert(SUCCEEDED(hr));
 		//ソフトウェアアダプタでなければ採用
 		if (!(adapteDesc.Flags & DXGI_ADAPTER_FLAG3_SOFTWARE)) {
-			//採用したアダプタの情報をログに出力。wstringの方なので注意
-			Logger::Log(stringUtility_->ConvertString(std::format(L"Use Adapater : {}\n", adapteDesc.Description)));
+            //採用したアダプタの情報をログに出力。wstringの方なので注意
+			NumaEngine::Logger::Log(stringUtility_->ConvertString(std::format(L"Use Adapater : {}\n", adapteDesc.Description)));
 			//Log(std::format(L"Use Adapater : {}\n", adapteDesc.Description));
 			break;
 		}
@@ -174,14 +174,14 @@ void NumaEngine::DirectXEngine::DeviceInitialize()
 		hr = D3D12CreateDevice(useAdapter.Get(), featureLevels[i], IID_PPV_ARGS(&device_));
 		//指定した機能レベルでデバイスが生成できたかを確認
 		if (SUCCEEDED(hr)) {
-			//生成できたのでログ出力を行ってループを抜ける
-			Logger::Log(std::format("FeatureLevel : {}\n", featureLevelStrings[i]));
+            //生成できたのでログ出力を行ってループを抜ける
+			NumaEngine::Logger::Log(std::format("FeatureLevel : {}\n", featureLevelStrings[i]));
 			break;
 		}
 	}
 	//デバイスの生成がうまくいかなかったので起動できない
 	assert(device_ != nullptr);
-	Logger::Log("Complete create D3D12Device!!!\n");
+    NumaEngine::Logger::Log("Complete create D3D12Device!!!\n");
 #ifdef ENABLE_EDITOR
 	ID3D12InfoQueue* infoQueue = nullptr;
 	if (SUCCEEDED(device_->QueryInterface(IID_PPV_ARGS(&infoQueue)))) {

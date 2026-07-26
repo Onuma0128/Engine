@@ -1,4 +1,4 @@
-﻿#include "MapCollision.h"
+#include "MapCollision.h"
 
 #include "imgui.h"
 
@@ -10,8 +10,8 @@ void MapCollision::Init(SceneJsonLoader loader)
 	for (auto it = loader.GetData().begin(); it != loader.GetData().end();) {
 		if (it->second.groupName == "FieldObject") {
 			auto& object = it->second;
-			if (object.collider.active) {
-				if (object.collider.type == ColliderType::kOBB) {
+                if (object.collider.active) {
+				if (object.collider.type == NumaEngine::ColliderType::kOBB) {
 					NumaEngine::Vector2 center = NumaEngine::Vector2::Rotate(
 						{ object.collider.center.x,object.collider.center.z },
 						-object.collider.rotate

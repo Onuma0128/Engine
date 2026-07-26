@@ -1,4 +1,4 @@
-﻿#include "SplineMover.h"
+#include "SplineMover.h"
 
 #include "DeltaTimer.h"
 
@@ -6,6 +6,16 @@ void SplineMover::Reset()
 {
 	splinePositions_.clear();
 	arcLengths_.clear();
+}
+
+void SplineMover::DebugSpline(bool flag)
+{
+#ifdef ENABLE_EDITOR
+	if (splines_) {
+		splines_->GetMaterial().enableDraw = flag;
+		splines_->Update();
+	}
+#endif // ENABLE_EDITOR
 }
 
 void SplineMover::Update(const float speed, float lookAt_t)
@@ -66,11 +76,11 @@ void SplineMover::ComputeArcLengths()
 	}
 
 #ifdef ENABLE_EDITOR
-	// ラインの初期化
-        if (splines_ == nullptr) {
-		splines_ = std::make_unique<Line3d>();
+    // ラインの初期化
+		if (splines_ == nullptr) {
+		splines_ = std::make_unique<NumaEngine::Line3d>();
 		splines_->Initialize(linePositions);
-        splines_->SetColor(NumaEngine::Vector3::ExprUnitZ);
+		splines_->SetColor(NumaEngine::Vector3::ExprUnitZ);
 	} else {
 		splines_->SetPositions(linePositions);
 		splines_->Update();

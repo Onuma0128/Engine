@@ -39,7 +39,7 @@ ParticleEmitter::ParticleEmitter(const std::string name)
     AABB aabb = emitter_.emitterSize;
     linePosition_ = CreateLineBox(emitter_.emitterSize);
 
-    line_ = std::make_unique<Line3d>();
+    line_ = std::make_unique<NumaEngine::Line3d>();
     line_->Initialize(linePosition_);
 #endif // ENABLE_EDITOR
 }

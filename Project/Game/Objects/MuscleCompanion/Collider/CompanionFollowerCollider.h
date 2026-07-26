@@ -8,7 +8,7 @@ class MuscleCompanion;
 /// <summary>
 /// 後続判定用コライダークラス
 /// </summary>
-class CompanionFollowerCollider : public Collider
+class CompanionFollowerCollider : public NumaEngine::Collider
 {
 public:
 
@@ -23,9 +23,9 @@ public:
 	void Update();
 
 	// セッター
-	void SetCompanion(MuscleCompanion* companion) { companion_ = companion; }
-	void SetActive(bool flag) { Collider::isActive_ = flag; }
-	void SetRadius(float radius) { Collider::radius_ = radius; }
+    void SetCompanion(MuscleCompanion* companion) { companion_ = companion; }
+	void SetActive(bool flag) { NumaEngine::Collider::isActive_ = flag; }
+	void SetRadius(float radius) { NumaEngine::Collider::radius_ = radius; }
 
 private:
 
@@ -33,9 +33,9 @@ private:
 	/// 当たり判定
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionEnter(Collider* other) override;
-	void OnCollisionStay(Collider* other) override;
-	void OnCollisionExit(Collider* other) override;
+    void OnCollisionEnter(NumaEngine::Collider* other) override;
+	void OnCollisionStay(NumaEngine::Collider* other) override;
+	void OnCollisionExit(NumaEngine::Collider* other) override;
 
 private:
 

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 
@@ -104,7 +104,7 @@ public:
 	void SetFirstDashAttack(bool flag) { isFirstDashAttack_ = flag; }
 	void SetInvincible(bool flag) { isInvincible_ = flag; }
 	void SetDashDirection(const NumaEngine::Vector3& direction) { dashDirection_ = direction; }
-	void SetColliderName(const std::string& name) { Collider::colliderName_ = name; }
+    void SetColliderName(const std::string& name) { colliderName_ = name; }
 	void SetOutLineColor(const NumaEngine::Vector3& color) { Animation::GetMaterial().outlineColor = color; }
 	// ゲッター
 	const CompanionAdjustItem* GetItems()const { return items_; }

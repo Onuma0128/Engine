@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include <random>
@@ -67,8 +67,8 @@ private:
 	// 今向かっているポイント
 	NumaEngine::Vector3 nowCheckPoint_;
 
-	// ターゲットした時のコライダー
-	Collider* targetCollider_ = nullptr;
+    // ターゲットした時のコライダー
+	NumaEngine::Collider* targetCollider_ = nullptr;
 
 };
 

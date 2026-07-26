@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -54,12 +54,7 @@ public:
 	/// スプラインのデバッグ描画を有効/無効にする
 	/// </summary>
 	/// <param name="flag"></param>
-	void DebugSpline(bool flag) { 
-		if (splines_) {
-			splines_->GetMaterial().enableDraw = flag;
-			splines_->Update();
-		}
-	}
+    void DebugSpline(bool flag);
 
 	/// <summary>
 	/// スプラインの座標を逆順にする
@@ -109,7 +104,7 @@ private:
 
 	// アルゴリズムで出た座標を格納
 	std::vector<NumaEngine::Vector3> splinePositions_;
-	std::unique_ptr<Line3d> splines_;
+    std::unique_ptr<NumaEngine::Line3d> splines_;
 	// 累積距離
 	std::vector<float> arcLengths_;
 

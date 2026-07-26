@@ -1,18 +1,18 @@
-﻿#include "EnemyBulletPredictionEffect.h"
+#include "EnemyBulletPredictionEffect.h"
 
 #include "Collision3D.h"
 
 void EnemyBulletPredictionEffect::Init()
 {
 	// コライダーを設定
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kSegment;
-	Collider::colliderName_ = "EnemyBulletRay";
-	Collider::isActive_ = true;
-	Collider::targetColliderName_ = {
+    this->AddCollider();
+	this->myType_ = NumaEngine::ColliderType::kSegment;
+	this->colliderName_ = "EnemyBulletRay";
+	this->isActive_ = true;
+	this->targetColliderName_ = {
 		"Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall","MuscleCompanion",
 	};
-	Collider::DrawCollider();
+    this->DrawCollider();
 
 	// エフェクトの初期化
 	plane_ = std::make_unique<PrimitiveDrawr>();
@@ -26,9 +26,9 @@ void EnemyBulletPredictionEffect::Init()
 
 void EnemyBulletPredictionEffect::Update()
 {
-	// コライダーを設定する
-	Collider::origin_ = enemyPosition_ + NumaEngine::Vector3::ExprUnitY;
-	Collider::diff_ = (plane_->GetTransform().translation - enemyPosition_) * 2.0f;
+    // コライダーを設定する
+	this->origin_ = enemyPosition_ + NumaEngine::Vector3::ExprUnitY;
+	this->diff_ = (plane_->GetTransform().translation - enemyPosition_) * 2.0f;
 
 	if (isHit_) {
 		plane_->GetTransform().scale.y = hitDistance_ * 0.5f;
@@ -36,23 +36,23 @@ void EnemyBulletPredictionEffect::Update()
 		plane_->GetTransform().translation = (enemyPosition_ + hitPosition_) * 0.5f;
 		plane_->GetTransform().translation.y = y;
 	}
-	// コライダーとエフェクトの更新
-	Collider::Update();
+    // コライダーとエフェクトの更新
+	NumaEngine::Collider::Update();
 	plane_->Update();
 	this->Reset();
 }
 
-void EnemyBulletPredictionEffect::OnCollisionEnter(Collider* other)
+void EnemyBulletPredictionEffect::OnCollisionEnter(NumaEngine::Collider* other)
 {
 }
 
-void EnemyBulletPredictionEffect::OnCollisionStay(Collider* other)
+void EnemyBulletPredictionEffect::OnCollisionStay(NumaEngine::Collider* other)
 {
 	const auto& name = other->GetColliderName();
 	const auto type = other->GetMyColliderType();
 	RaycastHit hit{};
 
-	if (type == ColliderType::kOBB) {
+    if (type == NumaEngine::ColliderType::kOBB) {
 		if (Collision3D::OBBSegment(other, this, &hit)) {
 			float distance = NumaEngine::Vector3::Distance(hit.point, enemyPosition_);
 			if (hitDistance_ < distance) { return; }
@@ -62,7 +62,7 @@ void EnemyBulletPredictionEffect::OnCollisionStay(Collider* other)
 		}
 	} else {
 		if (Collision3D::SphereSegment(other, this, &hit)) {
-			float distance = NumaEngine::Vector3::Distance(hit.point, enemyPosition_);
+            float distance = NumaEngine::Vector3::Distance(hit.point, enemyPosition_);
 			if (hitDistance_ < distance) { return; }
 			hitDistance_ = distance;
 			hitPosition_ = hit.point;
@@ -72,7 +72,7 @@ void EnemyBulletPredictionEffect::OnCollisionStay(Collider* other)
 	hitPosition_.y = 0.0f;
 }
 
-void EnemyBulletPredictionEffect::OnCollisionExit(Collider* other)
+void EnemyBulletPredictionEffect::OnCollisionExit(NumaEngine::Collider* other)
 {
 }
 

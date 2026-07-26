@@ -1,4 +1,4 @@
-﻿#include "BossRay.h"
+#include "BossRay.h"
 
 #include "Collision3D.h"
 
@@ -7,14 +7,14 @@
 void BossRay::Init()
 {
 	// コライダーを設定
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kSegment;
-	Collider::colliderName_ = "BossRay";
-	Collider::isActive_ = false;
-	Collider::targetColliderName_ = {
+    this->AddCollider();
+	this->myType_ = NumaEngine::ColliderType::kSegment;
+	this->colliderName_ = "BossRay";
+	this->isActive_ = false;
+	this->targetColliderName_ = {
 		"Player","Building","DeadTree","fence","Bush","StoneWall","ShortStoneWall",
 	};
-	Collider::DrawCollider();
+    this->DrawCollider();
 
 	isLooking_ = false;
 }
@@ -28,16 +28,16 @@ void BossRay::Update(const NumaEngine::Vector3& start, const NumaEngine::Vector3
 	start_ = start;
 	end_ = end;
 
-	// 反射処理のコライダーを設定
-    origin_ = start_;
+    // 反射処理のコライダーを設定
+	origin_ = start_;
 	diff_ = end_;
-	Collider::LineUpdate();
+	this->LineUpdate();
 }
 
 void BossRay::SetActive(const bool flag)
 {
-	Collider::isActive_ = flag;
-	Collider::LineUpdate();
+    this->isActive_ = flag;
+	this->LineUpdate();
 }
 
 void BossRay::Reset()
@@ -45,11 +45,11 @@ void BossRay::Reset()
 	isLooking_ = false;
 }
 
-void BossRay::OnCollisionEnter(Collider* other)
+void BossRay::OnCollisionEnter(NumaEngine::Collider* other)
 {
 }
 
-void BossRay::OnCollisionStay(Collider* other)
+void BossRay::OnCollisionStay(NumaEngine::Collider* other)
 {
 
 	const auto& name = other->GetColliderName();
@@ -57,7 +57,7 @@ void BossRay::OnCollisionStay(Collider* other)
 
 	RaycastHit hit{};
 	if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
-		if (type == ColliderType::kOBB) {
+        if (type == NumaEngine::ColliderType::kOBB) {
 			if (Collision3D::OBBSegment(other, this, &hit)) {
 				float length = (hit.point - start_).Length();
 				if (hitPointLength_ < length) { return; }
@@ -83,7 +83,7 @@ void BossRay::OnCollisionStay(Collider* other)
 	}
 }
 
-void BossRay::OnCollisionExit(Collider* other)
+void BossRay::OnCollisionExit(NumaEngine::Collider* other)
 {
 	const auto& name = other->GetColliderName();
 

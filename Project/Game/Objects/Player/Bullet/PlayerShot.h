@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <vector>
 #include <array>
@@ -16,7 +16,7 @@ class Player;
 /// <summary>
 /// プレイヤーの弾を管理するクラス
 /// </summary>
-class PlayerShot : public Collider
+class PlayerShot : public NumaEngine::Collider
 {
 public:
 
@@ -83,7 +83,7 @@ public:
 	/// Rayが当たった座標を取得する
 	/// </summary>
 	/// <returns></returns>
-	const Collider* GetRayHitCollider()const { return rayHitCollider_; }
+    const NumaEngine::Collider* GetRayHitCollider()const { return rayHitCollider_; }
 
 	/// <summary>
 	/// Rayが当たったかどうかをリセットする
@@ -120,7 +120,7 @@ public:
 	/// Rayが当たった座標を取得する
 	/// </summary>
 	/// <returns></returns>
-	Collider* GetTargetCollider() { return targetCollider_; }
+    NumaEngine::Collider* GetTargetCollider() { return targetCollider_; }
 
 private:
 
@@ -128,7 +128,7 @@ private:
 	/// 当たり判定
 	/// </summary>
 	/// <param name="other"></当たったColliderのポインタが入る>
-	void OnCollisionStay(Collider* other) override;
+    void OnCollisionStay(NumaEngine::Collider* other) override;
 
 	/// <summary>
 	/// Rayの更新
@@ -143,7 +143,7 @@ private:
 	bool isShot_ = false;
 	// 攻撃ができたか
 	bool isCanAttack_ = false;
-	Collider* targetCollider_{};
+    NumaEngine::Collider* targetCollider_{};
 	// 集合要求したかどうか
 	bool isGatherRequested_ = false;
 
@@ -153,7 +153,7 @@ private:
 	// Rayが当たったかどうか
 	bool isRayHit_ = false;
 	// Rayが当たった座標
-	Collider* rayHitCollider_ = nullptr;
+    NumaEngine::Collider* rayHitCollider_ = nullptr;
 
 	// 弾を撃つ方向の回転
     NumaEngine::Quaternion rightStickQuaternion_{};

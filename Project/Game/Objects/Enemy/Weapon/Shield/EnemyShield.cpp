@@ -1,4 +1,4 @@
-﻿#include "EnemyShield.h"
+#include "EnemyShield.h"
 
 #include "DeltaTimer.h"
 
@@ -11,10 +11,10 @@ EnemyShield::EnemyShield(BaseEnemy* enemy) : EnemyWeaponBase(enemy) {}
 void EnemyShield::Finalize()
 {
 	Object3d::RemoveRenderer();
-	Collider::RemoveCollider();
+	NumaEngine::Collider::RemoveCollider();
 }
 
-void EnemyShield::Init(ColliderType type, const std::string& name)
+void EnemyShield::Init(NumaEngine::ColliderType type, const std::string& name)
 {
 	Object3d::Initialize("Shield_Heater.obj");
 	Object3d::SetSceneRenderer();
@@ -22,13 +22,13 @@ void EnemyShield::Init(ColliderType type, const std::string& name)
 	Object3d::GetMaterial().outlineSceneColor = true;
 	Object3d::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 
-	Collider::AddCollider();
-	Collider::myType_ = type;
-	Collider::colliderName_ = name;
-	Collider::targetColliderName_ = {
+    NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::myType_ = type;
+	NumaEngine::Collider::colliderName_ = name;
+	NumaEngine::Collider::targetColliderName_ = {
 		"MuscleCompanion","SearchDashMuscleCompanion",
 	};
-	Collider::DrawCollider();
+	NumaEngine::Collider::DrawCollider();
 
 	rotateY_ = NumaEngine::Quaternion::IdentityQuaternion();
 	rotateMatrix_ = Matrix4x4::Identity();
@@ -45,10 +45,10 @@ void EnemyShield::Update()
 		rotateY_ = NumaEngine::Quaternion::DirectionToQuaternion(rotateY_, direction, data.lerpSpeed * DeltaTimer::GetDeltaTime());
 		rotateMatrix_ = NumaEngine::Quaternion::MakeRotateMatrix(rotateY_);
 	}
-	Collider::size_ = data.shieldColliderSize;
-	Collider::rotate_ = rotateY_;
-	Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.shieldColliderOffset.Transform(rotateMatrix_);
-	Collider::Update();
+    NumaEngine::Collider::size_ = data.shieldColliderSize;
+	NumaEngine::Collider::rotate_ = rotateY_;
+	NumaEngine::Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.shieldColliderOffset.Transform(rotateMatrix_);
+	NumaEngine::Collider::Update();
 
 	transform_.scale_ = data.shieldSize;
 	transform_.rotation_ = rotateY_;
@@ -56,26 +56,26 @@ void EnemyShield::Update()
 	Object3d::Update();
 }
 
-void EnemyShield::OnCollisionEnter(Collider* other)
+void EnemyShield::OnCollisionEnter(NumaEngine::Collider* other)
 {
 }
 
-void EnemyShield::OnCollisionStay(Collider* other)
+void EnemyShield::OnCollisionStay(NumaEngine::Collider* other)
 {
 }
 
-void EnemyShield::OnCollisionExit(Collider* other)
+void EnemyShield::OnCollisionExit(NumaEngine::Collider* other)
 {
 }
 
 void EnemyShield::SetIsActive(bool flag)
 {
 	Object3d::GetMaterial().enableDraw = flag;
-	Collider::isActive_ = flag;
+    NumaEngine::Collider::isActive_ = flag;
 }
 
 bool EnemyShield::GetIsActive()
 {
-	return Collider::isActive_;
+    return NumaEngine::Collider::isActive_;
 }
 

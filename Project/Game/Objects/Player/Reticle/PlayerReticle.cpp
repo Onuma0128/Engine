@@ -1,4 +1,4 @@
-﻿#include "PlayerReticle.h"
+#include "PlayerReticle.h"
 
 #include <numbers>
 
@@ -22,11 +22,11 @@ void PlayerReticle::Init()
 	Sprite::SetColor({ 1.0f,1.0f,1.0f,1.0f });
 	Sprite::Update();
 
-	Collider::AddCollider();
-	Collider::myType_ = ColliderType::kSegment;
-	Collider::colliderName_ = "PlayerReticle";
-	Collider::isActive_ = false;
-	Collider::targetColliderName_ = { "Enemy" };
+    NumaEngine::Collider::AddCollider();
+	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kSegment;
+	NumaEngine::Collider::colliderName_ = "PlayerReticle";
+	NumaEngine::Collider::isActive_ = false;
+	NumaEngine::Collider::targetColliderName_ = { "Enemy" };
 	hitCount_ = 0;
 	reticleColorTimer_ = 2.0f;
 }
@@ -76,7 +76,7 @@ void PlayerReticle::Draw()
 	}
 }
 
-void PlayerReticle::OnCollisionEnter(Collider* other)
+void PlayerReticle::OnCollisionEnter(NumaEngine::Collider* other)
 {
 	// 当たった敵のTransformを作成して取得する
 	if (other->GetColliderName() == "Enemy" &&
@@ -90,18 +90,18 @@ void PlayerReticle::OnCollisionEnter(Collider* other)
 	}
 }
 
-void PlayerReticle::OnCollisionStay(Collider* other)
+void PlayerReticle::OnCollisionStay(NumaEngine::Collider* other)
 {
 }
 
-void PlayerReticle::OnCollisionExit(Collider* other)
+void PlayerReticle::OnCollisionExit(NumaEngine::Collider* other)
 {
 }
 
 void PlayerReticle::SegmentUpdate()
 {
-	if (hitCount_ >= 6) { Collider::isActive_ = false; }
-	else { Collider::isActive_ = true; }
+    if (hitCount_ >= 6) { NumaEngine::Collider::isActive_ = false; }
+	else { NumaEngine::Collider::isActive_ = true; }
 
     NumaEngine::Vector2 position = transform_.position;
 	NumaEngine::Vector3 ndc = {
@@ -113,8 +113,8 @@ void PlayerReticle::SegmentUpdate()
     NumaEngine::Vector3 nearPos = NumaEngine::Vector3::Transform(NumaEngine::Vector3(ndc.x, ndc.y, 0.0f), invVP);
 	NumaEngine::Vector3 farPos = NumaEngine::Vector3::Transform(NumaEngine::Vector3(ndc.x, ndc.y, 1.0f), invVP);
 
-	Collider::origin_ = nearPos;
-	Collider::diff_ = (farPos - nearPos);
+    NumaEngine::Collider::origin_ = nearPos;
+	NumaEngine::Collider::diff_ = (farPos - nearPos);
 }
 
 void PlayerRayReticle::Init()

@@ -51,7 +51,7 @@ public:
 
 private:
 
-	std::unique_ptr<Line3d> bone_ = nullptr;
+    std::unique_ptr<NumaEngine::Line3d> bone_ = nullptr;
 
 };
 
