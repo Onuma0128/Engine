@@ -1,8 +1,10 @@
-﻿#pragma once
+#pragma once
 
 #include "JsonFunction.h"
 
-// フィールドオブジェクト全体の項目
+/// <summary>
+/// フィールドオブジェクト全体のデータ構造体
+/// </summary>
 struct FieldObjectMainData {
 	float shakePower;		// シェイクの強さ
 	NumaEngine::Vector3 shakeOffset;	// シェイクのオフセット

@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <cmath>
 #include <cassert>
 #include <vector>
@@ -75,31 +74,31 @@ namespace NumaEngine {
         static Vector3 TransformPointProjective(const Vector3& p, const Matrix4x4& m);
 
         // 単項演算子オーバーロード
-        NumaEngine::Vector3 operator+() const;
-        NumaEngine::Vector3 operator-() const;
+        Vector3 operator+() const;
+        Vector3 operator-() const;
 
         // 二項演算子オーバーロード
-        NumaEngine::Vector3 operator+(const NumaEngine::Vector3& v) const;
-        NumaEngine::Vector3 operator-(const NumaEngine::Vector3& v) const;
-        NumaEngine::Vector3 operator*(float scalar) const;
+        Vector3 operator+(const Vector3& v) const;
+        Vector3 operator-(const Vector3& v) const;
+        Vector3 operator*(float scalar) const;
 
         // 複合代入演算子オーバーロード
-        NumaEngine::Vector3& operator+=(const NumaEngine::Vector3& v);
-        NumaEngine::Vector3& operator-=(const NumaEngine::Vector3& v);
-        NumaEngine::Vector3& operator*=(float scalar);
-        bool operator==(const NumaEngine::Vector3& v);
-        bool operator!=(const NumaEngine::Vector3& v);
+        Vector3& operator+=(const Vector3& v);
+        Vector3& operator-=(const Vector3& v);
+        Vector3& operator*=(float scalar);
+        bool operator==(const Vector3& v);
+        bool operator!=(const Vector3& v);
 
         // フレンド関数：スカラー倍の演算子オーバーロード
-        friend NumaEngine::Vector3 operator*(float scalar, const NumaEngine::Vector3& v);
+        friend Vector3 operator*(float scalar, const Vector3& v);
 
         float& operator[](int i);             // 書き込み用
         const float& operator[](int i) const; // 読み取り用
     };
-}
-// Ensure scalar * NumaEngine::Vector3 operator is declared in the NumaEngine namespace
-namespace NumaEngine {
-    NumaEngine::Vector3 operator*(float scalar, const NumaEngine::Vector3& v);
-}
+
+    // Ensure scalar * Vector3 operator is declared in the NumaEngine namespace
+    Vector3 operator*(float scalar, const Vector3& v);
+
+} // namespace NumaEngine
 
 

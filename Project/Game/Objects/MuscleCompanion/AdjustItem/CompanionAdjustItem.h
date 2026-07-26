@@ -1,10 +1,12 @@
-﻿#pragma once
+#pragma once
 
 #include <array>
 
 #include "JsonFunction.h"
 
-// 仲間全体の調整項目
+/// <summary>
+/// 仲間全体のデータ構造体
+/// </summary>
 struct CompanionMainData {
 	int maxHP;						// 最大体力
 	float speed;					// 移動速度
@@ -27,7 +29,9 @@ struct CompanionMainData {
 	float clearStateTime;			// 仲間がクリアステートになる時間
 };
 
-// 仲間のダッシュの調整項目
+/// <summary>
+/// 仲間のダッシュのデータ構造体
+/// </summary>
 struct CompanionDashData {
 	float dashSpeed;				// 攻撃時の移動速度
 	float dashTargetDistance;		// ダッシュ時の目指す距離
@@ -40,7 +44,9 @@ struct CompanionDashData {
 	float pushUpTime;				// 待ち時間の後の攻撃力アップする時間
 };
 
-// 仲間の攻撃の調整項目
+/// <summary>
+/// 仲間の攻撃のデータ構造体
+/// </summary>
 struct CompanionAttackData {
 	float shakePowerHigh;			// カメラシェイクの振動値
 	float shakePowerLow;			// カメラシェイクの振動値
@@ -53,7 +59,9 @@ struct CompanionAttackData {
 	float attackRecoveryTime;		// 攻撃が終わってから硬直時間
 };
 
-// 仲間のノックバックの調整項目
+/// <summary>
+/// 仲間のノックバックのデータ構造体
+/// </summary>
 struct CompanionKnockbackData {
 	float knockbackSpeed;			// ノックバックスピード
 	float knockbackTime;			// ノックバックしている時間
@@ -70,7 +78,9 @@ struct CompanionPushUpData {
 	float effectTime;							// レベルアップのエフェクトの時間	
 };
 
-// 仲間のエフェクトの調整項目
+/// <summary>
+/// 仲間のエフェクトのデータ構造体
+/// </summary>
 struct CompanionEffectData {
 	NumaEngine::Vector3 nextArrowScale;				// 次発射される矢印のスケール
 	NumaEngine::Vector3 nextArrowPosition;			// 次発射される矢印の座標
@@ -81,7 +91,9 @@ struct CompanionEffectData {
 	float lerpSpeed;					// エフェクトのラープ移動スピード
 };
 
-// 仲間の効果音の音量
+/// <summary>
+/// 仲間の効果音のデータ構造体
+/// </summary>
 struct CompanionSeVolumeData {
 	float dashHit;					// ダッシュで敵に当たった時
 	float footsteps;				// 足音

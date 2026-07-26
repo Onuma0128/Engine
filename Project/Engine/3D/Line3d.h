@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #define NOMINMAX
 #include <d3d12.h>
@@ -72,6 +72,7 @@ private:
 	uint32_t lineIndex_ = 0;
 
 };
+
 
 
 

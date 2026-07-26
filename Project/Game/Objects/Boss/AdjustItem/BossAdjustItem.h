@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 
@@ -6,7 +6,9 @@
 #include "Vector2.h"
 #include "Vector3.h"
 
-// ボス全体の調整項目
+/// <summary>
+/// ボス全体のデータ構造体
+/// </summary>
 struct BossMainData {
  NumaEngine::Vector3 startPosition;			// ボスの最初の座標
 	NumaEngine::Vector3 sabStartPosition;		// ボスのもう1つの最初の座標
@@ -23,19 +25,25 @@ struct BossMainData {
 	bool debugSpline = false;		// ボスの経路探索のデバッグ表示
 };
 
-// ボスダウン時の調整項目
+/// <summary>
+/// ボスダウン時のデータ構造体
+/// </summary>
 struct BossDownData {
 	float shakePower;				// カメラシェイクの振動値
 	float downTime;					// ダウンしている時間
 };
 
-// ボスの敵スポーン時の調整項目
+/// <summary>
+/// ボスの敵スポーン時のデータ構造体
+/// </summary>
 struct BossEnemySpawnData {
 	int maxSpawnCount;				// ボスの敵をスポーンさせる最大数
 	std::vector<NumaEngine::Vector3> positions;	// ボスの敵をスポーンさせる座標
 };
 
-// ボスの近接攻撃の調整項目
+/// <summary>
+/// ボスの近接攻撃のデータ構造体
+/// </summary>
 struct BossMeleeData {
 	float shakePower;				// カメラシェイクの振動値
 	float jumpVelocityY;			// ジャンプの速度
@@ -53,7 +61,9 @@ struct BossMeleeData {
 	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
-// ボスのジャンプ攻撃の調整項目
+/// <summary>
+/// ボスのジャンプ攻撃のデータ構造体
+/// </summary>
 struct BossJumpAttackData {
 	float airSpeed;					// 空中にいる時のスピード
 	float shakePower;				// カメラシェイクの振動値
@@ -74,7 +84,9 @@ struct BossJumpAttackData {
 	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
-// ボスのダッシュ攻撃の調整項目
+/// <summary>
+/// ボスのダッシュ攻撃のデータ構造体
+/// </summary>
 struct BossDashAttackData {
 	float dashSpeed;				// ダッシュ時のスピード
 	float attackColliderSize;		// 攻撃時のコライダーサイズ
@@ -89,7 +101,9 @@ struct BossDashAttackData {
 	float attackEffectAppearTime;	// 攻撃のエフェクト発生時間
 };
 
-// ボスの登場シーンデータ
+/// <summary>
+/// ボスの登場シーンのデータ構造体
+/// </summary>
 struct BossAppearData {
 	float shakePower;				// カメラシェイクの振動値
 	float jumpVelocityY;			// ジャンプの速度
@@ -100,7 +114,9 @@ struct BossAppearData {
 	float recoveryTime;				// フェードインが終わりカメラ切り替えを待っている時間
 };
 
-// ボスの効果音の音量
+/// <summary>
+/// ボスの効果音のデータ構造体
+/// </summary>
 struct BossSeVolumeData {
 	float attackCaveat;				// ボスの攻撃警告
 	float attackDash;				// ボスのダッシュ攻撃
@@ -110,7 +126,9 @@ struct BossSeVolumeData {
 	float landing;					// 着地時
 };
 
-// ボスのスコア計算の調整項目
+/// <summary>
+/// ボスのスコア計算のデータ構造体
+/// </summary>
 struct BossStateScoreData {
 	float scoreAccumulationTime;	// スコアが加算される時間
 

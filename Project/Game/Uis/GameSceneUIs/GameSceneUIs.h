@@ -89,7 +89,9 @@ private:
     std::unique_ptr<NumaEngine::BaseUI> bossHpFrame_ = nullptr;
 	std::unique_ptr<BossHpBarUI> bossHpBar_ = nullptr;
 
-	// ボス登場シーンのフェードステート
+	/// <summary>
+	/// ボス登場シーンのフェードステート
+	/// </summary>
 	enum class BossFadeState {
 		StartIn,		// カメラ切り替え前のフェードイン
 		StartOut,		// カメラ切り替え後のフェードアウト
