@@ -4,6 +4,8 @@
 
 namespace NumaEngine { class Vector3; class Quaternion; }
 
+namespace NumaEngine {
+
 /// <summary>
 /// 4x4行列を表す構造体
 /// </summary>
@@ -26,7 +28,7 @@ public:
     static Matrix4x4 Multiply(const Matrix4x4& m1, const Matrix4x4& m2);
 
     // 拡縮行列の生成
-    static Matrix4x4 Scale(const NumaEngine::Vector3& scale);
+    static Matrix4x4 Scale(const Vector3& scale);
 
     // 回転行列の生成 (各軸)
     static Matrix4x4 RotateX(float radian);
@@ -34,10 +36,10 @@ public:
     static Matrix4x4 RotateZ(float radian);
 
     // 3軸の回転を合成した回転行列の生成
-    static Matrix4x4 Rotate(const NumaEngine::Vector3& rotate);
+    static Matrix4x4 Rotate(const Vector3& rotate);
 
     // 移動行列の生成
-    static Matrix4x4 Translate(const NumaEngine::Vector3& translate);
+    static Matrix4x4 Translate(const Vector3& translate);
 
     // 正規化回転行列
     static Matrix4x4 NormalizeRotation(const Matrix4x4& matrix);
@@ -46,13 +48,13 @@ public:
     Matrix4x4 operator*(const Matrix4x4& other) const;
 
     // LookAt行列の生成
-    static Matrix4x4 LookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3& target, const NumaEngine::Vector3& up);
+    static Matrix4x4 LookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
 
-    static NumaEngine::Vector3 ExtractEulerAngles(const Matrix4x4& m);
+    static Vector3 ExtractEulerAngles(const Matrix4x4& m);
 
     // アフィン変換行列の生成
-    static Matrix4x4 Affine(const NumaEngine::Vector3& scale, const NumaEngine::Vector3& rotate, const NumaEngine::Vector3& translate);
-    static Matrix4x4 Affine(const NumaEngine::Vector3& scale, const NumaEngine::Quaternion& rotate, const NumaEngine::Vector3& translate);
+    static Matrix4x4 Affine(const Vector3& scale, const Vector3& rotate, const Vector3& translate);
+    static Matrix4x4 Affine(const Vector3& scale, const Quaternion& rotate, const Vector3& translate);
 
     // 逆行列の生成
     static Matrix4x4 Inverse(const Matrix4x4& matrix);
@@ -63,12 +65,15 @@ public:
     // 正射影行列の生成
     static Matrix4x4 Orthographic(float left, float right, float bottom, float top,float nearClip, float farClip);
     // 任意軸回転行列の生成
-    static Matrix4x4 MakeRotateAxisAngle(const NumaEngine::Vector3& axis, float angle);
+    static Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle);
 
     // ある方向からある方向への回転行列
-    static Matrix4x4 DirectionToDirection(const NumaEngine::Vector3& from, const NumaEngine::Vector3& to);
+    static Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to);
 
 };
 
+} // namespace NumaEngine
+
+// Note: Prefer fully-qualified `NumaEngine::Matrix4x4`. Do not provide a global alias.
 
 

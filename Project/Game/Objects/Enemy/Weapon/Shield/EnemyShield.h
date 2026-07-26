@@ -55,7 +55,7 @@ public:
 private:
 
 	NumaEngine::Quaternion rotateY_;
-	Matrix4x4 rotateMatrix_;
+    NumaEngine::Matrix4x4 rotateMatrix_;
 
 };
 

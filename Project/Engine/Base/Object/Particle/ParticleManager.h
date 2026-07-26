@@ -41,7 +41,7 @@ public:
 		NumaEngine::Vector4 color;
 		int32_t enableLighting;
 		float padding[3];
-		Matrix4x4 uvTransform;
+      NumaEngine::Matrix4x4 uvTransform;
 		float shininess;
 		int32_t isUVFlipX;
 		int32_t isUVFlipY;
@@ -67,8 +67,8 @@ public:
     /// GPU用パーティクルデータ構造体
     /// </summary>
     struct ParticleForGPU {
-		Matrix4x4 WVP;
-		Matrix4x4 World;
+      NumaEngine::Matrix4x4 WVP;
+		NumaEngine::Matrix4x4 World;
 		NumaEngine::Vector4 color;
 	};
 

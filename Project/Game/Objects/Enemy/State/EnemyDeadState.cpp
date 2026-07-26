@@ -1,4 +1,4 @@
-﻿#include "EnemyDeadState.h"
+#include "EnemyDeadState.h"
 
 #include <numbers>
 
@@ -113,7 +113,7 @@ void EnemyDeadState::ResultTargetOffset()
 	// ノックバックする回転
 	// 敵のローカル空間で弾の座標が左か右にいるか計算
 	isLeft_ = false;
-	NumaEngine::Vector3 localPosition = NumaEngine::Vector3(enemy_->GetPlayerBullet()).Transform(Matrix4x4::Inverse(enemy_->GetTransform().matWorld_));
+    NumaEngine::Vector3 localPosition = NumaEngine::Vector3(enemy_->GetPlayerBullet()).Transform(NumaEngine::Matrix4x4::Inverse(enemy_->GetTransform().matWorld_));
 	NumaEngine::Quaternion rotateY = NumaEngine::Quaternion::IdentityQuaternion();
 	std::mt19937 randomEngine_(seedGenerator_());
 	// 弾が敵の左にあるか判定

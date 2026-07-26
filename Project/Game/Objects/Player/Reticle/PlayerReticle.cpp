@@ -109,7 +109,7 @@ void PlayerReticle::SegmentUpdate()
 		-((position.y / static_cast<float>(WinApp::kClientHeight)) * 2.0f - 1.0f),
 		1.0f
 	};
-	Matrix4x4 invVP = Matrix4x4::Inverse(CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix());
+    NumaEngine::Matrix4x4 invVP = NumaEngine::Matrix4x4::Inverse(CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix());
     NumaEngine::Vector3 nearPos = NumaEngine::Vector3::Transform(NumaEngine::Vector3(ndc.x, ndc.y, 0.0f), invVP);
 	NumaEngine::Vector3 farPos = NumaEngine::Vector3::Transform(NumaEngine::Vector3(ndc.x, ndc.y, 1.0f), invVP);
 

@@ -70,19 +70,19 @@ void MyGame::Draw()
 	SrvManager::GetInstance()->PreDraw();
 	// シャドウマップ深度処理
 	ShadowMap::GetInstance()->BeginShadowMapPass();
-	ModelInstanceRenderer::GetInstance()->AllDrawShadowDepth();
+ NumaEngine::ModelInstanceRenderer::GetInstance()->AllDrawShadowDepth();
 	ShadowMap::GetInstance()->EndShadowMapPass();
 	// 描画前の処理
 	directXEngine_->PreDraw();
 	// offscreen描画
 	directXEngine_->GetSceneRenderer()->AllDraw();
-	ModelInstanceRenderer::GetInstance()->AllDraw();
+    NumaEngine::ModelInstanceRenderer::GetInstance()->AllDraw();
 	// パーティクルの描画
 	//directXEngine_->RenderTexturePreDraw();
 	ParticleManager::GetInstance()->Draw();
 	// outlineMask処理
 	PostEffectManager::GetInstance()->BeginOutlineMaskPass();
-	ModelInstanceRenderer::GetInstance()->AllDrawOutlineMask();
+ NumaEngine::ModelInstanceRenderer::GetInstance()->AllDrawOutlineMask();
 	PostEffectManager::GetInstance()->EndOutlineMaskPass();
 	// offscreen描画終了
 	directXEngine_->RenderPost();

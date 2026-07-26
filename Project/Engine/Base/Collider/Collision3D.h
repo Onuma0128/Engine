@@ -27,7 +27,7 @@ struct AABB {
 // 回転有りボックス
 struct OBB {
 	NumaEngine::Vector3 center;
-	Matrix4x4 rotateMatrix;
+    NumaEngine::Matrix4x4 rotateMatrix;
 	NumaEngine::Vector3 size;
 };
 

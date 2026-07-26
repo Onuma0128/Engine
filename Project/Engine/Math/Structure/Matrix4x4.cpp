@@ -1,4 +1,4 @@
-﻿#include "Matrix4x4.h"
+#include "Matrix4x4.h"
 
 #include <cmath>
 #include <numbers>
@@ -9,7 +9,7 @@
 #include "Quaternion.h"
 
 // コンストラクタ：すべての要素を0に初期化
-Matrix4x4::Matrix4x4() {
+NumaEngine::Matrix4x4::Matrix4x4() {
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             m[i][j] = 0.0f;
@@ -17,7 +17,7 @@ Matrix4x4::Matrix4x4() {
     }
 }
 
-void Matrix4x4::ImGuiMatrix()
+void NumaEngine::Matrix4x4::ImGuiMatrix()
 {
     if (ImGui::BeginTable("MatrixTable", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
         for (int j = 0; j < 4; ++j) {
@@ -31,9 +31,9 @@ void Matrix4x4::ImGuiMatrix()
     }
 }
 
-Matrix4x4 Matrix4x4::Transpose()
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Transpose()
 {
-    Matrix4x4 result;
+    NumaEngine::Matrix4x4 result;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             result.m[i][j] = this->m[j][i];
@@ -43,17 +43,17 @@ Matrix4x4 Matrix4x4::Transpose()
 }
 
 // 単位行列の生成
-Matrix4x4 Matrix4x4::Identity() {
-    Matrix4x4 result{};
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Identity() {
+    NumaEngine::Matrix4x4 result{};
     for (int i = 0; i < 4; ++i) {
         result.m[i][i] = 1.0f;
     }
     return result;
 }
 
-Matrix4x4 Matrix4x4::Multiply(const Matrix4x4& m1, const Matrix4x4& m2)
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Multiply(const NumaEngine::Matrix4x4& m1, const NumaEngine::Matrix4x4& m2)
 {
-    Matrix4x4 result{};
+    NumaEngine::Matrix4x4 result{};
     result.m[0][0] = m1.m[0][0] * m2.m[0][0] + m1.m[0][1] * m2.m[1][0] + m1.m[0][2] * m2.m[2][0] + m1.m[0][3] * m2.m[3][0];
     result.m[0][1] = m1.m[0][0] * m2.m[0][1] + m1.m[0][1] * m2.m[1][1] + m1.m[0][2] * m2.m[2][1] + m1.m[0][3] * m2.m[3][1];
     result.m[0][2] = m1.m[0][0] * m2.m[0][2] + m1.m[0][1] * m2.m[1][2] + m1.m[0][2] * m2.m[2][2] + m1.m[0][3] * m2.m[3][2];
@@ -78,8 +78,8 @@ Matrix4x4 Matrix4x4::Multiply(const Matrix4x4& m1, const Matrix4x4& m2)
 }
 
 // 拡縮行列の生成
-Matrix4x4 Matrix4x4::Scale(const NumaEngine::Vector3& scale) {
-    Matrix4x4 result = Identity();
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Scale(const NumaEngine::Vector3& scale) {
+    NumaEngine::Matrix4x4 result = NumaEngine::Matrix4x4::Identity();
     result.m[0][0] = scale.x;
     result.m[1][1] = scale.y;
     result.m[2][2] = scale.z;
@@ -87,8 +87,8 @@ Matrix4x4 Matrix4x4::Scale(const NumaEngine::Vector3& scale) {
 }
 
 // X軸回転行列
-Matrix4x4 Matrix4x4::RotateX(float radian) {
-    Matrix4x4 result = Identity();
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::RotateX(float radian) {
+    NumaEngine::Matrix4x4 result = NumaEngine::Matrix4x4::Identity();
     float cosTheta = std::cos(radian);
     float sinTheta = std::sin(radian);
     result.m[1][1] = cosTheta;
@@ -99,8 +99,8 @@ Matrix4x4 Matrix4x4::RotateX(float radian) {
 }
 
 // Y軸回転行列
-Matrix4x4 Matrix4x4::RotateY(float radian) {
-    Matrix4x4 result = Identity();
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::RotateY(float radian) {
+    NumaEngine::Matrix4x4 result = NumaEngine::Matrix4x4::Identity();
     float cosTheta = std::cos(radian);
     float sinTheta = std::sin(radian);
     result.m[0][0] = cosTheta;
@@ -111,8 +111,8 @@ Matrix4x4 Matrix4x4::RotateY(float radian) {
 }
 
 // Z軸回転行列
-Matrix4x4 Matrix4x4::RotateZ(float radian) {
-    Matrix4x4 result = Identity();
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::RotateZ(float radian) {
+    NumaEngine::Matrix4x4 result = NumaEngine::Matrix4x4::Identity();
     float cosTheta = std::cos(radian);
     float sinTheta = std::sin(radian);
     result.m[0][0] = cosTheta;
@@ -123,22 +123,22 @@ Matrix4x4 Matrix4x4::RotateZ(float radian) {
 }
 
 // 3軸の回転を合成した回転行列
-Matrix4x4 Matrix4x4::Rotate(const NumaEngine::Vector3& rotate) {
-    return RotateX(rotate.x) * RotateY(rotate.y) * RotateZ(rotate.z);
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Rotate(const NumaEngine::Vector3& rotate) {
+    return NumaEngine::Matrix4x4::RotateX(rotate.x) * NumaEngine::Matrix4x4::RotateY(rotate.y) * NumaEngine::Matrix4x4::RotateZ(rotate.z);
 }
 
 // 移動行列の生成
-Matrix4x4 Matrix4x4::Translate(const NumaEngine::Vector3& translate) {
-    Matrix4x4 result = Identity();
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Translate(const NumaEngine::Vector3& translate) {
+    NumaEngine::Matrix4x4 result = NumaEngine::Matrix4x4::Identity();
     result.m[3][0] = translate.x;
     result.m[3][1] = translate.y;
     result.m[3][2] = translate.z;
     return result;
 }
 
-Matrix4x4 Matrix4x4::NormalizeRotation(const Matrix4x4& matrix)
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::NormalizeRotation(const NumaEngine::Matrix4x4& matrix)
 {
-    Matrix4x4 result = matrix;
+    NumaEngine::Matrix4x4 result = matrix;
     result.m[0][0] = NumaEngine::Vector3(matrix.m[0][0], matrix.m[1][0], matrix.m[2][0]).Length();
     result.m[1][1] = NumaEngine::Vector3(matrix.m[0][1], matrix.m[1][1], matrix.m[2][1]).Length();
     result.m[2][2] = NumaEngine::Vector3(matrix.m[0][2], matrix.m[1][2], matrix.m[2][2]).Length();
@@ -146,8 +146,8 @@ Matrix4x4 Matrix4x4::NormalizeRotation(const Matrix4x4& matrix)
 }
 
 // 行列の積
-Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
-    Matrix4x4 result;
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::operator*(const NumaEngine::Matrix4x4& other) const {
+    NumaEngine::Matrix4x4 result;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             result.m[i][j] = 0.0f;
@@ -160,12 +160,12 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
 }
 
 // LookAt行列の生成
-Matrix4x4 Matrix4x4::LookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3& target, const NumaEngine::Vector3& up) {
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::LookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3& target, const NumaEngine::Vector3& up) {
     NumaEngine::Vector3 z = (target - eye).Normalize();          // 視線（左手系: eye→target）
     NumaEngine::Vector3 x = NumaEngine::Vector3::Cross(up, z).Normalize();   // 右
     NumaEngine::Vector3 y = NumaEngine::Vector3::Cross(z, x);                // 上
 
-    Matrix4x4 m = Matrix4x4::Identity();
+    NumaEngine::Matrix4x4 m = NumaEngine::Matrix4x4::Identity();
     // 行ベクトル × 行列 前提
     m.m[0][0] = x.x;  m.m[0][1] = x.y;  m.m[0][2] = x.z;  m.m[0][3] = -NumaEngine::Vector3::Dot(x, eye);
     m.m[1][0] = y.x;  m.m[1][1] = y.y;  m.m[1][2] = y.z;  m.m[1][3] = -NumaEngine::Vector3::Dot(y, eye);
@@ -174,7 +174,7 @@ Matrix4x4 Matrix4x4::LookAt(const NumaEngine::Vector3& eye, const NumaEngine::Ve
     return m;
 }
 
-NumaEngine::Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)
+NumaEngine::Vector3 NumaEngine::Matrix4x4::ExtractEulerAngles(const NumaEngine::Matrix4x4& m)
 {
     NumaEngine::Vector3 euler{};
 
@@ -197,18 +197,18 @@ NumaEngine::Vector3 Matrix4x4::ExtractEulerAngles(const Matrix4x4& m)
 }
 
 // アフィン変換行列の生成
-Matrix4x4 Matrix4x4::Affine(const NumaEngine::Vector3& scale, const NumaEngine::Vector3& rotate, const NumaEngine::Vector3& translate) {
-    return  Scale(scale) * Rotate(rotate) * Translate(translate);
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Affine(const NumaEngine::Vector3& scale, const NumaEngine::Vector3& rotate, const NumaEngine::Vector3& translate) {
+    return  NumaEngine::Matrix4x4::Scale(scale) * NumaEngine::Matrix4x4::Rotate(rotate) * NumaEngine::Matrix4x4::Translate(translate);
 }
 
-Matrix4x4 Matrix4x4::Affine(const NumaEngine::Vector3& scale, const NumaEngine::Quaternion& rotate, const NumaEngine::Vector3& translate)
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Affine(const NumaEngine::Vector3& scale, const NumaEngine::Quaternion& rotate, const NumaEngine::Vector3& translate)
 {
-    return Scale(scale) * NumaEngine::Quaternion::MakeRotateMatrix(rotate) * Translate(translate);
+    return NumaEngine::Matrix4x4::Scale(scale) * NumaEngine::Quaternion::MakeRotateMatrix(rotate) * NumaEngine::Matrix4x4::Translate(translate);
 }
 
 // 逆行列の生成
-Matrix4x4 Matrix4x4::Inverse(const Matrix4x4& m) {
-    Matrix4x4 result;
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Inverse(const NumaEngine::Matrix4x4& m) {
+    NumaEngine::Matrix4x4 result;
     float A;
     A = m.m[0][0] * m.m[1][1] * m.m[2][2] * m.m[3][3] + m.m[0][0] * m.m[1][2] * m.m[2][3] * m.m[3][1] + m.m[0][0] * m.m[1][3] * m.m[2][1] * m.m[3][2]
         - m.m[0][0] * m.m[1][3] * m.m[2][2] * m.m[3][1] - m.m[0][0] * m.m[1][2] * m.m[2][1] * m.m[3][3] - m.m[0][0] * m.m[1][1] * m.m[2][3] * m.m[3][2]
@@ -258,8 +258,8 @@ Matrix4x4 Matrix4x4::Inverse(const Matrix4x4& m) {
 }
 
 // 投資投影行列の生成
-Matrix4x4 Matrix4x4::PerspectiveFov(float fovY, float aspectRatio, float nearClip, float farClip) {
-    Matrix4x4 result{};
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::PerspectiveFov(float fovY, float aspectRatio, float nearClip, float farClip) {
+    NumaEngine::Matrix4x4 result{};
     float tanHalfFovY = std::tan(fovY / 2.0f);
     result.m[0][0] = 1.0f / aspectRatio * (1.0f / tanHalfFovY);
     result.m[1][1] = 1.0f / tanHalfFovY;
@@ -270,8 +270,8 @@ Matrix4x4 Matrix4x4::PerspectiveFov(float fovY, float aspectRatio, float nearCli
 }
 
 // 正射影行列の生成
-Matrix4x4 Matrix4x4::Orthographic(float left, float right, float bottom, float top, float nearClip, float farClip) {
-    Matrix4x4 result = Identity();
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::Orthographic(float left, float right, float bottom, float top, float nearClip, float farClip) {
+    NumaEngine::Matrix4x4 result = NumaEngine::Matrix4x4::Identity();
     result.m[0][0] = 2.0f / (right - left);
     result.m[1][1] = 2.0f / (top - bottom);
     result.m[2][2] = 1.0f / (farClip - nearClip);
@@ -282,7 +282,7 @@ Matrix4x4 Matrix4x4::Orthographic(float left, float right, float bottom, float t
     return result;
 }
 
-Matrix4x4 Matrix4x4::MakeRotateAxisAngle(const NumaEngine::Vector3& axis, float angle)
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::MakeRotateAxisAngle(const NumaEngine::Vector3& axis, float angle)
 {
     // 回転軸を正規化
     NumaEngine::Vector3 normalizeAxis = axis.Normalize();
@@ -294,7 +294,7 @@ Matrix4x4 Matrix4x4::MakeRotateAxisAngle(const NumaEngine::Vector3& axis, float 
     float oneMinusCosTheta = 1.0f - cosTheta;
 
     // 回転行列の各成分を計算
-    Matrix4x4 rotation = Matrix4x4::Identity();
+    NumaEngine::Matrix4x4 rotation = NumaEngine::Matrix4x4::Identity();
     rotation.m[0][0] = cosTheta + x * x * oneMinusCosTheta;
     rotation.m[0][1] = x * y * oneMinusCosTheta + z * sinTheta;
     rotation.m[0][2] = x * z * oneMinusCosTheta - y * sinTheta;
@@ -318,7 +318,7 @@ Matrix4x4 Matrix4x4::MakeRotateAxisAngle(const NumaEngine::Vector3& axis, float 
     return rotation;
 }
 
-Matrix4x4 Matrix4x4::DirectionToDirection(const NumaEngine::Vector3& from, const NumaEngine::Vector3& to)
+NumaEngine::Matrix4x4 NumaEngine::Matrix4x4::DirectionToDirection(const NumaEngine::Vector3& from, const NumaEngine::Vector3& to)
 {
     // 入力ベクトルの正規化
     NumaEngine::Vector3 fromNorm = from.Normalize();
@@ -331,20 +331,20 @@ Matrix4x4 Matrix4x4::DirectionToDirection(const NumaEngine::Vector3& from, const
     if (axis.Length() < 1e-6f) {
         // 同方向: 単位行列
         if (NumaEngine::Vector3::Dot(fromNorm, toNorm) > 0.9999f) {
-            return Matrix4x4::Identity();
+            return NumaEngine::Matrix4x4::Identity();
         }
 
         // 逆方向: 任意の軸で180度回転
         NumaEngine::Vector3 arbitraryAxis = (std::abs(fromNorm.x) < 0.1f) ? NumaEngine::Vector3(1.0f, 0.0f, 0.0f) : NumaEngine::Vector3(0.0f, 1.0f, 0.0f);
         axis = NumaEngine::Vector3::Cross(fromNorm, arbitraryAxis).Normalize();
-        return MakeRotateAxisAngle(axis, std::numbers::pi_v<float>);
+        return NumaEngine::Matrix4x4::MakeRotateAxisAngle(axis, std::numbers::pi_v<float>);
     }
 
     axis = axis.Normalize();
     float cosTheta = NumaEngine::Vector3::Dot(fromNorm, toNorm);
 
     // 回転行列を返す
-    return MakeRotateAxisAngle(axis, std::acos(cosTheta));
+    return NumaEngine::Matrix4x4::MakeRotateAxisAngle(axis, std::acos(cosTheta));
 }
 
 

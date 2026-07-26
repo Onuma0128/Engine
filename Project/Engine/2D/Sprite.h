@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -40,7 +40,7 @@ public:
 	/// </summary>
     struct Material {
 		NumaEngine::Vector4 color;
-		Matrix4x4 uvTransform;
+      NumaEngine::Matrix4x4 uvTransform;
 	};
 
 	/// <summary>
@@ -58,9 +58,9 @@ public:
 	///	変換行列
 	/// </summary>
 	struct TransformationMatrix {
-		Matrix4x4 WVP;
-		Matrix4x4 World;
-		Matrix4x4 WorldInverseTranspose;
+      NumaEngine::Matrix4x4 WVP;
+		NumaEngine::Matrix4x4 World;
+		NumaEngine::Matrix4x4 WorldInverseTranspose;
 	};
 
 	/// <summary>

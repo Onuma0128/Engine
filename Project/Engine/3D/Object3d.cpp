@@ -25,12 +25,12 @@ void Object3d::Initialize(const std::string& filePath)
 
 void Object3d::SetSceneRenderer()
 {
-    ModelInstanceRenderer::GetInstance()->Push(this);
+    NumaEngine::ModelInstanceRenderer::GetInstance()->Push(this);
 }
 
 void Object3d::RemoveRenderer()
 {
-    ModelInstanceRenderer::GetInstance()->Remove(this);
+    NumaEngine::ModelInstanceRenderer::GetInstance()->Remove(this);
 }
 
 void Object3d::Update()
@@ -76,7 +76,7 @@ void Object3d::MakeMaterialData()
     materialData_.enableLighting = true;
     materialData_.outlineMask = false;
     materialData_.outlineSceneColor = false;
-    materialData_.uvTransform = Matrix4x4::Identity();
+    materialData_.uvTransform = NumaEngine::Matrix4x4::Identity();
     materialData_.shininess = 20.0f;
     materialData_.environmentCoefficient = 0;
     materialData_.shadowMap = true;

@@ -33,7 +33,7 @@ void PrimitiveDrawr::Init(std::vector<NumaEngine::Vector3> pos)
 	CreateBufferResource(materialResource_, sizeof(MaterialData));
 	CreateMaterialData();
 
-	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+    CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
@@ -42,10 +42,10 @@ void PrimitiveDrawr::Update()
 	// uvTransformの更新
 	UVTransformUpdate();
 
-	//Matrix4x4 matWorld = Matrix4x4::Affine(transform_.scale, transform_.rotation, transform_.translation);
+    //Matrix4x4 matWorld = NumaEngine::Matrix4x4::Affine(transform_.scale, transform_.rotation, transform_.translation);
 
 	// パーティクルのビルボード化
-	Matrix4x4 billboardMatrix = Matrix4x4::Identity();
+	NumaEngine::Matrix4x4 billboardMatrix = NumaEngine::Matrix4x4::Identity();
     if (isBillboard_) {
 		billboardMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
 	} else {
@@ -55,9 +55,9 @@ void PrimitiveDrawr::Update()
 	billboardMatrix.m[3][1] = 0.0f;
 	billboardMatrix.m[3][2] = 0.0f;
 	billboardMatrix.m[3][3] = 1.0f;
-	Matrix4x4 worldMatrix = Matrix4x4::Scale(transform_.scale) * billboardMatrix * Matrix4x4::Translate(transform_.translation);
-	Matrix4x4 worldViewMatrix = worldMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetViewMatrix();
-	Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
+    NumaEngine::Matrix4x4 worldMatrix = NumaEngine::Matrix4x4::Scale(transform_.scale) * billboardMatrix * NumaEngine::Matrix4x4::Translate(transform_.translation);
+	NumaEngine::Matrix4x4 worldViewMatrix = worldMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetViewMatrix();
+	NumaEngine::Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
 
 	*wvpData_ = worldViewProjectionMatrix;
 }
@@ -79,10 +79,10 @@ void PrimitiveDrawr::Draw()
 void PrimitiveDrawr::UVTransformUpdate()
 {
 	// UVTransformの更新
-    Matrix4x4 scaleMatrix = Matrix4x4::Scale(NumaEngine::Vector3{ uvTransform_.size.x, uvTransform_.size.y, 0.0f });
-	Matrix4x4 rotateMatrix = Matrix4x4::RotateZ(uvTransform_.rotate);
-    Matrix4x4 translateMatrix = Matrix4x4::Translate(NumaEngine::Vector3{ uvTransform_.position.x, uvTransform_.position.y, 0.0f });
-	Matrix4x4 uvTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
+    NumaEngine::Matrix4x4 scaleMatrix = NumaEngine::Matrix4x4::Scale(NumaEngine::Vector3{ uvTransform_.size.x, uvTransform_.size.y, 0.0f });
+	NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Matrix4x4::RotateZ(uvTransform_.rotate);
+	NumaEngine::Matrix4x4 translateMatrix = NumaEngine::Matrix4x4::Translate(NumaEngine::Vector3{ uvTransform_.position.x, uvTransform_.position.y, 0.0f });
+	NumaEngine::Matrix4x4 uvTransformMatrix = translateMatrix * rotateMatrix * scaleMatrix;
 
 	materialData_->uvTransform = uvTransformMatrix;
 }
@@ -249,7 +249,7 @@ void PrimitiveDrawr::CreateMaterialData()
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
 	materialData_->color = { 1.0f,1.0f,1.0f,1.0f };
-	materialData_->uvTransform = Matrix4x4::Identity();
+    materialData_->uvTransform = NumaEngine::Matrix4x4::Identity();
 	materialData_->xTexcoord_alpha = false;
 	materialData_->yTexcoord_alpha = false;
 }
@@ -258,7 +258,7 @@ void PrimitiveDrawr::CreateWVPData()
 {
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
 
-	*wvpData_ = Matrix4x4::Identity();
+    *wvpData_ = NumaEngine::Matrix4x4::Identity();
 }
 
 void PrimitiveDrawr::InitPlane()
@@ -273,7 +273,7 @@ void PrimitiveDrawr::InitPlane()
 	CreateBufferResource(materialResource_, sizeof(MaterialData));
 	CreateMaterialData();
 
-	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+    CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
@@ -328,7 +328,7 @@ void PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
 	CreateBufferResource(materialResource_, sizeof(MaterialData));
 	CreateMaterialData();
 
-	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+    CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
@@ -391,7 +391,7 @@ void PrimitiveDrawr::InitRing(uint32_t kRingDivide)
 	CreateBufferResource(materialResource_, sizeof(MaterialData));
 	CreateMaterialData();
 
-	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+    CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
@@ -462,7 +462,7 @@ void PrimitiveDrawr::InitCylinder(uint32_t kCylinderDivide)
 	CreateBufferResource(materialResource_, sizeof(MaterialData));
 	CreateMaterialData();
 
-	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+    CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
@@ -532,7 +532,7 @@ void PrimitiveDrawr::InitSkybox()
 	CreateBufferResource(materialResource_, sizeof(MaterialData));
 	CreateMaterialData();
 
-	CreateBufferResource(wvpResource_, sizeof(Matrix4x4));
+    CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 

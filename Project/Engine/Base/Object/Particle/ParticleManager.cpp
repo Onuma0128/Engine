@@ -81,19 +81,19 @@ void ParticleManager::Update()
                 }
 
                 // パーティクルのビルボード化
-                Matrix4x4 billboardMatrix = Matrix4x4::Identity();
+                NumaEngine::Matrix4x4 billboardMatrix = NumaEngine::Matrix4x4::Identity();
                 if (group.editor->GetBillboard()) {
-                    billboardMatrix = Matrix4x4::Rotate(p_it->transform.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
+                    billboardMatrix = NumaEngine::Matrix4x4::Rotate(p_it->transform.rotation) * CameraManager::GetInstance()->GetActiveCamera()->GetWorldMatrix();
                 } else {
-                    billboardMatrix = Matrix4x4::Rotate(p_it->transform.rotation);
+                    billboardMatrix = NumaEngine::Matrix4x4::Rotate(p_it->transform.rotation);
                 }
                 billboardMatrix.m[3][0] = 0.0f;
                 billboardMatrix.m[3][1] = 0.0f;
                 billboardMatrix.m[3][2] = 0.0f;
                 billboardMatrix.m[3][3] = 1.0f;
-                Matrix4x4 worldMatrix = Matrix4x4::Scale(p_it->transform.scale) * billboardMatrix * Matrix4x4::Translate(p_it->transform.translation);
-                Matrix4x4 worldViewMatrix = worldMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetViewMatrix();
-                Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
+                NumaEngine::Matrix4x4 worldMatrix = NumaEngine::Matrix4x4::Scale(p_it->transform.scale) * billboardMatrix * NumaEngine::Matrix4x4::Translate(p_it->transform.translation);
+                NumaEngine::Matrix4x4 worldViewMatrix = worldMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetViewMatrix();
+                NumaEngine::Matrix4x4 worldViewProjectionMatrix = worldViewMatrix * CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix();
 
                 // パーティクルの更新
                 uint16_t id = p_it->emitterID;
@@ -107,7 +107,7 @@ void ParticleManager::Update()
                 group.materialData_->isUVFlipX = group.editor->GetBaseEmitter().isUvFlipX;
                 group.materialData_->isUVFlipY = group.editor->GetBaseEmitter().isUvFlipY;
                 // uvTranslate
-                group.materialData_->uvTransform = Matrix4x4::Translate(p_it->uvTranslate);
+                group.materialData_->uvTransform = NumaEngine::Matrix4x4::Translate(p_it->uvTranslate);
 
                 float alpha = 1.0f - (p_it->currentTime / p_it->lifeTime);
                 if (numInstance < group.maxInstance) {
@@ -213,8 +213,8 @@ void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitt
     // リソースをマッピングして、インスタンスデータを初期化
     group.instancingResource->Map(0, nullptr, reinterpret_cast<void**>(&group.instancingData));
     for (uint32_t i = 0; i < kNumMaxInstance; ++i) {
-        group.instancingData[i].WVP = Matrix4x4::Identity();
-        group.instancingData[i].World = Matrix4x4::Identity();
+        group.instancingData[i].WVP = NumaEngine::Matrix4x4::Identity();
+        group.instancingData[i].World = NumaEngine::Matrix4x4::Identity();
         group.instancingData[i].color = NumaEngine::Vector4{ 1.0f, 1.0f, 1.0f, 1.0f };
     }
     group.emitters.push_back(emitter);
@@ -404,7 +404,7 @@ void ParticleManager::CreateMatrialResource(ParticleGroup& group)
     // 今回は白を書き込んでいく
     group.materialData_->color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
     group.materialData_->enableLighting = false;
-    group.materialData_->uvTransform = Matrix4x4::Identity();
+    group.materialData_->uvTransform = NumaEngine::Matrix4x4::Identity();
 }
 
 void ParticleManager::EnsureInstanceCapacity(ParticleGroup& group, uint32_t required)
@@ -426,8 +426,8 @@ void ParticleManager::EnsureInstanceCapacity(ParticleGroup& group, uint32_t requ
 
     // 必要なら初期化（省略可）
     for (uint32_t i = 0; i < newCap; ++i) {
-        group.instancingData[i].WVP = Matrix4x4::Identity();
-        group.instancingData[i].World = Matrix4x4::Identity();
+        group.instancingData[i].WVP = NumaEngine::Matrix4x4::Identity();
+        group.instancingData[i].World = NumaEngine::Matrix4x4::Identity();
         group.instancingData[i].color = NumaEngine::Vector4{ 1,1,1,1 };
     }
 

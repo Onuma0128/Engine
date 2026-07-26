@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 
-class Matrix4x4;
+namespace NumaEngine { class Matrix4x4; }
 
 /// <summary>
 /// 4Dベクトルを表す構造体
@@ -38,7 +38,7 @@ namespace NumaEngine { class Vector4 {
         Vector4& operator-=(const Vector4& v);
         Vector4& operator*=(float scalar);
 
-        friend Vector4 operator*(const Vector4& v, const Matrix4x4& m);
+        friend Vector4 operator*(const Vector4& v, const NumaEngine::Matrix4x4& m);
     };
 }
 

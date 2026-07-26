@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <map>
 #include <vector>
@@ -59,8 +59,8 @@ struct AnimationData {
 /// GPU用のウェル構造体
 /// </summary>
 struct WellForGPU {
-	Matrix4x4 skeletonSpaceMatrix;
-	Matrix4x4 skeletonSpaceInverseTransposeMatrix;
+    NumaEngine::Matrix4x4 skeletonSpaceMatrix;
+	NumaEngine::Matrix4x4 skeletonSpaceInverseTransposeMatrix;
 };
 
 

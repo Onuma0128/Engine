@@ -98,7 +98,7 @@ NumaEngine::Quaternion NumaEngine::Quaternion::DirectionToQuaternion(const NumaE
 	NumaEngine::Vector3 targetDir = NumaEngine::Vector3{ -direction.x,0.0f,direction.z };
 
 	// directionから回転を求める
-    ::Matrix4x4 targetMatrix = ::Matrix4x4::DirectionToDirection(foward, targetDir);
+    NumaEngine::Matrix4x4 targetMatrix = NumaEngine::Matrix4x4::DirectionToDirection(foward, targetDir);
 	NumaEngine::Quaternion targetRotation = NumaEngine::Quaternion::FormRotationMatrix(targetMatrix);
 	NumaEngine::Quaternion currentRotation = quaternion;
 	NumaEngine::Quaternion result = NumaEngine::Quaternion::Slerp(currentRotation, targetRotation, lerp);
@@ -112,7 +112,7 @@ NumaEngine::Quaternion NumaEngine::Quaternion::DirectionToQuaternion(const NumaE
 	NumaEngine::Vector3 targetDir = NumaEngine::Vector3{ -direction.x,0.0f,direction.z };
 
 	// directionから回転を求める
-    ::Matrix4x4 targetMatrix = ::Matrix4x4::DirectionToDirection(foward, targetDir);
+    NumaEngine::Matrix4x4 targetMatrix = NumaEngine::Matrix4x4::DirectionToDirection(foward, targetDir);
 	NumaEngine::Quaternion targetRotation = NumaEngine::Quaternion::FormRotationMatrix(targetMatrix);
 	NumaEngine::Quaternion currentRotation = quaternion;
 	NumaEngine::Quaternion result = NumaEngine::Quaternion::Slerp(currentRotation, targetRotation, lerp);
@@ -131,10 +131,10 @@ NumaEngine::Vector3 NumaEngine::Quaternion::RotateVector(const NumaEngine::Vecto
 	return { rotatedQuat.x, rotatedQuat.y, rotatedQuat.z };
 }
 
-Matrix4x4 NumaEngine::Quaternion::MakeRotateMatrix(const NumaEngine::Quaternion& quaternion)
+NumaEngine::Matrix4x4 NumaEngine::Quaternion::MakeRotateMatrix(const NumaEngine::Quaternion& quaternion)
 {
 	NumaEngine::Quaternion q = quaternion;
-	Matrix4x4 result = Matrix4x4::Identity();
+    NumaEngine::Matrix4x4 result = NumaEngine::Matrix4x4::Identity();
 
 	result.m[0][0] = q.w * q.w + q.x * q.x - q.y * q.y - q.z * q.z;
 	result.m[0][1] = 2.0f * (q.x * q.y + q.w * q.z);
@@ -159,7 +159,7 @@ Matrix4x4 NumaEngine::Quaternion::MakeRotateMatrix(const NumaEngine::Quaternion&
 	return result;
 }
 
-NumaEngine::Quaternion NumaEngine::Quaternion::FormRotationMatrix(const ::Matrix4x4& matrix)
+NumaEngine::Quaternion NumaEngine::Quaternion::FormRotationMatrix(const NumaEngine::Matrix4x4& matrix)
 {
 	NumaEngine::Quaternion result = IdentityQuaternion();
 

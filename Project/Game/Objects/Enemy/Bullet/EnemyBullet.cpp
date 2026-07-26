@@ -81,7 +81,7 @@ void EnemyBullet::OnCollisionEnter(NumaEngine::Collider* other)
 void EnemyBullet::Attack(const WorldTransform& transform)
 {
 	// 回転と座標を取得
-	Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform.rotation_);
+    NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform.rotation_);
 	transform_.rotation_ = transform.rotation_;
 	transform_.translation_ = transform.translation_ + NumaEngine::Vector3::ExprUnitY;
 

@@ -73,7 +73,7 @@ NumaEngine::Vector4& NumaEngine::Vector4::operator*=(float scalar)
 	return *this;
 }
 
-NumaEngine::Vector4 operator*(const NumaEngine::Vector4& v, const Matrix4x4& m) {
+NumaEngine::Vector4 operator*(const NumaEngine::Vector4& v, const NumaEngine::Matrix4x4& m) {
 	NumaEngine::Vector4 r;
 	r.x = v.x * m.m[0][0] + v.y * m.m[1][0] + v.z * m.m[2][0] + v.w * m.m[3][0];
 	r.y = v.x * m.m[0][1] + v.y * m.m[1][1] + v.z * m.m[2][1] + v.w * m.m[3][1];

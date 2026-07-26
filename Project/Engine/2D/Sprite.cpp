@@ -118,7 +118,7 @@ void Sprite::MaterialDataInitialize()
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
     materialData_->color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-	materialData_->uvTransform = Matrix4x4::Identity();
+    materialData_->uvTransform = NumaEngine::Matrix4x4::Identity();
 }
 
 void Sprite::DissolveDataInitialize()
@@ -135,8 +135,8 @@ void Sprite::TransformationMatrixDataInitialize()
 {
     transformationMatrixResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(TransformationMatrix));
 	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
-	transformationMatrixData_->WVP = Matrix4x4::Identity();
-	transformationMatrixData_->World = Matrix4x4::Identity();
+    transformationMatrixData_->WVP = NumaEngine::Matrix4x4::Identity();
+	transformationMatrixData_->World = NumaEngine::Matrix4x4::Identity();
 }
 
 void Sprite::AccessorUpdate()
@@ -180,17 +180,17 @@ void Sprite::AccessorUpdate()
 
 void Sprite::UpdateMatrix()
 {
-    Matrix4x4 worldMatrix = Matrix4x4::Affine(
+    NumaEngine::Matrix4x4 worldMatrix = NumaEngine::Matrix4x4::Affine(
 		NumaEngine::Vector3{ transform_.size.x,transform_.size.y,1.0f },
 		NumaEngine::Vector3{ 0.0f,0.0f,transform_.rotate },
 		NumaEngine::Vector3{ transform_.position.x,transform_.position.y,0.0f }
 	);
-	Matrix4x4 viewMatrix = Matrix4x4::Identity();
-	Matrix4x4 projectionMatrix = Matrix4x4::Orthographic(0.0f, float(WinApp::kClientWidth), float(WinApp::kClientHeight), 0.0f, 0.0f, 100.0f);
-	Matrix4x4 worldViewProjectionMatrix = worldMatrix * (viewMatrix * projectionMatrix);
+    NumaEngine::Matrix4x4 viewMatrix = NumaEngine::Matrix4x4::Identity();
+	NumaEngine::Matrix4x4 projectionMatrix = NumaEngine::Matrix4x4::Orthographic(0.0f, float(WinApp::kClientWidth), float(WinApp::kClientHeight), 0.0f, 0.0f, 100.0f);
+	NumaEngine::Matrix4x4 worldViewProjectionMatrix = worldMatrix * (viewMatrix * projectionMatrix);
 	transformationMatrixData_->WVP = worldViewProjectionMatrix;
 	transformationMatrixData_->World = worldViewProjectionMatrix;
-	transformationMatrixData_->WorldInverseTranspose = Matrix4x4::Inverse(worldViewProjectionMatrix);
+	transformationMatrixData_->WorldInverseTranspose = NumaEngine::Matrix4x4::Inverse(worldViewProjectionMatrix);
 }
 
 void Sprite::AdjustTextureSize()

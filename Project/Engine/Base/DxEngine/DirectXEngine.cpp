@@ -41,7 +41,7 @@ NumaEngine::DirectXEngine::~DirectXEngine()
 	TextureManager::GetInstance()->Finalize();
 	LightManager::GetInstance()->Finalize();
 	ModelManager::GetInstance()->Finalize();
-	ModelInstanceRenderer::GetInstance()->Finalize();
+   NumaEngine::ModelInstanceRenderer::GetInstance()->Finalize();
 	LineInstanceRenderer::GetInstance()->Finalize(true);
 	ParticleManager::GetInstance()->Finalize();
 	PostEffectManager::GetInstance()->Finalize();
@@ -118,7 +118,7 @@ void NumaEngine::DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiMa
 
 	PostEffectManager::GetInstance()->Initialize(this);
 
-	ModelInstanceRenderer::GetInstance()->Initialize();
+ NumaEngine::ModelInstanceRenderer::GetInstance()->Initialize();
 
 	LineInstanceRenderer::GetInstance()->Initialize(65536);
 

@@ -43,8 +43,8 @@ void NumaEngine::Collider::Update()
 	if (line_ == nullptr) { return; }
 
 	linePositions_ = CreateLinePositions();
-	for (auto& linePos : linePositions_) {
-		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rotate_);
+    for (auto& linePos : linePositions_) {
+		NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rotate_);
 		NumaEngine::Vector3 translate = centerPosition_ + offsetPosition_.Transform(rotateMatrix);
 		linePos = linePos.Transform(rotateMatrix) + translate;
 	}

@@ -1,11 +1,11 @@
-﻿#include "Joint.h"
+#include "Joint.h"
 
 int32_t Joint::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
 {
 	Joint joint;
 	joint.name_ = node.name;
 	joint.localMatrix_ = node.localMatrix;
-	joint.skeletonSpaceMatrix_ = Matrix4x4::Identity();
+    joint.skeletonSpaceMatrix_ = NumaEngine::Matrix4x4::Identity();
 	joint.transform_ = node.transform;
 	joint.index_ = int32_t(joints.size());
 	joint.parent_ = parent;

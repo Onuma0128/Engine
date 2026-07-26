@@ -93,7 +93,7 @@ bool Collision3D::OBBSphere(const NumaEngine::Collider* a, const NumaEngine::Col
 	Sphere sphere = ChangeSphere(b);
 
 	// OBBのWorld行列を作成
-	Matrix4x4 worldInverse = Matrix4x4::Identity();
+    NumaEngine::Matrix4x4 worldInverse = NumaEngine::Matrix4x4::Identity();
 
 	for (int32_t i = 0; i < 3; ++i) {
 		worldInverse.m[i][0] = obb.rotateMatrix.m[i][0];
@@ -108,7 +108,7 @@ bool Collision3D::OBBSphere(const NumaEngine::Collider* a, const NumaEngine::Col
 	worldInverse.m[3][3] = 1.0f;
 
 	// SphereをOBBローカル空間に入れる
-    NumaEngine::Vector3 centerInOBBLocalSpace = NumaEngine::Vector3::Transform(sphere.center, Matrix4x4::Inverse(worldInverse));
+    NumaEngine::Vector3 centerInOBBLocalSpace = NumaEngine::Vector3::Transform(sphere.center, NumaEngine::Matrix4x4::Inverse(worldInverse));
 
 	// OBBローカルのAABBとOBBローカルのSphereを作成
 	AABB aabb_OBBLocal = {
@@ -133,7 +133,7 @@ NumaEngine::Vector3 Collision3D::GetOBBSpherePushVector(const NumaEngine::Collid
 	Sphere sphere = ChangeSphere(b);
 
 	// OBBのワールド→ローカル変換行列
-	Matrix4x4 worldToLocal = Matrix4x4::Identity();
+    NumaEngine::Matrix4x4 worldToLocal = NumaEngine::Matrix4x4::Identity();
 	for (int i = 0; i < 3; ++i) {
 		worldToLocal.m[i][0] = obb.rotateMatrix.m[i][0];
 		worldToLocal.m[i][1] = obb.rotateMatrix.m[i][1];
@@ -144,7 +144,7 @@ NumaEngine::Vector3 Collision3D::GetOBBSpherePushVector(const NumaEngine::Collid
 	worldToLocal.m[3][2] = obb.center.z;
 	worldToLocal.m[3][3] = 1.0f;
 
-    Matrix4x4 localToWorld = Matrix4x4::Inverse(worldToLocal);
+    NumaEngine::Matrix4x4 localToWorld = NumaEngine::Matrix4x4::Inverse(worldToLocal);
 	NumaEngine::Vector3 sphereLocal = NumaEngine::Vector3::Transform(sphere.center, localToWorld);
 
 	AABB aabb = { -obb.size, obb.size };
@@ -265,7 +265,7 @@ bool Collision3D::OBBSegment(const NumaEngine::Collider* a, const NumaEngine::Co
 	Segment segment = ChangeSegment(b);
 
 	// OBBのWorld行列を作成
-	Matrix4x4 worldInverse = Matrix4x4::Identity();
+    NumaEngine::Matrix4x4 worldInverse = NumaEngine::Matrix4x4::Identity();
 
 	for (int32_t i = 0; i < 3; ++i) {
 		worldInverse.m[i][0] = obb.rotateMatrix.m[i][0];
@@ -280,9 +280,9 @@ bool Collision3D::OBBSegment(const NumaEngine::Collider* a, const NumaEngine::Co
 	worldInverse.m[3][3] = 1.0f;
 
 	// SegmentをOBBローカル空間に入れる
-    NumaEngine::Vector3 originInOBBLocalSpace = NumaEngine::Vector3::Transform(segment.origin, Matrix4x4::Inverse(worldInverse));
+    NumaEngine::Vector3 originInOBBLocalSpace = NumaEngine::Vector3::Transform(segment.origin, NumaEngine::Matrix4x4::Inverse(worldInverse));
 	// TransformNormaleにする
-	NumaEngine::Vector3 diffInOBBLocalSpace = NumaEngine::Vector3::TransformNormal(segment.diff, Matrix4x4::Inverse(worldInverse));
+    NumaEngine::Vector3 diffInOBBLocalSpace = NumaEngine::Vector3::TransformNormal(segment.diff, NumaEngine::Matrix4x4::Inverse(worldInverse));
 
 	// OBBローカルのAABBとOBBローカルのSegmentを作成
 	AABB aabb_OBBLocal = {
@@ -303,13 +303,13 @@ bool Collision3D::OBBSegment(const NumaEngine::Collider* obbCol, const NumaEngin
 	OBB     obb = ChangeOBB(obbCol);
 	Segment segW = ChangeSegment(segCol);
 
-	// 1) ローカル変換を既存実装と“同じ作り方”に統一
-	Matrix4x4 worldM = obb.rotateMatrix;
+    // 1) ローカル変換を既存実装と“同じ作り方”に統一
+	NumaEngine::Matrix4x4 worldM = obb.rotateMatrix;
 	worldM.m[3][0] = obb.center.x;
 	worldM.m[3][1] = obb.center.y;
 	worldM.m[3][2] = obb.center.z;
 	worldM.m[3][3] = 1.0f;
-	Matrix4x4 invM = Matrix4x4::Inverse(worldM);
+    NumaEngine::Matrix4x4 invM = NumaEngine::Matrix4x4::Inverse(worldM);
 
     Segment segL{
 		NumaEngine::Vector3::Transform(segW.origin, invM),

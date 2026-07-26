@@ -31,7 +31,7 @@ void EnemyShield::Init(NumaEngine::ColliderType type, const std::string& name)
 	NumaEngine::Collider::DrawCollider();
 
 	rotateY_ = NumaEngine::Quaternion::IdentityQuaternion();
-	rotateMatrix_ = Matrix4x4::Identity();
+    rotateMatrix_ = NumaEngine::Matrix4x4::Identity();
 }
 
 void EnemyShield::Update()

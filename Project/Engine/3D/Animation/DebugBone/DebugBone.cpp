@@ -19,9 +19,9 @@ std::vector<NumaEngine::Vector3> DebugBone::GetPositions(const WorldTransform& t
 	std::vector<NumaEngine::Vector3> linePositions{};
 	for (const Joint& joint : joints) {
 		if (joint.GetParent()) {
-			// 初期の位置を取得
-			Matrix4x4 parentMatrix = joints[*joint.GetParent()].GetSkeletonSpaceMatrix() * transform.matWorld_;
-			Matrix4x4 jointMatrix = joint.GetSkeletonSpaceMatrix() * transform.matWorld_;
+            // 初期の位置を取得
+			NumaEngine::Matrix4x4 parentMatrix = joints[*joint.GetParent()].GetSkeletonSpaceMatrix() * transform.matWorld_;
+			NumaEngine::Matrix4x4 jointMatrix = joint.GetSkeletonSpaceMatrix() * transform.matWorld_;
 
 			NumaEngine::Vector3 parentPos = NumaEngine::Vector3{}.Transform(parentMatrix);
 			NumaEngine::Vector3 jointPos = NumaEngine::Vector3{}.Transform(jointMatrix);

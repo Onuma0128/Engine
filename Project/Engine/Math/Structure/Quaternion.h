@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-class Matrix4x4;
+namespace NumaEngine { class Matrix4x4; }
 
 namespace NumaEngine {
     class Vector3;
@@ -52,10 +52,10 @@ namespace NumaEngine {
         static Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion);
 
         // Quaternionから回転行列を求める
-        static ::Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
+        static NumaEngine::Matrix4x4 MakeRotateMatrix(const Quaternion& quaternion);
 
         // 回転行列からQuaternionを求める
-        static Quaternion FormRotationMatrix(const ::Matrix4x4& matrix);
+        static Quaternion FormRotationMatrix(const NumaEngine::Matrix4x4& matrix);
 
         // QuaternionのY回転だけを取得
         static Quaternion ExtractYawQuaternion(const Quaternion& quaternion);

@@ -28,14 +28,14 @@ void EnemyAxe::Update()
 		MeleeData data = enemy_->GetItem()->GetMeleeData();
 
         NumaEngine::Collider::radius_ = data.colliderSize;
-		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
+        NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
         NumaEngine::Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.colliderOffset.Transform(rotateMatrix);
 
 	} else {
 		ShieldBearerData data = enemy_->GetItem()->GetShieldBearerData();
 
         NumaEngine::Collider::radius_ = data.attackColliderSize;
-		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
+        NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(enemy_->GetTransform().rotation_);
         NumaEngine::Collider::centerPosition_ = enemy_->GetTransform().translation_ + data.attackColliderOffset.Transform(rotateMatrix);
 	}
 

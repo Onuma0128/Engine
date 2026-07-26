@@ -200,7 +200,7 @@ void GameCamera::SabUpdate(const NumaEngine::Vector3& shakeOffset)
 	}
 
 	// プレイヤーの回転を適用したオフセット
-    Matrix4x4 rotMat = NumaEngine::Quaternion::MakeRotateMatrix(playerRot);
+    NumaEngine::Matrix4x4 rotMat = NumaEngine::Quaternion::MakeRotateMatrix(playerRot);
 	NumaEngine::Vector3 rotatedOffset = NumaEngine::Vector3::TransformNormal(sabAnima_.sabCameraOffset, rotMat);
 
 	// カメラの位置は、プレイヤー位置 + 回転されたオフセット

@@ -1,4 +1,4 @@
-﻿#include "EnemyEffect.h"
+#include "EnemyEffect.h"
 
 #include "DeltaTimer.h"
 #include "Easing.h"
@@ -251,7 +251,7 @@ void EnemyEffect::BulletPredictionUpdate()
 		effect->SetScale(data.planeSize);
 		// 座標を計算
 		NumaEngine::Quaternion quaternionY = NumaEngine::Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
-		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(quaternionY);
+     NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(quaternionY);
 		NumaEngine::Vector3 offset = data.planeOffset.Transform(rotateMatrix) + enemy_->GetTransform().translation_;
 		effect->SetTranslate(offset);
 		// 回転を更新
@@ -284,7 +284,7 @@ void EnemyEffect::BulletPredictionUpdate()
 			effect->SetScale(data.planeSize[i]);
 			// 座標を計算
 			NumaEngine::Quaternion quaternionY = NumaEngine::Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
-			Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(quaternionY);
+         NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(quaternionY);
 			NumaEngine::Vector3 offset = data.planeOffset[i].Transform(rotateMatrix) + enemy_->GetTransform().translation_;
 			effect->SetTranslate(offset);
 			// 回転を更新

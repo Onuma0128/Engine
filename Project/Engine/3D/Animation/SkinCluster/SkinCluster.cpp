@@ -26,12 +26,12 @@ void SkinCluster::CreateSkinCluster(Skeleton& skeleton, const ModelData& modelDa
 
 	item_.mappedPalettes.resize(skeleton.GetJoints().size());
 	for (size_t i = 0; i < item_.mappedPalettes.size(); ++i) {
-		item_.mappedPalettes[i].skeletonSpaceMatrix = Matrix4x4::Identity();
-		item_.mappedPalettes[i].skeletonSpaceInverseTransposeMatrix = Matrix4x4::Identity();
+        item_.mappedPalettes[i].skeletonSpaceMatrix = NumaEngine::Matrix4x4::Identity();
+		item_.mappedPalettes[i].skeletonSpaceInverseTransposeMatrix = NumaEngine::Matrix4x4::Identity();
 	}
 	item_.inverseBindPoseMatrices.resize(skeleton.GetJoints().size());
-	for (size_t i = 0; i < item_.inverseBindPoseMatrices.size(); ++i) {
-		item_.inverseBindPoseMatrices[i] = Matrix4x4::Identity();
+    for (size_t i = 0; i < item_.inverseBindPoseMatrices.size(); ++i) {
+		item_.inverseBindPoseMatrices[i] = NumaEngine::Matrix4x4::Identity();
 	}
 
 	for (const auto& jointWeight : modelData.skinClusterData) {
@@ -64,7 +64,7 @@ void SkinCluster::SkinClusterUpdate(Skeleton& skeleton)
 		item_.mappedPalettes[jointIndex].skeletonSpaceMatrix =
 			item_.inverseBindPoseMatrices[jointIndex] * skeleton.GetJoint(jointIndex).GetSkeletonSpaceMatrix();
 		item_.mappedPalettes[jointIndex].skeletonSpaceInverseTransposeMatrix =
-			Matrix4x4::Inverse(item_.mappedPalettes[jointIndex].skeletonSpaceMatrix).Transpose();
+            NumaEngine::Matrix4x4::Inverse(item_.mappedPalettes[jointIndex].skeletonSpaceMatrix).Transpose();
 	}
 }
 

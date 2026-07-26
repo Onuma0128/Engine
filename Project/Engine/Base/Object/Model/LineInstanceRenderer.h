@@ -94,7 +94,7 @@ private:
 
     // VS用 CB（ViewProjection）
     ComPtr<ID3D12Resource> cbVS_;
-    Matrix4x4* wvp_ = nullptr;
+    NumaEngine::Matrix4x4* wvp_ = nullptr;
     // PS用 SB (Color)
     ComPtr<ID3D12Resource> sbPS_;
     Material* materialDatas_;               

@@ -157,12 +157,12 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
             aiVector3D scale, translate;
             aiQuaternion rotate;
             bindPoseMatrixAssimp.Decompose(scale, rotate, translate);
-            Matrix4x4 bindPoseMatrix = Matrix4x4::Affine(
+            NumaEngine::Matrix4x4 bindPoseMatrix = NumaEngine::Matrix4x4::Affine(
                 NumaEngine::Vector3{ scale.x,scale.y,scale.z },
                 NumaEngine::Quaternion{ rotate.x,-rotate.y,-rotate.z,rotate.w },
                 NumaEngine::Vector3{ -translate.x,translate.y,translate.z }
             );
-            jointWeightData.inverseBindPosMatrix = Matrix4x4::Inverse(bindPoseMatrix);
+            jointWeightData.inverseBindPosMatrix = NumaEngine::Matrix4x4::Inverse(bindPoseMatrix);
             
             for (uint32_t weightIndex = 0; weightIndex < bone->mNumWeights; ++weightIndex) {
                 const auto& w = bone->mWeights[weightIndex];
@@ -310,7 +310,7 @@ Node Model::ReadNode(aiNode* node)
     result.transform.scale = { scale.x,scale.y,scale.z };
     result.transform.rotation = { rotate.x,-rotate.y,-rotate.z,rotate.w };
     result.transform.translation = { -translate.x,translate.y,translate.z };
-    result.localMatrix = Matrix4x4::Affine(result.transform.scale, result.transform.rotation, result.transform.translation);
+    result.localMatrix = NumaEngine::Matrix4x4::Affine(result.transform.scale, result.transform.rotation, result.transform.translation);
     result.globalMatrix = result.localMatrix;
     result.name = node->mName.C_Str();
     result.children.resize(node->mNumChildren);

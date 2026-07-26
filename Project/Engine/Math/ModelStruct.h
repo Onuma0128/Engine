@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include <string>
@@ -41,7 +41,7 @@ struct MeshData {
 /// </summary>
 struct Material {
     NumaEngine::Vector4 color;
-	Matrix4x4 uvTransform;
+    NumaEngine::Matrix4x4 uvTransform;
 	int32_t enableDraw;
 	int32_t enableLighting;
 	int32_t outlineMask;
@@ -87,8 +87,8 @@ struct KdColor {
 /// </summary>
 struct Node {
 	Transform3D transform;
-	Matrix4x4 localMatrix;
-	Matrix4x4 globalMatrix;
+    NumaEngine::Matrix4x4 localMatrix;
+	NumaEngine::Matrix4x4 globalMatrix;
 	std::string name;
 	std::vector<Node> children;
 };
@@ -105,7 +105,7 @@ struct VertexWeightData {
 /// ジョイントのウェイトデータを表す構造体
 /// </summary>
 struct JointWeightData {
-	Matrix4x4 inverseBindPosMatrix;
+    NumaEngine::Matrix4x4 inverseBindPosMatrix;
 	std::vector<VertexWeightData> vertexWeights;
 };
 

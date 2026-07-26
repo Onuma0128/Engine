@@ -69,7 +69,7 @@ void PlayerBullet::Update()
 	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed_;
 
 	effect_->OnceBulletTrailEffect(transform_);
-	Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation_);
+    NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation_);
     NumaEngine::Collider::size_ = transform_.scale_ + data.colliderSize;
 	NumaEngine::Collider::rotate_ = transform_.rotation_;
 	NumaEngine::Collider::centerPosition_ = transform_.translation_ + data.colliderPosition.Transform(rotateMatrix);
@@ -114,7 +114,7 @@ void PlayerBullet::Reload(const WorldTransform& transform, bool isEmit)
 void PlayerBullet::Attack(const WorldTransform& transform, float speed)
 {
 	// 回転と座標を取得
-	Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform.rotation_);
+    NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform.rotation_);
 	transform_.rotation_ = transform.rotation_;
 	transform_.translation_ = transform.translation_ + item_->GetBulletData().position.Transform(rotateMatrix);
 

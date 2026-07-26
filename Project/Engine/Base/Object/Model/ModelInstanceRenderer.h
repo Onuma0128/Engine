@@ -22,6 +22,8 @@ class Model;
 /// <summary>
 /// モデルのインスタンスを管理するクラス
 /// </summary>
+namespace NumaEngine {
+
 class ModelInstanceRenderer
 {
 private:
@@ -44,9 +46,9 @@ public:
     /// </summary>
     struct InstanceData
     {
-        Matrix4x4 WVP;
-        Matrix4x4 World;
-        Matrix4x4 WorldInvT;
+        NumaEngine::Matrix4x4 WVP;
+        NumaEngine::Matrix4x4 World;
+        NumaEngine::Matrix4x4 WorldInvT;
     };
     /// <summary>
     /// ジョイント数構造体
@@ -132,7 +134,7 @@ private:
     ComPtr<ID3D12PipelineState> animationShadowMapPipelineState_; // パイプラインステート
 
     struct LightData {
-        Matrix4x4 lightVP;
+        NumaEngine::Matrix4x4 lightVP;
     };
     ComPtr<ID3D12Resource> lightVpBuffer_;
     LightData* lightData_ = nullptr;
@@ -195,4 +197,8 @@ private:
     ComPtr<ID3D12PipelineState> animaMaskPipelineState_; // パイプラインステート
 
 };
+
+} // namespace NumaEngine
+
+// Note: Do not provide a global alias. Use `NumaEngine::ModelInstanceRenderer` explicitly.
 

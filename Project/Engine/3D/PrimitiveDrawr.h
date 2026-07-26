@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
@@ -61,7 +61,7 @@ public:
 	/// </summary>
     struct MaterialData {
 		NumaEngine::Vector4 color;
-		Matrix4x4 uvTransform;
+        NumaEngine::Matrix4x4 uvTransform;
 		int32_t xTexcoord_alpha;
 		int32_t yTexcoord_alpha;
 		float padding[2];
@@ -230,8 +230,8 @@ private:
 
 	/* =============== 座標変換行列 =============== */
 
-	ComPtr<ID3D12Resource> wvpResource_ = nullptr;
-	Matrix4x4* wvpData_ = nullptr;
+    ComPtr<ID3D12Resource> wvpResource_ = nullptr;
+	NumaEngine::Matrix4x4* wvpData_ = nullptr;
 
 	/* =============== TypeとTransform =============== */
 

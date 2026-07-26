@@ -1,4 +1,4 @@
-﻿#include "EnemyRangedElite_AttackState.h"
+#include "EnemyRangedElite_AttackState.h"
 
 #include <memory>
 #include <numbers>
@@ -66,7 +66,7 @@ void EnemyRangedElite_AttackState::Update()
 			NumaEngine::Vector3 targetDir = NumaEngine::Vector3{ -velocity.x,0.0f,velocity.z };
 
 			// velocityから回転を求める
-			Matrix4x4 targetMatrix = Matrix4x4::DirectionToDirection(foward, targetDir);
+            NumaEngine::Matrix4x4 targetMatrix = NumaEngine::Matrix4x4::DirectionToDirection(foward, targetDir);
 			NumaEngine::Quaternion targetRotation = NumaEngine::Quaternion::FormRotationMatrix(targetMatrix);
 			NumaEngine::Quaternion currentRotation = enemy_->GetTransform().rotation_;
 			NumaEngine::Quaternion result = NumaEngine::Quaternion::Slerp(currentRotation, targetRotation, 0.5f);

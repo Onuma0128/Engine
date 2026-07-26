@@ -41,12 +41,12 @@ void NumaEngine::Animation::Initialize(const std::string& filename)
 
 void NumaEngine::Animation::SetSceneRenderer()
 {
-	ModelInstanceRenderer::GetInstance()->Push(this);
+   NumaEngine::ModelInstanceRenderer::GetInstance()->Push(this);
 }
 
 void NumaEngine::Animation::RemoveRenderer()
 {
-	ModelInstanceRenderer::GetInstance()->Remove(this);
+ NumaEngine::ModelInstanceRenderer::GetInstance()->Remove(this);
 }
 
 void NumaEngine::Animation::Update()

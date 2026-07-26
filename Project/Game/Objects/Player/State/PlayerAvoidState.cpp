@@ -1,4 +1,4 @@
-﻿#include "PlayerAvoidState.h"
+#include "PlayerAvoidState.h"
 
 #include <numbers>
 
@@ -25,7 +25,7 @@ void PlayerAvoidState::Init()
 
 	rotateY_ = NumaEngine::Quaternion::ExtractYawQuaternion(player_->GetTransform().rotation_);
 	if (velocity_.Length() == 0.0f) {
-		Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rotateY_);
+        NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(rotateY_);
 		velocity_ = NumaEngine::Vector3::ExprUnitZ.Transform(rotateMatrix).Normalize();
 	} else {
 		player_->SetTransformRotation(

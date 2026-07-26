@@ -41,8 +41,8 @@ public:
 	
 	// モデルベース取得
 	const ModelData& GetModelData()const { return modelData_; }
-	// ルートノードのローカル行列取得
-	const Matrix4x4& GetLocalMatrix()const { return modelData_.rootNode.localMatrix; }
+    // ルートノードのローカル行列取得
+	const NumaEngine::Matrix4x4& GetLocalMatrix()const { return modelData_.rootNode.localMatrix; }
 	// メッシュデータ取得
 	const std::vector<MeshData>& GetMeshData()const { return modelData_.meshs; }
 	// 頂点バッファビュー取得

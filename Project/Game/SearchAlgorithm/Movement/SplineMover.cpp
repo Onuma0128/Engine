@@ -41,7 +41,7 @@ void SplineMover::Update(const float speed, float lookAt_t)
         velocity_ = { lookAtPosition_ - position_ };
 		NumaEngine::Vector3 targetDirection = { -velocity_.x, 0.0f, velocity_.z };
 		NumaEngine::Vector3 currentDirection = NumaEngine::Vector3::ExprUnitZ;
-		Matrix4x4 rotationMatrix = Matrix4x4::DirectionToDirection(currentDirection, targetDirection);
+        NumaEngine::Matrix4x4 rotationMatrix = NumaEngine::Matrix4x4::DirectionToDirection(currentDirection, targetDirection);
 		yRotation_ = NumaEngine::Quaternion::FormRotationMatrix(rotationMatrix);
 	}
 

@@ -42,12 +42,12 @@ public:
 	/// ライト用の行列構造体
 	/// </summary>
 	struct LightMatrix {
-		Matrix4x4 lightView;
-		Matrix4x4 lightProj;
-		Matrix4x4 lightVP;
+        NumaEngine::Matrix4x4 lightView;
+		NumaEngine::Matrix4x4 lightProj;
+		NumaEngine::Matrix4x4 lightVP;
 	};
 	const LightMatrix& GetLightMatrix() const { return lightMatrixs_; }
-	const Matrix4x4& GetLightVP()     const { return lightMatrixs_.lightVP; }
+    const NumaEngine::Matrix4x4& GetLightVP()     const { return lightMatrixs_.lightVP; }
 
 protected:
 

@@ -321,7 +321,7 @@ void PostEffectManager::ResourceInitialize()
 
     outlineResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(OutlineData));
     outlineResource_->Map(0, nullptr, reinterpret_cast<void**>(&outlineData_));
-    outlineData_->projection = Matrix4x4::Identity();
+    outlineData_->projection = NumaEngine::Matrix4x4::Identity();
 }
 
 void PostEffectManager::CreateOutLineMaskResource()
@@ -375,5 +375,5 @@ void PostEffectManager::Update()
 {
     grayscaleData_->t = std::clamp(grayscaleData_->t, 0.0f, 2.0f);
 
-    outlineData_->projection = Matrix4x4::Inverse(CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix());
+    outlineData_->projection = NumaEngine::Matrix4x4::Inverse(CameraManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix());
 }

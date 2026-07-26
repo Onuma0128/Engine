@@ -38,8 +38,8 @@ private:
 	/// <summary>
 	/// スキンのクラスタリング項目
 	/// </summary>
-	struct SkinClusterItem {
-		std::vector<Matrix4x4> inverseBindPoseMatrices;
+    struct SkinClusterItem {
+		std::vector<NumaEngine::Matrix4x4> inverseBindPoseMatrices;
 		ComPtr<ID3D12Resource> infuenceResource;
 		D3D12_VERTEX_BUFFER_VIEW influenceBufferView;
 		std::span<VertexInfluence> mappedInfluence;

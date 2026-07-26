@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
@@ -23,9 +23,9 @@ public:
 	/// ワールド変換行列
 	/// </summary>
 	struct TransformationMatrix {
-		Matrix4x4 WVP;
-		Matrix4x4 World;
-		Matrix4x4 WorldInverseTranspose;
+        NumaEngine::Matrix4x4 WVP;
+		NumaEngine::Matrix4x4 World;
+		NumaEngine::Matrix4x4 WorldInverseTranspose;
 	};
 	
 	/// <summary>
@@ -43,7 +43,7 @@ public:
 	/// </summary>
 	/// <param name="model"></param>
 	void TransferMatrix(const Model* model);
-	void TransferMatrix(const Matrix4x4& localMatrix);
+void TransferMatrix(const NumaEngine::Matrix4x4& localMatrix);
 
 public:
 
@@ -54,7 +54,7 @@ public:
 	// ローカル座標
 	NumaEngine::Vector3 translation_ = { 0, 0, 0 };
 	// ローカル → ワールド変換行列
-	Matrix4x4 matWorld_ = Matrix4x4::Identity();
+    NumaEngine::Matrix4x4 matWorld_ = NumaEngine::Matrix4x4::Identity();
 	// 親となるワールド変換へのポインタ
 	const WorldTransform* parent_ = nullptr;
 	// Instance描画用行列

@@ -61,7 +61,7 @@ void LineInstanceRenderer::CreateInstanceVB(uint32_t capacity)
 
 void LineInstanceRenderer::CreateCB()
 {
-    cbVS_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Matrix4x4));
+    cbVS_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(NumaEngine::Matrix4x4));
     cbVS_->Map(0, nullptr, reinterpret_cast<void**>(&wvp_));
 }
 
@@ -77,7 +77,7 @@ void LineInstanceRenderer::CreateSB()
         materialDatas_[i].enableLighting = true;
         materialDatas_[i].outlineMask = false;
         materialDatas_[i].outlineSceneColor = false;
-        materialDatas_[i].uvTransform = Matrix4x4::Identity();
+        materialDatas_[i].uvTransform = NumaEngine::Matrix4x4::Identity();
         materialDatas_[i].shininess = 20.0f;
         materialDatas_[i].environmentCoefficient = 0;
     }

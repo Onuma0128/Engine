@@ -76,7 +76,7 @@ void ParticleEmitter::Update()
     if (!editorEmitter_.isLock) {
         emitter_.transform.translation = emitterPosition;
     } else {
-        Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
+        NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
         emitter_.transform.translation = emitter_.setPosition + (emitterPosition).Transform(rotateMatrix);
         accelerationField_.acceleration = NumaEngine::Vector3::Transform(accelerationField_.acceleration, rotateMatrix);
     }
@@ -133,7 +133,7 @@ void ParticleEmitter::Update()
     linePosition_ = CreateLineBox(emitter_.emitterSize);
     for (auto& linePos : linePosition_) {
         NumaEngine::Vector3 translate = emitter_.transform.translation;
-        Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
+        NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter_.transform.rotation);
         linePos = linePos.Transform(rotateMatrix) + translate;
     }
     line_->SetPositions(linePosition_);
@@ -259,7 +259,7 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
         particle.rotateSpeed = { distRotateSpeedX(randomEngine),distRotateSpeedY(randomEngine),distRotateSpeedZ(randomEngine) };
     }
     NumaEngine::Vector3 randomTranslate = { distPosX(randomEngine),distPosY(randomEngine) ,distPosZ(randomEngine) };
-    Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter.transform.rotation);
+    NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(emitter.transform.rotation);
     particle.transform.translation = emitter.transform.translation + randomTranslate.Transform(rotateMatrix);
     
     if (!emitter.isLockDirectionXY && !emitter.isLockDirectionXZ) {

@@ -1,4 +1,4 @@
-﻿#include "PredictionObject.h"
+#include "PredictionObject.h"
 
 #include "objects/player/Player.h"
 
@@ -15,7 +15,7 @@ void PredictionObject::Init()
 
 void PredictionObject::Update(const NumaEngine::Vector3& offset)
 {
-	Matrix4x4 rotateMat = NumaEngine::Quaternion::MakeRotateMatrix(player_->GetShot()->GetRightStickQua());
+    NumaEngine::Matrix4x4 rotateMat = NumaEngine::Quaternion::MakeRotateMatrix(player_->GetShot()->GetRightStickQua());
 	NumaEngine::Vector3 position = offset.Transform(rotateMat);
 	transform_.translation_ = player_->GetTransform().translation_ + position;
 

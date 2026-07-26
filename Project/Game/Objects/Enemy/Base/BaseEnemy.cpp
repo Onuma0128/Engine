@@ -214,7 +214,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 			ray_->SetActive(false);
 			stateParam_.isAlive_ = false;
 			// 敵がノックバックする方向を取得
-			Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(other->GetRotate());
+        NumaEngine::Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(other->GetRotate());
 			velocity_ = NumaEngine::Vector3::ExprUnitZ.Transform(rotate);
 			playerBulletPosition_ = other->GetCenterPosition();
 			// 死亡時のステートに遷移

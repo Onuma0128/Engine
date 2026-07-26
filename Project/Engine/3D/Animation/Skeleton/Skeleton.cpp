@@ -1,4 +1,4 @@
-﻿#include "Skeleton.h"
+#include "Skeleton.h"
 
 #include <execution>
 #include <numeric>
@@ -27,7 +27,7 @@ void Skeleton::SkeletonUpdate(const WorldTransform& transform)
 {
 	for (Joint& joint : item_.joints) {
 		Transform3D transform = joint.GetTransform();
-		joint.GetLocalMatrix() = Matrix4x4::Affine(transform.scale, transform.rotation, transform.translation);
+        joint.GetLocalMatrix() = NumaEngine::Matrix4x4::Affine(transform.scale, transform.rotation, transform.translation);
 		if (joint.GetParent()) {
 			joint.GetSkeletonSpaceMatrix() = joint.GetLocalMatrix() * item_.joints[*joint.GetParent()].GetSkeletonSpaceMatrix();
 		} else {

@@ -81,11 +81,11 @@ private:
 	EulerTransform transform_;
 	EulerTransform debugTransform_;
 
-	Matrix4x4 worldMatrix_;
-	Matrix4x4 viewMatrix_;
-	Matrix4x4 viewProjectionMatrix_;
-	Matrix4x4 projectionMatrix_;
-	Matrix4x4 viewportMatrix_;
+ NumaEngine::Matrix4x4 worldMatrix_;
+	NumaEngine::Matrix4x4 viewMatrix_;
+	NumaEngine::Matrix4x4 viewProjectionMatrix_;
+	NumaEngine::Matrix4x4 projectionMatrix_;
+	NumaEngine::Matrix4x4 viewportMatrix_;
 
 	float fovY_;
 	float aspectRatio_;

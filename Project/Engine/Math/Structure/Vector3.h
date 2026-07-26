@@ -8,7 +8,7 @@
 /// <summary>
 /// 3Dベクトルを表す構造体
 /// </summary>
-class Matrix4x4;
+namespace NumaEngine { class Matrix4x4; }
 namespace NumaEngine {
     class Quaternion;
     class Vector3

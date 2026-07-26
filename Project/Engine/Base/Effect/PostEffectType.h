@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Vector3.h"
 #include "Matrix4x4.h"
@@ -41,6 +41,6 @@ struct VignetteData
 /// </summary>
 struct OutlineData
 {
-    Matrix4x4 projection;
+    NumaEngine::Matrix4x4 projection;
 };
 

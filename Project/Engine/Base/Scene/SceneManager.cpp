@@ -27,7 +27,7 @@ void SceneManager::Update()
 			CameraManager::GetInstance()->Clear();
 			ParticleManager::GetInstance()->Clear();
             NumaEngine::DirectXEngine::GetSceneRenderer()->Finalize();
-			ModelInstanceRenderer::GetInstance()->Finalize();
+           NumaEngine::ModelInstanceRenderer::GetInstance()->Finalize();
 			LineInstanceRenderer::GetInstance()->Finalize();
 			CollisionManager::GetInstance()->ClearCollider();
 			scene_->Finalize();
@@ -38,7 +38,7 @@ void SceneManager::Update()
 		nextScene_ = nullptr;
 		// 次シーンを初期化する
 		scene_->Initialize();
-		ModelInstanceRenderer::GetInstance()->Initialize();
+         NumaEngine::ModelInstanceRenderer::GetInstance()->Initialize();
 	}
 
 	// 実行中のシーンの更新

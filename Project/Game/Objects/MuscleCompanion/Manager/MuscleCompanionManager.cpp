@@ -1,4 +1,4 @@
-﻿#include "MuscleCompanionManager.h"
+#include "MuscleCompanionManager.h"
 
 #include "DeltaTimer.h"
 
@@ -251,7 +251,7 @@ void MuscleCompanionManager::UpdateEffect()
 
 		// 向きをプレイヤーと同じにする
 		const float distance = target->GetItems()->GetDashData().dashTargetDistance;
-		Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(NumaEngine::Quaternion::ExtractYawQuaternion(player_->GetTransform().rotation_));
+       NumaEngine::Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(NumaEngine::Quaternion::ExtractYawQuaternion(player_->GetTransform().rotation_));
 		NumaEngine::Vector3 targetPosition = player_->GetTransform().translation_;
 		targetPosition += (NumaEngine::Vector3::ExprUnitZ * distance).Transform(rotate);
 

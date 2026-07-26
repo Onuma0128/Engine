@@ -71,7 +71,7 @@ NumaEngine::Vector3 NumaEngine::Vector3::Normalize() const {
     return { x / length, y / length, z / length };
 }
 
-NumaEngine::Vector3 NumaEngine::Vector3::Transform(const NumaEngine::Vector3& v, const Matrix4x4& matrix)
+NumaEngine::Vector3 NumaEngine::Vector3::Transform(const NumaEngine::Vector3& v, const NumaEngine::Matrix4x4& matrix)
 {
     NumaEngine::Vector3 result{};
     result.x = v.x * matrix.m[0][0] + v.y * matrix.m[1][0] + v.z * matrix.m[2][0] + 1.0f * matrix.m[3][0];
@@ -86,7 +86,7 @@ NumaEngine::Vector3 NumaEngine::Vector3::Transform(const NumaEngine::Vector3& v,
 }
 
 // 行列による変換（仮実装）
-NumaEngine::Vector3 NumaEngine::Vector3::Transform(const Matrix4x4& matrix) const {
+NumaEngine::Vector3 NumaEngine::Vector3::Transform(const NumaEngine::Matrix4x4& matrix) const {
     NumaEngine::Vector3 result{};
     result.x = x * matrix.m[0][0] + y * matrix.m[1][0] + z * matrix.m[2][0] + 1.0f * matrix.m[3][0];
     result.y = x * matrix.m[0][1] + y * matrix.m[1][1] + z * matrix.m[2][1] + 1.0f * matrix.m[3][1];
@@ -99,7 +99,7 @@ NumaEngine::Vector3 NumaEngine::Vector3::Transform(const Matrix4x4& matrix) cons
     return result;
 }
 
-NumaEngine::Vector3 NumaEngine::Vector3::TransformNormal(const NumaEngine::Vector3& v, const Matrix4x4& matrix)
+NumaEngine::Vector3 NumaEngine::Vector3::TransformNormal(const NumaEngine::Vector3& v, const NumaEngine::Matrix4x4& matrix)
 {
     return {
             v.x * matrix.m[0][0] + v.y * matrix.m[1][0] + v.z * matrix.m[2][0],

@@ -1,4 +1,4 @@
-﻿#include "CompanionDashState.h"
+#include "CompanionDashState.h"
 
 #include "DeltaTimer.h"
 
@@ -29,7 +29,7 @@ void CompanionDashState::Init()
 	const float distance = companion_->GetItems()->GetDashData().dashTargetDistance;
 
 	if (!player->GetShot()->GetTargetCollider()) {
-		Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(player->GetTransform().rotation_);
+    NumaEngine::Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(player->GetTransform().rotation_);
 		targetPosition += (NumaEngine::Vector3::ExprUnitZ * distance).Transform(rotate);
 	} else {
 		targetCollider_ = player->GetShot()->GetTargetCollider();

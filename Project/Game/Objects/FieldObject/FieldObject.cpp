@@ -1,4 +1,4 @@
-﻿#include "FieldObject.h"
+#include "FieldObject.h"
 
 #include <numbers>
 
@@ -54,7 +54,7 @@ void FieldObject::Update()
 	if (gameCamera_ && !isGround_) {
 		float distance = NumaEngine::Vector3::Distance(gameCamera_->GetCamera()->GetTranslation(), transform_.translation_);
 		if (distance < items_->GetMainData().cameraDistance) {
-			ModelInstanceRenderer::GetInstance()->AddLateDrawModelName(Object3d::GetModel()->GetModelData().filePath);
+            NumaEngine::ModelInstanceRenderer::GetInstance()->AddLateDrawModelName(Object3d::GetModel()->GetModelData().filePath);
 			Object3d::GetMaterial().outlineMask = false;
 			alpha_ -= DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
 		} else {
@@ -80,7 +80,7 @@ void FieldObject::OnCollisionEnter(Collider* other)
 		shake_ = items_->GetMainData().shakeOffset;
 		if (Collider::colliderName_ == "DeadTree" || Collider::colliderName_ == "fence") {
 			// 弾が飛んできた方向を取得
-			Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(other->GetRotate());
+            NumaEngine::Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(other->GetRotate());
 			NumaEngine::Vector3 velocity = NumaEngine::Vector3::ExprUnitZ.Transform(rotate);
 			// エフェクトを描画
 			WorldTransform transform;

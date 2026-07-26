@@ -19,17 +19,17 @@
 // ===== 追加：LateDraw 制御用 =====
 #include <algorithm>
 
-std::unique_ptr<ModelInstanceRenderer> ModelInstanceRenderer::instance_ = nullptr;
+std::unique_ptr<NumaEngine::ModelInstanceRenderer> NumaEngine::ModelInstanceRenderer::instance_ = nullptr;
 
-ModelInstanceRenderer* ModelInstanceRenderer::GetInstance()
+NumaEngine::ModelInstanceRenderer* NumaEngine::ModelInstanceRenderer::GetInstance()
 {
     if (instance_ == nullptr) {
-        instance_ = std::make_unique<ModelInstanceRenderer>();
+        instance_ = std::make_unique<NumaEngine::ModelInstanceRenderer>();
     }
     return instance_.get();
 }
 
-void ModelInstanceRenderer::Initialize()
+void NumaEngine::ModelInstanceRenderer::Initialize()
 {
     objMaskPipelineState_ = NumaEngine::DirectXEngine::GetPipelineState()->GetPipelineState(
         PipelineType::kObjectOutLineMask,
@@ -67,12 +67,14 @@ void ModelInstanceRenderer::Initialize()
         PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
 
-    lightVpBuffer_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Matrix4x4));
+    lightVpBuffer_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(NumaEngine::Matrix4x4));
     lightVpBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&lightData_));
-    lightData_->lightVP = Matrix4x4::Identity();
+    lightData_->lightVP = NumaEngine::Matrix4x4::Identity();
 }
 
-void ModelInstanceRenderer::Finalize()
+// (no namespace wrapper) Ensure member functions are defined with NumaEngine:: qualifier
+
+void NumaEngine::ModelInstanceRenderer::Finalize()
 {
     auto* srvManager = SrvManager::GetInstance();
 
@@ -136,13 +138,13 @@ void ModelInstanceRenderer::Finalize()
 
 namespace {
     // vector<Model*> から指定モデルを取り除く
-    void RemoveFromModelVector(std::vector<Model*>& v, Model* model)
+    void RemoveFromModelVector(std::vector<::Model*>& v, ::Model* model)
     {
         v.erase(std::remove(v.begin(), v.end(), model), v.end());
     }
 }
 
-bool ModelInstanceRenderer::IsLateDrawModel(Model* model) const
+bool NumaEngine::ModelInstanceRenderer::IsLateDrawModel(::Model* model) const
 {
     if (!model) return false;
     if (lateDrawModelNames_.empty()) return false;
@@ -154,7 +156,7 @@ bool ModelInstanceRenderer::IsLateDrawModel(Model* model) const
     return lateDrawModelNames_.contains(name);
 }
 
-void ModelInstanceRenderer::MoveObjModelToLate(Model* model)
+void NumaEngine::ModelInstanceRenderer::MoveObjModelToLate(::Model* model)
 {
     RemoveFromModelVector(objDrawOrder_, model);
     if (std::find(objLateDrawOrder_.begin(), objLateDrawOrder_.end(), model) == objLateDrawOrder_.end()) {
@@ -162,7 +164,7 @@ void ModelInstanceRenderer::MoveObjModelToLate(Model* model)
     }
 }
 
-void ModelInstanceRenderer::MoveAnimModelToLate(Model* model)
+void NumaEngine::ModelInstanceRenderer::MoveAnimModelToLate(::Model* model)
 {
     RemoveFromModelVector(animDrawOrder_, model);
     if (std::find(animLateDrawOrder_.begin(), animLateDrawOrder_.end(), model) == animLateDrawOrder_.end()) {
@@ -170,33 +172,33 @@ void ModelInstanceRenderer::MoveAnimModelToLate(Model* model)
     }
 }
 
-void ModelInstanceRenderer::AddLateDrawModelName(const std::string& modelName)
+void NumaEngine::ModelInstanceRenderer::AddLateDrawModelName(const std::string& modelName)
 {
     lateDrawModelNames_.insert(modelName);
 
     // すでに確保済みのモデルも Late 側へ移動
     // Object
-    for (Model* m : objDrawOrder_) {
+    for (::Model* m : objDrawOrder_) {
         if (m && m->GetModelData().filePath == modelName) {
             MoveObjModelToLate(m);
         }
     }
     // Animation
-    for (Model* m : animDrawOrder_) {
+    for (::Model* m : animDrawOrder_) {
         if (m && m->GetModelData().filePath == modelName) {
             MoveAnimModelToLate(m);
         }
     }
 }
 
-void ModelInstanceRenderer::RemoveLateDrawModelName(const std::string& modelName)
+void NumaEngine::ModelInstanceRenderer::RemoveLateDrawModelName(const std::string& modelName)
 {
     lateDrawModelNames_.erase(modelName);
     // NOTE:
     // 「元の順へ戻す」まで行う場合は、描画順の再構築が必要になります。
 }
 
-void ModelInstanceRenderer::ClearLateDrawModelNames()
+void NumaEngine::ModelInstanceRenderer::ClearLateDrawModelNames()
 {
     lateDrawModelNames_.clear();
 }
@@ -205,7 +207,7 @@ void ModelInstanceRenderer::ClearLateDrawModelNames()
 ///                           Object3d_Resource
 /// =====================================================================
 
-void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstance)
+void NumaEngine::ModelInstanceRenderer::ObjReserveBatch(::Object3d* object, uint32_t maxInstance)
 {
     // 二重確保ガード
     if (objBatches_.contains(object->GetModel())) return;
@@ -228,9 +230,9 @@ void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstan
     // --- CPU 側から書き込むために永続 WorldMatrix ---
     batch.worldMatrixBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.instanceData));
     for (uint32_t i = 0; i < maxInstance; ++i) {
-        batch.instanceData[i].WVP = Matrix4x4::Identity();
-        batch.instanceData[i].World = Matrix4x4::Identity();
-        batch.instanceData[i].WorldInvT = Matrix4x4::Identity();
+        batch.instanceData[i].WVP = NumaEngine::Matrix4x4::Identity();
+        batch.instanceData[i].World = NumaEngine::Matrix4x4::Identity();
+        batch.instanceData[i].WorldInvT = NumaEngine::Matrix4x4::Identity();
     }
     // --- CPU 側から書き込むために永続 Material ---
     batch.materialBuffer->Map(0, nullptr, reinterpret_cast<void**>(&batch.materialData));
@@ -257,7 +259,7 @@ void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstan
     objBatches_[object->GetModel()] = std::move(batch);
 
     // ===== 追加：描画順へ登録（unordered_map の順序に依存しない） =====
-    Model* model = object->GetModel();
+    ::Model* model = object->GetModel();
     if (IsLateDrawModel(model)) {
         if (std::find(objLateDrawOrder_.begin(), objLateDrawOrder_.end(), model) == objLateDrawOrder_.end()) {
             objLateDrawOrder_.push_back(model);
@@ -273,7 +275,7 @@ void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstan
 ///                           Animation_Resource
 /// =====================================================================
 
-void ModelInstanceRenderer::AnimationReserveBatch(NumaEngine::Animation* animation, uint32_t maxInstance)
+void NumaEngine::ModelInstanceRenderer::AnimationReserveBatch(NumaEngine::Animation* animation, uint32_t maxInstance)
 {
     // 二重確保ガード
     if (animationBatches_.contains(animation->GetModel())) return;
@@ -363,7 +365,7 @@ void ModelInstanceRenderer::AnimationReserveBatch(NumaEngine::Animation* animati
 ///                      Object3d_Push & Remove
 /// =====================================================================
 
-void ModelInstanceRenderer::Push(Object3d* obj)
+void NumaEngine::ModelInstanceRenderer::Push(Object3d* obj)
 {
     // 未確保なら Reserve
     Model* model = obj->GetModel();
@@ -388,7 +390,7 @@ void ModelInstanceRenderer::Push(Object3d* obj)
     ++batch.count;
 }
 
-void ModelInstanceRenderer::Remove(Object3d* obj)
+void NumaEngine::ModelInstanceRenderer::Remove(Object3d* obj)
 {
     Model* model = obj->GetModel();
     ObjectBatch& batch = objBatches_[model];
@@ -407,7 +409,7 @@ void ModelInstanceRenderer::Remove(Object3d* obj)
 ///                     Animation_Push & Remove
 /// =====================================================================
 
-void ModelInstanceRenderer::Push(NumaEngine::Animation* animation)
+void NumaEngine::ModelInstanceRenderer::Push(NumaEngine::Animation* animation)
 {
     // 未確保なら Reserve
     Model* model = animation->GetModel();
@@ -430,7 +432,7 @@ void ModelInstanceRenderer::Push(NumaEngine::Animation* animation)
     ++batch.count;
 }
 
-void ModelInstanceRenderer::Remove(NumaEngine::Animation* animation)
+void NumaEngine::ModelInstanceRenderer::Remove(NumaEngine::Animation* animation)
 {
     Model* model = animation->GetModel();
     AnimationBatch& batch = animationBatches_[model];
@@ -449,7 +451,7 @@ void ModelInstanceRenderer::Remove(NumaEngine::Animation* animation)
 ///                          Object3d_Update
 /// =====================================================================
 
-void ModelInstanceRenderer::ObjUpdate()
+void NumaEngine::ModelInstanceRenderer::ObjUpdate()
 {
     for (auto it = objBatches_.begin(); it != objBatches_.end();) {
 
@@ -473,7 +475,7 @@ void ModelInstanceRenderer::ObjUpdate()
 ///                         Animation_Update
 /// =====================================================================
 
-void ModelInstanceRenderer::AnimationUpdate()
+void NumaEngine::ModelInstanceRenderer::AnimationUpdate()
 {
     for (auto it = animationBatches_.begin(); it != animationBatches_.end();) {
 
@@ -505,7 +507,7 @@ void ModelInstanceRenderer::AnimationUpdate()
     }
 }
 
-void ModelInstanceRenderer::AllDrawShadowDepth()
+void NumaEngine::ModelInstanceRenderer::AllDrawShadowDepth()
 {
     auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 
@@ -583,7 +585,7 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
     DrawAnimShadowDepth(animLateDrawOrder_);
 }
 
-void ModelInstanceRenderer::AllDrawOutlineMask() {
+void NumaEngine::ModelInstanceRenderer::AllDrawOutlineMask() {
     auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 
     if (!objBatches_.empty()) {
@@ -651,7 +653,7 @@ void ModelInstanceRenderer::AllDrawOutlineMask() {
 }
 
 
-void ModelInstanceRenderer::AllDraw()
+void NumaEngine::ModelInstanceRenderer::AllDraw()
 {
     auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <optional>
 
@@ -39,15 +39,15 @@ public:
 	/// アクセッサ
 	/// </summary>
 
-	// 書き込み専用
+    // 書き込み専用
 	Transform3D& GetTransform() { return transform_; }
-	Matrix4x4& GetLocalMatrix() { return localMatrix_; }
-	Matrix4x4& GetSkeletonSpaceMatrix() { return skeletonSpaceMatrix_; }
+	NumaEngine::Matrix4x4& GetLocalMatrix() { return localMatrix_; }
+	NumaEngine::Matrix4x4& GetSkeletonSpaceMatrix() { return skeletonSpaceMatrix_; }
 
     // 読み取り専用
     const Transform3D& GetTransform() const { return transform_; }
-    const Matrix4x4& GetLocalMatrix() const { return localMatrix_; }
-    const Matrix4x4& GetSkeletonSpaceMatrix() const { return skeletonSpaceMatrix_; }
+	const NumaEngine::Matrix4x4& GetLocalMatrix() const { return localMatrix_; }
+	const NumaEngine::Matrix4x4& GetSkeletonSpaceMatrix() const { return skeletonSpaceMatrix_; }
     const std::string& GetName() const { return name_; }
     const std::vector<int32_t>& GetChildren() const { return children_; }
     int32_t GetIndex() const { return index_; }
@@ -76,8 +76,8 @@ private:
 private:
 
 	Transform3D transform_;
-	Matrix4x4 localMatrix_;
-	Matrix4x4 skeletonSpaceMatrix_;
+    NumaEngine::Matrix4x4 localMatrix_;
+	NumaEngine::Matrix4x4 skeletonSpaceMatrix_;
 	std::string name_;
 	std::vector<int32_t> children_;
 	int32_t index_;
