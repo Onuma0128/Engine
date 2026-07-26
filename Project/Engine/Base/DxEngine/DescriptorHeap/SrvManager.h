@@ -12,7 +12,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 
 /// <summary>
 /// SRV管理クラス
@@ -36,7 +36,7 @@ public:
 	// シングルトンインスタンスの取得
 	static SrvManager* GetInstance();
 	// 初期化
-	void Initialize(DirectXEngine* dxEngine);
+    void Initialize(NumaEngine::DirectXEngine* dxEngine);
 	// グラフィックスルートデスクリプタテーブル設定
 	void SetGraphicsRootDescriptorTable(UINT RootParameterIndex, uint32_t srvIndex);
 	// 描画前の処理
@@ -70,7 +70,7 @@ public:
 
 private:
 
-	DirectXEngine* dxEngine_ = nullptr;
+    NumaEngine::DirectXEngine* dxEngine_ = nullptr;
 
 	// SRV用のデスクリプタサイズ
 	uint32_t descriptorSize_;

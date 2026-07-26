@@ -1,4 +1,4 @@
-﻿#include "PrimitiveDrawr.h"
+#include "PrimitiveDrawr.h"
 
 #include <numbers>
 
@@ -66,7 +66,7 @@ void PrimitiveDrawr::Draw()
 {
 	primitiveDrawrBase_->DrawBase(static_cast<int>(blendMode_));
 
-	auto commandList = DirectXEngine::GetCommandList();
+    auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->IASetIndexBuffer(&indexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
@@ -122,12 +122,12 @@ void PrimitiveDrawr::SetSceneRenderer()
 		.enabled = true,
 		.offscreen = false
 	};
-	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+    NumaEngine::DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
 void PrimitiveDrawr::RemoveRenderer()
 {
-	DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
+    NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
 }
 
 void PrimitiveDrawr::TypeDraw()
@@ -191,7 +191,7 @@ void PrimitiveDrawr::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size
 	vertexResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 頂点リソースを作成する
-	HRESULT hr = DirectXEngine::GetDevice()->CreateCommittedResource(
+    HRESULT hr = NumaEngine::DirectXEngine::GetDevice()->CreateCommittedResource(
 		&uploadHeapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&vertexResourceDesc,
@@ -279,7 +279,7 @@ void PrimitiveDrawr::InitPlane()
 
 void PrimitiveDrawr::DrawPlane()
 {
-	auto commandList = DirectXEngine::GetCommandList();
+    auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -334,7 +334,7 @@ void PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
 
 void PrimitiveDrawr::DrawSphere()
 {
-	auto commandList = DirectXEngine::GetCommandList();
+    auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -397,7 +397,7 @@ void PrimitiveDrawr::InitRing(uint32_t kRingDivide)
 
 void PrimitiveDrawr::DrawRing()
 {
-	auto commandList = DirectXEngine::GetCommandList();
+    auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -468,7 +468,7 @@ void PrimitiveDrawr::InitCylinder(uint32_t kCylinderDivide)
 
 void PrimitiveDrawr::DrawCylinder()
 {
-	auto commandList = DirectXEngine::GetCommandList();
+    auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());
@@ -538,7 +538,7 @@ void PrimitiveDrawr::InitSkybox()
 
 void PrimitiveDrawr::DrawSkybox()
 {
-	auto commandList = DirectXEngine::GetCommandList();
+	auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
 	commandList->SetGraphicsRootConstantBufferView(1, wvpResource_->GetGPUVirtualAddress());

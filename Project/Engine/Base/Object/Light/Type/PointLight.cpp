@@ -5,7 +5,7 @@
 
 #include "CreateBufferResource.h"
 
-void PointLight::Initialize(DirectXEngine* dxEngine)
+void PointLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 	MakeLightData();

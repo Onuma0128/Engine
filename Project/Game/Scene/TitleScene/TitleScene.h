@@ -47,8 +47,8 @@ public:
 
 private:
 
-	// フェード
-	std::unique_ptr<BaseUI> sceneFade_ = nullptr;
+    // フェード
+	std::unique_ptr<NumaEngine::BaseUI> sceneFade_ = nullptr;
 	bool isFade_ = false;
 
 	// タイトル用UI

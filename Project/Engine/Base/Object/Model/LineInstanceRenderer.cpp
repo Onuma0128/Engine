@@ -1,4 +1,4 @@
-﻿#include "LineInstanceRenderer.h"
+#include "LineInstanceRenderer.h"
 
 #include "DirectXEngine.h"
 #include "SrvManager.h"
@@ -32,7 +32,7 @@ void LineInstanceRenderer::Initialize(uint32_t capacity)
 void LineInstanceRenderer::CreateLocalVB()
 {
     LocalV local[2] = { {0.f}, {1.f} };
-    vbLocal_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(local));
+    vbLocal_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(local));
     void* dst = nullptr;
     vbLocal_->Map(0, nullptr, &dst);
     memcpy(dst, local, sizeof(local));
@@ -47,7 +47,7 @@ void LineInstanceRenderer::CreateInstanceVB(uint32_t capacity)
 {
     capacity_ = capacity;
     const UINT bytes = sizeof(Inst) * capacity_;
-    vbInst_ = CreateBufferResource(DirectXEngine::GetDevice(), bytes);
+    vbInst_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), bytes);
 
     vbvInst_.BufferLocation = vbInst_->GetGPUVirtualAddress();
     vbvInst_.StrideInBytes = sizeof(Inst);
@@ -61,7 +61,7 @@ void LineInstanceRenderer::CreateInstanceVB(uint32_t capacity)
 
 void LineInstanceRenderer::CreateCB()
 {
-    cbVS_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4));
+    cbVS_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Matrix4x4));
     cbVS_->Map(0, nullptr, reinterpret_cast<void**>(&wvp_));
 }
 
@@ -69,7 +69,7 @@ void LineInstanceRenderer::CreateSB()
 {
     uint32_t maxInstance = 32768;
 
-    sbPS_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material) * maxInstance);
+    sbPS_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Material) * maxInstance);
     sbPS_->Map(0, nullptr, reinterpret_cast<void**>(&materialDatas_));
     for (uint32_t i = 0; i < maxInstance; ++i) {
         materialDatas_[i].color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -217,11 +217,11 @@ void LineInstanceRenderer::Draws()
     base_->DrawBase();
 
     D3D12_VERTEX_BUFFER_VIEW views[2] = { vbvLocal_, vbvInst_ };
-    DirectXEngine::GetCommandList()->IASetVertexBuffers(0, 2, views);
+    NumaEngine::DirectXEngine::GetCommandList()->IASetVertexBuffers(0, 2, views);
 
-    DirectXEngine::GetCommandList()->SetGraphicsRootConstantBufferView(0, cbVS_->GetGPUVirtualAddress());
+    NumaEngine::DirectXEngine::GetCommandList()->SetGraphicsRootConstantBufferView(0, cbVS_->GetGPUVirtualAddress());
     SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(1, materialSrvIndex_);
 
-    DirectXEngine::GetCommandList()->DrawInstanced(2, totalInstances_, 0, 0);
+    NumaEngine::DirectXEngine::GetCommandList()->DrawInstanced(2, totalInstances_, 0, 0);
 }
 

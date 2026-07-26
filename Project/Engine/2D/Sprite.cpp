@@ -1,4 +1,4 @@
-﻿#include "Sprite.h"
+#include "Sprite.h"
 
 #include "DirectXEngine.h"
 
@@ -39,7 +39,7 @@ void Sprite::SetSceneRenderer()
 		.enabled = true,
 		.offscreen = true
 	};
-	DirectXEngine::GetSceneRenderer()->SetDrawList(this);
+    NumaEngine::DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
 void Sprite::Update()
@@ -54,7 +54,7 @@ void Sprite::Draw()
 {
 	spriteBase_->DrawBase();
 
-	auto commandList = DirectXEngine::GetCommandList();
+    auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
 	commandList->IASetIndexBuffer(&indexBufferView_);
 	commandList->SetGraphicsRootConstantBufferView(0, materialResource_->GetGPUVirtualAddress());
@@ -84,8 +84,8 @@ void Sprite::SetNoiseTexture(const std::string& fileName)
 
 void Sprite::VertexDataInitialize()
 {
-	vertexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VertexData) * 4);
-	indexResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(uint32_t) * 6);
+    vertexResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(VertexData) * 4);
+	indexResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(uint32_t) * 6);
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
 	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
 	vertexBufferView_.SizeInBytes = sizeof(VertexData) * 4;
@@ -113,7 +113,7 @@ void Sprite::VertexDataInitialize()
 
 void Sprite::MaterialDataInitialize()
 {
-	materialResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Material));
+    materialResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Material));
 	
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
@@ -123,7 +123,7 @@ void Sprite::MaterialDataInitialize()
 
 void Sprite::DissolveDataInitialize()
 {
-	dissolveResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(DissolveParams));
+    dissolveResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(DissolveParams));
 	dissolveResource_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
 
 	dissolveData_->threshold = 0.5f;
@@ -133,7 +133,7 @@ void Sprite::DissolveDataInitialize()
 
 void Sprite::TransformationMatrixDataInitialize()
 {
-	transformationMatrixResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(TransformationMatrix));
+    transformationMatrixResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(TransformationMatrix));
 	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
 	transformationMatrixData_->WVP = Matrix4x4::Identity();
 	transformationMatrixData_->World = Matrix4x4::Identity();

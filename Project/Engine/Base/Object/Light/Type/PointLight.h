@@ -21,7 +21,7 @@ public:
         float padding;
     };
 
-    void Initialize(DirectXEngine* dxEngine) override;
+    void Initialize(NumaEngine::DirectXEngine* dxEngine) override;
     void Update() override;
     void Debug_ImGui() override;
     void MakeLightData() override;

@@ -16,7 +16,7 @@ using Microsoft::WRL::ComPtr;
 
 class WorldTransform;
 class Object3d;
-class Animation;
+namespace NumaEngine { class Animation; }
 class Model;
 
 /// <summary>
@@ -65,8 +65,8 @@ public:
     /* ========================= Animation ========================= */
 
     // インスタンス登録・削除
-    void Push(Animation* animation);
-    void Remove(Animation* animation);
+    void Push(NumaEngine::Animation* animation);
+    void Remove(NumaEngine::Animation* animation);
 
     // 終了処理
     void Finalize();
@@ -98,7 +98,7 @@ private:
     /* ========================= Animation ========================= */
 
     // インスタンスバッチ確保・更新
-    void AnimationReserveBatch(Animation* animation, uint32_t maxInstance = 128);
+    void AnimationReserveBatch(NumaEngine::Animation* animation, uint32_t maxInstance = 128);
     void AnimationUpdate();
 
 private:
@@ -162,7 +162,7 @@ private:
     struct AnimationBatch
     {
         Model* model;                               // キー
-        std::vector<Animation*> animations;         // Animations
+        std::vector<NumaEngine::Animation*> animations;         // Animations
         uint32_t maxInstance;                       // 初期確保上限 (128)
         uint32_t count;                             // 今フレーム登録数
 

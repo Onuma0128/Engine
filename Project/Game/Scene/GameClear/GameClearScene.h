@@ -37,12 +37,12 @@ public:
 
 private:
 
-	std::shared_ptr<Camera> camera_ = nullptr;
+    std::shared_ptr<NumaEngine::Camera> camera_ = nullptr;
 
 	std::unique_ptr<SceneFade> sceneFade_ = nullptr;
 	bool isFade_ = false;
 
-	std::unique_ptr<Animation> enemy_ = nullptr;
+    std::unique_ptr<NumaEngine::Animation> enemy_ = nullptr;
 
 	std::unique_ptr<GameClearUI> gameClearUI_ = nullptr;
 

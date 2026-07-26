@@ -11,7 +11,7 @@ void SkinCluster::CreateSkinCluster(Skeleton& skeleton, const ModelData& modelDa
 {
 	// **Influenceリソースの作成**
 	size_t influenceSize = modelData.vertices.size() * sizeof(VertexInfluence);
-	item_.infuenceResource = CreateBufferResource(DirectXEngine::GetDevice(), influenceSize);
+    item_.infuenceResource = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), influenceSize);
 
 	// **Influenceのマッピング**
 	VertexInfluence* mappedInfluence = nullptr;

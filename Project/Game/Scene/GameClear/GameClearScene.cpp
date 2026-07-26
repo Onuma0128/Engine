@@ -1,4 +1,4 @@
-﻿#include "GameClearScene.h"
+#include "GameClearScene.h"
 
 #include "SceneManager.h"
 #include "CameraManager.h"
@@ -6,8 +6,8 @@
 
 void GameClearScene::Initialize()
 {
-	// カメラの初期化
-	camera_ = std::make_unique<Camera>();
+    // カメラの初期化
+	camera_ = std::make_shared<NumaEngine::Camera>();
 	camera_->Initialize();
 	CameraManager::GetInstance()->SetCamera(camera_);
 	CameraManager::GetInstance()->SetActiveCamera(0);
@@ -18,7 +18,7 @@ void GameClearScene::Initialize()
 	sceneFade_->Init();
 	sceneFade_->FadeIn(2.0f);
 
-	enemy_ = std::make_unique<Animation>();
+    enemy_ = std::make_unique<NumaEngine::Animation>();
 	enemy_->Initialize("Zombie_Basic.gltf");
 	enemy_->PlayByName("Yes");
 	enemy_->SetSceneRenderer();

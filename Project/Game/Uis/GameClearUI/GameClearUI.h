@@ -5,7 +5,7 @@
 /// <summary>
 /// ゲームクリアUIクラス
 /// </summary>
-class GameClearUI : public BaseUI
+class GameClearUI : public NumaEngine::BaseUI
 {
 public:
 

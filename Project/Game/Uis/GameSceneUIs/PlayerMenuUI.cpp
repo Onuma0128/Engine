@@ -2,16 +2,16 @@
 
 void PlayerMenuUI::Init()
 {
-	BaseUI::Init("PlayerMenuUI", "GameData");
+    NumaEngine::BaseUI::Init("PlayerMenuUI", "GameData");
 }
 
 void PlayerMenuUI::Update()
 {
-	BaseUI::DrawImGui();
-	BaseUI::Update();
+    NumaEngine::BaseUI::DrawImGui();
+	NumaEngine::BaseUI::Update();
 }
 
 void PlayerMenuUI::Draw()
 {
-	BaseUI::Draw();
+    NumaEngine::BaseUI::Draw();
 }

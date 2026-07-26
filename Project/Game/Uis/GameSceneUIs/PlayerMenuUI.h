@@ -5,7 +5,7 @@
 /// <summary>
 /// プレイヤーメニューUIクラス
 /// </summary>
-class PlayerMenuUI : public BaseUI
+class PlayerMenuUI : public NumaEngine::BaseUI
 {
 public:
 

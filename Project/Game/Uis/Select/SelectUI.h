@@ -5,7 +5,7 @@
 /// <summary>
 /// セレクトUIクラス
 /// </summary>
-class SelectUI : public BaseUI
+class SelectUI : public NumaEngine::BaseUI
 {
 public:
 

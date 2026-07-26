@@ -1,4 +1,4 @@
-﻿#include "ParticleManager.h"
+#include "ParticleManager.h"
 
 #include <numbers>
 #include "imgui.h"
@@ -27,7 +27,7 @@ ParticleManager* ParticleManager::GetInstance()
     return instance_.get();
 }
 
-void ParticleManager::Initialize(DirectXEngine* dxEngine)
+void ParticleManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
     dxEngine_ = dxEngine;
     srvManager_ = SrvManager::GetInstance();

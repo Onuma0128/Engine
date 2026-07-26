@@ -17,7 +17,8 @@ class ImGuiManager;
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine
+namespace NumaEngine {
+	class DirectXEngine
 {
 public:
 
@@ -130,4 +131,8 @@ private:
 	D3D12_RESOURCE_BARRIER barrier_{};
 	// 記録時間
 	std::chrono::steady_clock::time_point reference_;
-};
+    };
+}
+
+// Note: types are defined inside namespace `NumaEngine`.
+// Do not introduce global `using` declarations here to avoid name collisions.

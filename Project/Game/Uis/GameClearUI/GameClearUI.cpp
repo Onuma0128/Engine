@@ -2,17 +2,17 @@
 
 void GameClearUI::Init()
 {
-	BaseUI::Init("GameClearUI", "GameData");
+    NumaEngine::BaseUI::Init("GameClearUI", "GameData");
 }
 
 void GameClearUI::Update()
 {
-	BaseUI::DrawImGui();
+    NumaEngine::BaseUI::DrawImGui();
 
-	BaseUI::Update();
+	NumaEngine::BaseUI::Update();
 }
 
 void GameClearUI::Draw()
 {
-	BaseUI::Draw();
+    NumaEngine::BaseUI::Draw();
 }

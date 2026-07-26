@@ -7,7 +7,7 @@
 /// <summary>
 /// ゲームオーバーUIクラス
 /// </summary>
-class GameOverUI : public BaseUI
+class GameOverUI : public NumaEngine::BaseUI
 {
 public:
 

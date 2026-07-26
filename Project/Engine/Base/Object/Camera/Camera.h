@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -10,10 +10,11 @@
 
 using Microsoft::WRL::ComPtr;
 
-/// <summary>
-/// カメラクラス
-/// </summary>
-class Camera
+namespace NumaEngine {
+	/// <summary>
+	/// カメラクラス
+	/// </summary>
+	class Camera
 {
 public:
 
@@ -93,4 +94,7 @@ private:
 
 	float mouseSensitivity_ = 0.001f;
 	bool isDebug_ = false;
-};
+    };
+}
+
+// Camera is defined inside namespace NumaEngine; use fully-qualified name where needed.

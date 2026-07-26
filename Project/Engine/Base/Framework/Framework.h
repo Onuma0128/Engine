@@ -44,7 +44,7 @@ protected:
 	bool endRequst_ = false;
 
 	std::unique_ptr<WinApp> winApp_ = nullptr;
-	std::unique_ptr<DirectXEngine> directXEngine_ = nullptr;
+    std::unique_ptr<NumaEngine::DirectXEngine> directXEngine_ = nullptr;
 
 	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
 

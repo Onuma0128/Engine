@@ -14,7 +14,7 @@ RtvManager* RtvManager::GetInstance()
 	return instance_.get();
 }
 
-void RtvManager::Initialize(DirectXEngine* dxEngine)
+void RtvManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 

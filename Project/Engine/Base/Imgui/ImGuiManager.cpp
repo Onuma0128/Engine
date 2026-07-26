@@ -17,7 +17,7 @@ ImGuiManager::~ImGuiManager()
 	ImGui::DestroyContext();
 }
 
-void ImGuiManager::Initialize(DirectXEngine* dxEngine, WinApp* winApp)
+void ImGuiManager::Initialize(NumaEngine::DirectXEngine* dxEngine, WinApp* winApp)
 {
 	dxEngine_ = dxEngine;
 	winApp_ = winApp;
@@ -54,6 +54,6 @@ void ImGuiManager::Draw()
 {
 #ifdef ENABLE_EDITOR
 	// 実際のnommandListのImGuiの描画コマンドを積む
-	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), dxEngine_->GetCommandList());
+    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), NumaEngine::DirectXEngine::GetCommandList());
 #endif // ENABLE_EDITOR
 }

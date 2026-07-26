@@ -2,17 +2,17 @@
 
 void GameOverUI::Init()
 {
-	BaseUI::Init("GameOverUI", "GameData");
+    NumaEngine::BaseUI::Init("GameOverUI", "GameData");
 }
 
 void GameOverUI::Update()
 {
-	BaseUI::DrawImGui();
+    NumaEngine::BaseUI::DrawImGui();
 
-	BaseUI::Update();
+	NumaEngine::BaseUI::Update();
 }
 
 void GameOverUI::Draw()
 {
-	BaseUI::Draw();
+    NumaEngine::BaseUI::Draw();
 }

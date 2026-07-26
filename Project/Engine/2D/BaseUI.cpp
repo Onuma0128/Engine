@@ -8,7 +8,7 @@
 #include "DeltaTimer.h"
 #include "Easing.h"
 
-void BaseUI::Init(const std::string& uiName, const std::string& biginName, bool isNoiseTexture)
+void NumaEngine::BaseUI::Init(const std::string& uiName, const std::string& biginName, bool isNoiseTexture)
 {
 	isNoiseTexture_ = isNoiseTexture;
 	parameters_.filename = uiName;
@@ -121,19 +121,19 @@ void BaseUI::Init(const std::string& uiName, const std::string& biginName, bool 
 	playAnimationTimer_ = 0.0f;
 }
 
-void BaseUI::Update()
+void NumaEngine::BaseUI::Update()
 {
 	UI_Animation();
 
 	ui_->Update();
 }
 
-void BaseUI::Draw()
+void NumaEngine::BaseUI::Draw()
 {
 	ui_->Draw();
 }
 
-void BaseUI::DrawImGui()
+void NumaEngine::BaseUI::DrawImGui()
 {
 #ifdef ENABLE_EDITOR
 
@@ -241,7 +241,7 @@ void BaseUI::DrawImGui()
 #endif // ENABLE_EDITOR
 }
 
-void BaseUI::Save()
+void NumaEngine::BaseUI::Save()
 {
 	// Texture
 	json_.Set("Texture", parameters_.texture);
@@ -273,7 +273,7 @@ void BaseUI::Save()
 	json_.Save();
 }
 
-void BaseUI::FadeIn()
+void NumaEngine::BaseUI::FadeIn()
 {
 	if (!isPlayAnimation_) {
 		playAnimationTimer_ = 0.0f;
@@ -283,7 +283,7 @@ void BaseUI::FadeIn()
 	reversePlayBack_ = false;
 }
 
-void BaseUI::FadeOut()
+void NumaEngine::BaseUI::FadeOut()
 {
 	if (!isPlayAnimation_) {
 		playAnimationTimer_ = 1.0f;
@@ -293,7 +293,7 @@ void BaseUI::FadeOut()
 	reversePlayBack_ = true;
 }
 
-void BaseUI::Blinking()
+void NumaEngine::BaseUI::Blinking()
 {
 	// フレームを進める
 	blinkingTime_ += DeltaTimer::GetDeltaTime() * 5.0f;
@@ -307,13 +307,13 @@ void BaseUI::Blinking()
 	ui_->SetColor(NumaEngine::Vector4{ 1.0f, 1.0f, 1.0f, alpha });
 }
 
-void BaseUI::Reset()
+void NumaEngine::BaseUI::Reset()
 {
 	blinkingTime_ = 0.0f;
 	ui_->SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,1.0f });
 }
 
-void BaseUI::UI_Animation()
+void NumaEngine::BaseUI::UI_Animation()
 {
 	// Animationが有効なら再生する
 	if (isPlayAnimation_) {

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 
@@ -54,7 +54,7 @@ public:
 	void SetBossEnemy(BossEnemy* boss) { boss_ = boss; }
 	void SetSpawner(EnemySpawnerFactory* spawner) { spawner_ = spawner; }
 	void SetCompanionManager(MuscleCompanionManager* companionManager) { companionManager_ = companionManager; }
-	Camera* GetCamera() { return mainCamera_.get(); }
+    NumaEngine::Camera* GetCamera() { return mainCamera_.get(); }
 	const bool GetClearEnd()const { return isClearCameraEnd_; }
 
 private:
@@ -72,10 +72,10 @@ private:
 	// カメラの調整項目
 	std::unique_ptr<CameraAdjustItem> items_ = nullptr;
 
-	// カメラ
-	std::shared_ptr<Camera> mainCamera_ = nullptr;
-	std::shared_ptr<Camera> sabCamera_ = nullptr;
-	std::shared_ptr<Camera> bossCamera_ = nullptr;
+    // カメラ
+	std::shared_ptr<NumaEngine::Camera> mainCamera_ = nullptr;
+	std::shared_ptr<NumaEngine::Camera> sabCamera_ = nullptr;
+	std::shared_ptr<NumaEngine::Camera> bossCamera_ = nullptr;
 
     NumaEngine::Vector3 mainCameraAddPos_ = {};
 	float shakeStrength_ = 0.0f;

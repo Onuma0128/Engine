@@ -13,7 +13,7 @@ Collider::~Collider()
 {
 	CollisionManager::GetInstance()->RemoveCollider(this);
 	if (line_ == nullptr) { return; }
-	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
+    NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
 void Collider::AddCollider()
@@ -25,7 +25,7 @@ void Collider::RemoveCollider()
 {
 	CollisionManager::GetInstance()->RemoveCollider(this);
 	if (line_ == nullptr) { return; }
-	DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
+    NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
 void Collider::DrawCollider()

@@ -1,4 +1,4 @@
-﻿#include "RenderTexture.h"
+#include "RenderTexture.h"
 
 #include <cassert>
 
@@ -61,8 +61,8 @@ D3D12_CPU_DESCRIPTOR_HANDLE RenderTexture::GetDSVHandle() const
 void RenderTexture::Initialize()
 {
 	// 深度リソースを作成
-	depthStencilResource_ = CreateDepthStencilTextureResource(
-		DirectXEngine::GetDevice(),
+    depthStencilResource_ = CreateDepthStencilTextureResource(
+		NumaEngine::DirectXEngine::GetDevice(),
 		WinApp::kClientWidth,
 		WinApp::kClientHeight
 	);
@@ -72,8 +72,8 @@ void RenderTexture::Initialize()
 
 	// RenderTextureのRTVの設定
 	const NumaEngine::Vector4 kRenderTargetClearValue = { 0.0f,0.0f,0.2f,1.0f };
-	renderTextureResource_ = RenderTexture::CreateResource(
-		DirectXEngine::GetDevice(),
+    renderTextureResource_ = RenderTexture::CreateResource(
+		NumaEngine::DirectXEngine::GetDevice(),
 		WinApp::kClientWidth,
 		WinApp::kClientHeight,
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
@@ -89,10 +89,10 @@ void RenderTexture::Initialize()
 	SrvManager::GetInstance()->CreateSRVforRenderTexture(renderTextureSRVIndex_, renderTextureResource_.Get());
 
 	// ルートシグネチャ,パイプラインステート
-	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+    rootSignature_ = NumaEngine::DirectXEngine::GetPipelineState()->GetRootSignature(
 		PipelineType::kRenderTexture, PostEffectType::kRenderTexture, BlendMode::kBlendModeNone
 	).Get();
-	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+    pipelineState_ = NumaEngine::DirectXEngine::GetPipelineState()->GetPipelineState(
 		PipelineType::kRenderTexture, PostEffectType::kRenderTexture, BlendMode::kBlendModeNone
 	).Get();
 }
@@ -111,7 +111,7 @@ void RenderTexture::StartBarrier()
 	//遷移後のResourceState
 	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
 	//TransitionBarrierを張る
-	auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->ResourceBarrier(1, &barrier_);
 }
 
@@ -122,7 +122,7 @@ void RenderTexture::EndBarrier()
 	//遷移後のResourceState
 	barrier_.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
 	//TransitionBarrierを張る
-	auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->ResourceBarrier(1, &barrier_);
 }
 
@@ -130,7 +130,7 @@ void RenderTexture::PreDraw()
 {
 	//描画先のRTVとDSVを設定する
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = DsvManager::GetInstance()->GetCPUDescriptorHandle(depthIndex_);
-	auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->OMSetRenderTargets(1, &renderTextureHandle_, false, &dsvHandle);
 	//指定した深度で画面全体をクリアする
 	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -141,7 +141,7 @@ void RenderTexture::PreDraw()
 
 void RenderTexture::Draw()
 {
-	auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 	// RenderTextureの描画
 	commandList->SetGraphicsRootSignature(rootSignature_.Get());
 	commandList->SetPipelineState(pipelineState_.Get());

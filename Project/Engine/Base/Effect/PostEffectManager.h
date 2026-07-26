@@ -12,7 +12,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 class PipelineState;
 
 class PostEffectManager
@@ -40,7 +40,7 @@ public:
     /// <summary>
     /// 初期化
     /// </summary>
-	void Initialize(DirectXEngine* dxEngine);
+    void Initialize(NumaEngine::DirectXEngine* dxEngine);
 
     /// <summary>
     /// ポストエフェクトを作成する
@@ -103,7 +103,7 @@ private:
     };
 
 
-    DirectXEngine* dxEngine_ = nullptr;
+    NumaEngine::DirectXEngine* dxEngine_ = nullptr;
     PipelineState* pipeline_ = nullptr;
 
     std::vector<PostEffectType> enabledEffects_;

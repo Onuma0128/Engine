@@ -1,4 +1,4 @@
-﻿#include "ModelInstanceRenderer.h"
+#include "ModelInstanceRenderer.h"
 
 #include "DirectXEngine.h"
 #include "SrvManager.h"
@@ -31,43 +31,43 @@ ModelInstanceRenderer* ModelInstanceRenderer::GetInstance()
 
 void ModelInstanceRenderer::Initialize()
 {
-    objMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+    objMaskPipelineState_ = NumaEngine::DirectXEngine::GetPipelineState()->GetPipelineState(
         PipelineType::kObjectOutLineMask,
         PostEffectType::kNone,
         BlendMode::kBlendModeNone);
-    objMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+    objMaskRootSignature_ = NumaEngine::DirectXEngine::GetPipelineState()->GetRootSignature(
         PipelineType::kObjectOutLineMask,
         PostEffectType::kNone,
         BlendMode::kBlendModeNone);
 
-    animaMaskPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+    animaMaskPipelineState_ = NumaEngine::DirectXEngine::GetPipelineState()->GetPipelineState(
         PipelineType::kAnimationOutLineMask,
         PostEffectType::kNone,
         BlendMode::kBlendModeNone);
-    animaMaskRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+    animaMaskRootSignature_ = NumaEngine::DirectXEngine::GetPipelineState()->GetRootSignature(
         PipelineType::kAnimationOutLineMask,
         PostEffectType::kNone,
         BlendMode::kBlendModeNone);
 
-    objShadowMapPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+    objShadowMapPipelineState_ = NumaEngine::DirectXEngine::GetPipelineState()->GetPipelineState(
         PipelineType::kObjectShadowMapDepth,
         PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
-    objShadowMapRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+    objShadowMapRootSignature_ = NumaEngine::DirectXEngine::GetPipelineState()->GetRootSignature(
         PipelineType::kObjectShadowMapDepth,
         PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
 
-    animationShadowMapPipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(
+    animationShadowMapPipelineState_ = NumaEngine::DirectXEngine::GetPipelineState()->GetPipelineState(
         PipelineType::kAnimationShadowMapDepth,
         PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
-    animationShadowMapRootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(
+    animationShadowMapRootSignature_ = NumaEngine::DirectXEngine::GetPipelineState()->GetRootSignature(
         PipelineType::kAnimationShadowMapDepth,
         PostEffectType::kNone,
         BlendMode::kBlendModeNormal);
 
-    lightVpBuffer_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(Matrix4x4));
+    lightVpBuffer_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Matrix4x4));
     lightVpBuffer_->Map(0, nullptr, reinterpret_cast<void**>(&lightData_));
     lightData_->lightVP = Matrix4x4::Identity();
 }
@@ -217,11 +217,11 @@ void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstan
 
     // --- GPU リソース確保 WorldMatrix ---
     batch.worldMatrixBuffer = CreateBufferResource(
-        DirectXEngine::GetDevice(),
+        NumaEngine::DirectXEngine::GetDevice(),
         sizeof(InstanceData) * maxInstance);
     // --- GPU リソース確保 Material ---
     batch.materialBuffer = CreateBufferResource(
-        DirectXEngine::GetDevice(),
+        NumaEngine::DirectXEngine::GetDevice(),
         sizeof(Material) * maxInstance);
 
 
@@ -273,7 +273,7 @@ void ModelInstanceRenderer::ObjReserveBatch(Object3d* object, uint32_t maxInstan
 ///                           Animation_Resource
 /// =====================================================================
 
-void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t maxInstance)
+void ModelInstanceRenderer::AnimationReserveBatch(NumaEngine::Animation* animation, uint32_t maxInstance)
 {
     // 二重確保ガード
     if (animationBatches_.contains(animation->GetModel())) return;
@@ -285,19 +285,19 @@ void ModelInstanceRenderer::AnimationReserveBatch(Animation* animation, uint32_t
 
     // --- GPU リソース確保 WorldMatrix ---
     batch.worldMatrixBuffer = CreateBufferResource(
-        DirectXEngine::GetDevice(),
+        NumaEngine::DirectXEngine::GetDevice(),
         sizeof(InstanceData) * maxInstance);
     // --- GPU リソース確保 Material ---
     batch.materialBuffer = CreateBufferResource(
-        DirectXEngine::GetDevice(),
+        NumaEngine::DirectXEngine::GetDevice(),
         sizeof(Material) * maxInstance);
     // --- GPU リソース確保 Joint ---
     batch.jointBuffer = CreateBufferResource(
-        DirectXEngine::GetDevice(),
+        NumaEngine::DirectXEngine::GetDevice(),
         sizeof(JointCount));
     // --- GPU リソース確保 MatrixPalette ---
     batch.paletteBuffer = CreateBufferResource(
-        DirectXEngine::GetDevice(),
+        NumaEngine::DirectXEngine::GetDevice(),
         sizeof(WellForGPU) * maxInstance * animation->GetJointSize());
 
 
@@ -407,7 +407,7 @@ void ModelInstanceRenderer::Remove(Object3d* obj)
 ///                     Animation_Push & Remove
 /// =====================================================================
 
-void ModelInstanceRenderer::Push(Animation* animation)
+void ModelInstanceRenderer::Push(NumaEngine::Animation* animation)
 {
     // 未確保なら Reserve
     Model* model = animation->GetModel();
@@ -430,7 +430,7 @@ void ModelInstanceRenderer::Push(Animation* animation)
     ++batch.count;
 }
 
-void ModelInstanceRenderer::Remove(Animation* animation)
+void ModelInstanceRenderer::Remove(NumaEngine::Animation* animation)
 {
     Model* model = animation->GetModel();
     AnimationBatch& batch = animationBatches_[model];
@@ -507,7 +507,7 @@ void ModelInstanceRenderer::AnimationUpdate()
 
 void ModelInstanceRenderer::AllDrawShadowDepth()
 {
-    auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 
     ObjUpdate();
 
@@ -584,7 +584,7 @@ void ModelInstanceRenderer::AllDrawShadowDepth()
 }
 
 void ModelInstanceRenderer::AllDrawOutlineMask() {
-    auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 
     if (!objBatches_.empty()) {
         commandList->SetPipelineState(objMaskPipelineState_.Get());
@@ -653,7 +653,7 @@ void ModelInstanceRenderer::AllDrawOutlineMask() {
 
 void ModelInstanceRenderer::AllDraw()
 {
-    auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 
     // ===== 追加：描画順を保証（通常 → Late） =====
     auto DrawAnimations = [&](const std::vector<Model*>& drawOrder) {

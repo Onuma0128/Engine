@@ -15,7 +15,7 @@ TextureManager* TextureManager::GetInstance()
 	return instance_.get();
 }
 
-void TextureManager::Initialize(DirectXEngine* dxEngine)
+void TextureManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	textureDatas_.reserve(SrvManager::kMaxSRVCount_);
 	dxEngine_ = dxEngine;

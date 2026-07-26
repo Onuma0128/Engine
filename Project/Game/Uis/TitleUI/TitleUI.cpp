@@ -2,17 +2,17 @@
 
 void TitleUI::Init()
 {
-	BaseUI::Init("TitleUI", "GameData", true);
+    NumaEngine::BaseUI::Init("TitleUI", "GameData", true);
 }
 
 void TitleUI::Update()
 {
-	BaseUI::DrawImGui();
+    NumaEngine::BaseUI::DrawImGui();
 
-	BaseUI::Update();
+	NumaEngine::BaseUI::Update();
 }
 
 void TitleUI::Draw()
 {
-	BaseUI::Draw();
+    NumaEngine::BaseUI::Draw();
 }

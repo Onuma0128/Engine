@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -12,7 +12,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 
 /// <summary>
 /// カメラ管理クラス
@@ -40,7 +40,7 @@ public:
 	static CameraManager* GetInstance();
 
 	// 初期化
-	void Initialize(DirectXEngine* dxEngine);
+    void Initialize(NumaEngine::DirectXEngine* dxEngine);
 
 	// デバッグ用ImGui
 	void Debug_ImGui();
@@ -55,7 +55,7 @@ public:
 	void Clear();
 
 	// カメラ設定
-	void SetCamera(std::shared_ptr<Camera> camera) {
+    void SetCamera(std::shared_ptr<NumaEngine::Camera> camera) {
 		cameras_.push_back(camera); 
 	}
 
@@ -65,7 +65,7 @@ public:
 	}
 
 	// アクティブカメラ取得
-	Camera* GetActiveCamera()const { return cameras_[activeCameraIndex_].get(); }
+    NumaEngine::Camera* GetActiveCamera()const { return cameras_[activeCameraIndex_].get(); }
 
 	// カメラリソース
 	ID3D12Resource* GetCameraResource()const { return cameraResource_.Get(); }
@@ -77,10 +77,10 @@ private:
 
 private:
 
-	DirectXEngine* dxEngine_;
+    NumaEngine::DirectXEngine* dxEngine_;
 
 	// カメラを格納 <vector>
-	std::vector<std::shared_ptr<Camera>> cameras_;
+    std::vector<std::shared_ptr<NumaEngine::Camera>> cameras_;
 	// 今どのカメラが動いているかIndex
 	uint32_t activeCameraIndex_ = 0;
 

@@ -1,4 +1,4 @@
-﻿#include "CameraManager.h"
+#include "CameraManager.h"
 
 #include "DirectXEngine.h"
 #include "CreateBufferResource.h"
@@ -15,12 +15,12 @@ CameraManager* CameraManager::GetInstance()
 	return instance_.get();
 }
 
-void CameraManager::Initialize(DirectXEngine* dxEngine)
+void CameraManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
 	// カメラリソースの作成
-	cameras_.push_back(std::make_shared<Camera>());
+    cameras_.push_back(std::make_shared<NumaEngine::Camera>());
 	cameras_[activeCameraIndex_]->Initialize();
 	MakeCameraData();
 }

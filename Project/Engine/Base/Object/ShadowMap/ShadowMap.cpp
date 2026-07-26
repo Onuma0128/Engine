@@ -41,7 +41,7 @@ void ShadowMap::CreateShadowMap(uint32_t size)
     clear.DepthStencil = { 1.0f, 0 };
 
     D3D12_HEAP_PROPERTIES heap(D3D12_HEAP_TYPE_DEFAULT);
-    HRESULT hr = DirectXEngine::GetDevice()->CreateCommittedResource(
+    HRESULT hr = NumaEngine::DirectXEngine::GetDevice()->CreateCommittedResource(
         &heap, D3D12_HEAP_FLAG_NONE, &desc,
         D3D12_RESOURCE_STATE_DEPTH_WRITE, &clear,
         IID_PPV_ARGS(&shadowMapTexture_));
@@ -64,7 +64,7 @@ void ShadowMap::CreateShadowMap(uint32_t size)
 
 void ShadowMap::BeginShadowMapPass()
 {
-    auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
     // SRV→DSV 書き込み
     TransitionIfNeeded(commandList, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 
@@ -77,7 +77,7 @@ void ShadowMap::BeginShadowMapPass()
 
 void ShadowMap::EndShadowMapPass()
 {
-    auto* commandList = DirectXEngine::GetCommandList();
+    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
     // DSV→SRV
     TransitionIfNeeded(commandList, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }

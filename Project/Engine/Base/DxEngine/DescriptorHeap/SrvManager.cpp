@@ -30,7 +30,7 @@ SrvManager* SrvManager::GetInstance()
 	return instance_.get();
 }
 
-void SrvManager::Initialize(DirectXEngine* dxEngine)
+void SrvManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 

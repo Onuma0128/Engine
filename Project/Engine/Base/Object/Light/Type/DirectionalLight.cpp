@@ -1,4 +1,4 @@
-﻿#include "DirectionalLight.h"
+#include "DirectionalLight.h"
 
 #include <DirectXMath.h>
 
@@ -7,7 +7,7 @@
 
 #include "CreateBufferResource.h"
 
-void DirectionalLight::Initialize(DirectXEngine* dxEngine)
+void DirectionalLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 	MakeLightData();

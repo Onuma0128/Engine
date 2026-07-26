@@ -20,7 +20,7 @@ LightManager* LightManager::GetInstance()
 	return instance_.get();
 }
 
-void LightManager::Initialize(DirectXEngine* dxEngine)
+void LightManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	this->dxEngine_ = dxEngine;
 

@@ -6,7 +6,7 @@
 
 #include "type/BaseLight.h"
 
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 
 /// <summary>
 /// ライト管理クラス
@@ -30,8 +30,8 @@ public:
 	// シングルトンインスタンスの取得
 	static LightManager* GetInstance();
 
-	// 初期化
-	void Initialize(DirectXEngine* dxEngine);
+    // 初期化
+	void Initialize(NumaEngine::DirectXEngine* dxEngine);
 
 	// 更新
 	void Update();
@@ -54,7 +54,7 @@ public:
 
 private:
 
-	DirectXEngine* dxEngine_ = nullptr;
+    NumaEngine::DirectXEngine* dxEngine_ = nullptr;
 
 	/*==================== 平行光源 ====================*/
 

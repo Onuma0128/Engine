@@ -10,7 +10,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 
 /// <summary>
 /// テクスチャ管理クラス
@@ -44,7 +44,7 @@ public:
 	static uint32_t kSRVIndexTop;
 
 	// 初期化
-	void Initialize(DirectXEngine* dxEngine);
+    void Initialize(NumaEngine::DirectXEngine* dxEngine);
 	// 終了
 	void Finalize();
     
@@ -76,5 +76,5 @@ private:
 	std::unordered_map<std::string, TextureData> textureDatas_;
 	std::vector<std::string> textureNames_;
 	
-	DirectXEngine* dxEngine_ = nullptr;
+    NumaEngine::DirectXEngine* dxEngine_ = nullptr;
 };

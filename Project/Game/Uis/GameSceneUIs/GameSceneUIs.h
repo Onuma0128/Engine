@@ -77,16 +77,16 @@ private:
 	std::unique_ptr<GameUiAdjustItem> items_ = nullptr;
 	// 操作系のUI
 	std::unique_ptr<PlayerControlUI> controlUI_;
-	// フェード
-	std::unique_ptr<BaseUI> sceneFade_ = nullptr;
-	std::unique_ptr<BaseUI> bossFade_ = nullptr;
+    // フェード
+	std::unique_ptr<NumaEngine::BaseUI> sceneFade_ = nullptr;
+	std::unique_ptr<NumaEngine::BaseUI> bossFade_ = nullptr;
 	// 敵のキル数UI
 	std::unique_ptr<NumberCountUI> killCountUI_ = nullptr;
 	std::unique_ptr<NumberCountUI> maxKillCountUI_ = nullptr;
-	std::unique_ptr<BaseUI> catUI_ = nullptr;
+    std::unique_ptr<NumaEngine::BaseUI> catUI_ = nullptr;
 	uint32_t knockdownCount_ = 0;
 	// ボスのHPUI
-	std::unique_ptr<BaseUI> bossHpFrame_ = nullptr;
+    std::unique_ptr<NumaEngine::BaseUI> bossHpFrame_ = nullptr;
 	std::unique_ptr<BossHpBarUI> bossHpBar_ = nullptr;
 
 	// ボス登場シーンのフェードステート

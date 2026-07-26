@@ -1,4 +1,4 @@
-﻿#include "BaseEnemy.h"
+#include "BaseEnemy.h"
 
 #include "DeltaTimer.h"
 
@@ -49,12 +49,12 @@ void BaseEnemy::Initialize()
 
 	// 基本的なアニメーションを設定
 	transform_.translation_ = items_->GetMainData().startPosition;
-	Animation::SetSceneRenderer();
-	Animation::GetMaterial().enableDraw = false;
-	Animation::GetMaterial().outlineMask = true;
-	Animation::GetMaterial().outlineColor = NumaEngine::Vector3::ExprUnitX;
-	Animation::GetMaterial().shadowMap = false;
-	Animation::GetTimeStop() = true;
+    NumaEngine::Animation::SetSceneRenderer();
+	NumaEngine::Animation::GetMaterial().enableDraw = false;
+	NumaEngine::Animation::GetMaterial().outlineMask = true;
+	NumaEngine::Animation::GetMaterial().outlineColor = NumaEngine::Vector3::ExprUnitX;
+	NumaEngine::Animation::GetMaterial().shadowMap = false;
+	NumaEngine::Animation::GetTimeStop() = true;
 }
 
 void BaseEnemy::Update()

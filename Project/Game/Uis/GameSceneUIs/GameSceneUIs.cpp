@@ -1,4 +1,4 @@
-﻿#include "GameSceneUIs.h"
+#include "GameSceneUIs.h"
 
 #include "Input.h"
 #include "DeltaTimer.h"
@@ -21,12 +21,12 @@ void GameSceneUIs::Init()
 	isDrawControlUI_ = true;
 
 	// シーンフェードを初期化
-	sceneFade_ = std::make_unique<BaseUI>();
+    sceneFade_ = std::make_unique<NumaEngine::BaseUI>();
 	sceneFade_->Init("GameFade", "GameData", true);
 	sceneFade_->GetSprite()->SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,1.0f });
 	sceneFade_->FadeOut();
 
-	bossFade_ = std::make_unique<BaseUI>();
+    bossFade_ = std::make_unique<NumaEngine::BaseUI>();
 	bossFade_->Init("BossFade", "GameData");
 
 	// Kill数UIの初期化
@@ -34,11 +34,11 @@ void GameSceneUIs::Init()
 	killCountUI_->Init();
 	maxKillCountUI_ = std::make_unique<NumberCountUI>();
 	maxKillCountUI_->Init();
-	catUI_ = std::make_unique<BaseUI>();
+    catUI_ = std::make_unique<NumaEngine::BaseUI>();
 	catUI_->Init("CatUI", "GameData");
 	isDrawGameUIs_ = true;
 	
-	bossHpFrame_ = std::make_unique<BaseUI>();
+    bossHpFrame_ = std::make_unique<NumaEngine::BaseUI>();
 	bossHpFrame_->Init("BossHpFrame", "GameData");
 	bossHpBar_ = std::make_unique<BossHpBarUI>();
 	bossHpBar_->SetBossEnemy(boss_);

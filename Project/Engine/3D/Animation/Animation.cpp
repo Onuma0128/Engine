@@ -1,4 +1,4 @@
-﻿#include "Animation.h"
+#include "Animation.h"
 
 #include <execution>
 #include <numeric>
@@ -12,14 +12,14 @@
 #include "LightManager.h"
 #include "CameraManager.h"
 
-Animation::~Animation()
+NumaEngine::Animation::~Animation()
 {
 	skinCluster_.Reset();
 	skeleton_.Reset(); 
 	playAnim_.Reset();
 }
 
-void Animation::Initialize(const std::string& filename)
+void NumaEngine::Animation::Initialize(const std::string& filename)
 {
 	skinCluster_.Reset();
 	skeleton_.Reset();
@@ -39,17 +39,17 @@ void Animation::Initialize(const std::string& filename)
 	skinCluster_.CreateSkinCluster(skeleton_, model_->GetModelData());
 }
 
-void Animation::SetSceneRenderer()
+void NumaEngine::Animation::SetSceneRenderer()
 {
 	ModelInstanceRenderer::GetInstance()->Push(this);
 }
 
-void Animation::RemoveRenderer()
+void NumaEngine::Animation::RemoveRenderer()
 {
 	ModelInstanceRenderer::GetInstance()->Remove(this);
 }
 
-void Animation::Update()
+void NumaEngine::Animation::Update()
 {
 	if (playAnim_.GetStopped()) {
 		transform_.TransferMatrix(Matrix4x4::Identity());
@@ -65,7 +65,7 @@ void Animation::Update()
 	skeleton_.DebugBoneUpdate(transform_);
 }
 
-void Animation::SetVertexBuffer()
+void NumaEngine::Animation::SetVertexBuffer()
 {
 	auto commandList = DirectXEngine::GetCommandList();
 
@@ -78,7 +78,7 @@ void Animation::SetVertexBuffer()
 	}
 }
 
-void Animation::Draw()
+void NumaEngine::Animation::Draw()
 {
 	animationBase_->DrawBase();
 
@@ -91,45 +91,45 @@ void Animation::Draw()
 	SetVertexBuffer();
 }
 
-void Animation::Play(size_t idx, float fadeTime)
+void NumaEngine::Animation::Play(size_t idx, float fadeTime)
 {
 	playAnim_.Play(idx, fadeTime);
 }
 
-bool Animation::PlayByName(const std::string& clipName, float fadeTime)
+bool NumaEngine::Animation::PlayByName(const std::string& clipName, float fadeTime)
 {
 	return playAnim_.PlayByName(clipName, fadeTime);
 }
 
-void Animation::ForcePlay(size_t idx, float startTime, bool keepPhase) {
+void NumaEngine::Animation::ForcePlay(size_t idx, float startTime, bool keepPhase) {
 	playAnim_.ForcePlay(idx, startTime, keepPhase);
 }
 
-bool Animation::ForcePlayByName(const std::string& clipName, float startTime, bool keepPhase) {
+bool NumaEngine::Animation::ForcePlayByName(const std::string& clipName, float startTime, bool keepPhase) {
 	return playAnim_.ForcePlayByName(clipName, startTime, keepPhase);
 }
 
-void Animation::SetModel(const std::string& filePath)
+void NumaEngine::Animation::SetModel(const std::string& filePath)
 {
 	model_ = ModelManager::GetInstance()->FindModel(filePath);
 }
 
-void Animation::SetTexture(const std::string& directoryPath, const std::string& filePath)
+void NumaEngine::Animation::SetTexture(const std::string& directoryPath, const std::string& filePath)
 {
 	model_->SetTexture(directoryPath, filePath);
 }
 
-const size_t Animation::GetJointSize()const 
+const size_t NumaEngine::Animation::GetJointSize()const 
 {
 	return skeleton_.GetJoints().size();
 }
 
-const std::vector<WellForGPU>& Animation::GetWellForGPU()const 
+const std::vector<WellForGPU>& NumaEngine::Animation::GetWellForGPU()const 
 {
 	return skinCluster_.GetWellForGPU();
 }
 
-void Animation::MakeMaterialData()
+void NumaEngine::Animation::MakeMaterialData()
 {
 	materialData_.color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	materialData_.enableDraw = true;

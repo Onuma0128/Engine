@@ -12,7 +12,7 @@ DsvManager* DsvManager::GetInstance() {
 	return instance_.get();
 }
 
-void DsvManager::Initialize(DirectXEngine* dxEngine) {
+void DsvManager::Initialize(NumaEngine::DirectXEngine* dxEngine) {
 	dxEngine_ = dxEngine;
 
 	descriptorHeap_ = CreateDescriptorHeap(dxEngine_->GetDevice(), D3D12_DESCRIPTOR_HEAP_TYPE_DSV, kMaxDSVCount, false);

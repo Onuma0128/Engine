@@ -27,12 +27,12 @@
 
 using Microsoft::WRL::ComPtr;
 
-ComPtr<ID3D12Device> DirectXEngine::device_ = nullptr;
-ComPtr<ID3D12GraphicsCommandList> DirectXEngine::commandList_ = nullptr;
-std::unique_ptr<PipelineState> DirectXEngine::pipelineState_ = nullptr;
-std::unique_ptr<SceneRenderer> DirectXEngine::sceneRendrer_ = nullptr;
+ComPtr<ID3D12Device> NumaEngine::DirectXEngine::device_ = nullptr;
+ComPtr<ID3D12GraphicsCommandList> NumaEngine::DirectXEngine::commandList_ = nullptr;
+std::unique_ptr<PipelineState> NumaEngine::DirectXEngine::pipelineState_ = nullptr;
+std::unique_ptr<SceneRenderer> NumaEngine::DirectXEngine::sceneRendrer_ = nullptr;
 
-DirectXEngine::~DirectXEngine()
+NumaEngine::DirectXEngine::~DirectXEngine()
 {
 	SrvManager::GetInstance()->Finalize();
 	RtvManager::GetInstance()->Finalize();
@@ -59,7 +59,7 @@ DirectXEngine::~DirectXEngine()
 	CloseHandle(fenceEvent_);
 }
 
-void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
+void NumaEngine::DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 {
 	assert(winApp);
 	winApp_ = winApp;
@@ -125,7 +125,7 @@ void DirectXEngine::Initialize(WinApp* winApp, ImGuiManager* imguiManager)
 	ShadowMap::GetInstance()->CreateShadowMap(8192);
 }
 
-void DirectXEngine::DeviceInitialize()
+void NumaEngine::DirectXEngine::DeviceInitialize()
 {
 	//デバックレイヤー
 #ifdef ENABLE_EDITOR
@@ -211,7 +211,7 @@ void DirectXEngine::DeviceInitialize()
 #endif // ENABLE_EDITOR
 }
 
-void DirectXEngine::CommandInitialize()
+void NumaEngine::DirectXEngine::CommandInitialize()
 {
 	HRESULT hr{};
 
@@ -229,7 +229,7 @@ void DirectXEngine::CommandInitialize()
 		IID_PPV_ARGS(&commandList_));
 }
 
-void DirectXEngine::SwapChainInitialize()
+void NumaEngine::DirectXEngine::SwapChainInitialize()
 {
 	HRESULT hr{};
 
@@ -246,7 +246,7 @@ void DirectXEngine::SwapChainInitialize()
 	assert(SUCCEEDED(hr));
 }
 
-void DirectXEngine::DescriptorHeapInitialize()
+void NumaEngine::DirectXEngine::DescriptorHeapInitialize()
 {
 	/*==================== SRV,RTV,DSV ====================*/
 
@@ -255,7 +255,7 @@ void DirectXEngine::DescriptorHeapInitialize()
 	DsvManager::GetInstance()->Initialize(this);
 }
 
-void DirectXEngine::RTVInitialize()
+void NumaEngine::DirectXEngine::RTVInitialize()
 {
 	HRESULT hr{};
 
@@ -271,7 +271,7 @@ void DirectXEngine::RTVInitialize()
 	}
 }
 
-void DirectXEngine::FenceInitialize()
+void NumaEngine::DirectXEngine::FenceInitialize()
 {
 	HRESULT hr{};
 
@@ -283,7 +283,7 @@ void DirectXEngine::FenceInitialize()
 	assert(fenceEvent_ != nullptr);
 }
 
-void DirectXEngine::ViewportInitialize()
+void NumaEngine::DirectXEngine::ViewportInitialize()
 {
 	//クライアント領域のサイズと一緒にして画面全体に表示
 	viewport_.Width = winApp_->kClientWidth;
@@ -294,7 +294,7 @@ void DirectXEngine::ViewportInitialize()
 	viewport_.MaxDepth = 1.0f;
 }
 
-void DirectXEngine::RectInitialize()
+void NumaEngine::DirectXEngine::RectInitialize()
 {
 	//基本的にビューポート同じ矩形が構成されるようにする
 	scissorRect_.left = 0;
@@ -303,7 +303,7 @@ void DirectXEngine::RectInitialize()
 	scissorRect_.bottom = winApp_->kClientHeight;
 }
 
-void DirectXEngine::DxcCompilerInitialize()
+void NumaEngine::DirectXEngine::DxcCompilerInitialize()
 {
 	HRESULT hr{};
 
@@ -313,7 +313,7 @@ void DirectXEngine::DxcCompilerInitialize()
 	assert(SUCCEEDED(hr));
 }
 
-void DirectXEngine::IncludeHandlerInitialize()
+void NumaEngine::DirectXEngine::IncludeHandlerInitialize()
 {
 	HRESULT hr{};
 
@@ -322,25 +322,25 @@ void DirectXEngine::IncludeHandlerInitialize()
 	assert(SUCCEEDED(hr));
 }
 
-void DirectXEngine::PipelineStateInitialize()
+void NumaEngine::DirectXEngine::PipelineStateInitialize()
 {
 	// 新しいパイプライン
 	pipelineState_ = std::make_unique<PipelineState>();
 	pipelineState_->Initialize(device_, dxcUtils_, dxcCompiler_, includeHandler_);
 }
 
-void DirectXEngine::InitializeFixFPS()
+void NumaEngine::DirectXEngine::InitializeFixFPS()
 {
 	reference_ = std::chrono::steady_clock::now();
 }
 
-void DirectXEngine::RenderTextureInitialize()
+void NumaEngine::DirectXEngine::RenderTextureInitialize()
 {
 	renderTexture_ = std::make_unique<RenderTexture>();
 	renderTexture_->Initialize();
 }
 
-void DirectXEngine::UpdateFixFPS()
+void NumaEngine::DirectXEngine::UpdateFixFPS()
 {
 	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
 	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
@@ -364,7 +364,7 @@ void DirectXEngine::UpdateFixFPS()
 	reference_ = std::chrono::steady_clock::now();
 }
 
-void DirectXEngine::PreDraw()
+void NumaEngine::DirectXEngine::PreDraw()
 {
 	// RenderTextureのStartBarrier
 	renderTexture_->StartBarrier();
@@ -375,13 +375,13 @@ void DirectXEngine::PreDraw()
 	commandList_->RSSetScissorRects(1, &scissorRect_);
 }
 
-void DirectXEngine::RenderPost()
+void NumaEngine::DirectXEngine::RenderPost()
 {
 	// RenderTextureのEndBarrier
 	renderTexture_->EndBarrier();
 }
 
-void DirectXEngine::RenderTexturePreDraw()
+void NumaEngine::DirectXEngine::RenderTexturePreDraw()
 {
 	// RenderTextureの描画前準備
 	renderTexture_->PreDraw();
@@ -390,7 +390,7 @@ void DirectXEngine::RenderTexturePreDraw()
 	commandList_->RSSetScissorRects(1, &scissorRect_);
 }
 
-void DirectXEngine::RenderTextureDraw()
+void NumaEngine::DirectXEngine::RenderTextureDraw()
 {
 	// これから書き込むバックバッファのインデックスを取得
 	UINT backBufferIndex = swapChain_->GetCurrentBackBufferIndex();
@@ -415,7 +415,7 @@ void DirectXEngine::RenderTextureDraw()
 	renderTexture_->Draw();
 }
 
-void DirectXEngine::PostDraw()
+void NumaEngine::DirectXEngine::PostDraw()
 {
 	HRESULT hr{};
 	//画面に描く処理は全て終わり、画面に映すので、状態を遷移
@@ -453,7 +453,7 @@ void DirectXEngine::PostDraw()
 	assert(SUCCEEDED(hr));
 }
 
-void DirectXEngine::SetPostEffectDraw(PostEffectType type)
+void NumaEngine::DirectXEngine::SetPostEffectDraw(PostEffectType type)
 {
 	// PostEffectの描画
 	auto index = PostEffectManager::GetInstance()->DrawEffect(type, renderTexture_->GetFinalSrvIndex());

@@ -1,4 +1,4 @@
-﻿#include "Object3d.h"
+#include "Object3d.h"
 
 #include "DirectXEngine.h"
 #include "ModelInstanceRenderer.h"
@@ -42,7 +42,7 @@ void Object3d::Draw()
 {
     object3dBase_->DrawBase();
 
-    auto commandList = DirectXEngine::GetCommandList();
+    auto commandList = NumaEngine::DirectXEngine::GetCommandList();
     commandList->SetGraphicsRootConstantBufferView(3, LightManager::GetInstance()->GetDirectionalLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(4, LightManager::GetInstance()->GetPointLightResource()->GetGPUVirtualAddress());
     commandList->SetGraphicsRootConstantBufferView(5, LightManager::GetInstance()->GetSpotLightResource()->GetGPUVirtualAddress());

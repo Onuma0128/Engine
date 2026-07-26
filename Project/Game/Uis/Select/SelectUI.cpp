@@ -2,17 +2,17 @@
 
 void SelectUI::Init(const std::string& name)
 {
-	BaseUI::Init(name, "GameData", true);
+    NumaEngine::BaseUI::Init(name, "GameData", true);
 }
 
 void SelectUI::Update()
 {
-	BaseUI::DrawImGui();
+    NumaEngine::BaseUI::DrawImGui();
 
-	BaseUI::Update();
+	NumaEngine::BaseUI::Update();
 }
 
 void SelectUI::Draw()
 {
-	BaseUI::Draw();
+    NumaEngine::BaseUI::Draw();
 }

@@ -5,7 +5,7 @@
 /// <summary>
 /// タイトルUIクラス
 /// </summary>
-class TitleUI : public BaseUI
+class TitleUI : public NumaEngine::BaseUI
 {
 public:
 

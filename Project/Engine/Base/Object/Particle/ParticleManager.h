@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <iostream>
 #include <memory>
 #include <list>
@@ -15,7 +15,7 @@ const uint32_t kNumMaxInstance = 1024;
 
 class ParticleEmitter;
 class ParticleEditor;
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 class SrvManager;
 
 /// <summary>
@@ -98,8 +98,8 @@ public:
 	// シングルトンインスタンスの取得
 	static ParticleManager* GetInstance();
 
-	// 初期化
-	void Initialize(DirectXEngine* dxEngine);
+    // 初期化
+	void Initialize(NumaEngine::DirectXEngine* dxEngine);
 
 	// 更新
 	void Update();
@@ -142,8 +142,8 @@ private:
 
 	/*==================== メンバ変数 ====================*/
 
-	// 基盤ポインタ
-	DirectXEngine* dxEngine_ = nullptr;
+    // 基盤ポインタ
+	NumaEngine::DirectXEngine* dxEngine_ = nullptr;
 	SrvManager* srvManager_ = nullptr;
 	// ルートシグネチャ
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;

@@ -4,7 +4,7 @@
 #include "Collider.h"
 #include "SceneJsonLoader.h"
 
-class BaseCharacter : public Animation, public Collider
+class BaseCharacter : public NumaEngine::Animation, public Collider
 {
 public:
 

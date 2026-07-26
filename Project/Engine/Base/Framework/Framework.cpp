@@ -14,7 +14,7 @@ void Framework::Initialize()
 
 	imGuiManager_ = std::make_unique<ImGuiManager>();
 
-	directXEngine_ = std::make_unique<DirectXEngine>();
+    directXEngine_ = std::make_unique<NumaEngine::DirectXEngine>();
 	directXEngine_->Initialize(winApp_.get(), imGuiManager_.get());
 
 	Input::GetInstance()->Initialize(winApp_.get());

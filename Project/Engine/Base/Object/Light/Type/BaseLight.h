@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include <wrl.h>
@@ -8,7 +8,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 
 /// <summary>
 /// ライトの基底クラス
@@ -17,8 +17,8 @@ class BaseLight
 {
 public:
 
-	// 初期化
-	virtual void Initialize(DirectXEngine* dxEngine) = 0;
+    // 初期化
+	virtual void Initialize(NumaEngine::DirectXEngine* dxEngine) = 0;
 
 	// 更新
 	virtual void Update() = 0;
@@ -50,8 +50,8 @@ protected:
 
 	/*==================== ライト用のデータ ====================*/
 
-	// Engineのポインタ
-	DirectXEngine* dxEngine_ = nullptr;
+    // Engineのポインタ
+	NumaEngine::DirectXEngine* dxEngine_ = nullptr;
 	// バッファリソース
 	ComPtr<ID3D12Resource> resource_ = nullptr;
 	// バッファリソース内のデータを指すポインタ

@@ -1,4 +1,4 @@
-﻿#include "GameCamera.h"
+#include "GameCamera.h"
 
 #include <numbers>
 #include "imgui.h"
@@ -22,7 +22,7 @@ void GameCamera::Init()
 
 	// カメラの初期化
 	CameraManager::GetInstance()->Clear();
-	mainCamera_ = std::make_shared<Camera>();
+    mainCamera_ = std::make_shared<NumaEngine::Camera>();
 	mainCamera_->Initialize();
 	mainCamera_->SetRotation(data.mainRotate);
     NumaEngine::Vector3 translation = data.mainPosition;
@@ -31,7 +31,7 @@ void GameCamera::Init()
 	CameraManager::GetInstance()->SetActiveCamera(0);
 	mainCamera_->Update();
 
-	sabCamera_ = std::make_shared<Camera>();
+    sabCamera_ = std::make_shared<NumaEngine::Camera>();
 	sabCamera_->Initialize();
 	translation = data.sabPosition;
 	sabCamera_->SetTranslation(translation + player_->GetTransform().translation_);
@@ -39,7 +39,7 @@ void GameCamera::Init()
 	sabCamera_->Update();
 
 	// カメラの初期化
-	bossCamera_ = std::make_shared<Camera>();
+    bossCamera_ = std::make_shared<NumaEngine::Camera>();
 	bossCamera_->Initialize();
 	bossCamera_->SetRotation(data.bossStartRotate);
 	translation = data.bossStartPosition;

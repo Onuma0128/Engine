@@ -8,7 +8,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 
 /// <summary>
 /// RTV管理クラス
@@ -32,7 +32,7 @@ public:
 	// シングルトンインスタンスの取得
 	static RtvManager* GetInstance();
 	// 初期化
-	void Initialize(DirectXEngine* dxEngine);
+    void Initialize(NumaEngine::DirectXEngine* dxEngine);
 	// 終了処理
 	void Finalize();
 
@@ -46,7 +46,7 @@ public:
 	uint32_t Allocate();
 
 private:
-	DirectXEngine* dxEngine_ = nullptr;
+    NumaEngine::DirectXEngine* dxEngine_ = nullptr;
 
 	ComPtr<ID3D12DescriptorHeap> descriptorHeap_;
 	uint32_t descriptorSize_ = 0;

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <vector>
 
@@ -14,10 +14,11 @@
 
 class Model;
 
-/// <summary>
-/// アニメーションクラス
-/// </summary>
-class Animation
+namespace NumaEngine {
+	/// <summary>
+	/// アニメーションクラス
+	/// </summary>
+	class Animation
 {
 public:
 
@@ -137,4 +138,7 @@ private:
 
 	Material materialData_;
 
-};
+    };
+}
+
+// Animation is defined inside namespace NumaEngine; use fully-qualified name where needed.

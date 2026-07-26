@@ -1,4 +1,4 @@
-﻿#include "Camera.h"
+#include "Camera.h"
 
 #ifdef ENABLE_EDITOR
 #include "imgui.h"
@@ -9,7 +9,7 @@
 
 #include "LightManager.h"
 
-void Camera::Initialize()
+void NumaEngine::Camera::Initialize()
 {
 	debugTransform_ = { {1.0f,1.0f,1.0f},{0.26f,0.0f,0.0f},{0.0f,4.0f,-15.0f} };
 	transform_ = { {1.0f,1.0f,1.0f},{0.26f,0.0f,0.0f},{0.0f,4.0f,-15.0f} };
@@ -22,7 +22,7 @@ void Camera::Initialize()
 	isDebug_ = false;
 }
 
-void Camera::Update()
+void NumaEngine::Camera::Update()
 {
 #ifdef ENABLE_EDITOR
 	if (isDebug_) {
@@ -33,7 +33,7 @@ void Camera::Update()
 	NormalCamera();
 }
 
-void Camera::DebugCamera()
+void NumaEngine::Camera::DebugCamera()
 {
 	const float moveSpeed = 0.25f;
 
@@ -79,13 +79,13 @@ void Camera::DebugCamera()
 	UpdateMatrix(debugTransform_);
 }
 
-void Camera::NormalCamera()
+void NumaEngine::Camera::NormalCamera()
 {
 	debugTransform_ = transform_;
 	UpdateMatrix(transform_);
 }
 
-void Camera::SetLookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3& target)
+void NumaEngine::Camera::SetLookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3& target)
 {
 	// カメラの位置を設定
 	transform_.translation = eye;
@@ -136,7 +136,7 @@ void Camera::SetLookAt(const NumaEngine::Vector3& eye, const NumaEngine::Vector3
 	transform_.rotation = Matrix4x4::ExtractEulerAngles(rotMat);
 }
 
-void Camera::UpdateMatrix(EulerTransform transform)
+void NumaEngine::Camera::UpdateMatrix(EulerTransform transform)
 {
 	worldMatrix_ = Matrix4x4::Affine(transform.scale, transform.rotation, transform.translation);
 
@@ -146,7 +146,7 @@ void Camera::UpdateMatrix(EulerTransform transform)
 	viewProjectionMatrix_ = viewMatrix_ * projectionMatrix_;
 }
 
-void Camera::CameraImGui()
+void NumaEngine::Camera::CameraImGui()
 {
 #ifdef ENABLE_EDITOR
 	ImGui::Begin("Camera");

@@ -6,11 +6,12 @@
 #include "Sprite.h"
 #include "JsonFunction.h"
 
-/// <summary>
-/// ベースUIクラス
-/// </summary>
-class BaseUI
-{
+namespace NumaEngine { 
+	/// <summary>
+	/// ベースUIクラス
+	/// </summary>
+	class BaseUI
+	{
 private:
 
 	/// <summary>
@@ -129,7 +130,10 @@ private:
 	// 点滅時間
 	float blinkingTime_ = 2.0f;
 
-};
+    };
+}
+
+// BaseUI is defined inside namespace NumaEngine; use fully-qualified name where needed.
 
 
 

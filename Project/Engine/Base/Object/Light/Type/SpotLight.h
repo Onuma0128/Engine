@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "BaseLight.h"
 
@@ -25,8 +25,8 @@ public:
 		float padding;
 	};
 
-	// 初期化
-	void Initialize(DirectXEngine* dxEngine) override;
+    // 初期化
+	void Initialize(NumaEngine::DirectXEngine* dxEngine) override;
 
 	// 更新
 	void Update() override;

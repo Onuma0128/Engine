@@ -32,10 +32,10 @@ void PostEffectManager::Finalize()
     instance_ = nullptr;
 }
 
-void PostEffectManager::Initialize(DirectXEngine* dxEngine)
+void PostEffectManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
-	dxEngine_ = dxEngine;
-	pipeline_ = dxEngine->GetPipelineState();
+    dxEngine_ = dxEngine;
+    pipeline_ = dxEngine->GetPipelineState();
 
     CreateOutLineMaskResource();
 
@@ -81,7 +81,7 @@ void PostEffectManager::CreatePostEffect(PostEffectType type)
 
 void PostEffectManager::BeginOutlineMaskPass()
 {
-    auto* cmd = DirectXEngine::GetCommandList();
+    auto* cmd = NumaEngine::DirectXEngine::GetCommandList();
 
     // 1) outlineMask: SRV -> RTV
     D3D12_RESOURCE_BARRIER b{};
@@ -121,7 +121,7 @@ void PostEffectManager::BeginOutlineMaskPass()
 
 void PostEffectManager::EndOutlineMaskPass()
 {
-    auto* cmd = DirectXEngine::GetCommandList();
+    auto* cmd = NumaEngine::DirectXEngine::GetCommandList();
     D3D12_RESOURCE_BARRIER b{};
 
     // Mask: RTV -> SRV
@@ -309,17 +309,17 @@ uint32_t PostEffectManager::DrawEffect(PostEffectType type, uint32_t inputSRVInd
 
 void PostEffectManager::ResourceInitialize()
 {
-    grayscaleResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(GrayscaleData));
+    grayscaleResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(GrayscaleData));
     grayscaleResource_->Map(0, nullptr, reinterpret_cast<void**>(&grayscaleData_));
     grayscaleData_->color = { 0.2125f, 0.7154f, 0.0721f };
     grayscaleData_->t = 0.0f;
 
-    vignetteResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(VignetteData));
+    vignetteResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(VignetteData));
     vignetteResource_->Map(0, nullptr, reinterpret_cast<void**>(&vignetteData_));
     vignetteData_->scale = 16.0f;
     vignetteData_->gamma = 0.0f;
 
-    outlineResource_ = CreateBufferResource(DirectXEngine::GetDevice(), sizeof(OutlineData));
+    outlineResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(OutlineData));
     outlineResource_->Map(0, nullptr, reinterpret_cast<void**>(&outlineData_));
     outlineData_->projection = Matrix4x4::Identity();
 }

@@ -1,4 +1,4 @@
-﻿#include "SpotLight.h"
+#include "SpotLight.h"
 
 #include <numbers>
 
@@ -7,7 +7,7 @@
 
 #include "CreateBufferResource.h"
 
-void SpotLight::Initialize(DirectXEngine* dxEngine)
+void SpotLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 	MakeLightData();

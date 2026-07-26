@@ -1,6 +1,6 @@
 #pragma once
 
-class DirectXEngine;
+namespace NumaEngine { class DirectXEngine; }
 class WinApp;
 
 /// <summary>
@@ -14,7 +14,7 @@ public:
 	~ImGuiManager();
 
 	// 初期化
-	void Initialize(DirectXEngine* dxEngine, WinApp* winApp);
+    void Initialize(NumaEngine::DirectXEngine* dxEngine, WinApp* winApp);
 
 	// 描画開始
 	void Begin();
@@ -27,7 +27,7 @@ public:
 
 private:
 
-	DirectXEngine* dxEngine_ = nullptr;
+    NumaEngine::DirectXEngine* dxEngine_ = nullptr;
 	
 	WinApp* winApp_ = nullptr;
 };

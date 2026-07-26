@@ -26,7 +26,7 @@ void SceneManager::Update()
 		if (scene_) {
 			CameraManager::GetInstance()->Clear();
 			ParticleManager::GetInstance()->Clear();
-			DirectXEngine::GetSceneRenderer()->Finalize();
+            NumaEngine::DirectXEngine::GetSceneRenderer()->Finalize();
 			ModelInstanceRenderer::GetInstance()->Finalize();
 			LineInstanceRenderer::GetInstance()->Finalize();
 			CollisionManager::GetInstance()->ClearCollider();

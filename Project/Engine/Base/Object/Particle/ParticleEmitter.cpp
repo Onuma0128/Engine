@@ -1,4 +1,4 @@
-﻿#include "ParticleEmitter.h"
+#include "ParticleEmitter.h"
 
 #include "DirectXEngine.h"
 
@@ -6,7 +6,7 @@
 
 ParticleEmitter::~ParticleEmitter()
 {
-    DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
+    NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
 ParticleEmitter::ParticleEmitter(const std::string name)
