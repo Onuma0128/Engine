@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <array>
 
@@ -43,8 +43,8 @@ private:
 	CompanionAdjustItem* items_ = nullptr;
 
 	// オブジェクトを何個作成するか
-	static const size_t objSize_ = 5;
-	std::array<std::unique_ptr<Object3d>, objSize_> predictionObjects_;
+    static const size_t objSize_ = 5;
+	std::array<std::unique_ptr<NumaEngine::Object3d>, objSize_> predictionObjects_;
 	
 };
 

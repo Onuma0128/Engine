@@ -11,7 +11,7 @@
 
 #include "CreateBufferResource.h"
 
-void Sprite::Initialize(std::string textureFilePath, bool isNoiseTexture)
+void NumaEngine::Sprite::Initialize(std::string textureFilePath, bool isNoiseTexture)
 {
 	spriteBase_ = std::make_unique<SpriteBase>();
 	if(isNoiseTexture) {
@@ -33,7 +33,7 @@ void Sprite::Initialize(std::string textureFilePath, bool isNoiseTexture)
 	AdjustTextureSize();
 }
 
-void Sprite::SetSceneRenderer()
+void NumaEngine::Sprite::SetSceneRenderer()
 {
 	renderOptions_ = {
 		.enabled = true,
@@ -42,7 +42,7 @@ void Sprite::SetSceneRenderer()
     NumaEngine::DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
-void Sprite::Update()
+void NumaEngine::Sprite::Update()
 {
 	// セッターで貰った値を格納
 	AccessorUpdate();
@@ -50,7 +50,7 @@ void Sprite::Update()
 	UpdateMatrix();
 }
 
-void Sprite::Draw()
+void NumaEngine::Sprite::Draw()
 {
 	spriteBase_->DrawBase();
 
@@ -68,21 +68,21 @@ void Sprite::Draw()
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
 
-void Sprite::SetTexture(const std::string& fileName)
+void NumaEngine::Sprite::SetTexture(const std::string& fileName)
 {
 	textureFilePath_ = fileName;
 	textureIndex_ = TextureManager::GetInstance()->GetSrvIndex(fileName);
 	AdjustTextureSize();
 }
 
-void Sprite::SetNoiseTexture(const std::string& fileName)
+void NumaEngine::Sprite::SetNoiseTexture(const std::string& fileName)
 {
 	textureFilePath_ = fileName;
 	noiseTextureIndex_ = TextureManager::GetInstance()->GetSrvIndex(fileName);
 	AdjustTextureSize();
 }
 
-void Sprite::VertexDataInitialize()
+void NumaEngine::Sprite::VertexDataInitialize()
 {
     vertexResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(VertexData) * 4);
 	indexResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(uint32_t) * 6);
@@ -111,7 +111,7 @@ void Sprite::VertexDataInitialize()
 	indexData_[3] = 1; indexData_[4] = 3; indexData_[5] = 2;
 }
 
-void Sprite::MaterialDataInitialize()
+void NumaEngine::Sprite::MaterialDataInitialize()
 {
     materialResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Material));
 	
@@ -121,7 +121,7 @@ void Sprite::MaterialDataInitialize()
     materialData_->uvTransform = NumaEngine::Matrix4x4::Identity();
 }
 
-void Sprite::DissolveDataInitialize()
+void NumaEngine::Sprite::DissolveDataInitialize()
 {
     dissolveResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(DissolveParams));
 	dissolveResource_->Map(0, nullptr, reinterpret_cast<void**>(&dissolveData_));
@@ -131,7 +131,7 @@ void Sprite::DissolveDataInitialize()
     dissolveData_->edgeColor = NumaEngine::Vector3(1.0f, 1.0f, 1.0f);
 }
 
-void Sprite::TransformationMatrixDataInitialize()
+void NumaEngine::Sprite::TransformationMatrixDataInitialize()
 {
     transformationMatrixResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(TransformationMatrix));
 	transformationMatrixResource_->Map(0, nullptr, reinterpret_cast<void**>(&transformationMatrixData_));
@@ -139,7 +139,7 @@ void Sprite::TransformationMatrixDataInitialize()
 	transformationMatrixData_->World = NumaEngine::Matrix4x4::Identity();
 }
 
-void Sprite::AccessorUpdate()
+void NumaEngine::Sprite::AccessorUpdate()
 {
 	// アンカーポイントを設定
 	float left = 0.0f - anchorPoint_.x;
@@ -178,7 +178,7 @@ void Sprite::AccessorUpdate()
 	vertexData_[3].texcoord = { tex_right,tex_top };
 }
 
-void Sprite::UpdateMatrix()
+void NumaEngine::Sprite::UpdateMatrix()
 {
     NumaEngine::Matrix4x4 worldMatrix = NumaEngine::Matrix4x4::Affine(
 		NumaEngine::Vector3{ transform_.size.x,transform_.size.y,1.0f },
@@ -193,7 +193,7 @@ void Sprite::UpdateMatrix()
 	transformationMatrixData_->WorldInverseTranspose = NumaEngine::Matrix4x4::Inverse(worldViewProjectionMatrix);
 }
 
-void Sprite::AdjustTextureSize()
+void NumaEngine::Sprite::AdjustTextureSize()
 {
 	const DirectX::TexMetadata& metadata =
 		TextureManager::GetInstance()->GetMetaData(textureFilePath_);

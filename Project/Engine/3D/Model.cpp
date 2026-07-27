@@ -10,7 +10,7 @@
 #include "CreateBufferResource.h"
 
 
-void Model::Initialize(const std::string& directoryPath, const std::string& filename)
+void NumaEngine::Model::Initialize(const std::string& directoryPath, const std::string& filename)
 {
     modelData_ = LoadObjFile(directoryPath, filename);
 
@@ -35,7 +35,7 @@ void Model::Initialize(const std::string& directoryPath, const std::string& file
     MakeIndexData();
 }
 
-void Model::BindBuffers(bool isAnimation) const
+void NumaEngine::Model::BindBuffers(bool isAnimation) const
 {
     auto commandList = NumaEngine::DirectXEngine::GetCommandList();
     if (!isAnimation) {
@@ -44,7 +44,7 @@ void Model::BindBuffers(bool isAnimation) const
     commandList->IASetIndexBuffer(&indexBufferView_);
 }
 
-void Model::BindMaterial(uint32_t meshIdx) const
+void NumaEngine::Model::BindMaterial(uint32_t meshIdx) const
 {
     auto commandList = NumaEngine::DirectXEngine::GetCommandList();
     const auto& material = modelData_.materials[meshIdx];
@@ -53,7 +53,7 @@ void Model::BindMaterial(uint32_t meshIdx) const
     commandList->SetGraphicsRootConstantBufferView(8, material.kdColorResource->GetGPUVirtualAddress());
 }
 
-void Model::MakeVertexData()
+void NumaEngine::Model::MakeVertexData()
 {
     // 実際に頂点リソースを作る
     vertexResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
@@ -65,7 +65,7 @@ void Model::MakeVertexData()
     std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
 }
 
-void Model::MakeIndexData()
+void NumaEngine::Model::MakeIndexData()
 {
     // 実際に頂点リソースを作る
     indexResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(uint32_t) * modelData_.indices.size());
@@ -77,7 +77,7 @@ void Model::MakeIndexData()
     std::memcpy(indexData_, modelData_.indices.data(), sizeof(uint32_t) * modelData_.indices.size());
 }
 
-void Model::MakeMeshColor(MaterialData& material)
+void NumaEngine::Model::MakeMeshColor(MaterialData& material)
 {
     // マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
     material.kdColorResource = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(KdColor));
@@ -88,7 +88,7 @@ void Model::MakeMeshColor(MaterialData& material)
     kdColors_.push_back(std::move(kdColor));
 }
 
-std::wstring Model::s2ws(const std::string& str)
+std::wstring NumaEngine::Model::s2ws(const std::string& str)
 {
     int size_needed = MultiByteToWideChar(CP_UTF8, 0, &str[0], static_cast<int>(str.size()), NULL, 0);
     std::wstring wstrTo(size_needed, 0);
@@ -96,7 +96,7 @@ std::wstring Model::s2ws(const std::string& str)
     return wstrTo;
 }
 
-ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
+ModelData NumaEngine::Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
 {
     Assimp::Importer importer;
     std::string filePath = directoryPath + "/" + filename;
@@ -248,7 +248,7 @@ ModelData Model::LoadObjFile(const std::string& directoryPath, const std::string
     return modelData;
 }
 
-void Model::SetTexture(const std::string& directoryPath, const std::string& filename)
+void NumaEngine::Model::SetTexture(const std::string& directoryPath, const std::string& filename)
 {
     if (modelData_.materials.empty()) { return; }
     auto& materialData = modelData_.materials[0];
@@ -260,7 +260,7 @@ void Model::SetTexture(const std::string& directoryPath, const std::string& file
         TextureManager::GetInstance()->GetSrvIndex(materialData.filePath);
 }
 
-void Model::SetTexture_ENV(const std::string& directoryPath, const std::string& filename)
+void NumaEngine::Model::SetTexture_ENV(const std::string& directoryPath, const std::string& filename)
 {
     if (modelData_.materials.empty()) { return; }
     auto& materialData = modelData_.materials[0];
@@ -272,7 +272,7 @@ void Model::SetTexture_ENV(const std::string& directoryPath, const std::string& 
         TextureManager::GetInstance()->GetSrvIndex(materialData.ENV_FilePath);
 }
 
-MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
+MaterialData NumaEngine::Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
 {
     MaterialData materialData; // 構築するMaterialData
     std::string line; // ファイルから読んだ1行を格納するもの
@@ -300,7 +300,7 @@ MaterialData Model::LoadMaterialTemplateFile(const std::string& directoryPath, c
     return materialData;
 }
 
-Node Model::ReadNode(aiNode* node)
+Node NumaEngine::Model::ReadNode(aiNode* node)
 {
     Node result;
     

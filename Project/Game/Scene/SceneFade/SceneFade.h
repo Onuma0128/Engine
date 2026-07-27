@@ -5,7 +5,7 @@
 /// <summary>
 /// シーンフェード
 /// </summary>
-class SceneFade : public Sprite
+class SceneFade : public NumaEngine::Sprite
 {
 public:
 

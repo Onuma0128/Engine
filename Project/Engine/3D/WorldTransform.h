@@ -10,7 +10,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-class Model;
+namespace NumaEngine { class Model; }
 
 /// <summary>
 /// ワールド変換を扱うクラス
@@ -38,11 +38,11 @@ public:
 	/// </summary>
 	~WorldTransform() = default;
 
-	/// <summary>
+    /// <summary>
 	/// モデルからワールド変換行列を転送
 	/// </summary>
 	/// <param name="model"></param>
-	void TransferMatrix(const Model* model);
+	void TransferMatrix(const NumaEngine::Model* model);
 void TransferMatrix(const NumaEngine::Matrix4x4& localMatrix);
 
 public:

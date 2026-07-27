@@ -1,10 +1,10 @@
-﻿#include "BossHpUI.h"
+#include "BossHpUI.h"
 
 #include "Objects/Boss/Base/BossEnemy.h"
 
 void BossHpBarUI::Init(const NumaEngine::Vector2& position)
 {
-	Sprite::Initialize("bossHpBar.png");
+    NumaEngine::Sprite::Initialize("bossHpBar.png");
 
 	transform_.position = position;
 	preTextureSize_ = textureSize_.x;
@@ -18,17 +18,17 @@ void BossHpBarUI::Update(const NumaEngine::Vector2& position)
 	uint32_t currentHp = boss_->GetCurrentHp();
 	float scale = static_cast<float>(currentHp) / static_cast<float>(maxHp);
 	// ボスのHPに応じて色を変える
-	NumaEngine::Vector4 color = { 1.0f - scale,scale,0.0f,1.0f };
-	Sprite::SetColor(color);
+    NumaEngine::Vector4 color = { 1.0f - scale,scale,0.0f,1.0f };
+	NumaEngine::Sprite::SetColor(color);
 	// ボスのHPに応じてスケールを縮める
 	textureSize_.x = preTextureSize_ * scale;
 	transform_.size.x = preTextureSize_ * scale;
 	transform_.position = position;
 
-	Sprite::Update();
+    NumaEngine::Sprite::Update();
 }
 
 void BossHpBarUI::Draw()
 {
-	Sprite::Draw();
+    NumaEngine::Sprite::Draw();
 }

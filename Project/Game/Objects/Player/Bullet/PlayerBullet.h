@@ -12,7 +12,7 @@ class PlayerShot;
 /// <summary>
 /// プレイヤーの弾を表すクラス
 /// </summary>
-class PlayerBullet : public Object3d, public NumaEngine::Collider
+class PlayerBullet : public NumaEngine::Object3d, public NumaEngine::Collider
 {
 public:
 

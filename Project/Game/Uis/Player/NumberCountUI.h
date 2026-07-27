@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -8,7 +8,7 @@
 /// <summary>
 /// 数字表示UIクラス
 /// </summary>
-class NumbersUI : public Sprite
+class NumbersUI : public NumaEngine::Sprite
 {
 public:
 

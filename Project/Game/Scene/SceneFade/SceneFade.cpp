@@ -1,11 +1,11 @@
-﻿#include "SceneFade.h"
+#include "SceneFade.h"
 
 #include "DeltaTimer.h"
 
 void SceneFade::Init()
 {
-	Sprite::Initialize("white1x1.png");
-	Sprite::SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,1.0f });
+    NumaEngine::Sprite::Initialize("white1x1.png");
+	NumaEngine::Sprite::SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,1.0f });
 	
 	transform_.size = { 1280.0f,720.0f };
 }
@@ -13,8 +13,8 @@ void SceneFade::Init()
 void SceneFade::Update()
 {
 	// フェードをしていなければ即リターン
-	if (!isFade_) {
-		Sprite::Update();
+    if (!isFade_) {
+		NumaEngine::Sprite::Update();
 		return;
 	}
 	// フェードの処理
@@ -30,13 +30,13 @@ void SceneFade::Update()
 		if (time == 1.0f) { isFade_ = false; }
 	}
 
-	Sprite::SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,time });
-	Sprite::Update();
+    NumaEngine::Sprite::SetColor(NumaEngine::Vector4{ 0.0f,0.0f,0.0f,time });
+	NumaEngine::Sprite::Update();
 }
 
 void SceneFade::Draw()
 {
-	Sprite::Draw();
+    NumaEngine::Sprite::Draw();
 }
 
 void SceneFade::FadeIn(const float fadeTime)

@@ -16,7 +16,7 @@ class GameCamera;
 /// <summary>
 /// フィールドオブジェクトのクラス
 /// </summary>
-class FieldObject : public Object3d, public NumaEngine::Collider
+class FieldObject : public NumaEngine::Object3d, public NumaEngine::Collider
 {
 public:
 

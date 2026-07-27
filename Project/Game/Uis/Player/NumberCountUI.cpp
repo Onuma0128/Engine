@@ -1,4 +1,4 @@
-﻿#include "NumberCountUI.h"
+#include "NumberCountUI.h"
 
 #include <algorithm> 
 
@@ -108,13 +108,13 @@ void NumberCountUI::SetDissolvePrames(const float threshold, const float edgeWid
 
 void NumbersUI::Init(const NumaEngine::Vector2& position, bool isNoiseTexture)
 {
-	Sprite::Initialize("numbers.png", isNoiseTexture);
+    this->NumaEngine::Sprite::Initialize("numbers.png", isNoiseTexture);
 	if(isNoiseTexture) {
-		Sprite::SetNoiseTexture("gradationTexture.png");
+		this->NumaEngine::Sprite::SetNoiseTexture("gradationTexture.png");
 	}
-	Sprite::transform_.position = position;
-	Sprite::anchorPoint_ = { 0.5f,0.5f };
-	Sprite::transform_.size = { 80.0f,80.0f };
+	transform_.position = position;
+	anchorPoint_ = { 0.5f,0.5f };
+	transform_.size = { 80.0f,80.0f };
 }
 
 void NumbersUI::Update(const uint32_t number)
@@ -122,14 +122,14 @@ void NumbersUI::Update(const uint32_t number)
 	const float digitWidth = 128.0f;
 	const float digitHeight = 128.0f;
 
-	Sprite::textureLeftTop_ = { digitWidth * number, 0.0f };
-	Sprite::textureSize_ = { digitWidth, digitHeight };
+    textureLeftTop_ = { digitWidth * number, 0.0f };
+	textureSize_ = { digitWidth, digitHeight };
 
-	Sprite::Update();
+    this->NumaEngine::Sprite::Update();
 }
 
 void NumbersUI::Draw()
 {
-	Sprite::Draw();
+    this->NumaEngine::Sprite::Draw();
 }
 

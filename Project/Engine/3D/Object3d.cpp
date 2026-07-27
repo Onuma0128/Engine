@@ -11,7 +11,7 @@
 
 #include "CreateBufferResource.h"
 
-void Object3d::Initialize(const std::string& filePath)
+void NumaEngine::Object3d::Initialize(const std::string& filePath)
 {
     object3dBase_ = std::make_unique<Object3dBase>();
     object3dBase_->Initialize();
@@ -23,22 +23,22 @@ void Object3d::Initialize(const std::string& filePath)
     MakeMaterialData();
 }
 
-void Object3d::SetSceneRenderer()
+void NumaEngine::Object3d::SetSceneRenderer()
 {
     NumaEngine::ModelInstanceRenderer::GetInstance()->Push(this);
 }
 
-void Object3d::RemoveRenderer()
+void NumaEngine::Object3d::RemoveRenderer()
 {
     NumaEngine::ModelInstanceRenderer::GetInstance()->Remove(this);
 }
 
-void Object3d::Update()
+void NumaEngine::Object3d::Update()
 {
     transform_.TransferMatrix(model_->GetLocalMatrix());
 }
 
-void Object3d::Draw()
+void NumaEngine::Object3d::Draw()
 {
     object3dBase_->DrawBase();
 
@@ -49,27 +49,27 @@ void Object3d::Draw()
     commandList->SetGraphicsRootConstantBufferView(6, CameraManager::GetInstance()->GetCameraResource()->GetGPUVirtualAddress());
 }
 
-void Object3d::SetModel(const std::string& filePath)
+void NumaEngine::Object3d::SetModel(const std::string& filePath)
 {
-    model_ = ModelManager::GetInstance()->FindModel(filePath);
+    model_ = NumaEngine::ModelManager::GetInstance()->FindModel(filePath);
 }
 
-void Object3d::SetTexture(const std::string& directoryPath, const std::string& filePath)
+void NumaEngine::Object3d::SetTexture(const std::string& directoryPath, const std::string& filePath)
 {
     model_->SetTexture(directoryPath, filePath);
 }
 
-void Object3d::SetTexture_ENV(const std::string& directoryPath, const std::string& filePath)
+void NumaEngine::Object3d::SetTexture_ENV(const std::string& directoryPath, const std::string& filePath)
 {
     model_->SetTexture_ENV(directoryPath, filePath);
 }
 
-void Object3d::SetColor(const NumaEngine::Vector4& color)
+void NumaEngine::Object3d::SetColor(const NumaEngine::Vector4& color)
 {
     materialData_.color = color;
 }
 
-void Object3d::MakeMaterialData()
+void NumaEngine::Object3d::MakeMaterialData()
 {
     materialData_.color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
     materialData_.enableDraw = true;

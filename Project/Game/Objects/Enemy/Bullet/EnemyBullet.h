@@ -11,7 +11,7 @@ class EnemyAdjustItem;
 /// <summary>
 /// 敵の弾クラス
 /// </summary>
-class EnemyBullet : public Object3d, public NumaEngine::Collider
+class EnemyBullet : public NumaEngine::Object3d, public NumaEngine::Collider
 {
 public:
 

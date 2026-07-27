@@ -62,9 +62,9 @@ void TitleScene::Initialize()
 	enemySpawnerFactory_->PlayDemo();
 	gameCamera_->SetSpawner(enemySpawnerFactory_.get());
 
-	// BGMを流す
+    // BGMを流す
 	const float kBGMVolume = 0.04f;
-	bgm_ = std::make_unique<Audio>();
+	bgm_ = std::make_unique<NumaEngine::Audio>();
 	bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
 }
 

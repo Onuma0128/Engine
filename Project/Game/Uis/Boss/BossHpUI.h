@@ -6,7 +6,7 @@
 // 前方宣言
 class BossEnemy;
 
-class BossHpBarUI : public Sprite
+class BossHpBarUI : public NumaEngine::Sprite
 {
 public:
     void Init(const NumaEngine::Vector2& position);

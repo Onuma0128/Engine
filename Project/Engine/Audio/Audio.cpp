@@ -5,7 +5,7 @@
 
 #include "AudioManager.h"
 
-Audio::Audio()
+NumaEngine::Audio::Audio()
 {
     HRESULT hr = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
     assert(SUCCEEDED(hr));
@@ -14,7 +14,7 @@ Audio::Audio()
     assert(SUCCEEDED(hr));
 }
 
-Audio::~Audio()
+NumaEngine::Audio::~Audio()
 {
     StopAll();
 
@@ -25,7 +25,7 @@ Audio::~Audio()
     xAudio2_.Reset();
 }
 
-void Audio::SoundPlayWave(const std::string& filePath, float volume, bool loop)
+void NumaEngine::Audio::SoundPlayWave(const std::string& filePath, float volume, bool loop)
 {
     const AudioManager::SoundData& soundData = AudioManager::GetInstance()->GetSoundData(filePath);
 
@@ -59,7 +59,7 @@ void Audio::SoundPlayWave(const std::string& filePath, float volume, bool loop)
     playingVoices_[filePath].push_back(sourceVoice);
 }
 
-void Audio::StopAudio(const std::string& filePath)
+void NumaEngine::Audio::StopAudio(const std::string& filePath)
 {
     auto it = playingVoices_.find(filePath);
     if (it == playingVoices_.end()) return;
@@ -74,14 +74,14 @@ void Audio::StopAudio(const std::string& filePath)
     playingVoices_.erase(it);
 }
 
-void Audio::SetMasterVolume(float volume)
+void NumaEngine::Audio::SetMasterVolume(float volume)
 {
     if (masterVoice_) {
         masterVoice_->SetVolume(volume);
     }
 }
 
-void Audio::SetVolume(const std::string& filePath, float volume)
+void NumaEngine::Audio::SetVolume(const std::string& filePath, float volume)
 {
     auto it = playingVoices_.find(filePath);
     if (it == playingVoices_.end()) return;
@@ -92,7 +92,7 @@ void Audio::SetVolume(const std::string& filePath, float volume)
     }
 }
 
-bool Audio::IsPlaying(const std::string& filePath)
+bool NumaEngine::Audio::IsPlaying(const std::string& filePath)
 {
     auto it = playingVoices_.find(filePath);
     if (it == playingVoices_.end()) {
@@ -136,7 +136,7 @@ bool Audio::IsPlaying(const std::string& filePath)
     return anyPlaying;
 }
 
-void Audio::StopAll()
+void NumaEngine::Audio::StopAll()
 {
     for (auto& kv : playingVoices_) {
         for (IXAudio2SourceVoice* v : kv.second) {

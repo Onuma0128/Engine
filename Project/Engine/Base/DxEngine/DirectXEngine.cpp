@@ -40,7 +40,7 @@ NumaEngine::DirectXEngine::~DirectXEngine()
 	CameraManager::GetInstance()->Finalize();
 	TextureManager::GetInstance()->Finalize();
 	LightManager::GetInstance()->Finalize();
-	ModelManager::GetInstance()->Finalize();
+    NumaEngine::ModelManager::GetInstance()->Finalize();
    NumaEngine::ModelInstanceRenderer::GetInstance()->Finalize();
 	LineInstanceRenderer::GetInstance()->Finalize(true);
 	ParticleManager::GetInstance()->Finalize();

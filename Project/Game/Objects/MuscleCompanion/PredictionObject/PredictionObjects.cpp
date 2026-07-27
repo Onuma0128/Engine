@@ -1,11 +1,11 @@
-﻿#include "PredictionObjects.h"
+#include "PredictionObjects.h"
 
 #include "Objects/MuscleCompanion/AdjustItem/CompanionAdjustItem.h"
 
 void PredictionObjects::Init()
 {
-	for (auto& obj : predictionObjects_) {
-		obj = std::make_unique<Object3d>();
+  for (auto& obj : predictionObjects_) {
+		obj = std::make_unique<NumaEngine::Object3d>();
 		obj->Initialize("Box.obj");
 		obj->SetSceneRenderer();
 		obj->GetMaterial().outlineMask = true;

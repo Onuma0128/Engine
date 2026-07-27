@@ -20,8 +20,8 @@ void BossEnemy::Initialize()
 	items_ = std::make_unique<BossAdjustItem>();
 	items_->LoadItems();
 
-	// Audioの初期化
-	audio_ = std::make_unique<Audio>();
+    // Audioの初期化
+	audio_ = std::make_unique<NumaEngine::Audio>();
 
 	// アニメーションを設定
 	Animation::Initialize("BossEnemy.gltf");

@@ -12,6 +12,7 @@ using Microsoft::WRL::ComPtr;
 /// <summary>
 /// オーディオクラス
 /// </summary>
+namespace NumaEngine {
 class Audio
 {
 public:
@@ -72,3 +73,5 @@ private:
 	std::unordered_map<std::string, std::vector<IXAudio2SourceVoice*>> playingVoices_;
 
 };
+} // namespace NumaEngine
+// Prefer fully-qualified `NumaEngine::Audio`.

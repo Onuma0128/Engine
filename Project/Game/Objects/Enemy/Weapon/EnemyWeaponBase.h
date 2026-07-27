@@ -9,7 +9,7 @@ class BaseEnemy;
 /// <summary>
 /// 敵の武器の基底クラス
 /// </summary>
-class EnemyWeaponBase : public Object3d, public NumaEngine::Collider
+class EnemyWeaponBase : public NumaEngine::Object3d, public NumaEngine::Collider
 {
 public:
 
@@ -44,8 +44,8 @@ public:
 	/// <summary>
 	/// 動かしたくない時の更新
 	/// </summary>
-	virtual void TransformUpdate() {
-     Object3d::Update();
+    virtual void TransformUpdate() {
+		NumaEngine::Object3d::Update();
 		this->Update();
 	}
 

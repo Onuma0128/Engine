@@ -93,7 +93,7 @@ public:
 	void SetItems(CompanionAdjustItem* items) { items_ = items; }
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
 	void SetCamera(GameCamera* camera) { camera_ = camera; }
-	void SetAudio(Audio* audio) { audio_ = audio; }
+    void SetAudio(NumaEngine::Audio* audio) { audio_ = audio; }
 	void SetColliderIsActive(bool flag) { isActive_ = flag; }
 	void SetColliderScale(float scale) { colliderScale_ = scale; }
 	void SetExperience(float exp) { experience_ = exp; }
@@ -114,7 +114,7 @@ public:
 	CompanionFollowerCollider* GetFollowerCollider() { return followerCollider_.get(); }
 	CompanionEffect* GetEffect() { return effect_.get(); }
 	GameCamera* GetCamera() { return camera_; }
-	Audio* GetAudio() { return audio_; }
+    NumaEngine::Audio* GetAudio() { return audio_; }
 	PathFinder& GetPathFinder() { return pathFinder_; }
 	const float GetExperience()const { return experience_; }
 	const uint32_t GetLevel()const { return level_; }
@@ -133,8 +133,8 @@ private:
 	CompanionAdjustItem* items_ = nullptr;
 	// ゲームカメラ
 	GameCamera* camera_ = nullptr;
-	// オーディオ
-	Audio* audio_ = nullptr;
+    // オーディオ
+	NumaEngine::Audio* audio_ = nullptr;
 	// 状態遷移
 	std::unique_ptr<CompanionBaseState> state_ = nullptr;
 	// 攻撃用コライダー

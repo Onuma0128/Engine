@@ -73,6 +73,6 @@ private:
 	std::unique_ptr<MapCollision> mapCollision_ = nullptr;
 
 
-	std::unique_ptr<Audio> bgm_;
+    std::unique_ptr<NumaEngine::Audio> bgm_;
 
 };

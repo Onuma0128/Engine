@@ -138,13 +138,13 @@ void NumaEngine::ModelInstanceRenderer::Finalize()
 
 namespace {
     // vector<Model*> から指定モデルを取り除く
-    void RemoveFromModelVector(std::vector<::Model*>& v, ::Model* model)
+    void RemoveFromModelVector(std::vector<NumaEngine::Model*>& v, NumaEngine::Model* model)
     {
         v.erase(std::remove(v.begin(), v.end(), model), v.end());
     }
 }
 
-bool NumaEngine::ModelInstanceRenderer::IsLateDrawModel(::Model* model) const
+bool NumaEngine::ModelInstanceRenderer::IsLateDrawModel(NumaEngine::Model* model) const
 {
     if (!model) return false;
     if (lateDrawModelNames_.empty()) return false;
@@ -156,7 +156,7 @@ bool NumaEngine::ModelInstanceRenderer::IsLateDrawModel(::Model* model) const
     return lateDrawModelNames_.contains(name);
 }
 
-void NumaEngine::ModelInstanceRenderer::MoveObjModelToLate(::Model* model)
+void NumaEngine::ModelInstanceRenderer::MoveObjModelToLate(NumaEngine::Model* model)
 {
     RemoveFromModelVector(objDrawOrder_, model);
     if (std::find(objLateDrawOrder_.begin(), objLateDrawOrder_.end(), model) == objLateDrawOrder_.end()) {
@@ -164,7 +164,7 @@ void NumaEngine::ModelInstanceRenderer::MoveObjModelToLate(::Model* model)
     }
 }
 
-void NumaEngine::ModelInstanceRenderer::MoveAnimModelToLate(::Model* model)
+void NumaEngine::ModelInstanceRenderer::MoveAnimModelToLate(NumaEngine::Model* model)
 {
     RemoveFromModelVector(animDrawOrder_, model);
     if (std::find(animLateDrawOrder_.begin(), animLateDrawOrder_.end(), model) == animLateDrawOrder_.end()) {
@@ -178,13 +178,13 @@ void NumaEngine::ModelInstanceRenderer::AddLateDrawModelName(const std::string& 
 
     // すでに確保済みのモデルも Late 側へ移動
     // Object
-    for (::Model* m : objDrawOrder_) {
+    for (NumaEngine::Model* m : objDrawOrder_) {
         if (m && m->GetModelData().filePath == modelName) {
             MoveObjModelToLate(m);
         }
     }
     // Animation
-    for (::Model* m : animDrawOrder_) {
+    for (NumaEngine::Model* m : animDrawOrder_) {
         if (m && m->GetModelData().filePath == modelName) {
             MoveAnimModelToLate(m);
         }
@@ -207,7 +207,7 @@ void NumaEngine::ModelInstanceRenderer::ClearLateDrawModelNames()
 ///                           Object3d_Resource
 /// =====================================================================
 
-void NumaEngine::ModelInstanceRenderer::ObjReserveBatch(::Object3d* object, uint32_t maxInstance)
+void NumaEngine::ModelInstanceRenderer::ObjReserveBatch(NumaEngine::Object3d* object, uint32_t maxInstance)
 {
     // 二重確保ガード
     if (objBatches_.contains(object->GetModel())) return;
@@ -259,7 +259,7 @@ void NumaEngine::ModelInstanceRenderer::ObjReserveBatch(::Object3d* object, uint
     objBatches_[object->GetModel()] = std::move(batch);
 
     // ===== 追加：描画順へ登録（unordered_map の順序に依存しない） =====
-    ::Model* model = object->GetModel();
+    NumaEngine::Model* model = object->GetModel();
     if (IsLateDrawModel(model)) {
         if (std::find(objLateDrawOrder_.begin(), objLateDrawOrder_.end(), model) == objLateDrawOrder_.end()) {
             objLateDrawOrder_.push_back(model);
@@ -349,7 +349,7 @@ void NumaEngine::ModelInstanceRenderer::AnimationReserveBatch(NumaEngine::Animat
     animationBatches_[animation->GetModel()] = std::move(batch);
 
     // ===== 追加：描画順へ登録（unordered_map の順序に依存しない） =====
-    Model* model = animation->GetModel();
+    NumaEngine::Model* model = animation->GetModel();
     if (IsLateDrawModel(model)) {
         if (std::find(animLateDrawOrder_.begin(), animLateDrawOrder_.end(), model) == animLateDrawOrder_.end()) {
             animLateDrawOrder_.push_back(model);
@@ -365,10 +365,10 @@ void NumaEngine::ModelInstanceRenderer::AnimationReserveBatch(NumaEngine::Animat
 ///                      Object3d_Push & Remove
 /// =====================================================================
 
-void NumaEngine::ModelInstanceRenderer::Push(Object3d* obj)
+void NumaEngine::ModelInstanceRenderer::Push(NumaEngine::Object3d* obj)
 {
     // 未確保なら Reserve
-    Model* model = obj->GetModel();
+    NumaEngine::Model* model = obj->GetModel();
     if (!objBatches_.contains(model)) { ObjReserveBatch(obj); }
 
     ObjectBatch& batch = objBatches_[model];
@@ -390,9 +390,9 @@ void NumaEngine::ModelInstanceRenderer::Push(Object3d* obj)
     ++batch.count;
 }
 
-void NumaEngine::ModelInstanceRenderer::Remove(Object3d* obj)
+void NumaEngine::ModelInstanceRenderer::Remove(NumaEngine::Object3d* obj)
 {
-    Model* model = obj->GetModel();
+    NumaEngine::Model* model = obj->GetModel();
     ObjectBatch& batch = objBatches_[model];
 
     for (auto it = batch.objects.begin(); it != batch.objects.end();) {
@@ -412,7 +412,7 @@ void NumaEngine::ModelInstanceRenderer::Remove(Object3d* obj)
 void NumaEngine::ModelInstanceRenderer::Push(NumaEngine::Animation* animation)
 {
     // 未確保なら Reserve
-    Model* model = animation->GetModel();
+    NumaEngine::Model* model = animation->GetModel();
     if (!animationBatches_.contains(model)) { AnimationReserveBatch(animation); }
 
     AnimationBatch& batch = animationBatches_[model];
@@ -522,8 +522,8 @@ void NumaEngine::ModelInstanceRenderer::AllDrawShadowDepth()
     lightData_->lightVP = LightManager::GetInstance()->GetDirectionalLight()->GetLightVP();
 
     // ===== 追加：描画順を保証（通常 → Late） =====
-    auto DrawObjShadowDepth = [&](const std::vector<Model*>& drawOrder) {
-        for (Model* model : drawOrder) {
+    auto DrawObjShadowDepth = [&](const std::vector<NumaEngine::Model*>& drawOrder) {
+        for (NumaEngine::Model* model : drawOrder) {
             auto it = objBatches_.find(model);
             if (it == objBatches_.end()) continue;
             ObjectBatch& batch = it->second;
@@ -556,8 +556,8 @@ void NumaEngine::ModelInstanceRenderer::AllDrawShadowDepth()
     }
 
     // ===== 追加：描画順を保証（通常 → Late） =====
-    auto DrawAnimShadowDepth = [&](const std::vector<Model*>& drawOrder) {
-        for (Model* model : drawOrder) {
+    auto DrawAnimShadowDepth = [&](const std::vector<NumaEngine::Model*>& drawOrder) {
+        for (NumaEngine::Model* model : drawOrder) {
             auto it = animationBatches_.find(model);
             if (it == animationBatches_.end()) continue;
             AnimationBatch& batch = it->second;
@@ -596,8 +596,8 @@ void NumaEngine::ModelInstanceRenderer::AllDrawOutlineMask() {
 
     // === Object3d バッチ ===
     // ===== 追加：描画順を保証（通常 → Late） =====
-    auto DrawObjOutlineMask = [&](const std::vector<Model*>& drawOrder) {
-        for (Model* model : drawOrder) {
+    auto DrawObjOutlineMask = [&](const std::vector<NumaEngine::Model*>& drawOrder) {
+        for (NumaEngine::Model* model : drawOrder) {
             auto it = objBatches_.find(model);
             if (it == objBatches_.end()) continue;
             ObjectBatch& batch = it->second;
@@ -626,8 +626,8 @@ void NumaEngine::ModelInstanceRenderer::AllDrawOutlineMask() {
 
     // === Animation バッチ ===
     // ===== 追加：描画順を保証（通常 → Late） =====
-    auto DrawAnimOutlineMask = [&](const std::vector<Model*>& drawOrder) {
-        for (Model* model : drawOrder) {
+    auto DrawAnimOutlineMask = [&](const std::vector<NumaEngine::Model*>& drawOrder) {
+        for (NumaEngine::Model* model : drawOrder) {
             auto it = animationBatches_.find(model);
             if (it == animationBatches_.end()) continue;
             AnimationBatch& batch = it->second;
@@ -658,8 +658,8 @@ void NumaEngine::ModelInstanceRenderer::AllDraw()
     auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 
     // ===== 追加：描画順を保証（通常 → Late） =====
-    auto DrawAnimations = [&](const std::vector<Model*>& drawOrder) {
-        for (Model* model : drawOrder) {
+    auto DrawAnimations = [&](const std::vector<NumaEngine::Model*>& drawOrder) {
+        for (NumaEngine::Model* model : drawOrder) {
             auto it = animationBatches_.find(model);
             if (it == animationBatches_.end()) continue;
             AnimationBatch& batch = it->second;
@@ -688,8 +688,8 @@ void NumaEngine::ModelInstanceRenderer::AllDraw()
         }
         };
 
-    auto DrawObjects = [&](const std::vector<Model*>& drawOrder) {
-        for (Model* model : drawOrder) {
+    auto DrawObjects = [&](const std::vector<NumaEngine::Model*>& drawOrder) {
+        for (NumaEngine::Model* model : drawOrder) {
             auto it = objBatches_.find(model);
             if (it == objBatches_.end()) continue;
             ObjectBatch& batch = it->second;

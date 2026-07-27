@@ -92,34 +92,34 @@ void Framework::LoadFiles()
 
 	// ============================== Model ============================== //
 
-	ModelManager::GetInstance()->LoadModel("Resources/Model", "plane.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model", "Box.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/shadow", "shadow.obj");
+    NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model", "plane.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model", "Box.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/shadow", "shadow.obj");
 
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "fence.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "ground.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "TowerWindmill.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_1.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_2.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_3.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_4.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_5.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "BirchTree_1.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "Well.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "OpenBarn.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "BigBarn.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "Bush.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "ShortStoneWall.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "StoneWall.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "Rock1.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "fence.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "ground.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "TowerWindmill.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_1.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_2.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_3.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_4.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "DeadTree_5.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "BirchTree_1.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "Well.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "OpenBarn.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "BigBarn.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "Bush.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "ShortStoneWall.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "StoneWall.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/fieldObject", "Rock1.obj");
 
-	ModelManager::GetInstance()->LoadModel("Resources/Model/player", "Player.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/muscleCompanion", "muscleCompanion.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/enemy/shield", "Shield_Heater.obj");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/enemy", "Zombie_Basic.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/enemy", "Characters_Shaun.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/Boss", "BossEnemy.gltf");
-	ModelManager::GetInstance()->LoadModel("Resources/Model/Mattyo", "Mattyo.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/player", "Player.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/muscleCompanion", "muscleCompanion.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/enemy/shield", "Shield_Heater.obj");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/enemy", "Zombie_Basic.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/enemy", "Characters_Shaun.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/Boss", "BossEnemy.gltf");
+	NumaEngine::ModelManager::GetInstance()->LoadModel("Resources/Model/Mattyo", "Mattyo.gltf");
 
 	// ============================== Audio ============================== //
 

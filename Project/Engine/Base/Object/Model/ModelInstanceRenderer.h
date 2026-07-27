@@ -15,9 +15,7 @@ using Microsoft::WRL::ComPtr;
 #include "ModelStruct.h"
 
 class WorldTransform;
-class Object3d;
-namespace NumaEngine { class Animation; }
-class Model;
+namespace NumaEngine { class Animation; class Model; class Object3d; }
 
 /// <summary>
 /// モデルのインスタンスを管理するクラス
@@ -65,8 +63,8 @@ public:
     /* ========================= Object3d ========================= */
 
     // インスタンス登録・削除
-    void Push(Object3d* obj);
-    void Remove(Object3d* obj);
+    void Push(NumaEngine::Object3d* obj);
+    void Remove(NumaEngine::Object3d* obj);
 
     /* ========================= Animation ========================= */
 
@@ -98,7 +96,7 @@ private:
     /* ========================= Object3d ========================= */
 
     // インスタンスバッチ確保・更新
-    void ObjReserveBatch(Object3d* object, uint32_t maxInstance = 128);
+    void ObjReserveBatch(NumaEngine::Object3d* object, uint32_t maxInstance = 128);
     void ObjUpdate();
 
     /* ========================= Animation ========================= */
@@ -115,16 +113,16 @@ private:
     std::unordered_set<std::string> lateDrawModelNames_;
 
     // 描画順（unordered_map を回さず、必ずこの順で描画する）
-    std::vector<Model*> objDrawOrder_;
-    std::vector<Model*> objLateDrawOrder_;
-    std::vector<Model*> animDrawOrder_;
-    std::vector<Model*> animLateDrawOrder_;
+    std::vector<NumaEngine::Model*> objDrawOrder_;
+    std::vector<NumaEngine::Model*> objLateDrawOrder_;
+    std::vector<NumaEngine::Model*> animDrawOrder_;
+    std::vector<NumaEngine::Model*> animLateDrawOrder_;
 
     // Model が Late 対象か
-    bool IsLateDrawModel(Model* model) const;
+    bool IsLateDrawModel(NumaEngine::Model* model) const;
     // 既に確保済みのモデルを「末尾（Late）」へ移動
-    void MoveObjModelToLate(Model* model);
-    void MoveAnimModelToLate(Model* model);
+    void MoveObjModelToLate(NumaEngine::Model* model);
+    void MoveAnimModelToLate(NumaEngine::Model* model);
 
 private:
 
@@ -146,8 +144,8 @@ private:
     /// </summary>
     struct ObjectBatch
     {
-        Model* model;                               // キー
-        std::vector<Object3d*> objects;             // Objects
+        NumaEngine::Model* model;                               // キー
+        std::vector<NumaEngine::Object3d*> objects;             // Objects
         uint32_t maxInstance;                       // 初期確保上限 (128)
         uint32_t count;                             // 今フレーム登録数
 
@@ -159,7 +157,7 @@ private:
         Material* materialData;                     // Mapしたポインタ
         uint32_t materialSrvIndex;                  // SRV番地 (material)
     };
-    std::unordered_map<Model*, ObjectBatch> objBatches_;
+    std::unordered_map<NumaEngine::Model*, ObjectBatch> objBatches_;
 
     ComPtr<ID3D12RootSignature> objMaskRootSignature_; // ルートシグネチャ
     ComPtr<ID3D12PipelineState> objMaskPipelineState_; // パイプラインステート
@@ -171,7 +169,7 @@ private:
     /// </summary>
     struct AnimationBatch
     {
-        Model* model;                               // キー
+        NumaEngine::Model* model;                               // キー
         std::vector<NumaEngine::Animation*> animations;         // Animations
         uint32_t maxInstance;                       // 初期確保上限 (128)
         uint32_t count;                             // 今フレーム登録数
@@ -191,7 +189,7 @@ private:
         WellForGPU* paletteData;                    // Mapしたポインタ
         uint32_t paletteSrvIndex;                   // SRV番地 (matrixPalette)
     };
-    std::unordered_map<Model*, AnimationBatch> animationBatches_;
+    std::unordered_map<NumaEngine::Model*, AnimationBatch> animationBatches_;
 
     ComPtr<ID3D12RootSignature> animaMaskRootSignature_; // ルートシグネチャ
     ComPtr<ID3D12PipelineState> animaMaskPipelineState_; // パイプラインステート

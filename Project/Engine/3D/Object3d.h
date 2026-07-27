@@ -1,6 +1,6 @@
-﻿#pragma once
+#pragma once
 #include <d3d12.h>
-#pragma comment(lib,"d3d12.lib")
+#pragma comment(lib, "d3d12.lib")
 #include <wrl.h>
 #include <memory>
 #include <string>
@@ -14,7 +14,9 @@
 
 using Microsoft::WRL::ComPtr;
 
-class Model;
+namespace NumaEngine { class Model; }
+
+namespace NumaEngine {
 
 /// <summary>
 /// 3Dオブジェクトクラス
@@ -22,79 +24,73 @@ class Model;
 class Object3d
 {
 public:
-	
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	/// <param name="filePath"></描画したい3Dオブジェクトのファイルパス>
-	void Initialize(const std::string& filePath);
-	
-	/// <summary>
-	/// シーンレンダラーを設定
-	/// </summary>
-	void SetSceneRenderer();
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <param name="filePath">描画したい3Dオブジェクトのファイルパス</param>
+    void Initialize(const std::string& filePath);
 
-	/// <summary>
-	/// レンダラーを削除
-	/// </summary>
-	void RemoveRenderer();
+    /// <summary>
+    /// シーンレンダラーを設定
+    /// </summary>
+    void SetSceneRenderer();
 
-	/// <summary>
-	/// 更新
-	/// </summary>
-	void Update();
+    /// <summary>
+    /// レンダラーを削除
+    /// </summary>
+    void RemoveRenderer();
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw();
+    /// <summary>
+    /// 更新
+    /// </summary>
+    void Update();
 
-	/// <summary>
-	/// アクセッサ
-	/// </summary>
+    /// <summary>
+    /// 描画
+    /// </summary>
+    void Draw();
 
-	// モデルの設定
-	void SetModel(const std::string& filePath);
-	// テクスチャの設定
-	void SetTexture(const std::string& directoryPath, const std::string& filePath);
-	// 環境マップテクスチャの設定
-	void SetTexture_ENV(const std::string& directoryPath, const std::string& filePath);
-	// カラーの設定
+    // モデルの設定
+    void SetModel(const std::string& filePath);
+    // テクスチャの設定
+    void SetTexture(const std::string& directoryPath, const std::string& filePath);
+    // 環境マップテクスチャの設定
+    void SetTexture_ENV(const std::string& directoryPath, const std::string& filePath);
+    // カラーの設定
     void SetColor(const NumaEngine::Vector4& color);
-	// ワールド変換行列の取得
-	const WorldTransform& GetTransform() { return transform_; }
-	// ワールド変換行列の設定
-	void SetTransform(const WorldTransform& transform) { transform_ = transform; }
-	void SetTransformParent(const WorldTransform* parent) { transform_.parent_ = parent; }
+    // ワールド変換行列の取得
+    const WorldTransform& GetTransform() { return transform_; }
+    // ワールド変換行列の設定
+    void SetTransform(const WorldTransform& transform) { transform_ = transform; }
+    void SetTransformParent(const WorldTransform* parent) { transform_.parent_ = parent; }
     void SetTransformScale(const NumaEngine::Vector3& scale) { transform_.scale_ = scale; }
-	void SetTransformRotation(const NumaEngine::Quaternion& rotation) { transform_.rotation_ = rotation; }
-	void SetTransformTranslation(const NumaEngine::Vector3& translation) { transform_.translation_ = translation; }
-	// モデルの取得
-	Model* GetModel() { return model_; }
-	// マテリアルの取得
-	Material& GetMaterial() { return materialData_; }
-	// カラーの取得
+    void SetTransformRotation(const NumaEngine::Quaternion& rotation) { transform_.rotation_ = rotation; }
+    void SetTransformTranslation(const NumaEngine::Vector3& translation) { transform_.translation_ = translation; }
+    // モデルの取得
+    NumaEngine::Model* GetModel() { return model_; }
+    // マテリアルの取得
+    Material& GetMaterial() { return materialData_; }
+    // カラーの取得
     NumaEngine::Vector4& GetColor() { return materialData_.color; }
 
 private:
-
-	// マテリアルデータの作成
-	void MakeMaterialData();
+    // マテリアルデータの作成
+    void MakeMaterialData();
 
 protected:
-
-	WorldTransform transform_;
+    WorldTransform transform_;
 
 private:
+    std::unique_ptr<Object3dBase> object3dBase_ = nullptr;
 
-	std::unique_ptr<Object3dBase> object3dBase_ = nullptr;
+    NumaEngine::Model* model_ = nullptr;
 
-	Model* model_ = nullptr;
-
-	/*==================== マテリアル ====================*/
-
-	Material materialData_;
-
+    /*==================== マテリアル ====================*/
+    Material materialData_;
 };
+
+} // namespace NumaEngine
+
+// Note: Do not add a global alias here. Use `NumaEngine::Object3d` explicitly.
 
 

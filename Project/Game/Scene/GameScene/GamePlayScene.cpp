@@ -1,4 +1,4 @@
-﻿#include "GamePlayScene.h"
+#include "GamePlayScene.h"
 
 #include "imgui.h"
 #include "Input.h"
@@ -86,8 +86,8 @@ void GamePlayScene::Initialize()
 
 	// BGMを流す
 	const float kBGMVolume = 0.08f;
-	bgm_ = std::make_unique<Audio>();
-	bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);	
+    bgm_ = std::make_unique<NumaEngine::Audio>();
+	bgm_->SoundPlayWave("GameSceneBGM.wav", kBGMVolume, true);
 	selectSystem_->SetAudio(bgm_.get());
 }
 

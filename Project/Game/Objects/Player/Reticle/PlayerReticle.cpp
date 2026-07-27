@@ -13,14 +13,14 @@
 
 void PlayerReticle::Init()
 {
-	Sprite::Initialize("2dReticle.png");
+    this->NumaEngine::Sprite::Initialize("2dReticle.png");
 
 	transform_.size = { 0.0f,0.0f };
 	anchorPoint_ = { 0.5f,0.5f };
-	Sprite::GetRenderOptions().enabled = false;
-	Sprite::GetRenderOptions().offscreen = false;
-	Sprite::SetColor({ 1.0f,1.0f,1.0f,1.0f });
-	Sprite::Update();
+	GetRenderOptions().enabled = false;
+	GetRenderOptions().offscreen = false;
+    this->NumaEngine::Sprite::SetColor({ 1.0f,1.0f,1.0f,1.0f });
+	this->NumaEngine::Sprite::Update();
 
     NumaEngine::Collider::AddCollider();
 	NumaEngine::Collider::myType_ = NumaEngine::ColliderType::kSegment;
@@ -57,7 +57,7 @@ void PlayerReticle::Update(bool isPlayingMouse)
 	if (reticleColorTimer_ <= 1.0f) {
 		reticleColorTimer_ += 1.0f / 30.0f;
 		float color = std::clamp(reticleColorTimer_, 0.0f, 1.0f);
-		Sprite::SetColor(NumaEngine::Vector4{ 1.0f,color,color,1.0f });
+        this->NumaEngine::Sprite::SetColor(NumaEngine::Vector4{ 1.0f,color,color,1.0f });
 
 		if (reticleColorTimer_ <= 0.0f) {
 			float time = reticleColorTimer_ * -5.0f;
@@ -66,13 +66,13 @@ void PlayerReticle::Update(bool isPlayingMouse)
 	}
 
 	// Spriteの更新
-	Sprite::Update();
+    this->NumaEngine::Sprite::Update();
 }
 
 void PlayerReticle::Draw()
 {
-	if (Sprite::GetRenderOptions().enabled) {
-		Sprite::Draw();
+    if (GetRenderOptions().enabled) {
+		this->NumaEngine::Sprite::Draw();
 	}
 }
 

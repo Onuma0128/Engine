@@ -1,11 +1,11 @@
-﻿#pragma once
+#pragma once
 
 #include "Sprite.h"
 
 /// <summary>
 /// プレイヤーの弾を表示するUI
 /// </summary>
-class PlayerBulletUI :public Sprite
+class PlayerBulletUI : public NumaEngine::Sprite
 {
 public:
 

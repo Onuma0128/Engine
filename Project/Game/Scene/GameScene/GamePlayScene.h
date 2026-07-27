@@ -79,6 +79,6 @@ private:
 	// セレクト
 	std::unique_ptr<SelectSystem> selectSystem_ = nullptr;
 
-	std::unique_ptr<Audio> bgm_;
+    std::unique_ptr<NumaEngine::Audio> bgm_;
 };
 

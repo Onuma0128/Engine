@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -13,7 +13,7 @@ class MapCollision;
 /// <summary>
 /// アルゴリズムのテストクラス
 /// </summary>
-class AlgorithmTest : public Object3d
+class AlgorithmTest : public NumaEngine::Object3d
 {
 public:
 

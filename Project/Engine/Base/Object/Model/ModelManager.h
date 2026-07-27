@@ -3,12 +3,12 @@
 #include <string>
 #include <memory>
 
-class DirectXEngine;
-class Model;
+namespace NumaEngine { class DirectXEngine; class Model; }
 
 /// <summary>
 /// モデルを管理するクラス
 /// </summary>
+namespace NumaEngine {
 class ModelManager
 {
 private:
@@ -40,3 +40,5 @@ private:
 	// モデルデータ
 	std::map<std::string, std::unique_ptr<Model>> models_;
 };
+} // namespace NumaEngine
+// Prefer fully-qualified `NumaEngine::ModelManager`.

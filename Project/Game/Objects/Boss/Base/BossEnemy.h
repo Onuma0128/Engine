@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 
@@ -91,8 +91,8 @@ public:
 	EnemySpawnerFactory* GetSpawnerFactory() { return spawnerFactory_; }
 	GameCamera* GetGameCamera() { return camera_; }
 	BossAttackCollider* GetAttackCollider() { return attackCollider_.get(); }
-	BossEffect* GetEffect() { return effect_.get(); }
-	Audio* GetAudio() { return audio_.get(); }
+    BossEffect* GetEffect() { return effect_.get(); }
+	NumaEngine::Audio* GetAudio() { return audio_.get(); }
 	PathFinder& GetPathFinder() { return pathFinder_; }
 
 private:
@@ -112,8 +112,8 @@ private:
 	std::unique_ptr<BossAttackCollider> attackCollider_ = nullptr;
 	// ボスのエフェクト
 	std::unique_ptr<BossEffect> effect_ = nullptr;
-	// Audio
-	std::unique_ptr<Audio> audio_ = nullptr;
+    // Audio
+	std::unique_ptr<NumaEngine::Audio> audio_ = nullptr;
 	// ボスの目線
 	std::unique_ptr<BossRay> ray_ = nullptr;
 

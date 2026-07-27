@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Object3d.h"
 
@@ -7,7 +7,7 @@ class Player;
 /// <summary>
 /// 弾の予測オブジェクトクラス
 /// </summary>
-class PredictionObject :public Object3d
+class PredictionObject : public NumaEngine::Object3d
 {
 public:
 

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -120,8 +120,8 @@ private:
 	std::unique_ptr<NextArrowEffect> arrowEffect_ = nullptr;
 	// 仲間の数エフェクト
 	std::unique_ptr<MuscleCountEffect> muscleCountEffect_ = nullptr;
-	// オーディオ
-	std::unique_ptr<Audio> audio_ = nullptr;
+    // オーディオ
+	std::unique_ptr<NumaEngine::Audio> audio_ = nullptr;
 
 	// 仲間がクリアステートに入る
 	CompanionManagerState state_ = CompanionManagerState::Playing;

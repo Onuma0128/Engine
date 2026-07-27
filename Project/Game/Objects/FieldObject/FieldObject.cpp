@@ -11,11 +11,11 @@
 
 void FieldObject::Init(SceneObject object)
 {
-	Object3d::Initialize(object.fileName);
-	Object3d::SetSceneRenderer();
+    this->NumaEngine::Object3d::Initialize(object.fileName);
+	this->NumaEngine::Object3d::SetSceneRenderer();
 	if (object.tag != "ground") {
-		Object3d::GetMaterial().outlineMask = true;
-		Object3d::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
+        this->NumaEngine::Object3d::GetMaterial().outlineMask = true;
+		this->NumaEngine::Object3d::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 	} else {
 		isGround_ = true;
 	}
@@ -54,21 +54,21 @@ void FieldObject::Update()
 	if (gameCamera_ && !isGround_) {
 		float distance = NumaEngine::Vector3::Distance(gameCamera_->GetCamera()->GetTranslation(), transform_.translation_);
 		if (distance < items_->GetMainData().cameraDistance) {
-            NumaEngine::ModelInstanceRenderer::GetInstance()->AddLateDrawModelName(Object3d::GetModel()->GetModelData().filePath);
-			Object3d::GetMaterial().outlineMask = false;
+            NumaEngine::ModelInstanceRenderer::GetInstance()->AddLateDrawModelName(GetModel()->GetModelData().filePath);
+			this->NumaEngine::Object3d::GetMaterial().outlineMask = false;
 			alpha_ -= DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
 		} else {
-			Object3d::GetMaterial().outlineMask = true;
+            this->NumaEngine::Object3d::GetMaterial().outlineMask = true;
 			alpha_ += DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
 		}
 		alpha_ = std::clamp(alpha_, 0.0f, 1.0f);
-		Object3d::SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,alpha_ });
+        this->NumaEngine::Object3d::SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,alpha_ });
 	}
 
 	Collider::rotate_ = transform_.rotation_;
 	Collider::centerPosition_ = transform_.translation_;
-	Collider::Update();
-	Object3d::Update();
+    Collider::Update();
+	this->NumaEngine::Object3d::Update();
 }
 
 void FieldObject::OnCollisionEnter(Collider* other)

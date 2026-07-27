@@ -10,6 +10,7 @@
 /// <summary>
 /// モデルクラス
 /// </summary>
+namespace NumaEngine {
 class Model
 {
 public:
@@ -107,3 +108,5 @@ private:
 	D3D12_INDEX_BUFFER_VIEW indexBufferView_{};
 
 };
+} // namespace NumaEngine
+// Prefer fully-qualified `NumaEngine::Model`.

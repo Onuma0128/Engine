@@ -10,7 +10,7 @@
 /// <summary>
 /// プレイヤーのレティクルを管理するクラス
 /// </summary>
-class PlayerReticle : public Sprite, public NumaEngine::Collider
+class PlayerReticle : public NumaEngine::Sprite, public NumaEngine::Collider
 {
 public:
 
@@ -89,7 +89,7 @@ private:
 /// <summary>
 /// プレイヤーのレイ用レティクルクラス
 /// </summary>
-class PlayerRayReticle : public Sprite 
+class PlayerRayReticle : public NumaEngine::Sprite 
 {
 	public:
 

@@ -13,7 +13,7 @@ WorldTransform::WorldTransform()
     
 }
 
-void WorldTransform::TransferMatrix(const Model* model)
+void WorldTransform::TransferMatrix(const NumaEngine::Model* model)
 {
     matWorld_ = NumaEngine::Matrix4x4::Affine(scale_, rotation_, translation_);
     if (parent_) {

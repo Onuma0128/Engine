@@ -10,17 +10,17 @@ EnemyShield::EnemyShield(BaseEnemy* enemy) : EnemyWeaponBase(enemy) {}
 
 void EnemyShield::Finalize()
 {
-	Object3d::RemoveRenderer();
+    this->NumaEngine::Object3d::RemoveRenderer();
 	NumaEngine::Collider::RemoveCollider();
 }
 
 void EnemyShield::Init(NumaEngine::ColliderType type, const std::string& name)
 {
-	Object3d::Initialize("Shield_Heater.obj");
-	Object3d::SetSceneRenderer();
-	Object3d::GetMaterial().outlineMask = true;
-	Object3d::GetMaterial().outlineSceneColor = true;
-	Object3d::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
+    this->NumaEngine::Object3d::Initialize("Shield_Heater.obj");
+	this->NumaEngine::Object3d::SetSceneRenderer();
+	this->NumaEngine::Object3d::GetMaterial().outlineMask = true;
+	this->NumaEngine::Object3d::GetMaterial().outlineSceneColor = true;
+	this->NumaEngine::Object3d::GetMaterial().outlineColor = NumaEngine::Vector3::ExprZero;
 
     NumaEngine::Collider::AddCollider();
 	NumaEngine::Collider::myType_ = type;
@@ -53,7 +53,7 @@ void EnemyShield::Update()
 	transform_.scale_ = data.shieldSize;
 	transform_.rotation_ = rotateY_;
 	transform_.translation_ = enemy_->GetTransform().translation_ + data.shieldOffset.Transform(rotateMatrix_);
-	Object3d::Update();
+    this->NumaEngine::Object3d::Update();
 }
 
 void EnemyShield::OnCollisionEnter(NumaEngine::Collider* other)
@@ -70,7 +70,7 @@ void EnemyShield::OnCollisionExit(NumaEngine::Collider* other)
 
 void EnemyShield::SetIsActive(bool flag)
 {
-	Object3d::GetMaterial().enableDraw = flag;
+    this->NumaEngine::Object3d::GetMaterial().enableDraw = flag;
     NumaEngine::Collider::isActive_ = flag;
 }
 

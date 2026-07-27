@@ -22,6 +22,7 @@ using Microsoft::WRL::ComPtr;
 /// <summary>
 /// スプライトクラス
 /// </summary>
+namespace NumaEngine {
 class Sprite
 {
 public:
@@ -198,6 +199,9 @@ protected:
 	bool isUseNoiseTexture_ = false;
 
 };
+} // namespace NumaEngine
+
+// Note: Do not add a global alias here. Use `NumaEngine::Sprite` explicitly.
 
 
 
