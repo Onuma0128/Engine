@@ -9,6 +9,8 @@
 #include "Vector4.h"
 #include "Matrix4x4.h"
 
+namespace NumaEngine {
+
 /// <summary>
 /// 平行光源クラス
 /// </summary>
@@ -23,7 +25,8 @@ public:
 		float intensity;
 	};
 
-    // 初期化
+
+	// 初期化
 	void Initialize(NumaEngine::DirectXEngine* dxEngine) override;
 
 	// 更新
@@ -56,4 +59,6 @@ private:
 	NumaEngine::Vector3 center_ = NumaEngine::Vector3::ExprZero;
 
 };
+
+} // namespace NumaEngine
 

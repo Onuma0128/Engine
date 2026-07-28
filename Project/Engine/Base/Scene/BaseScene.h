@@ -1,5 +1,7 @@
 #pragma once
 
+namespace NumaEngine {
+
 /// <summary>
 /// 基底シーンクラス
 /// </summary>
@@ -22,3 +24,6 @@ public:
 	// 描画
 	virtual void Draw() = 0;
 };
+
+} // namespace NumaEngine
+

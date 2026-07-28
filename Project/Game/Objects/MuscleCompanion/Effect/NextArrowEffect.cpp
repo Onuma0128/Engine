@@ -1,4 +1,4 @@
-﻿#include "NextArrowEffect.h"
+#include "NextArrowEffect.h"
 
 #include <numbers>
 
@@ -21,7 +21,7 @@ void NextArrowEffect::Update(const NumaEngine::Vector3& position)
 	const auto& data = items_->GetEffectData();
 
 	// タイム加算
-	animaTime_ += DeltaTimer::GetDeltaTime();
+   animaTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	float t = animaTime_ / data.nextArrowAnimaTime;
 	t = std::sinf(t * std::numbers::pi_v<float>);
 

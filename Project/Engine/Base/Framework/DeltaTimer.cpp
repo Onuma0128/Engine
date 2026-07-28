@@ -1,6 +1,14 @@
 #include "DeltaTimer.h"
 
-void DeltaTimer::Initialize()
+// Static member definitions (C++14 compatible)
+LARGE_INTEGER NumaEngine::DeltaTimer::frequency_ = {};
+LARGE_INTEGER NumaEngine::DeltaTimer::startTime_ = {};
+LARGE_INTEGER NumaEngine::DeltaTimer::prevTime_ = {};
+float NumaEngine::DeltaTimer::deltaTime_ = 0.0f;
+float NumaEngine::DeltaTimer::timeScale_ = 1.0f;
+float NumaEngine::DeltaTimer::scaleTimer_ = 0.0f;
+
+void NumaEngine::DeltaTimer::Initialize()
 {
     QueryPerformanceFrequency(&frequency_);
     QueryPerformanceCounter(&startTime_);
@@ -9,7 +17,7 @@ void DeltaTimer::Initialize()
     scaleTimer_ = 0.0f;
 }
 
-void DeltaTimer::Update()
+void NumaEngine::DeltaTimer::Update()
 {
     LARGE_INTEGER currentTime;
     QueryPerformanceCounter(&currentTime);
@@ -28,7 +36,7 @@ void DeltaTimer::Update()
     }
 }
 
-void DeltaTimer::SetTimeScaleForSeconds(float scale, float duration)
+void NumaEngine::DeltaTimer::SetTimeScaleForSeconds(float scale, float duration)
 {
     timeScale_ = scale;
     scaleTimer_ = duration;

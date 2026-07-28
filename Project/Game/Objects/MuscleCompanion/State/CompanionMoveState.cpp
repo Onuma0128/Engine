@@ -1,4 +1,4 @@
-﻿#include "CompanionMoveState.h"
+#include "CompanionMoveState.h"
 
 #include <memory>
 
@@ -44,8 +44,8 @@ void CompanionMoveState::Update()
 	const auto& data = companion_->GetItems()->GetMainData();
 	const auto& volume = companion_->GetItems()->GetSeVolumeData();
 
-	// 時間を更新
-	searchTimer_ += DeltaTimer::GetDeltaTime();
+    // 時間を更新
+	searchTimer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	// 更新時間が来たら探索を再更新する
 	if (searchTimer_ > data.searchUpdateTime) {
 		companion_->ResetSearch(companion_->GetPlayer()->GetTransform().translation_);
@@ -65,8 +65,8 @@ void CompanionMoveState::Update()
 	NumaEngine::Vector3 velocity = companion_->GetPathFinder().GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
-	NumaEngine::Vector3 translate = companion_->GetTransform().translation_ +
-		speed * velocity * DeltaTimer::GetDeltaTime();
+    NumaEngine::Vector3 translate = companion_->GetTransform().translation_ +
+		speed * velocity * NumaEngine::DeltaTimer::GetDeltaTime();
 	companion_->SetTransformTranslation(translate);
 	// エフェクトを追加する
 	companion_->GetEffect()->OnceMoveEffect();

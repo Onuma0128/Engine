@@ -19,11 +19,11 @@ void MyGame::Initialize()
 {
 	Framework::Initialize();
 
-	sceneFactory_ = std::make_unique<SceneFactory>();
+    sceneFactory_ = std::make_unique<NumaEngine::SceneFactory>();
 	SceneManager::GetInstance()->SetSceneFactory(sceneFactory_.get());
 	SceneManager::GetInstance()->ChangeScene("Title");
 
-	DeltaTimer::Initialize();
+    NumaEngine::DeltaTimer::Initialize();
 }
 
 void MyGame::Finalize()
@@ -40,25 +40,25 @@ void MyGame::Update()
 
 	Framework::Update();
 	
-	// DeltaTimeの更新
-	DeltaTimer::Update();
+    // DeltaTimeの更新
+	NumaEngine::DeltaTimer::Update();
 
-	// 当たり判定
-	CollisionManager::GetInstance()->CheckAllCollisions();
+    // 当たり判定
+	NumaEngine::CollisionManager::GetInstance()->CheckAllCollisions();
 
 	// シーンの更新
 	SceneManager::GetInstance()->Update();
 
-	// 登録済みのLineを更新
-	LineInstanceRenderer::GetInstance()->Update();
+    // 登録済みのLineを更新
+	NumaEngine::LineInstanceRenderer::GetInstance()->Update();
 
 	// ライトの更新
 	LightManager::GetInstance()->Debug_ImGui();
 	LightManager::GetInstance()->Update();
 
-	// カメラの更新
-	CameraManager::GetInstance()->Debug_ImGui();
-	CameraManager::GetInstance()->Update();
+    // カメラの更新
+	NumaEngine::CameraManager::GetInstance()->Debug_ImGui();
+	NumaEngine::CameraManager::GetInstance()->Update();
 
 	// ImGui受付終了
 	imGuiManager_->End();
@@ -79,7 +79,7 @@ void MyGame::Draw()
     NumaEngine::ModelInstanceRenderer::GetInstance()->AllDraw();
 	// パーティクルの描画
 	//directXEngine_->RenderTexturePreDraw();
-	ParticleManager::GetInstance()->Draw();
+	NumaEngine::ParticleManager::GetInstance()->Draw();
 	// outlineMask処理
 	PostEffectManager::GetInstance()->BeginOutlineMaskPass();
  NumaEngine::ModelInstanceRenderer::GetInstance()->AllDrawOutlineMask();
@@ -95,8 +95,8 @@ void MyGame::Draw()
 
 	// offscreenを掛けたくない描画
 	directXEngine_->GetSceneRenderer()->OutAllDraw();
-	// Lineの描画
-	LineInstanceRenderer::GetInstance()->Draws();
+    // Lineの描画
+	NumaEngine::LineInstanceRenderer::GetInstance()->Draws();
 	SceneManager::GetInstance()->Draw();
 
 

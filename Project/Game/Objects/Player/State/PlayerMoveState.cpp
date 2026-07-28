@@ -78,7 +78,7 @@ void PlayerMoveState::Update()
 	// 移動の処理
 	NumaEngine::Vector3 moveVelocity = CreateMoveVelocity();
 	NumaEngine::Vector3 position = player_->GetTransform().translation_;
-	player_->SetTransformTranslation(position + moveVelocity * DeltaTimer::GetDeltaTime() * speed);
+    player_->SetTransformTranslation(position + moveVelocity * NumaEngine::DeltaTimer::GetDeltaTime() * speed);
 
 	// 右のスティックのvelocityを取得
 	NumaEngine::Vector3 rotateVelocity{};
@@ -176,8 +176,8 @@ void PlayerMoveState::SomeAction()
 
 	// 避けの状態に遷移
 	if (player_->GetAvoidCoolTimer() > 0.0f) {
-		float coolTime = player_->GetAvoidCoolTimer();
-		coolTime -= DeltaTimer::GetDeltaTime();
+        float coolTime = player_->GetAvoidCoolTimer();
+		coolTime -= NumaEngine::DeltaTimer::GetDeltaTime();
 		player_->SetAvoidCoolTimer(coolTime);
 	} else {
 		if (input->TriggerGamepadButton(XINPUT_GAMEPAD_B) ||
@@ -227,9 +227,9 @@ const NumaEngine::Vector3 PlayerMoveState::CreateRotateVelocity()
 	NumaEngine::Vector2 position = {};
 	position.x = static_cast<float>(input->GetMousePosX());
 	position.y = static_cast<float>(input->GetMousePosY());
-	NumaEngine::Vector3 ndc = {
-		(position.x / WinApp::kClientWidth) * 2.0f - 1.0f,
-		-((position.y / WinApp::kClientHeight) * 2.0f - 1.0f),
+    NumaEngine::Vector3 ndc = {
+		(position.x / NumaEngine::WinApp::kClientWidth) * 2.0f - 1.0f,
+		-((position.y / NumaEngine::WinApp::kClientHeight) * 2.0f - 1.0f),
 		1.0f
 	};
 	// ワールド座標に変換

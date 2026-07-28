@@ -12,7 +12,7 @@
 /// <summary>
 /// ゲームオーバーシーン
 /// </summary>
-class GameOverScene : public BaseScene
+class GameOverScene : public NumaEngine::BaseScene
 {
 public:
 

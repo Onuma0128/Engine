@@ -4,6 +4,8 @@
 
 #include "AbstractSceneFactory.h"
 
+namespace NumaEngine {
+
 /// <summary>
 /// シーンファクトリークラス
 /// </summary>
@@ -14,4 +16,7 @@ public:
 	// シーンを生成
 	std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName)override;
 };
+
+} // namespace NumaEngine
+
 

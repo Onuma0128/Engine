@@ -148,7 +148,7 @@ void GamePlayScene::Update()
 	selectSystem_->Update();
 
 	// パーティクルの更新
-	ParticleManager::GetInstance()->Update();
+    NumaEngine::ParticleManager::GetInstance()->Update();
 }
 
 void GamePlayScene::Draw()

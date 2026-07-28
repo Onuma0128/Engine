@@ -24,21 +24,21 @@ void SceneManager::Update()
 	if (nextScene_) {
 		// 旧シーンの終了
 		if (scene_) {
-			CameraManager::GetInstance()->Clear();
-			ParticleManager::GetInstance()->Clear();
-            NumaEngine::DirectXEngine::GetSceneRenderer()->Finalize();
-           NumaEngine::ModelInstanceRenderer::GetInstance()->Finalize();
-			LineInstanceRenderer::GetInstance()->Finalize();
-			CollisionManager::GetInstance()->ClearCollider();
+            NumaEngine::CameraManager::GetInstance()->Clear();
+			NumaEngine::ParticleManager::GetInstance()->Clear();
+			NumaEngine::DirectXEngine::GetSceneRenderer()->Finalize();
+			NumaEngine::ModelInstanceRenderer::GetInstance()->Finalize();
+			NumaEngine::LineInstanceRenderer::GetInstance()->Finalize();
+			NumaEngine::CollisionManager::GetInstance()->ClearCollider();
 			scene_->Finalize();
 		}
 
 		// シーン切り替え
-		scene_ = std::move(nextScene_);
+        scene_ = std::move(nextScene_);
 		nextScene_ = nullptr;
 		// 次シーンを初期化する
 		scene_->Initialize();
-         NumaEngine::ModelInstanceRenderer::GetInstance()->Initialize();
+        NumaEngine::ModelInstanceRenderer::GetInstance()->Initialize();
 	}
 
 	// 実行中のシーンの更新

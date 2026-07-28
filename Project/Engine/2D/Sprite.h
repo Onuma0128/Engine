@@ -201,7 +201,7 @@ protected:
 };
 } // namespace NumaEngine
 
-// Note: Do not add a global alias here. Use `NumaEngine::Sprite` explicitly.
+// Use `NumaEngine::Sprite` explicitly; no global alias.
 
 
 

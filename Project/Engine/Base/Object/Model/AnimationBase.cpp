@@ -3,16 +3,20 @@
 #include "DirectXEngine.h"
 #include "PipelineState.h"
 
+namespace NumaEngine {
+
 void AnimationBase::Initialize()
 {
-    rootSignature_ = NumaEngine::DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::kAnimation).Get();
-	pipelineState_ = NumaEngine::DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::kAnimation).Get();
+	rootSignature_ = DirectXEngine::GetPipelineState()->GetRootSignature(PipelineType::kAnimation).Get();
+	pipelineState_ = DirectXEngine::GetPipelineState()->GetPipelineState(PipelineType::kAnimation).Get();
 }
 
 void AnimationBase::DrawBase()
 {
-    auto commandList = NumaEngine::DirectXEngine::GetCommandList();
+	auto commandList = DirectXEngine::GetCommandList();
 	commandList->SetGraphicsRootSignature(rootSignature_.Get());
 	commandList->SetPipelineState(pipelineState_.Get());
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
+
+} // namespace NumaEngine

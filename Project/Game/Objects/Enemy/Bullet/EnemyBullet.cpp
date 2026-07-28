@@ -33,7 +33,7 @@ void EnemyBullet::Update()
 {
 	// フレームが60立ったらIsActiveをfalseにする
 	if (isActive_) {
-		activeFrame_ += DeltaTimer::GetDeltaTime() * 2.0f;
+        activeFrame_ += NumaEngine::DeltaTimer::GetDeltaTime() * 2.0f;
 		if (activeFrame_ >= 1.0f) {
 			activeFrame_ = 1.0f;
             isActive_ = false;
@@ -58,7 +58,7 @@ void EnemyBullet::Update()
 
 	// 移動処理
 	float speed = GetTypeBulletSpeed();
-	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed;
+    transform_.translation_ += velocity_ * NumaEngine::DeltaTimer::GetDeltaTime() * speed;
 
     NumaEngine::Collider::rotate_ = transform_.rotation_;
 	NumaEngine::Collider::centerPosition_ = transform_.translation_;

@@ -1,34 +1,34 @@
-﻿#include "CompanionEffect.h"
+#include "CompanionEffect.h"
 
 #include "Objects/MuscleCompanion/Base/MuscleCompanion.h"
 
 void CompanionEffect::Init()
 {
 	// 移動時のエフェクト
-	moveDustEmitter_ = std::make_unique<ParticleEmitter>("moveDust");
+	moveDustEmitter_ = std::make_unique<NumaEngine::ParticleEmitter>("moveDust");
 	particleManager_->CreateParticleGroup(moveDustEmitter_);
 	moveDustEmitter_->SetIsCreate(false);
 
 	// 移動時のエフェクト
-	dashEmitter_ = std::make_unique<ParticleEmitter>("dash");
+	dashEmitter_ = std::make_unique<NumaEngine::ParticleEmitter>("dash");
 	particleManager_->CreateParticleGroup(dashEmitter_);
 	dashEmitter_->SetIsCreate(false);
-	searchDashEmitter_ = std::make_unique<ParticleEmitter>("searchDash");
+	searchDashEmitter_ = std::make_unique<NumaEngine::ParticleEmitter>("searchDash");
 	particleManager_->CreateParticleGroup(searchDashEmitter_);
 	searchDashEmitter_->SetIsCreate(false);
-	damageUpEmitter_ = std::make_unique<ParticleEmitter>("companionDamageUp");
+	damageUpEmitter_ = std::make_unique<NumaEngine::ParticleEmitter>("companionDamageUp");
 	particleManager_->CreateParticleGroup(damageUpEmitter_);
 	damageUpEmitter_->SetIsCreate(false);
 
-	levelUpEmitter_ = std::make_unique<ParticleEmitter>("companionLevelUp");
+	levelUpEmitter_ = std::make_unique<NumaEngine::ParticleEmitter>("companionLevelUp");
 	particleManager_->CreateParticleGroup(levelUpEmitter_);
 	levelUpEmitter_->SetIsCreate(false);
-	levelUpRingEmitter_ = std::make_unique<ParticleEmitter>("companionLevelUpRing");
+	levelUpRingEmitter_ = std::make_unique<NumaEngine::ParticleEmitter>("companionLevelUpRing");
 	particleManager_->CreateParticleGroup(levelUpRingEmitter_);
 	levelUpRingEmitter_->SetIsCreate(false);
 
 	// ヒット時のエフェクト
-	hitEmitter_ = std::make_unique<ParticleEmitter>("hitDamage");
+	hitEmitter_ = std::make_unique<NumaEngine::ParticleEmitter>("hitDamage");
 	particleManager_->CreateParticleGroup(hitEmitter_);
 	hitEmitter_->SetIsCreate(false);
 

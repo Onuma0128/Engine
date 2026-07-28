@@ -10,6 +10,8 @@ using Microsoft::WRL::ComPtr;
 
 namespace NumaEngine { class DirectXEngine; }
 
+namespace NumaEngine {
+
 /// <summary>
 /// ライトの基底クラス
 /// </summary>
@@ -62,5 +64,8 @@ protected:
 
 	LightMatrix lightMatrixs_{};
 
+
 };
+
+} // namespace NumaEngine
 

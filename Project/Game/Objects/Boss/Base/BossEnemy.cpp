@@ -182,12 +182,12 @@ void BossEnemy::OnCollisionStay(NumaEngine::Collider* other)
 		state_->GetState() == BossState::DashAttack) {
 		NumaEngine::Vector3 push{};
         if (other->GetMyColliderType() == NumaEngine::ColliderType::kOBB) {
-			push = Collision3D::GetOBBSpherePushVector(other, this);
-        } else if (other->GetMyColliderType() == NumaEngine::ColliderType::kSphere) {
-			push = Collision3D::GetSphereSpherePushVector(other, this);
+			push = NumaEngine::Collision3D::GetOBBSpherePushVector(other, this);
+		} else if (other->GetMyColliderType() == NumaEngine::ColliderType::kSphere) {
+			push = NumaEngine::Collision3D::GetSphereSpherePushVector(other, this);
 		}
 		push.y = 0.0f;
-		transform_.translation_ += push * 100.0f * DeltaTimer::GetDeltaTime();
+        transform_.translation_ += push * 100.0f * NumaEngine::DeltaTimer::GetDeltaTime();
         NumaEngine::Collider::centerPosition_ = transform_.translation_;
 		NumaEngine::Collider::Update();
 		Animation::TransformUpdate();

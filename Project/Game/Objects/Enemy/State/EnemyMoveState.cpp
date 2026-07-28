@@ -1,4 +1,4 @@
-﻿#include "EnemyMoveState.h"
+#include "EnemyMoveState.h"
 
 #include <memory>
 
@@ -36,8 +36,8 @@ void EnemyMoveState::Update()
 	// データを取得
 	const auto mainData = enemy_->GetItem()->GetMainData();
 
-	// 探索をする
-	searchTime_ += DeltaTimer::GetDeltaTime();
+    // 探索をする
+	searchTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	if (searchTime_ > mainData.searchUpdateTime) {
 		searchTime_ = 0.0f;
 		enemy_->HitColliderNotActive();
@@ -62,14 +62,14 @@ void EnemyMoveState::Update()
 		enemy_->SetTransformRotation(NumaEngine::Quaternion::Slerp(enemy_->GetTransform().rotation_, yRotation, 0.2f));
 	}
 
-	// 攻撃のクールタイムを縮める
-	attackCoolTime_ -= DeltaTimer::GetDeltaTime();
+    // 攻撃のクールタイムを縮める
+	attackCoolTime_ -= NumaEngine::DeltaTimer::GetDeltaTime();
 	attackCoolTime_ = std::clamp(attackCoolTime_, 0.0f, 100.0f);
 
 	// 攻撃のクールタイムが0になっているなら攻撃ステートに遷移
 	NumaEngine::Vector3 playerPos = enemy_->GetPlayer()->GetTransform().translation_;
 	if (enemy_->GetHitCollider()) { playerPos = enemy_->GetHitCollider()->GetCenterPosition(); }
-	NumaEngine::Vector3 enemyPos = enemy_->GetTransform().translation_ + (velocity * speed * DeltaTimer::GetDeltaTime());
+    NumaEngine::Vector3 enemyPos = enemy_->GetTransform().translation_ + (velocity * speed * NumaEngine::DeltaTimer::GetDeltaTime());
 	const float dist = NumaEngine::Vector3::Distance(enemyPos, playerPos);
 	// 入り判定、出判定
 	const float attackIn = enemy_->GetTypeAttackDistance();
@@ -131,7 +131,7 @@ void EnemyMoveState::MoveAction(const NumaEngine::Vector3& velocity, const float
 	enemy_->GetEffect()->OnceMoveEffect(enemy_->GetTransform());
 	// 距離があれば移動処理をする
 	NumaEngine::Vector3 position = enemy_->GetTransform().translation_;
-	enemy_->SetTransformTranslation(position + velocity * speed * DeltaTimer::GetDeltaTime());
+    enemy_->SetTransformTranslation(position + velocity * speed * NumaEngine::DeltaTimer::GetDeltaTime());
 	enemy_->GetEnemyRay()->Reset();
 }
 

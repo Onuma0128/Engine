@@ -24,7 +24,7 @@
 /// <summary>
 /// ゲームプレイシーン
 /// </summary>
-class GamePlayScene : public BaseScene
+class GamePlayScene : public NumaEngine::BaseScene
 {
 public:
 

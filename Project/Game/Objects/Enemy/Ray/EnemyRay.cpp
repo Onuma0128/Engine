@@ -59,14 +59,14 @@ void EnemyRay::OnCollisionStay(NumaEngine::Collider* other)
 	RaycastHit hit{};
     if (CollisionFilter::CheckColliderNameFieldObject(other->GetColliderName())) {
 		if (type == NumaEngine::ColliderType::kOBB) {
-			if (Collision3D::OBBSegment(other, this, &hit)) {
+			if (NumaEngine::Collision3D::OBBSegment(other, this, &hit)) {
 				float length = (hit.point - start_).Length();
 				if (hitPointLength_ < length) { return; }
 				hitPointLength_ = length;
 				isLooking_ = false;
 			}
 		} else {
-			if (Collision3D::SphereSegment(other, this, &hit)) {
+            if (NumaEngine::Collision3D::SphereSegment(other, this, &hit)) {
 				float length = (hit.point - start_).Length();
 				if (hitPointLength_ < length) { return; }
 				hitPointLength_ = length;
@@ -74,8 +74,8 @@ void EnemyRay::OnCollisionStay(NumaEngine::Collider* other)
 			}
 		}
 	}
-	if (name == "Player" || name == "MuscleCompanion" || "PushUpMuscleCompanion") {
-		if (Collision3D::SphereSegment(other, this, &hit)) {
+    if (name == "Player" || name == "MuscleCompanion" || "PushUpMuscleCompanion") {
+		if (NumaEngine::Collision3D::SphereSegment(other, this, &hit)) {
 			float length = (hit.point - start_).Length();
 			if (hitPointLength_ < length) { return; }
 			hitPointLength_ = length;

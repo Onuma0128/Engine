@@ -17,9 +17,9 @@
 #include "ParticleEmitter.h"
 #include "ParticleEditor.h"
 
-std::unique_ptr<ParticleManager> ParticleManager::instance_ = nullptr;
+std::unique_ptr<NumaEngine::ParticleManager> NumaEngine::ParticleManager::instance_ = nullptr;
 
-ParticleManager* ParticleManager::GetInstance()
+NumaEngine::ParticleManager* NumaEngine::ParticleManager::GetInstance()
 {
     if (instance_ == nullptr) {
         instance_ = std::make_unique<ParticleManager>();
@@ -27,7 +27,7 @@ ParticleManager* ParticleManager::GetInstance()
     return instance_.get();
 }
 
-void ParticleManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
+void NumaEngine::ParticleManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
     dxEngine_ = dxEngine;
     srvManager_ = SrvManager::GetInstance();
@@ -45,7 +45,7 @@ void ParticleManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
     CreateIndexData();
 }
 
-void ParticleManager::Update()
+void NumaEngine::ParticleManager::Update()
 {
 #ifdef ENABLE_EDITOR
     // editorのUpdate
@@ -132,7 +132,7 @@ void ParticleManager::Update()
     }
 }
 
-void ParticleManager::Draw()
+void NumaEngine::ParticleManager::Draw()
 {
     auto commandList = dxEngine_->GetCommandList();
 
@@ -168,12 +168,12 @@ void ParticleManager::Draw()
     }
 }
 
-void ParticleManager::Finalize()
+void NumaEngine::ParticleManager::Finalize()
 {
     instance_ = nullptr;
 }
 
-void ParticleManager::Clear()
+void NumaEngine::ParticleManager::Clear()
 {
     for (auto& group : particleGroups_) {
         group.second.particles.clear();
@@ -183,7 +183,7 @@ void ParticleManager::Clear()
     }
 }
 
-void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitter)
+void NumaEngine::ParticleManager::CreateParticleGroup(std::shared_ptr<NumaEngine::ParticleEmitter> emitter)
 {
     std::string name = emitter->GetName();
 
@@ -238,7 +238,7 @@ void ParticleManager::CreateParticleGroup(std::shared_ptr<ParticleEmitter> emitt
     particleGroups_[name] = std::move(group);
 }
 
-void ParticleManager::Emit(const std::string name)
+void NumaEngine::ParticleManager::Emit(const std::string name)
 {
     // 新しいパーティクルを追加する
     for (auto& g_emitter : particleGroups_[name].emitters) {
@@ -248,7 +248,7 @@ void ParticleManager::Emit(const std::string name)
     }
 }
 
-void ParticleManager::ParticleEditorUpdate()
+void NumaEngine::ParticleManager::ParticleEditorUpdate()
 {
     // 選択できるアイテム
     std::vector<std::string> items;
@@ -290,7 +290,7 @@ void ParticleManager::ParticleEditorUpdate()
     ImGui::End();
 }
 
-void ParticleManager::CreateVertexData()
+void NumaEngine::ParticleManager::CreateVertexData()
 {
     /* ============================== Plane ============================== */
 
@@ -327,7 +327,7 @@ void ParticleManager::CreateVertexData()
 
 }
 
-void ParticleManager::CreateVertexResource()
+void NumaEngine::ParticleManager::CreateVertexResource()
 {
     // 実際に頂点リソースを作る
     vertexPlane_.vertexResource = CreateBufferResource(dxEngine_->GetDevice(), sizeof(VertexData) * 4);
@@ -346,7 +346,7 @@ void ParticleManager::CreateVertexResource()
     vertexRing_.vertexResource->Map(0, nullptr, reinterpret_cast<void**>(&vertexRing_.vertexData));
 }
 
-void ParticleManager::CreateIndexData() 
+void NumaEngine::ParticleManager::CreateIndexData() 
 {
     /* ============================== Plane ============================== */
 
@@ -377,7 +377,7 @@ void ParticleManager::CreateIndexData()
     }
 }
 
-void ParticleManager::CreateIndexResource()
+void NumaEngine::ParticleManager::CreateIndexResource()
 {
     indexPlane_.indexResource = CreateBufferResource(dxEngine_->GetDevice(), sizeof(uint32_t) * 6);
     indexPlane_.indexBufferView.BufferLocation = indexPlane_.indexResource->GetGPUVirtualAddress();
@@ -395,7 +395,7 @@ void ParticleManager::CreateIndexResource()
     indexRing_.indexResource->Map(0, nullptr, reinterpret_cast<void**>(&indexRing_.indexData));
 }
 
-void ParticleManager::CreateMatrialResource(ParticleGroup& group)
+void NumaEngine::ParticleManager::CreateMatrialResource(ParticleGroup& group)
 {
     // マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
     group.materialResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(Material));
@@ -407,7 +407,7 @@ void ParticleManager::CreateMatrialResource(ParticleGroup& group)
     group.materialData_->uvTransform = NumaEngine::Matrix4x4::Identity();
 }
 
-void ParticleManager::EnsureInstanceCapacity(ParticleGroup& group, uint32_t required)
+void NumaEngine::ParticleManager::EnsureInstanceCapacity(ParticleGroup& group, uint32_t required)
 {
     if (required <= group.maxInstance) return;
 

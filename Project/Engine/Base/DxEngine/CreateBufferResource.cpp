@@ -5,7 +5,7 @@
 
 #include "ModelStruct.h"
 
-ComPtr<ID3D12Resource> CreateBufferResource(ComPtr<ID3D12Device> device, size_t sizeInBytes)
+ComPtr<ID3D12Resource> NumaEngine::CreateBufferResource(ComPtr<ID3D12Device> device, size_t sizeInBytes)
 {
 	// 頂点リソースのヒープの設定
 	D3D12_HEAP_PROPERTIES uploadHeapProperties = {};

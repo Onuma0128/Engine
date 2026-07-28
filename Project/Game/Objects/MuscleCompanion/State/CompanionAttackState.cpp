@@ -1,4 +1,4 @@
-﻿#include "CompanionAttackState.h"
+#include "CompanionAttackState.h"
 
 #include "DeltaTimer.h"
 
@@ -46,7 +46,7 @@ void CompanionAttackState::Update()
 	const auto& data = companion_->GetItems()->GetAttackData();
 
 	// タイムを加算
-	timer_ += DeltaTimer::GetDeltaTime();
+   timer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 	// ダッシュ攻撃の一回目なら硬直時間を与える
 	if (companion_->GetFirstDashAttack()) {

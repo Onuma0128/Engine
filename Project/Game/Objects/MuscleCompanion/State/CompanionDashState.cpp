@@ -63,7 +63,7 @@ void CompanionDashState::Update()
 		// データを取得する
 		const auto& data = companion_->GetItems()->GetMainData();
 		// 時間を更新
-		searchTimer_ += DeltaTimer::GetDeltaTime();
+    searchTimer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 		// 更新時間が来たら探索を再更新する
 		if (searchTimer_ > data.searchUpdateTime) {
 			companion_->ResetSearch(targetCollider_->GetCenterPosition());
@@ -92,7 +92,7 @@ void CompanionDashState::Update()
 	}
 
 	// 移動を更新
-	NumaEngine::Vector3 position = companion_->GetTransform().translation_ + velocity_ * speed * DeltaTimer::GetDeltaTime();
+    NumaEngine::Vector3 position = companion_->GetTransform().translation_ + velocity_ * speed * NumaEngine::DeltaTimer::GetDeltaTime();
 	NumaEngine::Vector2 min = companion_->GetPlayer()->GetItem()->GetPlayerData().minPlayerClamp;
 	NumaEngine::Vector2 max = companion_->GetPlayer()->GetItem()->GetPlayerData().maxPlayerClamp;
 	position.x = std::clamp(position.x, min.x, max.x);

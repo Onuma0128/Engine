@@ -1,4 +1,4 @@
-﻿#include "EnemySpawnerFactory.h"
+#include "EnemySpawnerFactory.h"
 
 #include "DeltaTimer.h"
 
@@ -135,8 +135,8 @@ void EnemySpawnerFactory::RandomSpawnEnemy()
 	if (enemySpawnCount >= mainData.maxSpawn) { return; }
 	if (static_cast<int>(spawnCount_) >= mainData.maxSpawnCount) { return; }
 
-	// スポーンタイムを更新
-	spawnTime_ += DeltaTimer::GetDeltaTime();
+    // スポーンタイムを更新
+	spawnTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	// 敵をスポーンさせる
 	if (spawnTime_ > spawnInterval_) {
 		// デモスポーンならカウントをリセットする

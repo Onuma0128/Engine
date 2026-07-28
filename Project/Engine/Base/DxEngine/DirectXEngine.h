@@ -12,7 +12,7 @@
 #include "SceneRenderer.h"
 #include "RenderTexture.h"
 
-class WinApp;
+namespace NumaEngine { class WinApp; }
 class ImGuiManager;
 
 using Microsoft::WRL::ComPtr;
@@ -87,8 +87,8 @@ public:
 private:
 	// StringUtility
 	std::unique_ptr<StringUtility> stringUtility_ = nullptr;
-	// WindowsAPI
-	WinApp* winApp_ = nullptr;
+    // WindowsAPI
+	NumaEngine::WinApp* winApp_ = nullptr;
 	// RenderTexture
 	std::unique_ptr<RenderTexture> renderTexture_ = nullptr;
 	// D3D12Deviceの作成

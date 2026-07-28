@@ -1,6 +1,9 @@
+
 #pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
+
+namespace NumaEngine {
 
 /// <summary>
 /// ブレンドステートの基底クラス
@@ -17,4 +20,6 @@ protected:
 	D3D12_BLEND_DESC blendDesc;
 
 };
+
+} // namespace NumaEngine
 

@@ -42,7 +42,7 @@ void EnemyShield::Update()
 	direction.y = 0.0f;
 	if (direction.Length() != 0.0f) {
 		direction = direction.Normalize();
-		rotateY_ = NumaEngine::Quaternion::DirectionToQuaternion(rotateY_, direction, data.lerpSpeed * DeltaTimer::GetDeltaTime());
+        rotateY_ = NumaEngine::Quaternion::DirectionToQuaternion(rotateY_, direction, data.lerpSpeed * NumaEngine::DeltaTimer::GetDeltaTime());
 		rotateMatrix_ = NumaEngine::Quaternion::MakeRotateMatrix(rotateY_);
 	}
     NumaEngine::Collider::size_ = data.shieldColliderSize;

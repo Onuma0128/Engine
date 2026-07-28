@@ -1,4 +1,4 @@
-﻿#include "BossDashAttackState.h"
+#include "BossDashAttackState.h"
 
 #include <memory>
 
@@ -37,8 +37,8 @@ void BossDashAttackState::Update()
 	const auto& data = boss_->GetItems()->GetDashAttackData();
 	const auto& volume = boss_->GetItems()->GetSeVolumeData();
 
-	// タイムを加算
-	timer_ += DeltaTimer::GetDeltaTime();
+    // タイムを加算
+	timer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 	switch (dashAttackState_)
 	{
@@ -73,8 +73,8 @@ void BossDashAttackState::Update()
 	case DashAttackState::DashAttack:
 	{
 		// 移動の更新
-		NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
-		translate += velocity_ * data.dashSpeed * DeltaTimer::GetDeltaTime();
+        NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
+		translate += velocity_ * data.dashSpeed * NumaEngine::DeltaTimer::GetDeltaTime();
 		boss_->SetTransformTranslation(translate);
 		boss_->GetAttackCollider()->SetColliderSize(data.attackColliderSize);
 		boss_->GetAttackCollider()->SetColliderOffset(data.attackColliderOffset);

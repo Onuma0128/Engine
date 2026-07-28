@@ -185,10 +185,10 @@ void MuscleCompanion::OnCollisionStay(Collider* other)
 		// 当たった仲間より近かったらプレイヤーに近づける
 		if (dist1 < dist2 && !SearchDistance()) {
 			const float speed = items_->GetMainData().hitPushSpeed;
-			transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+            transform_.translation_ += velocity * speed * NumaEngine::DeltaTimer::GetDeltaTime();
 		} else if (SearchDistance()) {
 			const float speed = 1.0f;
-			transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+            transform_.translation_ += velocity * speed * NumaEngine::DeltaTimer::GetDeltaTime();
 		}
 	}
 
@@ -209,7 +209,7 @@ void MuscleCompanion::BlinkingColor()
 	if (static_cast<uint32_t>(data.blinkingHP) > currentHp_ && currentHp_ > 0) {
 		float scale = static_cast<float>(data.blinkingHP) / static_cast<float>(currentHp_);
 		float timeScale = data.blinkingTimeScale * scale;
-		blinkingTime_ += DeltaTimer::GetDeltaTime() * timeScale;
+        blinkingTime_ += NumaEngine::DeltaTimer::GetDeltaTime() * timeScale;
 		blinkingTime_ = std::clamp(blinkingTime_, 0.0f, std::numbers::pi_v<float>);
 		float color = std::sinf(blinkingTime_) + (data.blinkingColor / scale);
 		color = std::clamp(color, 0.0f, 1.0f);
@@ -240,7 +240,7 @@ void MuscleCompanion::LevelUp()
 	if (level_ != prevLevel_ || levelUpEffectTime_ > 0.0f) {
 		const auto& data = items_->GetPushUpData();
 		float effectTime = data.effectTime;
-		levelUpEffectTime_ += DeltaTimer::GetDeltaTime();
+    levelUpEffectTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 		effect_->LevelUpEffect(true);
 		if (levelUpEffectTime_ > effectTime) {
 			effect_->LevelUpEffect(false);

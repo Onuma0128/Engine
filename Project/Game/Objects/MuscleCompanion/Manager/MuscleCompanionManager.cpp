@@ -165,8 +165,8 @@ void MuscleCompanionManager::ClearGatherCompanions()
 		audio_->SoundPlayWave("MattyoSet.wav", items_->GetSeVolumeData().set);
 		state_ = CompanionManagerState::Clear;
 	}
-	if (state_ == CompanionManagerState::Clear) {
-		clearStateTime_ += DeltaTimer::GetDeltaTime();
+    if (state_ == CompanionManagerState::Clear) {
+		clearStateTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	}
 	if (clearStateTime_ > items_->GetMainData().clearStateTime) {
 		for (auto& companion : companions_) {
@@ -270,6 +270,7 @@ void MuscleCompanionManager::UpdateEffect()
 	arrowEffect_->Update(position + NumaEngine::Vector3::ExprUnitY * scale);
 	muscleCountEffect_->Update(player_->GetTransform().translation_);
 	predictionObjects_->SetDraw(isDraw);
+    // (no-op timer removed)
 }
 
 const NumaEngine::Vector3 MuscleCompanionManager::CompanionCenterPosition()

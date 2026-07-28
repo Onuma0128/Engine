@@ -1,9 +1,13 @@
 #pragma once
 
+#pragma once
+
 #include "BaseLight.h"
 
 #include "Vector3.h"
 #include "Vector4.h"
+
+namespace NumaEngine {
 
 /// <summary>
 /// スポットライトクラス
@@ -25,7 +29,7 @@ public:
 		float padding;
 	};
 
-    // 初期化
+	// 初期化
 	void Initialize(NumaEngine::DirectXEngine* dxEngine) override;
 
 	// 更新
@@ -33,7 +37,7 @@ public:
 
 	// デバッグ用のImGui表示
 	void Debug_ImGui() override;
-	
+
 	// ライト用のデータ作成
 	void MakeLightData() override;
 
@@ -48,4 +52,6 @@ private:
 	SpotLightData* lightData_ = nullptr;
 
 };
+
+} // namespace NumaEngine
 

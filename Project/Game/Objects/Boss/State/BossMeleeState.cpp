@@ -1,4 +1,4 @@
-﻿#include "BossMeleeState.h"
+#include "BossMeleeState.h"
 
 #include "DeltaTimer.h"
 
@@ -40,7 +40,7 @@ void BossMeleeState::Update()
 	const auto& volume = boss_->GetItems()->GetSeVolumeData();
 
 	// タイムを加算
-	timer_ += DeltaTimer::GetDeltaTime();
+    timer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 	switch (meleeAttackState_)
 	{
@@ -105,11 +105,11 @@ void BossMeleeState::Draw()
 void BossMeleeState::UpdateJump()
 {
 	// 速度更新（加速度）
-	jumpVelocityY_ += jumpAccelerY_ * DeltaTimer::GetDeltaTime();
+    jumpVelocityY_ += jumpAccelerY_ * NumaEngine::DeltaTimer::GetDeltaTime();
 
 	// 位置更新（Y方向）
 	NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
-	translate.y += jumpVelocityY_ * DeltaTimer::GetDeltaTime();
+    translate.y += jumpVelocityY_ * NumaEngine::DeltaTimer::GetDeltaTime();
 	boss_->SetTransformTranslation(translate);
 }
 

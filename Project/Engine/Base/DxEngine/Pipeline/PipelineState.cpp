@@ -85,15 +85,15 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 	psoDesc.InputLayout = InputLayoutFactory::GetInputLayout(type);
 	psoDesc.PrimitiveTopologyType = (type == PipelineType::kLine3d) ? D3D12_PRIMITIVE_TOPOLOGY_TYPE_LINE : D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	// シェーダー設定
-	if (type == PipelineType::kObjectShadowMapDepth ||
+    if (type == PipelineType::kObjectShadowMapDepth ||
 		type == PipelineType::kAnimationShadowMapDepth) {
-		psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
+		psoDesc.VS = NumaEngine::CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
 		psoDesc.PS = { nullptr, 0 };
 		psoDesc.NumRenderTargets = 0;
-		psoDesc.BlendState = BlendStateFactory::GetBlendState(BlendMode::kBlendModeNone);
+        psoDesc.BlendState = NumaEngine::BlendStateFactory::GetBlendState(BlendMode::kBlendModeNone);
 	} else {
-		psoDesc.VS = CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
-		psoDesc.PS = CompileShaderFactory::GetCompileShader_PS(type, dxcUtils_, dxcCompiler_, includeHandler_, effectType);
+        psoDesc.VS = NumaEngine::CompileShaderFactory::GetCompileShader_VS(type, dxcUtils_, dxcCompiler_, includeHandler_);
+		psoDesc.PS = NumaEngine::CompileShaderFactory::GetCompileShader_PS(type, dxcUtils_, dxcCompiler_, includeHandler_, effectType);
 		if (type == PipelineType::kObjectOutLineMask || 
 			type == PipelineType::kAnimationOutLineMask) {
 			psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -103,7 +103,7 @@ ComPtr<ID3D12PipelineState> PipelineState::CreatePipelineState(PipelineType type
 			psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 			psoDesc.NumRenderTargets = 1;
 		}
-		psoDesc.BlendState = BlendStateFactory::GetBlendState(blendMode);
+        psoDesc.BlendState = NumaEngine::BlendStateFactory::GetBlendState(blendMode);
 	}
 	// 既存の同じ設定
 	psoDesc.SampleDesc.Count = 1;

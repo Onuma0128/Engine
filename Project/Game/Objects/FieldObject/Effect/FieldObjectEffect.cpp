@@ -1,19 +1,19 @@
-﻿#include "FieldObjectEffect.h"
+#include "FieldObjectEffect.h"
 
 void FieldObjectEffect::Init(const std::string& name)
 {
 	// ヒット時のエフェクト
-	if (name == "DeadTree") {
-		hitEmitter_ = std::make_unique<ParticleEmitter>("woodChip");
+    if (name == "DeadTree") {
+		hitEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("woodChip");
 		particleManager_->CreateParticleGroup(hitEmitter_);
 		hitEmitter_->SetIsCreate(false);
 
-		breakEmitter_ = std::make_unique<ParticleEmitter>("breakTree");
+		breakEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("breakTree");
 		particleManager_->CreateParticleGroup(breakEmitter_);
 		breakEmitter_->SetIsCreate(false);
 	}
 	if (name == "fence") {
-		hitEmitter_ = std::make_unique<ParticleEmitter>("fenceChip");
+		hitEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("fenceChip");
 		particleManager_->CreateParticleGroup(hitEmitter_);
 		hitEmitter_->SetIsCreate(false);
 	}

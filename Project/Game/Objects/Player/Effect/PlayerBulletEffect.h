@@ -46,25 +46,25 @@ public:
 
 private:
 
-	// パーティクルを管理する
-	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+    // パーティクルを管理する
+	NumaEngine::ParticleManager* particleManager_ = NumaEngine::ParticleManager::GetInstance();
 
 	/* ==================== プレイヤーが弾を撃った時のエフェクト ==================== */
 
-	// 弾のトレイルエフェクト
-	std::shared_ptr<ParticleEmitter> bulletTrailEmitter_;
+    // 弾のトレイルエフェクト
+	std::shared_ptr<NumaEngine::ParticleEmitter> bulletTrailEmitter_;
 	// 弾が消える時のエフェクト
-	std::shared_ptr<ParticleEmitter> bulletDeleteEmitter_;
+	std::shared_ptr<NumaEngine::ParticleEmitter> bulletDeleteEmitter_;
 
 	/* ==================== プレイヤーが弾を撃った時のエフェクト ==================== */
 
-	// 弾を撃った時の爆発
-	std::shared_ptr<ParticleEmitter> bulletExplosionEmitter_ = nullptr;
+    // 弾を撃った時の爆発
+	std::shared_ptr<NumaEngine::ParticleEmitter> bulletExplosionEmitter_ = nullptr;
 	// 弾を撃った時の火花
-	std::shared_ptr<ParticleEmitter> bulletSparkEmitter_ = nullptr;
+	std::shared_ptr<NumaEngine::ParticleEmitter> bulletSparkEmitter_ = nullptr;
 	// 弾を撃った後の煙
-	std::shared_ptr<ParticleEmitter> bulletSmokeEmitter_ = nullptr;
+	std::shared_ptr<NumaEngine::ParticleEmitter> bulletSmokeEmitter_ = nullptr;
 	// 弾を撃った後の薬莢
-	std::shared_ptr<ParticleEmitter> bulletCartridgeEmitter_ = nullptr;
+	std::shared_ptr<NumaEngine::ParticleEmitter> bulletCartridgeEmitter_ = nullptr;
 };
 

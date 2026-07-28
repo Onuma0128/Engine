@@ -90,7 +90,7 @@ void GameSceneUIs::BossFadeUpdate()
 
 	// タイムを加算
 	if (bossFadeTime_ >= 0.0f) {
-		bossFadeTime_ += DeltaTimer::GetDeltaTime();
+        bossFadeTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 		// キル数が一定以上になったら
 	} else {
 		uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);

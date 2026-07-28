@@ -6,7 +6,7 @@
 
 using Microsoft::WRL::ComPtr;
 
-D3DResourceLeakChecker::~D3DResourceLeakChecker()
+NumaEngine::D3DResourceLeakChecker::~D3DResourceLeakChecker()
 {
 	//リソースリークチェック
     ComPtr<IDXGIDebug1> debug;

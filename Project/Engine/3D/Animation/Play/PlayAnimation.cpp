@@ -18,7 +18,7 @@ void PlayAnimation::Init(const ModelData& modelData)
 
 void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 {
-	requestCooldown_ = std::max(0.0f, requestCooldown_ - DeltaTimer::GetDeltaTime());
+    requestCooldown_ = std::max(0.0f, requestCooldown_ - NumaEngine::DeltaTimer::GetDeltaTime());
 
 	if (requestCooldown_ <= 0.0f && pendingIx_.has_value()) {
 		// ここで反映（fadeTime は固定でもいいし保持してもOK）
@@ -31,7 +31,7 @@ void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 
 		const AnimationData& clip = animationDatas_[flags_.currentAnim];
 		if (flags_.reversePlay) {
-			flags_.animationTime -= DeltaTimer::GetDeltaTime();
+            flags_.animationTime -= NumaEngine::DeltaTimer::GetDeltaTime();
 			if (flags_.animationTime < 0.0f) {
 				if (flags_.timeStop) {
 					flags_.animationTime = 0.0f;
@@ -41,7 +41,7 @@ void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 				}
 			}
 		} else {
-			flags_.animationTime += DeltaTimer::GetDeltaTime();
+            flags_.animationTime += NumaEngine::DeltaTimer::GetDeltaTime();
 			if (flags_.timeStop) {
 				if (flags_.animationTime >= clip.duration) {
 					flags_.animationTime = clip.duration;
@@ -56,14 +56,14 @@ void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 	} else {
 
 		const AnimationData& clipA = animationDatas_[blend_.fromIndex];
-		blend_.fromTime += DeltaTimer::GetDeltaTime();
+        blend_.fromTime += NumaEngine::DeltaTimer::GetDeltaTime();
 		blend_.fromTime = std::fmod(blend_.fromTime, clipA.duration);
 		Skeleton poseA;		// スケルトンのコピー
 		poseA.SetJoints(skeleton.GetJoints());
 		poseA.ApplyAnimation(clipA, blend_.fromTime, clipA.duration);
 
 		const AnimationData& clipB = animationDatas_[blend_.toIndex];
-		blend_.toTime += DeltaTimer::GetDeltaTime();
+        blend_.toTime += NumaEngine::DeltaTimer::GetDeltaTime();
 		blend_.toTime = std::fmod(blend_.toTime, clipB.duration);
 		Skeleton poseB;		// スケルトンのコピー
 		poseB.SetJoints(skeleton.GetJoints());
@@ -77,7 +77,7 @@ void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 			skeleton.LerpTransformUpdate(j, alpha, poseA, poseB);
 		}
 
-		blend_.time += DeltaTimer::GetDeltaTime();
+        blend_.time += NumaEngine::DeltaTimer::GetDeltaTime();
 		if (blend_.time >= blend_.duration) {
 			/*====== フェード完了 ======*/
 			blend_.active = false;

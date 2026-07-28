@@ -1,4 +1,4 @@
-﻿#include "PlayerDemoMoveState.h"
+#include "PlayerDemoMoveState.h"
 
 #include "SceneJsonLoader.h"
 #include "DeltaTimer.h"
@@ -59,7 +59,7 @@ void PlayerDemoMoveState::Update()
 	}
 	// 移動処理
 	NumaEngine::Vector3 position = player_->GetTransform().translation_;
-	player_->SetTransformTranslation(position + velocity * speed * DeltaTimer::GetDeltaTime());
+    player_->SetTransformTranslation(position + velocity * speed * NumaEngine::DeltaTimer::GetDeltaTime());
 
 	// 攻撃処理
 	bool check = targetCollider_ != searchCollider->GetTargetCollider();

@@ -4,23 +4,23 @@
 
 #include "imgui.h"
 
-std::unique_ptr<CollisionManager> CollisionManager::instance_ = nullptr;
+std::unique_ptr<NumaEngine::CollisionManager> NumaEngine::CollisionManager::instance_ = nullptr;
 
-CollisionManager* CollisionManager::GetInstance()
+NumaEngine::CollisionManager* NumaEngine::CollisionManager::GetInstance()
 {
     if (instance_ == nullptr) {
-        instance_ = std::make_unique<CollisionManager>();
+        instance_ = std::make_unique<NumaEngine::CollisionManager>();
     }
     return instance_.get();
 }
 
-void CollisionManager::CheckAllCollisions()
+void NumaEngine::CollisionManager::CheckAllCollisions()
 {
     // デバッグ用
     DebugImGui();
 
     // 今フレームに衝突したペアを格納するコンテナ
-    PairSet thisFrame;
+    NumaEngine::CollisionManager::PairSet thisFrame;
 
     // すべての組み合わせを走査
     std::list<NumaEngine::Collider*>::iterator itrA = colliders_.begin();
@@ -54,7 +54,7 @@ void CollisionManager::CheckAllCollisions()
     previousFrame_.swap(thisFrame);
 }
 
-void CollisionManager::DebugImGui()
+void NumaEngine::CollisionManager::DebugImGui()
 {
 #ifdef ENABLE_EDITOR
 
@@ -72,7 +72,7 @@ void CollisionManager::DebugImGui()
 #endif // ENABLE_EDITOR
 }
 
-bool CollisionManager::Dispatch(NumaEngine::Collider* a, NumaEngine::Collider* b)
+bool NumaEngine::CollisionManager::Dispatch(NumaEngine::Collider* a, NumaEngine::Collider* b)
 {
     // お互いのTypeを取得
     NumaEngine::ColliderType typeA = a->GetMyColliderType();
@@ -108,23 +108,23 @@ bool CollisionManager::Dispatch(NumaEngine::Collider* a, NumaEngine::Collider* b
     {
     case NumaEngine::ColliderType::kSphere:
         switch (typeB) {
-        case NumaEngine::ColliderType::kSphere:   return Collision3D::SphereSphere(a, b);
-        case NumaEngine::ColliderType::kOBB:      return Collision3D::OBBSphere(b, a);
-        case NumaEngine::ColliderType::kSegment:  return Collision3D::SphereSegment(a, b);
+        case NumaEngine::ColliderType::kSphere:   return NumaEngine::Collision3D::SphereSphere(a, b);
+        case NumaEngine::ColliderType::kOBB:      return NumaEngine::Collision3D::OBBSphere(b, a);
+        case NumaEngine::ColliderType::kSegment:  return NumaEngine::Collision3D::SphereSegment(a, b);
         }
         break;
     case NumaEngine::ColliderType::kSegment:
         switch (typeB) {
-        case NumaEngine::ColliderType::kSphere:   return Collision3D::SphereSegment(b,a);
-        case NumaEngine::ColliderType::kOBB:      return Collision3D::OBBSegment(b, a);
+        case NumaEngine::ColliderType::kSphere:   return NumaEngine::Collision3D::SphereSegment(b,a);
+        case NumaEngine::ColliderType::kOBB:      return NumaEngine::Collision3D::OBBSegment(b, a);
         case NumaEngine::ColliderType::kSegment:  return false;
         }
         break;
     case NumaEngine::ColliderType::kOBB:
         switch (typeB) {
-        case NumaEngine::ColliderType::kSphere:   return Collision3D::OBBSphere(a, b);
-        case NumaEngine::ColliderType::kOBB:      return Collision3D::OBBOBB(a, b);
-        case NumaEngine::ColliderType::kSegment:  return Collision3D::OBBSegment(a, b);
+        case NumaEngine::ColliderType::kSphere:   return NumaEngine::Collision3D::OBBSphere(a, b);
+        case NumaEngine::ColliderType::kOBB:      return NumaEngine::Collision3D::OBBOBB(a, b);
+        case NumaEngine::ColliderType::kSegment:  return NumaEngine::Collision3D::OBBSegment(a, b);
         }
         break;
     default:
@@ -134,7 +134,7 @@ bool CollisionManager::Dispatch(NumaEngine::Collider* a, NumaEngine::Collider* b
     return false;
 }
 
-void CollisionManager::CheckCollisionPair(NumaEngine::Collider* a, NumaEngine::Collider* b, PairSet& thisFrame)
+void NumaEngine::CollisionManager::CheckCollisionPair(NumaEngine::Collider* a, NumaEngine::Collider* b, NumaEngine::CollisionManager::PairSet& thisFrame)
 {
     bool hit = false;
 

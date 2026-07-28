@@ -7,18 +7,18 @@
 
 #include "CreateBufferResource.h"
 
-void SpotLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
+void NumaEngine::SpotLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 	MakeLightData();
 }
 
-void SpotLight::Update()
+void NumaEngine::SpotLight::Update()
 {
 	lightData_->direction = lightData_->direction.Normalize();
 }
 
-void SpotLight::Debug_ImGui()
+void NumaEngine::SpotLight::Debug_ImGui()
 {
 	ImGui::ColorEdit4("LightColor", (float*)&lightData_->color.x);
 	ImGui::DragFloat3("SpotLightData.pos", &lightData_->position.x, 0.01f);
@@ -30,9 +30,9 @@ void SpotLight::Debug_ImGui()
 	ImGui::DragFloat("SpotLightData.cosFalloffStart", &lightData_->cosFalloffStart, 0.01f);
 }
 
-void SpotLight::MakeLightData()
+void NumaEngine::SpotLight::MakeLightData()
 {
-	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(SpotLightData));
+    resource_ = NumaEngine::CreateBufferResource(dxEngine_->GetDevice(), sizeof(SpotLightData));
 	bufferView_.BufferLocation = resource_->GetGPUVirtualAddress();
 	bufferView_.SizeInBytes = sizeof(SpotLightData);
 	bufferView_.StrideInBytes = sizeof(SpotLightData);

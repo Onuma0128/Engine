@@ -49,8 +49,8 @@ void CompanionPushUpIdleState::Update()
 			// 腕立て中にスケールを大きくする
 			uint32_t level = std::clamp(static_cast<int>(companion_->GetLevel() + 1), 0, pushUpData.maxLevel - 1);
 			float levelUpExp = pushUpData.levelUpExperience[level];
-			float exp = companion_->GetExperience();
-			exp += DeltaTimer::GetDeltaTime();
+            float exp = companion_->GetExperience();
+			exp += NumaEngine::DeltaTimer::GetDeltaTime();
 			// 経験値が溜まったらレベルを上げる
 			if (exp > levelUpExp) {
 				level = std::clamp(static_cast<int>(level), 0, pushUpData.maxLevel - 1);
@@ -60,8 +60,8 @@ void CompanionPushUpIdleState::Update()
 			// 経験値をセットする
 			companion_->SetExperience(exp);
 
-			// 一定時間が経ったら攻撃力を上げる
-			pushUpTime_ += DeltaTimer::GetDeltaTime();
+            // 一定時間が経ったら攻撃力を上げる
+			pushUpTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 			if (pushUpTime_ > dashData.pushUpTime) {
 				companion_->GetEffect()->DamageUpEffect(true);
 				if (!isPowerUp_) {

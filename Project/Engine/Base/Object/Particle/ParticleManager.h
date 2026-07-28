@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include <iostream>
 #include <memory>
 #include <list>
@@ -13,16 +14,19 @@
 // パーティクルのMAX値(上げすぎ注意!!)
 const uint32_t kNumMaxInstance = 1024;
 
-class ParticleEmitter;
-class ParticleEditor;
-namespace NumaEngine { class DirectXEngine; }
+// Forward declarations for types in NumaEngine
+namespace NumaEngine { class ParticleEmitter; class ParticleEditor; class DirectXEngine; }
 class SrvManager;
+
+#include <wrl.h>
+using Microsoft::WRL::ComPtr;
 
 /// <summary>
 /// パーティクルを管理するクラス
 /// </summary>
-class ParticleManager
-{
+namespace NumaEngine {
+	class ParticleManager
+	{
 public:
 	
     /// <summary>
@@ -193,5 +197,8 @@ private:
 	bool drawEmitter_ = false;
 
 
-};
+    };
+} // namespace NumaEngine
+
+// (No global aliases) Ensure users reference NumaEngine:: explicitly.
 

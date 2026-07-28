@@ -1,3 +1,4 @@
+
 #pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
@@ -5,4 +6,9 @@
 
 using Microsoft::WRL::ComPtr;
 
+namespace NumaEngine {
+
 ComPtr<ID3D12Resource> CreateBufferResource(ComPtr<ID3D12Device> device, size_t sizeInBytes);
+
+} // namespace NumaEngine
+

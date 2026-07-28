@@ -1,4 +1,4 @@
-﻿#include "EnemyAdjustItem.h"
+#include "EnemyAdjustItem.h"
 
 #include "imgui.h"
 
@@ -306,7 +306,7 @@ void EnemyAdjustItem::Editor()
 	ImGui::End();
 }
 
-void EnemyAdjustItem::SetJsonParameter(JsonFunction json)
+void EnemyAdjustItem::SetJsonParameter(NumaEngine::JsonFunction json)
 {
 	json.Set("maxHp", 0);
 	json.Set("speed", 0.0f);
@@ -322,7 +322,7 @@ void EnemyAdjustItem::SetJsonParameter(JsonFunction json)
 	json.Set("attackCoolTime", 0.0f);
 }
 
-EnemyTemplate EnemyAdjustItem::GetTemplateData(JsonFunction json)
+EnemyTemplate EnemyAdjustItem::GetTemplateData(NumaEngine::JsonFunction json)
 {
 	EnemyTemplate data{};
 	data.maxHp = json.Get("maxHp", data.maxHp);
@@ -341,7 +341,7 @@ EnemyTemplate EnemyAdjustItem::GetTemplateData(JsonFunction json)
 	return data;
 }
 
-void EnemyAdjustItem::SetImGuiData(JsonFunction& json, EnemyTemplate& tempData)
+void EnemyAdjustItem::SetImGuiData(NumaEngine::JsonFunction& json, EnemyTemplate& tempData)
 {
 	ImGui::DragInt("maxHp", &tempData.maxHp);
 	ImGui::DragFloat("speed", &tempData.speed, 0.01f, 0.0f, 100.0f);
@@ -355,7 +355,7 @@ void EnemyAdjustItem::SetImGuiData(JsonFunction& json, EnemyTemplate& tempData)
 	ImGui::DragFloat("attackCoolTime", &tempData.attackCoolTime, 0.01f);
 }
 
-void EnemyAdjustItem::SetTemplateData(JsonFunction& json, EnemyTemplate& tempData)
+void EnemyAdjustItem::SetTemplateData(NumaEngine::JsonFunction& json, EnemyTemplate& tempData)
 {
 	json.Set("maxHp", tempData.maxHp);
 	json.Set("speed", tempData.speed);

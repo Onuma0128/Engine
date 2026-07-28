@@ -5,6 +5,8 @@
 
 using Microsoft::WRL::ComPtr;
 
+namespace NumaEngine {
+
 /// <summary>
 /// オブジェクトのPSOを管理するクラス
 /// </summary>
@@ -24,3 +26,7 @@ private:
 	// パイプラインステート
 	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
 };
+
+} // namespace NumaEngine
+
+

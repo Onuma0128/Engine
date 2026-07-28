@@ -1,4 +1,4 @@
-﻿#include "MuscleCountEffect.h"
+#include "MuscleCountEffect.h"
 
 #include <numbers>
 
@@ -27,7 +27,7 @@ void MuscleCountEffect::Init()
 void MuscleCountEffect::Update(const NumaEngine::Vector3& position)
 {
 	// タイム加算
-	timer_ -= DeltaTimer::GetDeltaTime();
+    timer_ -= NumaEngine::DeltaTimer::GetDeltaTime();
 
 	// スケールと座標を設定
 	float t = timer_;

@@ -2,43 +2,43 @@
 
 #include <cassert>
 
-std::unique_ptr<AudioManager> AudioManager::instance_ = nullptr;
+std::unique_ptr<NumaEngine::AudioManager> NumaEngine::AudioManager::instance_ = nullptr;
 
-AudioManager* AudioManager::GetInstance()
+NumaEngine::AudioManager* NumaEngine::AudioManager::GetInstance()
 {
     if (instance_ == nullptr) {
-        instance_ = std::make_unique<AudioManager>();
+        instance_ = std::make_unique<NumaEngine::AudioManager>();
     }
     return instance_.get();
 }
 
-void AudioManager::Finalize()
+void NumaEngine::AudioManager::Finalize()
 {
     for (auto& pair : soundDataMap_) {
         SoundUnload(&pair.second);
     }
 }
 
-void AudioManager::LoadAudioFile(const std::string& directoryPath, const std::string& filePath)
+void NumaEngine::AudioManager::LoadAudioFile(const std::string& directoryPath, const std::string& filePath)
 {
-	const std::string fullFilePath = directoryPath + "/" + filePath;
+    const std::string fullFilePath = directoryPath + "/" + filePath;
 
-	if (soundDataMap_.find(filePath) == soundDataMap_.end()) {
-		soundDataMap_[filePath] = SoundLoadWave(fullFilePath.c_str());
-	}
+    if (soundDataMap_.find(filePath) == soundDataMap_.end()) {
+        soundDataMap_[filePath] = SoundLoadWave(fullFilePath.c_str());
+    }
 }
 
-const AudioManager::SoundData& AudioManager::GetSoundData(const std::string& filePath)
+const NumaEngine::AudioManager::SoundData& NumaEngine::AudioManager::GetSoundData(const std::string& filePath)
 {
     auto it = soundDataMap_.find(filePath);
     if (it == soundDataMap_.end()) {
-		// 未ロードならロードする
-		assert(0);
+        // 未ロードならロードする
+        assert(0);
     }
     return it->second;
 }
 
-AudioManager::SoundData AudioManager::SoundLoadWave(const char* filePath)
+NumaEngine::AudioManager::SoundData NumaEngine::AudioManager::SoundLoadWave(const char* filePath)
 {
     std::ifstream file(filePath, std::ios_base::binary);
     assert(file.is_open());
@@ -76,10 +76,10 @@ AudioManager::SoundData AudioManager::SoundLoadWave(const char* filePath)
     return soundData;
 }
 
-void AudioManager::SoundUnload(SoundData* soundData)
+void NumaEngine::AudioManager::SoundUnload(SoundData* soundData)
 {
-	soundData->buffer.clear();
-	soundData->buffer.shrink_to_fit();
-	soundData->bufferSize = 0;
-	soundData->wfex = {};
+    soundData->buffer.clear();
+    soundData->buffer.shrink_to_fit();
+    soundData->bufferSize = 0;
+    soundData->wfex = {};
 }

@@ -1,4 +1,4 @@
-﻿#include "PlayerEffect.h"
+#include "PlayerEffect.h"
 
 #include "DeltaTimer.h"
 #include "Input.h"
@@ -14,13 +14,13 @@ PlayerEffect::~PlayerEffect()
 
 void PlayerEffect::Init()
 {
-	// 移動時のエフェクト
-	moveDustEmitter_ = std::make_unique<ParticleEmitter>("moveDust");
+    // 移動時のエフェクト
+	moveDustEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("moveDust");
 	particleManager_->CreateParticleGroup(moveDustEmitter_);
 	moveDustEmitter_->SetIsCreate(false);
 
 	// 避け時のエフェクト
-	avoidDustEmitter_ = std::make_unique<ParticleEmitter>("avoidDust");
+	avoidDustEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("avoidDust");
 	particleManager_->CreateParticleGroup(avoidDustEmitter_);
 	avoidDustEmitter_->SetIsCreate(false);
 	avoidCoolTimeEffect_ = std::make_unique<PrimitiveDrawr>();
@@ -31,8 +31,8 @@ void PlayerEffect::Init()
 	avoidCoolTimeEffect_->GetRenderOptions().offscreen = false;
 	avoidCoolTimeEffect_->SetIsBillboard(true);
 
-	// 攻撃を受けた時のエフェクト
-	playerHit_ = std::make_unique<ParticleEmitter>("playerHit");
+    // 攻撃を受けた時のエフェクト
+	playerHit_ = std::make_shared<NumaEngine::ParticleEmitter>("playerHit");
 	particleManager_->CreateParticleGroup(playerHit_);
 	playerHit_->SetIsCreate(false);
 
@@ -79,7 +79,7 @@ void PlayerEffect::Update()
 	cylinder_->GetTransform().translation.y = 0.0f;
 	cylinder_->Update();
 
-	specialMoveReadyTimer_ += DeltaTimer::GetDeltaTime();
+    specialMoveReadyTimer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	t = specialMoveReadyTimer_ / data.needMachoEffectTime;
 	t = std::sinf(t * std::numbers::pi_v<float>);
 	needMoreMachoEffect->GetTransform().scale = data.needMachoScale + data.needMachoVarianceScale * t;
@@ -174,7 +174,7 @@ void PlayerEffect::UpdatePostEffect()
 		{
 			// PostEffectへの値を適応
 			postEffectManager_->GetGrayscaleData()->t = 1.0f;
-			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.2f);
+            NumaEngine::DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.2f);
 
 			if (Input::GetInstance()->GetGamepadLeftTrigger() == 0.0f &&
 				specialMoveFrame_ >= holdDuration) {
@@ -217,7 +217,7 @@ void PlayerEffect::UpdatePostEffect()
 		if (isSpecialMove_) {
 			specialMoveState_ = SpecialMoveState::kExpanding;
 			cylinder_->GetRenderOptions().enabled = true;
-			DeltaTimer::SetTimeScaleForSeconds(0.1f, 5.0f);
+            NumaEngine::DeltaTimer::SetTimeScaleForSeconds(0.1f, 5.0f);
 		}
 		break;
 

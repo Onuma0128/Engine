@@ -39,7 +39,7 @@ void PlayerBullet::Update()
 
 	// フレームが60立ったらIsActiveをfalseにする
 	if (isActive_) {
-		activeTime_ += DeltaTimer::GetDeltaTime() * 2.0f;
+        activeTime_ += NumaEngine::DeltaTimer::GetDeltaTime() * 2.0f;
 		if (activeTime_ >= 1.0f) {
 			activeTime_ = 1.0f;
 			isActive_ = false;
@@ -66,7 +66,7 @@ void PlayerBullet::Update()
 	}
 
 	// 移動処理
-	transform_.translation_ += velocity_ * DeltaTimer::GetDeltaTime() * speed_;
+    transform_.translation_ += velocity_ * NumaEngine::DeltaTimer::GetDeltaTime() * speed_;
 
 	effect_->OnceBulletTrailEffect(transform_);
     NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform_.rotation_);

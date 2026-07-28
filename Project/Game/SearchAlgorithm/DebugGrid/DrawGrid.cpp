@@ -48,7 +48,7 @@ void DrawGrid::HitGridInit()
 #endif // ENABLE_EDITOR
 }
 
-void DrawGrid::HitAABB(const AABB_2D& aabb)
+void DrawGrid::HitAABB(const NumaEngine::AABB_2D& aabb)
 {
 	// ヒットしたAABBを登録
 	hitAABBs_.push_back(aabb);
@@ -56,10 +56,10 @@ void DrawGrid::HitAABB(const AABB_2D& aabb)
 	RebuildHitGridPositions();
 }
 
-void DrawGrid::DeleteHitAABB(const AABB_2D& aabb)
+void DrawGrid::DeleteHitAABB(const NumaEngine::AABB_2D& aabb)
 {
 	// min / max が一致する AABB を消す
-	auto isSame = [&](const AABB_2D& other) {
+    auto isSame = [&](const NumaEngine::AABB_2D& other) {
 		return (other.min.x == aabb.min.x &&
 			other.min.y == aabb.min.y &&
 			other.max.x == aabb.max.x &&

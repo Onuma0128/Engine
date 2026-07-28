@@ -6,6 +6,9 @@
 #include "CompileShaderBase.h"
 #include "PipelineStruct.h"
 
+namespace NumaEngine {
+
+
 class CompileShaderFactory
 {
 public:
@@ -52,11 +55,16 @@ private:
 
 };
 
+} // namespace NumaEngine
+
+
+
+
 // ============================================================
 // Object3d
 // ============================================================
 
-class Object3dCompileShader : public CompileShaderBase
+class Object3dCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -64,22 +72,22 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+     this->vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Object3d.VS.hlsl", L"vs_6_0", 
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
 		return vsBytecode;
 	}
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+     this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Object3d.PS.hlsl", L"ps_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
 		return psBytecode;
 	}
@@ -89,7 +97,7 @@ public:
 // Sprite
 // ============================================================
 
-class SpriteCompileShader : public CompileShaderBase
+class SpriteCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -97,24 +105,24 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+     this->vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Sprite.VS.hlsl", L"vs_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return vsBytecode;
+		return this->vsBytecode;
 	}
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+     this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Sprite.PS.hlsl", L"ps_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return psBytecode;
+		return this->psBytecode;
 	}
 };
 
@@ -122,7 +130,7 @@ public:
 // Line3d
 // ============================================================
 
-class Line3dCompileShader : public CompileShaderBase
+class Line3dCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -130,24 +138,24 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+     this->vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Line3d.VS.hlsl", L"vs_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return vsBytecode;
+		return this->vsBytecode;
 	}
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+     this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Line3d.PS.hlsl", L"ps_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return psBytecode;
+		return this->psBytecode;
 	}
 };
 
@@ -155,7 +163,7 @@ public:
 // Particle
 // ============================================================
 
-class ParticleCompileShader : public CompileShaderBase
+class ParticleCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -163,24 +171,24 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+     this->vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Particle.VS.hlsl", L"vs_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return vsBytecode;
+		return this->vsBytecode;
 	}
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+     this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Particle.PS.hlsl", L"ps_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return psBytecode;
+		return this->psBytecode;
 	}
 };
 
@@ -188,7 +196,7 @@ public:
 // PrimitiveDrawr
 // ============================================================
 
-class PrimitiveDrawrCompileShader : public CompileShaderBase
+class PrimitiveDrawrCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -196,11 +204,11 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+     vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/PrimitiveDrawr.VS.hlsl", L"vs_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -209,7 +217,7 @@ public:
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+     psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/PrimitiveDrawr.PS.hlsl", L"ps_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -221,7 +229,7 @@ public:
 // RenderTexture
 // ============================================================
 
-class RenderTextureCompileShader : public CompileShaderBase
+class RenderTextureCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -229,15 +237,15 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+     this->vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Fullscreen.VS.hlsl", L"vs_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return vsBytecode;
+		return this->vsBytecode;
 	}
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
@@ -247,34 +255,34 @@ public:
 		case PostEffectType::kNone:
 			break;
 		case PostEffectType::kRenderTexture:
-			psBytecode = CompileShaderFactory::CreateCompileShader(
-				L"resources/shaders/CopyImage.PS.hlsl", L"ps_6_0",
-				dxcUtils_, dxcCompiler_, includeHandler_
-			);
+     this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/CopyImage.PS.hlsl", L"ps_6_0",
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
+		);
 			break;
 		case PostEffectType::kGrayscale:
-			psBytecode = CompileShaderFactory::CreateCompileShader(
-				L"resources/shaders/Grayscale.PS.hlsl", L"ps_6_0",
-				dxcUtils_, dxcCompiler_, includeHandler_
-			);
+     this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/Grayscale.PS.hlsl", L"ps_6_0",
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
+		);
 			break;
 		case PostEffectType::kVignette:
-			psBytecode = CompileShaderFactory::CreateCompileShader(
-				L"resources/shaders/Vignette.PS.hlsl", L"ps_6_0",
-				dxcUtils_, dxcCompiler_, includeHandler_
-			);
+     this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/Vignette.PS.hlsl", L"ps_6_0",
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
+		);
 			break;
-		case PostEffectType::kSmoothing:
-			psBytecode = CompileShaderFactory::CreateCompileShader(
-				L"resources/shaders/GaussianFilter.PS.hlsl", L"ps_6_0",
-				dxcUtils_, dxcCompiler_, includeHandler_
-			);
+        case PostEffectType::kSmoothing:
+		this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/GaussianFilter.PS.hlsl", L"ps_6_0",
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
+		);
 			break;
 		case PostEffectType::kOutLine:
-			psBytecode = CompileShaderFactory::CreateCompileShader(
-				L"resources/shaders/LuminanceBasedOutline.PS.hlsl", L"ps_6_0",
-				dxcUtils_, dxcCompiler_, includeHandler_
-			);
+       this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
+			L"resources/shaders/LuminanceBasedOutline.PS.hlsl", L"ps_6_0",
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
+		);
 			break;
 		default:
 			break;
@@ -288,7 +296,7 @@ public:
 // Animation
 // ============================================================
 
-class AnimationCompileShader : public CompileShaderBase
+class AnimationCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -296,24 +304,24 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+     this->vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/SkinningObject3d.VS.hlsl", L"vs_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return vsBytecode;
+		return this->vsBytecode;
 	}
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+   this->psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Object3d.PS.hlsl", L"ps_6_0",
-			dxcUtils_, dxcCompiler_, includeHandler_
+			this->dxcUtils_, this->dxcCompiler_, this->includeHandler_
 		);
-		return psBytecode;
+		return this->psBytecode;
 	}
 };
 
@@ -321,7 +329,7 @@ public:
 // Skybox
 // ============================================================
 
-class SkyboxCompileShader : public CompileShaderBase
+class SkyboxCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -329,12 +337,12 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
 	}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+    vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Skybox.VS.hlsl", L"vs_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -343,7 +351,7 @@ public:
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+    psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Skybox.PS.hlsl", L"ps_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -355,7 +363,7 @@ public:
 // ObjectOutLineMask
 // ============================================================
 
-class ObjectOutLineMaskCompileShader : public CompileShaderBase
+class ObjectOutLineMaskCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -363,12 +371,12 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
 	}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+    vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Object3d.VS.hlsl", L"vs_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -377,7 +385,7 @@ public:
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+    psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/OutlineMask.PS.hlsl", L"ps_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -389,7 +397,7 @@ public:
 // AnimationOutLineMask
 // ============================================================
 
-class AnimationOutLineMaskCompileShader : public CompileShaderBase
+class AnimationOutLineMaskCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -397,12 +405,12 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
 	}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+    vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/SkinningObject3d.VS.hlsl", L"vs_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -411,7 +419,7 @@ public:
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+    psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/OutlineMask.PS.hlsl", L"ps_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -423,7 +431,7 @@ public:
 // ObjectShadowMapDepth
 // ============================================================
 
-class ObjectShadowMapDepthCompileShader : public CompileShaderBase
+class ObjectShadowMapDepthCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -431,12 +439,12 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
 	}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+    vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/ObjectShadowMap.VS.hlsl", L"vs_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -445,7 +453,7 @@ public:
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+    psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/OutlineMask.PS.hlsl", L"ps_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -457,7 +465,7 @@ public:
 // AnimationShadowMapDepth
 // ============================================================
 
-class AnimationShadowMapDepthCompileShader : public CompileShaderBase
+class AnimationShadowMapDepthCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -465,12 +473,12 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
 	}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+         vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/AnimationShadowMap.VS.hlsl", L"vs_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -479,7 +487,7 @@ public:
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+         psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/OutlineMask.PS.hlsl", L"ps_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -491,7 +499,7 @@ public:
 // SpriteDissolve
 // ============================================================
 
-class SpriteDissolveCompileShader : public CompileShaderBase
+class SpriteDissolveCompileShader : public ::NumaEngine::CompileShaderBase
 {
 public:
 
@@ -499,12 +507,12 @@ public:
 		ComPtr<IDxcUtils> dxcUtils,
 		ComPtr<IDxcCompiler3>& dxcCompiler,
 		ComPtr<IDxcIncludeHandler> includeHandler
-	) :CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
+) : ::NumaEngine::CompileShaderBase(dxcUtils, dxcCompiler, includeHandler) {
 	}
 
 	D3D12_SHADER_BYTECODE& BuildVS_Shader() override
 	{
-		vsBytecode = CompileShaderFactory::CreateCompileShader(
+     vsBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/Sprite.VS.hlsl", L"vs_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);
@@ -513,7 +521,7 @@ public:
 
 	D3D12_SHADER_BYTECODE& BuildPS_Shader(PostEffectType type = PostEffectType::kNone) override
 	{
-		psBytecode = CompileShaderFactory::CreateCompileShader(
+     psBytecode = ::NumaEngine::CompileShaderFactory::CreateCompileShader(
 			L"resources/shaders/SpriteDissolve.PS.hlsl", L"ps_6_0",
 			dxcUtils_, dxcCompiler_, includeHandler_
 		);

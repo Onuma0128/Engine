@@ -4,12 +4,12 @@
 
 #include "DeltaTimer.h"
 
-ParticleEmitter::~ParticleEmitter()
+NumaEngine::ParticleEmitter::~ParticleEmitter()
 {
     NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(line_.get());
 }
 
-ParticleEmitter::ParticleEmitter(const std::string name)
+NumaEngine::ParticleEmitter::ParticleEmitter(const std::string name)
 {
     emitter_.name = name;
     emitter_.setPosition = { 0.0f,0.0f,0.0f };
@@ -44,7 +44,7 @@ ParticleEmitter::ParticleEmitter(const std::string name)
 #endif // ENABLE_EDITOR
 }
 
-void ParticleEmitter::Update()
+void NumaEngine::ParticleEmitter::Update()
 {
     /*==================== パーティクルの範囲更新 ====================*/
 
@@ -142,7 +142,7 @@ void ParticleEmitter::Update()
 #endif // ENABLE_EDITOR
 }
 
-void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)
+void NumaEngine::ParticleEmitter::CreateParticles(NumaEngine::ParticleManager::ParticleGroup& group)
 {
     if (emitter_.isMoveStart && isCreate_) {
         emitter_.frequencyTime += DeltaTimer::GetDeltaTime();
@@ -192,7 +192,7 @@ void ParticleEmitter::CreateParticles(ParticleManager::ParticleGroup& group)
     }
 }
 
-void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::iterator& particle)
+void NumaEngine::ParticleEmitter::UpdateParticle(std::list<NumaEngine::ParticleManager::Particle>::iterator& particle)
 {
     if (emitter_.isMoveStart) {
         if (IsCollision(accelerationField_.area, particle->transform.translation) && emitter_.isFieldStart) {
@@ -221,7 +221,7 @@ void ParticleEmitter::UpdateParticle(std::list<ParticleManager::Particle>::itera
     }
 }
 
-std::list<ParticleManager::Particle> ParticleEmitter::Emit(const Emitter& emitter, std::mt19937& randomEngine)
+std::list<NumaEngine::ParticleManager::Particle> NumaEngine::ParticleEmitter::Emit(const Emitter& emitter, std::mt19937& randomEngine)
 {
     std::list<ParticleManager::Particle> particles;
     for (uint32_t count = 0; count < emitter.count; ++count) {
@@ -230,7 +230,7 @@ std::list<ParticleManager::Particle> ParticleEmitter::Emit(const Emitter& emitte
     return particles;
 }
 
-ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomEngine, const Emitter& emitter)
+NumaEngine::ParticleManager::Particle NumaEngine::ParticleEmitter::MakeNewParticle(std::mt19937& randomEngine, const Emitter& emitter)
 {
     std::uniform_real_distribution<float> distPosX(emitter.emitterSize.min.x, emitter.emitterSize.max.x);
     std::uniform_real_distribution<float> distPosY(emitter.emitterSize.min.y, emitter.emitterSize.max.y);
@@ -297,7 +297,7 @@ ParticleManager::Particle ParticleEmitter::MakeNewParticle(std::mt19937& randomE
     return particle;
 }
 
-std::vector<NumaEngine::Vector3> ParticleEmitter::CreateLineBox(AABB aabb)
+std::vector<NumaEngine::Vector3> NumaEngine::ParticleEmitter::CreateLineBox(AABB aabb)
 {
     std::vector<NumaEngine::Vector3> linePosition = {
         aabb.min,
@@ -341,7 +341,7 @@ std::vector<NumaEngine::Vector3> ParticleEmitter::CreateLineBox(AABB aabb)
 }
 
 
-bool ParticleEmitter::IsCollision(const AABB& aabb, const NumaEngine::Vector3& point)
+bool NumaEngine::ParticleEmitter::IsCollision(const AABB& aabb, const NumaEngine::Vector3& point)
 {
     if (aabb.min.x < point.x && aabb.max.x > point.x &&
         aabb.min.y < point.y && aabb.max.y > point.y &&

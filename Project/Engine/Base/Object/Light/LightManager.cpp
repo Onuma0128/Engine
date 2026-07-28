@@ -4,6 +4,7 @@
 #include "imgui.h"
 #endif // ENABLE_EDITOR
 
+#include <memory>
 #include "DirectXEngine.h"
 
 #include "type/DirectionalLight.h"
@@ -24,14 +25,15 @@ void LightManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	this->dxEngine_ = dxEngine;
 
-	directionalLight_ = std::make_unique<DirectionalLight>();
+    directionalLight_ = std::make_unique<NumaEngine::DirectionalLight>();
 	directionalLight_->Initialize(dxEngine_);
 
-	pointLight_ = std::make_unique<PointLight>();
+	pointLight_ = std::make_unique<NumaEngine::PointLight>();
 	pointLight_->Initialize(dxEngine_);
 
-	spotLight_ = std::make_unique<SpotLight>();
+	spotLight_ = std::make_unique<NumaEngine::SpotLight>();
 	spotLight_->Initialize(dxEngine_);
+
 }
 
 void LightManager::Update()

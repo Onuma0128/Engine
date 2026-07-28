@@ -1,4 +1,4 @@
-﻿#include "SelectSystem.h"
+#include "SelectSystem.h"
 
 #include "Input.h"
 #include "DeltaTimer.h"
@@ -71,7 +71,7 @@ void SelectSystem::Update()
 	// セレクトUIが表示されているか判定
 	const auto& data = items_->GetSelectData();
 	if (isFadeIn_ && !updateSelectUI_) {
-		clearCountUiTimer_ += DeltaTimer::GetDeltaTime();
+        clearCountUiTimer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 		if (clearCountUiTimer_ > data.selectUiInterval) {
 			updateSelectUI_ = true;
 			clearCountUiTimer_ = 0.0f;
@@ -134,8 +134,8 @@ void SelectSystem::SelectInput()
 	Input* input = Input::GetInstance();
 	// スティックを倒しているか
 	const float leftStickX = input->GetGamepadLeftStickX();
-	if (leftStickX < 0.0f || leftStickX > 0.0f) {
-		targetTime_ += DeltaTimer::GetDeltaTime();
+        if (leftStickX < 0.0f || leftStickX > 0.0f) {
+			targetTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	} else {
 		targetTime_ = 1.0f;
 	}

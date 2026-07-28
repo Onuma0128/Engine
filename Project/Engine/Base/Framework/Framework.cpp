@@ -9,7 +9,7 @@
 
 void Framework::Initialize()
 {
-	winApp_ = std::make_unique<WinApp>();
+    winApp_ = std::make_unique<NumaEngine::WinApp>();
 	winApp_->Initialize();
 
 	imGuiManager_ = std::make_unique<ImGuiManager>();
@@ -123,25 +123,25 @@ void Framework::LoadFiles()
 
 	// ============================== Audio ============================== //
 
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "GameSceneBGM.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "GameClearBGM.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "BossBGM.wav");
+    NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "GameSceneBGM.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "GameClearBGM.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Scene", "BossBGM.wav");
 
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoDashHit.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoFootsteps.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoGetDamage.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoGiveDamage.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoSet.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoShot.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoClear.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoShield.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoPowerUp.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoDashHit.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoFootsteps.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoGetDamage.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoGiveDamage.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoSet.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoShot.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoClear.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoShield.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Mattyo", "MattyoPowerUp.wav");
 
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossAttackCaveat.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossAttackDash.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossDown.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossEnemySpawn.wav");
-	AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossLanding.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossAttackCaveat.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossAttackDash.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossDown.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossEnemySpawn.wav");
+	NumaEngine::AudioManager::GetInstance()->LoadAudioFile("Resources/Audio/Boss", "BossLanding.wav");
 }
 
 void Framework::Run()

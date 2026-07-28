@@ -5,17 +5,17 @@
 
 #include "CreateBufferResource.h"
 
-void PointLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
+void NumaEngine::PointLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 	MakeLightData();
 }
 
-void PointLight::Update()
+void NumaEngine::PointLight::Update()
 {
 }
 
-void PointLight::Debug_ImGui()
+void NumaEngine::PointLight::Debug_ImGui()
 {
 	ImGui::ColorEdit4("LightColor", (float*)&lightData_->color.x);
 	ImGui::DragFloat3("PointLightData.pos", &lightData_->position.x, 0.01f);
@@ -24,9 +24,9 @@ void PointLight::Debug_ImGui()
 	ImGui::DragFloat("PointLightDecay", &lightData_->decay, 0.01f);
 }
 
-void PointLight::MakeLightData()
+void NumaEngine::PointLight::MakeLightData()
 {
-	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(PointLightData));
+    resource_ = NumaEngine::CreateBufferResource(dxEngine_->GetDevice(), sizeof(PointLightData));
 	bufferView_.BufferLocation = resource_->GetGPUVirtualAddress();
 	bufferView_.SizeInBytes = sizeof(PointLightData);
 	bufferView_.StrideInBytes = sizeof(PointLightData);

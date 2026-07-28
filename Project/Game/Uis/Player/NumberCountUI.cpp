@@ -50,7 +50,7 @@ void NumberCountUI::MochiPuniScale(const uint32_t killCount, const float mochiPu
 		mochiPuniTime_ = 0.0f;
 	}
 
-	mochiPuniTime_ += DeltaTimer::GetDeltaTime() * 3.0f;
+    mochiPuniTime_ += NumaEngine::DeltaTimer::GetDeltaTime() * 3.0f;
 	mochiPuniTime_ = std::clamp(mochiPuniTime_, 0.0f, 1.0f);
     NumaEngine::Vector2 scale = NumaEngine::Vector2::MochiPuniScaleNormalized(mochiPuniTime_);
 	for (size_t i = 0; i < numbers_.size(); ++i) {

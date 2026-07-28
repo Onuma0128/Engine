@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Vector2.h"
 #include "Vector3.h"
@@ -10,6 +10,8 @@
 #ifdef max
 #undef max
 #endif
+
+namespace NumaEngine {
 
 // 円
 struct Circle {
@@ -50,9 +52,12 @@ public:
 	/// <param name="obb"></回転矩形>
 	/// <param name="aabb"></矩形>
 	/// <returns></returns>
-	static bool OBBAABB(const OBB_2D& obb, const AABB_2D& aabb);
+
+static bool OBBAABB(const OBB_2D& obb, const AABB_2D& aabb);
 
 };
+
+} // namespace NumaEngine
 
 
 

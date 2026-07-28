@@ -9,6 +9,8 @@
 
 using Microsoft::WRL::ComPtr;
 
+namespace NumaEngine {
+
 class CompileShaderBase
 {
 public:
@@ -32,4 +34,7 @@ protected:
 	D3D12_SHADER_BYTECODE psBytecode{};
 
 };
+
+
+} // namespace NumaEngine
 

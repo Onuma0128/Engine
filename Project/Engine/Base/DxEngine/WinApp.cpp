@@ -1,12 +1,13 @@
 #include "WinApp.h"
 
 #pragma comment(lib,"winmm.lib")
+#include "WinApp.h"
 #include "imgui.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 // ウィンドウプロシージェ
-LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+LRESULT NumaEngine::WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) {
 		return true;
@@ -23,7 +24,7 @@ LRESULT WinApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
-void WinApp::Initialize()
+void NumaEngine::WinApp::Initialize()
 {
 	//COMの初期化
 	HRESULT hr = CoInitializeEx(0, COINIT_MULTITHREADED);
@@ -66,11 +67,11 @@ void WinApp::Initialize()
 	timeBeginPeriod(1);
 }
 
-void WinApp::Update()
+void NumaEngine::WinApp::Update()
 {
 }
 
-bool WinApp::ProcessMessage()
+bool NumaEngine::WinApp::ProcessMessage()
 {
 	MSG msg{};
 
@@ -86,7 +87,7 @@ bool WinApp::ProcessMessage()
 	return false;
 }
 
-void WinApp::Finalize()
+void NumaEngine::WinApp::Finalize()
 {
 	//ゲーム終了の処理
 	CoUninitialize();

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "JsonFunction.h"
 
@@ -62,8 +62,8 @@ public:
 
 private:
 
-	// Jsonファイルを読み込むローダー
-	JsonFunction cameraJson_;
+    // Jsonファイルを読み込むローダー
+	NumaEngine::JsonFunction cameraJson_;
 
 
 	GameCameraData cameraData_;

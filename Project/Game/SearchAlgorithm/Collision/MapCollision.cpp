@@ -11,22 +11,22 @@ void MapCollision::Init(SceneJsonLoader loader)
 		if (it->second.groupName == "FieldObject") {
 			auto& object = it->second;
                 if (object.collider.active) {
-				if (object.collider.type == NumaEngine::ColliderType::kOBB) {
+                if (object.collider.type == NumaEngine::ColliderType::kOBB) {
 					NumaEngine::Vector2 center = NumaEngine::Vector2::Rotate(
 						{ object.collider.center.x,object.collider.center.z },
 						-object.collider.rotate
 					);
-					OBB_2D obb = {
-						.center = object.collider.defPosition + center,
-						.rotate = object.collider.rotate,
-						.size = {object.collider.size.x,object.collider.size.z},
-						.worldPosition = object.transform.translation_
+                    NumaEngine::OBB_2D obb{
+						object.collider.defPosition + center,
+						object.collider.rotate,
+						{object.collider.size.x,object.collider.size.z},
+						object.transform.translation_
 					};
 					objects_obb_.push_back(obb);
 				} else {
-					Circle circle = {
-						.center = object.collider.defPosition,
-						.radius = object.collider.radius
+                    NumaEngine::Circle circle{
+						object.collider.defPosition,
+						object.collider.radius
 					};
 					objects_circle_.push_back(circle);
 				}
@@ -78,17 +78,17 @@ void MapCollision::Update()
 	grid_->Update();
 }
 
-void MapCollision::ReTargetMapCollisionOBB(const OBB_2D& prevOBB, const OBB_2D& currentOBB)
+void MapCollision::ReTargetMapCollisionOBB(const NumaEngine::OBB_2D& prevOBB, const NumaEngine::OBB_2D& currentOBB)
 {
 	// フィールドオブジェクトとの判定
 	for (auto& maptips : mapDatas_) {
 		for (auto& block : maptips) {
 			// OBB
-			if (Collision2D::OBBAABB(prevOBB, block.aabb)) {
+            if (NumaEngine::Collision2D::OBBAABB(prevOBB, block.aabb)) {
 				block.isEnable = true;
 				grid_->DeleteHitAABB(block.aabb);
 			}
-			if (Collision2D::OBBAABB(currentOBB, block.aabb)) {
+            if (NumaEngine::Collision2D::OBBAABB(currentOBB, block.aabb)) {
 				block.isEnable = false;
 				grid_->HitAABB(block.aabb);
 			}
@@ -122,18 +122,18 @@ void MapCollision::CreateMapCollision()
 	// フィールドオブジェクトとの判定
 	for (auto& maptips : mapDatas_) {
 		for (auto& block : maptips) {
-			// OBB
+            // OBB
 			for (auto& obb : objects_obb_) {
-				if (Collision2D::OBBAABB(obb, block.aabb)) {
+				if (NumaEngine::Collision2D::OBBAABB(obb, block.aabb)) {
 					block.isEnable = false;
 					grid_->HitAABB(block.aabb);
 					break;
 				}
 			}
 			if (!block.isEnable) { continue; }
-			// Circle
+            // Circle
 			for (auto& circle : objects_circle_) {
-				if (Collision2D::CircleAABB(circle, block.aabb)) {
+				if (NumaEngine::Collision2D::CircleAABB(circle, block.aabb)) {
 					block.isEnable = false;
 					grid_->HitAABB(block.aabb);
 					break;

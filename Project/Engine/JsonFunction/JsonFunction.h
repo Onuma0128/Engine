@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <json.hpp>
 #include <string>
 #include <fstream>
@@ -69,8 +69,9 @@ namespace nlohmann {
 /// <summary>
 /// JSON操作を行うクラス
 /// </summary>
-class JsonFunction
-{
+namespace NumaEngine {
+    class JsonFunction
+    {
 public:
 
     // コンストラクタでファイルパスを取得する
@@ -125,7 +126,10 @@ private:
     const std::string kDirectoryPath_ = "resources/gameData/";
     std::string filePath_ = "";
 
-};
+    };
+} // namespace NumaEngine
+
+// No global alias: use `NumaEngine::JsonFunction` explicitly.
 
 
 

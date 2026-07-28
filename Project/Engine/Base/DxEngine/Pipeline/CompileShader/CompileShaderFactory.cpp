@@ -5,6 +5,7 @@
 
 #include "Logger.h"
 #include "StringUtility.h"
+namespace NumaEngine {
 
 D3D12_SHADER_BYTECODE& CompileShaderFactory::GetCompileShader_VS(PipelineType type, ComPtr<IDxcUtils> dxcUtils, ComPtr<IDxcCompiler3>& dxcCompiler, ComPtr<IDxcIncludeHandler> includeHandler)
 {
@@ -34,8 +35,8 @@ D3D12_SHADER_BYTECODE CompileShaderFactory::CreateCompileShader(
 	ComPtr<IDxcCompiler3> dxcCompiler,
 	ComPtr<IDxcIncludeHandler> includeHandler)
 {
-	ComPtr<IDxcBlob> vsBlob = CompileShader(
-		filePath, profile,dxcUtils.Get(), dxcCompiler.Get(), includeHandler.Get()
+    ComPtr<IDxcBlob> vsBlob = CompileShader(
+		filePath, profile, dxcUtils, dxcCompiler, includeHandler
 	);
 	assert(vsBlob != nullptr);
 
@@ -164,3 +165,5 @@ std::unique_ptr<CompileShaderBase> CompileShaderFactory::GetCompileShaderPtr(Pip
 
 	return std::move(compileShader[type]);
 }
+
+} // namespace NumaEngine

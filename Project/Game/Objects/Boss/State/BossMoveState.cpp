@@ -1,4 +1,4 @@
-﻿#include "BossMoveState.h"
+#include "BossMoveState.h"
 
 #include "DeltaTimer.h"
 
@@ -26,8 +26,8 @@ void BossMoveState::Update()
 	// データを取得する
 	const auto& data = boss_->GetItems()->GetMainData();
 	// 時間を更新
-	searchTimer_ += DeltaTimer::GetDeltaTime();
-	spawnTimer_ += DeltaTimer::GetDeltaTime();
+    searchTimer_ += NumaEngine::DeltaTimer::GetDeltaTime();
+	spawnTimer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	// 更新時間が来たら探索を再更新する
 	if (searchTimer_ > data.searchUpdateTime) {
 		boss_->ResetSearch(boss_->GetPlayer()->GetTransform().translation_);
@@ -44,8 +44,8 @@ void BossMoveState::Update()
 	NumaEngine::Vector3 velocity = boss_->GetPathFinder().GetVelocity();
 	velocity.y = 0.0f;
 	if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
-	NumaEngine::Vector3 translate = boss_->GetTransform().translation_ +
-		speed * velocity * DeltaTimer::GetDeltaTime();
+    NumaEngine::Vector3 translate = boss_->GetTransform().translation_ +
+		speed * velocity * NumaEngine::DeltaTimer::GetDeltaTime();
 	boss_->SetTransformTranslation(translate);
 
 	// 移動時の回転の更新

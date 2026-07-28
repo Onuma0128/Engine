@@ -47,7 +47,7 @@ void PlayerAvoidState::Update()
 
 	float speed = data.avoid_speed;
 	if (player_->GetIsPushMove()) { speed = data.speed; }
-	avoidTime_ += DeltaTimer::GetDeltaTime() * (1.0f / data.avoidTime);
+    avoidTime_ += NumaEngine::DeltaTimer::GetDeltaTime() * (1.0f / data.avoidTime);
 	avoidTime_ = std::clamp(avoidTime_, 0.0f, 1.0f);
 
 	// 回転を適応
@@ -56,8 +56,8 @@ void PlayerAvoidState::Update()
 	player_->SetTransformRotation(rotateY_ * rotateX);
 	// 座標を更新
 	NumaEngine::Vector3 position = player_->GetTransform().translation_;
-	player_->SetTransformTranslation(position + velocity_ * speed * DeltaTimer::GetDeltaTime());
-	velocityY_ -= acceleration_ * DeltaTimer::GetDeltaTime();
+    player_->SetTransformTranslation(position + velocity_ * speed * NumaEngine::DeltaTimer::GetDeltaTime());
+    velocityY_ -= acceleration_ * NumaEngine::DeltaTimer::GetDeltaTime();
 	NumaEngine::Vector2 min = player_->GetItem()->GetPlayerData().minPlayerClamp;
 	NumaEngine::Vector2 max = player_->GetItem()->GetPlayerData().maxPlayerClamp;
 	position = player_->GetTransform().translation_;

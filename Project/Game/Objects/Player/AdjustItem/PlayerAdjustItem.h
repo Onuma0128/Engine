@@ -102,11 +102,11 @@ public:
 
 private:
 
-	// Jsonファイルを読み込むローダー
-	JsonFunction playerJson_;
-	JsonFunction bulletJson_;
-	JsonFunction preObjectJson_;
-	JsonFunction bulletUIJson_;
+    // Jsonファイルを読み込むローダー
+	NumaEngine::JsonFunction playerJson_;
+	NumaEngine::JsonFunction bulletJson_;
+	NumaEngine::JsonFunction preObjectJson_;
+	NumaEngine::JsonFunction bulletUIJson_;
 
 	// プレイヤーの項目
 	PlayerData playerData_;

@@ -1,4 +1,4 @@
-﻿#include "BossEffect.h"
+#include "BossEffect.h"
 
 #include <numbers>
 
@@ -26,29 +26,29 @@ void BossEffect::Init()
 	dashAttackTimeEffect_->SetTexture("gradationWhite.png");
 	dashAttackPrediction_ = std::make_unique<BossDashPrediction>();
 	dashAttackPrediction_->Init();
-	// ジャンプ時の煙エフェクト
-	jumpDustEmitter_ = std::make_unique<ParticleEmitter>("jumpDust");
+    // ジャンプ時の煙エフェクト
+	jumpDustEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("jumpDust");
 	particleManager_->CreateParticleGroup(jumpDustEmitter_);
 	jumpDustEmitter_->SetIsCreate(false);
 	// ダッシュ時のダウンエフェクト
-	downLineEmitter_ = std::make_unique<ParticleEmitter>("downLine");
+    downLineEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("downLine");
 	particleManager_->CreateParticleGroup(downLineEmitter_);
 	downLineEmitter_->SetIsCreate(false);
-	downStarEmitter_ = std::make_unique<ParticleEmitter>("downStar");
+	downStarEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("downStar");
 	particleManager_->CreateParticleGroup(downStarEmitter_);
 	downStarEmitter_->SetIsCreate(false);
 	// ヒット時のエフェクト
-	hitExplosionEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
+    hitExplosionEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyHitExplosion");
 	particleManager_->CreateParticleGroup(hitExplosionEmitter_);
 	hitExplosionEmitter_->SetIsCreate(false);
-	hitExplosionBlueEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosionBlue");
+	hitExplosionBlueEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyHitExplosionBlue");
 	particleManager_->CreateParticleGroup(hitExplosionBlueEmitter_);
 	hitExplosionBlueEmitter_->SetIsCreate(false);
 
-	hitRingEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRing");
+	hitRingEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyHitRing");
 	particleManager_->CreateParticleGroup(hitRingEmitter_);
 	hitRingEmitter_->SetIsCreate(false);
-	hitRingBlueEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRingBlue");
+	hitRingBlueEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyHitRingBlue");
 	particleManager_->CreateParticleGroup(hitRingBlueEmitter_);
 	hitRingBlueEmitter_->SetIsCreate(false);
 }
@@ -123,7 +123,7 @@ void BossEffect::Draw()
 void BossEffect::SetAttackEffect(BossAttackEffect effect)
 {
 	// タイムを加算
-	attackEffectTime_ += DeltaTimer::GetDeltaTime();
+    attackEffectTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 	switch (effect)
 	{

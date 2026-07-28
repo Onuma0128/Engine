@@ -136,14 +136,14 @@ public:
 
 private:
 
-	// Jsonファイルを読み込むローダー
-	JsonFunction mainJson_;
-	JsonFunction dashJson_;
-	JsonFunction attackJson_;
-	JsonFunction knockbackJson_;
-	JsonFunction pushUpJson_;
-	JsonFunction effectJson_;
-	JsonFunction seVolumeJson_;
+    // Jsonファイルを読み込むローダー
+	NumaEngine::JsonFunction mainJson_;
+	NumaEngine::JsonFunction dashJson_;
+	NumaEngine::JsonFunction attackJson_;
+	NumaEngine::JsonFunction knockbackJson_;
+	NumaEngine::JsonFunction pushUpJson_;
+	NumaEngine::JsonFunction effectJson_;
+	NumaEngine::JsonFunction seVolumeJson_;
 
 	// 仲間全体の項目
 	CompanionMainData mainData_;

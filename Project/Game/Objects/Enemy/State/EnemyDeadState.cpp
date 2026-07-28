@@ -61,7 +61,7 @@ void EnemyDeadState::Update()
 {
 	const auto data = enemy_->GetItem()->GetMainData();
 
-	deadTimer_ -= DeltaTimer::GetDeltaTime();
+    deadTimer_ -= NumaEngine::DeltaTimer::GetDeltaTime();
 	deadTimer_ = std::clamp(deadTimer_, 0.0f, maxDeadTimer_);
 	// スケール変化を更新
 	if (deadTimer_ > (maxDeadTimer_ - data.kNockbackScaleTimer)) {
@@ -78,12 +78,12 @@ void EnemyDeadState::Update()
 		float t = std::clamp(1.0f - (deadTimer_ - 4.0f), 0.0f, 1.0f);
 		NumaEngine::Vector3 enemyPosition = enemy_->GetTransform().translation_;
 		if (enemy_->GetTransform().translation_.y > 0.5f) {
-			enemyPosition.y += velocity_.y * DeltaTimer::GetDeltaTime();
-			target_.y += velocity_.y * DeltaTimer::GetDeltaTime();
+            enemyPosition.y += velocity_.y * NumaEngine::DeltaTimer::GetDeltaTime();
+			target_.y += velocity_.y * NumaEngine::DeltaTimer::GetDeltaTime();
 		}
 		NumaEngine::Vector3 target = NumaEngine::Vector3::Lerp(enemyPosition, target_, t);
 		enemy_->SetTransformTranslation(target);
-		velocity_.y -= accelerationY_ * DeltaTimer::GetDeltaTime();
+        velocity_.y -= accelerationY_ * NumaEngine::DeltaTimer::GetDeltaTime();
 		// 回転をスラープさせる
 		defaultRotate_ = NumaEngine::Quaternion::Slerp(defaultRotate_, targetRotate_, 0.2f);
 		enemy_->SetTransformRotation(defaultRotate_);

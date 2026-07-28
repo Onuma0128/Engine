@@ -44,8 +44,8 @@ public:
 
 	/*==================== アクセッサー ====================*/
 
-	// 平行光源のリソース取得
-	BaseLight* GetDirectionalLight() const { return directionalLight_.get(); }
+    // 平行光源のリソース取得
+	NumaEngine::BaseLight* GetDirectionalLight() const { return directionalLight_.get(); }
 	ID3D12Resource* GetDirectionalLightResource()const { return directionalLight_->GetResource(); }
 	// ポイントライトのリソース取得
 	ID3D12Resource* GetPointLightResource()const { return pointLight_->GetResource(); }
@@ -58,14 +58,14 @@ private:
 
 	/*==================== 平行光源 ====================*/
 
-	std::unique_ptr<BaseLight> directionalLight_ = nullptr;
+    std::unique_ptr<NumaEngine::BaseLight> directionalLight_ = nullptr;
 
 	/*==================== ポイントライト ====================*/
 
-	std::unique_ptr<BaseLight> pointLight_ = nullptr;
+    std::unique_ptr<NumaEngine::BaseLight> pointLight_ = nullptr;
 
 	/*==================== スポットライト ====================*/
 
-	std::unique_ptr<BaseLight> spotLight_ = nullptr;
+    std::unique_ptr<NumaEngine::BaseLight> spotLight_ = nullptr;
 
 };

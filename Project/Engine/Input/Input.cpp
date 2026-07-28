@@ -21,7 +21,7 @@ void Input::Finalize()
 	instance_ = nullptr;
 }
 
-void Input::Initialize(WinApp* winApp)
+void Input::Initialize(NumaEngine::WinApp* winApp)
 {
 	winApp_ = winApp;
 
@@ -109,8 +109,8 @@ void Input::Update()
 	}
 
 	if (rumble_.active) {
-		// ▼ スローモーションに追従させる場合
-		float dt = DeltaTimer::GetDeltaTime();
+        // ▼ スローモーションに追従させる場合
+		float dt = NumaEngine::DeltaTimer::GetDeltaTime();
 
 		// 現実時間で減らしたい場合
 

@@ -67,32 +67,32 @@ private:
 	// 仲間のポインタ
 	MuscleCompanion* companion_ = nullptr;
 
-	// パーティクルを管理する
-	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+    // パーティクルを管理する
+	NumaEngine::ParticleManager* particleManager_ = NumaEngine::ParticleManager::GetInstance();
 
 	/* ==================== 仲間が移動時のエフェクト ==================== */
 
-	// 移動時の土埃
-	std::shared_ptr<ParticleEmitter> moveDustEmitter_ = nullptr;
+    // 移動時の土埃
+	std::shared_ptr<NumaEngine::ParticleEmitter> moveDustEmitter_ = nullptr;
 
 	/* ==================== 仲間がダッシュ時のエフェクト ==================== */
 
-	std::shared_ptr<ParticleEmitter> dashEmitter_ = nullptr;
-	std::shared_ptr<ParticleEmitter> searchDashEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> dashEmitter_ = nullptr;
+	std::shared_ptr<NumaEngine::ParticleEmitter> searchDashEmitter_ = nullptr;
 
 	/* ==================== 仲間のダメージアップエフェクト ==================== */
 
-	std::shared_ptr<ParticleEmitter> damageUpEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> damageUpEmitter_ = nullptr;
 
 	/* ==================== 仲間のレベルアップエフェクト ==================== */
 
-	std::shared_ptr<ParticleEmitter> levelUpEmitter_ = nullptr;
-	std::shared_ptr<ParticleEmitter> levelUpRingEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> levelUpEmitter_ = nullptr;
+	std::shared_ptr<NumaEngine::ParticleEmitter> levelUpRingEmitter_ = nullptr;
 
 	/* ==================== 仲間がダメージ時のエフェクト ==================== */
 
 	// 血飛沫
-	std::shared_ptr<ParticleEmitter> hitEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> hitEmitter_ = nullptr;
 
 };
 

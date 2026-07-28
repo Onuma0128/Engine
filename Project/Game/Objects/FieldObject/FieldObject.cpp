@@ -56,10 +56,10 @@ void FieldObject::Update()
 		if (distance < items_->GetMainData().cameraDistance) {
             NumaEngine::ModelInstanceRenderer::GetInstance()->AddLateDrawModelName(GetModel()->GetModelData().filePath);
 			this->NumaEngine::Object3d::GetMaterial().outlineMask = false;
-			alpha_ -= DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
+            alpha_ -= NumaEngine::DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
 		} else {
             this->NumaEngine::Object3d::GetMaterial().outlineMask = true;
-			alpha_ += DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
+            alpha_ += NumaEngine::DeltaTimer::GetDeltaTime() / items_->GetMainData().alphaTime;
 		}
 		alpha_ = std::clamp(alpha_, 0.0f, 1.0f);
         this->NumaEngine::Object3d::SetColor(NumaEngine::Vector4{ 1.0f,1.0f,1.0f,alpha_ });
@@ -97,16 +97,16 @@ void FieldObject::OnCollisionEnter(Collider* other)
 				// マップの衝突判定を更新する
 				float prevRotate = NumaEngine::Quaternion::ToEuler(Collider::GetRotate()).y;
 				float currentRotate = NumaEngine::Quaternion::ToEuler(other->GetRotate()).y;
-				OBB_2D prevOBB{
-					.center = { Collider::centerPosition_.x,Collider::centerPosition_.z },
-					.rotate = prevRotate,
-					.size = { Collider::size_.x,Collider::size_.z }
+                NumaEngine::OBB_2D prevOBB{
+					{ Collider::centerPosition_.x, Collider::centerPosition_.z },
+					prevRotate,
+					{ Collider::size_.x, Collider::size_.z }
 				};
 				NumaEngine::Vector3 offset = Collider::offsetPosition_.Transform(NumaEngine::Quaternion::MakeRotateMatrix(breakRotate_));
-				OBB_2D currentOBB{
-					.center = { Collider::centerPosition_.x + offset.x,Collider::centerPosition_.z + offset.z },
-					.rotate = currentRotate,
-					.size = { Collider::size_.x,Collider::size_.y } 
+                NumaEngine::OBB_2D currentOBB{
+					{ Collider::centerPosition_.x + offset.x, Collider::centerPosition_.z + offset.z },
+					currentRotate,
+					{ Collider::size_.x, Collider::size_.y }
 				};
 				mapCollision_->ReTargetMapCollisionOBB(prevOBB, currentOBB);
 				// カメラをシェイクさせる
@@ -149,9 +149,9 @@ void FieldObject::UpdateShake(NumaEngine::Vector3& shake)
 
 void FieldObject::UpdateBreak()
 {
-	if (isBreak_ && breakTimer_ < 1.0f) {
+    if (isBreak_ && breakTimer_ < 1.0f) {
 		const auto& data = items_->GetMainData();
-		breakTimer_ += DeltaTimer::GetDeltaTime() / data.breakTimer;
+        breakTimer_ += NumaEngine::DeltaTimer::GetDeltaTime() / data.breakTimer;
 		breakTimer_ = std::clamp(breakTimer_, 0.0f, 1.0f);
 		float t = Easing::EaseOutBounce(breakTimer_);
 		transform_.rotation_ = NumaEngine::Quaternion::Slerp(prevRotate_, breakRotate_,t);

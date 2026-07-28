@@ -25,8 +25,8 @@ void AlgorithmTest::Update(const NumaEngine::Vector3& goal)
 	}
 	ImGui::End();
 
-	// 自動で探索をする
-	isSearchTime_ += DeltaTimer::GetDeltaTime();
+    // 自動で探索をする
+	isSearchTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	if (isSearchTime_ >= searchDecisionTime_) {
 		isSearchTime_ = 0.0f;
 		Reset(goal);

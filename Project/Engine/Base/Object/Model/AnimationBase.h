@@ -1,9 +1,12 @@
+
 #pragma once
 #include <d3d12.h>
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
 
 using Microsoft::WRL::ComPtr;
+
+namespace NumaEngine {
 
 /// <summary>
 /// アニメーションのPSOを管理するクラス
@@ -24,4 +27,8 @@ private:
 	// パイプラインステート
 	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
 };
+
+} // namespace NumaEngine
+
+
 

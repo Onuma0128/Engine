@@ -52,8 +52,8 @@ void PostEffectManager::CreatePostEffect(PostEffectType type)
     // RenderTexture作成
     pass.renderTexture = RenderTexture::CreateResource(
         dxEngine_->GetDevice(),
-        WinApp::kClientWidth,
-        WinApp::kClientHeight,
+        NumaEngine::WinApp::kClientWidth,
+        NumaEngine::WinApp::kClientHeight,
         DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
         { 0.0f,0.0f,0.0f,1.0f }
     );
@@ -309,17 +309,17 @@ uint32_t PostEffectManager::DrawEffect(PostEffectType type, uint32_t inputSRVInd
 
 void PostEffectManager::ResourceInitialize()
 {
-    grayscaleResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(GrayscaleData));
+    grayscaleResource_ = NumaEngine::CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(GrayscaleData));
     grayscaleResource_->Map(0, nullptr, reinterpret_cast<void**>(&grayscaleData_));
     grayscaleData_->color = { 0.2125f, 0.7154f, 0.0721f };
     grayscaleData_->t = 0.0f;
 
-    vignetteResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(VignetteData));
+    vignetteResource_ = NumaEngine::CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(VignetteData));
     vignetteResource_->Map(0, nullptr, reinterpret_cast<void**>(&vignetteData_));
     vignetteData_->scale = 16.0f;
     vignetteData_->gamma = 0.0f;
 
-    outlineResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(OutlineData));
+    outlineResource_ = NumaEngine::CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(OutlineData));
     outlineResource_->Map(0, nullptr, reinterpret_cast<void**>(&outlineData_));
     outlineData_->projection = NumaEngine::Matrix4x4::Identity();
 }
@@ -329,15 +329,15 @@ void PostEffectManager::CreateOutLineMaskResource()
     // RenderTexture作成
     maskPass_.outlineMask = RenderTexture::CreateResource(
         dxEngine_->GetDevice(),
-        WinApp::kClientWidth,
-        WinApp::kClientHeight,
+        NumaEngine::WinApp::kClientWidth,
+        NumaEngine::WinApp::kClientHeight,
         DXGI_FORMAT_R8G8B8A8_UNORM,
         { 0.0f,0.0f,0.0f,0.0f }
     );
     maskPass_.objectID = RenderTexture::CreateResource(
         dxEngine_->GetDevice(),
-        WinApp::kClientWidth,
-        WinApp::kClientHeight,
+        NumaEngine::WinApp::kClientWidth,
+        NumaEngine::WinApp::kClientHeight,
         DXGI_FORMAT_R32_UINT,
         { 0.0f,0.0f,0.0f,0.0f }
     );

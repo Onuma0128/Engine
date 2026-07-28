@@ -4,10 +4,10 @@
 #include "gameClear/GameClearScene.h"
 #include "gameOver/GameOverScene.h"
 
-std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneName)
+std::unique_ptr<NumaEngine::BaseScene> NumaEngine::SceneFactory::CreateScene(const std::string& sceneName)
 {
 	// 次のシーンを生成
-	std::unique_ptr<BaseScene> newScene = nullptr;
+	std::unique_ptr<NumaEngine::BaseScene> newScene = nullptr;
 
 	if (sceneName == "Title") {
 		newScene = std::make_unique<TitleScene>();

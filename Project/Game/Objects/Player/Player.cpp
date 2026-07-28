@@ -125,12 +125,12 @@ void Player::OnCollisionStay(NumaEngine::Collider* other)
 		isPushMove_ = true;
 		NumaEngine::Vector3 push{};
         if (other->GetMyColliderType() == NumaEngine::ColliderType::kOBB) {
-			push = Collision3D::GetOBBSpherePushVector(other, this);
+			push = NumaEngine::Collision3D::GetOBBSpherePushVector(other, this);
         } else if (other->GetMyColliderType() == NumaEngine::ColliderType::kSphere) {
-			push = Collision3D::GetSphereSpherePushVector(other, this);
+            push = NumaEngine::Collision3D::GetSphereSpherePushVector(other, this);
 		}
 		push.y = 0.0f;
-		transform_.translation_ += push * items_->GetPlayerData().pushSpeed * DeltaTimer::GetDeltaTime();
+        transform_.translation_ += push * items_->GetPlayerData().pushSpeed * NumaEngine::DeltaTimer::GetDeltaTime();
         this->centerPosition_ = transform_.translation_;
         NumaEngine::Collider::Update();
 		Animation::TransformUpdate();

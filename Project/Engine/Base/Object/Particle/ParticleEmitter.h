@@ -17,8 +17,9 @@
 /// <summary>
 /// パーティクルエミッタクラス
 /// </summary>
-class ParticleEmitter
-{
+namespace NumaEngine {
+	class ParticleEmitter
+	{
 public:
 
     /// <summary>
@@ -174,6 +175,9 @@ private:
 
 	bool isCreate_ = true;    
 	bool onceEmit_ = false;
-};
+    };
+} // namespace NumaEngine
+
+// No global alias: use `NumaEngine::ParticleEmitter` explicitly.
 
 

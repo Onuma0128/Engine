@@ -30,7 +30,7 @@ void BossDownState::Update()
 	const auto& data = boss_->GetItems()->GetDownData();
 
 	// タイムを加算
-	timer_ += DeltaTimer::GetDeltaTime();
+    timer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 	// エフェクトを更新
 	boss_->GetEffect()->EmitDownStar(true);

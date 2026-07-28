@@ -166,7 +166,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 		}
 		// 初回ヒット時はヒットジャンプステートに遷移
 		if (isCompanion && other->GetRadius() > 0.5f && !stateParam_.isJumping_) {
-			DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
+            NumaEngine::DeltaTimer::SetTimeScaleForSeconds(0.1f, 0.1f);
 			stateParam_.isJumping_ = true;
 			ChangeState(std::make_unique<EnemyHitJumpState>(this));
 		} else if (isFollowerCompanion || isSearchDashCompanion) {
@@ -228,7 +228,7 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 	// プレイヤーと当たっているなら
 	if (other->GetColliderName() == "Player") {
 		const float speed = 2.0f;
-		transform_.translation_ -= velocity_ * speed * DeltaTimer::GetDeltaTime();
+        transform_.translation_ -= velocity_ * speed * NumaEngine::DeltaTimer::GetDeltaTime();
 	}
 
 	// 敵と当たっているなら
@@ -237,7 +237,7 @@ void BaseEnemy::OnCollisionStay(Collider* other)
 		NumaEngine::Vector3 velocity = transform_.translation_ - other->GetCenterPosition();
 		velocity.y = 0.0f;
 		if (velocity.Length() != 0.0f) { velocity = velocity.Normalize(); }
-		transform_.translation_ += velocity * speed * DeltaTimer::GetDeltaTime();
+        transform_.translation_ += velocity * speed * NumaEngine::DeltaTimer::GetDeltaTime();
 	}
 }
 

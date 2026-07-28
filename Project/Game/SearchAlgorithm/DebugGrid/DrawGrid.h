@@ -46,13 +46,13 @@ public:
 	/// ヒットグリッドにAABBを追加する
 	/// </summary>
 	/// <param name="aabb"></param>
-	void HitAABB(const AABB_2D& aabb);
+    void HitAABB(const NumaEngine::AABB_2D& aabb);
 
 	/// <summary>
 	/// 特定のヒットグリッドを削除する
 	/// </summary>
 	/// <param name="aabb"></param>
-	void DeleteHitAABB(const AABB_2D& aabb);
+    void DeleteHitAABB(const NumaEngine::AABB_2D& aabb);
 
 	/// <summary>
 	/// ヒットグリッドをクリアする
@@ -81,7 +81,7 @@ private:
 	std::vector<NumaEngine::Vector3> hitGridPositions_;
 
 	// ヒットしたAABBのリスト
-	std::vector<AABB_2D> hitAABBs_;
+    std::vector<NumaEngine::AABB_2D> hitAABBs_;
 
 };
 

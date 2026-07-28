@@ -21,6 +21,7 @@ namespace NumaEngine { class Line3d; }
 /// <summary>
 /// ラインのインスタンス、描画を管理するクラス
 /// </summary>
+namespace NumaEngine {
 class LineInstanceRenderer
 {
 private:
@@ -112,6 +113,9 @@ private:
     uint32_t totalInstances_ = 0;
     uint32_t capacity_ = 0;
 };
+
+} // namespace NumaEngine
+
 
 
 

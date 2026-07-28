@@ -104,9 +104,9 @@ void PlayerReticle::SegmentUpdate()
 	else { NumaEngine::Collider::isActive_ = true; }
 
     NumaEngine::Vector2 position = transform_.position;
-	NumaEngine::Vector3 ndc = {
-		(position.x / static_cast<float>(WinApp::kClientWidth)) * 2.0f - 1.0f,
-		-((position.y / static_cast<float>(WinApp::kClientHeight)) * 2.0f - 1.0f),
+    NumaEngine::Vector3 ndc = {
+		(position.x / static_cast<float>(NumaEngine::WinApp::kClientWidth)) * 2.0f - 1.0f,
+		-((position.y / static_cast<float>(NumaEngine::WinApp::kClientHeight)) * 2.0f - 1.0f),
 		1.0f
 	};
     NumaEngine::Matrix4x4 invVP = NumaEngine::Matrix4x4::Inverse(CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix());
@@ -140,8 +140,8 @@ void PlayerRayReticle::Draw()
 
 void PlayerRayReticle::SetRaticleAlpha(bool flag)
 {
-	if (flag) { alphaTimer_ += DeltaTimer::GetDeltaTime() * 5.0f; }
-	else { alphaTimer_ -= DeltaTimer::GetDeltaTime() * 5.0f; }
+    if (flag) { alphaTimer_ += NumaEngine::DeltaTimer::GetDeltaTime() * 5.0f; }
+	else { alphaTimer_ -= NumaEngine::DeltaTimer::GetDeltaTime() * 5.0f; }
 	alphaTimer_ = std::clamp(alphaTimer_, 0.0f, 1.0f);
 	float t = std::sinf(alphaTimer_ * std::numbers::pi_v<float>);
 
@@ -161,9 +161,9 @@ void PlayerRayReticle::SetPosition(const NumaEngine::Vector3& position)
 		position,
 		CameraManager::GetInstance()->GetActiveCamera()->GetViewProjectionMatrix()
 	);
-    NumaEngine::Vector2 pos = {
-		((screenPos.x + 1.0f) / 2.0f) * static_cast<float>(WinApp::kClientWidth),
-		((1.0f - screenPos.y) / 2.0f) * static_cast<float>(WinApp::kClientHeight)
+        NumaEngine::Vector2 pos = {
+		((screenPos.x + 1.0f) / 2.0f) * static_cast<float>(NumaEngine::WinApp::kClientWidth),
+		((1.0f - screenPos.y) / 2.0f) * static_cast<float>(NumaEngine::WinApp::kClientHeight)
 	};
 
     if(NumaEngine::Vector2::Distance(transform_.position, pos) > 320.0f){

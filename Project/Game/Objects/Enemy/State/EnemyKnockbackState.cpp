@@ -1,4 +1,4 @@
-﻿#include "EnemyKnockbackState.h"
+#include "EnemyKnockbackState.h"
 
 #include "Easing.h"
 #include "DeltaTimer.h"
@@ -28,7 +28,7 @@ void EnemyKnockbackState::Update()
 {
 	const float knockbackTime = 0.5f;
 
-	time_ += DeltaTimer::GetDeltaTime();
+    time_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	float t = time_ / knockbackTime;
 	t = std::clamp(t, 0.0f, 1.0f);
 	t = Easing::EaseOutQuint(t);

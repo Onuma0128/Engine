@@ -1,5 +1,5 @@
 #include "SrvManager.h"
-
+#include "SrvManager.h"
 #include <cassert>
 #include <stdexcept>
 
@@ -34,8 +34,8 @@ void SrvManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
-	// デスクリプタヒープの生成
-	descriptorHeap_ = CreateDescriptorHeap(
+    // デスクリプタヒープの生成
+	descriptorHeap_ = NumaEngine::CreateDescriptorHeap(
 		dxEngine_->GetDevice(),
 		D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV,
 		kMaxSRVCount_,

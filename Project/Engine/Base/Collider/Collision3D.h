@@ -31,11 +31,14 @@ struct OBB {
 	NumaEngine::Vector3 size;
 };
 
-namespace NumaEngine { class Collider; }
-
 /// <summary>
 /// 3D衝突判定クラス
 /// </summary>
+namespace NumaEngine {
+
+class Collider;
+
+
 class Collision3D
 {
 public:
@@ -121,11 +124,14 @@ public:
     static AABB ComputeBroadphaseAABB(const NumaEngine::Collider* collider);
 
 	// コライダーから各形状に変換する
-    static Sphere ChangeSphere(const NumaEngine::Collider* collider);
-	static Segment ChangeSegment(const NumaEngine::Collider* collider);
-	static AABB ChangeAABB(const NumaEngine::Collider* collider);
-	static OBB ChangeOBB(const NumaEngine::Collider* collider);
+
+static Sphere ChangeSphere(const NumaEngine::Collider* collider);
+static Segment ChangeSegment(const NumaEngine::Collider* collider);
+static AABB ChangeAABB(const NumaEngine::Collider* collider);
+static OBB ChangeOBB(const NumaEngine::Collider* collider);
 };
+
+} // namespace NumaEngine
 
 
 

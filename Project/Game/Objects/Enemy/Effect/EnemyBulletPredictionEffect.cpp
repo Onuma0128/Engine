@@ -53,15 +53,15 @@ void EnemyBulletPredictionEffect::OnCollisionStay(NumaEngine::Collider* other)
 	RaycastHit hit{};
 
     if (type == NumaEngine::ColliderType::kOBB) {
-		if (Collision3D::OBBSegment(other, this, &hit)) {
+		if (NumaEngine::Collision3D::OBBSegment(other, this, &hit)) {
 			float distance = NumaEngine::Vector3::Distance(hit.point, enemyPosition_);
 			if (hitDistance_ < distance) { return; }
 			hitDistance_ = distance;
 			hitPosition_ = hit.point;
 			isHit_ = true;
 		}
-	} else {
-		if (Collision3D::SphereSegment(other, this, &hit)) {
+    } else {
+		if (NumaEngine::Collision3D::SphereSegment(other, this, &hit)) {
             float distance = NumaEngine::Vector3::Distance(hit.point, enemyPosition_);
 			if (hitDistance_ < distance) { return; }
 			hitDistance_ = distance;

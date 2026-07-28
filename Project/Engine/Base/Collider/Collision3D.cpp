@@ -2,14 +2,15 @@
 
 #include <algorithm>
 
-#include "Collision3D.h"
 #include "Collider.h"
 #include "../../Math/Structure/Quaternion.h"
 
+namespace NumaEngine {
+
 bool Collision3D::SphereSphere(const NumaEngine::Collider* a, const NumaEngine::Collider* b)
 {
-	Sphere sphere1 = ChangeSphere(a);
-	Sphere sphere2 = ChangeSphere(b);
+    Sphere sphere1 = Collision3D::ChangeSphere(a);
+	Sphere sphere2 = Collision3D::ChangeSphere(b);
 
 	float distance = (sphere1.center - sphere2.center).Length();
 	if (distance <= sphere1.radius + sphere2.radius) {
@@ -20,8 +21,8 @@ bool Collision3D::SphereSphere(const NumaEngine::Collider* a, const NumaEngine::
 }
 
 NumaEngine::Vector3 Collision3D::GetSphereSpherePushVector(const NumaEngine::Collider* a, const NumaEngine::Collider* b) {
-	Sphere sA = ChangeSphere(a);
-	Sphere sB = ChangeSphere(b);
+    Sphere sA = Collision3D::ChangeSphere(a);
+	Sphere sB = Collision3D::ChangeSphere(b);
 
 	NumaEngine::Vector3 dir = sB.center - sA.center;
 	float dist = dir.Length();
@@ -44,10 +45,9 @@ NumaEngine::Vector3 Collision3D::GetSphereSpherePushVector(const NumaEngine::Col
 }
 
 
-bool Collision3D::AABBSphere(const AABB aabb, const Sphere sphere)
-{
+bool Collision3D::AABBSphere(const AABB aabb, const Sphere sphere) {
 	//最近接点を求める
-    NumaEngine::Vector3 closestPoint{
+	NumaEngine::Vector3 closestPoint{
 		std::clamp(sphere.center.x,aabb.min.x,aabb.max.x),
 		std::clamp(sphere.center.y,aabb.min.y,aabb.max.y),
 		std::clamp(sphere.center.z,aabb.min.z,aabb.max.z)
@@ -58,6 +58,7 @@ bool Collision3D::AABBSphere(const AABB aabb, const Sphere sphere)
 	if (distance <= sphere.radius) {
 		return true;
 	}
+
 	return false;
 }
 
@@ -89,8 +90,8 @@ bool Collision3D::AABBSegment(const AABB aabb, const Segment segment)
 
 bool Collision3D::OBBSphere(const NumaEngine::Collider* a, const NumaEngine::Collider* b)
 {
-	OBB obb = ChangeOBB(a);
-	Sphere sphere = ChangeSphere(b);
+    OBB obb = Collision3D::ChangeOBB(a);
+	Sphere sphere = Collision3D::ChangeSphere(b);
 
 	// OBBのWorld行列を作成
     NumaEngine::Matrix4x4 worldInverse = NumaEngine::Matrix4x4::Identity();
@@ -121,7 +122,7 @@ bool Collision3D::OBBSphere(const NumaEngine::Collider* a, const NumaEngine::Col
 	};
 
 	// AABBとSphereで判定を取る
-	if (AABBSphere(aabb_OBBLocal, sphere_OBBLocal)) {
+    if (Collision3D::AABBSphere(aabb_OBBLocal, sphere_OBBLocal)) {
 		return true;
 	} else {
 		return false;
@@ -129,8 +130,8 @@ bool Collision3D::OBBSphere(const NumaEngine::Collider* a, const NumaEngine::Col
 }
 
 NumaEngine::Vector3 Collision3D::GetOBBSpherePushVector(const NumaEngine::Collider* a, const NumaEngine::Collider* b) {
-	OBB obb = ChangeOBB(a);
-	Sphere sphere = ChangeSphere(b);
+    OBB obb = Collision3D::ChangeOBB(a);
+	Sphere sphere = Collision3D::ChangeSphere(b);
 
 	// OBBのワールド→ローカル変換行列
     NumaEngine::Matrix4x4 worldToLocal = NumaEngine::Matrix4x4::Identity();
@@ -261,7 +262,7 @@ bool Collision3D::SphereSegment(const NumaEngine::Collider* sphereCol,
 
 bool Collision3D::OBBSegment(const NumaEngine::Collider* a, const NumaEngine::Collider* b)
 {
-	OBB obb = ChangeOBB(a);
+    OBB obb = Collision3D::ChangeOBB(a);
 	Segment segment = ChangeSegment(b);
 
 	// OBBのWorld行列を作成
@@ -520,4 +521,4 @@ OBB Collision3D::ChangeOBB(const NumaEngine::Collider* collider)
 	};
 }
 
-
+} // namespace NumaEngine

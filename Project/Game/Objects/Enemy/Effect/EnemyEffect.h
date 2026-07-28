@@ -112,33 +112,33 @@ private:
 
 	BaseEnemy* enemy_ = nullptr;
 
-	// パーティクルを管理する
-	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+    // パーティクルを管理する
+	NumaEngine::ParticleManager* particleManager_ = NumaEngine::ParticleManager::GetInstance();
 
 	/* ==================== 敵が移動時のエフェクト ==================== */
 
-	// 移動時の土埃
-	std::shared_ptr<ParticleEmitter> moveDustEmitter_ = nullptr;
+    // 移動時の土埃
+	std::shared_ptr<NumaEngine::ParticleEmitter> moveDustEmitter_ = nullptr;
 
 	/* ==================== 仲間がヒットした時のエフェクト ==================== */
 
 	// 仲間がヒットした時のエフェクト(血飛沫)
-	std::shared_ptr<ParticleEmitter> hitEmitter_;
+    std::shared_ptr<NumaEngine::ParticleEmitter> hitEmitter_;
 	// 仲間がヒットした時のエフェクト(爆発)
-	std::shared_ptr<ParticleEmitter> hitExplosionEmitter_;
-	std::shared_ptr<ParticleEmitter> hitExplosionBlueEmitter_;
+    std::shared_ptr<NumaEngine::ParticleEmitter> hitExplosionEmitter_;
+	std::shared_ptr<NumaEngine::ParticleEmitter> hitExplosionBlueEmitter_;
 	// 仲間がヒットした時のエフェクト(爆発)
-	std::shared_ptr<ParticleEmitter> hitRingEmitter_;
-	std::shared_ptr<ParticleEmitter> hitRingBlueEmitter_;
+    std::shared_ptr<NumaEngine::ParticleEmitter> hitRingEmitter_;
+	std::shared_ptr<NumaEngine::ParticleEmitter> hitRingBlueEmitter_;
 
 	/* ==================== 敵が死亡時のエフェクト ==================== */
 
-	// 死亡のエフェクト
-	std::shared_ptr<ParticleEmitter> deadEmitter_ = nullptr;
+    // 死亡のエフェクト
+	std::shared_ptr<NumaEngine::ParticleEmitter> deadEmitter_ = nullptr;
 
 	/* ==================== 敵の攻撃時のエフェクト ==================== */
 
-	std::shared_ptr<ParticleEmitter> enemyMeleeAttack_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> enemyMeleeAttack_ = nullptr;
 
 	/* ==================== レティクルがヒットした時のエフェクト ==================== */
 
@@ -154,10 +154,10 @@ private:
 	std::vector<std::unique_ptr<EnemyBulletPredictionEffect>> bulletPredictionEffect_;
 
 	// 弾を撃った時の爆発
-	std::shared_ptr<ParticleEmitter> bulletExplosionEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> bulletExplosionEmitter_ = nullptr;
 	// 弾を撃った時の火花
-	std::shared_ptr<ParticleEmitter> bulletSparkEmitter_ = nullptr;
+	std::shared_ptr<NumaEngine::ParticleEmitter> bulletSparkEmitter_ = nullptr;
 	// 弾を撃った後の煙
-	std::shared_ptr<ParticleEmitter> bulletSmokeEmitter_ = nullptr;
+	std::shared_ptr<NumaEngine::ParticleEmitter> bulletSmokeEmitter_ = nullptr;
 
 };

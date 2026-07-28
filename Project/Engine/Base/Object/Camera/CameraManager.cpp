@@ -5,33 +5,33 @@
 
 #include "Camera.h"
 
-std::unique_ptr<CameraManager> CameraManager::instance_ = nullptr;
+std::unique_ptr<NumaEngine::CameraManager> NumaEngine::CameraManager::instance_ = nullptr;
 
-CameraManager* CameraManager::GetInstance()
+NumaEngine::CameraManager* NumaEngine::CameraManager::GetInstance()
 {
 	if (instance_ == nullptr) {
-		instance_ = std::make_unique<CameraManager>();
+		instance_ = std::make_unique<NumaEngine::CameraManager>();
 	}
 	return instance_.get();
 }
 
-void CameraManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
+void NumaEngine::CameraManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
 	// カメラリソースの作成
-    cameras_.push_back(std::make_shared<NumaEngine::Camera>());
+	cameras_.push_back(std::make_shared<NumaEngine::Camera>());
 	cameras_[activeCameraIndex_]->Initialize();
 	MakeCameraData();
 }
 
-void CameraManager::Debug_ImGui()
+void NumaEngine::CameraManager::Debug_ImGui()
 {
 	// ImGuiの更新
 	cameras_[activeCameraIndex_]->CameraImGui();
 }
 
-void CameraManager::Update()
+void NumaEngine::CameraManager::Update()
 {
 	// カメラの更新
 	cameras_[activeCameraIndex_]->Update();
@@ -40,20 +40,20 @@ void CameraManager::Update()
 	cameraData_->worldPosition = NumaEngine::Vector3{}.Transform(cameras_[activeCameraIndex_]->GetWorldMatrix());
 }
 
-void CameraManager::Finalize()
+void NumaEngine::CameraManager::Finalize()
 {
 	instance_ = nullptr;
 }
 
-void CameraManager::Clear()
+void NumaEngine::CameraManager::Clear()
 {
 	cameras_.clear();
 }
 
-void CameraManager::MakeCameraData()
+void NumaEngine::CameraManager::MakeCameraData()
 {
 	// WVP用のリソースを作る。Matrix4x4 1つ分のサイズを用意する
-	cameraResource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(NumaEngine::Vector3));
+	cameraResource_ = NumaEngine::CreateBufferResource(dxEngine_->GetDevice(), sizeof(NumaEngine::Vector3));
 
 	// 書き込むためのアドレスを取得
 	cameraResource_->Map(0, nullptr, reinterpret_cast<void**>(&cameraData_));

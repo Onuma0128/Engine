@@ -31,7 +31,7 @@ void EnemyShieldBearer_AttackState::Update()
 	ShieldBearerData data = enemy_->GetItem()->GetShieldBearerData();
 	EnemyWeaponBase* weapon = enemy_->GetWeapon();
 
-	chengeStateTime_ += DeltaTimer::GetDeltaTime();
+    chengeStateTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 	// 攻撃を始める硬直時間
 	float time = data.tempData.attackStartupTime;

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <vector>
 #include <list>
@@ -12,7 +12,7 @@
 /// マップの情報
 /// </summary>
 struct Maptip {
-	AABB_2D aabb;		// 座標格納
+ NumaEngine::AABB_2D aabb;		// 座標格納
 	NumaEngine::Vector3 center;		// 中心座標
 	bool isEnable;		// 有効かどうか
 };
@@ -58,7 +58,7 @@ public:
 	/// </summary>
 	/// <param name="prevOBB"></前のOBB>
 	/// <param name="currentOBB"></現在のOBB>
-	void ReTargetMapCollisionOBB(const OBB_2D& prevOBB, const OBB_2D& currentOBB);
+    void ReTargetMapCollisionOBB(const NumaEngine::OBB_2D& prevOBB, const NumaEngine::OBB_2D& currentOBB);
 
 private:
 
@@ -87,9 +87,9 @@ private:
 	// マップの座標を格納する多重配列
 	std::vector<std::vector<Maptip>> mapDatas_;
 	// OBBの判定が付いてる用
-	std::list<OBB_2D> objects_obb_;
+    std::list<NumaEngine::OBB_2D> objects_obb_;
 	// Sphereの判定が付いている用
-	std::list<Circle> objects_circle_;
+    std::list<NumaEngine::Circle> objects_circle_;
 
 	// グリッドを表示
 	std::unique_ptr<DrawGrid> grid_ = nullptr;

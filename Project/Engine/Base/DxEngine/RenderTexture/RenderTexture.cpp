@@ -1,7 +1,7 @@
 #include "RenderTexture.h"
-
 #include <cassert>
 
+#include "RenderTexture.h"
 #include "DirectXEngine.h"
 #include "WinApp.h"
 #include "SrvManager.h"
@@ -61,10 +61,10 @@ D3D12_CPU_DESCRIPTOR_HANDLE RenderTexture::GetDSVHandle() const
 void RenderTexture::Initialize()
 {
 	// 深度リソースを作成
-    depthStencilResource_ = CreateDepthStencilTextureResource(
+    depthStencilResource_ = NumaEngine::CreateDepthStencilTextureResource(
 		NumaEngine::DirectXEngine::GetDevice(),
-		WinApp::kClientWidth,
-		WinApp::kClientHeight
+		NumaEngine::WinApp::kClientWidth,
+		NumaEngine::WinApp::kClientHeight
 	);
 	// DSVManagerからインデックスを割り当て
 	depthIndex_ = DsvManager::GetInstance()->Allocate();
@@ -74,17 +74,17 @@ void RenderTexture::Initialize()
 	const NumaEngine::Vector4 kRenderTargetClearValue = { 0.0f,0.0f,0.2f,1.0f };
     renderTextureResource_ = RenderTexture::CreateResource(
 		NumaEngine::DirectXEngine::GetDevice(),
-		WinApp::kClientWidth,
-		WinApp::kClientHeight,
+		NumaEngine::WinApp::kClientWidth,
+		NumaEngine::WinApp::kClientHeight,
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		kRenderTargetClearValue
 	);
-	// RtvManagerでRTVを割り当てて作成
+    // RtvManagerでRTVを割り当てて作成
 	uint32_t renderTextureRTVIndex = RtvManager::GetInstance()->Allocate();
 	renderTextureHandle_ = RtvManager::GetInstance()->GetCPUDescriptorHandle(renderTextureRTVIndex);
 	RtvManager::GetInstance()->CreateRTV(renderTextureRTVIndex, renderTextureResource_.Get());
 
-	// RenderTextureのSRVの設定
+    // RenderTextureのSRVの設定
 	renderTextureSRVIndex_ = SrvManager::GetInstance()->Allocate() + 1;
 	SrvManager::GetInstance()->CreateSRVforRenderTexture(renderTextureSRVIndex_, renderTextureResource_.Get());
 
@@ -129,8 +129,8 @@ void RenderTexture::EndBarrier()
 void RenderTexture::PreDraw()
 {
 	//描画先のRTVとDSVを設定する
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = DsvManager::GetInstance()->GetCPUDescriptorHandle(depthIndex_);
-    auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
+    D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = DsvManager::GetInstance()->GetCPUDescriptorHandle(depthIndex_);
+	auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->OMSetRenderTargets(1, &renderTextureHandle_, false, &dsvHandle);
 	//指定した深度で画面全体をクリアする
 	commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -146,9 +146,10 @@ void RenderTexture::Draw()
 	commandList->SetGraphicsRootSignature(rootSignature_.Get());
 	commandList->SetPipelineState(pipelineState_.Get());
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, finalSrvIndex_);
+    SrvManager::GetInstance()->SetGraphicsRootDescriptorTable(0, finalSrvIndex_);
 	commandList->DrawInstanced(3, 1, 0, 0);
 
-	finalSrvIndex_ = renderTextureSRVIndex_;
+
+finalSrvIndex_ = renderTextureSRVIndex_;
 }
 

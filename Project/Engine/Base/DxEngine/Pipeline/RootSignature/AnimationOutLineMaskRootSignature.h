@@ -67,6 +67,6 @@ public:
 		hr = device->CreateRootSignature(0, signatureBlob->GetBufferPointer(), signatureBlob->GetBufferSize(), IID_PPV_ARGS(&rootSignature));
 		assert(SUCCEEDED(hr));
 
-		return rootSignature;
+    return rootSignature;
 	}
 };

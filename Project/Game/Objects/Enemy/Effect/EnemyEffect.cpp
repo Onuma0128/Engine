@@ -14,36 +14,36 @@ void EnemyEffect::Init()
 
 	BulletPredictionInit();
 
-	// 移動時のエフェクト
-	moveDustEmitter_ = std::make_unique<ParticleEmitter>("moveDust");
+    // 移動時のエフェクト
+	moveDustEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("moveDust");
 	particleManager_->CreateParticleGroup(moveDustEmitter_);
 	moveDustEmitter_->SetIsCreate(false);
 
 	// ヒット時のエフェクト
-	hitEmitter_ = std::make_unique<ParticleEmitter>("hitDamage");
+	hitEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("hitDamage");
 	particleManager_->CreateParticleGroup(hitEmitter_);
 	hitEmitter_->SetIsCreate(false);
 
-	hitExplosionEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosion");
+	hitExplosionEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyHitExplosion");
 	particleManager_->CreateParticleGroup(hitExplosionEmitter_);
 	hitExplosionEmitter_->SetIsCreate(false);
-	hitExplosionBlueEmitter_ = std::make_unique<ParticleEmitter>("enemyHitExplosionBlue");
+	hitExplosionBlueEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyHitExplosionBlue");
 	particleManager_->CreateParticleGroup(hitExplosionBlueEmitter_);
 	hitExplosionBlueEmitter_->SetIsCreate(false);
 
-	hitRingEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRing");
+	hitRingEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyHitRing");
 	particleManager_->CreateParticleGroup(hitRingEmitter_);
 	hitRingEmitter_->SetIsCreate(false);
-	hitRingBlueEmitter_ = std::make_unique<ParticleEmitter>("enemyHitRingBlue");
+	hitRingBlueEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyHitRingBlue");
 	particleManager_->CreateParticleGroup(hitRingBlueEmitter_);
 	hitRingBlueEmitter_->SetIsCreate(false);
 
 	// 死亡時のエフェクト
-	deadEmitter_ = std::make_unique<ParticleEmitter>("enemyDead");
+	deadEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyDead");
 	particleManager_->CreateParticleGroup(deadEmitter_);
 	deadEmitter_->SetIsCreate(false);
 
-	enemyMeleeAttack_ = std::make_unique<ParticleEmitter>("enemyMeleeAttack");
+	enemyMeleeAttack_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyMeleeAttack");
 	particleManager_->CreateParticleGroup(enemyMeleeAttack_);
 	enemyMeleeAttack_->SetIsCreate(false);
 }
@@ -185,16 +185,16 @@ void EnemyEffect::BulletPredictionInit()
 		effect->Init();
 	}
 	if (!bulletPredictionEffect_.empty()) {
-		// 弾を撃つ時のエフェクト
-		bulletExplosionEmitter_ = std::make_unique<ParticleEmitter>("bulletExplosion");
+        // 弾を撃つ時のエフェクト
+		bulletExplosionEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletExplosion");
 		particleManager_->CreateParticleGroup(bulletExplosionEmitter_);
 		bulletExplosionEmitter_->SetIsCreate(false);
 
-		bulletSparkEmitter_ = std::make_unique<ParticleEmitter>("bulletSpark");
+		bulletSparkEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletSpark");
 		particleManager_->CreateParticleGroup(bulletSparkEmitter_);
 		bulletSparkEmitter_->SetIsCreate(false);
 
-		bulletSmokeEmitter_ = std::make_unique<ParticleEmitter>("bulletSmoke");
+		bulletSmokeEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletSmoke");
 		particleManager_->CreateParticleGroup(bulletSmokeEmitter_);
 		bulletSmokeEmitter_->SetIsCreate(false);
 	}

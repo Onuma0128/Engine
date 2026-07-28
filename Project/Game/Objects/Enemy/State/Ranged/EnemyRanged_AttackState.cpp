@@ -35,7 +35,7 @@ void EnemyRanged_AttackState::Update()
 	// 近接攻撃のデータを取得
 	RangedData data = enemy_->GetItem()->GetRangedData();
 
-	chengeStateTime_ += DeltaTimer::GetDeltaTime();
+    chengeStateTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 	// 攻撃を始める硬直時間
 	float time = data.tempData.attackStartupTime;

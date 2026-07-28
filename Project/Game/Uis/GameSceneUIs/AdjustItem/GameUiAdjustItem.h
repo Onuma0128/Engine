@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "JsonFunction.h"
 
@@ -55,7 +55,7 @@ private:
 
 private:
 
-	JsonFunction json_;
+    NumaEngine::JsonFunction json_;
 
 	GameUiData data_;
 

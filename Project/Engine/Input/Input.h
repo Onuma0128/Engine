@@ -9,7 +9,7 @@
 
 #include <memory>
 
-class WinApp;
+namespace NumaEngine { class WinApp; }
 
 /// <summary>
 /// 入力管理クラス
@@ -32,8 +32,8 @@ public:
 	static Input* GetInstance();
 
 	template<class T>using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// 初期化
-	void Initialize(WinApp* winApp);
+    // 初期化
+	void Initialize(NumaEngine::WinApp* winApp);
 	// 更新
 	void Update();
 	// 終了
@@ -83,8 +83,8 @@ private:
 	void ApplyVibration(float left, float right);
 
 private:
-	// WindowsAPI
-	WinApp* winApp_ = nullptr;
+    // WindowsAPI
+	NumaEngine::WinApp* winApp_ = nullptr;
 	// 入力デバイス
 	ComPtr<IDirectInput8> directInput_;
 	// キーボードのデバイス

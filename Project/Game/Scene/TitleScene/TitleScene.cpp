@@ -108,8 +108,8 @@ void TitleScene::Update()
 		SceneManager::GetInstance()->ChangeScene("Game");
 	}
 
-	// パーティクルの更新
-	ParticleManager::GetInstance()->Update();
+    // パーティクルの更新
+	NumaEngine::ParticleManager::GetInstance()->Update();
 }
 
 void TitleScene::Draw()

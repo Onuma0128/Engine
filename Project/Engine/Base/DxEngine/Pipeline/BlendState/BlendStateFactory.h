@@ -3,6 +3,8 @@
 #include "BlendStateBase.h"
 #include "PipelineStruct.h"
 
+namespace NumaEngine {
+
 class BlendStateFactory
 {
 public:
@@ -113,3 +115,8 @@ public:
 		return blendDesc;
 	}
 };
+
+} // namespace NumaEngine
+
+
+

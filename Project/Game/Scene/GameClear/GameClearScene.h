@@ -11,7 +11,7 @@
 /// <summary>
 /// ゲームクリアシーン
 /// </summary>
-class GameClearScene : public BaseScene
+class GameClearScene : public NumaEngine::BaseScene
 {
 public:
 

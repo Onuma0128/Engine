@@ -8,8 +8,9 @@
 /// <summary>
 /// パーティクルエディタクラス
 /// </summary>
-class ParticleEditor
-{
+namespace NumaEngine {
+	class ParticleEditor
+	{
 public:
 
 	// 初期化
@@ -43,5 +44,6 @@ private:
 	int modelIndex_ = 0;
 	int blendIndex_ = 0;
 
-};
+    };
+} // namespace NumaEngine
 

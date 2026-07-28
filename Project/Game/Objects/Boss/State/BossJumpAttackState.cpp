@@ -1,4 +1,4 @@
-﻿#include "BossJumpAttackState.h"
+#include "BossJumpAttackState.h"
 
 #include "DeltaTimer.h"
 
@@ -40,7 +40,7 @@ void BossJumpAttackState::Update()
 	const auto& volume = boss_->GetItems()->GetSeVolumeData();
 
 	// タイムを加算
-	timer_ += DeltaTimer::GetDeltaTime();
+    timer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 
 	switch (jumpAttackState_)
@@ -80,8 +80,8 @@ void BossJumpAttackState::Update()
 		boss_->GetEffect()->SetAttackEffect(BossAttackEffect::JumpAttack);
 
 		// 移動と回転の更新
-		if (distance > 0.1f) {
-			translate += velocity.Normalize() * data.airSpeed * DeltaTimer::GetDeltaTime();
+        if (distance > 0.1f) {
+			translate += velocity.Normalize() * data.airSpeed * NumaEngine::DeltaTimer::GetDeltaTime();
 			boss_->SetTransformTranslation(translate);
 			NumaEngine::Quaternion yRotation = NumaEngine::Quaternion::DirectionToQuaternion(NumaEngine::Quaternion::IdentityQuaternion(),velocity, 1.0f);
 			boss_->SetTransformRotation(NumaEngine::Quaternion::Slerp(boss_->GetTransform().rotation_, yRotation, 0.2f));
@@ -139,11 +139,11 @@ void BossJumpAttackState::Draw()
 void BossJumpAttackState::UpdateJump()
 {
 	// 速度更新（加速度）
-	jumpVelocityY_ += jumpAccelerY_ * DeltaTimer::GetDeltaTime();
+    jumpVelocityY_ += jumpAccelerY_ * NumaEngine::DeltaTimer::GetDeltaTime();
 
 	// 位置更新（Y方向）
 	NumaEngine::Vector3 translate = boss_->GetTransform().translation_;
-	translate.y += jumpVelocityY_ * DeltaTimer::GetDeltaTime();
+    translate.y += jumpVelocityY_ * NumaEngine::DeltaTimer::GetDeltaTime();
 	boss_->SetTransformTranslation(translate);
 }
 

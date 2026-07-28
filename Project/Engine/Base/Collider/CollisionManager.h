@@ -7,6 +7,8 @@
 
 #include "Collider.h"
 
+namespace NumaEngine {
+
 class CollisionManager
 {
 private:
@@ -141,7 +143,11 @@ private:
 
 private:
 
+
     std::list<NumaEngine::Collider*> colliders_;
     PairSet previousFrame_;
     bool debugColliderEnable_ = false;
 };
+
+} // namespace NumaEngine
+

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 #include <array>
@@ -98,15 +98,15 @@ private:
 	// ボス本体のポインタ
 	BossEnemy* boss_ = nullptr;
 
-	// パーティクルを管理する
-	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+    // パーティクルを管理する
+	NumaEngine::ParticleManager* particleManager_ = NumaEngine::ParticleManager::GetInstance();
 
 	// 攻撃エフェクト時間
 	float attackEffectTime_ = 0.0f;
 
 	/* ==================== ジャンプ攻撃時のエフェクト ==================== */
 
-	std::shared_ptr<ParticleEmitter> jumpDustEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> jumpDustEmitter_ = nullptr;
 
 	/* ==================== 近接攻撃の攻撃範囲エフェクト ==================== */
 
@@ -126,17 +126,17 @@ private:
 
 	/* ==================== ダッシュ攻撃の後の怯みエフェクト ==================== */
 	
-	std::shared_ptr<ParticleEmitter> downLineEmitter_ = nullptr;
-	std::shared_ptr<ParticleEmitter> downStarEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> downLineEmitter_ = nullptr;
+	std::shared_ptr<NumaEngine::ParticleEmitter> downStarEmitter_ = nullptr;
 
 	/* ==================== 仲間がヒットした時のエフェクト ==================== */
 
+    // 仲間がヒットした時のエフェクト(爆発)
+	std::shared_ptr<NumaEngine::ParticleEmitter> hitExplosionEmitter_;
+	std::shared_ptr<NumaEngine::ParticleEmitter> hitExplosionBlueEmitter_;
 	// 仲間がヒットした時のエフェクト(爆発)
-	std::shared_ptr<ParticleEmitter> hitExplosionEmitter_;
-	std::shared_ptr<ParticleEmitter> hitExplosionBlueEmitter_;
-	// 仲間がヒットした時のエフェクト(爆発)
-	std::shared_ptr<ParticleEmitter> hitRingEmitter_;
-	std::shared_ptr<ParticleEmitter> hitRingBlueEmitter_;
+	std::shared_ptr<NumaEngine::ParticleEmitter> hitRingEmitter_;
+	std::shared_ptr<NumaEngine::ParticleEmitter> hitRingBlueEmitter_;
 
 };
 

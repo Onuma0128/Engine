@@ -7,7 +7,7 @@
 
 #include "CreateBufferResource.h"
 
-void DirectionalLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
+void NumaEngine::DirectionalLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 	MakeLightData();
@@ -15,7 +15,7 @@ void DirectionalLight::Initialize(NumaEngine::DirectXEngine* dxEngine)
 	center_ = { 10.0f,35.0f,-20.0f };
 }
 
-void DirectionalLight::Update()
+void NumaEngine::DirectionalLight::Update()
 {
 	lightData_->direction = lightData_->direction.Normalize();
 
@@ -26,7 +26,7 @@ void DirectionalLight::Update()
     BuildMatricesCoverAll(sceneMin, sceneMax, shadowW, shadowH);
 }
 
-void DirectionalLight::Debug_ImGui()
+void NumaEngine::DirectionalLight::Debug_ImGui()
 {
 	ImGui::ColorEdit4("LightColor", (float*)&lightData_->color.x);
 	ImGui::DragFloat3("DirectionalLightData.Direction", &lightData_->direction.x, 0.01f);
@@ -40,9 +40,9 @@ void DirectionalLight::Debug_ImGui()
     ImGui::Text("Row2: %f %f %f %f", M.m[2][0], M.m[2][1], M.m[2][2], M.m[2][3]);
 }
 
-void DirectionalLight::MakeLightData()
+void NumaEngine::DirectionalLight::MakeLightData()
 {
-	resource_ = CreateBufferResource(dxEngine_->GetDevice(), sizeof(DirectionalLightData));
+    resource_ = NumaEngine::CreateBufferResource(dxEngine_->GetDevice(), sizeof(DirectionalLightData));
 	bufferView_.BufferLocation = resource_->GetGPUVirtualAddress();
 	bufferView_.SizeInBytes = sizeof(DirectionalLightData);
 	bufferView_.StrideInBytes = sizeof(DirectionalLightData);
@@ -54,7 +54,7 @@ void DirectionalLight::MakeLightData()
 }
 
 // マップ全体を覆う AABB を与える前提（sceneMin/sceneMax）
-void DirectionalLight::BuildMatricesCoverAll(
+void NumaEngine::DirectionalLight::BuildMatricesCoverAll(
     const NumaEngine::Vector3& sceneMin,
     const NumaEngine::Vector3& sceneMax,
     uint32_t shadowW, uint32_t shadowH)

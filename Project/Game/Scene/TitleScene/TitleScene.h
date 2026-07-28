@@ -21,7 +21,7 @@
 /// <summary>
 /// タイトルシーン
 /// </summary>
-class TitleScene : public BaseScene
+class TitleScene : public NumaEngine::BaseScene
 {
 public:
 

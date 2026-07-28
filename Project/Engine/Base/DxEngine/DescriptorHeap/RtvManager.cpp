@@ -18,7 +18,7 @@ void RtvManager::Initialize(NumaEngine::DirectXEngine* dxEngine)
 {
 	dxEngine_ = dxEngine;
 
-	descriptorHeap_ = CreateDescriptorHeap(dxEngine_->GetDevice(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, kMaxRTVCount, false);
+	descriptorHeap_ = NumaEngine::CreateDescriptorHeap(dxEngine_->GetDevice(), D3D12_DESCRIPTOR_HEAP_TYPE_RTV, kMaxRTVCount, false);
 	descriptorSize_ = dxEngine_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 }
 

@@ -1,4 +1,4 @@
-﻿#include "CompanionKnockbackState.h"
+#include "CompanionKnockbackState.h"
 
 #include "DeltaTimer.h"
 #include "Easing.h"
@@ -39,8 +39,8 @@ void CompanionKnockbackState::Finalize()
 
 void CompanionKnockbackState::Update()
 {
-	// 時間を更新する
-	timer_ += DeltaTimer::GetDeltaTime();
+    // 時間を更新する
+	timer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	timer_ = std::clamp(timer_, 0.0f, maxTime_);
 	float t = Easing::EaseOutQuint(timer_ / maxTime_);
 	NumaEngine::Vector3 position = NumaEngine::Vector3::Lerp(prePos_, target_, t);

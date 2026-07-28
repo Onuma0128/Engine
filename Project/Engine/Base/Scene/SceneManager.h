@@ -38,14 +38,14 @@ public:
 
 	// 次のシーン予約
 	void ChangeScene(const std::string& sceneName);
-	// シーンファクトリーのセッター
-	void SetSceneFactory(AbstractSceneFactory* sceneFactory) { sceneFactory_ = sceneFactory; }
+    // シーンファクトリーのセッター
+	void SetSceneFactory(NumaEngine::AbstractSceneFactory* sceneFactory) { sceneFactory_ = sceneFactory; }
 
 private:
-	// 今のシーン
-	std::unique_ptr<BaseScene> scene_ = nullptr;
+    // 今のシーン
+	std::unique_ptr<NumaEngine::BaseScene> scene_ = nullptr;
 	// 次のシーン
-	std::unique_ptr<BaseScene> nextScene_ = nullptr;
+	std::unique_ptr<NumaEngine::BaseScene> nextScene_ = nullptr;
 
-	AbstractSceneFactory* sceneFactory_ = nullptr;
+    NumaEngine::AbstractSceneFactory* sceneFactory_ = nullptr;
 };

@@ -189,16 +189,16 @@ public:
 
 private:
 
-	// Jsonファイルを読み込むローダー
-	JsonFunction mainJson_;
-	JsonFunction downJson_;
-	JsonFunction spawnJson_;
-	JsonFunction meleeAttackJson_;
-	JsonFunction jumpAttackJson_;
-	JsonFunction dashAttackJson_;
-	JsonFunction appearJson_;
-	JsonFunction stateScoreJson_;
-	JsonFunction seVolumeJson_;
+    // Jsonファイルを読み込むローダー
+	NumaEngine::JsonFunction mainJson_;
+	NumaEngine::JsonFunction downJson_;
+	NumaEngine::JsonFunction spawnJson_;
+	NumaEngine::JsonFunction meleeAttackJson_;
+	NumaEngine::JsonFunction jumpAttackJson_;
+	NumaEngine::JsonFunction dashAttackJson_;
+	NumaEngine::JsonFunction appearJson_;
+	NumaEngine::JsonFunction stateScoreJson_;
+	NumaEngine::JsonFunction seVolumeJson_;
 
 	BossMainData mainData_;
 	BossDownData downData_;

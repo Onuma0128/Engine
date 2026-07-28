@@ -17,7 +17,7 @@ ImGuiManager::~ImGuiManager()
 	ImGui::DestroyContext();
 }
 
-void ImGuiManager::Initialize(NumaEngine::DirectXEngine* dxEngine, WinApp* winApp)
+void ImGuiManager::Initialize(NumaEngine::DirectXEngine* dxEngine, NumaEngine::WinApp* winApp)
 {
 	dxEngine_ = dxEngine;
 	winApp_ = winApp;

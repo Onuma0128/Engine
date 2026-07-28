@@ -6,6 +6,8 @@
 #include "Vector3.h"
 #include "Vector4.h"
 
+namespace NumaEngine {
+
 /// <summary>
 /// 点光源クラス
 /// </summary>
@@ -34,4 +36,6 @@ public:
 private:
     PointLightData* lightData_ = nullptr;
 };
+
+} // namespace NumaEngine
 

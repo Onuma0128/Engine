@@ -101,19 +101,19 @@ private:
 
 	Player* player_ = nullptr;
 
-	// パーティクルを管理する
-	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+    // パーティクルを管理する
+	NumaEngine::ParticleManager* particleManager_ = NumaEngine::ParticleManager::GetInstance();
 	PostEffectManager* postEffectManager_ = PostEffectManager::GetInstance();
 
 	/* ==================== プレイヤーが移動時のエフェクト ==================== */
 
-	// 移動時の土埃
-	std::shared_ptr<ParticleEmitter> moveDustEmitter_ = nullptr;
+    // 移動時の土埃
+	std::shared_ptr<NumaEngine::ParticleEmitter> moveDustEmitter_ = nullptr;
 
 	/* ==================== プレイヤーが避けた時のエフェクト ==================== */
 
 	// 避けた時の土埃
-	std::shared_ptr<ParticleEmitter> avoidDustEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> avoidDustEmitter_ = nullptr;
 	// 次の回避が使えるまでのエフェクト
 	std::unique_ptr<PrimitiveDrawr> avoidCoolTimeEffect_ = nullptr;
 
@@ -135,6 +135,6 @@ private:
 
 	/* ==================== プレイヤーが攻撃を受けた時のエフェクト ==================== */
 
-	std::shared_ptr<ParticleEmitter> playerHit_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> playerHit_ = nullptr;
 };
 

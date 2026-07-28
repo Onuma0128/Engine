@@ -94,7 +94,7 @@ void GameCamera::mainUpdate(const NumaEngine::Vector3& shakeOffset)
 				shakeStrength_ = data.clearShackPow;
 			}
 		}
-		clearCameraTime_ += DeltaTimer::GetDeltaTime();
+        clearCameraTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	// ボスが死んだら
 	} else if (boss_ && boss_->GetBossState() == BossState::Dead) {
 		clearCameraTime_ = 0.0f;
@@ -188,7 +188,7 @@ void GameCamera::SabUpdate(const NumaEngine::Vector3& shakeOffset)
 	if (!sabAnima_.isRotate) {
 		sabAnima_.sabCameraOffset = data.sabPosition;
 	} else {
-		sabAnima_.rotateTimer += DeltaTimer::GetDeltaTime() / sabAnima_.rotateSpeed;
+        sabAnima_.rotateTimer += NumaEngine::DeltaTimer::GetDeltaTime() / sabAnima_.rotateSpeed;
 		sabAnima_.rotateTimer = std::clamp(sabAnima_.rotateTimer, 0.0f, 1.0f);
 		float t = sabAnima_.rotateTimer * std::numbers::pi_v<float> * 2.0f;
 		if (sabAnima_.rotateTimer >= 1.0f) { sabAnima_.rotateTimer = 0.0f; }
@@ -220,7 +220,7 @@ void GameCamera::BossUpdate(const NumaEngine::Vector3& shakeOffset)
 
 	// タイムを加算
 	if (bossCameraTime_ >= 0.0f) {
-		bossCameraTime_ += DeltaTimer::GetDeltaTime();
+        bossCameraTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	// キル数が一定以上になったら
 	} else {
 		uint32_t clearKill = static_cast<uint32_t>(player_->GetItem()->GetPlayerData().clearKill);

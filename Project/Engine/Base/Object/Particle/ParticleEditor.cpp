@@ -1,10 +1,10 @@
-﻿#include "ParticleEditor.h"
+#include "ParticleEditor.h"
 
 #include "imgui.h"
 
 #include "TextureManager.h"
 
-void ParticleEditor::Initialize(std::string filePath)
+void NumaEngine::ParticleEditor::Initialize(std::string filePath)
 {
 	parameters_.Init(filePath);
 
@@ -152,7 +152,7 @@ void ParticleEditor::Initialize(std::string filePath)
 	}
 }
 
-void ParticleEditor::Update()
+void NumaEngine::ParticleEditor::Update()
 {
 	ImGui::Separator();
 
@@ -294,7 +294,7 @@ void ParticleEditor::Update()
 	}
 }
 
-void ParticleEditor::Save()
+void NumaEngine::ParticleEditor::Save()
 {
 	/* ==================== Particle全体の固定値 ==================== */
 

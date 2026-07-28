@@ -143,31 +143,31 @@ private:
 	/// 初期化時のパラメータをセットする
 	/// </summary>
 	/// <param name="json"></各敵のJsonデータを入れる>
-	void SetJsonParameter(JsonFunction json);
+    void SetJsonParameter(NumaEngine::JsonFunction json);
 
 	/// <summary>
 	/// 敵のテンプレートデータをゲットやセットする
 	/// </summary>
 	/// <param name="json"></各敵のJsonデータを入れる>
 	/// <returns></各敵のテンプレートデータが入ったjsonを返す>
-	EnemyTemplate GetTemplateData(JsonFunction json);
-	void SetTemplateData(JsonFunction& json, EnemyTemplate& tempData);
+    EnemyTemplate GetTemplateData(NumaEngine::JsonFunction json);
+	void SetTemplateData(NumaEngine::JsonFunction& json, EnemyTemplate& tempData);
 
 	/// <summary>
 	/// 敵のテンプレートデータをImGuiにする
 	/// </summary>
 	/// <param name="json"></各敵のJsonデータを入れる>
 	/// <param name="tempData"></各敵の調整項目内のテンプレートデータを入れる>
-	void SetImGuiData(JsonFunction& json, EnemyTemplate& tempData);
+    void SetImGuiData(NumaEngine::JsonFunction& json, EnemyTemplate& tempData);
 
 private:
 
-	// Jsonファイルを読み込むローダー
-	JsonFunction mainJson_;
-	JsonFunction meleeJson_;
-	JsonFunction rangedJson_;
-	JsonFunction shieldBearerJson_;
-	JsonFunction rangedEliteJson_;
+    // Jsonファイルを読み込むローダー
+	NumaEngine::JsonFunction mainJson_;
+	NumaEngine::JsonFunction meleeJson_;
+	NumaEngine::JsonFunction rangedJson_;
+	NumaEngine::JsonFunction shieldBearerJson_;
+	NumaEngine::JsonFunction rangedEliteJson_;
 
 	// 敵全体の項目
 	EnemyMainData mainData_;

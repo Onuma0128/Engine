@@ -57,7 +57,7 @@ private:
 
 private:
 
-	JsonFunction json_;
+    NumaEngine::JsonFunction json_;
 
 };
 

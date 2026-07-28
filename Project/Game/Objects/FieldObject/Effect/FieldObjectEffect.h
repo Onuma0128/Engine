@@ -38,16 +38,16 @@ public:
 
 private:
 
-	// パーティクルを管理する
-	ParticleManager* particleManager_ = ParticleManager::GetInstance();
+    // パーティクルを管理する
+	NumaEngine::ParticleManager* particleManager_ = NumaEngine::ParticleManager::GetInstance();
 
 	/* ==================== 弾がヒット時のエフェクト ==================== */
 
-	std::shared_ptr<ParticleEmitter> hitEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> hitEmitter_ = nullptr;
 
 	/* ==================== 壊れた時のエフェクト ==================== */
 
-	std::shared_ptr<ParticleEmitter> breakEmitter_ = nullptr;
+    std::shared_ptr<NumaEngine::ParticleEmitter> breakEmitter_ = nullptr;
 	bool isBreakEffectPlay_ = false;
 };
 

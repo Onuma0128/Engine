@@ -5,6 +5,8 @@
 
 #include "BaseScene.h"
 
+namespace NumaEngine {
+
 /// <summary>
 /// シーンファクトリーの抽象クラス
 /// </summary>
@@ -17,4 +19,7 @@ public:
 	virtual std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) = 0;
 
 };
+
+} // namespace NumaEngine
+
 

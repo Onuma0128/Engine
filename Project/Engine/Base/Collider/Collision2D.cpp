@@ -1,14 +1,14 @@
-﻿#include "Collision2D.h"
+#include "Collision2D.h"
 
 #include <math.h>
 #include <algorithm>
 
-bool Collision2D::CircleAABB(const Circle& circle, const AABB_2D& aabb)
+bool NumaEngine::Collision2D::CircleAABB(const NumaEngine::Circle& circle, const NumaEngine::AABB_2D& aabb)
 {
     // 円の中心から一番近い点の距離を計算
     NumaEngine::Vector2 closest{
-        std::clamp(circle.center.x,aabb.min.x,aabb.max.x),
-        std::clamp(circle.center.y,aabb.min.y,aabb.max.y)
+        std::max(aabb.min.x, std::min(circle.center.x, aabb.max.x)),
+        std::max(aabb.min.y, std::min(circle.center.y, aabb.max.y))
     };
     NumaEngine::Vector2 diff = circle.center - closest;
     float dist = diff.Length();
@@ -17,7 +17,7 @@ bool Collision2D::CircleAABB(const Circle& circle, const AABB_2D& aabb)
     return dist <= (circle.radius);
 }
 
-bool Collision2D::OBBAABB(const OBB_2D& obb, const AABB_2D& aabb)
+bool NumaEngine::Collision2D::OBBAABB(const NumaEngine::OBB_2D& obb, const NumaEngine::AABB_2D& aabb)
 {
     // AABBの中心とサイズを求める
     NumaEngine::Vector2 aabbCenter = (aabb.min + aabb.max) * 0.5f;

@@ -1,30 +1,30 @@
-﻿#include "PlayerBulletEffect.h"
+#include "PlayerBulletEffect.h"
 
 void PlayerBulletEffect::Init()
 {
 	// 弾のエフェクト
-	bulletTrailEmitter_ = std::make_unique<ParticleEmitter>("bulletTrail");
+    bulletTrailEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletTrail");
 	particleManager_->CreateParticleGroup(bulletTrailEmitter_);
 	bulletTrailEmitter_->SetIsCreate(false);
 
-	bulletDeleteEmitter_ = std::make_unique<ParticleEmitter>("bulletDelete");
+	bulletDeleteEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletDelete");
 	particleManager_->CreateParticleGroup(bulletDeleteEmitter_);
 	bulletDeleteEmitter_->SetIsCreate(false);
 
 	// 弾を撃つ時のエフェクト
-	bulletExplosionEmitter_ = std::make_unique<ParticleEmitter>("bulletExplosion");
+	bulletExplosionEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletExplosion");
 	particleManager_->CreateParticleGroup(bulletExplosionEmitter_);
 	bulletExplosionEmitter_->SetIsCreate(false);
 
-	bulletSparkEmitter_ = std::make_unique<ParticleEmitter>("bulletSpark");
+	bulletSparkEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletSpark");
 	particleManager_->CreateParticleGroup(bulletSparkEmitter_);
 	bulletSparkEmitter_->SetIsCreate(false);
 
-	bulletSmokeEmitter_ = std::make_unique<ParticleEmitter>("bulletSmoke");
+	bulletSmokeEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletSmoke");
 	particleManager_->CreateParticleGroup(bulletSmokeEmitter_);
 	bulletSmokeEmitter_->SetIsCreate(false);
 
-	bulletCartridgeEmitter_ = std::make_unique<ParticleEmitter>("bulletCartridge");
+	bulletCartridgeEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletCartridge");
 	particleManager_->CreateParticleGroup(bulletCartridgeEmitter_);
 	bulletCartridgeEmitter_->SetIsCreate(false);
 }

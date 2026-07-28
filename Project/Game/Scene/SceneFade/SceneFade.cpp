@@ -20,12 +20,12 @@ void SceneFade::Update()
 	// フェードの処理
 	float time = 0.0f;
 	if (isFade_in_) {
-		fadeTime_ -= DeltaTimer::GetDeltaTime();
+        fadeTime_ -= NumaEngine::DeltaTimer::GetDeltaTime();
 		time = std::clamp(fadeTime_, 0.0f, 1.0f);
 		if (time == 0.0f) { isFade_ = false; }
 	}
 	if (isFade_out_) {
-		fadeTime_ += DeltaTimer::GetDeltaTime();
+        fadeTime_ += NumaEngine::DeltaTimer::GetDeltaTime();
 		time = std::clamp(fadeTime_, 0.0f, 1.0f);
 		if (time == 1.0f) { isFade_ = false; }
 	}

@@ -1,11 +1,13 @@
-﻿#include "JsonFunction.h"
+#include "JsonFunction.h"
 
 #include "Imgui.h"
 
-void JsonFunction::DrawImGui(float dragSpeed)
+void NumaEngine::JsonFunction::DrawImGui(float dragSpeed)
 {
-    for (auto& [key, val] : datas_.items())
+    for (auto it = datas_.begin(); it != datas_.end(); ++it)
     {
+        const std::string key = it.key();
+        Json& val = it.value();
         // ---------- 数値 ----------
         if (val.is_number_integer())
         {
@@ -62,7 +64,7 @@ void JsonFunction::DrawImGui(float dragSpeed)
 }
 
 
-bool JsonFunction::Save(bool pretty) const
+bool NumaEngine::JsonFunction::Save(bool pretty) const
 {
     // ファイルを保存する
     std::ofstream ofs(kDirectoryPath_ + filePath_, std::ios::out | std::ios::trunc);
@@ -71,7 +73,7 @@ bool JsonFunction::Save(bool pretty) const
     return true;
 }
 
-bool JsonFunction::Load() 
+bool NumaEngine::JsonFunction::Load() 
 {
     // ファイルを探す
     std::ifstream ifs(kDirectoryPath_ + filePath_);
@@ -83,7 +85,7 @@ bool JsonFunction::Load()
     return true;
 }
 
-bool JsonFunction::Deleta() const
+bool NumaEngine::JsonFunction::Deleta() const
 {
     std::error_code ec;
     // 初期化時に決めたファイルパスのjsonを削除する

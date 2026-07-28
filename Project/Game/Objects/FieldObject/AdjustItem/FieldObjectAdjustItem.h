@@ -41,8 +41,8 @@ public:
 
 private:
 
-	// Jsonファイルを読み込むローダー
-	JsonFunction mainJson_;
+    // Jsonファイルを読み込むローダー
+	NumaEngine::JsonFunction mainJson_;
 
 	// フィールドオブジェクト全体の項目
 	FieldObjectMainData mainData_;

@@ -4,9 +4,12 @@
 #include "SrvManager.h"
 #include "TextureManager.h"
 #include "CreateBufferResource.h"
+#include "LineInstanceRenderer.h"
 
 #include "Camera.h"
 #include "CameraManager.h"
+
+namespace NumaEngine {
 
 std::unique_ptr<LineInstanceRenderer> LineInstanceRenderer::instance_ = nullptr;
 
@@ -32,7 +35,7 @@ void LineInstanceRenderer::Initialize(uint32_t capacity)
 void LineInstanceRenderer::CreateLocalVB()
 {
     LocalV local[2] = { {0.f}, {1.f} };
-    vbLocal_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(local));
+    vbLocal_ = NumaEngine::CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(local));
     void* dst = nullptr;
     vbLocal_->Map(0, nullptr, &dst);
     memcpy(dst, local, sizeof(local));
@@ -47,7 +50,7 @@ void LineInstanceRenderer::CreateInstanceVB(uint32_t capacity)
 {
     capacity_ = capacity;
     const UINT bytes = sizeof(Inst) * capacity_;
-    vbInst_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), bytes);
+    vbInst_ = NumaEngine::CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), bytes);
 
     vbvInst_.BufferLocation = vbInst_->GetGPUVirtualAddress();
     vbvInst_.StrideInBytes = sizeof(Inst);
@@ -61,7 +64,7 @@ void LineInstanceRenderer::CreateInstanceVB(uint32_t capacity)
 
 void LineInstanceRenderer::CreateCB()
 {
-    cbVS_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(NumaEngine::Matrix4x4));
+    cbVS_ = NumaEngine::CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(NumaEngine::Matrix4x4));
     cbVS_->Map(0, nullptr, reinterpret_cast<void**>(&wvp_));
 }
 
@@ -69,7 +72,7 @@ void LineInstanceRenderer::CreateSB()
 {
     uint32_t maxInstance = 32768;
 
-    sbPS_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Material) * maxInstance);
+    sbPS_ = NumaEngine::CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(Material) * maxInstance);
     sbPS_->Map(0, nullptr, reinterpret_cast<void**>(&materialDatas_));
     for (uint32_t i = 0; i < maxInstance; ++i) {
         materialDatas_[i].color = NumaEngine::Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -224,4 +227,6 @@ void LineInstanceRenderer::Draws()
 
     NumaEngine::DirectXEngine::GetCommandList()->DrawInstanced(2, totalInstances_, 0, 0);
 }
+
+} // namespace NumaEngine
 

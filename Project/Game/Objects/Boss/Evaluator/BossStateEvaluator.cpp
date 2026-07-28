@@ -1,4 +1,4 @@
-﻿#include "BossStateEvaluator.h"
+#include "BossStateEvaluator.h"
 
 #include "imgui.h"
 
@@ -23,8 +23,8 @@ void BossStateEvaluator::Update()
 	// データを取得する
 	const auto& data = boss_->GetItems()->GetStateScoreData();
 
-	// タイム加算
-	timer_ += DeltaTimer::GetDeltaTime();
+    // タイム加算
+	timer_ += NumaEngine::DeltaTimer::GetDeltaTime();
 
 	// タイムが超えたら
 	if (timer_ > data.scoreAccumulationTime) {

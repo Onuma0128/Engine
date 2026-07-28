@@ -28,8 +28,8 @@ void SplineMover::Update(const float speed, float lookAt_t)
 	}
 #endif // ENABLE_EDITOR
 
-	// 速度に応じて距離を進める
-	currentDistance_ += speed * DeltaTimer::GetDeltaTime();
+    // 速度に応じて距離を進める
+	currentDistance_ += speed * NumaEngine::DeltaTimer::GetDeltaTime();
 	float t = GetArcLengthParam(currentDistance_);
 
     if (splinePositions_.empty()) { return; }

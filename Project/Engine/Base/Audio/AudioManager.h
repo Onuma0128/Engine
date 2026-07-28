@@ -11,8 +11,9 @@
 /// <summary>
 /// オーディオ管理クラス
 /// </summary>
-class AudioManager
-{
+namespace NumaEngine {
+	class AudioManager
+	{
 public:
 
 	/// <summary>
@@ -126,4 +127,6 @@ private:
 private:
 
 	std::unordered_map<std::string, SoundData> soundDataMap_;
-};
+    };
+} // namespace NumaEngine
+

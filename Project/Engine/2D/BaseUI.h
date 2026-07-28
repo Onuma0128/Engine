@@ -88,7 +88,7 @@ public:
 	/// スプライトを取得
 	/// </summary>
 	/// <returns></returns>
-	Sprite* GetSprite()const { return ui_.get(); }
+    NumaEngine::Sprite* GetSprite()const { return ui_.get(); }
 
 	/// <summary>
 	/// アニメーション中かどうか
@@ -110,11 +110,11 @@ private:
 
 private:
 
-	std::unique_ptr<Sprite> ui_ = nullptr;
+    std::unique_ptr<NumaEngine::Sprite> ui_ = nullptr;
 
 	UiParameters parameters_;
 
-	JsonFunction json_;
+    NumaEngine::JsonFunction json_;
 
 	// 選択中インデックス
 	uint32_t textureIndex_ = 0;
