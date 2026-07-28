@@ -3,21 +3,22 @@
 #include <numbers>
 
 #include "DeltaTimer.h"
+#include "Transform.h"
 
 void MuscleCountEffect::Init()
 {
-	// 仲間の数を表示するエフェクトの初期化
-	maxCountEffect_ = std::make_unique<PrimitiveDrawr>();
+    // 仲間の数を表示するエフェクトの初期化
+	maxCountEffect_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	maxCountEffect_->TypeInit(PrimitiveType::kPlane);
 	maxCountEffect_->SetTexture("numbers.png");
 	maxCountEffect_->SetIsBillboard(true);
 	maxCountEffect_->GetRenderOptions().enabled = true;
-	nowCountEffect_ = std::make_unique<PrimitiveDrawr>();
+	nowCountEffect_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	nowCountEffect_->TypeInit(PrimitiveType::kPlane);
 	nowCountEffect_->SetTexture("numbers.png");
 	nowCountEffect_->SetIsBillboard(true);
 	nowCountEffect_->GetRenderOptions().enabled = true;
-	catEffect_ = std::make_unique<PrimitiveDrawr>();
+	catEffect_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	catEffect_->TypeInit(PrimitiveType::kPlane);
 	catEffect_->SetTexture("catUI.png");
 	catEffect_->SetIsBillboard(true);
@@ -41,7 +42,7 @@ void MuscleCountEffect::Update(const NumaEngine::Vector3& position)
 	maxCountEffect_->GetTransform().scale = scale;
 	catEffect_->GetTransform().scale = scale;
 	// 番号を設定
-	Transform2D uv{};
+    NumaEngine::Transform2D uv{};
 	uv.size = { 1.0f / 10.0f, 1.0f };
 	uv.rotate = 0.0f;
 	if (nowCount_ == 0) { nowCount_ = 1; }

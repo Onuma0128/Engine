@@ -90,7 +90,7 @@ public:
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
 
 	const PlayerState GetPlayerState()const { return state_->GetState(); }
-	const WorldTransform& GetTransform() const { return transform_; }
+    const NumaEngine::WorldTransform& GetTransform() const { return transform_; }
 	bool GetIsAlive()const { return isAlive_; }
 	bool GetIsPlayingMouse()const { return isPlayingMouse_; }
 	float GetAvoidCoolTimer()const { return avoidCoolTimer_; }
@@ -119,7 +119,7 @@ private:
 	std::unique_ptr<PlayerAdjustItem> items_ = nullptr;
 	// 敵探索用コライダー
 	std::unique_ptr<EnemySearchCollider> searchCollider_ = nullptr;
-	WorldTransform startTransform_{};
+    NumaEngine::WorldTransform startTransform_{};
     // ローダーのポインタ
 	NumaEngine::SceneJsonLoader* loader_ = nullptr;
 

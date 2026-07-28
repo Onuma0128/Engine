@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 
@@ -35,10 +35,10 @@ class MuscleCountEffect
 
 private:
 
-	// 仲間の数を表示するエフェクト
-	std::unique_ptr<PrimitiveDrawr> maxCountEffect_ = nullptr;
-	std::unique_ptr<PrimitiveDrawr> nowCountEffect_ = nullptr;
-	std::unique_ptr<PrimitiveDrawr> catEffect_ = nullptr;
+    // 仲間の数を表示するエフェクト
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> maxCountEffect_ = nullptr;
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> nowCountEffect_ = nullptr;
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> catEffect_ = nullptr;
 
 	uint32_t maxCount_ = 0;
 	uint32_t nowCount_ = 0;

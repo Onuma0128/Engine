@@ -4,6 +4,8 @@
 #include <numbers>
 
 #include "imgui.h"
+#include "SceneJsonLoader.h"
+namespace NumaEngine {
 
 void SceneJsonLoader::Load(const std::string filePath)
 {
@@ -18,7 +20,8 @@ void SceneJsonLoader::Load(const std::string filePath)
 	if (file.fail()) {
 		assert(0);
 	}
-	// ファイルを解凍
+
+    // ファイルを解凍
 	file >> datas_;
 
 	// 正しいレベルデータファイルかチェック
@@ -40,6 +43,7 @@ void SceneJsonLoader::Load(const std::string filePath)
 		// データをマップで保存
 		sceneObjectDatas_[obj.name] = obj;
 	}
+
 }
 
 void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
@@ -127,5 +131,7 @@ void SceneJsonLoader::ParseObject(const Json& json, SceneObject& object)
 		}
 	}
 }
+
+} // namespace NumaEngine
 
 

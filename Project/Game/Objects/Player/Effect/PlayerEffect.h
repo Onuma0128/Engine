@@ -114,18 +114,18 @@ private:
 
 	// 避けた時の土埃
     std::shared_ptr<NumaEngine::ParticleEmitter> avoidDustEmitter_ = nullptr;
-	// 次の回避が使えるまでのエフェクト
-	std::unique_ptr<PrimitiveDrawr> avoidCoolTimeEffect_ = nullptr;
+    // 次の回避が使えるまでのエフェクト
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> avoidCoolTimeEffect_ = nullptr;
 
 	/* ==================== プレイヤーのマッチョが無くなった時のエフェクト ==================== */
 
-	std::unique_ptr<PrimitiveDrawr> needMoreMachoEffect = nullptr;
+    std::unique_ptr<NumaEngine::PrimitiveDrawr> needMoreMachoEffect = nullptr;
 	float specialMoveReadyTimer_ = 0.0f;
 
 	/* ==================== プレイヤーが必殺技を撃った時のエフェクト ==================== */
 
-	// シリンダーで必殺の範囲を視覚的に
-	std::unique_ptr<PrimitiveDrawr> cylinder_ = nullptr;
+    // シリンダーで必殺の範囲を視覚的に
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> cylinder_ = nullptr;
 	// 必殺技の遷移状態
 	SpecialMoveState specialMoveState_ = SpecialMoveState::kNone;
 	// 今必殺技を撃っているか

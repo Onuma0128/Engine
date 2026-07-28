@@ -14,8 +14,8 @@ void EnemyBulletPredictionEffect::Init()
 	};
     this->DrawCollider();
 
-	// エフェクトの初期化
-	plane_ = std::make_unique<PrimitiveDrawr>();
+    // エフェクトの初期化
+	plane_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	plane_->TypeInit(PrimitiveType::kPlane);
 	plane_->SetBlendMode(BlendMode::kBlendModeAdd);
 	plane_->SetColor(NumaEngine::Vector3::ExprUnitX);

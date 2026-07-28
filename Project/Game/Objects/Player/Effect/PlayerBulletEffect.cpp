@@ -34,7 +34,7 @@ void PlayerBulletEffect::Update()
 	bulletTrailEmitter_->SetIsCreate(false);
 }
 
-void PlayerBulletEffect::OnceBulletTrailEffect(const WorldTransform& transform)
+void PlayerBulletEffect::OnceBulletTrailEffect(const NumaEngine::WorldTransform& transform)
 {
 	bulletTrailEmitter_->SetIsCreate(true);
 
@@ -46,7 +46,7 @@ void PlayerBulletEffect::OnceBulletTrailEffect(const WorldTransform& transform)
 	bulletTrailEmitter_->SetPosition(position);
 }
 
-void PlayerBulletEffect::OnceBulletDeleteEffect(const WorldTransform& transform)
+void PlayerBulletEffect::OnceBulletDeleteEffect(const NumaEngine::WorldTransform& transform)
 {
 	bulletDeleteEmitter_->onceEmit();
 
@@ -58,7 +58,7 @@ void PlayerBulletEffect::OnceBulletDeleteEffect(const WorldTransform& transform)
 	bulletDeleteEmitter_->SetPosition(position);
 }
 
-void PlayerBulletEffect::OnceBulletEffect(const WorldTransform& transform)
+void PlayerBulletEffect::OnceBulletEffect(const NumaEngine::WorldTransform& transform)
 {
 	// Particleを一回生成
 	bulletExplosionEmitter_->onceEmit();
@@ -80,7 +80,7 @@ void PlayerBulletEffect::OnceBulletEffect(const WorldTransform& transform)
 	bulletSmokeEmitter_->SetRotation(rotate);
 }
 
-void PlayerBulletEffect::OnceBulletReloadEffect(const WorldTransform& transform)
+void PlayerBulletEffect::OnceBulletReloadEffect(const NumaEngine::WorldTransform& transform)
 {
 	// Particleを一回生成
 	bulletCartridgeEmitter_->onceEmit();

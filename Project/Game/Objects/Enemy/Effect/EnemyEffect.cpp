@@ -1,4 +1,5 @@
-﻿#include "EnemyEffect.h"
+#include "EnemyEffect.h"
+#include "WorldTransform.h"
 
 #include "DeltaTimer.h"
 #include "Easing.h"
@@ -64,7 +65,7 @@ void EnemyEffect::Draw()
 	}
 }
 
-void EnemyEffect::OnceMoveEffect(const WorldTransform& transform)
+void EnemyEffect::OnceMoveEffect(const NumaEngine::WorldTransform& transform)
 {
 	moveDustEmitter_->onceEmit();
 
@@ -76,7 +77,7 @@ void EnemyEffect::OnceMoveEffect(const WorldTransform& transform)
 	moveDustEmitter_->SetPosition(position);
 }
 
-void EnemyEffect::OnceBulletEffect(const WorldTransform& transform)
+void EnemyEffect::OnceBulletEffect(const NumaEngine::WorldTransform& transform)
 {
 	// Particle繧剃ｸ蝗樒函謌・
 	bulletExplosionEmitter_->onceEmit();
@@ -98,7 +99,7 @@ void EnemyEffect::OnceBulletEffect(const WorldTransform& transform)
 	bulletSmokeEmitter_->SetRotation(rotate);
 }
 
-void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
+void EnemyEffect::OnceBulletHitEffect(const NumaEngine::WorldTransform& transform)
 {
 	hitEmitter_->onceEmit();
 
@@ -110,7 +111,7 @@ void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
 	hitEmitter_->SetPosition(position);
 }
 
-void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
+void EnemyEffect::OnceBulletHitExplosionEffect(const NumaEngine::WorldTransform& transform)
 {
 	hitExplosionEmitter_->onceEmit();
 	hitRingEmitter_->onceEmit();
@@ -125,7 +126,7 @@ void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
 	hitRingEmitter_->SetPosition(position);
 }
 
-void EnemyEffect::OnceBulletHitExplosionBlueEffect(const WorldTransform& transform)
+void EnemyEffect::OnceBulletHitExplosionBlueEffect(const NumaEngine::WorldTransform& transform)
 {
 	hitExplosionBlueEmitter_->onceEmit();
 	hitRingBlueEmitter_->onceEmit();
@@ -140,7 +141,7 @@ void EnemyEffect::OnceBulletHitExplosionBlueEffect(const WorldTransform& transfo
 	hitRingBlueEmitter_->SetPosition(position);
 }
 
-void EnemyEffect::SetMeleeAttackEffect(const WorldTransform& transform)
+void EnemyEffect::SetMeleeAttackEffect(const NumaEngine::WorldTransform& transform)
 {
 	// 繝代・繝・ぅ繧ｯ繝ｫ縺ｮ蠎ｧ讓吶ｒ險ｭ螳・
 	NumaEngine::Quaternion rotate = transform.rotation_;
@@ -159,7 +160,7 @@ void EnemyEffect::SetBulletPredictionEffect(bool flag)
 
 void EnemyEffect::HitReticleInit()
 {
-	hitReticleEffect_.cylinder_ = std::make_unique<PrimitiveDrawr>();
+    hitReticleEffect_.cylinder_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	hitReticleEffect_.cylinder_->TypeInit(PrimitiveType::kCylinder, 32);
 	hitReticleEffect_.cylinder_->GetTransform().scale = {};
 	hitReticleEffect_.cylinder_->SetColor(NumaEngine::Vector3::ExprUnitX + NumaEngine::Vector3::ExprUnitY);

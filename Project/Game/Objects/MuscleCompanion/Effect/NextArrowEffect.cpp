@@ -9,7 +9,7 @@
 void NextArrowEffect::Init()
 {
 	// 矢印エフェクトの初期化
-	arrow_ = std::make_unique<PrimitiveDrawr>();
+    arrow_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	arrow_->TypeInit(PrimitiveType::kPlane);
 	arrow_->SetTexture("nextArrow.png");
 	arrow_->SetIsBillboard(true);

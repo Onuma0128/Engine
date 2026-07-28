@@ -18,7 +18,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update(PrimitiveDrawr* plane, PrimitiveDrawr* timePlane);
+    void Update(NumaEngine::PrimitiveDrawr* plane, NumaEngine::PrimitiveDrawr* timePlane);
 
 	/// <summary>
 	/// セッター

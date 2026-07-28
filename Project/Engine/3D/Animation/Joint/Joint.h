@@ -10,6 +10,7 @@
 /// <summary>
 /// ボーンのジョイントを表すクラス
 /// </summary>
+namespace NumaEngine {
 class Joint
 {
 public:
@@ -73,10 +74,11 @@ private:
 	/// <returns></returns>
     NumaEngine::Quaternion CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration);
 
+
 private:
 
 	Transform3D transform_;
-    NumaEngine::Matrix4x4 localMatrix_;
+	NumaEngine::Matrix4x4 localMatrix_;
 	NumaEngine::Matrix4x4 skeletonSpaceMatrix_;
 	std::string name_;
 	std::vector<int32_t> children_;
@@ -85,5 +87,5 @@ private:
 
 };
 
-
+} // namespace NumaEngine
 

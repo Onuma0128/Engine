@@ -10,11 +10,12 @@
 #include "ModelStruct.h"
 #include "AnimationStruct.h"
 
-class Skeleton;
+namespace NumaEngine { class Skeleton; }
 
 /// <summary>
 /// アニメーションの再生を管理するクラス
 /// </summary>
+namespace NumaEngine {
 class PlayAnimation
 {
 private:
@@ -112,5 +113,8 @@ private:
 
 	PlayAnimationFlags flags_;
 
+
 };
+
+} // namespace NumaEngine
 

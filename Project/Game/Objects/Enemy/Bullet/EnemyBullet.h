@@ -5,6 +5,7 @@
 #include "Collider.h"
 
 #include "objects/enemy/type/EnemyType.h"
+#include "WorldTransform.h"
 
 class EnemyAdjustItem;
 
@@ -37,7 +38,7 @@ public:
 	/// 弾を撃つ関数
 	/// </summary>
 	/// <param name="transform"></撃つ敵のTransformを入れる>
-	void Attack(const WorldTransform& transform);
+    void Attack(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// 弾が何かしらに当たっているなら呼び出す

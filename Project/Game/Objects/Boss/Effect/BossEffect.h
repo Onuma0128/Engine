@@ -82,15 +82,15 @@ private:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void PrimitiveInit(std::unique_ptr<PrimitiveDrawr>& effect);
+    void PrimitiveInit(std::unique_ptr<NumaEngine::PrimitiveDrawr>& effect);
 
 	/// <summary>
 	/// 更新
 	/// </summary>
 	/// <param name="effect"></param>
-    void PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect,
+    void PrimitiveUpdate(std::unique_ptr<NumaEngine::PrimitiveDrawr>& effect,
 		const float time, const float size, const NumaEngine::Vector3& offset);
-	void PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect,
+    void PrimitiveUpdate(std::unique_ptr<NumaEngine::PrimitiveDrawr>& effect,
 		const float time, const NumaEngine::Vector2& size, const NumaEngine::Vector3& offset);
 
 private:
@@ -110,18 +110,18 @@ private:
 
 	/* ==================== 近接攻撃の攻撃範囲エフェクト ==================== */
 
-	std::unique_ptr<PrimitiveDrawr> meleeEffect_ = nullptr;
-	std::unique_ptr<PrimitiveDrawr> meleeTimeEffect_ = nullptr;
+    std::unique_ptr<NumaEngine::PrimitiveDrawr> meleeEffect_ = nullptr;
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> meleeTimeEffect_ = nullptr;
 
 	/* ==================== ジャンプ攻撃の攻撃範囲エフェクト ==================== */
 
-	std::unique_ptr<PrimitiveDrawr> jumpAttackEffect_ = nullptr;
-	std::unique_ptr<PrimitiveDrawr> jumpAttackTimeEffect_ = nullptr;
+    std::unique_ptr<NumaEngine::PrimitiveDrawr> jumpAttackEffect_ = nullptr;
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> jumpAttackTimeEffect_ = nullptr;
 
 	/* ==================== ダッシュ攻撃の攻撃範囲エフェクト ==================== */
 
-	std::unique_ptr<PrimitiveDrawr> dashAttackEffect_ = nullptr;
-	std::unique_ptr<PrimitiveDrawr> dashAttackTimeEffect_ = nullptr;
+    std::unique_ptr<NumaEngine::PrimitiveDrawr> dashAttackEffect_ = nullptr;
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> dashAttackTimeEffect_ = nullptr;
 	std::unique_ptr<BossDashPrediction> dashAttackPrediction_ = nullptr;
 
 	/* ==================== ダッシュ攻撃の後の怯みエフェクト ==================== */

@@ -10,13 +10,12 @@ using Microsoft::WRL::ComPtr;
 #include <memory>
 #include <cassert>
 
-#include "Line3dBase.h"
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Matrix4x4.h"
 #include "ModelStruct.h"
 
-namespace NumaEngine { class Line3d; }
+namespace NumaEngine { class Line3d; class Line3dBase; }
 
 /// <summary>
 /// ラインのインスタンス、描画を管理するクラス

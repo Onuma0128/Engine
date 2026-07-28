@@ -56,13 +56,13 @@ void NumaEngine::Model::BindMaterial(uint32_t meshIdx) const
 void NumaEngine::Model::MakeVertexData()
 {
     // 実際に頂点リソースを作る
-    vertexResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(VertexData) * modelData_.vertices.size());
+    vertexResource_ = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(NumaEngine::VertexData) * modelData_.vertices.size());
     vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-    vertexBufferView_.SizeInBytes = UINT(sizeof(VertexData) * modelData_.vertices.size());
-    vertexBufferView_.StrideInBytes = sizeof(VertexData);
+    vertexBufferView_.SizeInBytes = UINT(sizeof(NumaEngine::VertexData) * modelData_.vertices.size());
+    vertexBufferView_.StrideInBytes = sizeof(NumaEngine::VertexData);
 
     vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
-    std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(VertexData) * modelData_.vertices.size());
+    std::memcpy(vertexData_, modelData_.vertices.data(), sizeof(NumaEngine::VertexData) * modelData_.vertices.size());
 }
 
 void NumaEngine::Model::MakeIndexData()
@@ -80,7 +80,7 @@ void NumaEngine::Model::MakeIndexData()
 void NumaEngine::Model::MakeMeshColor(MaterialData& material)
 {
     // マテリアル用のリソースを作る。今回はcolor1つ分のサイズを用意する
-    material.kdColorResource = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(KdColor));
+    material.kdColorResource = CreateBufferResource(NumaEngine::DirectXEngine::GetDevice(), sizeof(NumaEngine::KdColor));
     // 書き込むためのアドレスを取得
     KdColor* kdColor = nullptr;
     material.kdColorResource->Map(0, nullptr, reinterpret_cast<void**>(&kdColor));
@@ -96,14 +96,14 @@ std::wstring NumaEngine::Model::s2ws(const std::string& str)
     return wstrTo;
 }
 
-ModelData NumaEngine::Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
+NumaEngine::ModelData NumaEngine::Model::LoadObjFile(const std::string& directoryPath, const std::string& filename)
 {
     Assimp::Importer importer;
     std::string filePath = directoryPath + "/" + filename;
     const aiScene* scene = importer.ReadFile(filePath.c_str(), aiProcess_FlipWindingOrder | aiProcess_FlipUVs | aiProcess_RemoveRedundantMaterials);
     assert(scene->HasMeshes());
 
-    ModelData modelData;
+    NumaEngine::ModelData modelData;
     size_t vertexOffset = 0;
     // ファイルを保存
     modelData.directoryPath = directoryPath;
@@ -114,14 +114,14 @@ ModelData NumaEngine::Model::LoadObjFile(const std::string& directoryPath, const
         aiMesh* mesh = scene->mMeshes[meshIndex];
         assert(mesh->HasNormals());
 
-        MeshData meshData{};
+        NumaEngine::MeshData meshData{};
         meshData.indexStart = static_cast<uint32_t>(modelData.indices.size());
         meshData.materialIndex = mesh->mMaterialIndex;
         uint32_t baseVertexOffset = static_cast<uint32_t>(modelData.vertices.size());
         //modelData.vertices.resize(mesh->mNumVertices);
 
         for (uint32_t vertexIndex = 0; vertexIndex < mesh->mNumVertices; ++vertexIndex) {
-            VertexData vertex{};
+            NumaEngine::VertexData vertex{};
             aiVector3D& position = mesh->mVertices[vertexIndex];
             aiVector3D& normal = mesh->mNormals[vertexIndex];
 
@@ -151,7 +151,7 @@ ModelData NumaEngine::Model::LoadObjFile(const std::string& directoryPath, const
         for (uint32_t boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
             aiBone* bone = mesh->mBones[boneIndex];
             std::string jointName = bone->mName.C_Str();
-            JointWeightData& jointWeightData = modelData.skinClusterData[jointName];
+            NumaEngine::JointWeightData& jointWeightData = modelData.skinClusterData[jointName];
 
             aiMatrix4x4 bindPoseMatrixAssimp = bone->mOffsetMatrix.Inverse();
             aiVector3D scale, translate;
@@ -177,7 +177,7 @@ ModelData NumaEngine::Model::LoadObjFile(const std::string& directoryPath, const
     modelData.materials.resize(scene->mNumMaterials);
     for (uint32_t materialIndex = 0; materialIndex < scene->mNumMaterials; ++materialIndex) {
         aiMaterial* material = scene->mMaterials[materialIndex];
-        MaterialData materialData{};
+        NumaEngine::MaterialData materialData{};
         aiString textureFilePath;
         aiColor3D kd(1, 1, 1);
         NumaEngine::Vector4 kdColor = { 1.0f,1.0f,1.0f,1.0f };
@@ -272,9 +272,9 @@ void NumaEngine::Model::SetTexture_ENV(const std::string& directoryPath, const s
         TextureManager::GetInstance()->GetSrvIndex(materialData.ENV_FilePath);
 }
 
-MaterialData NumaEngine::Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
+NumaEngine::MaterialData NumaEngine::Model::LoadMaterialTemplateFile(const std::string& directoryPath, const std::string& filename)
 {
-    MaterialData materialData; // 構築するMaterialData
+    NumaEngine::MaterialData materialData; // 構築するMaterialData
     std::string line; // ファイルから読んだ1行を格納するもの
     std::ifstream file(directoryPath + "/" + filename); // ファイルを開く
     assert(file.is_open()); // とりあえず開けなかったら止める
@@ -300,9 +300,9 @@ MaterialData NumaEngine::Model::LoadMaterialTemplateFile(const std::string& dire
     return materialData;
 }
 
-Node NumaEngine::Model::ReadNode(aiNode* node)
+NumaEngine::Node NumaEngine::Model::ReadNode(aiNode* node)
 {
-    Node result;
+    NumaEngine::Node result;
     
     aiVector3D scale, translate;
     aiQuaternion rotate;

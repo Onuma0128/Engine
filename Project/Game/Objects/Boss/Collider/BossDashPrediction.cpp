@@ -15,7 +15,7 @@ void BossDashPrediction::Init()
     this->DrawCollider();
 }
 
-void BossDashPrediction::Update(PrimitiveDrawr* plane, PrimitiveDrawr* timePlane)
+void BossDashPrediction::Update(NumaEngine::PrimitiveDrawr* plane, NumaEngine::PrimitiveDrawr* timePlane)
 {
     // コライダーを設定する
 	this->origin_ = bossPosition_ + NumaEngine::Vector3::ExprUnitY;

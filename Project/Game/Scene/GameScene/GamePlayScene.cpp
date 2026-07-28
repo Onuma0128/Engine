@@ -9,8 +9,8 @@
 
 void GamePlayScene::Initialize()
 {
-	// シーンのロード
-	SceneJsonLoader loader;
+    // シーンのロード
+	NumaEngine::SceneJsonLoader loader;
 	loader.Load("sceneObject");
 
 	// マップの初期化
@@ -18,7 +18,7 @@ void GamePlayScene::Initialize()
 	mapCollision_->Init(loader);
 
 	// スカイボックスの初期化
-	skyBox_ = std::make_unique<PrimitiveDrawr>();
+    skyBox_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	skyBox_->TypeInit(PrimitiveType::kSkybox);
 	skyBox_->GetTransform().scale = NumaEngine::Vector3::ExprUnitXYZ * 1024.0f;
 	skyBox_->SetSceneRenderer();

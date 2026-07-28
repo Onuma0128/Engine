@@ -50,7 +50,7 @@ public:
 
 private:
 
-	std::unique_ptr<PrimitiveDrawr> skyBox_ = nullptr;
+    std::unique_ptr<NumaEngine::PrimitiveDrawr> skyBox_ = nullptr;
 	
 	// プレイヤーの生成
 	std::unique_ptr<Player> player_ = nullptr;

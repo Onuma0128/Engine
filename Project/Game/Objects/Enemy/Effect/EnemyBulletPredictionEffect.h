@@ -47,8 +47,8 @@ private:
 
 private:
 
-	// エフェクト
-	std::unique_ptr<PrimitiveDrawr> plane_ = nullptr;
+    // エフェクト
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> plane_ = nullptr;
 	float hitDistance_ = 100.0f;
     NumaEngine::Vector3 hitPosition_ = {};
 	bool isHit_ = false;

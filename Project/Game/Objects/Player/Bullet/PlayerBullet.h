@@ -38,14 +38,14 @@ public:
 	/// </summary>
 	/// <param name="transform"></プレイヤーのTransformを設定する>
 	/// <param name="isEmit"></エフェクトを出すか>
-	void Reload(const WorldTransform& transform, bool isEmit = false);
+    void Reload(const NumaEngine::WorldTransform& transform, bool isEmit = false);
 
 	/// <summary>
 	/// 攻撃をする関数
 	/// </summary>
 	/// <param name="transform"></プレイヤーのTransformを設定する>
 	/// <param name="speed"></弾の速度を設定する>
-	void Attack(const WorldTransform& transform, float speed = 20.0f);
+    void Attack(const NumaEngine::WorldTransform& transform, float speed = 20.0f);
 
 	/// <summary>
 	/// 動いているかを取得する

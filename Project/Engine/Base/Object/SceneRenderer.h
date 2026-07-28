@@ -9,8 +9,7 @@
 #include "Animation.h"
 
 // Forward declarations to ensure pointer types are available even if includes fail
-namespace NumaEngine { class Object3d; class Sprite; class Line3d; class Animation; }
-class PrimitiveDrawr;
+namespace NumaEngine { class Object3d; class Sprite; class Line3d; class Animation; class PrimitiveDrawr; }
 
 /// <summary>
 /// シーンの描画を管理するクラス
@@ -40,8 +39,8 @@ void AddImpl(NumaEngine::Sprite* sprite) { sprites_.push_back(sprite); }
 void RemoveImpl(NumaEngine::Sprite* sprite) { sprites_.remove(sprite); }
 void AddImpl(NumaEngine::Line3d* line) { lines_.push_back(line); }
 void RemoveImpl(NumaEngine::Line3d* line) { lines_.remove(line); }
-void AddImpl(PrimitiveDrawr* primitive) { primitiveDrawrs_.push_back(primitive); }
-void RemoveImpl(PrimitiveDrawr* primitive) { primitiveDrawrs_.remove(primitive); }
+void AddImpl(NumaEngine::PrimitiveDrawr* primitive) { primitiveDrawrs_.push_back(primitive); }
+void RemoveImpl(NumaEngine::PrimitiveDrawr* primitive) { primitiveDrawrs_.remove(primitive); }
 void AddImpl(NumaEngine::Animation* animation) { animations_.push_back(animation); }
 void RemoveImpl(NumaEngine::Animation* animation) { animations_.remove(animation); }
 
@@ -52,7 +51,7 @@ private:
    std::list<NumaEngine::Object3d*>		objects_;
 	std::list<NumaEngine::Sprite*>			sprites_;
 	std::list<NumaEngine::Line3d*>			lines_;
-	std::list<PrimitiveDrawr*>			primitiveDrawrs_;
+	std::list<NumaEngine::PrimitiveDrawr*>	primitiveDrawrs_;
 	std::list<NumaEngine::Animation*>		animations_;
 
 };

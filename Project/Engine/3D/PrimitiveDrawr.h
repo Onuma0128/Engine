@@ -35,6 +35,7 @@ enum class PrimitiveType {
 /// <summary>
 /// プリミティブ描画クラス
 /// </summary>
+namespace NumaEngine {
 class PrimitiveDrawr
 {
 public:
@@ -266,6 +267,10 @@ private:
 
 
 
+
 };
 
+} // namespace NumaEngine
+
+// (No global aliases)
 

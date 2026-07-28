@@ -15,6 +15,7 @@ namespace NumaEngine { class Model; }
 /// <summary>
 /// ワールド変換を扱うクラス
 /// </summary>
+namespace NumaEngine {
 class WorldTransform
 {
 public:
@@ -63,6 +64,8 @@ public:
 
 private:
 
+
+
 };
 
-
+} // namespace NumaEngine

@@ -16,6 +16,7 @@
 /// <summary>
 /// スケルトン
 /// </summary>
+namespace NumaEngine {
 class Skeleton
 {
 private:
@@ -96,6 +97,7 @@ public:
 
 	const std::vector<const NodeAnimation*>& GetOrBuildTrackCacke(const AnimationData& animationData);
 
+
 private:
 
 	SkeletonItem item_;
@@ -105,4 +107,6 @@ private:
 	std::unordered_map<size_t, std::vector<const NodeAnimation*>> animTracksCache_;
 
 };
+
+} // namespace NumaEngine
 

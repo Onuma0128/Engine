@@ -53,9 +53,9 @@ void BossEffect::Init()
 	hitRingBlueEmitter_->SetIsCreate(false);
 }
 
-void BossEffect::PrimitiveInit(std::unique_ptr<PrimitiveDrawr>& effect)
+void BossEffect::PrimitiveInit(std::unique_ptr<NumaEngine::PrimitiveDrawr>& effect)
 {
-	effect = std::make_unique<PrimitiveDrawr>();
+    effect = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	effect->TypeInit(PrimitiveType::kPlane);
     effect->SetColor(NumaEngine::Vector3::ExprUnitX);
 	effect->SetAlpha(0.6f);
@@ -64,7 +64,7 @@ void BossEffect::PrimitiveInit(std::unique_ptr<PrimitiveDrawr>& effect)
 	effect->GetTransform().scale = {};
 }
 
-void BossEffect::PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect, const float time, const float size, const NumaEngine::Vector3& offset)
+void BossEffect::PrimitiveUpdate(std::unique_ptr<NumaEngine::PrimitiveDrawr>& effect, const float time, const float size, const NumaEngine::Vector3& offset)
 {
 	float scale = attackEffectTime_ / time;
 	scale = std::clamp(scale, 0.0f, 1.0f);
@@ -78,7 +78,7 @@ void BossEffect::PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect, const 
 	effect->GetRenderOptions().enabled = true;
 }
 
-void BossEffect::PrimitiveUpdate(std::unique_ptr<PrimitiveDrawr>& effect, const float time, const NumaEngine::Vector2& size, const NumaEngine::Vector3& offset)
+void BossEffect::PrimitiveUpdate(std::unique_ptr<NumaEngine::PrimitiveDrawr>& effect, const float time, const NumaEngine::Vector2& size, const NumaEngine::Vector3& offset)
 {
 	float scale = attackEffectTime_ / time;
 	scale = std::clamp(scale, 0.0f, 1.0f);

@@ -1,4 +1,4 @@
-﻿#include "TitleScene.h"
+#include "TitleScene.h"
 
 #include "DirectXEngine.h"
 #include "SceneManager.h"
@@ -18,8 +18,8 @@ void TitleScene::Initialize()
 	titleUI_->Init();
 	titleUI_->FadeIn();
 
-	// 繧ｷ繝ｼ繝ｳ縺ｮ繝ｭ繝ｼ繝・
-	SceneJsonLoader loader;
+    // 繧ｷ繝ｼ繝ｳ縺ｮ繝ｭ繝ｼ繝・
+	NumaEngine::SceneJsonLoader loader;
 	loader.Load("sceneObject");
 
 	// 繝槭ャ繝励・蛻晄悄蛹・

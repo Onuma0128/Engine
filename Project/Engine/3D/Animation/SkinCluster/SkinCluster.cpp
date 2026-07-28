@@ -7,7 +7,7 @@
 
 #include "animation/skeleton/Skeleton.h"
 
-void SkinCluster::CreateSkinCluster(Skeleton& skeleton, const ModelData& modelData)
+void NumaEngine::SkinCluster::CreateSkinCluster(Skeleton& skeleton, const ModelData& modelData)
 {
 	// **Influenceリソースの作成**
 	size_t influenceSize = modelData.vertices.size() * sizeof(VertexInfluence);
@@ -57,7 +57,7 @@ void SkinCluster::CreateSkinCluster(Skeleton& skeleton, const ModelData& modelDa
 	}
 }
 
-void SkinCluster::SkinClusterUpdate(Skeleton& skeleton)
+void NumaEngine::SkinCluster::SkinClusterUpdate(Skeleton& skeleton)
 {
 	for (size_t jointIndex = 0; jointIndex < skeleton.GetJoints().size(); ++jointIndex) {
 		assert(jointIndex < item_.inverseBindPoseMatrices.size());
@@ -68,7 +68,7 @@ void SkinCluster::SkinClusterUpdate(Skeleton& skeleton)
 	}
 }
 
-void SkinCluster::Reset()
+void NumaEngine::SkinCluster::Reset()
 {
 	if (item_.infuenceResource) {
 		item_.infuenceResource->Unmap(0, nullptr);

@@ -102,7 +102,7 @@ void PlayerBullet::OnCollisionEnter(NumaEngine::Collider* other)
 	}
 }
 
-void PlayerBullet::Reload(const WorldTransform& transform, bool isEmit)
+void PlayerBullet::Reload(const NumaEngine::WorldTransform& transform, bool isEmit)
 {
 	isReload_ = true;
 
@@ -111,7 +111,7 @@ void PlayerBullet::Reload(const WorldTransform& transform, bool isEmit)
 	effect_->OnceBulletReloadEffect(transform);
 }
 
-void PlayerBullet::Attack(const WorldTransform& transform, float speed)
+void PlayerBullet::Attack(const NumaEngine::WorldTransform& transform, float speed)
 {
 	// 回転と座標を取得
     NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(transform.rotation_);

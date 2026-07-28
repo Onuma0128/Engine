@@ -27,22 +27,22 @@ public:
 	/// <summary>
 	/// 弾のトレイルエフェクトを呼び出す
 	/// </summary>
-	void OnceBulletTrailEffect(const WorldTransform& transform);
+    void OnceBulletTrailEffect(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// 弾が消える時のエフェクトを呼び出す
 	/// </summary>
-	void OnceBulletDeleteEffect(const WorldTransform& transform);
+   void OnceBulletDeleteEffect(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// 弾のエフェクトを呼び出す
 	/// </summary>
-	void OnceBulletEffect(const WorldTransform& transform);
+ void OnceBulletEffect(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// 弾リロード時のエフェクトを呼び出す
 	/// </summary>
-	void OnceBulletReloadEffect(const WorldTransform& transform);
+   void OnceBulletReloadEffect(const NumaEngine::WorldTransform& transform);
 
 private:
 

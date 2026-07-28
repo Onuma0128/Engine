@@ -2,24 +2,24 @@
 
 #include "animation/joint/Joint.h"
 
-void DebugBone::Init(const std::vector<NumaEngine::Vector3>& positions)
+void NumaEngine::DebugBone::Init(const std::vector<NumaEngine::Vector3>& positions)
 {
-    bone_ = std::make_unique<NumaEngine::Line3d>();
+	bone_ = std::make_unique<NumaEngine::Line3d>();
 	bone_->Initialize(positions);
 	bone_->GetMaterial().enableDraw = false;
 }
 
-void DebugBone::Update()
+void NumaEngine::DebugBone::Update()
 {
 	bone_->Update();
 }
 
-std::vector<NumaEngine::Vector3> DebugBone::GetPositions(const WorldTransform& transform, const std::vector<Joint>& joints)
+std::vector<NumaEngine::Vector3> NumaEngine::DebugBone::GetPositions(const WorldTransform& transform, const std::vector<Joint>& joints)
 {
 	std::vector<NumaEngine::Vector3> linePositions{};
 	for (const Joint& joint : joints) {
 		if (joint.GetParent()) {
-            // 初期の位置を取得
+			// 初期の位置を取得
 			NumaEngine::Matrix4x4 parentMatrix = joints[*joint.GetParent()].GetSkeletonSpaceMatrix() * transform.matWorld_;
 			NumaEngine::Matrix4x4 jointMatrix = joint.GetSkeletonSpaceMatrix() * transform.matWorld_;
 

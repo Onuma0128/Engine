@@ -18,6 +18,8 @@
 #include <wrl.h>
 using Microsoft::WRL::ComPtr;
 
+namespace NumaEngine {
+
 /// <summary>
 /// 頂点データを表す構造体
 /// </summary>
@@ -131,5 +133,9 @@ struct RenderOptions {
 	bool enabled;		// 描画をするか
 	bool offscreen;		// オフスク描画をするか
 };
+
+} // namespace NumaEngine
+
+// (No global aliases)
 
 

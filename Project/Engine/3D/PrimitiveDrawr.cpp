@@ -9,12 +9,12 @@
 #include "Camera.h"
 #include "CameraManager.h"
 
-PrimitiveDrawr::~PrimitiveDrawr()
+NumaEngine::PrimitiveDrawr::~PrimitiveDrawr()
 {
 	RemoveRenderer();
 }
 
-void PrimitiveDrawr::Init(std::vector<NumaEngine::Vector3> pos)
+void NumaEngine::PrimitiveDrawr::Init(std::vector<NumaEngine::Vector3> pos)
 {
     primitiveDrawrBase_ = std::make_unique<NumaEngine::PrimitiveDrawrBase>();
 	primitiveDrawrBase_->Initialize();
@@ -22,7 +22,7 @@ void PrimitiveDrawr::Init(std::vector<NumaEngine::Vector3> pos)
 
 	SetTexture("white1x1.png");
 
-	CreateBufferResource(vertexResource_, sizeof(VertexData) * 4);
+    CreateBufferResource(vertexResource_, sizeof(NumaEngine::PrimitiveDrawr::VertexData) * 4);
 	CreateVertexBufferView(4);
 	CreateVertexData();
 
@@ -30,14 +30,14 @@ void PrimitiveDrawr::Init(std::vector<NumaEngine::Vector3> pos)
 	CreateIndexBufferView();
 	CreateIndexData();
 
-	CreateBufferResource(materialResource_, sizeof(MaterialData));
+    CreateBufferResource(materialResource_, sizeof(NumaEngine::PrimitiveDrawr::MaterialData));
 	CreateMaterialData();
 
     CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
-void PrimitiveDrawr::Update()
+void NumaEngine::PrimitiveDrawr::Update()
 {
 	// uvTransformの更新
 	UVTransformUpdate();
@@ -62,7 +62,7 @@ void PrimitiveDrawr::Update()
 	*wvpData_ = worldViewProjectionMatrix;
 }
 
-void PrimitiveDrawr::Draw()
+void NumaEngine::PrimitiveDrawr::Draw()
 {
 	primitiveDrawrBase_->DrawBase(static_cast<int>(blendMode_));
 
@@ -76,7 +76,7 @@ void PrimitiveDrawr::Draw()
 	commandList->DrawIndexedInstanced(6, 1, 0, 0, 0);
 }
 
-void PrimitiveDrawr::UVTransformUpdate()
+void NumaEngine::PrimitiveDrawr::UVTransformUpdate()
 {
 	// UVTransformの更新
     NumaEngine::Matrix4x4 scaleMatrix = NumaEngine::Matrix4x4::Scale(NumaEngine::Vector3{ uvTransform_.size.x, uvTransform_.size.y, 0.0f });
@@ -87,7 +87,7 @@ void PrimitiveDrawr::UVTransformUpdate()
 	materialData_->uvTransform = uvTransformMatrix;
 }
 
-void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
+void NumaEngine::PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 {
 	type_ = type;
 
@@ -116,7 +116,7 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 	}
 }
 
-void PrimitiveDrawr::SetSceneRenderer()
+void NumaEngine::PrimitiveDrawr::SetSceneRenderer()
 {
 	renderOptions_ = {
 		.enabled = true,
@@ -125,12 +125,12 @@ void PrimitiveDrawr::SetSceneRenderer()
     NumaEngine::DirectXEngine::GetSceneRenderer()->SetDrawList(this);
 }
 
-void PrimitiveDrawr::RemoveRenderer()
+void NumaEngine::PrimitiveDrawr::RemoveRenderer()
 {
     NumaEngine::DirectXEngine::GetSceneRenderer()->SetRemoveList(this);
 }
 
-void PrimitiveDrawr::TypeDraw()
+void NumaEngine::PrimitiveDrawr::TypeDraw()
 {
 	if (type_ == PrimitiveType::kSkybox) {
 		primitiveDrawrBase_->DrawSkyboxBase();
@@ -160,7 +160,7 @@ void PrimitiveDrawr::TypeDraw()
 	}
 }
 
-void PrimitiveDrawr::SetPosition(std::vector<NumaEngine::Vector3> pos)
+void NumaEngine::PrimitiveDrawr::SetPosition(std::vector<NumaEngine::Vector3> pos)
 {
 	vertexData_[0].position = { pos[0].x,pos[0].y,pos[0].z,1.0f };
 	vertexData_[1].position = { pos[1].x,pos[1].y,pos[1].z,1.0f };
@@ -168,13 +168,13 @@ void PrimitiveDrawr::SetPosition(std::vector<NumaEngine::Vector3> pos)
 	vertexData_[3].position = { pos[3].x,pos[3].y,pos[3].z,1.0f };
 }
 
-void PrimitiveDrawr::SetTexture(const std::string& filePath)
+void NumaEngine::PrimitiveDrawr::SetTexture(const std::string& filePath)
 {
 	textureData_.filePath = filePath;
 	textureData_.textureIndex = TextureManager::GetInstance()->GetSrvIndex(textureData_.filePath);
 }
 
-void PrimitiveDrawr::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size_t size)
+void NumaEngine::PrimitiveDrawr::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size_t size)
 {
 	// 頂点リソースのヒープの設定
 	D3D12_HEAP_PROPERTIES uploadHeapProperties = {};
@@ -202,21 +202,21 @@ void PrimitiveDrawr::CreateBufferResource(ComPtr<ID3D12Resource>& resource, size
 	assert(SUCCEEDED(hr)); // エラーチェック
 }
 
-void PrimitiveDrawr::CreateVertexBufferView(uint32_t kVertexSize)
+void NumaEngine::PrimitiveDrawr::CreateVertexBufferView(uint32_t kVertexSize)
 {
 	vertexBufferView_.BufferLocation = vertexResource_->GetGPUVirtualAddress();
-	vertexBufferView_.SizeInBytes = sizeof(VertexData) * kVertexSize;
-	vertexBufferView_.StrideInBytes = sizeof(VertexData);
+    vertexBufferView_.SizeInBytes = sizeof(NumaEngine::PrimitiveDrawr::VertexData) * kVertexSize;
+	vertexBufferView_.StrideInBytes = sizeof(NumaEngine::PrimitiveDrawr::VertexData);
 }
 
-void PrimitiveDrawr::CreateIndexBufferView()
+void NumaEngine::PrimitiveDrawr::CreateIndexBufferView()
 {
 	indexBufferView_.BufferLocation = indexResource_->GetGPUVirtualAddress();
 	indexBufferView_.SizeInBytes = sizeof(uint32_t) * 6;
 	indexBufferView_.Format = DXGI_FORMAT_R32_UINT;
 }
 
-void PrimitiveDrawr::CreateVertexData()
+void NumaEngine::PrimitiveDrawr::CreateVertexData()
 {
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 
@@ -236,7 +236,7 @@ void PrimitiveDrawr::CreateVertexData()
 	/*vertexData_[3] = { 0.5f,0.5f,0.0f,1.0f };*/
 }
 
-void PrimitiveDrawr::CreateIndexData()
+void NumaEngine::PrimitiveDrawr::CreateIndexData()
 {
 	indexResource_->Map(0, nullptr, reinterpret_cast<void**>(&indexData_));
 
@@ -244,7 +244,7 @@ void PrimitiveDrawr::CreateIndexData()
 	indexData_[3] = 1; indexData_[4] = 3; indexData_[5] = 2;
 }
 
-void PrimitiveDrawr::CreateMaterialData()
+void NumaEngine::PrimitiveDrawr::CreateMaterialData()
 {
 	materialResource_->Map(0, nullptr, reinterpret_cast<void**>(&materialData_));
 
@@ -254,14 +254,14 @@ void PrimitiveDrawr::CreateMaterialData()
 	materialData_->yTexcoord_alpha = false;
 }
 
-void PrimitiveDrawr::CreateWVPData()
+void NumaEngine::PrimitiveDrawr::CreateWVPData()
 {
 	wvpResource_->Map(0, nullptr, reinterpret_cast<void**>(&wvpData_));
 
     *wvpData_ = NumaEngine::Matrix4x4::Identity();
 }
 
-void PrimitiveDrawr::InitPlane()
+void NumaEngine::PrimitiveDrawr::InitPlane()
 {
 	SetTexture("uvChecker.png");
 
@@ -277,7 +277,7 @@ void PrimitiveDrawr::InitPlane()
 	CreateWVPData();
 }
 
-void PrimitiveDrawr::DrawPlane()
+void NumaEngine::PrimitiveDrawr::DrawPlane()
 {
     auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
@@ -288,7 +288,7 @@ void PrimitiveDrawr::DrawPlane()
 	commandList->DrawInstanced(6, 1, 0, 0);
 }
 
-void PrimitiveDrawr::CreatePlaneVertexData(VertexData* vertexData)
+void NumaEngine::PrimitiveDrawr::CreatePlaneVertexData(NumaEngine::PrimitiveDrawr::VertexData* vertexData)
 {
 	// 1,3,2
 	vertexData[0] = {
@@ -313,26 +313,26 @@ void PrimitiveDrawr::CreatePlaneVertexData(VertexData* vertexData)
 	};
 }
 
-void PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
+void NumaEngine::PrimitiveDrawr::InitSphere(uint32_t kSubdivision)
 {
 	kSubdivision_ = kSubdivision;
 	
 	SetTexture("white1x1.png");
 
 	uint32_t startIndex = kSubdivision * kSubdivision * 6;
-	CreateBufferResource(vertexResource_, sizeof(VertexData) * startIndex);
+    CreateBufferResource(vertexResource_, sizeof(NumaEngine::PrimitiveDrawr::VertexData) * startIndex);
 	CreateVertexBufferView(startIndex);
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	CreateSphereVertexData(vertexData_, kSubdivision);
 
-	CreateBufferResource(materialResource_, sizeof(MaterialData));
+    CreateBufferResource(materialResource_, sizeof(NumaEngine::PrimitiveDrawr::MaterialData));
 	CreateMaterialData();
 
     CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
-void PrimitiveDrawr::DrawSphere()
+void NumaEngine::PrimitiveDrawr::DrawSphere()
 {
     auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
@@ -343,7 +343,7 @@ void PrimitiveDrawr::DrawSphere()
 	commandList->DrawInstanced(kSubdivision_ * kSubdivision_ * 6, 1, 0, 0);
 }
 
-void PrimitiveDrawr::CreateSphereVertexData(VertexData* vertexData, uint32_t kSubdivision)
+void NumaEngine::PrimitiveDrawr::CreateSphereVertexData(NumaEngine::PrimitiveDrawr::VertexData* vertexData, uint32_t kSubdivision)
 {
 	const float pi = static_cast<float>(std::numbers::pi);
 	const float kLonEvery = 2 * pi / float(kSubdivision); // 経度
@@ -377,25 +377,25 @@ void PrimitiveDrawr::CreateSphereVertexData(VertexData* vertexData, uint32_t kSu
 	}
 }
 
-void PrimitiveDrawr::InitRing(uint32_t kRingDivide)
+void NumaEngine::PrimitiveDrawr::InitRing(uint32_t kRingDivide)
 {
 	kRingDivide_ = kRingDivide;
 
 	SetTexture("gradationLine.png");
 
-	CreateBufferResource(vertexResource_, sizeof(VertexData) * kRingDivide_ * 6);
+    CreateBufferResource(vertexResource_, sizeof(NumaEngine::PrimitiveDrawr::VertexData) * kRingDivide_ * 6);
 	CreateVertexBufferView(kRingDivide_ * 6);
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	CreateRingVertexData(vertexData_, kRingDivide_);
 
-	CreateBufferResource(materialResource_, sizeof(MaterialData));
+    CreateBufferResource(materialResource_, sizeof(NumaEngine::PrimitiveDrawr::MaterialData));
 	CreateMaterialData();
 
     CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
-void PrimitiveDrawr::DrawRing()
+void NumaEngine::PrimitiveDrawr::DrawRing()
 {
     auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
@@ -406,7 +406,7 @@ void PrimitiveDrawr::DrawRing()
 	commandList->DrawInstanced(kRingDivide_ * 6, 1, 0, 0);
 }
 
-void PrimitiveDrawr::CreateRingVertexData(VertexData* vertexData, uint32_t kRingDivide)
+void NumaEngine::PrimitiveDrawr::CreateRingVertexData(NumaEngine::PrimitiveDrawr::VertexData* vertexData, uint32_t kRingDivide)
 {
 	const float kOuterRadius = 1.0f;
 	const float kInnerRadius = 0.2f;
@@ -448,25 +448,25 @@ void PrimitiveDrawr::CreateRingVertexData(VertexData* vertexData, uint32_t kRing
 	}
 }
 
-void PrimitiveDrawr::InitCylinder(uint32_t kCylinderDivide)
+void NumaEngine::PrimitiveDrawr::InitCylinder(uint32_t kCylinderDivide)
 {
 	kCylinderDivide_ = kCylinderDivide;
 
 	SetTexture("gradationLine.png");
 
-	CreateBufferResource(vertexResource_, sizeof(VertexData) * kCylinderDivide_ * 6);
+    CreateBufferResource(vertexResource_, sizeof(NumaEngine::PrimitiveDrawr::VertexData) * kCylinderDivide_ * 6);
 	CreateVertexBufferView(kCylinderDivide_ * 6);
 	vertexResource_->Map(0, nullptr, reinterpret_cast<void**>(&vertexData_));
 	CreateCylinderVertexData(vertexData_, kCylinderDivide_);
 
-	CreateBufferResource(materialResource_, sizeof(MaterialData));
+    CreateBufferResource(materialResource_, sizeof(NumaEngine::PrimitiveDrawr::MaterialData));
 	CreateMaterialData();
 
     CreateBufferResource(wvpResource_, sizeof(NumaEngine::Matrix4x4));
 	CreateWVPData();
 }
 
-void PrimitiveDrawr::DrawCylinder()
+void NumaEngine::PrimitiveDrawr::DrawCylinder()
 {
     auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
@@ -477,7 +477,7 @@ void PrimitiveDrawr::DrawCylinder()
 	commandList->DrawInstanced(kCylinderDivide_ * 6, 1, 0, 0);
 }
 
-void PrimitiveDrawr::CreateCylinderVertexData(VertexData* vertexData, uint32_t kCylinderDivide)
+void NumaEngine::PrimitiveDrawr::CreateCylinderVertexData(NumaEngine::PrimitiveDrawr::VertexData* vertexData, uint32_t kCylinderDivide)
 {
 	const float kTopRadius = 1.0f;
 	const float kBottomRadius = 1.0f;
@@ -520,7 +520,7 @@ void PrimitiveDrawr::CreateCylinderVertexData(VertexData* vertexData, uint32_t k
 	}
 }
 
-void PrimitiveDrawr::InitSkybox()
+void NumaEngine::PrimitiveDrawr::InitSkybox()
 {
 	SetTexture("output.dds");
 
@@ -536,7 +536,7 @@ void PrimitiveDrawr::InitSkybox()
 	CreateWVPData();
 }
 
-void PrimitiveDrawr::DrawSkybox()
+void NumaEngine::PrimitiveDrawr::DrawSkybox()
 {
 	auto commandList = NumaEngine::DirectXEngine::GetCommandList();
 	commandList->IASetVertexBuffers(0, 1, &vertexBufferView_);
@@ -547,7 +547,7 @@ void PrimitiveDrawr::DrawSkybox()
 	commandList->DrawInstanced(36, 1, 0, 0);
 }
 
-void PrimitiveDrawr::CreateSkyboxVertexData(VertexData* vertexData)
+void NumaEngine::PrimitiveDrawr::CreateSkyboxVertexData(NumaEngine::PrimitiveDrawr::VertexData* vertexData)
 {
 	// 前面 (+Z)
 	vertexData[0].position = { -1.0f,  1.0f,  1.0f, 1.0f };

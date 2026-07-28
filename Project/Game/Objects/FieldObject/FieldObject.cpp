@@ -83,7 +83,7 @@ void FieldObject::OnCollisionEnter(Collider* other)
             NumaEngine::Matrix4x4 rotate = NumaEngine::Quaternion::MakeRotateMatrix(other->GetRotate());
 			NumaEngine::Vector3 velocity = NumaEngine::Vector3::ExprUnitZ.Transform(rotate);
 			// エフェクトを描画
-			WorldTransform transform;
+            NumaEngine::WorldTransform transform;
 			transform.rotation_ = NumaEngine::Quaternion::IdentityQuaternion();
 			transform.translation_ = other->GetCenterPosition() + (velocity * 0.2f);
 			effect_->OnceHitEffect(transform);

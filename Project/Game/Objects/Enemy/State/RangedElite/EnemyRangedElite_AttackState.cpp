@@ -9,6 +9,7 @@
 #include "objects/player/Player.h"
 #include "objects/enemy/adjustItem/EnemyAdjustItem.h"
 #include "objects/enemy/state/EnemyMoveState.h"
+#include "WorldTransform.h"
 
 EnemyRangedElite_AttackState::EnemyRangedElite_AttackState(BaseEnemy* enemy) :EnemyBaseState(enemy) {}
 
@@ -91,7 +92,7 @@ void EnemyRangedElite_AttackState::Attack()
 	float rad = -data.bulletRadSpace;
 	float pi = std::numbers::pi_v<float> / 4.0f;
 	for (auto& bullet : enemy_->GetBullets()) {
-		WorldTransform transform = enemy_->GetTransform();
+    NumaEngine::WorldTransform transform = enemy_->GetTransform();
 		NumaEngine::Quaternion quaternion = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitY, pi * rad);
 		transform.rotation_ = transform.rotation_ * quaternion;
 		bullet->Attack(transform);

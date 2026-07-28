@@ -3,7 +3,7 @@
 #include <execution>
 #include <numeric>
 
-void Skeleton::CreateSkeleton(const WorldTransform& transform, const Node& rootNode)
+void NumaEngine::Skeleton::CreateSkeleton(const WorldTransform& transform, const Node& rootNode)
 {
 	animTracksCache_.clear();
 
@@ -23,7 +23,7 @@ void Skeleton::CreateSkeleton(const WorldTransform& transform, const Node& rootN
 #endif // ENABLE_EDITOR
 }
 
-void Skeleton::SkeletonUpdate(const WorldTransform& transform)
+void NumaEngine::Skeleton::SkeletonUpdate(const WorldTransform& transform)
 {
 	for (Joint& joint : item_.joints) {
 		Transform3D transform = joint.GetTransform();
@@ -36,7 +36,7 @@ void Skeleton::SkeletonUpdate(const WorldTransform& transform)
 	}
 }
 
-void Skeleton::DebugBoneUpdate(const WorldTransform& transform)
+void NumaEngine::Skeleton::DebugBoneUpdate(const WorldTransform& transform)
 {
 	// DebugBoneの更新
 #ifdef ENABLE_EDITOR
@@ -47,7 +47,7 @@ void Skeleton::DebugBoneUpdate(const WorldTransform& transform)
 #endif // ENABLE_EDITOR
 }
 
-void Skeleton::ApplyAnimation(const AnimationData& animation, float animationTime, float duration)
+void NumaEngine::Skeleton::ApplyAnimation(const AnimationData& animation, float animationTime, float duration)
 {
 	// index配列を用意
 	std::vector<size_t> indices(item_.joints.size());
@@ -71,7 +71,7 @@ void Skeleton::ApplyAnimation(const AnimationData& animation, float animationTim
 	}
 }
 
-void Skeleton::LerpTransformUpdate(const size_t index, const float alpha, const Skeleton& poseA, const Skeleton& poseB)
+void NumaEngine::Skeleton::LerpTransformUpdate(const size_t index, const float alpha, const Skeleton& poseA, const Skeleton& poseB)
 {
 	auto& dst = item_.joints[index];
 	const auto& a = poseA.GetItem().joints[index];
@@ -82,7 +82,7 @@ void Skeleton::LerpTransformUpdate(const size_t index, const float alpha, const 
 	dst.GetTransform().rotation = NumaEngine::Quaternion::Slerp(a.GetTransform().rotation, b.GetTransform().rotation, alpha);
 }
 
-void Skeleton::Reset()
+void NumaEngine::Skeleton::Reset()
 {
 	animTracksCache_.clear();
 	item_.jointMap.clear();
@@ -90,7 +90,7 @@ void Skeleton::Reset()
 	item_.root = 0;
 }
 
-bool Skeleton::CheckJointName(const std::string name)
+bool NumaEngine::Skeleton::CheckJointName(const std::string name)
 {
 	auto checkName = item_.jointMap.find(name);
 	if (checkName == item_.jointMap.end()) {
@@ -99,7 +99,7 @@ bool Skeleton::CheckJointName(const std::string name)
 	return false;
 }
 
-const std::vector<const NodeAnimation*>& Skeleton::GetOrBuildTrackCacke(const AnimationData& animation)
+const std::vector<const NodeAnimation*>& NumaEngine::Skeleton::GetOrBuildTrackCacke(const AnimationData& animation)
 {
 	// クリップごとのキャッシュキーを生成
 	size_t key = reinterpret_cast<size_t>(&animation);

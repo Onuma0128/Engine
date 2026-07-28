@@ -1,4 +1,5 @@
-﻿#include <d3d12.h>
+#include <d3d12.h>
+#pragma once
 #pragma comment(lib,"d3d12.lib")
 #include "wrl.h"
 

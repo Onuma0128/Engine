@@ -8,12 +8,12 @@
 
 #include "CreateBufferResource.h"
 
-WorldTransform::WorldTransform()
+NumaEngine::WorldTransform::WorldTransform()
 {
-    
+
 }
 
-void WorldTransform::TransferMatrix(const NumaEngine::Model* model)
+void NumaEngine::WorldTransform::TransferMatrix(const NumaEngine::Model* model)
 {
     matWorld_ = NumaEngine::Matrix4x4::Affine(scale_, rotation_, translation_);
     if (parent_) {
@@ -26,7 +26,7 @@ void WorldTransform::TransferMatrix(const NumaEngine::Model* model)
     instanceMatrix_.WorldInverseTranspose = model->GetModelData().rootNode.localMatrix * NumaEngine::Matrix4x4::Inverse(matWorld_).Transpose();
 }
 
-void WorldTransform::TransferMatrix(const NumaEngine::Matrix4x4& localMatrix)
+void NumaEngine::WorldTransform::TransferMatrix(const NumaEngine::Matrix4x4& localMatrix)
 {
     matWorld_ = NumaEngine::Matrix4x4::Affine(scale_, rotation_, translation_);
     if (parent_) {

@@ -23,7 +23,7 @@ void PlayerEffect::Init()
 	avoidDustEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("avoidDust");
 	particleManager_->CreateParticleGroup(avoidDustEmitter_);
 	avoidDustEmitter_->SetIsCreate(false);
-	avoidCoolTimeEffect_ = std::make_unique<PrimitiveDrawr>();
+    avoidCoolTimeEffect_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	avoidCoolTimeEffect_->TypeInit(PrimitiveType::kPlane);
 	avoidCoolTimeEffect_->SetTexture("white1x1.png");
 	avoidCoolTimeEffect_->SetBlendMode(BlendMode::kBlendModeNormal);
@@ -41,7 +41,7 @@ void PlayerEffect::Init()
 	postEffectManager_->CreatePostEffect(PostEffectType::kVignette);
 	postEffectManager_->CreatePostEffect(PostEffectType::kOutLine);
 
-	needMoreMachoEffect = std::make_unique<PrimitiveDrawr>();
+    needMoreMachoEffect = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	needMoreMachoEffect->TypeInit(PrimitiveType::kPlane);
 	needMoreMachoEffect->SetTexture("needMoreMacho.png");
 	needMoreMachoEffect->SetBlendMode(BlendMode::kBlendModeNormal);
@@ -49,7 +49,7 @@ void PlayerEffect::Init()
 	needMoreMachoEffect->GetRenderOptions().offscreen = false;
 	needMoreMachoEffect->SetIsBillboard(true);
 	
-	cylinder_ = std::make_unique<PrimitiveDrawr>();
+    cylinder_ = std::make_unique<NumaEngine::PrimitiveDrawr>();
 	cylinder_->TypeInit(PrimitiveType::kCylinder, 32);
 	cylinder_->GetTransform().scale = {};
 	cylinder_->SetColor({ 1.0f,1.0f,0.0f });

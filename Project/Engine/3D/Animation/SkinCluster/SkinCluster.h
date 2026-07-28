@@ -13,11 +13,12 @@ using Microsoft::WRL::ComPtr;
 #include "ModelStruct.h"
 #include "AnimationStruct.h"
 
-class Skeleton;
+namespace NumaEngine { class Skeleton; }
 
 /// <summary>
 /// スキンのクラスタリングクラス
 /// </summary>
+namespace NumaEngine {
 class SkinCluster
 {
 private:
@@ -75,9 +76,12 @@ public:
 	// 影響バッファビューを取得
 	const D3D12_VERTEX_BUFFER_VIEW& GetInfluenceBufferView()const { return item_.influenceBufferView; }
 
+
 private:
 
 	SkinClusterItem item_;
 
 };
+
+} // namespace NumaEngine
 

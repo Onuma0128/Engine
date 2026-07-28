@@ -6,6 +6,8 @@
 #include "CreateBufferResource.h"
 #include "LineInstanceRenderer.h"
 
+#include "Line3dBase.h"
+
 #include "Camera.h"
 #include "CameraManager.h"
 

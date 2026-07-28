@@ -15,6 +15,7 @@
 #include "Objects/Enemy/state/Ranged/EnemyRanged_AttackState.h"
 #include "Objects/Enemy/state/ShieldBearer/EnemyShieldBearer_AttackState.h"
 #include "Objects/Enemy/state/RangedElite/EnemyRangedElite_AttackState.h"
+#include "WorldTransform.h"
 
 void BaseEnemy::Initialize()
 {
@@ -196,7 +197,7 @@ void BaseEnemy::OnCollisionEnter(Collider* other)
 			}
 		}
 		// エフェクトを描画
-		WorldTransform transform;
+        NumaEngine::WorldTransform transform;
 		transform.rotation_ = other->GetRotate();
 		transform.translation_ = transform_.translation_;
 		effect_->OnceBulletHitEffect(transform);

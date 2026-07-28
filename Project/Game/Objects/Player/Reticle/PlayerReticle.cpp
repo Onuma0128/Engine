@@ -1,4 +1,4 @@
-﻿#include "PlayerReticle.h"
+#include "PlayerReticle.h"
 
 #include <numbers>
 
@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "DeltaTimer.h"
 #include "Easing.h"
+#include "WorldTransform.h"
 
 void PlayerReticle::Init()
 {
@@ -83,7 +84,7 @@ void PlayerReticle::OnCollisionEnter(NumaEngine::Collider* other)
 		hitCount_ < 6) {
 		reticleColorTimer_ = -0.2f;
 		++hitCount_;
-		WorldTransform transform;
+        NumaEngine::WorldTransform transform;
 		transform.translation_ = other->GetCenterPosition();
 		enemyColliders_.push_front(other);
 		Input::GetInstance()->Vibrate(0.2f, 1.0f, 10);

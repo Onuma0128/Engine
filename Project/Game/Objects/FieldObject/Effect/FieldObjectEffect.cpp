@@ -24,7 +24,7 @@ void FieldObjectEffect::Update()
 
 }
 
-void FieldObjectEffect::OnceHitEffect(const WorldTransform& transform)
+void FieldObjectEffect::OnceHitEffect(const NumaEngine::WorldTransform& transform)
 {
 	hitEmitter_->onceEmit();
 
@@ -35,7 +35,7 @@ void FieldObjectEffect::OnceHitEffect(const WorldTransform& transform)
 	hitEmitter_->SetPosition(position);
 }
 
-void FieldObjectEffect::OnceBreakEffect(const WorldTransform& transform)
+void FieldObjectEffect::OnceBreakEffect(const NumaEngine::WorldTransform& transform)
 {
 	/*if (isBreakEffectPlay_) { return; }
 	isBreakEffectPlay_ = true;*/

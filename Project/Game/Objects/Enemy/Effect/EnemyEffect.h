@@ -42,32 +42,32 @@ public:
 	/// <summary>
 	/// 移動時のエフェクトを呼び出す
 	/// </summary>
-	void OnceMoveEffect(const WorldTransform& transform);
+    void OnceMoveEffect(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// 弾を撃つ時のエフェクトを呼び出す
 	/// </summary>
 	/// <param name="transform"></敵のTransformを入れる>
-	void OnceBulletEffect(const WorldTransform& transform);
+    void OnceBulletEffect(const NumaEngine::WorldTransform& transform);
 	
 	/// <summary>
 	/// 弾がヒットした時のエフェクトを呼び出す
 	/// </summary>
 	/// <param name="transform"></敵のTransformを入れる>
-	void OnceBulletHitEffect(const WorldTransform& transform);
+    void OnceBulletHitEffect(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// 弾がヒットした時の爆発エフェクトを呼び出す
 	/// </summary>
 	/// <param name="transform"></敵のTransformを入れる>
-	void OnceBulletHitExplosionEffect(const WorldTransform& transform);
-	void OnceBulletHitExplosionBlueEffect(const WorldTransform& transform);
+    void OnceBulletHitExplosionEffect(const NumaEngine::WorldTransform& transform);
+	void OnceBulletHitExplosionBlueEffect(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// 近接敵攻撃時のエフェクトをセットする
 	/// </summary>
 	/// <param name="transform"></敵のTransformを入れる>
-	void SetMeleeAttackEffect(const WorldTransform& transform);
+    void SetMeleeAttackEffect(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// 近接敵攻撃時のエフェクトを出すか
@@ -143,7 +143,7 @@ private:
 	/* ==================== レティクルがヒットした時のエフェクト ==================== */
 
 	struct HitReticleEffect {
-		std::unique_ptr<PrimitiveDrawr> cylinder_;
+        std::unique_ptr<NumaEngine::PrimitiveDrawr> cylinder_;
 		float frame_;
 		float axis_;
 	};

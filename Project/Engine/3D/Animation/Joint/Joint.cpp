@@ -1,6 +1,6 @@
 #include "Joint.h"
 
-int32_t Joint::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
+int32_t NumaEngine::Joint::CreateJoint(const Node& node, const std::optional<int32_t>& parent, std::vector<Joint>& joints)
 {
 	Joint joint;
 	joint.name_ = node.name;
@@ -18,14 +18,14 @@ int32_t Joint::CreateJoint(const Node& node, const std::optional<int32_t>& paren
 	return joint.index_;
 }
 
-void Joint::TransformUpdate(const NodeAnimation& track, float animationTime, float duration)
+void NumaEngine::Joint::TransformUpdate(const NodeAnimation& track, float animationTime, float duration)
 {
 	transform_.translation = CalculateValue(track.translate.keyframes, animationTime, duration);
 	transform_.rotation = CalculateValue(track.rotate.keyframes, animationTime, duration);
 	transform_.scale = CalculateValue(track.scale.keyframes, animationTime, duration);
 }
 
-NumaEngine::Vector3 Joint::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)
+NumaEngine::Vector3 NumaEngine::Joint::CalculateValue(const std::vector<KeyFrameVector3>& keys, float time, float clipDuration)
 {
 	assert(!keys.empty());
 
@@ -51,7 +51,7 @@ NumaEngine::Vector3 Joint::CalculateValue(const std::vector<KeyFrameVector3>& ke
 	return keys.back().value;
 }
 
-NumaEngine::Quaternion Joint::CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration)
+NumaEngine::Quaternion NumaEngine::Joint::CalculateValue(const std::vector<KeyFrameQuaternion>& keys, float time, float clipDuration)
 {
 	assert(!keys.empty());
 

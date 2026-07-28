@@ -28,13 +28,13 @@ public:
 	/// 弾がヒット時のエフェクトを呼び出す
 	/// </summary>
 	/// <param name="transform"></フィールドオブジェクトのTransform>
-	void OnceHitEffect(const WorldTransform& transform);
+    void OnceHitEffect(const NumaEngine::WorldTransform& transform);
 
 	/// <summary>
 	/// ブレイク時のエフェクトを呼び出す
 	/// </summary>
 	/// <param name="transform"></フィールドオブジェクトのTransform>
-	void OnceBreakEffect(const WorldTransform& transform);
+    void OnceBreakEffect(const NumaEngine::WorldTransform& transform);
 
 private:
 

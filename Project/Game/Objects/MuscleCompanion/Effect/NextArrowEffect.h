@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <memory>
 
@@ -43,8 +43,8 @@ private:
 	// 調整項目のポインタ
 	CompanionAdjustItem* items_ = nullptr;
 
-	// 矢印エフェクト
-	std::unique_ptr<PrimitiveDrawr> arrow_ = nullptr;
+    // 矢印エフェクト
+	std::unique_ptr<NumaEngine::PrimitiveDrawr> arrow_ = nullptr;
 	float animaTime_ = 0.0f;
 
 

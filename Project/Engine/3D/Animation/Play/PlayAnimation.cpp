@@ -7,7 +7,7 @@
 #include "DeltaTimer.h"
 #include "animation/skeleton/Skeleton.h"
 
-void PlayAnimation::Init(const ModelData& modelData)
+void NumaEngine::PlayAnimation::Init(const ModelData& modelData)
 {
 	animationDatas_ = modelData.animations;
 	for (size_t i = 0; i < animationDatas_.size(); ++i) {
@@ -16,7 +16,7 @@ void PlayAnimation::Init(const ModelData& modelData)
 	flags_.currentAnim = 0;
 }
 
-void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
+void NumaEngine::PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 {
     requestCooldown_ = std::max(0.0f, requestCooldown_ - NumaEngine::DeltaTimer::GetDeltaTime());
 
@@ -87,19 +87,19 @@ void PlayAnimation::AnimationPlayUpdate(Skeleton& skeleton)
 	}
 }
 
-void PlayAnimation::Reset()
+void NumaEngine::PlayAnimation::Reset()
 {
 	animationDatas_.clear();
 	nameToIx_.clear();
 }
 
-void PlayAnimation::ClearPending()
+void NumaEngine::PlayAnimation::ClearPending()
 {
 	pendingIx_.reset();      // 予約を消す
 	requestCooldown_ = 0.0f; // クールダウンもリセットする
 }
 
-void PlayAnimation::Play(size_t idx, float fadeTime)
+void NumaEngine::PlayAnimation::Play(size_t idx, float fadeTime)
 {
 	if (idx >= animationDatas_.size()) { return; }
 
@@ -135,7 +135,7 @@ void PlayAnimation::Play(size_t idx, float fadeTime)
 	flags_.stopped = false;
 }
 
-bool PlayAnimation::PlayByName(const std::string& clipName, float fadeTime)
+bool NumaEngine::PlayAnimation::PlayByName(const std::string& clipName, float fadeTime)
 {
 	auto it = nameToIx_.find(clipName);
 	if (it == nameToIx_.end()) { return false; }
@@ -151,7 +151,7 @@ bool PlayAnimation::PlayByName(const std::string& clipName, float fadeTime)
 	return true;
 }
 
-void PlayAnimation::ForcePlay(size_t idx, float startTime, bool keepPhase)
+void NumaEngine::PlayAnimation::ForcePlay(size_t idx, float startTime, bool keepPhase)
 {
 	if (idx >= animationDatas_.size()) { return; }
 
@@ -181,7 +181,7 @@ void PlayAnimation::ForcePlay(size_t idx, float startTime, bool keepPhase)
 	flags_.stopped = false;
 }
 
-bool PlayAnimation::ForcePlayByName(const std::string& clipName, float startTime, bool keepPhase)
+bool NumaEngine::PlayAnimation::ForcePlayByName(const std::string& clipName, float startTime, bool keepPhase)
 {
 	auto it = nameToIx_.find(clipName);
 	if (it == nameToIx_.end()) { return false; }
