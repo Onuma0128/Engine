@@ -349,7 +349,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="Engine\3d\Sprite.h" />
     <ClInclude Include="Engine\Base\Camera\CameraManager.h" />
-    <ClInclude Include="Engine\Base\Scene\SceneFactory\titleScene\TitleScene.h" />
     <ClInclude Include="Game\Objects\Player\Collider\EnemySearchCollider.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionPushUpIdleState.h" />
     <ClInclude Include="Game\Objects\MuscleCompanion\State\CompanionClearState.h" />

@@ -1368,7 +1368,6 @@
     <ClInclude Include="Game\Objects\MuscleCompanion\Effect\MuscleCountEffect.h" />
     <ClInclude Include="Engine\3d\Sprite.h" />
     <ClInclude Include="Engine\Base\Camera\CameraManager.h" />
-    <ClInclude Include="Engine\Base\Scene\SceneFactory\titleScene\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="scripts\qualify_types.ps1" />

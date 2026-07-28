@@ -108,6 +108,7 @@ void MuscleCompanion::OnCollisionEnter(Collider* other)
 	// 進行ベクトルを取り背面の建物を判定する
 	const auto& data = items_->GetDashData();
 	NumaEngine::Vector3 toTarget = other->GetCenterPosition() - transform_.translation_;
+	if (dashDirection_.Length() <= 0.0f || toTarget.Length() < 0.0f) { return; }
 	float dot = NumaEngine::Vector3::Dot(dashDirection_.Normalize(), toTarget.Normalize());
 	dot = std::clamp(dot, -1.0f, 1.0f);
 	// 角度を計算して、背面に建物があるか判定する
