@@ -4,7 +4,7 @@
 
 #include "Collider.h"
 
-void MapCollision::Init(SceneJsonLoader loader)
+void MapCollision::Init(NumaEngine::SceneJsonLoader loader)
 {
 	// フィールドに配置されているObjectを取得する
 	for (auto it = loader.GetData().begin(); it != loader.GetData().end();) {

@@ -10,7 +10,7 @@
 #include "objects/player/Player.h"
 #include "gameCamera/GameCamera.h"
 
-void EnemySpawnerFactory::Init(SceneJsonLoader loader)
+void EnemySpawnerFactory::Init(NumaEngine::SceneJsonLoader loader)
 {
 	items_ = std::make_unique<EnemyAdjustItem>();
 	items_->LoadItems();
@@ -77,7 +77,7 @@ void EnemySpawnerFactory::SetSpawnEnemy(EnemyType type, const NumaEngine::Vector
 	}
 }
 
-void EnemySpawnerFactory::CreateSpawner(SceneObject object)
+void EnemySpawnerFactory::CreateSpawner(NumaEngine::SceneObject object)
 {
 	std::unique_ptr<EnemySpawner> spawner = std::make_unique<EnemySpawner>();
 	spawner->Init(object);

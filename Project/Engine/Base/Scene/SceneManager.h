@@ -8,6 +8,7 @@
 /// <summary>
 /// シーン管理クラス
 /// </summary>
+namespace NumaEngine {
 class SceneManager
 {
 private:
@@ -49,3 +50,5 @@ private:
 
     NumaEngine::AbstractSceneFactory* sceneFactory_ = nullptr;
 };
+
+} // namespace NumaEngine

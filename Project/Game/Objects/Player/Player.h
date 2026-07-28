@@ -82,10 +82,10 @@ public:
 	PlayerReticle* GetReticle()const { return reticle_.get(); }
 	PlayerAdjustItem* GetItem() const { return items_.get(); }
 	BossEnemy* GetBoss()const { return boss_; }
-	SceneJsonLoader* GetSceneJsonLoader()const { return loader_; }
+    NumaEngine::SceneJsonLoader* GetSceneJsonLoader()const { return loader_; }
 	EnemySearchCollider* GetSearchCollider()const { return searchCollider_.get(); }
 	PathFinder& GetPathFinder() { return pathFinder_; }
-	void SetLoader(SceneJsonLoader* loader) { loader_ = loader; }
+    void SetLoader(NumaEngine::SceneJsonLoader* loader) { loader_ = loader; }
 	void SetBoss(BossEnemy* boss) { boss_ = boss; }
 	void SetMapData(MapCollision* mapData) { pathFinder_.SetMapData(mapData); }
 
@@ -120,8 +120,8 @@ private:
 	// 敵探索用コライダー
 	std::unique_ptr<EnemySearchCollider> searchCollider_ = nullptr;
 	WorldTransform startTransform_{};
-	// ローダーのポインタ
-	SceneJsonLoader* loader_ = nullptr;
+    // ローダーのポインタ
+	NumaEngine::SceneJsonLoader* loader_ = nullptr;
 
 	// 今生きているか
 	bool isAlive_ = true;

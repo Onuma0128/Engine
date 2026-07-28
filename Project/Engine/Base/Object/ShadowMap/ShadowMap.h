@@ -11,6 +11,7 @@ using Microsoft::WRL::ComPtr;
 /// <summary>
 /// シャドウマップクラス
 /// </summary>
+namespace NumaEngine {
 class ShadowMap
 {
 private:
@@ -80,3 +81,5 @@ private:
     uint32_t shadowSize_ = 0;
 
 };
+
+} // namespace NumaEngine

@@ -31,7 +31,7 @@ void EnemyKnockbackState::Update()
     time_ += NumaEngine::DeltaTimer::GetDeltaTime();
 	float t = time_ / knockbackTime;
 	t = std::clamp(t, 0.0f, 1.0f);
-	t = Easing::EaseOutQuint(t);
+	t = NumaEngine::Easing::EaseOutQuint(t);
 
 	NumaEngine::Vector3 translate = NumaEngine::Vector3::Lerp(startPosition_, endPosition_, t);
 	enemy_->SetTransformTranslation(translate);
@@ -44,6 +44,7 @@ void EnemyKnockbackState::Update()
 void EnemyKnockbackState::Draw()
 {
 }
+
 
 
 

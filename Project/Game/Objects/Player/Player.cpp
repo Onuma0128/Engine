@@ -14,8 +14,8 @@ void Player::Initialize()
 	items_ = std::make_unique<PlayerAdjustItem>();
 	items_->LoadItems();
 
-	// シーンのオブジェクトをロード、初期化
-	SceneObject player;
+    // シーンのオブジェクトをロード、初期化
+	NumaEngine::SceneObject player;
 	for (auto it = loader_->GetData().begin(); it != loader_->GetData().end();) {
 		if (it->second.tag == "Player") {
 			player = it->second;

@@ -103,7 +103,7 @@ void SelectSystem::SelectInput()
 	// シーンフェードインが完了したらシーン遷移
 	if (isSceneFadeIn_ && !gameSceneUis_->GetIsFadePlayAnimation()) {
 		if (targetIndex_ == 0u) {
-			SceneManager::GetInstance()->ChangeScene("Title");
+			NumaEngine::SceneManager::GetInstance()->ChangeScene("Title");
 		} else {
 			player_->Reset();
 			spawner_->Reset();

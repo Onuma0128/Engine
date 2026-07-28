@@ -207,7 +207,7 @@ private:
 
 private:
 
-	std::unique_ptr<PrimitiveDrawrBase> primitiveDrawrBase_ = nullptr;
+    std::unique_ptr<NumaEngine::PrimitiveDrawrBase> primitiveDrawrBase_ = nullptr;
 
 	/* =============== 頂点 =============== */
 

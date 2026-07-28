@@ -9,7 +9,7 @@
 #include "SearchAlgorithm/Collision/MapCollision.h"
 #include "GameCamera/GameCamera.h"
 
-void FieldObject::Init(SceneObject object)
+void FieldObject::Init(NumaEngine::SceneObject object)
 {
     this->NumaEngine::Object3d::Initialize(object.fileName);
 	this->NumaEngine::Object3d::SetSceneRenderer();
@@ -153,7 +153,7 @@ void FieldObject::UpdateBreak()
 		const auto& data = items_->GetMainData();
         breakTimer_ += NumaEngine::DeltaTimer::GetDeltaTime() / data.breakTimer;
 		breakTimer_ = std::clamp(breakTimer_, 0.0f, 1.0f);
-		float t = Easing::EaseOutBounce(breakTimer_);
+		float t = NumaEngine::Easing::EaseOutBounce(breakTimer_);
 		transform_.rotation_ = NumaEngine::Quaternion::Slerp(prevRotate_, breakRotate_,t);
 		centerPosition_.y = breakTimer_ * 0.75f;
 		if (t > data.breakEmitTimer) {
@@ -161,4 +161,5 @@ void FieldObject::UpdateBreak()
 		}
 	}
 }
+
 

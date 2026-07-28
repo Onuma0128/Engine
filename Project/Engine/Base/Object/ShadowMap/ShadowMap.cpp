@@ -6,26 +6,26 @@
 #include "DsvManager.h"
 #include "TextureManager.h"
 
-std::unique_ptr<ShadowMap> ShadowMap::instance_ = nullptr;
+std::unique_ptr<NumaEngine::ShadowMap> NumaEngine::ShadowMap::instance_ = nullptr;
 
-ShadowMap* ShadowMap::GetInstance()
+NumaEngine::ShadowMap* NumaEngine::ShadowMap::GetInstance()
 {
     if (instance_ == nullptr) {
-        instance_ = std::make_unique<ShadowMap>();
+        instance_ = std::make_unique<NumaEngine::ShadowMap>();
     }
     return instance_.get();
 }
 
-void ShadowMap::Finalize()
+void NumaEngine::ShadowMap::Finalize()
 {
     instance_ = nullptr;
 }
 
-void ShadowMap::CreateShadowMap(uint32_t size)
+void NumaEngine::ShadowMap::CreateShadowMap(uint32_t size)
 {
     shadowSize_ = size;
 
-	// シャドウマップ用テクスチャの作成
+	// 繧ｷ繝｣繝峨え繝槭ャ繝礼畑繝・け繧ｹ繝√Ε縺ｮ菴懈・
     D3D12_RESOURCE_DESC desc{};
     desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
     desc.Width = size;
@@ -47,12 +47,12 @@ void ShadowMap::CreateShadowMap(uint32_t size)
         IID_PPV_ARGS(&shadowMapTexture_));
     assert(SUCCEEDED(hr));
 
-	// シャドウマップ用DSVの作成
+	// 繧ｷ繝｣繝峨え繝槭ャ繝礼畑DSV縺ｮ菴懈・
     const uint32_t dsvIndex = DsvManager::GetInstance()->Allocate();
     shadowDSV_ = DsvManager::GetInstance()->GetCPUDescriptorHandle(dsvIndex);
     DsvManager::GetInstance()->CreateDSV(dsvIndex, shadowMapTexture_.Get());
 
-	// シャドウマップ用SRVの作成
+	// 繧ｷ繝｣繝峨え繝槭ャ繝礼畑SRV縺ｮ菴懈・
 	shadowSrvIndex_ = SrvManager::GetInstance()->Allocate() + TextureManager::kSRVIndexTop;
     SrvManager::GetInstance()->CreateSRVforDepth(shadowSrvIndex_, shadowMapTexture_.Get(), DXGI_FORMAT_R24_UNORM_X8_TYPELESS);
 
@@ -62,27 +62,27 @@ void ShadowMap::CreateShadowMap(uint32_t size)
     shadowState_ = D3D12_RESOURCE_STATE_DEPTH_WRITE;
 }
 
-void ShadowMap::BeginShadowMapPass()
+void NumaEngine::ShadowMap::BeginShadowMapPass()
 {
     auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
-    // SRV→DSV 書き込み
+    // SRV竊奪SV 譖ｸ縺崎ｾｼ縺ｿ
     TransitionIfNeeded(commandList, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 
     commandList->RSSetViewports(1, &shadowViewport_);
     commandList->RSSetScissorRects(1, &shadowScissor_);
-    // DSV のみ。カラーRTVは設定しない
+    // DSV 縺ｮ縺ｿ縲ゅき繝ｩ繝ｼRTV縺ｯ險ｭ螳壹＠縺ｪ縺・
     commandList->OMSetRenderTargets(0, nullptr, FALSE, &shadowDSV_);
     commandList->ClearDepthStencilView(shadowDSV_, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 }
 
-void ShadowMap::EndShadowMapPass()
+void NumaEngine::ShadowMap::EndShadowMapPass()
 {
     auto* commandList = NumaEngine::DirectXEngine::GetCommandList();
-    // DSV→SRV
+    // DSV竊担RV
     TransitionIfNeeded(commandList, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
 }
 
-void ShadowMap::TransitionIfNeeded(ID3D12GraphicsCommandList* cmd, D3D12_RESOURCE_STATES newState)
+void NumaEngine::ShadowMap::TransitionIfNeeded(ID3D12GraphicsCommandList* cmd, D3D12_RESOURCE_STATES newState)
 {
     if (!shadowMapTexture_) return;
     if (shadowState_ == newState) return;
@@ -98,3 +98,4 @@ void ShadowMap::TransitionIfNeeded(ID3D12GraphicsCommandList* cmd, D3D12_RESOURC
 
     shadowState_ = newState;
 }
+

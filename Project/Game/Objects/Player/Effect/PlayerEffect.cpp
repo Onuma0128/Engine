@@ -151,7 +151,7 @@ void PlayerEffect::UpdatePostEffect()
 		{
 			// 必殺技のフレーム管理
 			float t = std::clamp(specialMoveFrame_ / expandDuration, 0.0f, 1.0f);
-			t = Easing::EaseInQuint(t);
+			t = NumaEngine::Easing::EaseInQuint(t);
 			// PostEffectへの値を適応
 			postEffectManager_->GetGrayscaleData()->t = t;
 			postEffectManager_->GetVignetteData()->gamma = t * 0.8f;
@@ -190,7 +190,7 @@ void PlayerEffect::UpdatePostEffect()
 		{
 			// 必殺技のフレーム管理
 			float t = std::clamp(1.0f - (specialMoveFrame_ / shrinkDuration), 0.0f, 1.0f);
-			t = Easing::EaseInQuint(t);
+			t = NumaEngine::Easing::EaseInQuint(t);
 			// PostEffectへの値を適応
 			postEffectManager_->GetGrayscaleData()->t = t;
 			postEffectManager_->GetVignetteData()->gamma = t * 0.8f;

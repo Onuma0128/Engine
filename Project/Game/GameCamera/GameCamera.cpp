@@ -244,7 +244,7 @@ void GameCamera::BossUpdate(const NumaEngine::Vector3& shakeOffset)
 	case GameCamera::BossCameraState::Active:
 	{
 		float t = bossCameraTime_ / data.bossActiveTime;
-		t = Easing::EaseInQuint(std::clamp(t, 0.0f, 1.0f));
+		t = NumaEngine::Easing::EaseInQuint(std::clamp(t, 0.0f, 1.0f));
         NumaEngine::Vector3 rotation = NumaEngine::Vector3::Lerp(data.bossStartRotate, data.bossEndRotate, t);
 		NumaEngine::Vector3 translate = NumaEngine::Vector3::Lerp(data.bossStartPosition, data.bossEndPosition, t);
 		NumaEngine::Vector3 bossPos = { boss_->GetTransform().translation_ };

@@ -44,9 +44,9 @@ protected:
 	bool endRequst_ = false;
 
     std::unique_ptr<NumaEngine::WinApp> winApp_ = nullptr;
-    std::unique_ptr<NumaEngine::DirectXEngine> directXEngine_ = nullptr;
+	std::unique_ptr<NumaEngine::DirectXEngine> directXEngine_ = nullptr;
 
-    std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
+	std::unique_ptr<NumaEngine::ImGuiManager> imGuiManager_ = nullptr;
 
 	std::unique_ptr<NumaEngine::AbstractSceneFactory> sceneFactory_ = nullptr;
 

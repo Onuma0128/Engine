@@ -12,7 +12,7 @@ void Framework::Initialize()
     winApp_ = std::make_unique<NumaEngine::WinApp>();
 	winApp_->Initialize();
 
-	imGuiManager_ = std::make_unique<ImGuiManager>();
+	imGuiManager_ = std::make_unique<NumaEngine::ImGuiManager>();
 
     directXEngine_ = std::make_unique<NumaEngine::DirectXEngine>();
 	directXEngine_->Initialize(winApp_.get(), imGuiManager_.get());
@@ -26,7 +26,7 @@ void Framework::Finalize()
 {
 	Input::GetInstance()->Finalize();
 
-	SceneManager::GetInstance()->Finalize();
+	NumaEngine::SceneManager::GetInstance()->Finalize();
 }
 
 void Framework::Update()

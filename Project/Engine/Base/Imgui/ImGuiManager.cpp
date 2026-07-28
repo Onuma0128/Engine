@@ -9,7 +9,7 @@
 #include "SrvManager.h"
 #include "DescriptorHeap.h"
 
-ImGuiManager::~ImGuiManager()
+NumaEngine::ImGuiManager::~ImGuiManager()
 {
 	// ImGuiの終了処理
 	ImGui_ImplDX12_Shutdown();
@@ -17,7 +17,7 @@ ImGuiManager::~ImGuiManager()
 	ImGui::DestroyContext();
 }
 
-void ImGuiManager::Initialize(NumaEngine::DirectXEngine* dxEngine, NumaEngine::WinApp* winApp)
+void NumaEngine::ImGuiManager::Initialize(NumaEngine::DirectXEngine* dxEngine, NumaEngine::WinApp* winApp)
 {
 	dxEngine_ = dxEngine;
 	winApp_ = winApp;
@@ -36,7 +36,7 @@ void ImGuiManager::Initialize(NumaEngine::DirectXEngine* dxEngine, NumaEngine::W
 	);
 }
 
-void ImGuiManager::Begin()
+void NumaEngine::ImGuiManager::Begin()
 {
 	//ImGuiの開始処理
 	ImGui_ImplDX12_NewFrame();
@@ -44,16 +44,17 @@ void ImGuiManager::Begin()
 	ImGui::NewFrame();
 }
 
-void ImGuiManager::End()
+void NumaEngine::ImGuiManager::End()
 {
 	// ImGuiの内部コマンドを生成
 	ImGui::Render();
 }
 
-void ImGuiManager::Draw()
+void NumaEngine::ImGuiManager::Draw()
 {
 #ifdef ENABLE_EDITOR
 	// 実際のnommandListのImGuiの描画コマンドを積む
     ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), NumaEngine::DirectXEngine::GetCommandList());
 #endif // ENABLE_EDITOR
 }
+

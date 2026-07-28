@@ -5,6 +5,7 @@ namespace NumaEngine { class DirectXEngine; class WinApp; }
 /// <summary>
 /// ImGui管理クラス
 /// </summary>
+namespace NumaEngine {
 class ImGuiManager
 {
 public:
@@ -26,7 +27,8 @@ public:
 
 private:
 
-    NumaEngine::DirectXEngine* dxEngine_ = nullptr;
-	
-    NumaEngine::WinApp* winApp_ = nullptr;
+	DirectXEngine* dxEngine_ = nullptr;
+
+	WinApp* winApp_ = nullptr;
 };
+} // namespace NumaEngine

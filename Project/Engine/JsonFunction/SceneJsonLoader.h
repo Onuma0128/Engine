@@ -10,13 +10,20 @@
 #include "Collider.h"
 #include "Vector3.h"
 
+// NOTE: SceneObject and ColliderData will be declared inside the NumaEngine namespace below.
+
+/// <summary>
+/// シーンのJSONデータを読み込むクラス
+/// </summary>
+namespace NumaEngine {
+
 // 保存するコライダーのデータ
 struct ColliderData {
-    NumaEngine::ColliderType type;
-    NumaEngine::Vector3 center{};
-    NumaEngine::Vector3 size{};
+    ColliderType type;
+    Vector3 center{};
+    Vector3 size{};
     float radius;
-    NumaEngine::Vector2 defPosition;
+    Vector2 defPosition;
     float rotate{};
     bool active;
 };
@@ -33,9 +40,6 @@ struct SceneObject {
     std::vector<SceneObject> children;      // ペアレントされているObject再帰構造
 };
 
-/// <summary>
-/// シーンのJSONデータを読み込むクラス
-/// </summary>
 class SceneJsonLoader
 {
 public:
@@ -62,11 +66,11 @@ private:
     std::map<std::string, SceneObject> sceneObjectDatas_;
 
     // 保存先ファイルパス
+
     const std::string kDirectoryPath_ = "resources/gameData/";
     std::string filePath_ = "";
 
 };
 
-
-
+} // namespace NumaEngine
 

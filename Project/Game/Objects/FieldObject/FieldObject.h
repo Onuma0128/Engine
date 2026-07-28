@@ -24,7 +24,7 @@ public:
 	/// フィールドオブジェクトを初期化する
 	/// </summary>
 	/// <param name="object"></Jsonの保存データを取得する>
-	void Init(SceneObject object);
+    void Init(NumaEngine::SceneObject object);
 
 	/// <summary>
 	/// フィールドオブジェクトを更新する

@@ -8,6 +8,7 @@ using Microsoft::WRL::ComPtr;
 /// <summary>
 /// アニメーションのPSOを管理するクラス
 /// </summary>
+namespace NumaEngine {
 class SpriteBase
 {
 public:
@@ -25,3 +26,5 @@ private:
 	// パイプラインステート
 	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
 };
+
+} // namespace NumaEngine

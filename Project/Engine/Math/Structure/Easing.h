@@ -25,6 +25,7 @@ enum class EasingType : int32_t {
 /// <summary>
 /// Easing関数を提供するクラス
 /// </summary>
+namespace NumaEngine {
 class Easing {
 public:
     static float EaseInSine(float t) {
@@ -227,3 +228,5 @@ private:
     static constexpr int kEaseCount = static_cast<int>(sizeof(easeTypes_) / sizeof(easeTypes_[0]));
 
 };
+
+} // namespace NumaEngine

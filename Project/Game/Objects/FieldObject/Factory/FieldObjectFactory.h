@@ -22,7 +22,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="loader"></Jsonの保存データを取得する>
-	void Init(SceneJsonLoader loader);
+    void Init(NumaEngine::SceneJsonLoader loader);
 
 	/// <summary>
 	/// 更新

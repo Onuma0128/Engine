@@ -1,8 +1,8 @@
-﻿#include "EnemySpawner.h"
+#include "EnemySpawner.h"
 
 #include "DeltaTimer.h"
 
-void EnemySpawner::Init(SceneObject object)
+void EnemySpawner::Init(NumaEngine::SceneObject object)
 {
 	Object3d::Initialize(object.fileName);
 	transform_ = object.transform;

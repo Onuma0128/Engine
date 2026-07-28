@@ -9,17 +9,17 @@
 #include "ModelInstanceRenderer.h"
 #include "CollisionManager.h"
 
-std::unique_ptr<SceneManager> SceneManager::instance_ = nullptr;
+std::unique_ptr<NumaEngine::SceneManager> NumaEngine::SceneManager::instance_ = nullptr;
 
-SceneManager* SceneManager::GetInstance()
+NumaEngine::SceneManager* NumaEngine::SceneManager::GetInstance()
 {
-	if (instance_ == nullptr) {
-		instance_ = std::make_unique<SceneManager>();
+    if (instance_ == nullptr) {
+		instance_ = std::make_unique<NumaEngine::SceneManager>();
 	}
 	return instance_.get();
 }
 
-void SceneManager::Update()
+void NumaEngine::SceneManager::Update()
 {
 	if (nextScene_) {
 		// 旧シーンの終了
@@ -45,23 +45,24 @@ void SceneManager::Update()
 	scene_->Update();
 }
 
-void SceneManager::Draw()
+void NumaEngine::SceneManager::Draw()
 {
 	// 実行中のシーンの描画
 	scene_->Draw();
 }
 
-void SceneManager::Finalize()
+void NumaEngine::SceneManager::Finalize()
 {
 	scene_->Finalize();
 
 	instance_ = nullptr;
 }
 
-void SceneManager::ChangeScene(const std::string& sceneName)
+void NumaEngine::SceneManager::ChangeScene(const std::string& sceneName)
 {
 	assert(sceneFactory_);
 	assert(nextScene_ == nullptr);
 
 	nextScene_ = sceneFactory_->CreateScene(sceneName);
 }
+

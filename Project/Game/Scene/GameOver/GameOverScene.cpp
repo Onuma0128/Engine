@@ -1,4 +1,4 @@
-#include "GameOverScene.h"
+﻿#include "GameOverScene.h"
 
 #include "SceneManager.h"
 #include "CameraManager.h"
@@ -6,7 +6,7 @@
 
 void GameOverScene::Initialize()
 {
-    // カメラの初期化
+    // 繧ｫ繝｡繝ｩ縺ｮ蛻晄悄蛹・
 	camera_ = std::make_shared<NumaEngine::Camera>();
 	camera_->Initialize();
 	CameraManager::GetInstance()->SetCamera(camera_);
@@ -48,9 +48,9 @@ void GameOverScene::Update()
 		isFade_ = true;
 		sceneFade_->FadeOut();
 	}
-	// フェードが終わったらシーン遷移する
+	// 繝輔ぉ繝ｼ繝峨′邨ゅｏ縺｣縺溘ｉ繧ｷ繝ｼ繝ｳ驕ｷ遘ｻ縺吶ｋ
 	if (isFade_ && !sceneFade_->GetIsFade()) {
-		SceneManager::GetInstance()->ChangeScene("Title");
+		NumaEngine::SceneManager::GetInstance()->ChangeScene("Title");
 	}
 }
 
@@ -60,4 +60,5 @@ void GameOverScene::Draw()
 
 	sceneFade_->Draw();
 }
+
 

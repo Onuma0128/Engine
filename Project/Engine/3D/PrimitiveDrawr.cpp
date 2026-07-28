@@ -16,7 +16,7 @@ PrimitiveDrawr::~PrimitiveDrawr()
 
 void PrimitiveDrawr::Init(std::vector<NumaEngine::Vector3> pos)
 {
-	primitiveDrawrBase_ = std::make_unique<PrimitiveDrawrBase>();
+    primitiveDrawrBase_ = std::make_unique<NumaEngine::PrimitiveDrawrBase>();
 	primitiveDrawrBase_->Initialize();
 	positions_ = pos;
 
@@ -91,7 +91,7 @@ void PrimitiveDrawr::TypeInit(PrimitiveType type, uint32_t kIndex)
 {
 	type_ = type;
 
-	primitiveDrawrBase_ = std::make_unique<PrimitiveDrawrBase>();
+    primitiveDrawrBase_ = std::make_unique<NumaEngine::PrimitiveDrawrBase>();
 	primitiveDrawrBase_->Initialize();
 
 	switch (type_)

@@ -18,7 +18,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="object"></Jsonの保存データを取得する>
-	void Init(SceneObject object);
+    void Init(NumaEngine::SceneObject object);
 
 	/// <summary>
 	/// 更新

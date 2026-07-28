@@ -3,7 +3,7 @@
 #include "SearchAlgorithm/Collision/MapCollision.h"
 #include "GameCamera/GameCamera.h"
 
-void FieldObjectFactory::Init(SceneJsonLoader loader)
+void FieldObjectFactory::Init(NumaEngine::SceneJsonLoader loader)
 {
 	items_ = std::make_unique<FieldObjectAdjustItem>();
 	items_->LoadItems();

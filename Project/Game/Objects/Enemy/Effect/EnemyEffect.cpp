@@ -1,4 +1,4 @@
-#include "EnemyEffect.h"
+﻿#include "EnemyEffect.h"
 
 #include "DeltaTimer.h"
 #include "Easing.h"
@@ -14,12 +14,12 @@ void EnemyEffect::Init()
 
 	BulletPredictionInit();
 
-    // 移動時のエフェクト
+    // 遘ｻ蜍墓凾縺ｮ繧ｨ繝輔ぉ繧ｯ繝・
 	moveDustEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("moveDust");
 	particleManager_->CreateParticleGroup(moveDustEmitter_);
 	moveDustEmitter_->SetIsCreate(false);
 
-	// ヒット時のエフェクト
+	// 繝偵ャ繝域凾縺ｮ繧ｨ繝輔ぉ繧ｯ繝・
 	hitEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("hitDamage");
 	particleManager_->CreateParticleGroup(hitEmitter_);
 	hitEmitter_->SetIsCreate(false);
@@ -38,7 +38,7 @@ void EnemyEffect::Init()
 	particleManager_->CreateParticleGroup(hitRingBlueEmitter_);
 	hitRingBlueEmitter_->SetIsCreate(false);
 
-	// 死亡時のエフェクト
+	// 豁ｻ莠｡譎ゅ・繧ｨ繝輔ぉ繧ｯ繝・
 	deadEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("enemyDead");
 	particleManager_->CreateParticleGroup(deadEmitter_);
 	deadEmitter_->SetIsCreate(false);
@@ -68,7 +68,7 @@ void EnemyEffect::OnceMoveEffect(const WorldTransform& transform)
 {
 	moveDustEmitter_->onceEmit();
 
-	// パーティクルの座標を設定
+	// 繝代・繝・ぅ繧ｯ繝ｫ縺ｮ蠎ｧ讓吶ｒ險ｭ螳・
 	NumaEngine::Quaternion rotate = transform.rotation_;
 	NumaEngine::Vector3 position = transform.translation_;
 
@@ -78,22 +78,22 @@ void EnemyEffect::OnceMoveEffect(const WorldTransform& transform)
 
 void EnemyEffect::OnceBulletEffect(const WorldTransform& transform)
 {
-	// Particleを一回生成
+	// Particle繧剃ｸ蝗樒函謌・
 	bulletExplosionEmitter_->onceEmit();
 	bulletSparkEmitter_->onceEmit();
 	bulletSmokeEmitter_->onceEmit();
 
-	// パーティクルの座標を設定
+	// 繝代・繝・ぅ繧ｯ繝ｫ縺ｮ蠎ｧ讓吶ｒ險ｭ螳・
 	NumaEngine::Quaternion rotate = transform.rotation_;
 	NumaEngine::Vector3 position = transform.translation_;
 
-	// 爆発
+	// 辷・匱
 	bulletExplosionEmitter_->SetPosition(position);
 	bulletExplosionEmitter_->SetRotation(rotate);
-	// 火花
+	// 轣ｫ闃ｱ
 	bulletSparkEmitter_->SetPosition(position);
 	bulletSparkEmitter_->SetRotation(rotate);
-	// 煙
+	// 辣・
 	bulletSmokeEmitter_->SetPosition(position);
 	bulletSmokeEmitter_->SetRotation(rotate);
 }
@@ -102,7 +102,7 @@ void EnemyEffect::OnceBulletHitEffect(const WorldTransform& transform)
 {
 	hitEmitter_->onceEmit();
 
-	// パーティクルの座標を設定
+	// 繝代・繝・ぅ繧ｯ繝ｫ縺ｮ蠎ｧ讓吶ｒ險ｭ螳・
 	NumaEngine::Quaternion rotate = transform.rotation_;
 	NumaEngine::Vector3 position = transform.translation_;
 
@@ -115,7 +115,7 @@ void EnemyEffect::OnceBulletHitExplosionEffect(const WorldTransform& transform)
 	hitExplosionEmitter_->onceEmit();
 	hitRingEmitter_->onceEmit();
 
-	// パーティクルの座標を設定
+	// 繝代・繝・ぅ繧ｯ繝ｫ縺ｮ蠎ｧ讓吶ｒ險ｭ螳・
 	NumaEngine::Quaternion rotate = transform.rotation_;
 	NumaEngine::Vector3 position = transform.translation_;
 
@@ -130,7 +130,7 @@ void EnemyEffect::OnceBulletHitExplosionBlueEffect(const WorldTransform& transfo
 	hitExplosionBlueEmitter_->onceEmit();
 	hitRingBlueEmitter_->onceEmit();
 
-	// パーティクルの座標を設定
+	// 繝代・繝・ぅ繧ｯ繝ｫ縺ｮ蠎ｧ讓吶ｒ險ｭ螳・
 	NumaEngine::Quaternion rotate = transform.rotation_;
 	NumaEngine::Vector3 position = transform.translation_;
 
@@ -142,7 +142,7 @@ void EnemyEffect::OnceBulletHitExplosionBlueEffect(const WorldTransform& transfo
 
 void EnemyEffect::SetMeleeAttackEffect(const WorldTransform& transform)
 {
-	// パーティクルの座標を設定
+	// 繝代・繝・ぅ繧ｯ繝ｫ縺ｮ蠎ｧ讓吶ｒ險ｭ螳・
 	NumaEngine::Quaternion rotate = transform.rotation_;
 	NumaEngine::Vector3 position = transform.translation_;
 
@@ -179,13 +179,13 @@ void EnemyEffect::BulletPredictionInit()
 	default:break;
 	}
 
-	// Planeの初期化
+	// Plane縺ｮ蛻晄悄蛹・
 	for (auto& effect : bulletPredictionEffect_) {
 		effect = std::make_unique<EnemyBulletPredictionEffect>();
 		effect->Init();
 	}
 	if (!bulletPredictionEffect_.empty()) {
-        // 弾を撃つ時のエフェクト
+        // 蠑ｾ繧呈茶縺､譎ゅ・繧ｨ繝輔ぉ繧ｯ繝・
 		bulletExplosionEmitter_ = std::make_shared<NumaEngine::ParticleEmitter>("bulletExplosion");
 		particleManager_->CreateParticleGroup(bulletExplosionEmitter_);
 		bulletExplosionEmitter_->SetIsCreate(false);
@@ -205,29 +205,29 @@ void EnemyEffect::HitReticleUpdate()
 {
 	float deltaTime = 1.0f / 60.0f;
 
-	// ヒットしているなら描画をする
+	// 繝偵ャ繝医＠縺ｦ縺・ｋ縺ｪ繧画緒逕ｻ繧偵☆繧・
 	if (enemy_->GetHitReticle()) {
 		hitReticleEffect_.cylinder_->GetRenderOptions().enabled = true;
 		hitReticleEffect_.frame_ += deltaTime;
 
-		// ヒットが終わったら
+		// 繝偵ャ繝医′邨ゅｏ縺｣縺溘ｉ
 	} else {
 		hitReticleEffect_.frame_ -= deltaTime * 2.0f;
 
-		// 描画を切る
+		// 謠冗判繧貞・繧・
 		if (hitReticleEffect_.frame_ <= 0.0f) {
 			hitReticleEffect_.cylinder_->GetRenderOptions().enabled = false;
 		}
 	}
 
-	// Cylinderが描画されているなら
+	// Cylinder縺梧緒逕ｻ縺輔ｌ縺ｦ縺・ｋ縺ｪ繧・
 	if (hitReticleEffect_.cylinder_->GetRenderOptions().enabled) {
-		// frameをクランプしてイージングを掛ける
+		// frame繧偵け繝ｩ繝ｳ繝励＠縺ｦ繧､繝ｼ繧ｸ繝ｳ繧ｰ繧呈寺縺代ｋ
 		hitReticleEffect_.frame_ = std::clamp(hitReticleEffect_.frame_, 0.0f, 1.0f);
 		float t = 0.0f;
-		if (enemy_->GetHitReticle()) { t = Easing::EaseInQuint(hitReticleEffect_.frame_); } else { t = Easing::EaseOutBack(hitReticleEffect_.frame_); }
+		if (enemy_->GetHitReticle()) { t = NumaEngine::Easing::EaseInQuint(hitReticleEffect_.frame_); } else { t = NumaEngine::Easing::EaseOutBack(hitReticleEffect_.frame_); }
 		float scale = t;
-		// スケールと回転を適応
+		// 繧ｹ繧ｱ繝ｼ繝ｫ縺ｨ蝗櫁ｻ｢繧帝←蠢・
 		hitReticleEffect_.cylinder_->GetTransform().scale = { scale,scale,scale };
 		hitReticleEffect_.axis_ += 0.1f;
 		hitReticleEffect_.cylinder_->GetTransform().rotation =
@@ -247,14 +247,14 @@ void EnemyEffect::BulletPredictionUpdate()
 		const auto& data = enemy_->GetItem()->GetRangedData();
 		auto& effect = bulletPredictionEffect_[0];
 
-		// サイズを更新
+		// 繧ｵ繧､繧ｺ繧呈峩譁ｰ
 		effect->SetScale(data.planeSize);
-		// 座標を計算
+		// 蠎ｧ讓吶ｒ險育ｮ・
 		NumaEngine::Quaternion quaternionY = NumaEngine::Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
      NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(quaternionY);
 		NumaEngine::Vector3 offset = data.planeOffset.Transform(rotateMatrix) + enemy_->GetTransform().translation_;
 		effect->SetTranslate(offset);
-		// 回転を更新
+		// 蝗櫁ｻ｢繧呈峩譁ｰ
 		NumaEngine::Quaternion rotateX = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitX, -std::numbers::pi_v<float> / 2.0f);
 		NumaEngine::Vector3 direction = (offset - enemy_->GetTransform().translation_);
 		direction.y = 0.0f;
@@ -265,7 +265,7 @@ void EnemyEffect::BulletPredictionUpdate()
 		} else {
 			effect->SetRotate(rotateX);
 		}
-		// 更新
+		// 譖ｴ譁ｰ
 		effect->SetAddUvPosition(NumaEngine::Vector2{ 0.1f,0.0f });
 		effect->SetEnemyPosition(enemy_->GetTransform().translation_);
 		effect->Update();
@@ -280,14 +280,14 @@ void EnemyEffect::BulletPredictionUpdate()
 
 		for (size_t i = 0; i < bulletPredictionEffect_.size(); ++i) {
 			auto& effect = bulletPredictionEffect_[i];
-			// サイズを更新
+			// 繧ｵ繧､繧ｺ繧呈峩譁ｰ
 			effect->SetScale(data.planeSize[i]);
-			// 座標を計算
+			// 蠎ｧ讓吶ｒ險育ｮ・
 			NumaEngine::Quaternion quaternionY = NumaEngine::Quaternion::ExtractYawQuaternion(enemy_->GetTransform().rotation_);
          NumaEngine::Matrix4x4 rotateMatrix = NumaEngine::Quaternion::MakeRotateMatrix(quaternionY);
 			NumaEngine::Vector3 offset = data.planeOffset[i].Transform(rotateMatrix) + enemy_->GetTransform().translation_;
 			effect->SetTranslate(offset);
-			// 回転を更新
+			// 蝗櫁ｻ｢繧呈峩譁ｰ
 			NumaEngine::Quaternion rotateX = NumaEngine::Quaternion::MakeRotateAxisAngleQuaternion(NumaEngine::Vector3::ExprUnitX, std::numbers::pi_v<float> / 2.0f);
 			NumaEngine::Vector3 direction = (offset - enemy_->GetTransform().translation_);
 			direction.y = 0.0f;
@@ -299,7 +299,7 @@ void EnemyEffect::BulletPredictionUpdate()
 			} else {
 				effect->SetRotate(rotateX);
 			}
-			// 更新
+			// 譖ｴ譁ｰ
 			effect->SetAddUvPosition(NumaEngine::Vector2{ 0.1f,0.0f });
 			effect->SetEnemyPosition(enemy_->GetTransform().translation_);
 			effect->Update();
@@ -311,4 +311,5 @@ void EnemyEffect::BulletPredictionUpdate()
 		break;
 	}
 }
+
 

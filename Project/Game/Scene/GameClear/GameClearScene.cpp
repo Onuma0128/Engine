@@ -50,7 +50,7 @@ void GameClearScene::Update()
 	}
 	// フェードが終わったらシーン遷移する
 	if (isFade_ && !sceneFade_->GetIsFade()) {
-		SceneManager::GetInstance()->ChangeScene("Title");
+		NumaEngine::SceneManager::GetInstance()->ChangeScene("Title");
 	}
 }
 

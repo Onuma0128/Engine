@@ -1,4 +1,4 @@
-#include "PlayerReticle.h"
+﻿#include "PlayerReticle.h"
 
 #include <numbers>
 
@@ -35,7 +35,7 @@ void PlayerReticle::Update(bool isPlayingMouse)
 {
 	Input* input = Input::GetInstance();
 
-	// 移動の処理
+	// 遘ｻ蜍輔・蜃ｦ逅・
     const float reticleSpeed = 10.0f;
 	NumaEngine::Vector2 velocity{};
 	if (!isPlayingMouse) {
@@ -50,10 +50,10 @@ void PlayerReticle::Update(bool isPlayingMouse)
 		transform_.position += velocity * reticleSpeed;
 	}
 
-	// 当たり判定用の線を更新
+	// 蠖薙◆繧雁愛螳夂畑縺ｮ邱壹ｒ譖ｴ譁ｰ
 	SegmentUpdate();
 
-	// カラーをラープさせる
+	// 繧ｫ繝ｩ繝ｼ繧偵Λ繝ｼ繝励＆縺帙ｋ
 	if (reticleColorTimer_ <= 1.0f) {
 		reticleColorTimer_ += 1.0f / 30.0f;
 		float color = std::clamp(reticleColorTimer_, 0.0f, 1.0f);
@@ -65,7 +65,7 @@ void PlayerReticle::Update(bool isPlayingMouse)
 		}
 	}
 
-	// Spriteの更新
+	// Sprite縺ｮ譖ｴ譁ｰ
     this->NumaEngine::Sprite::Update();
 }
 
@@ -78,7 +78,7 @@ void PlayerReticle::Draw()
 
 void PlayerReticle::OnCollisionEnter(NumaEngine::Collider* other)
 {
-	// 当たった敵のTransformを作成して取得する
+	// 蠖薙◆縺｣縺滓雰縺ｮTransform繧剃ｽ懈・縺励※蜿門ｾ励☆繧・
 	if (other->GetColliderName() == "Enemy" &&
 		hitCount_ < 6) {
 		reticleColorTimer_ = -0.2f;
@@ -146,8 +146,8 @@ void PlayerRayReticle::SetRaticleAlpha(bool flag)
 	float t = std::sinf(alphaTimer_ * std::numbers::pi_v<float>);
 
     transform_.size = NumaEngine::Vector2{ 64.0f,64.0f } + NumaEngine::Vector2{ 32.0f,32.0f } * t;
-	transform_.rotate = std::numbers::pi_v<float> * Easing::EaseInBack(alphaTimer_);
-	transform_.rotate = std::numbers::pi_v<float> * Easing::EaseInBack(alphaTimer_);
+	transform_.rotate = std::numbers::pi_v<float> * NumaEngine::Easing::EaseInBack(alphaTimer_);
+	transform_.rotate = std::numbers::pi_v<float> * NumaEngine::Easing::EaseInBack(alphaTimer_);
 
 	NumaEngine::Vector4 color = { alphaTimer_,0.0f,0.0f,alphaTimer_ };
 	Sprite::SetColor(color);
@@ -155,7 +155,7 @@ void PlayerRayReticle::SetRaticleAlpha(bool flag)
 
 void PlayerRayReticle::SetPosition(const NumaEngine::Vector3& position)
 {
-	// ワールドからスクリーン座標に変換
+	// 繝ｯ繝ｼ繝ｫ繝峨°繧峨せ繧ｯ繝ｪ繝ｼ繝ｳ蠎ｧ讓吶↓螟画鋤
 	if (position.Length() < 0.01f) { return; }
 	NumaEngine::Vector3 screenPos = NumaEngine::Vector3::Transform(
 		position,
@@ -172,4 +172,5 @@ void PlayerRayReticle::SetPosition(const NumaEngine::Vector3& position)
         transform_.position = NumaEngine::Vector2::Lerp(transform_.position, pos, 0.5f);
 	}
 }
+
 

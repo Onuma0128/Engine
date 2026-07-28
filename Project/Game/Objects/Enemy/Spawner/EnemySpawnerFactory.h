@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <memory>
 #include <vector>
 #include <list>
@@ -22,7 +22,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="loader"></Jsonの保存データを取得する>
-	void Init(SceneJsonLoader loader);
+    void Init(NumaEngine::SceneJsonLoader loader);
 
 	/// <summary>
 	/// 更新
@@ -83,7 +83,7 @@ private:
 	/// スポナーを作成する
 	/// </summary>
 	/// <param name="object"></Jsonの保存データを取得する>
-	void CreateSpawner(SceneObject object);
+    void CreateSpawner(NumaEngine::SceneObject object);
 
 	/// <summary>
 	/// 敵のタイプごとの初期化

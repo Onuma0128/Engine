@@ -10,6 +10,7 @@ using Microsoft::WRL::ComPtr;
 /// <summary>
 /// プリミティブ描画のPSOを管理するクラス
 /// </summary>
+namespace NumaEngine {
 class PrimitiveDrawrBase
 {
 public:
@@ -30,3 +31,5 @@ private:
 	ComPtr<ID3D12PipelineState> skyboxPipelineState_;
 
 };
+
+} // namespace NumaEngine

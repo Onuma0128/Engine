@@ -12,8 +12,7 @@
 #include "SceneRenderer.h"
 #include "RenderTexture.h"
 
-namespace NumaEngine { class WinApp; }
-class ImGuiManager;
+namespace NumaEngine { class WinApp; class ImGuiManager; }
 
 using Microsoft::WRL::ComPtr;
 
